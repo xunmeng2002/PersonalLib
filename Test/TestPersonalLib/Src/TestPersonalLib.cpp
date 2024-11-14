@@ -1,16 +1,23 @@
 #include "MD5.h"
+#include "Logger.h"
 #include <iostream>
-#include <Windows.h>
 using namespace std;
 
-int main()
+int main(int argc, const char* argv[])
 {
-    HINSTANCE hinst = LoadLibraryA("PersonalLib.dll");
+    Logger::GetInstance().Init(argv[0]);
+    Logger::GetInstance().SetLogLevel(LogLevel::Info, LogLevel::Info);
+    Logger::GetInstance().Start();
 
+    WriteLog(LogLevel::Info, "TestPersonalLib Start.");
 
     string src = "HelloWorldHelloWorldHelloWorldHelloWorldHelloWorldHelloWorld";
 
     string s = getMD5((const unsigned char*)src.c_str(), src.length());
-    cout << s;
+    WriteLog(LogLevel::Info, "getMD5 Result:%s", s.c_str());
+
+    WriteLog(LogLevel::Info, "TestPersonalLib Stop.");
+    Logger::GetInstance().Stop();
+    Logger::GetInstance().Join();
     return 0;
 }
