@@ -42,18 +42,18 @@ void TestXtpServer()
 {
 	WriteLog(LogLevel::Info, "TestXtpServer");
 
-	XtpServer XtpServer;
-	XtpServer.Init();
-	XtpServer.Start();
+	XtpServer xtpServer;
+	xtpServer.Init();
+	xtpServer.Start();
 
-	while (!XtpServer.m_ConnectStatus)
+	while (!xtpServer.m_ConnectStatus)
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 	//for (auto i = 0; i < 5; ++i)
 	//{
 	//	XtpReqInsertOrderPackage reqInsertOrder;
-	//	reqInsertOrder.Prepare(XtpServer.m_SessionID);
+	//	reqInsertOrder.Prepare(xtpServer.m_SessionID);
 	//	Strcpy(reqInsertOrder.Field.PrimaryAccountID, "Xunmeng001");
 	//	Strcpy(reqInsertOrder.Field.ExchangeID, "SHSE");
 	//	Strcpy(reqInsertOrder.Field.InstrumentID, "600000");
@@ -64,12 +64,12 @@ void TestXtpServer()
 	//	reqInsertOrder.Field.Volume = i;
 	//	reqInsertOrder.Field.OrderID = i;
 
-	//	XtpServer.Send(&reqInsertOrder);
+	//	xtpServer.Send(&reqInsertOrder);
 	//}
 
 	std::this_thread::sleep_for(std::chrono::seconds(300));
-	XtpServer.Stop();
-	XtpServer.Join();
+	xtpServer.Stop();
+	xtpServer.Join();
 }
 
 
