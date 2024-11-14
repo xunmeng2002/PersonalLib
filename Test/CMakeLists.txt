@@ -1,0 +1,8 @@
+add_subdirectory(TestMD5)
+add_subdirectory(TestClient)
+add_subdirectory(TestServer)
+add_subdirectory(TestSharedMemoryClient)
+add_subdirectory(TestSharedMemoryServer)
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
+endif()

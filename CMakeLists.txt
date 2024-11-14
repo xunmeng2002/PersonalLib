@@ -71,11 +71,6 @@ endmacro(include_package)
 string(TIMESTAMP BUILD_TIMESTAMP "%Y%m%d-%H%M%S")
 message("Build timestamp is ${BUILD_TIMESTAMP}")
  
-# 配置文件，将时间戳填充到头文件中
-configure_file(
-    "${CMAKE_SOURCE_DIR}/Source/Version/BuildTime.cpp.in"
-	"${CMAKE_SOURCE_DIR}/Source/Version/BuildTime.cpp"
-    @ONLY
-)
 
 add_subdirectory(Target)
+add_subdirectory(Test)

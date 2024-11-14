@@ -7,10 +7,9 @@
 
 namespace step
 {
-	StepProtocol::StepProtocol(ServerTypeType serverType, IOTypeType ioType, const char* threadName, const char* addressName)
-		:m_StepSubscriber(nullptr)
+	StepProtocol::StepProtocol(ServerTypeType serverType, IOTypeType ioType, const char* threadName, const char* addressName, StepPackageFactoryBase* stepPackageFactory)
+		:m_StepSubscriber(nullptr), m_StepPackageFactory(stepPackageFactory)
 	{
-		m_StepPackageFactory = StepPackageFactoryBase::Create();
 		m_IOThread = IOThreadFactory::CreateIOThread(serverType, ioType, threadName, addressName);
 		if (m_IOThread != nullptr)
 		{

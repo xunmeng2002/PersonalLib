@@ -1,0 +1,25 @@
+﻿SET(PROJECT_NAME "TestSharedMemoryClient")
+project(${PROJECT_NAME})
+message("PROJECT_NAME:" ${PROJECT_NAME})
+
+add_package(Src ./Src)
+add_package(TestUtility ${CMAKE_SOURCE_DIR}/Test/Source/TestUtility)
+add_package(TestShm ${CMAKE_SOURCE_DIR}/Test/Source/TestShm)
+add_package(Platform ${CMAKE_SOURCE_DIR}/Source/Platform)
+add_package(Constant ${CMAKE_SOURCE_DIR}/Source/Constant)
+add_package(Types ${CMAKE_SOURCE_DIR}/Source/Types)
+add_package(MemCache ${CMAKE_SOURCE_DIR}/Source/MemCache)
+add_package(Utility ${CMAKE_SOURCE_DIR}/Source/Utility)
+add_package(Buffer ${CMAKE_SOURCE_DIR}/Source/Buffer)
+add_package(Logger ${CMAKE_SOURCE_DIR}/Source/Logger)
+add_package(ThreadBase ${CMAKE_SOURCE_DIR}/Source/ThreadBase)
+add_package(IOThread ${CMAKE_SOURCE_DIR}/Source/IOThread)
+
+
+add_package(SocketInit ${CMAKE_SOURCE_DIR}/Source/SocketInit)
+add_package(TcpBase ${CMAKE_SOURCE_DIR}/Source/Tcp/TcpBase)
+add_package(TcpSelect ${CMAKE_SOURCE_DIR}/Source/Tcp/TcpSelect)
+add_package(TcpEpoll ${CMAKE_SOURCE_DIR}/Source/Tcp/TcpEpoll)
+add_package(Shm ${CMAKE_SOURCE_DIR}/Source/Shm)
+
+add_executable(${PROJECT_NAME} ${all_file})

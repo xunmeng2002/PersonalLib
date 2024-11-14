@@ -7,10 +7,9 @@
 
 namespace xtp
 {
-	XtpProtocol::XtpProtocol(ServerTypeType serverType, IOTypeType ioType, const char* threadName, const char* addressName)
-		:m_XtpSubscriber(nullptr)
+	XtpProtocol::XtpProtocol(ServerTypeType serverType, IOTypeType ioType, const char* threadName, const char* addressName, XtpPackageFactoryBase* xtpPackageFactory)
+		:m_XtpSubscriber(nullptr), m_XtpPackageFactory(xtpPackageFactory)
 	{
-		m_XtpPackageFactory = XtpPackageFactoryBase::Create();
 		m_IOThread = IOThreadFactory::CreateIOThread(serverType, ioType, threadName, addressName);
 		if (m_IOThread != nullptr)
 		{

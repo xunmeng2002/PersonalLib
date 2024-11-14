@@ -1,0 +1,90 @@
+<copylist>
+	<file name="Types.xml" dest="./Model/" src="../Model/"/>
+	<file name="StepHeadID.xml" dest="./Model/Step" src="../Model/"/>
+	<file name="Items.xml" dest="./Model/Step" src="../Model/"/>
+
+	<file name="Aspect.h" dest="../Libs/PersonalLib/include/" src="./Source/Aspect/"/>
+	<file name="AspectAfter.h" dest="../Libs/PersonalLib/include/" src="./Source/Aspect/"/>
+	<file name="AspectBefore.h" dest="../Libs/PersonalLib/include/" src="./Source/Aspect/"/>
+	<file name="AspectLogger.h" dest="../Libs/PersonalLib/include/" src="./Source/AspectLogger/"/>
+	<file name="AspectPerformance.h" dest="../Libs/PersonalLib/include/" src="./Source/AspectPerformance/"/>
+	
+	<file name="Base64.h" dest="../Libs/PersonalLib/include/" src="./Source/Base64/"/>
+	<file name="Buffer.h" dest="../Libs/PersonalLib/include/" src="./Source/Buffer/"/>
+	<file name="RingBuffer.h" dest="../Libs/PersonalLib/include/" src="./Source/Buffer/"/>
+	<file name="SingleShmBuffer.h" dest="../Libs/PersonalLib/include/" src="./Source/Buffer/"/>
+	
+	<file name="Constant.h" dest="../Libs/PersonalLib/include/" src="./Source/Constant/"/>
+	<file name="CsvParser.h" dest="../Libs/PersonalLib/include/" src="./Source/Csv/"/>
+	<file name="CsvRecord.h" dest="../Libs/PersonalLib/include/" src="./Source/Csv/"/>
+	
+	<file name="Dir.h" dest="../Libs/PersonalLib/include/" src="./Source/Dir/"/>
+	
+	<file name="Encode.h" dest="../Libs/PersonalLib/include/" src="./Source/Encode/"/>
+	
+	<file name="IOThread.h" dest="../Libs/PersonalLib/include/" src="./Source/IOThread/"/>
+	<file name="IOThreadFactory.h" dest="../Libs/PersonalLib/include/" src="./Source/IOThread/"/>
+	
+	<file name="json_tool.h" dest="../Libs/PersonalLib/include/" src="./Source/Jsoncpp/"/>
+	<file name="allocator.h" dest="../Libs/PersonalLib/include/" src="./Source/JsonCpp/json/"/>
+	<file name="assertions.h" dest="../Libs/PersonalLib/include/" src="./Source/JsonCpp/json/"/>
+	<file name="config.h" dest="../Libs/PersonalLib/include/" src="./Source/JsonCpp/json/"/>
+	<file name="forwards.h" dest="../Libs/PersonalLib/include/" src="./Source/JsonCpp/json/"/>
+	<file name="json.h" dest="../Libs/PersonalLib/include/" src="./Source/JsonCpp/json/"/>
+	<file name="json_features.h" dest="../Libs/PersonalLib/include/" src="./Source/JsonCpp/json/"/>
+	<file name="reader.h" dest="../Libs/PersonalLib/include/" src="./Source/JsonCpp/json/"/>
+	<file name="value.h" dest="../Libs/PersonalLib/include/" src="./Source/JsonCpp/json/"/>
+	<file name="version.h" dest="../Libs/PersonalLib/include/" src="./Source/JsonCpp/json/"/>
+	<file name="writer.h" dest="../Libs/PersonalLib/include/" src="./Source/JsonCpp/json/"/>
+	
+	<file name="Logger.h" dest="../Libs/PersonalLib/include/" src="./Source/Logger/"/>
+	<file name="LogData.h" dest="../Libs/PersonalLib/include/" src="./Source/Logger/"/>
+	<file name="LoggerInterface.h" dest="../Libs/PersonalLib/include/" src="./Source/Logger/"/>
+	
+	<file name="MD5.h" dest="../Libs/PersonalLib/include/" src="./Source/MD5/"/>
+	<file name="MemCacheTemplate.h" dest="../Libs/PersonalLib/include/" src="./Source/MemCache/"/>
+	<file name="MemCacheTemplateSingleton.h" dest="../Libs/PersonalLib/include/" src="./Source/MemCache/"/>
+	
+	<file name="Package.h" dest="../Libs/PersonalLib/include/" src="./Source/Package/"/>
+	<file name="PackageReader.h" dest="../Libs/PersonalLib/include/" src="./Source/Package/"/>
+	<file name="Platform.h" dest="../Libs/PersonalLib/include/" src="./Source/Platform/"/>
+
+	<file name="Sem.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
+	<file name="ShmBase.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
+	<file name="ShmClient.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
+	<file name="ShmServer.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
+	<file name="SingleShm.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
+	<file name="SocketInit.h" dest="../Libs/PersonalLib/include/" src="./Source/SocketInit/"/>
+	<file name="StepInterface.h" dest="../Libs/PersonalLib/include/" src="./Source/StepProtocol/"/>
+	<file name="StepPackageBase.h" dest="../Libs/PersonalLib/include/" src="./Source/StepProtocol/"/>
+	<file name="StepPackageFactoryBase.h" dest="../Libs/PersonalLib/include/" src="./Source/StepProtocol/"/>
+	<file name="StepPackageReader.h" dest="../Libs/PersonalLib/include/" src="./Source/StepProtocol/"/>
+	<file name="StepProtocol.h" dest="../Libs/PersonalLib/include/" src="./Source/StepProtocol/"/>
+	<file name="StepUtility.h" dest="../Libs/PersonalLib/include/" src="./Source/StepProtocol/"/>
+	
+	<file name="ConnectData.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpBase/"/>
+	<file name="TcpBase.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpBase/"/>
+	<file name="TcpClientBase.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpBase/"/>
+	<file name="TcpServerBase.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpBase/"/>
+	<file name="TcpUtility.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpBase/"/>
+	<file name="TcpEpollBase.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpEpoll/"/>
+	<file name="TcpEpollClient.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpEpoll/"/>
+	<file name="TcpEpollServer.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpEpoll/"/>
+	<file name="TcpSelectBase.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpSelect/"/>
+	<file name="TcpSelectClient.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpSelect/"/>
+	<file name="TcpSelectServer.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpSelect/"/>
+	
+	<file name="ThreadBase.h" dest="../Libs/PersonalLib/include/" src="./Source/ThreadBase/"/>
+	<file name="Timer.h" dest="../Libs/PersonalLib/include/" src="./Source/Timer/"/>
+	<file name="Types.h" dest="../Libs/PersonalLib/include/" src="./Source/Types/"/>
+	
+	<file name="TimeUtility.h" dest="../Libs/PersonalLib/include/" src="./Source/Utility/"/>
+	<file name="Utility.h" dest="../Libs/PersonalLib/include/" src="./Source/Utility/"/>
+	
+	<file name="XtpInterface.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
+	<file name="XtpPackageBase.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
+	<file name="XtpPackageFactoryBase.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
+	<file name="XtpPackageReader.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
+	<file name="XtpProtocol.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
+	<file name="XtpUtility.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
+</copylist>

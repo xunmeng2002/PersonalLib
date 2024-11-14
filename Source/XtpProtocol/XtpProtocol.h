@@ -9,7 +9,7 @@ namespace xtp
 	class XtpProtocol : public IOSubscriber
 	{
 	public:
-		XtpProtocol(ServerTypeType serverType, IOTypeType ioType, const char* threadName, const char* addressName);
+		XtpProtocol(ServerTypeType serverType, IOTypeType ioType, const char* threadName, const char* addressName, XtpPackageFactoryBase* xtpPackageFactory);
 		virtual ~XtpProtocol();
 		void SubscribeXtp(XtpSubscriber* xtpSubscriber);
 		void UnSubscribeXtp();

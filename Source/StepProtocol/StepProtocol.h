@@ -9,7 +9,7 @@ namespace step
 	class StepProtocol : public IOSubscriber
 	{
 	public:
-		StepProtocol(ServerTypeType serverType, IOTypeType ioType, const char* threadName, const char* addressName);
+		StepProtocol(ServerTypeType serverType, IOTypeType ioType, const char* threadName, const char* addressName, StepPackageFactoryBase* stepPackageFactory);
 		~StepProtocol();
 		void SubscribeStep(StepSubscriber* stepSubscriber);
 		void UnSubscribeStep();

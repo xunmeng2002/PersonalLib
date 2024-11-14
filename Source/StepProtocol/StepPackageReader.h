@@ -1,7 +1,6 @@
 #pragma once
 #include "PackageReader.h"
 #include "StepUtility.h"
-#include "StepPackages.h"
 #include "StepPackageFactoryBase.h"
 #include <map>
 #include <unordered_map>

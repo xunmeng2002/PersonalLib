@@ -1,0 +1,5 @@
+{
+	"Protocol": "1",
+	"ListenIP": "0.0.0.0",
+	"ListenPort": "20000"
+}
