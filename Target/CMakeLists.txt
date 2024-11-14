@@ -1,4 +1,4 @@
-SET(PROJECT_NAME "PersonLib")
+SET(PROJECT_NAME "PersonalLib")
 project(${PROJECT_NAME})
 message("PROJECT_NAME:" ${PROJECT_NAME})
 
@@ -31,7 +31,7 @@ add_package(Utility ${CMAKE_SOURCE_DIR}/Source/Utility)
 add_package(XtpProtocol ${CMAKE_SOURCE_DIR}/Source/XtpProtocol)
 
 
-add_library(${PROJECT_NAME} SHARED ${all_file})
+add_library(${PROJECT_NAME} STATIC ${all_file})
 
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")

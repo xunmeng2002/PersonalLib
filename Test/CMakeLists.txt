@@ -1,3 +1,4 @@
+add_subdirectory(TestPersonalLib)
 add_subdirectory(TestMD5)
 add_subdirectory(TestClient)
 add_subdirectory(TestServer)
