@@ -1,0 +1,200 @@
+#pragma once
+#include "MemCacheTemplateSingleton.h"
+#include "Constant.h"
+#include "Types.h"
+#include "MemCacheTemplateSingleton.h"
+#include <string.h>
+#include <algorithm>
+
+
+struct SingleShmHeader
+{
+	int Status;
+	unsigned UpWriteCount;
+	unsigned UpReadCount;
+	unsigned DownWriteCount;
+	unsigned DownReadCount;
+};
+
+
+template<unsigned SIZE>
+class SingleShmBuffer
+{
+public:
+	SingleShmHeader* m_ShmHeader;
+	ServerTypeType m_ServerType;
+	char* m_UpBuffer;
+	char* m_DownBuffer;
+
+	static SingleShmBuffer* Allocate()
+	{
+		return ::Allocate<SingleShmBuffer<SIZE>>();
+	}
+	void Free()
+	{
+		m_ShmHeader = nullptr;
+		m_UpBuffer = nullptr;
+		m_DownBuffer = nullptr;
+		MemCacheTemplateSingleton<SingleShmBuffer<SIZE>>::GetInstance().Free(this);
+	}
+
+	unsigned Write(const char* data, unsigned len)
+	{
+		if (m_ServerType == ServerTypeType::Client)
+			return UpWrite(data, len);
+		return DownWrite(data, len);
+	}
+	unsigned Read(char* buff, unsigned len)
+	{
+		if (m_ServerType == ServerTypeType::Client)
+			return DownRead(buff, len);
+		return UpRead(buff, len);
+	}
+
+	unsigned GetWriteBufferSize()
+	{
+		if (m_ServerType == ServerTypeType::Client)
+			return GetUpWriteBufferSize();
+		return GetDownWriteBufferSize();
+	}
+	unsigned GetReadBufferSize()
+	{
+		if (m_ServerType == ServerTypeType::Client)
+			return GetDownReadBufferSize();
+		return GetUpReadBufferSize();
+	}
+
+private:
+	unsigned GetUpWriteBufferSize()
+	{
+		if (m_ShmHeader->UpReadCount > m_ShmHeader->UpWriteCount)
+		{
+			return m_ShmHeader->UpReadCount - m_ShmHeader->UpWriteCount - 1;
+		}
+		return SIZE - (m_ShmHeader->UpWriteCount - m_ShmHeader->UpReadCount) - 1;
+	}
+	unsigned GetUpReadBufferSize()
+	{
+		if (m_ShmHeader->UpWriteCount >= m_ShmHeader->UpReadCount)
+		{
+			return m_ShmHeader->UpWriteCount - m_ShmHeader->UpReadCount;
+		}
+		return SIZE - (m_ShmHeader->UpReadCount - m_ShmHeader->UpWriteCount);
+	}
+	unsigned GetDownWriteBufferSize()
+	{
+		if (m_ShmHeader->DownReadCount > m_ShmHeader->DownWriteCount)
+		{
+			return m_ShmHeader->DownReadCount - m_ShmHeader->DownWriteCount - 1;
+		}
+		return SIZE - (m_ShmHeader->DownWriteCount - m_ShmHeader->DownReadCount) - 1;
+	}
+	unsigned GetDownReadBufferSize()
+	{
+		if (m_ShmHeader->DownWriteCount >= m_ShmHeader->DownReadCount)
+		{
+			return m_ShmHeader->DownWriteCount - m_ShmHeader->DownReadCount;
+		}
+		return SIZE - (m_ShmHeader->DownReadCount - m_ShmHeader->DownWriteCount);
+	}
+
+	unsigned UpWrite(const char* data, unsigned len)
+	{
+		if (m_ShmHeader->Status < 2)
+			return 0;
+		auto size = GetUpWriteBufferSize();
+		unsigned int currLen = std::min<unsigned>(len, size);
+		unsigned int tailLen = std::min<unsigned>(currLen, SIZE - m_ShmHeader->UpWriteCount);
+		memcpy(m_UpBuffer + m_ShmHeader->UpWriteCount, data, tailLen);
+		if (tailLen < currLen)
+		{
+			memcpy(m_UpBuffer, data + tailLen, size_t(currLen - tailLen));
+			m_ShmHeader->UpWriteCount = currLen - tailLen;
+		}
+		else
+		{
+			m_ShmHeader->UpWriteCount += currLen;
+		}
+		return currLen;
+	}
+	unsigned UpRead(char* buff, unsigned len)
+	{
+		if (m_ShmHeader->Status < 2)
+			return 0;
+		auto size = GetUpReadBufferSize();
+		auto currLen = std::min<unsigned>(len, size);
+		auto tailLen = std::min<unsigned>(currLen, SIZE - m_ShmHeader->UpReadCount);
+		memcpy(buff, m_UpBuffer + m_ShmHeader->UpReadCount, tailLen);
+		if (tailLen < currLen)
+		{
+			memcpy(buff + tailLen, m_UpBuffer, currLen - tailLen);
+			m_ShmHeader->UpReadCount = currLen - tailLen;
+		}
+		else
+		{
+			m_ShmHeader->UpReadCount += currLen;
+		}
+		return currLen;
+	}
+	unsigned DownWrite(const char* data, unsigned len)
+	{
+		if (m_ShmHeader->Status < 2)
+			return 0;
+		auto size = GetDownWriteBufferSize();
+		unsigned int currLen = std::min<unsigned>(len, size);
+		unsigned int tailLen = std::min<unsigned>(currLen, SIZE - m_ShmHeader->DownWriteCount);
+		memcpy(m_DownBuffer + m_ShmHeader->DownWriteCount, data, tailLen);
+		if (tailLen < currLen)
+		{
+			memcpy(m_DownBuffer, data + tailLen, size_t(currLen - tailLen));
+			m_ShmHeader->DownWriteCount = currLen - tailLen;
+		}
+		else
+		{
+			m_ShmHeader->DownWriteCount += currLen;
+		}
+		return currLen;
+	}
+	unsigned DownRead(char* buff, unsigned len)
+	{
+		if (m_ShmHeader->Status < 2)
+			return 0;
+		auto size = GetDownReadBufferSize();
+		auto currLen = std::min<unsigned>(len, size);
+		auto tailLen = std::min<unsigned>(currLen, SIZE - m_ShmHeader->DownReadCount);
+		memcpy(buff, m_DownBuffer + m_ShmHeader->DownReadCount, tailLen);
+		if (tailLen < currLen)
+		{
+			memcpy(buff + tailLen, m_DownBuffer, currLen - tailLen);
+			m_ShmHeader->DownReadCount = currLen - tailLen;
+		}
+		else
+		{
+			m_ShmHeader->DownReadCount += currLen;
+		}
+		return currLen;
+	}
+};
+
+
+template<unsigned SIZE>
+class ShmConnect
+{
+public:
+	SessionIDType SessionID;
+	int Index;
+	SingleShmBuffer<SIZE>* ShmBuffer;
+
+	static ShmConnect* Allocate()
+	{
+		auto item = ::Allocate<ShmConnect<SIZE>>();
+		item->ShmBuffer = ::Allocate<SingleShmBuffer<SIZE>>();
+		return item;
+	}
+	void Free()
+	{
+		ShmBuffer->Free();
+		ShmBuffer = nullptr;
+		MemCacheTemplateSingleton<ShmConnect<SIZE>>::GetInstance().Free(this);
+	}
+};
