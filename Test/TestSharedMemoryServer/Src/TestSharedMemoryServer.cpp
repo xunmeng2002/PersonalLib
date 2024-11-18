@@ -16,7 +16,7 @@ using namespace std;
 
 static void TestShm()
 {
-	auto shmServer = IOThreadFactory::CreateIOThread(ServerTypeType::Server, IOTypeType::Shm, "ShmServer", g_ShmName);
+	auto shmServer = IOThreadFactory::CreateIOThread(ServerTypeType::Server, IOTypeType::Shm, "ShmServer", g_Address);
 	ShmSubscriberImpl* shmSubscriberImpl = new ShmSubscriberImpl(shmServer, ServerTypeType::Server);
 
 	if (!shmServer->Init())
@@ -35,6 +35,30 @@ static void TestShm()
 	shmServer->Stop();
 	shmServer->Join();
 	delete shmServer;
+	delete shmSubscriberImpl;
+}
+static void TestSingleShm()
+{
+	SingleShm* singleShm = new SingleShm(ServerTypeType::Server, "SingleShm", g_ShmName);
+	ShmSubscriberImpl* shmSubscriberImpl = new ShmSubscriberImpl(singleShm, ServerTypeType::Server);
+
+	if (!singleShm->Init())
+	{
+		WriteLog(LogLevel::Error, "SingleShm Init Failed.");
+		return;
+	}
+	singleShm->Start();
+
+	while (!shmSubscriberImpl->m_Connected)
+	{
+		this_thread::sleep_for(chrono::seconds(1));
+	}
+
+	std::this_thread::sleep_for(chrono::seconds(30));
+	singleShm->Stop();
+	singleShm->Join();
+	delete singleShm;
+	delete shmSubscriberImpl;
 }
 static void TestSem()
 {
@@ -57,8 +81,9 @@ int main(int argc, char* argv[])
 
 	//TestSystemVIPC();
 	//TestPosixIPC();
-	TestShm();
+	//TestShm();
 	//TestSem();
+	TestSingleShm();
 
 
 	this_thread::sleep_for(chrono::seconds(5));

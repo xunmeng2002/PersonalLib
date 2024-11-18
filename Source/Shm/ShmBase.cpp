@@ -28,17 +28,6 @@ ShmBase::ShmBase(ServerTypeType shmType, const char* threadName, const char* shm
 }
 ShmBase::~ShmBase()
 {
-	{
-		lock_guard<mutex> guard(m_ShmConnectsMutex);
-		for (auto& it : m_ShmConnects)
-		{
-			auto shmConnect = it.second;
-			shmConnect->ShmBuffer->m_ShmHeader->Status--;
-			m_IOSubscriber->OnDisConnect(shmConnect->SessionID, m_ShmName.c_str(), std::to_string(shmConnect->Index).c_str());
-		}
-		m_ShmConnects.clear();
-	}
-
 	if (m_Sem != nullptr)
 		delete m_Sem;
 	m_Sem = nullptr;
@@ -133,17 +122,17 @@ bool ShmBase::Init()
 	if (m_ShmType == ServerTypeType::Server)
 	{
 		memset(m_ShmAddr, 0, ShmBuffSize * m_MaxConnectSize * 2);
+		m_CommonShmHeader->Status = ConnectStatusType::UnConnected;
+		for (auto i = 1u; i < m_MaxConnectSize; ++i)
+		{
+			auto shmHeader = m_CommonShmHeader + i;
+			shmHeader->Status = ConnectStatusType::UnConnected;
+		}
 	}
 	WriteLog(LogLevel::Info, "Create Or Open Shm Successed.");
 	return true;
 }
 
-void ShmBase::DisConnect(SessionIDType sessionID)
-{
-	auto shmConnect = GetShmConnect(sessionID);
-	lock_guard<mutex> guard(m_ShmDisConnectsMutex);
-	m_ShmDisConnects.push_back(shmConnect);
-}
 int ShmBase::Send(SessionIDType sessionID, const char* data, unsigned len)
 {
 	auto shmConnect = GetShmConnect(sessionID);
@@ -155,39 +144,7 @@ int ShmBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 	return shmConnect->ShmBuffer->Write(buffer->GetReadPos(), buffer->GetLength());
 }
 
-void ShmBase::CheckConnect()
-{
-	lock_guard<mutex> guard(m_ShmConnectsMutex);
-	for (auto& it : m_ShmConnects)
-	{
-		auto shmConnect = it.second;
-		if (shmConnect->ShmBuffer->m_ShmHeader->Status == 1)
-		{
-			lock_guard<mutex> guard(m_ShmDisConnectsMutex);
-			m_ShmDisConnects.push_back(shmConnect);
-		}
-	}
-}
-void ShmBase::DoDisConnect()
-{
-	lock_guard<mutex> guard(m_ShmDisConnectsMutex);
-	for (auto shmDisConnect : m_ShmDisConnects)
-	{
-		RemoveConnect(shmDisConnect);
-	}
-	m_ShmDisConnects.clear();
-}
-void ShmBase::HandleEvent()
-{
-	for (auto& it : m_ShmConnects)
-	{
-		auto shmConnect = it.second;
-		if (shmConnect->ShmBuffer->GetReadBufferSize() > 0)
-		{
-			DoRecv(shmConnect);
-		}
-	}
-}
+
 
 void ShmBase::DoRecv(ShmConnect<ShmBuffSize>* shmConnect)
 {
@@ -199,14 +156,7 @@ void ShmBase::DoRecv(ShmConnect<ShmBuffSize>* shmConnect)
 	else
 		buffer->Free();
 }
-ShmConnect<ShmBuffSize>* ShmBase::GetShmConnect(SessionIDType sessionID)
-{
-	std::lock_guard<mutex> guard(m_ShmConnectsMutex);
-	if (m_ShmConnects.find(sessionID) != m_ShmConnects.end())
-		return m_ShmConnects[sessionID];
-	return nullptr;
-}
-void ShmBase::AddConnect(int index)
+ShmConnect<ShmBuffSize>* ShmBase::AddConnect(int index)
 {
 	ShmConnect<ShmBuffSize>* shmConnect = ShmConnect<ShmBuffSize>::Allocate();
 	shmConnect->SessionID = GetSessionID();
@@ -216,16 +166,15 @@ void ShmBase::AddConnect(int index)
 	shmConnect->ShmBuffer->m_ServerType = m_ShmType;
 	shmConnect->ShmBuffer->m_UpBuffer = (char*)m_ShmAddr + ShmBuffSize * index * 2;
 	shmConnect->ShmBuffer->m_DownBuffer = (char*)m_ShmAddr + ShmBuffSize * (index * 2 + 1);
-	lock_guard<mutex> guard(m_ShmConnectsMutex);
-	m_ShmConnects.insert(make_pair(shmConnect->SessionID, shmConnect));
 
 	m_IOSubscriber->OnConnect(shmConnect->SessionID, m_ShmName.c_str(), to_string(index).c_str());
+	return shmConnect;
 }
 void ShmBase::RemoveConnect(ShmConnect<ShmBuffSize>* shmConnect)
 {
 	m_IOSubscriber->OnDisConnect(shmConnect->SessionID, m_ShmName.c_str(), std::to_string(shmConnect->Index).c_str());
-	shmConnect->ShmBuffer->m_ShmHeader->Status--;
-	std::lock_guard<mutex> guard(m_ShmConnectsMutex);
-	m_ShmConnects.erase(shmConnect->SessionID);
-	shmConnect->Free();
+	if (shmConnect->ShmBuffer->m_ShmHeader->Status == ConnectStatusType::Connected)
+		shmConnect->ShmBuffer->m_ShmHeader->Status = ConnectStatusType::DisConnected;
+	else
+		shmConnect->ShmBuffer->m_ShmHeader->Status = ConnectStatusType::UnConnected;
 }

@@ -18,19 +18,14 @@ public:
 	virtual ~ShmBase();
 	virtual bool Init() override;
 
-	virtual void DisConnect(SessionIDType sessionID) override;
 	virtual int Send(SessionIDType sessionID, const char* data, unsigned len) override;
 	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 
 protected:
-	virtual void CheckConnect();
-	virtual void DoDisConnect();
-	virtual void HandleEvent();
-
 	void DoRecv(ShmConnect<ShmBuffSize>* shmConnect);
 
-	ShmConnect<ShmBuffSize>* GetShmConnect(SessionIDType sessionID);
-	virtual void AddConnect(int index);
+	virtual ShmConnect<ShmBuffSize>* GetShmConnect(SessionIDType sessionID) = 0;
+	virtual ShmConnect<ShmBuffSize>* AddConnect(int index);
 	virtual void RemoveConnect(ShmConnect<ShmBuffSize>* shmConnect);
 
 protected:
@@ -42,8 +37,8 @@ protected:
 	Sem* m_Sem;
 	std::map<int64_t, ShmConnect<ShmBuffSize>*> m_ShmConnects;
 	std::mutex m_ShmConnectsMutex;
-	std::list<ShmConnect<ShmBuffSize>*> m_ShmDisConnects;
-	std::mutex m_ShmDisConnectsMutex;
+
+
 #ifdef WINDOWS
 	void* m_File;
 	void* m_FileMap;

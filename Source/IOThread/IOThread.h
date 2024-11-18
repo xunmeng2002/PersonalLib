@@ -3,6 +3,8 @@
 #include "Types.h"
 #include "Buffer.h"
 #include <string>
+#include <mutex>
+#include <list>
 
 
 class IOSubscriber
@@ -21,7 +23,7 @@ public:
 	void UnSubscribe();
 
 	virtual bool Init() { return true; }
-	virtual void DisConnect(SessionIDType sessionID) {}
+	virtual void DisConnect(SessionIDType sessionID);
 	virtual int Send(SessionIDType sessionID, const char* data, unsigned len) = 0;
 	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) = 0;
 
@@ -32,5 +34,8 @@ protected:
 	std::string	m_AddressName;
 	IOSubscriber* m_IOSubscriber;
 	SessionIDType m_LastSessionIndex;
+
+	std::list<SessionIDType> m_DisConnectSessionIDs;
+	std::mutex m_DisConnectSessionIDsMutex;
 };
 

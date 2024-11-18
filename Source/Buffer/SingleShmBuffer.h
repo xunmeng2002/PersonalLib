@@ -9,7 +9,7 @@
 
 struct SingleShmHeader
 {
-	int Status;
+	ConnectStatusType Status;
 	unsigned UpWriteCount;
 	unsigned UpReadCount;
 	unsigned DownWriteCount;
@@ -100,7 +100,7 @@ private:
 
 	unsigned UpWrite(const char* data, unsigned len)
 	{
-		if (m_ShmHeader->Status < 2)
+		if (m_ShmHeader->Status != ConnectStatusType::Connected)
 			return 0;
 		auto size = GetUpWriteBufferSize();
 		unsigned int currLen = std::min<unsigned>(len, size);
@@ -119,7 +119,7 @@ private:
 	}
 	unsigned UpRead(char* buff, unsigned len)
 	{
-		if (m_ShmHeader->Status < 2)
+		if (m_ShmHeader->Status != ConnectStatusType::Connected)
 			return 0;
 		auto size = GetUpReadBufferSize();
 		auto currLen = std::min<unsigned>(len, size);
@@ -138,7 +138,7 @@ private:
 	}
 	unsigned DownWrite(const char* data, unsigned len)
 	{
-		if (m_ShmHeader->Status < 2)
+		if (m_ShmHeader->Status != ConnectStatusType::Connected)
 			return 0;
 		auto size = GetDownWriteBufferSize();
 		unsigned int currLen = std::min<unsigned>(len, size);
@@ -157,7 +157,7 @@ private:
 	}
 	unsigned DownRead(char* buff, unsigned len)
 	{
-		if (m_ShmHeader->Status < 2)
+		if (m_ShmHeader->Status != ConnectStatusType::Connected)
 			return 0;
 		auto size = GetDownReadBufferSize();
 		auto currLen = std::min<unsigned>(len, size);

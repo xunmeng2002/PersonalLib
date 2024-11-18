@@ -309,6 +309,23 @@ enum class ContingentConditionType : int
 	ParkedOrder = '3',
 };
 
+//连接状态
+enum class ConnectStatusType : int
+{
+	//未连接
+	UnConnected = '0',
+	//正在链接
+	Connecting = '1',
+	//已接受
+	Accepted = '2',
+	//已拒绝
+	Rejected = '3',
+	//已连接
+	Connected = '4',
+	//已断开连接
+	DisConnected = '5',
+};
+
 //数据库操作
 enum class DBOperateType : int
 {

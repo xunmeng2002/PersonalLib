@@ -50,22 +50,6 @@ void TestXtpServer()
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
-	//for (auto i = 0; i < 5; ++i)
-	//{
-	//	XtpReqInsertOrderPackage reqInsertOrder;
-	//	reqInsertOrder.Prepare(xtpServer.m_SessionID);
-	//	Strcpy(reqInsertOrder.Field.PrimaryAccountID, "Xunmeng001");
-	//	Strcpy(reqInsertOrder.Field.ExchangeID, "SHSE");
-	//	Strcpy(reqInsertOrder.Field.InstrumentID, "600000");
-	//	reqInsertOrder.Field.Direction = DirectionType::Buy;
-	//	reqInsertOrder.Field.OffsetFlag = OffsetFlagType::Open;
-	//	reqInsertOrder.Field.OrderPriceType = OrderPriceTypeType::LimitPrice;
-	//	reqInsertOrder.Field.Price = 200 + i;
-	//	reqInsertOrder.Field.Volume = i;
-	//	reqInsertOrder.Field.OrderID = i;
-
-	//	xtpServer.Send(&reqInsertOrder);
-	//}
 
 	std::this_thread::sleep_for(std::chrono::seconds(300));
 	xtpServer.Stop();

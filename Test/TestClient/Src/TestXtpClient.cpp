@@ -3,6 +3,7 @@
 #include "Logger.h"
 #include "TestUtility.h"
 #include "XtpPackageFactory.h"
+#include "TimeUtility.h"
 
 using namespace xtp;
 using namespace std;
@@ -51,6 +52,7 @@ void TestXtpClient()
 	{
 		XtpReqInsertOrderPackage reqInsertOrder;
 		reqInsertOrder.Prepare(xtpClient.m_SessionID);
+		Strcpy(reqInsertOrder.Field.TradingDay, GetLocalDate().c_str());
 		Strcpy(reqInsertOrder.Field.PrimaryAccountID, "Xunmeng001");
 		Strcpy(reqInsertOrder.Field.ExchangeID, "SHSE");
 		Strcpy(reqInsertOrder.Field.InstrumentID, "600036");

@@ -9,9 +9,16 @@
 #endif
 
 
-Sem::Sem(const char* name)
+Sem::Sem(const char* name, unsigned timeOutMilliSecond)
 	:m_SemName(name), m_Sem(nullptr)
 {
+#ifdef WINDOWS
+	m_TimeOutMilliSecond = timeOutMilliSecond;
+#endif
+#ifdef LINUX
+	m_TimeOutTimeSpec.tv_sec = timeOutMilliSecond / 1000;
+	m_TimeOutTimeSpec.tv_nsec = (timeOutMilliSecond % 1000) * 1000000;
+#endif
 }
 Sem::~Sem()
 {
@@ -63,19 +70,25 @@ bool Sem::Init()
 bool Sem::Lock()
 {
 #ifdef WINDOWS
-	return WaitForSingleObject(m_Sem, INFINITE) == WAIT_OBJECT_0;
+	return WaitForSingleObject(m_Sem, m_TimeOutMilliSecond) == WAIT_OBJECT_0;
 #endif
 #ifdef LINUX
-	return sem_wait(m_Sem) == 0;
+	return sem_timedwait(m_Sem, &m_TimeOutTimeSpec) == 0;
 #endif
 }
 bool Sem::UnLock()
 {
+	bool result;
 #ifdef WINDOWS
-	return ReleaseSemaphore(m_Sem, 1, NULL);
+	result = ReleaseSemaphore(m_Sem, 1, NULL);
 #endif
 #ifdef LINUX
-	return sem_post(m_Sem) == 0;
+	result = sem_post(m_Sem) == 0;
 #endif
+	if (!result)
+	{
+		WriteLog(LogLevel::Error, "Sem UnLock Failed.");
+	}
+	return result;
 }
 

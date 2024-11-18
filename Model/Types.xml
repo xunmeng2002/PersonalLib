@@ -124,6 +124,14 @@
 			<item name="TouchProfit" value="2" desc="止赢"/>
 			<item name="ParkedOrder" value="3" desc="预埋单"/>
 		</enum>
+		<enum name="ConnectStatus" desc="连接状态">
+			<item name="UnConnected" value="0" desc="未连接"/>
+			<item name="Connecting" value="1" desc="正在链接"/>
+			<item name="Accepted" value="2" desc="已接受"/>
+			<item name="Rejected" value="3" desc="已拒绝"/>
+			<item name="Connected" value="4" desc="已连接"/>
+			<item name="DisConnected" value="5" desc="已断开连接"/>
+		</enum>
 		<enum name="DBOperate" desc="数据库操作">
 			<item name="Insert" 			value="0" desc="插入"/>
 			<item name="Delete" 			value="1" desc="删除"/>
