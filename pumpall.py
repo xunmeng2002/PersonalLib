@@ -54,7 +54,7 @@ def DoPump(dest, tpl, target, model):
             exit()
 
 if __name__ == "__main__":
-    os.system("python copyall.py")
+    os.system("python copymodel.py")
     
     excludes = ['.sv', '.vs', 'build', 'out', "Branches"]
     includes = []
