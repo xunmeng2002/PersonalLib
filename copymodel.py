@@ -37,6 +37,6 @@ def Search(path, destFileName):
     return destPaths
 
 if __name__ == "__main__":
-    copyfiles = Search(".", "copymodellist.xml")
+    copyfiles = Search(".", "modellist.xml")
     for copyfile in copyfiles:
         DoCopy(copyfile)
