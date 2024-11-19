@@ -69,18 +69,18 @@ void ShmClient::Connect()
 			}
 			else
 			{
-				printf("UnExpected Status:%d\n", m_CommonShmHeader->Status);
+				printf("UnExpected Status:%d\n", (int)m_CommonShmHeader->Status);
 			}
 			m_Sem->UnLock();
+			if (!m_Connected)
+			{
+				printf("Connect Failed. Sleep 5s\n");
+				std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			}
 		}
 		else
 		{
 			printf("Sem Lock Failed.\n");
-		}
-		if (!m_Connected)
-		{
-			printf("Connect Failed. Sleep 5s\n");
-			std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 		}
 	}
 }

@@ -1,5 +1,8 @@
 #include "Sem.h"
 #include "Logger.h"
+#include "TimeUtility.h"
+#include <thread>
+#include <chrono>
 #ifdef WINDOWS
 #include <Windows.h>
 #endif
@@ -8,17 +11,12 @@
 #include <fcntl.h>
 #endif
 
+using namespace std;
 
 Sem::Sem(const char* name, unsigned timeOutMilliSecond)
 	:m_SemName(name), m_Sem(nullptr)
 {
-#ifdef WINDOWS
 	m_TimeOutMilliSecond = timeOutMilliSecond;
-#endif
-#ifdef LINUX
-	m_TimeOutTimeSpec.tv_sec = timeOutMilliSecond / 1000;
-	m_TimeOutTimeSpec.tv_nsec = (timeOutMilliSecond % 1000) * 1000000;
-#endif
 }
 Sem::~Sem()
 {
@@ -54,7 +52,7 @@ bool Sem::Init()
 	}
 #endif
 #ifdef LINUX
-	m_Sem = sem_open(m_SemName.c_str(), O_CREAT, 0666, 1);
+	m_Sem = sem_open(m_SemName.c_str(), O_CREAT | O_EXCL, 0666, 1);
 	if (m_Sem == nullptr)
 	{
 		m_Sem = sem_open(m_SemName.c_str(), O_EXCL, 0666, 1);
@@ -63,8 +61,17 @@ bool Sem::Init()
 			WriteLog(LogLevel::Warning, "sem_open Failed. ErrNo:%d", errno);
 			return false;
 		}
+		else
+		{
+			WriteLog(LogLevel::Warning, "sem_open Successed ReOpen");
+		}
+	}
+	else
+	{
+		WriteLog(LogLevel::Warning, "sem_open Successed FirstOpen");
 	}
 #endif
+	WriteLog(LogLevel::Info, "Sem::Init Successed");
 	return true;
 }
 bool Sem::Lock()
@@ -72,8 +79,12 @@ bool Sem::Lock()
 #ifdef WINDOWS
 	return WaitForSingleObject(m_Sem, m_TimeOutMilliSecond) == WAIT_OBJECT_0;
 #endif
+	
 #ifdef LINUX
-	return sem_timedwait(m_Sem, &m_TimeOutTimeSpec) == 0;
+	timespec ts;
+	clock_gettime(CLOCK_REALTIME, &ts);
+	ts.tv_sec += 1;
+	return sem_timedwait(m_Sem, &ts) == 0;
 #endif
 }
 bool Sem::UnLock()

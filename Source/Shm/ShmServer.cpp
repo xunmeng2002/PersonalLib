@@ -74,26 +74,29 @@ void ShmServer::Accept()
 	case ConnectStatusType::Accepted:
 	case ConnectStatusType::Rejected:
 	{
-		if (m_Sem->Lock())
+		auto currTimePoint = chrono::system_clock::now();
+		auto t = chrono::duration_cast<chrono::seconds>(currTimePoint - m_LastWriteTimePoint);
+		if (t.count() >= 5)
 		{
-			auto currTimePoint = chrono::system_clock::now();
-			auto t = chrono::duration_cast<chrono::seconds>(currTimePoint - m_LastWriteTimePoint);
-			if (t.count() >= 5)
+			if (m_Sem->Lock())
 			{
-				printf("Reset Connect From Server,  Status:%d\n", m_CommonShmHeader->Status);
-				if (m_CommonShmHeader->Status == ConnectStatusType::Accepted)
+				if (m_CommonShmHeader->Status == ConnectStatusType::Accepted || m_CommonShmHeader->Status == ConnectStatusType::Rejected)
 				{
-					auto index = m_CommonShmHeader->DownWriteCount;
-					auto shmHeader = m_CommonShmHeader + index;
-					memset(shmHeader, 0, sizeof(SingleShmHeader));
+					printf("Reset Connect From Server,  Status:%d\n", (int)m_CommonShmHeader->Status);
+					if (m_CommonShmHeader->Status == ConnectStatusType::Accepted)
+					{
+						auto index = m_CommonShmHeader->DownWriteCount;
+						auto shmHeader = m_CommonShmHeader + index;
+						memset(shmHeader, 0, sizeof(SingleShmHeader));
+					}
+					m_CommonShmHeader->Status = ConnectStatusType::UnConnected;
 				}
-				m_CommonShmHeader->Status = ConnectStatusType::UnConnected;
+				m_Sem->UnLock();
 			}
-			m_Sem->UnLock();
-		}
-		else
-		{
-			printf("Sem Lock Failed.\n");
+			else
+			{
+				printf("Sem Lock Failed.\n");
+			}
 		}
 	}
 		break;
