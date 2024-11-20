@@ -15,7 +15,6 @@ public:
 	TcpBase(const char* threadName, const char* addressName);
 	virtual ~TcpBase();
 	
-	virtual void DisConnect(SessionIDType sessionID) override;
 	virtual int Send(SessionIDType sessionID, const char* data, unsigned len) override;
 	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 protected:
@@ -34,8 +33,6 @@ protected:
 protected:
 	std::map<SessionIDType, ConnectData*> m_ConnectDatas;
 	std::mutex m_ConnectDataMutex;
-	std::list<SessionIDType> m_DisConnectSessions;
-	std::mutex m_DisConnectSessionMutex;
 	std::mutex m_SendMutex;
 
 	

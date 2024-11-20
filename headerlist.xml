@@ -10,7 +10,7 @@
 	<file name="Base64.h" dest="../Libs/PersonalLib/include/" src="./Source/Base64/"/>
 	<file name="Buffer.h" dest="../Libs/PersonalLib/include/" src="./Source/Buffer/"/>
 	<file name="RingBuffer.h" dest="../Libs/PersonalLib/include/" src="./Source/Buffer/"/>
-	<file name="SingleShmBuffer.h" dest="../Libs/PersonalLib/include/" src="./Source/Buffer/"/>
+	<file name="ShmBuffer.h" dest="../Libs/PersonalLib/include/" src="./Source/Buffer/"/>
 	
 	<file name="Constant.h" dest="../Libs/PersonalLib/include/" src="./Source/Constant/"/>
 	<file name="CsvParser.h" dest="../Libs/PersonalLib/include/" src="./Source/Csv/"/>
@@ -49,6 +49,7 @@
 
 	<file name="Sem.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
 	<file name="ShmBase.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
+	<file name="ShmConnect.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
 	<file name="ShmClient.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
 	<file name="ShmServer.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
 	<file name="SingleShm.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>

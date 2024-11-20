@@ -18,7 +18,7 @@ SingleShm::SingleShm(ServerTypeType shmType, const char* threadName, const char*
 	:IOThread(threadName, shmName), m_ShmType(shmType), m_ShmName(shmName), m_ConnectStatus(false), m_SessionID(0LL),
 	m_ShmAddr(nullptr)
 {
-	m_ShmBuffer = new SingleShmBuffer<ShmBuffSize>();
+	m_ShmBuffer = new ShmBuffer<ShmBuffSize>();
 #ifdef WINDOWS
 	m_File = nullptr;
 	m_FileMap = nullptr;

@@ -1,9 +1,7 @@
 #pragma once
-#include "MemCacheTemplateSingleton.h"
 #include "Constant.h"
 #include "Types.h"
 #include "MemCacheTemplateSingleton.h"
-#include <string.h>
 #include <algorithm>
 
 
@@ -18,7 +16,7 @@ struct SingleShmHeader
 
 
 template<unsigned SIZE>
-class SingleShmBuffer
+class ShmBuffer
 {
 public:
 	SingleShmHeader* m_ShmHeader;
@@ -26,16 +24,16 @@ public:
 	char* m_UpBuffer;
 	char* m_DownBuffer;
 
-	static SingleShmBuffer* Allocate()
+	static ShmBuffer* Allocate()
 	{
-		return ::Allocate<SingleShmBuffer<SIZE>>();
+		return ::Allocate<ShmBuffer<SIZE>>();
 	}
 	void Free()
 	{
 		m_ShmHeader = nullptr;
 		m_UpBuffer = nullptr;
 		m_DownBuffer = nullptr;
-		MemCacheTemplateSingleton<SingleShmBuffer<SIZE>>::GetInstance().Free(this);
+		MemCacheTemplateSingleton<ShmBuffer<SIZE>>::GetInstance().Free(this);
 	}
 
 	unsigned Write(const char* data, unsigned len)
@@ -177,24 +175,3 @@ private:
 };
 
 
-template<unsigned SIZE>
-class ShmConnect
-{
-public:
-	SessionIDType SessionID;
-	int Index;
-	SingleShmBuffer<SIZE>* ShmBuffer;
-
-	static ShmConnect* Allocate()
-	{
-		auto item = ::Allocate<ShmConnect<SIZE>>();
-		item->ShmBuffer = ::Allocate<SingleShmBuffer<SIZE>>();
-		return item;
-	}
-	void Free()
-	{
-		ShmBuffer->Free();
-		ShmBuffer = nullptr;
-		MemCacheTemplateSingleton<ShmConnect<SIZE>>::GetInstance().Free(this);
-	}
-};

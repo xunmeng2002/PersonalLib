@@ -15,7 +15,7 @@ ShmServer::~ShmServer()
 		for (auto& it : m_ShmConnects)
 		{
 			auto shmConnect = it.second;
-			shmConnect->ShmBuffer->m_ShmHeader->Status = ConnectStatusType::UnConnected;
+			shmConnect->m_ShmBuffer->m_ShmHeader->Status = ConnectStatusType::UnConnected;
 			m_IOSubscriber->OnDisConnect(shmConnect->SessionID, m_ShmName.c_str(), std::to_string(shmConnect->Index).c_str());
 			shmConnect->Free();
 		}
@@ -114,7 +114,7 @@ void ShmServer::CheckConnect()
 	for (auto& it : m_ShmConnects)
 	{
 		auto shmConnect = it.second;
-		if (shmConnect->ShmBuffer->m_ShmHeader->Status == ConnectStatusType::DisConnected)
+		if (shmConnect->m_ShmBuffer->m_ShmHeader->Status == ConnectStatusType::DisConnected)
 		{
 			m_DisConnectSessionIDs.push_back(shmConnect->SessionID);
 		}
@@ -146,7 +146,7 @@ void ShmServer::HandleEvent()
 	for (auto& it : m_ShmConnects)
 	{
 		auto shmConnect = it.second;
-		if (shmConnect->ShmBuffer->GetReadBufferSize() > 0)
+		if (shmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
 		{
 			DoRecv(shmConnect);
 		}

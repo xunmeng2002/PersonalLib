@@ -3,7 +3,7 @@
 #include "Types.h"
 #include "Buffer.h"
 #include "IOThread.h"
-#include "SingleShmBuffer.h"
+#include "ShmConnect.h"
 
 
 
@@ -30,7 +30,7 @@ public:
 protected:
 	SessionIDType m_SessionID;
 	void* m_ShmAddr;
-	SingleShmBuffer<ShmBuffSize>* m_ShmBuffer;
+	ShmBuffer<ShmBuffSize>* m_ShmBuffer;
 #ifdef WINDOWS
 	void* m_File;
 	void* m_FileMap;

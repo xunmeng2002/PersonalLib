@@ -7,7 +7,7 @@
 #include "Buffer.h"
 #include "IOThread.h"
 #include "Sem.h"
-#include "SingleShmBuffer.h"
+#include "ShmConnect.h"
 
 
 

@@ -81,10 +81,7 @@ bool Sem::Lock()
 #endif
 	
 #ifdef LINUX
-	timespec ts;
-	clock_gettime(CLOCK_REALTIME, &ts);
-	ts.tv_sec += 1;
-	return sem_timedwait(m_Sem, &ts) == 0;
+	return sem_trywait(m_Sem) == 0;
 #endif
 }
 bool Sem::UnLock()

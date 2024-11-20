@@ -136,12 +136,12 @@ bool ShmBase::Init()
 int ShmBase::Send(SessionIDType sessionID, const char* data, unsigned len)
 {
 	auto shmConnect = GetShmConnect(sessionID);
-	return shmConnect->ShmBuffer->Write(data, len);
+	return shmConnect->m_ShmBuffer->Write(data, len);
 }
 int ShmBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
 	auto shmConnect = GetShmConnect(sessionID);
-	return shmConnect->ShmBuffer->Write(buffer->GetReadPos(), buffer->GetLength());
+	return shmConnect->m_ShmBuffer->Write(buffer->GetReadPos(), buffer->GetLength());
 }
 
 
@@ -149,7 +149,7 @@ int ShmBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 void ShmBase::DoRecv(ShmConnect<ShmBuffSize>* shmConnect)
 {
 	Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
-	auto len = shmConnect->ShmBuffer->Read(buffer->GetData(), BuffSize);
+	auto len = shmConnect->m_ShmBuffer->Read(buffer->GetData(), BuffSize);
 	buffer->SetLength(len);
 	if (m_IOSubscriber != nullptr)
 		m_IOSubscriber->OnRecv(shmConnect->SessionID, buffer);
@@ -161,11 +161,11 @@ ShmConnect<ShmBuffSize>* ShmBase::AddConnect(int index)
 	ShmConnect<ShmBuffSize>* shmConnect = ShmConnect<ShmBuffSize>::Allocate();
 	shmConnect->SessionID = GetSessionID();
 	shmConnect->Index = index;
-	shmConnect->ShmBuffer = SingleShmBuffer<ShmBuffSize>::Allocate();
-	shmConnect->ShmBuffer->m_ShmHeader = m_CommonShmHeader + index;
-	shmConnect->ShmBuffer->m_ServerType = m_ShmType;
-	shmConnect->ShmBuffer->m_UpBuffer = (char*)m_ShmAddr + ShmBuffSize * index * 2;
-	shmConnect->ShmBuffer->m_DownBuffer = (char*)m_ShmAddr + ShmBuffSize * (index * 2 + 1);
+	shmConnect->m_ShmBuffer = ShmBuffer<ShmBuffSize>::Allocate();
+	shmConnect->m_ShmBuffer->m_ShmHeader = m_CommonShmHeader + index;
+	shmConnect->m_ShmBuffer->m_ServerType = m_ShmType;
+	shmConnect->m_ShmBuffer->m_UpBuffer = (char*)m_ShmAddr + ShmBuffSize * index * 2;
+	shmConnect->m_ShmBuffer->m_DownBuffer = (char*)m_ShmAddr + ShmBuffSize * (index * 2 + 1);
 
 	m_IOSubscriber->OnConnect(shmConnect->SessionID, m_ShmName.c_str(), to_string(index).c_str());
 	return shmConnect;
@@ -173,8 +173,8 @@ ShmConnect<ShmBuffSize>* ShmBase::AddConnect(int index)
 void ShmBase::RemoveConnect(ShmConnect<ShmBuffSize>* shmConnect)
 {
 	m_IOSubscriber->OnDisConnect(shmConnect->SessionID, m_ShmName.c_str(), std::to_string(shmConnect->Index).c_str());
-	if (shmConnect->ShmBuffer->m_ShmHeader->Status == ConnectStatusType::Connected)
-		shmConnect->ShmBuffer->m_ShmHeader->Status = ConnectStatusType::DisConnected;
+	if (shmConnect->m_ShmBuffer->m_ShmHeader->Status == ConnectStatusType::Connected)
+		shmConnect->m_ShmBuffer->m_ShmHeader->Status = ConnectStatusType::DisConnected;
 	else
-		shmConnect->ShmBuffer->m_ShmHeader->Status = ConnectStatusType::UnConnected;
+		shmConnect->m_ShmBuffer->m_ShmHeader->Status = ConnectStatusType::UnConnected;
 }

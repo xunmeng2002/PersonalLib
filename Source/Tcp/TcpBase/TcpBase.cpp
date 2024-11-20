@@ -21,11 +21,7 @@ TcpBase::~TcpBase()
 	m_ConnectDatas.clear();
 }
 
-void TcpBase::DisConnect(SessionIDType sessionID)
-{
-	std::lock_guard<std::mutex> guard(m_DisConnectSessionMutex);
-	m_DisConnectSessions.push_back(sessionID);
-}
+
 int TcpBase::Send(SessionIDType sessionID, const char* data, unsigned len)
 {
 	auto connectData = GetConnect(sessionID);
@@ -61,8 +57,11 @@ void TcpBase::ThreadExit()
 }
 void TcpBase::DoDisConnect()
 {
-	std::lock_guard<std::mutex> guard(m_DisConnectSessionMutex);
-	for (auto sessionID : m_DisConnectSessions)
+	if (m_DisConnectSessionIDs.empty())
+		return;
+	
+	std::lock_guard<std::mutex> guard(m_DisConnectSessionIDsMutex);
+	for (auto sessionID : m_DisConnectSessionIDs)
 	{
 		auto connectData = GetConnect(sessionID);
 		if (connectData != nullptr)
@@ -70,7 +69,7 @@ void TcpBase::DoDisConnect()
 			RemoveConnect(connectData);
 		}
 	}
-	m_DisConnectSessions.clear();
+	m_DisConnectSessionIDs.clear();
 }
 void TcpBase::DoRecv(ConnectData* connectData)
 {
