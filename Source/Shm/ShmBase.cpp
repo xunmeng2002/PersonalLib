@@ -136,11 +136,15 @@ bool ShmBase::Init()
 int ShmBase::Send(SessionIDType sessionID, const char* data, unsigned len)
 {
 	auto shmConnect = GetShmConnect(sessionID);
+	if (shmConnect == nullptr)
+		return -1;
 	return shmConnect->m_ShmBuffer->Write(data, len);
 }
 int ShmBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
 	auto shmConnect = GetShmConnect(sessionID);
+	if (shmConnect == nullptr)
+		return -1;
 	return shmConnect->m_ShmBuffer->Write(buffer->GetReadPos(), buffer->GetLength());
 }
 
