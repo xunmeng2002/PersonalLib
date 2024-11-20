@@ -1,15 +1,15 @@
 #pragma once
 #include "Types.h"
+#include "Connect.h"
 #include "ShmBuffer.h"
 #include "MemCacheTemplateSingleton.h"
 
 
 
 template<unsigned SIZE>
-class ShmConnect
+class ShmConnect : public Connect
 {
 public:
-	SessionIDType SessionID;
 	int Index;
 	ShmBuffer<SIZE>* m_ShmBuffer;
 

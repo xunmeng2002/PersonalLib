@@ -83,7 +83,7 @@ void mainLoop(unsigned int M[])
 *填充方式为先加一个1,其它位补零
 *最后加上64位的原来长度
 */
-unsigned int* add(const unsigned char* data, int len)
+unsigned int* add(const unsigned char* data, unsigned int len)
 {
     unsigned int num = ((len + 8) / 64) + 1;//以512位,64个字节为一组
     unsigned int* strByte = new unsigned int[num * 16];    //64/4=16,所以有16个整数
