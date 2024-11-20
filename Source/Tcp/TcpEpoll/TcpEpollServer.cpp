@@ -21,7 +21,7 @@ bool TcpEpollServer::Init()
 	{
 		return false;
 	}
-	ConnectData* connectData = ConnectData::Allocate(0, m_ListenSocket, m_BindIP, m_BindPort);
+	TcpConnect* connectData = TcpConnect::Allocate(0, m_ListenSocket, m_BindIP, m_BindPort);
 	AddEpollEvent(connectData);
 	return true;
 }
@@ -53,12 +53,12 @@ void TcpEpollServer::HandleTcpEvent()
 #endif
 }
 
-void TcpEpollServer::AddConnect(ConnectData* connectData)
+void TcpEpollServer::AddConnect(TcpConnect* connectData)
 {
 	TcpServerBase::AddConnect(connectData);
 	AddEpollEvent(connectData);
 }
-void TcpEpollServer::RemoveConnect(ConnectData* connectData)
+void TcpEpollServer::RemoveConnect(TcpConnect* connectData)
 {
 	RemoveEpollEvent(connectData);
 	TcpServerBase::RemoveConnect(connectData);

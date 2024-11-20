@@ -29,7 +29,6 @@ protected:
 	virtual void RemoveConnect(ShmConnect<ShmBuffSize>* shmConnect);
 
 protected:
-	ServerTypeType m_ShmType;
 	std::string m_ShmName;
 	unsigned m_MaxConnectSize;
 	SingleShmHeader* m_CommonShmHeader;

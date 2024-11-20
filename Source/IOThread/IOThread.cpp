@@ -3,8 +3,8 @@
 
 using namespace std;
 
-IOThread::IOThread(const char* threadName, const char* addressName, int milliSeconds)
-	:ThreadBase(threadName, milliSeconds), m_AddressName(addressName), m_IOSubscriber(nullptr), m_LastSessionIndex(0LL)
+IOThread::IOThread(ServerTypeType serverType, const char* threadName, const char* addressName, int milliSeconds)
+	:ThreadBase(threadName, milliSeconds), m_ServerType(serverType), m_AddressName(addressName), m_IOSubscriber(nullptr), m_LastSessionIndex(0LL)
 {
 }
 void IOThread::Subscribe(IOSubscriber* subscriber)

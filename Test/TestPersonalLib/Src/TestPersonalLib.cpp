@@ -13,7 +13,7 @@ int main(int argc, const char* argv[])
 
     string src = "HelloWorldHelloWorldHelloWorldHelloWorldHelloWorldHelloWorld";
 
-    string s = getMD5((const unsigned char*)src.c_str(), src.length());
+    string s = getMD5((const unsigned char*)src.c_str(), (int)src.length());
     WriteLog(LogLevel::Info, "getMD5 Result:%s", s.c_str());
 
     WriteLog(LogLevel::Info, "TestPersonalLib Stop.");

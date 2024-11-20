@@ -14,6 +14,6 @@ public:
 	virtual void HandleTcpEvent() override;
 
 protected:
-	virtual void AddConnect(ConnectData* connectData) override;
-	virtual void RemoveConnect(ConnectData* connectData) override;
+	virtual void AddConnect(TcpConnect* connectData) override;
+	virtual void RemoveConnect(TcpConnect* connectData) override;
 };

@@ -4,7 +4,7 @@
 
 
 TcpServerBase::TcpServerBase(const char* threadName, const char* addressName)
-	:TcpBase(threadName, addressName), m_ListenSocket(INVALID_SOCKET), m_BindAddressInfo(nullptr)
+	:TcpBase(ServerTypeType::Server, threadName, addressName), m_ListenSocket(INVALID_SOCKET), m_BindAddressInfo(nullptr)
 {
 	ParseIPAddress(m_AddressName, m_BindIP, m_BindPort);
 	GetAddrinfo(m_BindIP.c_str(), m_BindPort.c_str(), m_BindAddressInfo);
@@ -45,7 +45,7 @@ void TcpServerBase::DoAccept()
 		SetSockNodelay(socketID);
 		auto sessionID = GetSessionID();
 		WriteLog(LogLevel::Info, "accept: SessionID[%lld], SocketID[%lld], RemoteIP[%s], RemotePort[%s]", sessionID, socketID, ip.c_str(), port.c_str());
-		auto connectData = ConnectData::Allocate(sessionID, socketID, ip, port);
+		auto connectData = TcpConnect::Allocate(sessionID, socketID, ip, port);
 		AddConnect(connectData);
 	}
 }

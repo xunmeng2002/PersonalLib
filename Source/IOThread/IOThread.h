@@ -18,7 +18,7 @@ public:
 class IOThread : public ThreadBase
 {
 public:
-	IOThread(const char* threadName, const char* addressName, int milliSeconds = 100);
+	IOThread(ServerTypeType serverType, const char* threadName, const char* addressName, int milliSeconds = 100);
 	void Subscribe(IOSubscriber* subscriber);
 	void UnSubscribe();
 
@@ -31,6 +31,7 @@ protected:
 	SessionIDType GetSessionID();
 
 protected:
+	ServerTypeType m_ServerType;
 	std::string	m_AddressName;
 	IOSubscriber* m_IOSubscriber;
 	SessionIDType m_LastSessionIndex;

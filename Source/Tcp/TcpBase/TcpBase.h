@@ -1,6 +1,6 @@
 #pragma once
 #include "SocketInit.h"
-#include "ConnectData.h"
+#include "TcpConnect.h"
 #include "IOThread.h"
 #include "Buffer.h"
 #include "Constant.h"
@@ -12,7 +12,7 @@
 class TcpBase : public IOThread
 {
 public:
-	TcpBase(const char* threadName, const char* addressName);
+	TcpBase(ServerTypeType serverType, const char* threadName, const char* addressName);
 	virtual ~TcpBase();
 	
 	virtual int Send(SessionIDType sessionID, const char* data, unsigned len) override;
@@ -22,16 +22,16 @@ protected:
 	virtual void ThreadExit() override;
 
 	virtual void DoDisConnect();
-	virtual void DoRecv(ConnectData* connectData);
-	virtual void AddConnect(ConnectData* connectData);
-	virtual void RemoveConnect(ConnectData* connectData);
-	virtual ConnectData* GetConnect(SessionIDType sessionID);
+	virtual void DoRecv(TcpConnect* connectData);
+	virtual void AddConnect(TcpConnect* connectData);
+	virtual void RemoveConnect(TcpConnect* connectData);
+	virtual TcpConnect* GetConnect(SessionIDType sessionID);
 
 	bool InitSocket(SOCKET socketID);
 	SOCKET PrepareSocket(int family);
 
 protected:
-	std::map<SessionIDType, ConnectData*> m_ConnectDatas;
+	std::map<SessionIDType, TcpConnect*> m_ConnectDatas;
 	std::mutex m_ConnectDataMutex;
 	std::mutex m_SendMutex;
 

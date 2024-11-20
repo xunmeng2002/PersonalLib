@@ -21,7 +21,7 @@ protected:
 	//override ThreadBase
 	virtual void Run() override;
 	//override TcpBase
-	virtual void RemoveConnect(ConnectData* connectData) override;
+	virtual void RemoveConnect(TcpConnect* connectData) override;
 
 protected:
 	std::string m_ConnectIP;

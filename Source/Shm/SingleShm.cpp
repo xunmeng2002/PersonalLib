@@ -15,7 +15,7 @@
 using namespace std;
 
 SingleShm::SingleShm(ServerTypeType shmType, const char* threadName, const char* shmName)
-	:IOThread(threadName, shmName), m_ShmType(shmType), m_ShmName(shmName), m_ConnectStatus(false), m_SessionID(0LL),
+	:IOThread(shmType, threadName, shmName), m_ShmName(shmName), m_ConnectStatus(false), m_SessionID(0LL),
 	m_ShmAddr(nullptr)
 {
 	m_ShmBuffer = new ShmBuffer<ShmBuffSize>();
@@ -115,7 +115,7 @@ bool SingleShm::Init()
 	}
 #endif
 	m_ShmBuffer->m_ShmHeader = (SingleShmHeader*)m_ShmAddr;
-	m_ShmBuffer->m_ServerType = m_ShmType;
+	m_ShmBuffer->m_ServerType = m_ServerType;
 	m_ShmBuffer->m_UpBuffer = (char*)m_ShmAddr + sizeof(SingleShmHeader);
 	m_ShmBuffer->m_DownBuffer = (char*)m_ShmAddr + sizeof(SingleShmHeader) + ShmBuffSize;
 	if (firstOpen)
@@ -165,7 +165,7 @@ void SingleShm::CheckEvent()
 	auto size = m_ShmBuffer->GetReadBufferSize();
 	if (size == 0)
 	{
-		if (m_ShmType == ServerTypeType::Client)
+		if (m_ServerType == ServerTypeType::Client)
 		{
 			int lastWriteCount = m_ShmBuffer->m_ShmHeader->UpWriteCount;
 			std::unique_lock<std::mutex> guard(m_Mutex);

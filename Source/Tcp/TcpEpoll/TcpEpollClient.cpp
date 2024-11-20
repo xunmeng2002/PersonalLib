@@ -36,12 +36,12 @@ void TcpEpollClient::HandleTcpEvent()
 #endif
 }
 
-void TcpEpollClient::AddConnect(ConnectData* connectData)
+void TcpEpollClient::AddConnect(TcpConnect* connectData)
 {
 	TcpClientBase::AddConnect(connectData);
 	AddEpollEvent(connectData);
 }
-void TcpEpollClient::RemoveConnect(ConnectData* connectData)
+void TcpEpollClient::RemoveConnect(TcpConnect* connectData)
 {
 	RemoveEpollEvent(connectData);
 	TcpClientBase::RemoveConnect(connectData);

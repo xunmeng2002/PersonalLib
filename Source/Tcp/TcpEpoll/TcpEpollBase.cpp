@@ -17,7 +17,7 @@ TcpEpollBase::~TcpEpollBase()
 }
 
 
-void TcpEpollBase::AddEpollEvent(ConnectData* connectData)
+void TcpEpollBase::AddEpollEvent(TcpConnect* connectData)
 {
 #ifdef LINUX
 	epoll_event epollEvent;
@@ -26,7 +26,7 @@ void TcpEpollBase::AddEpollEvent(ConnectData* connectData)
 	epoll_ctl(m_EpollFd, EPOLL_CTL_ADD, connectData->SocketID, &epollEvent);
 #endif
 }
-void TcpEpollBase::RemoveEpollEvent(ConnectData* connectData)
+void TcpEpollBase::RemoveEpollEvent(TcpConnect* connectData)
 {
 #ifdef LINUX
 	epoll_ctl(m_EpollFd, EPOLL_CTL_DEL, connectData->SocketID, NULL);

@@ -9,7 +9,7 @@ using namespace std;
 using namespace std::chrono;
 
 TcpClientBase::TcpClientBase(const char* threadName, const char* addressName)
-	:TcpBase(threadName, addressName), m_ConnectAddressInfo(nullptr), m_ConnectStatus(false)
+	:TcpBase(ServerTypeType::Client, threadName, addressName), m_ConnectAddressInfo(nullptr), m_ConnectStatus(false)
 {
 	ParseIPAddress(m_AddressName, m_ConnectIP, m_ConnectPort);
 }
@@ -45,7 +45,7 @@ bool TcpClientBase::Connect()
 	}
 	InitSocket(socketID);
 	SessionIDType sessionID = GetSessionID();
-	ConnectData* connectData = ConnectData::Allocate(sessionID, socketID, m_ConnectIP.c_str(), m_ConnectPort.c_str());
+	TcpConnect* connectData = TcpConnect::Allocate(sessionID, socketID, m_ConnectIP.c_str(), m_ConnectPort.c_str());
 	AddConnect(connectData);
 
 	m_ConnectStatus = true;
@@ -56,7 +56,7 @@ void TcpClientBase::Run()
 	CheckClientConnect();
 	HandleTcpEvent();
 }
-void TcpClientBase::RemoveConnect(ConnectData* connectData)
+void TcpClientBase::RemoveConnect(TcpConnect* connectData)
 {
 	TcpBase::RemoveConnect(connectData);
 	m_ConnectStatus = false;

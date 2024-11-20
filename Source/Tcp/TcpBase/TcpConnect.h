@@ -5,10 +5,10 @@
 #include <string>
 #include <chrono>
 
-class ConnectData
+class TcpConnect
 {
 public:
-	static ConnectData* Allocate(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort);
+	static TcpConnect* Allocate(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort);
 	void Free();
 
 	void Set(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort);

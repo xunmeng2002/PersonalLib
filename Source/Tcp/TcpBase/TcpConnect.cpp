@@ -1,17 +1,17 @@
-#include "ConnectData.h"
+#include "TcpConnect.h"
 #include "Logger.h"
 #include "MemCacheTemplateSingleton.h"
 #include "TimeUtility.h"
 
 
 
-ConnectData* ConnectData::Allocate(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort)
+TcpConnect* TcpConnect::Allocate(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort)
 {
-	ConnectData* connectData = MemCacheTemplateSingleton<ConnectData>::GetInstance().Allocate();
+	TcpConnect* connectData = MemCacheTemplateSingleton<TcpConnect>::GetInstance().Allocate();
 	connectData->Set(sessionID, socketID, remoteIP, remotePort);
 	return connectData;
 }
-void ConnectData::Free()
+void TcpConnect::Free()
 {
 #ifdef WINDOWS
 	shutdown(SocketID, SD_BOTH);
@@ -20,10 +20,10 @@ void ConnectData::Free()
 	shutdown(SocketID, SHUT_RDWR);
 #endif
 	closesocket(SocketID);
-	MemCacheTemplateSingleton<ConnectData>::GetInstance().Free(this);
+	MemCacheTemplateSingleton<TcpConnect>::GetInstance().Free(this);
 }
 
-void ConnectData::Set(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort)
+void TcpConnect::Set(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort)
 {
 	SessionID = sessionID;
 	SocketID = socketID;
@@ -31,7 +31,7 @@ void ConnectData::Set(SessionIDType sessionID, const SOCKET& socketID, const std
 	strcpy(RemotePort, remotePort.c_str());
 	LastSendTimePoint = std::chrono::steady_clock::now();
 }
-void ConnectData::UpdateLastSendTime()
+void TcpConnect::UpdateLastSendTime()
 {
 	LastSendTimePoint = std::chrono::steady_clock::now();
 }

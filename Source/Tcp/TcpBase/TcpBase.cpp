@@ -7,8 +7,8 @@
 #include <assert.h>
 
 
-TcpBase::TcpBase(const char* threadName, const char* addressName)
-	:IOThread(threadName, addressName), m_RemoteAddressLen(sizeof(m_RemoteAddress))
+TcpBase::TcpBase(ServerTypeType serverType, const char* threadName, const char* addressName)
+	:IOThread(serverType, threadName, addressName), m_RemoteAddressLen(sizeof(m_RemoteAddress))
 {
 	memset(&m_RemoteAddress, 0, sizeof(m_RemoteAddress));
 }
@@ -71,7 +71,7 @@ void TcpBase::DoDisConnect()
 	}
 	m_DisConnectSessionIDs.clear();
 }
-void TcpBase::DoRecv(ConnectData* connectData)
+void TcpBase::DoRecv(TcpConnect* connectData)
 {
 	Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
 	auto data = buffer->GetData();
@@ -91,7 +91,7 @@ void TcpBase::DoRecv(ConnectData* connectData)
 		m_IOSubscriber->OnRecv(connectData->SessionID, buffer);
 	}
 }
-void TcpBase::AddConnect(ConnectData* connectData)
+void TcpBase::AddConnect(TcpConnect* connectData)
 {
 	WriteLog(LogLevel::Info, "New Connection. SessionID[%lld], Socket[%lld], RemoteIP[%s], RemotePort[%s]", connectData->SessionID, connectData->SocketID, connectData->RemoteIP, connectData->RemotePort);
 	{
@@ -103,7 +103,7 @@ void TcpBase::AddConnect(ConnectData* connectData)
 		m_IOSubscriber->OnConnect(connectData->SessionID, connectData->RemoteIP, connectData->RemotePort);
 	}
 }
-void TcpBase::RemoveConnect(ConnectData* connectData)
+void TcpBase::RemoveConnect(TcpConnect* connectData)
 {
 	WriteLog(LogLevel::Info, "RemoveConnect. SessionID[%lld], Socket[%lld], RemoteIP[%s], RemotePort[%s]", connectData->SessionID, connectData->SocketID, connectData->RemoteIP, connectData->RemotePort);
 	if (m_IOSubscriber)
@@ -114,7 +114,7 @@ void TcpBase::RemoveConnect(ConnectData* connectData)
 	m_ConnectDatas.erase(connectData->SessionID);
 	connectData->Free();
 }
-ConnectData* TcpBase::GetConnect(SessionIDType sessionID)
+TcpConnect* TcpBase::GetConnect(SessionIDType sessionID)
 {
 	std::lock_guard<std::mutex> guard(m_ConnectDataMutex);
 	if (m_ConnectDatas.find(sessionID) == m_ConnectDatas.end())

@@ -13,7 +13,7 @@ public:
 	virtual void HandleTcpEvent() override;
 protected:
 	//override TcpBase
-	virtual void AddConnect(ConnectData* connectData) override;
+	virtual void AddConnect(TcpConnect* connectData) override;
 	//override TcpClientBase
-	virtual void RemoveConnect(ConnectData* connectData) override;
+	virtual void RemoveConnect(TcpConnect* connectData) override;
 };

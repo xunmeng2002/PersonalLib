@@ -1,6 +1,6 @@
 #pragma once
 #include "TcpBase.h"
-#include "ConnectData.h"
+#include "TcpConnect.h"
 #include <list>
 #include <map>
 #ifdef LINUX
@@ -17,8 +17,8 @@ public:
 	~TcpEpollBase();
 	
 protected:
-	void AddEpollEvent(ConnectData* connectData);
-	void RemoveEpollEvent(ConnectData* connectData);
+	void AddEpollEvent(TcpConnect* connectData);
+	void RemoveEpollEvent(TcpConnect* connectData);
 
 protected:
 	int m_EpollFd;

@@ -12,8 +12,8 @@
 
 using namespace std;
 
-ShmBase::ShmBase(ServerTypeType shmType, const char* threadName, const char* shmName)
-	:IOThread(threadName, shmName), m_ShmType(shmType), m_CommonShmHeader(nullptr), m_ShmAddr(nullptr)
+ShmBase::ShmBase(ServerTypeType serverType, const char* threadName, const char* shmName)
+	:IOThread(serverType, threadName, shmName), m_CommonShmHeader(nullptr), m_ShmAddr(nullptr)
 {
 #ifdef WINDOWS
 	m_File = nullptr;
@@ -39,7 +39,7 @@ ShmBase::~ShmBase()
 		CloseHandle(m_File);
 		m_File = nullptr;
 	}
-	if (m_ShmType == ServerTypeType::Server)
+	if (m_ServerType == ServerTypeType::Server)
 	{
 		DeleteFileA(m_ShmName.c_str());
 	}
@@ -50,7 +50,7 @@ ShmBase::~ShmBase()
 		perror("shm_unlink");
 		WriteLog(LogLevel::Warning, "munmap Failed. ErrNo:%d", errno);
 	}
-	if (m_ShmType == ServerTypeType::Server)
+	if (m_ServerType == ServerTypeType::Server)
 	{
 		if (shm_unlink(m_ShmName.c_str()) < 0)
 		{
@@ -65,7 +65,7 @@ bool ShmBase::Init()
 	if (!m_Sem->Init())
 		return false;
 #ifdef WINDOWS
-	if (m_ShmType == ServerTypeType::Server)
+	if (m_ServerType == ServerTypeType::Server)
 	{
 		m_File = CreateFileA(m_ShmName.c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (m_File == INVALID_HANDLE_VALUE)
@@ -93,7 +93,7 @@ bool ShmBase::Init()
 #endif
 #ifdef LINUX
 	int fd;
-	if (m_ShmType == ServerTypeType::Server)
+	if (m_ServerType == ServerTypeType::Server)
 	{
 		fd = shm_open(m_ShmName.c_str(), O_CREAT | O_EXCL | O_RDWR, 0666);
 	}
@@ -119,7 +119,7 @@ bool ShmBase::Init()
 	}
 #endif
 	m_CommonShmHeader = (SingleShmHeader*)m_ShmAddr;
-	if (m_ShmType == ServerTypeType::Server)
+	if (m_ServerType == ServerTypeType::Server)
 	{
 		memset(m_ShmAddr, 0, ShmBuffSize * m_MaxConnectSize * 2);
 		m_CommonShmHeader->Status = ConnectStatusType::UnConnected;
@@ -163,7 +163,7 @@ ShmConnect<ShmBuffSize>* ShmBase::AddConnect(int index)
 	shmConnect->Index = index;
 	shmConnect->m_ShmBuffer = ShmBuffer<ShmBuffSize>::Allocate();
 	shmConnect->m_ShmBuffer->m_ShmHeader = m_CommonShmHeader + index;
-	shmConnect->m_ShmBuffer->m_ServerType = m_ShmType;
+	shmConnect->m_ShmBuffer->m_ServerType = m_ServerType;
 	shmConnect->m_ShmBuffer->m_UpBuffer = (char*)m_ShmAddr + ShmBuffSize * index * 2;
 	shmConnect->m_ShmBuffer->m_DownBuffer = (char*)m_ShmAddr + ShmBuffSize * (index * 2 + 1);
 

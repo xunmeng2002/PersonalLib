@@ -24,7 +24,6 @@ protected:
 
 	void DoRecv();
 public:
-	ServerTypeType m_ShmType;
 	std::string m_ShmName;
 	bool m_ConnectStatus;
 protected:
