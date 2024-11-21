@@ -4,6 +4,8 @@ add_subdirectory(TestClient)
 add_subdirectory(TestServer)
 add_subdirectory(TestSharedMemoryClient)
 add_subdirectory(TestSharedMemoryServer)
+
+add_subdirectory(TestCtpApi)
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
 endif()
