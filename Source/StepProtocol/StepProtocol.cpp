@@ -72,7 +72,10 @@ namespace step
 		{
 			auto sendLen = m_IOThread->Send(stepPackage->SessionID, buffer);
 			if (sendLen < 0)
+			{
+				WriteLog(LogLevel::Warning, "StepProtocol::Send Failed. sendLen:%d", sendLen);
 				return false;
+			}
 			buffer->Shift(sendLen);
 		}
 		buffer->Free();

@@ -129,10 +129,6 @@ namespace xtp
 				WriteLog(LogLevel::Warning, "XtpProtocol::Send Failed. sendLen:%d", sendLen);
 				return false;
 			}
-			else
-			{
-				WriteLog(LogLevel::Info, "XtpProtocol::Send Successed. sendLen:%d", sendLen);
-			}
 			buffer->Shift(sendLen);
 		}
 		buffer->Free();

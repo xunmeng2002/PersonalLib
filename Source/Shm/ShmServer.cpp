@@ -108,6 +108,16 @@ void ShmServer::CheckConnect()
 
 void ShmServer::HandleEvent()
 {
+	unique_lock guard(m_Mutex);
+	m_ThreadConditionVariable.wait_for(guard, m_TimeOut, [&]() {
+		for (auto& it : m_Connects)
+		{
+			auto shmConnect = (ShmConnect<ShmBuffSize>*)it.second;
+			if (shmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
+				return true;
+		}
+		return false;
+		});
 	for (auto& it : m_Connects)
 	{
 		auto shmConnect = (ShmConnect<ShmBuffSize>*)it.second;
