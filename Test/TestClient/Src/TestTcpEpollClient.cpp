@@ -25,7 +25,7 @@ void TestTcpEpollClient()
     tcpEpollClient.Start();
 
     
-    std::this_thread::sleep_for(std::chrono::seconds(80));
+    std::this_thread::sleep_for(std::chrono::seconds(5));
     tcpEpollClient.Stop();
     tcpEpollClient.Join();
 #endif

@@ -103,11 +103,10 @@ SessionIDType IOThread::GetSessionID()
 }
 void IOThread::DisConnectAll()
 {
-	if (m_IOSubscriber)
+	WriteLog(LogLevel::Info, "DisConnectAll");
+	std::map<SessionIDType, Connect*> connects(m_Connects.begin(), m_Connects.end());
+	for (auto& it : connects)
 	{
-		for (auto& it : m_Connects)
-		{
-			RemoveConnect(it.second);
-		}
+		RemoveConnect(it.second);
 	}
 }

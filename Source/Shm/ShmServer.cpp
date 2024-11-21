@@ -38,12 +38,12 @@ void ShmServer::Accept()
 					auto shmHeader = m_CommonShmHeader + i;
 					if (shmHeader->Status == ConnectStatusType::UnConnected)
 					{
+						ShmConnect<ShmBuffSize>* shmConnect = ShmConnect<ShmBuffSize>::Allocate(GetSessionID(), m_Address.c_str(), i, m_ServerType, m_ShmAddr, ConnectStatusType::Accepted);
+						AddConnect(shmConnect);
+
 						m_CommonShmHeader->Status = ConnectStatusType::Accepted;
 						m_CommonShmHeader->DownWriteCount = i;
 						++m_ConnectCount;
-
-						ShmConnect<ShmBuffSize>* shmConnect = ShmConnect<ShmBuffSize>::Allocate(GetSessionID(), m_Address.c_str(), i, m_ServerType, m_ShmAddr, ConnectStatusType::Accepted);
-						AddConnect(shmConnect);
 						break;
 					}
 				}
@@ -120,7 +120,6 @@ void ShmServer::HandleEvent()
 
 void ShmServer::RemoveConnect(Connect* connect)
 {
-	((ShmConnect<ShmBuffSize>*)connect)->m_ShmBuffer->m_ShmHeader->Status = ConnectStatusType::UnConnected;
 	ShmBase::RemoveConnect(connect);
 	--m_ConnectCount;
 }

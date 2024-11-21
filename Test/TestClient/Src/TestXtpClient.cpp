@@ -66,7 +66,7 @@ void TestXtpClient()
 		xtpClient.Send(&reqInsertOrder);
 	}
 
-	std::this_thread::sleep_for(std::chrono::seconds(20));
+	std::this_thread::sleep_for(std::chrono::seconds(5));
 	xtpClient.Stop();
 	xtpClient.Join();
 }

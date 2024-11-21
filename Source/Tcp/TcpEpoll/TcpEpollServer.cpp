@@ -10,10 +10,6 @@ TcpEpollServer::TcpEpollServer(const char* threadName, const char* addressName)
 }
 TcpEpollServer::~TcpEpollServer()
 {
-	for (auto& item : m_Connects)
-	{
-		RemoveEpollEvent(item.second);
-	}
 }
 bool TcpEpollServer::Init()
 {

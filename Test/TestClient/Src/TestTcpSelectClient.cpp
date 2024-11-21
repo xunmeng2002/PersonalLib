@@ -24,7 +24,7 @@ void TestTcpSelectClient()
     }
     tcpSelectClient.Start();
 
-    std::this_thread::sleep_for(std::chrono::seconds(80));
+    std::this_thread::sleep_for(std::chrono::seconds(5));
     tcpSelectClient.Stop();
     tcpSelectClient.Join();
 }

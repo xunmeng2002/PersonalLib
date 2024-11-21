@@ -23,8 +23,8 @@ protected:
 	virtual void RemoveConnect(::Connect* connect) override;
 	
 
-	void AddEpollEvent(Connect* connect);
-	void RemoveEpollEvent(Connect* connect);
+	void AddEpollEvent(TcpConnect* connect);
+	void RemoveEpollEvent(TcpConnect* connect);
 
 protected:
 	int m_EpollFd;

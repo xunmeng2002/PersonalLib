@@ -2,6 +2,7 @@
 #include "Constant.h"
 #include "Types.h"
 #include "MemCacheTemplateSingleton.h"
+#include "Logger.h"
 #include <algorithm>
 
 
@@ -21,6 +22,7 @@ class ShmBuffer
 public:
 	SingleShmHeader* m_ShmHeader;
 	ServerTypeType m_ServerType;
+	int m_Index;
 	char* m_UpBuffer;
 	char* m_DownBuffer;
 
@@ -28,6 +30,7 @@ public:
 	{
 		auto shmBuffer = ::Allocate<ShmBuffer<SIZE>>();
 		shmBuffer->m_ServerType = serverType;
+		shmBuffer->m_Index = index;
 		shmBuffer->m_ShmHeader = (SingleShmHeader*)shmAddr + index;
 		shmBuffer->m_ShmHeader->Status = connectStatus;
 		shmBuffer->m_UpBuffer = (char*)shmAddr + ShmBuffSize * index * 2;
@@ -36,6 +39,18 @@ public:
 	}
 	void Free()
 	{
+		if (m_ShmHeader->Status != ConnectStatusType::DisConnected)
+		{
+			m_ShmHeader->Status = ConnectStatusType::DisConnected;
+		}
+		else
+		{
+			m_ShmHeader->Status = ConnectStatusType::UnConnected;
+			m_ShmHeader->UpWriteCount = 0;
+			m_ShmHeader->UpReadCount = 0;
+			m_ShmHeader->DownWriteCount = 0;
+			m_ShmHeader->DownReadCount = 0;
+		}
 		m_ShmHeader = nullptr;
 		m_UpBuffer = nullptr;
 		m_DownBuffer = nullptr;

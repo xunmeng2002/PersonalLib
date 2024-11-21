@@ -67,7 +67,7 @@ void TestStepClient()
 		stepClient.Send(&reqInsertOrder);
 	}
 
-	std::this_thread::sleep_for(std::chrono::seconds(20));
+	std::this_thread::sleep_for(std::chrono::seconds(5));
 	stepClient.Stop();
 	stepClient.Join();
 }

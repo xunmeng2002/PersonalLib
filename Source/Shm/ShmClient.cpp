@@ -54,11 +54,10 @@ void ShmClient::Connect()
 			if (m_CommonShmHeader->Status == ConnectStatusType::Accepted)
 			{
 				auto index = m_CommonShmHeader->DownWriteCount;
-				m_CommonShmHeader->Status = ConnectStatusType::UnConnected;
-
 				m_ShmConnect = ShmConnect<ShmBuffSize>::Allocate(GetSessionID(), m_Address.c_str(), index, m_ServerType, m_ShmAddr, ConnectStatusType::Connected);
 				AddConnect(m_ShmConnect);
 				m_Connected = true;
+				m_CommonShmHeader->Status = ConnectStatusType::UnConnected;
 			}
 			else if (m_CommonShmHeader->Status == ConnectStatusType::Rejected)
 			{
@@ -94,7 +93,6 @@ void ShmClient::CheckConnect()
 
 void ShmClient::RemoveConnect(::Connect* connect)
 {
-	((ShmConnect<ShmBuffSize>*)connect)->m_ShmBuffer->m_ShmHeader->Status = ConnectStatusType::DisConnected;
 	ShmBase::RemoveConnect(connect);
 	m_Connected = false;
 	m_HasSendConnected = false;

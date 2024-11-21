@@ -45,15 +45,15 @@ void TcpEpollBase::HandleTcpEvent()
 void TcpEpollBase::AddConnect(::Connect* connect)
 {
 	TcpBase::AddConnect(connect);
-	AddEpollEvent(connect);
+	AddEpollEvent((TcpConnect*)connect);
 }
 void TcpEpollBase::RemoveConnect(::Connect* connect)
 {
-	RemoveEpollEvent(connect);
+	RemoveEpollEvent((TcpConnect*)connect);
 	TcpBase::RemoveConnect(connect);
 }
 
-void TcpEpollBase::AddEpollEvent(Connect* connect)
+void TcpEpollBase::AddEpollEvent(TcpConnect* connect)
 {
 #ifdef LINUX
 	epoll_event epollEvent;
@@ -62,7 +62,7 @@ void TcpEpollBase::AddEpollEvent(Connect* connect)
 	epoll_ctl(m_EpollFd, EPOLL_CTL_ADD, connect->SocketID, &epollEvent);
 #endif
 }
-void TcpEpollBase::RemoveEpollEvent(Connect* connect)
+void TcpEpollBase::RemoveEpollEvent(TcpConnect* connect)
 {
 #ifdef LINUX
 	epoll_ctl(m_EpollFd, EPOLL_CTL_DEL, connect->SocketID, NULL);
