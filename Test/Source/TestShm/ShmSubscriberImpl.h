@@ -7,8 +7,8 @@ class ShmSubscriberImpl : public IOSubscriber
 public:
 	ShmSubscriberImpl(IOThread* ioThread, ServerTypeType serverType);
 
-	virtual void OnConnect(SessionIDType sessionID, const char* ip, const char* port) override;
-	virtual void OnDisConnect(SessionIDType sessionID, const char* ip, const char* port) override;
+	virtual void OnConnect(SessionIDType sessionID, const char* ip, int port) override;
+	virtual void OnDisConnect(SessionIDType sessionID, const char* ip, int port) override;
 	virtual void OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 
 

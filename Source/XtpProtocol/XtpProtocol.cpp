@@ -1,7 +1,5 @@
 #include "XtpProtocol.h"
 #include "Logger.h"
-#include "TcpClientBase.h"
-#include "TcpServerBase.h"
 #include "IOThreadFactory.h"
 #include <assert.h>
 
@@ -41,29 +39,35 @@ namespace xtp
 
 	bool XtpProtocol::Start()
 	{
+		if (m_IOThread == nullptr)
+			return false;
 		return m_IOThread->Start();
 	}
 	void XtpProtocol::Stop()
 	{
+		if (m_IOThread == nullptr)
+			return;
 		m_IOThread->Stop();
 	}
 	void XtpProtocol::Join()
 	{
+		if (m_IOThread == nullptr)
+			return;
 		m_IOThread->Join();
 	}
 
-	void XtpProtocol::OnConnect(SessionIDType sessionID, const char* ip, const char* port)
+	void XtpProtocol::OnConnect(SessionIDType sessionID, const char* ip, int port)
 	{
-		WriteLog(LogLevel::Info, "XtpProtocol::OnConnect SessionID:%lld, IP:%s, Port:%s", sessionID, ip, port);
+		WriteLog(LogLevel::Info, "XtpProtocol::OnConnect SessionID:%lld, IP:%s, Port:%d", sessionID, ip, port);
 		m_SessionPackageReaders.insert(std::make_pair(sessionID, XtpPackageReader::Allocate(m_XtpPackageFactory, sessionID, ip)));
 		if (m_XtpSubscriber)
 		{
 			m_XtpSubscriber->OnXtpConnect(sessionID, ip, port);
 		}
 	}
-	void XtpProtocol::OnDisConnect(SessionIDType sessionID, const char* ip, const char* port)
+	void XtpProtocol::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
 	{
-		WriteLog(LogLevel::Info, "XtpProtocol::OnDisConnect SessionID:%lld, IP:%s, Port:%s", sessionID, ip, port);
+		WriteLog(LogLevel::Info, "XtpProtocol::OnDisConnect SessionID:%lld, IP:%s, Port:%d", sessionID, ip, port);
 		if (m_SessionPackageReaders.find(sessionID) != m_SessionPackageReaders.end())
 		{
 			m_SessionPackageReaders[sessionID]->Free();
@@ -76,6 +80,8 @@ namespace xtp
 	}
 	void XtpProtocol::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 	{
+		if (m_IOThread == nullptr)
+			return;
 		auto xtpPackageReader = m_SessionPackageReaders[sessionID];
 		if (xtpPackageReader == nullptr)
 		{
@@ -105,17 +111,28 @@ namespace xtp
 	}
 	void XtpProtocol::DisConnect(SessionIDType sessionID)
 	{
+		if (m_IOThread == nullptr)
+			return;
 		m_IOThread->DisConnect(sessionID);
 	}
 	bool XtpProtocol::Send(XtpPackageBase* xtpPackage)
 	{
+		if (m_IOThread == nullptr)
+			return false;
 		Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
 		buffer->SetLength(xtpPackage->MakePackage(buffer->GetData(), BuffSize));
 		while (buffer->GetLength() > 0)
 		{
 			auto sendLen = m_IOThread->Send(xtpPackage->SessionID, buffer);
 			if (sendLen < 0)
+			{
+				WriteLog(LogLevel::Warning, "XtpProtocol::Send Failed. sendLen:%d", sendLen);
 				return false;
+			}
+			else
+			{
+				WriteLog(LogLevel::Info, "XtpProtocol::Send Successed. sendLen:%d", sendLen);
+			}
 			buffer->Shift(sendLen);
 		}
 		buffer->Free();

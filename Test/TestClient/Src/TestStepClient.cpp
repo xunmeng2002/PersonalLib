@@ -9,7 +9,7 @@ using namespace std;
 
 
 StepClient::StepClient()
-	:step::StepProtocol(ServerTypeType::Client, g_IOType, "StepClient", g_Address, new StepPackageFactory()), m_ConnectStatus(false), m_SessionID(0LL)
+	:step::StepProtocol(ServerTypeType::Client, g_IOType, "StepClient", g_Address, new StepPackageFactory()), m_Connected(false), m_SessionID(0LL)
 {
 	SubscribeStep(this);
 }
@@ -17,18 +17,18 @@ StepClient::~StepClient()
 {
 }
 
-void StepClient::OnStepConnect(SessionIDType sessionID, const char* ip, const char* port)
+void StepClient::OnStepConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "StepClient::OnStepConnect SessionID:[%lld], IP:[%s], port:[%s]", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "StepClient::OnStepConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
 	m_SessionID = sessionID;
-	m_ConnectStatus = true;
+	m_Connected = true;
 }
-void StepClient::OnStepDisConnect(SessionIDType sessionID, const char* ip, const char* port)
+void StepClient::OnStepDisConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "StepClient::OnStepDisConnect SessionID:[%lld], IP:[%s], port:[%s]", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "StepClient::OnStepDisConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
-	m_ConnectStatus = false;
+	m_Connected = false;
 }
 void StepClient::OnStepMessage(step::StepPackageBase* stepPackage)
 {
@@ -44,7 +44,7 @@ void TestStepClient()
 	stepClient.Init();
 	stepClient.Start();
 
-	while (!stepClient.m_ConnectStatus)
+	while (!stepClient.m_Connected)
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}

@@ -24,15 +24,15 @@ TcpClientSubscriberImpl::~TcpClientSubscriberImpl()
 }
 
 
-void TcpClientSubscriberImpl::OnConnect(SessionIDType sessionID, const char* ip, const char* port)
+void TcpClientSubscriberImpl::OnConnect(SessionIDType sessionID, const char* ip, int port)
 {
-    WriteLog(LogLevel::Info, "TcpClientSubscriberImpl::OnConnect SessionID:[%lld], IP:[%s], Port:[%s]", sessionID, ip, port);
+    WriteLog(LogLevel::Info, "TcpClientSubscriberImpl::OnConnect SessionID:[%lld], IP:[%s], Port:[%d]", sessionID, ip, port);
     m_MessageCounts.insert(std::make_pair(sessionID, 0));
     Send(sessionID);
 }
-void TcpClientSubscriberImpl::OnDisConnect(SessionIDType sessionID, const char* ip, const char* port)
+void TcpClientSubscriberImpl::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
 {
-    WriteLog(LogLevel::Info, "TcpClientSubscriberImpl::OnDisConnect SessionID:[%lld], IP:[%s], Port:[%s]", sessionID, ip, port);
+    WriteLog(LogLevel::Info, "TcpClientSubscriberImpl::OnDisConnect SessionID:[%lld], IP:[%s], Port:[%d]", sessionID, ip, port);
     m_MessageCounts.erase(sessionID);
 }
 void TcpClientSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer)

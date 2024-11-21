@@ -9,7 +9,7 @@ using namespace std;
 
 
 XtpServer::XtpServer()
-	:xtp::XtpProtocol(ServerTypeType::Server, g_IOType, "XtpServer", g_Address, new XtpPackageFactory()), m_ConnectStatus(false), m_SessionID(0LL)
+	:xtp::XtpProtocol(ServerTypeType::Server, g_IOType, "XtpServer", g_Address, new XtpPackageFactory()), m_Connected(false), m_SessionID(0LL)
 {
 	SubscribeXtp(this);
 }
@@ -17,18 +17,18 @@ XtpServer::~XtpServer()
 {
 }
 
-void XtpServer::OnXtpConnect(SessionIDType sessionID, const char* ip, const char* port)
+void XtpServer::OnXtpConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "XtpServer::OnXtpConnect SessionID:[%lld], IP:[%s], port:[%s]", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "XtpServer::OnXtpConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
 	m_SessionID = sessionID;
-	m_ConnectStatus = true;
+	m_Connected = true;
 }
-void XtpServer::OnXtpDisConnect(SessionIDType sessionID, const char* ip, const char* port)
+void XtpServer::OnXtpDisConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "XtpServer::OnXtpDisConnect SessionID:[%lld], IP:[%s], port:[%s]", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "XtpServer::OnXtpDisConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
-	m_ConnectStatus = false;
+	m_Connected = false;
 }
 void XtpServer::OnXtpMessage(xtp::XtpPackageBase* xtpPackage)
 {
@@ -46,12 +46,12 @@ void TestXtpServer()
 	xtpServer.Init();
 	xtpServer.Start();
 
-	while (!xtpServer.m_ConnectStatus)
+	while (!xtpServer.m_Connected)
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 
-	std::this_thread::sleep_for(std::chrono::seconds(300));
+	std::this_thread::sleep_for(std::chrono::seconds(60));
 	xtpServer.Stop();
 	xtpServer.Join();
 }

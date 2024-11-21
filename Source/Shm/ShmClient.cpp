@@ -5,18 +5,12 @@
 using namespace std;
 
 ShmClient::ShmClient(const char* threadName, const char* shmName)
-	:ShmBase(ServerTypeType::Client, threadName, shmName), m_Connected(false), m_HasSendConnected(false), m_SessionID(0LL), m_ShmConnect(nullptr)
+	:ShmBase(ServerTypeType::Client, threadName, shmName), m_HasSendConnected(false), m_ShmConnect(nullptr)
 {
 }
 ShmClient::~ShmClient()
 {
-	if (m_ShmConnect != nullptr)
-	{
-		m_ShmConnect->m_ShmBuffer->m_ShmHeader->Status = ConnectStatusType::DisConnected;
-		m_IOSubscriber->OnDisConnect(m_ShmConnect->SessionID, m_ShmName.c_str(), std::to_string(m_ShmConnect->Index).c_str());
-		m_ShmConnect->Free();
-		m_ShmConnect = nullptr;
-	}
+	m_ShmConnect = nullptr;
 }
 
 
@@ -61,8 +55,9 @@ void ShmClient::Connect()
 			{
 				auto index = m_CommonShmHeader->DownWriteCount;
 				m_CommonShmHeader->Status = ConnectStatusType::UnConnected;
-				m_ShmConnect = AddConnect(index);
-				m_ShmConnect->m_ShmBuffer->m_ShmHeader->Status = ConnectStatusType::Connected;
+
+				m_ShmConnect = ShmConnect<ShmBuffSize>::Allocate(GetSessionID(), m_Address.c_str(), index, m_ServerType, m_ShmAddr, ConnectStatusType::Connected);
+				AddConnect(m_ShmConnect);
 				m_Connected = true;
 			}
 			else if (m_CommonShmHeader->Status == ConnectStatusType::Rejected)
@@ -91,30 +86,17 @@ void ShmClient::CheckConnect()
 {
 	if (!m_Connected)
 		return;
-	lock_guard<mutex> guard(m_ShmConnectsMutex);
 	if (m_ShmConnect->m_ShmBuffer->m_ShmHeader->Status == ConnectStatusType::DisConnected)
 	{
 		RemoveConnect(m_ShmConnect);
 	}
 }
-void ShmClient::DoDisConnect()
+
+void ShmClient::RemoveConnect(::Connect* connect)
 {
-	if (m_DisConnectSessionIDs.empty())
-		return;
-
-	RemoveConnect(m_ShmConnect);
-
-	lock_guard<mutex> guard(m_DisConnectSessionIDsMutex);
-	m_DisConnectSessionIDs.clear();
-}
-
-void ShmClient::RemoveConnect(ShmConnect<ShmBuffSize>* shmConnect)
-{
-	ShmBase::RemoveConnect(shmConnect);
+	((ShmConnect<ShmBuffSize>*)connect)->m_ShmBuffer->m_ShmHeader->Status = ConnectStatusType::DisConnected;
+	ShmBase::RemoveConnect(connect);
 	m_Connected = false;
 	m_HasSendConnected = false;
-}
-ShmConnect<ShmBuffSize>* ShmClient::GetShmConnect(SessionIDType sessionID)
-{
-	return m_ShmConnect;
+	m_ShmConnect = nullptr;
 }

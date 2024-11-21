@@ -23,7 +23,6 @@ void TestTcpSelectClient()
         return;
     }
     tcpSelectClient.Start();
-    tcpSelectClient.CheckClientConnect();
 
     std::this_thread::sleep_for(std::chrono::seconds(80));
     tcpSelectClient.Stop();

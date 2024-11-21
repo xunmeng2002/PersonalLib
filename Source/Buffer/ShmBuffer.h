@@ -24,9 +24,15 @@ public:
 	char* m_UpBuffer;
 	char* m_DownBuffer;
 
-	static ShmBuffer* Allocate()
+	static ShmBuffer* Allocate(ServerTypeType serverType, int index, void* shmAddr, ConnectStatusType connectStatus)
 	{
-		return ::Allocate<ShmBuffer<SIZE>>();
+		auto shmBuffer = ::Allocate<ShmBuffer<SIZE>>();
+		shmBuffer->m_ServerType = serverType;
+		shmBuffer->m_ShmHeader = (SingleShmHeader*)shmAddr + index;
+		shmBuffer->m_ShmHeader->Status = connectStatus;
+		shmBuffer->m_UpBuffer = (char*)shmAddr + ShmBuffSize * index * 2;
+		shmBuffer->m_DownBuffer = (char*)shmAddr + ShmBuffSize * (index * 2 + 1);
+		return shmBuffer;
 	}
 	void Free()
 	{

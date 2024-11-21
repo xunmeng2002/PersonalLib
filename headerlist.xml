@@ -12,6 +12,7 @@
 	<file name="RingBuffer.h" dest="../Libs/PersonalLib/include/" src="./Source/Buffer/"/>
 	<file name="ShmBuffer.h" dest="../Libs/PersonalLib/include/" src="./Source/Buffer/"/>
 	
+	<file name="Connect.h" dest="../Libs/PersonalLib/include/" src="./Source/Connect/"/>
 	<file name="Constant.h" dest="../Libs/PersonalLib/include/" src="./Source/Constant/"/>
 	<file name="CsvParser.h" dest="../Libs/PersonalLib/include/" src="./Source/Csv/"/>
 	<file name="CsvRecord.h" dest="../Libs/PersonalLib/include/" src="./Source/Csv/"/>
@@ -22,6 +23,7 @@
 	
 	<file name="IOThread.h" dest="../Libs/PersonalLib/include/" src="./Source/IOThread/"/>
 	<file name="IOThreadFactory.h" dest="../Libs/PersonalLib/include/" src="./Source/IOThread/"/>
+	<file name="IOUtility.h" dest="../Libs/PersonalLib/include/" src="./Source/IOThread/"/>
 	
 	<file name="json_tool.h" dest="../Libs/PersonalLib/include/json/" src="./Source/Jsoncpp/"/>
 	<file name="allocator.h" dest="../Libs/PersonalLib/include/json/" src="./Source/JsonCpp/json/"/>
@@ -62,10 +64,8 @@
 	<file name="StepProtocol.h" dest="../Libs/PersonalLib/include/" src="./Source/StepProtocol/"/>
 	<file name="StepUtility.h" dest="../Libs/PersonalLib/include/" src="./Source/StepProtocol/"/>
 	
-	<file name="ConnectData.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpBase/"/>
 	<file name="TcpBase.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpBase/"/>
-	<file name="TcpClientBase.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpBase/"/>
-	<file name="TcpServerBase.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpBase/"/>
+	<file name="TcpConnect.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpBase/"/>
 	<file name="TcpUtility.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpBase/"/>
 	<file name="TcpEpollBase.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpEpoll/"/>
 	<file name="TcpEpollClient.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpEpoll/"/>

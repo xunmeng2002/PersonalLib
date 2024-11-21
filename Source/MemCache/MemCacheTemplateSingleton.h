@@ -78,7 +78,6 @@ T* Allocate()
 template<typename T>
 void Free(T* item)
 {
-	memset(item, 0, sizeof(T));
 	MemCacheTemplateSingleton<T>::GetInstance().Free(item);
 }
 

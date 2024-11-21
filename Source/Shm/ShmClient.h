@@ -14,13 +14,9 @@ protected:
 
 	void Connect();
 	void CheckConnect();
-	void DoDisConnect();
 
-	virtual void RemoveConnect(ShmConnect<ShmBuffSize>* shmConnect) override;
-	virtual ShmConnect<ShmBuffSize>* GetShmConnect(SessionIDType sessionID) override;
+	virtual void RemoveConnect(::Connect* connect) override;
 protected:
-	bool m_Connected;
 	bool m_HasSendConnected;
-	SessionIDType m_SessionID;
 	ShmConnect<ShmBuffSize>* m_ShmConnect;
 };

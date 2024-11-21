@@ -2,16 +2,17 @@
 #include <list>
 #include <map>
 #include "SocketInit.h"
+#include "TcpBase.h"
 
 
-
-class TcpSelectBase
+class TcpSelectBase : public TcpBase
 {
 public:
-	TcpSelectBase();
+	TcpSelectBase(ServerTypeType serverType, const char* threadName, const char* addressName);
 	void SetSelectTimeOut(int milliSeconds);
 protected:
-	virtual void PrepareFds() = 0;
+	virtual void PrepareFds();
+	virtual void HandleTcpEvent() override;
 
 protected:
 	fd_set m_RecvFds;

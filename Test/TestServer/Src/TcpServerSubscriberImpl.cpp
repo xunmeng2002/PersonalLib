@@ -14,13 +14,13 @@ TcpServerSubscriberImpl::~TcpServerSubscriberImpl()
     m_IOThread->UnSubscribe();
 }
 
-void TcpServerSubscriberImpl::OnConnect(SessionIDType sessionID, const char* ip, const char* port)
+void TcpServerSubscriberImpl::OnConnect(SessionIDType sessionID, const char* ip, int port)
 {
-    WriteLog(LogLevel::Info, "TcpServerSubscriberImpl::OnConnect SessionID:[%lld], IP:[%s], Port:[%s]", sessionID, ip, port);
+    WriteLog(LogLevel::Info, "TcpServerSubscriberImpl::OnConnect SessionID:[%lld], IP:[%s], Port:[%d]", sessionID, ip, port);
 }
-void TcpServerSubscriberImpl::OnDisConnect(SessionIDType sessionID, const char* ip, const char* port)
+void TcpServerSubscriberImpl::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
 {
-    WriteLog(LogLevel::Info, "TcpServerSubscriberImpl::OnDisConnect SessionID:[%lld], IP:[%s], Port:[%s]", sessionID, ip, port);
+    WriteLog(LogLevel::Info, "TcpServerSubscriberImpl::OnDisConnect SessionID:[%lld], IP:[%s], Port:[%d]", sessionID, ip, port);
 }
 
 

@@ -10,7 +10,7 @@ using namespace std;
 
 
 StepServer::StepServer()
-	:step::StepProtocol(ServerTypeType::Server, g_IOType, "StepServer", g_Address, new StepPackageFactory()), m_ConnectStatus(false), m_SessionID(0LL)
+	:step::StepProtocol(ServerTypeType::Server, g_IOType, "StepServer", g_Address, new StepPackageFactory()), m_Connected(false), m_SessionID(0LL)
 {
 	SubscribeStep(this);
 }
@@ -18,18 +18,18 @@ StepServer::~StepServer()
 {
 }
 
-void StepServer::OnStepConnect(SessionIDType sessionID, const char* ip, const char* port)
+void StepServer::OnStepConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "StepServer::OnStepConnect SessionID:[%lld], IP:[%s], port:[%s]", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "StepServer::OnStepConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
 	m_SessionID = sessionID;
-	m_ConnectStatus = true;
+	m_Connected = true;
 }
-void StepServer::OnStepDisConnect(SessionIDType sessionID, const char* ip, const char* port)
+void StepServer::OnStepDisConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "StepServer::OnStepDisConnect SessionID:[%lld], IP:[%s], port:[%s]", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "StepServer::OnStepDisConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
-	m_ConnectStatus = false;
+	m_Connected = false;
 }
 void StepServer::OnStepMessage(step::StepPackageBase* stepPackage)
 {
@@ -47,7 +47,7 @@ void TestStepServer()
 	StepServer.Init();
 	StepServer.Start();
 
-	while (!StepServer.m_ConnectStatus)
+	while (!StepServer.m_Connected)
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
@@ -70,7 +70,7 @@ void TestStepServer()
 	//	StepServer.Send(&reqInsertOrder);
 	//}
 
-	std::this_thread::sleep_for(std::chrono::seconds(300));
+	std::this_thread::sleep_for(std::chrono::seconds(60));
 	StepServer.Stop();
 	StepServer.Join();
 }

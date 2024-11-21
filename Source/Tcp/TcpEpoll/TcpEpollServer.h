@@ -1,19 +1,13 @@
 #pragma once
 #include "TcpEpollBase.h"
-#include "TcpServerBase.h"
 
 
-class TcpEpollServer : public TcpEpollBase, public TcpServerBase
+class TcpEpollServer : public TcpEpollBase
 {
 public:
 	TcpEpollServer(const char* threadName, const char* addressName);
 	~TcpEpollServer();
 
-	//override TcpBase
 	virtual bool Init() override;
-	virtual void HandleTcpEvent() override;
 
-protected:
-	virtual void AddConnect(TcpConnect* connectData) override;
-	virtual void RemoveConnect(TcpConnect* connectData) override;
 };

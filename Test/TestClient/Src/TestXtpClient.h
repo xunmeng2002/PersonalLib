@@ -10,11 +10,11 @@ public:
 	XtpClient();
 	virtual ~XtpClient();
 
-	virtual void OnXtpConnect(SessionIDType sessionID, const char* ip, const char* port) override;
-	virtual void OnXtpDisConnect(SessionIDType sessionID, const char* ip, const char* port) override;
+	virtual void OnXtpConnect(SessionIDType sessionID, const char* ip, int port) override;
+	virtual void OnXtpDisConnect(SessionIDType sessionID, const char* ip, int port) override;
 	virtual void OnXtpMessage(xtp::XtpPackageBase* xtpPackage) override;
 
-	bool m_ConnectStatus;
+	bool m_Connected;
 	SessionIDType m_SessionID;
 };
 

@@ -15,7 +15,7 @@
 using namespace std;
 
 SingleShm::SingleShm(ServerTypeType shmType, const char* threadName, const char* shmName)
-	:IOThread(shmType, threadName, shmName), m_ShmName(shmName), m_ConnectStatus(false), m_SessionID(0LL),
+	:IOThread(shmType, threadName, shmName), m_ShmName(shmName), m_SessionID(0LL),
 	m_ShmAddr(nullptr)
 {
 	m_ShmBuffer = new ShmBuffer<ShmBuffSize>();
@@ -151,16 +151,16 @@ void SingleShm::Run()
 }
 void SingleShm::CheckEvent()
 {
-	if (!m_ConnectStatus && m_ShmBuffer->m_ShmHeader->Status == ConnectStatusType::Connected && m_IOSubscriber != nullptr)
+	if (!m_Connected && m_ShmBuffer->m_ShmHeader->Status == ConnectStatusType::Connected && m_IOSubscriber != nullptr)
 	{
-		m_ConnectStatus = true;
+		m_Connected = true;
 		m_SessionID = GetSessionID();
-		m_IOSubscriber->OnConnect(m_SessionID, m_ShmName.c_str(), "");
+		m_IOSubscriber->OnConnect(m_SessionID, m_ShmName.c_str(), 0);
 	}
-	if (m_ConnectStatus && m_ShmBuffer->m_ShmHeader->Status == ConnectStatusType::UnConnected && m_IOSubscriber != nullptr)
+	if (m_Connected && m_ShmBuffer->m_ShmHeader->Status == ConnectStatusType::UnConnected && m_IOSubscriber != nullptr)
 	{
-		m_ConnectStatus = false;
-		m_IOSubscriber->OnDisConnect(m_SessionID, m_ShmName.c_str(), "");
+		m_Connected = false;
+		m_IOSubscriber->OnDisConnect(m_SessionID, m_ShmName.c_str(), 0);
 	}
 	auto size = m_ShmBuffer->GetReadBufferSize();
 	if (size == 0)
@@ -182,7 +182,7 @@ void SingleShm::CheckEvent()
 }
 void SingleShm::HandleEvent()
 {
-	if (m_ConnectStatus)
+	if (m_Connected)
 	{
 		while (m_ShmBuffer->GetReadBufferSize() > 0)
 		{

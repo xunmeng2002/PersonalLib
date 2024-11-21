@@ -14,15 +14,15 @@ ShmSubscriberImpl::ShmSubscriberImpl(IOThread* ioThread, ServerTypeType serverTy
 
 	ioThread->Subscribe(this);
 }
-void ShmSubscriberImpl::OnConnect(SessionIDType sessionID, const char* ip, const char* port)
+void ShmSubscriberImpl::OnConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "OnConnect sessionID:%lld, ip:%s, port:%s", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "OnConnect sessionID:%lld, ip:%s, port:%d", sessionID, ip, port);
 	m_Connected = true;
 	m_SessionID = sessionID;
 }
-void ShmSubscriberImpl::OnDisConnect(SessionIDType sessionID, const char* ip, const char* port)
+void ShmSubscriberImpl::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "OnDisConnect sessionID:%lld, ip:%s, port:%s", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "OnDisConnect sessionID:%lld, ip:%s, port:%d", sessionID, ip, port);
 	m_Connected = false;
 }
 void ShmSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer)

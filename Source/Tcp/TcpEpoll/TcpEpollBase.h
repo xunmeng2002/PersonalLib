@@ -10,15 +10,21 @@
 
 #define EpollEventNumber 1024
 
-class TcpEpollBase
+class TcpEpollBase : public TcpBase
 {
 public:
-	TcpEpollBase();
+	TcpEpollBase(ServerTypeType serverType, const char* threadName, const char* addressName);
 	~TcpEpollBase();
 	
 protected:
-	void AddEpollEvent(TcpConnect* connectData);
-	void RemoveEpollEvent(TcpConnect* connectData);
+	virtual void HandleTcpEvent() override;
+
+	virtual void AddConnect(::Connect* connect) override;
+	virtual void RemoveConnect(::Connect* connect) override;
+	
+
+	void AddEpollEvent(Connect* connect);
+	void RemoveEpollEvent(Connect* connect);
 
 protected:
 	int m_EpollFd;

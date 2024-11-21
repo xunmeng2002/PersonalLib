@@ -20,6 +20,7 @@ void TcpConnect::Free()
 	shutdown(SocketID, SHUT_RDWR);
 #endif
 	closesocket(SocketID);
+	SocketID = INVALID_SOCKET;
 	MemCacheTemplateSingleton<TcpConnect>::GetInstance().Free(this);
 }
 
@@ -27,8 +28,8 @@ void TcpConnect::Set(SessionIDType sessionID, const SOCKET& socketID, const std:
 {
 	SessionID = sessionID;
 	SocketID = socketID;
-	strcpy(RemoteIP, remoteIP.c_str());
-	strcpy(RemotePort, remotePort.c_str());
+	strcpy(RemoteAddress, remoteIP.c_str());
+	RemotePort = atoi(remotePort.c_str());
 	LastSendTimePoint = std::chrono::steady_clock::now();
 }
 void TcpConnect::UpdateLastSendTime()

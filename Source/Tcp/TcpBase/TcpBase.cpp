@@ -8,36 +8,40 @@
 
 
 TcpBase::TcpBase(ServerTypeType serverType, const char* threadName, const char* addressName)
-	:IOThread(serverType, threadName, addressName), m_RemoteAddressLen(sizeof(m_RemoteAddress))
+	:IOThread(serverType, threadName, addressName), m_AddressInfo(nullptr), m_Socket(INVALID_SOCKET), m_RemoteAddressLen(sizeof(m_RemoteAddress))
 {
 	memset(&m_RemoteAddress, 0, sizeof(m_RemoteAddress));
-	ParseIPAddress(m_AddressName, m_IP, m_Port);
 }
 TcpBase::~TcpBase()
 {
-	for (auto& item : m_ConnectDatas)
+	if (m_Socket != INVALID_SOCKET)
 	{
-		item.second->Free();
+		closesocket(m_Socket);
+		m_Socket = INVALID_SOCKET;
 	}
-	m_ConnectDatas.clear();
 }
 
 bool TcpBase::Init()
 {
-	auto ret = GetAddrinfo(m_IP.c_str(), m_Port.c_str(), m_AddressInfo);
+	auto ret = GetAddrinfo(m_Address.c_str(), m_Port.c_str(), m_AddressInfo);
 	if (ret < 0)
 	{
-		WriteLog(LogLevel::Info, "GetAddrinfo Failed. IP:[%s] Port[%s] ret[%d] Errno[%d]", m_IP.c_str(), m_Port.c_str(), ret, errno);
+		WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:[%s] Port[%s] ret[%d] Errno[%d]", m_Address.c_str(), m_Port.c_str(), ret, errno);
 		return false;
 	}
 		
-	m_Socket = PrepareSocket(m_AddressInfo->ai_family);
+	m_Socket = socket(m_AddressInfo->ai_family, SOCK_STREAM, IPPROTO_TCP);
 	if (m_Socket == INVALID_SOCKET)
 	{
 		return false;
 	}
 	if (m_ServerType == ServerTypeType::Server)
 	{
+		if (!InitSocket(m_Socket))
+		{
+			closesocket(m_Socket);
+			return false;
+		}
 		if (!Bind(m_Socket, m_AddressInfo))
 		{
 			return false;
@@ -48,7 +52,7 @@ bool TcpBase::Init()
 }
 int TcpBase::Send(SessionIDType sessionID, const char* data, unsigned len)
 {
-	auto tcpConnect = GetConnect(sessionID);
+	auto tcpConnect = (TcpConnect*)GetConnect(sessionID);
 	if (!tcpConnect)
 	{
 		return -1;
@@ -57,7 +61,7 @@ int TcpBase::Send(SessionIDType sessionID, const char* data, unsigned len)
 }
 int TcpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
-	auto tcpConnect = GetConnect(sessionID);
+	auto tcpConnect = (TcpConnect*)GetConnect(sessionID);
 	if (!tcpConnect)
 	{
 		return -1;
@@ -65,35 +69,12 @@ int TcpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 	return send(tcpConnect->SocketID, buffer->GetReadPos(), buffer->GetLength(), 0);
 }
 
-void TcpBase::ThreadExit()
+void TcpBase::Run()
 {
-	std::lock_guard<std::mutex> guard(m_ConnectDataMutex);
-	if (m_IOSubscriber)
-	{
-		for (auto& it : m_ConnectDatas)
-		{
-			m_IOSubscriber->OnDisConnect(it.second->SessionID, it.second->RemoteIP, it.second->RemotePort);
-			it.second->Free();
-		}
-	}
-	m_ConnectDatas.clear();
-	ThreadBase::ThreadExit();
-}
-void TcpBase::DoDisConnect()
-{
-	if (m_DisConnectSessionIDs.empty())
-		return;
-	
-	std::lock_guard<std::mutex> guard(m_DisConnectSessionIDsMutex);
-	for (auto sessionID : m_DisConnectSessionIDs)
-	{
-		auto connectData = GetConnect(sessionID);
-		if (connectData != nullptr)
-		{
-			RemoveConnect(connectData);
-		}
-	}
-	m_DisConnectSessionIDs.clear();
+	if (m_ServerType == ServerTypeType::Client)
+		CheckConnect();
+	DoDisConnect();
+	HandleTcpEvent();
 }
 void TcpBase::DoRecv(TcpConnect* tcpConnect)
 {
@@ -115,40 +96,38 @@ void TcpBase::DoRecv(TcpConnect* tcpConnect)
 		m_IOSubscriber->OnRecv(tcpConnect->SessionID, buffer);
 	}
 }
-void TcpBase::AddConnect(TcpConnect* tcpConnect)
+void TcpBase::CheckConnect()
 {
-	WriteLog(LogLevel::Info, "New Connection. SessionID[%lld], Socket[%lld], RemoteIP[%s], RemotePort[%s]", tcpConnect->SessionID, tcpConnect->SocketID, tcpConnect->RemoteIP, tcpConnect->RemotePort);
+	if (m_Connected)
+		return;
+	auto ret = connect(m_Socket, m_AddressInfo->ai_addr, int(m_AddressInfo->ai_addrlen));
+	WriteLog(LogLevel::Info, "Connect Server: Address:[%s] Port[%s] ret[%d]", m_Address.c_str(), m_Port.c_str(), ret);
+	if (ret < 0)
 	{
-		std::lock_guard<std::mutex> guard(m_ConnectDataMutex);
-		m_ConnectDatas.insert(std::make_pair(tcpConnect->SessionID, tcpConnect));
+		WriteLog(LogLevel::Info, "Connect Server Failed. Address:[%s] Port[%s] ret[%d] Errno[%d]", m_Address.c_str(), m_Port.c_str(), ret, errno);
+		closesocket(m_Socket);
+		return;
 	}
-	if (m_IOSubscriber)
+	InitSocket(m_Socket);
+	TcpConnect* tcpConnect = TcpConnect::Allocate(GetSessionID(), m_Socket, m_Address.c_str(), m_Port.c_str());
+	AddConnect(tcpConnect);
+}
+void TcpBase::DoAccept()
+{
+	for (int i = 0; i < 5; i++)
 	{
-		m_IOSubscriber->OnConnect(tcpConnect->SessionID, tcpConnect->RemoteIP, tcpConnect->RemotePort);
+		SOCKET socketID = accept(m_Socket, (sockaddr*)&m_RemoteAddress, &m_RemoteAddressLen);
+		if (socketID == INVALID_SOCKET)
+		{
+			break;
+		}
+		std::string ip, port;
+		auto ret = GetNameinfo((sockaddr*)&m_RemoteAddress, m_RemoteAddressLen, ip, port);
+		SetSockNodelay(socketID);
+		auto connect = TcpConnect::Allocate(GetSessionID(), socketID, ip, port);
+		AddConnect(connect);
 	}
 }
-void TcpBase::RemoveConnect(TcpConnect* tcpConnect)
-{
-	WriteLog(LogLevel::Info, "RemoveConnect. SessionID[%lld], Socket[%lld], RemoteIP[%s], RemotePort[%s]", tcpConnect->SessionID, tcpConnect->SocketID, tcpConnect->RemoteIP, tcpConnect->RemotePort);
-	if (m_IOSubscriber)
-	{
-		m_IOSubscriber->OnDisConnect(tcpConnect->SessionID, tcpConnect->RemoteIP, tcpConnect->RemotePort);
-	}
-	std::lock_guard<std::mutex> guard(m_ConnectDataMutex);
-	m_ConnectDatas.erase(tcpConnect->SessionID);
-	tcpConnect->Free();
-}
-TcpConnect* TcpBase::GetConnect(SessionIDType sessionID)
-{
-	std::lock_guard<std::mutex> guard(m_ConnectDataMutex);
-	if (m_ConnectDatas.find(sessionID) == m_ConnectDatas.end())
-	{
-		WriteLog(LogLevel::Warning, "Connect not Exist For SessionID[%lld]", sessionID);
-		return nullptr;
-	}
-	return m_ConnectDatas[sessionID];
-}
-
 
 bool TcpBase::InitSocket(SOCKET socketID)
 {

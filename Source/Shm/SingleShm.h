@@ -25,7 +25,6 @@ protected:
 	void DoRecv();
 public:
 	std::string m_ShmName;
-	bool m_ConnectStatus;
 protected:
 	SessionIDType m_SessionID;
 	void* m_ShmAddr;

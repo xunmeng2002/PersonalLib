@@ -20,9 +20,8 @@ ShmBase::ShmBase(ServerTypeType serverType, const char* threadName, const char* 
 	m_FileMap = nullptr;
 #endif // WINDOWS
 
-	auto index = m_AddressName.find(':');
-	m_ShmName = m_AddressName.substr(0, index);
-	m_MaxConnectSize = atoi(m_AddressName.substr(index + 1).c_str());
+	m_ShmName = m_Address;
+	m_MaxConnectSize = atoi(m_Port.c_str());
 
 	m_Sem = new Sem((m_ShmName + "Sem").c_str());
 }
@@ -135,14 +134,14 @@ bool ShmBase::Init()
 
 int ShmBase::Send(SessionIDType sessionID, const char* data, unsigned len)
 {
-	auto shmConnect = GetShmConnect(sessionID);
+	auto shmConnect = (ShmConnect<ShmBuffSize>*)GetConnect(sessionID);
 	if (shmConnect == nullptr)
 		return -1;
 	return shmConnect->m_ShmBuffer->Write(data, len);
 }
 int ShmBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
-	auto shmConnect = GetShmConnect(sessionID);
+	auto shmConnect = (ShmConnect<ShmBuffSize>*)GetConnect(sessionID);
 	if (shmConnect == nullptr)
 		return -1;
 	return shmConnect->m_ShmBuffer->Write(buffer->GetReadPos(), buffer->GetLength());
@@ -160,25 +159,5 @@ void ShmBase::DoRecv(ShmConnect<ShmBuffSize>* shmConnect)
 	else
 		buffer->Free();
 }
-ShmConnect<ShmBuffSize>* ShmBase::AddConnect(int index)
-{
-	ShmConnect<ShmBuffSize>* shmConnect = ShmConnect<ShmBuffSize>::Allocate();
-	shmConnect->SessionID = GetSessionID();
-	shmConnect->Index = index;
-	shmConnect->m_ShmBuffer = ShmBuffer<ShmBuffSize>::Allocate();
-	shmConnect->m_ShmBuffer->m_ShmHeader = m_CommonShmHeader + index;
-	shmConnect->m_ShmBuffer->m_ServerType = m_ServerType;
-	shmConnect->m_ShmBuffer->m_UpBuffer = (char*)m_ShmAddr + ShmBuffSize * index * 2;
-	shmConnect->m_ShmBuffer->m_DownBuffer = (char*)m_ShmAddr + ShmBuffSize * (index * 2 + 1);
 
-	m_IOSubscriber->OnConnect(shmConnect->SessionID, m_ShmName.c_str(), to_string(index).c_str());
-	return shmConnect;
-}
-void ShmBase::RemoveConnect(ShmConnect<ShmBuffSize>* shmConnect)
-{
-	m_IOSubscriber->OnDisConnect(shmConnect->SessionID, m_ShmName.c_str(), std::to_string(shmConnect->Index).c_str());
-	if (shmConnect->m_ShmBuffer->m_ShmHeader->Status == ConnectStatusType::Connected)
-		shmConnect->m_ShmBuffer->m_ShmHeader->Status = ConnectStatusType::DisConnected;
-	else
-		shmConnect->m_ShmBuffer->m_ShmHeader->Status = ConnectStatusType::UnConnected;
-}
+

@@ -5,18 +5,19 @@
 #include "MemCacheTemplateSingleton.h"
 
 
-
 template<unsigned SIZE>
 class ShmConnect : public Connect
 {
 public:
-	int Index;
 	ShmBuffer<SIZE>* m_ShmBuffer;
 
-	static ShmConnect* Allocate()
+	static ShmConnect* Allocate(SessionIDType sessionID, const char* remoteAddress, int remotePort, ServerTypeType serverType, void* shmAddr, ConnectStatusType connectStatus)
 	{
 		auto item = ::Allocate<ShmConnect<SIZE>>();
-		item->m_ShmBuffer = ::Allocate<ShmBuffer<SIZE>>();
+		item->SessionID = sessionID;
+		strncpy(item->RemoteAddress, remoteAddress, sizeof(RemoteAddress));
+		item->RemotePort = remotePort;
+		item->m_ShmBuffer = ShmBuffer<SIZE>::Allocate(serverType, remotePort, shmAddr, connectStatus);
 		return item;
 	}
 	void Free()

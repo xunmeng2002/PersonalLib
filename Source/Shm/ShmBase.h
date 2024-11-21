@@ -24,19 +24,12 @@ public:
 protected:
 	void DoRecv(ShmConnect<ShmBuffSize>* shmConnect);
 
-	virtual ShmConnect<ShmBuffSize>* GetShmConnect(SessionIDType sessionID) = 0;
-	virtual ShmConnect<ShmBuffSize>* AddConnect(int index);
-	virtual void RemoveConnect(ShmConnect<ShmBuffSize>* shmConnect);
-
 protected:
 	std::string m_ShmName;
 	unsigned m_MaxConnectSize;
 	SingleShmHeader* m_CommonShmHeader;
 	void* m_ShmAddr;
 	Sem* m_Sem;
-	std::map<int64_t, ShmConnect<ShmBuffSize>*> m_ShmConnects;
-	std::mutex m_ShmConnectsMutex;
-
 
 #ifdef WINDOWS
 	void* m_File;
