@@ -8,9 +8,9 @@ CThostFtdcTraderApi *CThostFtdcTraderApiMiddle::CreateFtdcTraderApi(const char *
 {
 	WriteLog(LogLevel::Info, "CreateFtdcTraderApi: pszFlowPath[%s]", pszFlowPath);
 	
-	auto traderApi = CThostFtdcTraderApi::CreateFtdcTraderApi(pszFlowPath);
+	auto api = CThostFtdcTraderApi::CreateFtdcTraderApi(pszFlowPath);
 	auto apiMiddle = new CThostFtdcTraderApiMiddle();
-	apiMiddle->m_TraderApi = traderApi;
+	apiMiddle->m_TraderApi = api;
 	
 	return apiMiddle;
 }
@@ -72,11 +72,11 @@ void CThostFtdcTraderApiMiddle::RegisterFensUserInfo(CThostFtdcFensUserInfoField
 	return m_TraderApi->RegisterFensUserInfo(pFensUserInfo);
 }
 
-void CThostFtdcTraderApiMiddle::RegisterSpi(CThostFtdcTraderSpi *pTraderSp)
+void CThostFtdcTraderApiMiddle::RegisterSpi(CThostFtdcTraderSpi *pTraderSpi)
 {
 	WriteLog(LogLevel::Info, "RegisterSpi:");
 
-	return m_TraderApi->RegisterSpi(pTraderSp);
+	return m_TraderApi->RegisterSpi(pTraderSpi);
 }
 
 void CThostFtdcTraderApiMiddle::SubscribePrivateTopic(THOST_TE_RESUME_TYPE nResumeType)

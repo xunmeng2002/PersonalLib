@@ -23,7 +23,7 @@ public:
 
 	virtual void RegisterFensUserInfo(CThostFtdcFensUserInfoField *pFensUserInfo);
 
-	virtual void RegisterSpi(CThostFtdcTraderSpi *pTraderSp);
+	virtual void RegisterSpi(CThostFtdcTraderSpi *pTraderSpi);
 
 	virtual void SubscribePrivateTopic(THOST_TE_RESUME_TYPE nResumeType);
 

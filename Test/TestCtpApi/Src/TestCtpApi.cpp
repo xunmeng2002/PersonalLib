@@ -74,10 +74,10 @@ int main()
 	ReadAccountInfo(accountInfos);
 
 	Logger::GetInstance().Init("CTPTraderApiTest");
-	Logger::GetInstance().SetLogLevel(LogLevel::Info, LogLevel::Warning);
+	Logger::GetInstance().SetLogLevel(LogLevel::Info, LogLevel::Info);
 	Logger::GetInstance().Start();
 
-	string userID = "132924";
+	string userID = "229140";
 	CThostFtdcTraderApi* traderApi = CThostFtdcTraderApiMiddle::CreateFtdcTraderApi();
 	cout << "API Version:" << traderApi->GetApiVersion() << endl;
 	CThostFtdcTraderSpiImpl* traderSpi = new CThostFtdcTraderSpiImpl(traderApi);
