@@ -28,42 +28,36 @@ void CThostFtdcTraderApiMiddle::Release()
 
 	return m_TraderApi->Release();
 }
-
 void CThostFtdcTraderApiMiddle::Init()
 {
 	WriteLog(LogLevel::Info, "Init:");
 
 	return m_TraderApi->Init();
 }
-
 int CThostFtdcTraderApiMiddle::Join()
 {
 	WriteLog(LogLevel::Info, "Join:");
 
 	return m_TraderApi->Join();
 }
-
 const char * CThostFtdcTraderApiMiddle::GetTradingDay()
 {
 	WriteLog(LogLevel::Info, "GetTradingDay:");
 
 	return m_TraderApi->GetTradingDay();
 }
-
 void CThostFtdcTraderApiMiddle::RegisterFront(char * pszFrontAddress)
 {
 	WriteLog(LogLevel::Info, "RegisterFront: pszFrontAddress[%s]", pszFrontAddress);
 
 	return m_TraderApi->RegisterFront(pszFrontAddress);
 }
-
 void CThostFtdcTraderApiMiddle::RegisterNameServer(char * pszNsAddress)
 {
 	WriteLog(LogLevel::Info, "RegisterNameServer: pszNsAddress[%s]", pszNsAddress);
 
 	return m_TraderApi->RegisterNameServer(pszNsAddress);
 }
-
 void CThostFtdcTraderApiMiddle::RegisterFensUserInfo(CThostFtdcFensUserInfoField *pFensUserInfo)
 {
 	WriteLog(LogLevel::Info, "RegisterFensUserInfo:");
@@ -71,28 +65,24 @@ void CThostFtdcTraderApiMiddle::RegisterFensUserInfo(CThostFtdcFensUserInfoField
 
 	return m_TraderApi->RegisterFensUserInfo(pFensUserInfo);
 }
-
 void CThostFtdcTraderApiMiddle::RegisterSpi(CThostFtdcTraderSpi *pTraderSpi)
 {
 	WriteLog(LogLevel::Info, "RegisterSpi:");
 
 	return m_TraderApi->RegisterSpi(pTraderSpi);
 }
-
 void CThostFtdcTraderApiMiddle::SubscribePrivateTopic(THOST_TE_RESUME_TYPE nResumeType)
 {
 	WriteLog(LogLevel::Info, "SubscribePrivateTopic: nResumeType[%d]", nResumeType);
 
 	return m_TraderApi->SubscribePrivateTopic(nResumeType);
 }
-
 void CThostFtdcTraderApiMiddle::SubscribePublicTopic(THOST_TE_RESUME_TYPE nResumeType)
 {
 	WriteLog(LogLevel::Info, "SubscribePublicTopic: nResumeType[%d]", nResumeType);
 
 	return m_TraderApi->SubscribePublicTopic(nResumeType);
 }
-
 int CThostFtdcTraderApiMiddle::ReqAuthenticate(CThostFtdcReqAuthenticateField *pReqAuthenticate, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqAuthenticate: nRequestID[%d]", nRequestID);
@@ -100,7 +90,6 @@ int CThostFtdcTraderApiMiddle::ReqAuthenticate(CThostFtdcReqAuthenticateField *p
 
 	return m_TraderApi->ReqAuthenticate(pReqAuthenticate, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::RegisterUserSystemInfo(CThostFtdcUserSystemInfoField *pUserSystemInfo)
 {
 	WriteLog(LogLevel::Info, "RegisterUserSystemInfo:");
@@ -108,7 +97,6 @@ int CThostFtdcTraderApiMiddle::RegisterUserSystemInfo(CThostFtdcUserSystemInfoFi
 
 	return m_TraderApi->RegisterUserSystemInfo(pUserSystemInfo);
 }
-
 int CThostFtdcTraderApiMiddle::SubmitUserSystemInfo(CThostFtdcUserSystemInfoField *pUserSystemInfo)
 {
 	WriteLog(LogLevel::Info, "SubmitUserSystemInfo:");
@@ -116,7 +104,6 @@ int CThostFtdcTraderApiMiddle::SubmitUserSystemInfo(CThostFtdcUserSystemInfoFiel
 
 	return m_TraderApi->SubmitUserSystemInfo(pUserSystemInfo);
 }
-
 int CThostFtdcTraderApiMiddle::ReqUserLogin(CThostFtdcReqUserLoginField *pReqUserLogin, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqUserLogin: nRequestID[%d]", nRequestID);
@@ -124,7 +111,6 @@ int CThostFtdcTraderApiMiddle::ReqUserLogin(CThostFtdcReqUserLoginField *pReqUse
 
 	return m_TraderApi->ReqUserLogin(pReqUserLogin, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqUserLogout(CThostFtdcUserLogoutField *pUserLogout, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqUserLogout: nRequestID[%d]", nRequestID);
@@ -132,7 +118,6 @@ int CThostFtdcTraderApiMiddle::ReqUserLogout(CThostFtdcUserLogoutField *pUserLog
 
 	return m_TraderApi->ReqUserLogout(pUserLogout, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqUserPasswordUpdate(CThostFtdcUserPasswordUpdateField *pUserPasswordUpdate, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqUserPasswordUpdate: nRequestID[%d]", nRequestID);
@@ -140,7 +125,6 @@ int CThostFtdcTraderApiMiddle::ReqUserPasswordUpdate(CThostFtdcUserPasswordUpdat
 
 	return m_TraderApi->ReqUserPasswordUpdate(pUserPasswordUpdate, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqTradingAccountPasswordUpdate(CThostFtdcTradingAccountPasswordUpdateField *pTradingAccountPasswordUpdate, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqTradingAccountPasswordUpdate: nRequestID[%d]", nRequestID);
@@ -148,7 +132,6 @@ int CThostFtdcTraderApiMiddle::ReqTradingAccountPasswordUpdate(CThostFtdcTrading
 
 	return m_TraderApi->ReqTradingAccountPasswordUpdate(pTradingAccountPasswordUpdate, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqUserAuthMethod(CThostFtdcReqUserAuthMethodField *pReqUserAuthMethod, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqUserAuthMethod: nRequestID[%d]", nRequestID);
@@ -156,7 +139,6 @@ int CThostFtdcTraderApiMiddle::ReqUserAuthMethod(CThostFtdcReqUserAuthMethodFiel
 
 	return m_TraderApi->ReqUserAuthMethod(pReqUserAuthMethod, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqGenUserCaptcha(CThostFtdcReqGenUserCaptchaField *pReqGenUserCaptcha, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqGenUserCaptcha: nRequestID[%d]", nRequestID);
@@ -164,7 +146,6 @@ int CThostFtdcTraderApiMiddle::ReqGenUserCaptcha(CThostFtdcReqGenUserCaptchaFiel
 
 	return m_TraderApi->ReqGenUserCaptcha(pReqGenUserCaptcha, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqGenUserText(CThostFtdcReqGenUserTextField *pReqGenUserText, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqGenUserText: nRequestID[%d]", nRequestID);
@@ -172,7 +153,6 @@ int CThostFtdcTraderApiMiddle::ReqGenUserText(CThostFtdcReqGenUserTextField *pRe
 
 	return m_TraderApi->ReqGenUserText(pReqGenUserText, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqUserLoginWithCaptcha(CThostFtdcReqUserLoginWithCaptchaField *pReqUserLoginWithCaptcha, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqUserLoginWithCaptcha: nRequestID[%d]", nRequestID);
@@ -180,7 +160,6 @@ int CThostFtdcTraderApiMiddle::ReqUserLoginWithCaptcha(CThostFtdcReqUserLoginWit
 
 	return m_TraderApi->ReqUserLoginWithCaptcha(pReqUserLoginWithCaptcha, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqUserLoginWithText(CThostFtdcReqUserLoginWithTextField *pReqUserLoginWithText, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqUserLoginWithText: nRequestID[%d]", nRequestID);
@@ -188,7 +167,6 @@ int CThostFtdcTraderApiMiddle::ReqUserLoginWithText(CThostFtdcReqUserLoginWithTe
 
 	return m_TraderApi->ReqUserLoginWithText(pReqUserLoginWithText, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqUserLoginWithOTP(CThostFtdcReqUserLoginWithOTPField *pReqUserLoginWithOTP, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqUserLoginWithOTP: nRequestID[%d]", nRequestID);
@@ -196,7 +174,6 @@ int CThostFtdcTraderApiMiddle::ReqUserLoginWithOTP(CThostFtdcReqUserLoginWithOTP
 
 	return m_TraderApi->ReqUserLoginWithOTP(pReqUserLoginWithOTP, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqOrderInsert(CThostFtdcInputOrderField *pInputOrder, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqOrderInsert: nRequestID[%d]", nRequestID);
@@ -204,7 +181,6 @@ int CThostFtdcTraderApiMiddle::ReqOrderInsert(CThostFtdcInputOrderField *pInputO
 
 	return m_TraderApi->ReqOrderInsert(pInputOrder, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqParkedOrderInsert(CThostFtdcParkedOrderField *pParkedOrder, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqParkedOrderInsert: nRequestID[%d]", nRequestID);
@@ -212,7 +188,6 @@ int CThostFtdcTraderApiMiddle::ReqParkedOrderInsert(CThostFtdcParkedOrderField *
 
 	return m_TraderApi->ReqParkedOrderInsert(pParkedOrder, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqParkedOrderAction(CThostFtdcParkedOrderActionField *pParkedOrderAction, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqParkedOrderAction: nRequestID[%d]", nRequestID);
@@ -220,7 +195,6 @@ int CThostFtdcTraderApiMiddle::ReqParkedOrderAction(CThostFtdcParkedOrderActionF
 
 	return m_TraderApi->ReqParkedOrderAction(pParkedOrderAction, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqOrderAction: nRequestID[%d]", nRequestID);
@@ -228,7 +202,6 @@ int CThostFtdcTraderApiMiddle::ReqOrderAction(CThostFtdcInputOrderActionField *p
 
 	return m_TraderApi->ReqOrderAction(pInputOrderAction, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryMaxOrderVolume(CThostFtdcQryMaxOrderVolumeField *pQryMaxOrderVolume, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryMaxOrderVolume: nRequestID[%d]", nRequestID);
@@ -236,7 +209,6 @@ int CThostFtdcTraderApiMiddle::ReqQryMaxOrderVolume(CThostFtdcQryMaxOrderVolumeF
 
 	return m_TraderApi->ReqQryMaxOrderVolume(pQryMaxOrderVolume, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqSettlementInfoConfirm: nRequestID[%d]", nRequestID);
@@ -244,7 +216,6 @@ int CThostFtdcTraderApiMiddle::ReqSettlementInfoConfirm(CThostFtdcSettlementInfo
 
 	return m_TraderApi->ReqSettlementInfoConfirm(pSettlementInfoConfirm, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqRemoveParkedOrder(CThostFtdcRemoveParkedOrderField *pRemoveParkedOrder, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqRemoveParkedOrder: nRequestID[%d]", nRequestID);
@@ -252,7 +223,6 @@ int CThostFtdcTraderApiMiddle::ReqRemoveParkedOrder(CThostFtdcRemoveParkedOrderF
 
 	return m_TraderApi->ReqRemoveParkedOrder(pRemoveParkedOrder, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqRemoveParkedOrderAction(CThostFtdcRemoveParkedOrderActionField *pRemoveParkedOrderAction, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqRemoveParkedOrderAction: nRequestID[%d]", nRequestID);
@@ -260,7 +230,6 @@ int CThostFtdcTraderApiMiddle::ReqRemoveParkedOrderAction(CThostFtdcRemoveParked
 
 	return m_TraderApi->ReqRemoveParkedOrderAction(pRemoveParkedOrderAction, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqExecOrderInsert(CThostFtdcInputExecOrderField *pInputExecOrder, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqExecOrderInsert: nRequestID[%d]", nRequestID);
@@ -268,7 +237,6 @@ int CThostFtdcTraderApiMiddle::ReqExecOrderInsert(CThostFtdcInputExecOrderField 
 
 	return m_TraderApi->ReqExecOrderInsert(pInputExecOrder, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqExecOrderAction(CThostFtdcInputExecOrderActionField *pInputExecOrderAction, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqExecOrderAction: nRequestID[%d]", nRequestID);
@@ -276,7 +244,6 @@ int CThostFtdcTraderApiMiddle::ReqExecOrderAction(CThostFtdcInputExecOrderAction
 
 	return m_TraderApi->ReqExecOrderAction(pInputExecOrderAction, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqForQuoteInsert(CThostFtdcInputForQuoteField *pInputForQuote, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqForQuoteInsert: nRequestID[%d]", nRequestID);
@@ -284,7 +251,6 @@ int CThostFtdcTraderApiMiddle::ReqForQuoteInsert(CThostFtdcInputForQuoteField *p
 
 	return m_TraderApi->ReqForQuoteInsert(pInputForQuote, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQuoteInsert(CThostFtdcInputQuoteField *pInputQuote, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQuoteInsert: nRequestID[%d]", nRequestID);
@@ -292,7 +258,6 @@ int CThostFtdcTraderApiMiddle::ReqQuoteInsert(CThostFtdcInputQuoteField *pInputQ
 
 	return m_TraderApi->ReqQuoteInsert(pInputQuote, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQuoteAction(CThostFtdcInputQuoteActionField *pInputQuoteAction, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQuoteAction: nRequestID[%d]", nRequestID);
@@ -300,7 +265,6 @@ int CThostFtdcTraderApiMiddle::ReqQuoteAction(CThostFtdcInputQuoteActionField *p
 
 	return m_TraderApi->ReqQuoteAction(pInputQuoteAction, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqBatchOrderAction(CThostFtdcInputBatchOrderActionField *pInputBatchOrderAction, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqBatchOrderAction: nRequestID[%d]", nRequestID);
@@ -308,7 +272,6 @@ int CThostFtdcTraderApiMiddle::ReqBatchOrderAction(CThostFtdcInputBatchOrderActi
 
 	return m_TraderApi->ReqBatchOrderAction(pInputBatchOrderAction, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqOptionSelfCloseInsert(CThostFtdcInputOptionSelfCloseField *pInputOptionSelfClose, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqOptionSelfCloseInsert: nRequestID[%d]", nRequestID);
@@ -316,7 +279,6 @@ int CThostFtdcTraderApiMiddle::ReqOptionSelfCloseInsert(CThostFtdcInputOptionSel
 
 	return m_TraderApi->ReqOptionSelfCloseInsert(pInputOptionSelfClose, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqOptionSelfCloseAction(CThostFtdcInputOptionSelfCloseActionField *pInputOptionSelfCloseAction, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqOptionSelfCloseAction: nRequestID[%d]", nRequestID);
@@ -324,7 +286,6 @@ int CThostFtdcTraderApiMiddle::ReqOptionSelfCloseAction(CThostFtdcInputOptionSel
 
 	return m_TraderApi->ReqOptionSelfCloseAction(pInputOptionSelfCloseAction, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqCombActionInsert(CThostFtdcInputCombActionField *pInputCombAction, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqCombActionInsert: nRequestID[%d]", nRequestID);
@@ -332,7 +293,6 @@ int CThostFtdcTraderApiMiddle::ReqCombActionInsert(CThostFtdcInputCombActionFiel
 
 	return m_TraderApi->ReqCombActionInsert(pInputCombAction, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryOrder(CThostFtdcQryOrderField *pQryOrder, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryOrder: nRequestID[%d]", nRequestID);
@@ -340,7 +300,6 @@ int CThostFtdcTraderApiMiddle::ReqQryOrder(CThostFtdcQryOrderField *pQryOrder, i
 
 	return m_TraderApi->ReqQryOrder(pQryOrder, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryTrade(CThostFtdcQryTradeField *pQryTrade, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryTrade: nRequestID[%d]", nRequestID);
@@ -348,7 +307,6 @@ int CThostFtdcTraderApiMiddle::ReqQryTrade(CThostFtdcQryTradeField *pQryTrade, i
 
 	return m_TraderApi->ReqQryTrade(pQryTrade, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInvestorPosition(CThostFtdcQryInvestorPositionField *pQryInvestorPosition, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInvestorPosition: nRequestID[%d]", nRequestID);
@@ -356,7 +314,6 @@ int CThostFtdcTraderApiMiddle::ReqQryInvestorPosition(CThostFtdcQryInvestorPosit
 
 	return m_TraderApi->ReqQryInvestorPosition(pQryInvestorPosition, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryTradingAccount(CThostFtdcQryTradingAccountField *pQryTradingAccount, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryTradingAccount: nRequestID[%d]", nRequestID);
@@ -364,7 +321,6 @@ int CThostFtdcTraderApiMiddle::ReqQryTradingAccount(CThostFtdcQryTradingAccountF
 
 	return m_TraderApi->ReqQryTradingAccount(pQryTradingAccount, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInvestor(CThostFtdcQryInvestorField *pQryInvestor, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInvestor: nRequestID[%d]", nRequestID);
@@ -372,7 +328,6 @@ int CThostFtdcTraderApiMiddle::ReqQryInvestor(CThostFtdcQryInvestorField *pQryIn
 
 	return m_TraderApi->ReqQryInvestor(pQryInvestor, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryTradingCode(CThostFtdcQryTradingCodeField *pQryTradingCode, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryTradingCode: nRequestID[%d]", nRequestID);
@@ -380,7 +335,6 @@ int CThostFtdcTraderApiMiddle::ReqQryTradingCode(CThostFtdcQryTradingCodeField *
 
 	return m_TraderApi->ReqQryTradingCode(pQryTradingCode, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInstrumentMarginRate(CThostFtdcQryInstrumentMarginRateField *pQryInstrumentMarginRate, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInstrumentMarginRate: nRequestID[%d]", nRequestID);
@@ -388,7 +342,6 @@ int CThostFtdcTraderApiMiddle::ReqQryInstrumentMarginRate(CThostFtdcQryInstrumen
 
 	return m_TraderApi->ReqQryInstrumentMarginRate(pQryInstrumentMarginRate, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInstrumentCommissionRate(CThostFtdcQryInstrumentCommissionRateField *pQryInstrumentCommissionRate, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInstrumentCommissionRate: nRequestID[%d]", nRequestID);
@@ -396,7 +349,6 @@ int CThostFtdcTraderApiMiddle::ReqQryInstrumentCommissionRate(CThostFtdcQryInstr
 
 	return m_TraderApi->ReqQryInstrumentCommissionRate(pQryInstrumentCommissionRate, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryExchange(CThostFtdcQryExchangeField *pQryExchange, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryExchange: nRequestID[%d]", nRequestID);
@@ -404,7 +356,6 @@ int CThostFtdcTraderApiMiddle::ReqQryExchange(CThostFtdcQryExchangeField *pQryEx
 
 	return m_TraderApi->ReqQryExchange(pQryExchange, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryProduct(CThostFtdcQryProductField *pQryProduct, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryProduct: nRequestID[%d]", nRequestID);
@@ -412,7 +363,6 @@ int CThostFtdcTraderApiMiddle::ReqQryProduct(CThostFtdcQryProductField *pQryProd
 
 	return m_TraderApi->ReqQryProduct(pQryProduct, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInstrument(CThostFtdcQryInstrumentField *pQryInstrument, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInstrument: nRequestID[%d]", nRequestID);
@@ -420,7 +370,6 @@ int CThostFtdcTraderApiMiddle::ReqQryInstrument(CThostFtdcQryInstrumentField *pQ
 
 	return m_TraderApi->ReqQryInstrument(pQryInstrument, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryDepthMarketData(CThostFtdcQryDepthMarketDataField *pQryDepthMarketData, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryDepthMarketData: nRequestID[%d]", nRequestID);
@@ -428,7 +377,6 @@ int CThostFtdcTraderApiMiddle::ReqQryDepthMarketData(CThostFtdcQryDepthMarketDat
 
 	return m_TraderApi->ReqQryDepthMarketData(pQryDepthMarketData, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryTraderOffer(CThostFtdcQryTraderOfferField *pQryTraderOffer, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryTraderOffer: nRequestID[%d]", nRequestID);
@@ -436,7 +384,6 @@ int CThostFtdcTraderApiMiddle::ReqQryTraderOffer(CThostFtdcQryTraderOfferField *
 
 	return m_TraderApi->ReqQryTraderOffer(pQryTraderOffer, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQrySettlementInfo(CThostFtdcQrySettlementInfoField *pQrySettlementInfo, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQrySettlementInfo: nRequestID[%d]", nRequestID);
@@ -444,7 +391,6 @@ int CThostFtdcTraderApiMiddle::ReqQrySettlementInfo(CThostFtdcQrySettlementInfoF
 
 	return m_TraderApi->ReqQrySettlementInfo(pQrySettlementInfo, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryTransferBank(CThostFtdcQryTransferBankField *pQryTransferBank, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryTransferBank: nRequestID[%d]", nRequestID);
@@ -452,7 +398,6 @@ int CThostFtdcTraderApiMiddle::ReqQryTransferBank(CThostFtdcQryTransferBankField
 
 	return m_TraderApi->ReqQryTransferBank(pQryTransferBank, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInvestorPositionDetail(CThostFtdcQryInvestorPositionDetailField *pQryInvestorPositionDetail, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInvestorPositionDetail: nRequestID[%d]", nRequestID);
@@ -460,7 +405,6 @@ int CThostFtdcTraderApiMiddle::ReqQryInvestorPositionDetail(CThostFtdcQryInvesto
 
 	return m_TraderApi->ReqQryInvestorPositionDetail(pQryInvestorPositionDetail, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryNotice(CThostFtdcQryNoticeField *pQryNotice, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryNotice: nRequestID[%d]", nRequestID);
@@ -468,7 +412,6 @@ int CThostFtdcTraderApiMiddle::ReqQryNotice(CThostFtdcQryNoticeField *pQryNotice
 
 	return m_TraderApi->ReqQryNotice(pQryNotice, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQrySettlementInfoConfirm(CThostFtdcQrySettlementInfoConfirmField *pQrySettlementInfoConfirm, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQrySettlementInfoConfirm: nRequestID[%d]", nRequestID);
@@ -476,7 +419,6 @@ int CThostFtdcTraderApiMiddle::ReqQrySettlementInfoConfirm(CThostFtdcQrySettleme
 
 	return m_TraderApi->ReqQrySettlementInfoConfirm(pQrySettlementInfoConfirm, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInvestorPositionCombineDetail(CThostFtdcQryInvestorPositionCombineDetailField *pQryInvestorPositionCombineDetail, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInvestorPositionCombineDetail: nRequestID[%d]", nRequestID);
@@ -484,7 +426,6 @@ int CThostFtdcTraderApiMiddle::ReqQryInvestorPositionCombineDetail(CThostFtdcQry
 
 	return m_TraderApi->ReqQryInvestorPositionCombineDetail(pQryInvestorPositionCombineDetail, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryCFMMCTradingAccountKey(CThostFtdcQryCFMMCTradingAccountKeyField *pQryCFMMCTradingAccountKey, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryCFMMCTradingAccountKey: nRequestID[%d]", nRequestID);
@@ -492,7 +433,6 @@ int CThostFtdcTraderApiMiddle::ReqQryCFMMCTradingAccountKey(CThostFtdcQryCFMMCTr
 
 	return m_TraderApi->ReqQryCFMMCTradingAccountKey(pQryCFMMCTradingAccountKey, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryEWarrantOffset(CThostFtdcQryEWarrantOffsetField *pQryEWarrantOffset, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryEWarrantOffset: nRequestID[%d]", nRequestID);
@@ -500,7 +440,6 @@ int CThostFtdcTraderApiMiddle::ReqQryEWarrantOffset(CThostFtdcQryEWarrantOffsetF
 
 	return m_TraderApi->ReqQryEWarrantOffset(pQryEWarrantOffset, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInvestorProductGroupMargin(CThostFtdcQryInvestorProductGroupMarginField *pQryInvestorProductGroupMargin, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInvestorProductGroupMargin: nRequestID[%d]", nRequestID);
@@ -508,7 +447,6 @@ int CThostFtdcTraderApiMiddle::ReqQryInvestorProductGroupMargin(CThostFtdcQryInv
 
 	return m_TraderApi->ReqQryInvestorProductGroupMargin(pQryInvestorProductGroupMargin, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryExchangeMarginRate(CThostFtdcQryExchangeMarginRateField *pQryExchangeMarginRate, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryExchangeMarginRate: nRequestID[%d]", nRequestID);
@@ -516,7 +454,6 @@ int CThostFtdcTraderApiMiddle::ReqQryExchangeMarginRate(CThostFtdcQryExchangeMar
 
 	return m_TraderApi->ReqQryExchangeMarginRate(pQryExchangeMarginRate, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryExchangeMarginRateAdjust(CThostFtdcQryExchangeMarginRateAdjustField *pQryExchangeMarginRateAdjust, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryExchangeMarginRateAdjust: nRequestID[%d]", nRequestID);
@@ -524,7 +461,6 @@ int CThostFtdcTraderApiMiddle::ReqQryExchangeMarginRateAdjust(CThostFtdcQryExcha
 
 	return m_TraderApi->ReqQryExchangeMarginRateAdjust(pQryExchangeMarginRateAdjust, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryExchangeRate(CThostFtdcQryExchangeRateField *pQryExchangeRate, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryExchangeRate: nRequestID[%d]", nRequestID);
@@ -532,7 +468,6 @@ int CThostFtdcTraderApiMiddle::ReqQryExchangeRate(CThostFtdcQryExchangeRateField
 
 	return m_TraderApi->ReqQryExchangeRate(pQryExchangeRate, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQrySecAgentACIDMap(CThostFtdcQrySecAgentACIDMapField *pQrySecAgentACIDMap, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQrySecAgentACIDMap: nRequestID[%d]", nRequestID);
@@ -540,7 +475,6 @@ int CThostFtdcTraderApiMiddle::ReqQrySecAgentACIDMap(CThostFtdcQrySecAgentACIDMa
 
 	return m_TraderApi->ReqQrySecAgentACIDMap(pQrySecAgentACIDMap, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryProductExchRate(CThostFtdcQryProductExchRateField *pQryProductExchRate, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryProductExchRate: nRequestID[%d]", nRequestID);
@@ -548,7 +482,6 @@ int CThostFtdcTraderApiMiddle::ReqQryProductExchRate(CThostFtdcQryProductExchRat
 
 	return m_TraderApi->ReqQryProductExchRate(pQryProductExchRate, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryProductGroup(CThostFtdcQryProductGroupField *pQryProductGroup, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryProductGroup: nRequestID[%d]", nRequestID);
@@ -556,7 +489,6 @@ int CThostFtdcTraderApiMiddle::ReqQryProductGroup(CThostFtdcQryProductGroupField
 
 	return m_TraderApi->ReqQryProductGroup(pQryProductGroup, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryMMInstrumentCommissionRate(CThostFtdcQryMMInstrumentCommissionRateField *pQryMMInstrumentCommissionRate, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryMMInstrumentCommissionRate: nRequestID[%d]", nRequestID);
@@ -564,7 +496,6 @@ int CThostFtdcTraderApiMiddle::ReqQryMMInstrumentCommissionRate(CThostFtdcQryMMI
 
 	return m_TraderApi->ReqQryMMInstrumentCommissionRate(pQryMMInstrumentCommissionRate, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryMMOptionInstrCommRate(CThostFtdcQryMMOptionInstrCommRateField *pQryMMOptionInstrCommRate, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryMMOptionInstrCommRate: nRequestID[%d]", nRequestID);
@@ -572,7 +503,6 @@ int CThostFtdcTraderApiMiddle::ReqQryMMOptionInstrCommRate(CThostFtdcQryMMOption
 
 	return m_TraderApi->ReqQryMMOptionInstrCommRate(pQryMMOptionInstrCommRate, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInstrumentOrderCommRate(CThostFtdcQryInstrumentOrderCommRateField *pQryInstrumentOrderCommRate, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInstrumentOrderCommRate: nRequestID[%d]", nRequestID);
@@ -580,7 +510,6 @@ int CThostFtdcTraderApiMiddle::ReqQryInstrumentOrderCommRate(CThostFtdcQryInstru
 
 	return m_TraderApi->ReqQryInstrumentOrderCommRate(pQryInstrumentOrderCommRate, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQrySecAgentTradingAccount(CThostFtdcQryTradingAccountField *pQryTradingAccount, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQrySecAgentTradingAccount: nRequestID[%d]", nRequestID);
@@ -588,7 +517,6 @@ int CThostFtdcTraderApiMiddle::ReqQrySecAgentTradingAccount(CThostFtdcQryTrading
 
 	return m_TraderApi->ReqQrySecAgentTradingAccount(pQryTradingAccount, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQrySecAgentCheckMode(CThostFtdcQrySecAgentCheckModeField *pQrySecAgentCheckMode, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQrySecAgentCheckMode: nRequestID[%d]", nRequestID);
@@ -596,7 +524,6 @@ int CThostFtdcTraderApiMiddle::ReqQrySecAgentCheckMode(CThostFtdcQrySecAgentChec
 
 	return m_TraderApi->ReqQrySecAgentCheckMode(pQrySecAgentCheckMode, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQrySecAgentTradeInfo(CThostFtdcQrySecAgentTradeInfoField *pQrySecAgentTradeInfo, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQrySecAgentTradeInfo: nRequestID[%d]", nRequestID);
@@ -604,7 +531,6 @@ int CThostFtdcTraderApiMiddle::ReqQrySecAgentTradeInfo(CThostFtdcQrySecAgentTrad
 
 	return m_TraderApi->ReqQrySecAgentTradeInfo(pQrySecAgentTradeInfo, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryOptionInstrTradeCost(CThostFtdcQryOptionInstrTradeCostField *pQryOptionInstrTradeCost, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryOptionInstrTradeCost: nRequestID[%d]", nRequestID);
@@ -612,7 +538,6 @@ int CThostFtdcTraderApiMiddle::ReqQryOptionInstrTradeCost(CThostFtdcQryOptionIns
 
 	return m_TraderApi->ReqQryOptionInstrTradeCost(pQryOptionInstrTradeCost, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryOptionInstrCommRate(CThostFtdcQryOptionInstrCommRateField *pQryOptionInstrCommRate, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryOptionInstrCommRate: nRequestID[%d]", nRequestID);
@@ -620,7 +545,6 @@ int CThostFtdcTraderApiMiddle::ReqQryOptionInstrCommRate(CThostFtdcQryOptionInst
 
 	return m_TraderApi->ReqQryOptionInstrCommRate(pQryOptionInstrCommRate, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryExecOrder(CThostFtdcQryExecOrderField *pQryExecOrder, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryExecOrder: nRequestID[%d]", nRequestID);
@@ -628,7 +552,6 @@ int CThostFtdcTraderApiMiddle::ReqQryExecOrder(CThostFtdcQryExecOrderField *pQry
 
 	return m_TraderApi->ReqQryExecOrder(pQryExecOrder, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryForQuote(CThostFtdcQryForQuoteField *pQryForQuote, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryForQuote: nRequestID[%d]", nRequestID);
@@ -636,7 +559,6 @@ int CThostFtdcTraderApiMiddle::ReqQryForQuote(CThostFtdcQryForQuoteField *pQryFo
 
 	return m_TraderApi->ReqQryForQuote(pQryForQuote, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryQuote(CThostFtdcQryQuoteField *pQryQuote, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryQuote: nRequestID[%d]", nRequestID);
@@ -644,7 +566,6 @@ int CThostFtdcTraderApiMiddle::ReqQryQuote(CThostFtdcQryQuoteField *pQryQuote, i
 
 	return m_TraderApi->ReqQryQuote(pQryQuote, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryOptionSelfClose(CThostFtdcQryOptionSelfCloseField *pQryOptionSelfClose, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryOptionSelfClose: nRequestID[%d]", nRequestID);
@@ -652,7 +573,6 @@ int CThostFtdcTraderApiMiddle::ReqQryOptionSelfClose(CThostFtdcQryOptionSelfClos
 
 	return m_TraderApi->ReqQryOptionSelfClose(pQryOptionSelfClose, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInvestUnit(CThostFtdcQryInvestUnitField *pQryInvestUnit, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInvestUnit: nRequestID[%d]", nRequestID);
@@ -660,7 +580,6 @@ int CThostFtdcTraderApiMiddle::ReqQryInvestUnit(CThostFtdcQryInvestUnitField *pQ
 
 	return m_TraderApi->ReqQryInvestUnit(pQryInvestUnit, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryCombInstrumentGuard(CThostFtdcQryCombInstrumentGuardField *pQryCombInstrumentGuard, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryCombInstrumentGuard: nRequestID[%d]", nRequestID);
@@ -668,7 +587,6 @@ int CThostFtdcTraderApiMiddle::ReqQryCombInstrumentGuard(CThostFtdcQryCombInstru
 
 	return m_TraderApi->ReqQryCombInstrumentGuard(pQryCombInstrumentGuard, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryCombAction(CThostFtdcQryCombActionField *pQryCombAction, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryCombAction: nRequestID[%d]", nRequestID);
@@ -676,7 +594,6 @@ int CThostFtdcTraderApiMiddle::ReqQryCombAction(CThostFtdcQryCombActionField *pQ
 
 	return m_TraderApi->ReqQryCombAction(pQryCombAction, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryTransferSerial(CThostFtdcQryTransferSerialField *pQryTransferSerial, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryTransferSerial: nRequestID[%d]", nRequestID);
@@ -684,7 +601,6 @@ int CThostFtdcTraderApiMiddle::ReqQryTransferSerial(CThostFtdcQryTransferSerialF
 
 	return m_TraderApi->ReqQryTransferSerial(pQryTransferSerial, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryAccountregister(CThostFtdcQryAccountregisterField *pQryAccountregister, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryAccountregister: nRequestID[%d]", nRequestID);
@@ -692,7 +608,6 @@ int CThostFtdcTraderApiMiddle::ReqQryAccountregister(CThostFtdcQryAccountregiste
 
 	return m_TraderApi->ReqQryAccountregister(pQryAccountregister, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryContractBank(CThostFtdcQryContractBankField *pQryContractBank, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryContractBank: nRequestID[%d]", nRequestID);
@@ -700,7 +615,6 @@ int CThostFtdcTraderApiMiddle::ReqQryContractBank(CThostFtdcQryContractBankField
 
 	return m_TraderApi->ReqQryContractBank(pQryContractBank, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryParkedOrder(CThostFtdcQryParkedOrderField *pQryParkedOrder, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryParkedOrder: nRequestID[%d]", nRequestID);
@@ -708,7 +622,6 @@ int CThostFtdcTraderApiMiddle::ReqQryParkedOrder(CThostFtdcQryParkedOrderField *
 
 	return m_TraderApi->ReqQryParkedOrder(pQryParkedOrder, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryParkedOrderAction(CThostFtdcQryParkedOrderActionField *pQryParkedOrderAction, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryParkedOrderAction: nRequestID[%d]", nRequestID);
@@ -716,7 +629,6 @@ int CThostFtdcTraderApiMiddle::ReqQryParkedOrderAction(CThostFtdcQryParkedOrderA
 
 	return m_TraderApi->ReqQryParkedOrderAction(pQryParkedOrderAction, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryTradingNotice(CThostFtdcQryTradingNoticeField *pQryTradingNotice, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryTradingNotice: nRequestID[%d]", nRequestID);
@@ -724,7 +636,6 @@ int CThostFtdcTraderApiMiddle::ReqQryTradingNotice(CThostFtdcQryTradingNoticeFie
 
 	return m_TraderApi->ReqQryTradingNotice(pQryTradingNotice, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryBrokerTradingParams(CThostFtdcQryBrokerTradingParamsField *pQryBrokerTradingParams, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryBrokerTradingParams: nRequestID[%d]", nRequestID);
@@ -732,7 +643,6 @@ int CThostFtdcTraderApiMiddle::ReqQryBrokerTradingParams(CThostFtdcQryBrokerTrad
 
 	return m_TraderApi->ReqQryBrokerTradingParams(pQryBrokerTradingParams, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryBrokerTradingAlgos(CThostFtdcQryBrokerTradingAlgosField *pQryBrokerTradingAlgos, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryBrokerTradingAlgos: nRequestID[%d]", nRequestID);
@@ -740,7 +650,6 @@ int CThostFtdcTraderApiMiddle::ReqQryBrokerTradingAlgos(CThostFtdcQryBrokerTradi
 
 	return m_TraderApi->ReqQryBrokerTradingAlgos(pQryBrokerTradingAlgos, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQueryCFMMCTradingAccountToken(CThostFtdcQueryCFMMCTradingAccountTokenField *pQueryCFMMCTradingAccountToken, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQueryCFMMCTradingAccountToken: nRequestID[%d]", nRequestID);
@@ -748,7 +657,6 @@ int CThostFtdcTraderApiMiddle::ReqQueryCFMMCTradingAccountToken(CThostFtdcQueryC
 
 	return m_TraderApi->ReqQueryCFMMCTradingAccountToken(pQueryCFMMCTradingAccountToken, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqFromBankToFutureByFuture(CThostFtdcReqTransferField *pReqTransfer, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqFromBankToFutureByFuture: nRequestID[%d]", nRequestID);
@@ -756,7 +664,6 @@ int CThostFtdcTraderApiMiddle::ReqFromBankToFutureByFuture(CThostFtdcReqTransfer
 
 	return m_TraderApi->ReqFromBankToFutureByFuture(pReqTransfer, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqFromFutureToBankByFuture(CThostFtdcReqTransferField *pReqTransfer, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqFromFutureToBankByFuture: nRequestID[%d]", nRequestID);
@@ -764,7 +671,6 @@ int CThostFtdcTraderApiMiddle::ReqFromFutureToBankByFuture(CThostFtdcReqTransfer
 
 	return m_TraderApi->ReqFromFutureToBankByFuture(pReqTransfer, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQueryBankAccountMoneyByFuture(CThostFtdcReqQueryAccountField *pReqQueryAccount, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQueryBankAccountMoneyByFuture: nRequestID[%d]", nRequestID);
@@ -772,7 +678,6 @@ int CThostFtdcTraderApiMiddle::ReqQueryBankAccountMoneyByFuture(CThostFtdcReqQue
 
 	return m_TraderApi->ReqQueryBankAccountMoneyByFuture(pReqQueryAccount, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryClassifiedInstrument(CThostFtdcQryClassifiedInstrumentField *pQryClassifiedInstrument, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryClassifiedInstrument: nRequestID[%d]", nRequestID);
@@ -780,7 +685,6 @@ int CThostFtdcTraderApiMiddle::ReqQryClassifiedInstrument(CThostFtdcQryClassifie
 
 	return m_TraderApi->ReqQryClassifiedInstrument(pQryClassifiedInstrument, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryCombPromotionParam(CThostFtdcQryCombPromotionParamField *pQryCombPromotionParam, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryCombPromotionParam: nRequestID[%d]", nRequestID);
@@ -788,7 +692,6 @@ int CThostFtdcTraderApiMiddle::ReqQryCombPromotionParam(CThostFtdcQryCombPromoti
 
 	return m_TraderApi->ReqQryCombPromotionParam(pQryCombPromotionParam, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryRiskSettleInvstPosition(CThostFtdcQryRiskSettleInvstPositionField *pQryRiskSettleInvstPosition, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryRiskSettleInvstPosition: nRequestID[%d]", nRequestID);
@@ -796,7 +699,6 @@ int CThostFtdcTraderApiMiddle::ReqQryRiskSettleInvstPosition(CThostFtdcQryRiskSe
 
 	return m_TraderApi->ReqQryRiskSettleInvstPosition(pQryRiskSettleInvstPosition, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryRiskSettleProductStatus(CThostFtdcQryRiskSettleProductStatusField *pQryRiskSettleProductStatus, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryRiskSettleProductStatus: nRequestID[%d]", nRequestID);
@@ -804,7 +706,6 @@ int CThostFtdcTraderApiMiddle::ReqQryRiskSettleProductStatus(CThostFtdcQryRiskSe
 
 	return m_TraderApi->ReqQryRiskSettleProductStatus(pQryRiskSettleProductStatus, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQrySPBMFutureParameter(CThostFtdcQrySPBMFutureParameterField *pQrySPBMFutureParameter, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQrySPBMFutureParameter: nRequestID[%d]", nRequestID);
@@ -812,7 +713,6 @@ int CThostFtdcTraderApiMiddle::ReqQrySPBMFutureParameter(CThostFtdcQrySPBMFuture
 
 	return m_TraderApi->ReqQrySPBMFutureParameter(pQrySPBMFutureParameter, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQrySPBMOptionParameter(CThostFtdcQrySPBMOptionParameterField *pQrySPBMOptionParameter, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQrySPBMOptionParameter: nRequestID[%d]", nRequestID);
@@ -820,7 +720,6 @@ int CThostFtdcTraderApiMiddle::ReqQrySPBMOptionParameter(CThostFtdcQrySPBMOption
 
 	return m_TraderApi->ReqQrySPBMOptionParameter(pQrySPBMOptionParameter, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQrySPBMIntraParameter(CThostFtdcQrySPBMIntraParameterField *pQrySPBMIntraParameter, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQrySPBMIntraParameter: nRequestID[%d]", nRequestID);
@@ -828,7 +727,6 @@ int CThostFtdcTraderApiMiddle::ReqQrySPBMIntraParameter(CThostFtdcQrySPBMIntraPa
 
 	return m_TraderApi->ReqQrySPBMIntraParameter(pQrySPBMIntraParameter, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQrySPBMInterParameter(CThostFtdcQrySPBMInterParameterField *pQrySPBMInterParameter, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQrySPBMInterParameter: nRequestID[%d]", nRequestID);
@@ -836,7 +734,6 @@ int CThostFtdcTraderApiMiddle::ReqQrySPBMInterParameter(CThostFtdcQrySPBMInterPa
 
 	return m_TraderApi->ReqQrySPBMInterParameter(pQrySPBMInterParameter, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQrySPBMPortfDefinition(CThostFtdcQrySPBMPortfDefinitionField *pQrySPBMPortfDefinition, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQrySPBMPortfDefinition: nRequestID[%d]", nRequestID);
@@ -844,7 +741,6 @@ int CThostFtdcTraderApiMiddle::ReqQrySPBMPortfDefinition(CThostFtdcQrySPBMPortfD
 
 	return m_TraderApi->ReqQrySPBMPortfDefinition(pQrySPBMPortfDefinition, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQrySPBMInvestorPortfDef(CThostFtdcQrySPBMInvestorPortfDefField *pQrySPBMInvestorPortfDef, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQrySPBMInvestorPortfDef: nRequestID[%d]", nRequestID);
@@ -852,7 +748,6 @@ int CThostFtdcTraderApiMiddle::ReqQrySPBMInvestorPortfDef(CThostFtdcQrySPBMInves
 
 	return m_TraderApi->ReqQrySPBMInvestorPortfDef(pQrySPBMInvestorPortfDef, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInvestorPortfMarginRatio(CThostFtdcQryInvestorPortfMarginRatioField *pQryInvestorPortfMarginRatio, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInvestorPortfMarginRatio: nRequestID[%d]", nRequestID);
@@ -860,7 +755,6 @@ int CThostFtdcTraderApiMiddle::ReqQryInvestorPortfMarginRatio(CThostFtdcQryInves
 
 	return m_TraderApi->ReqQryInvestorPortfMarginRatio(pQryInvestorPortfMarginRatio, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInvestorProdSPBMDetail(CThostFtdcQryInvestorProdSPBMDetailField *pQryInvestorProdSPBMDetail, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInvestorProdSPBMDetail: nRequestID[%d]", nRequestID);
@@ -868,7 +762,6 @@ int CThostFtdcTraderApiMiddle::ReqQryInvestorProdSPBMDetail(CThostFtdcQryInvesto
 
 	return m_TraderApi->ReqQryInvestorProdSPBMDetail(pQryInvestorProdSPBMDetail, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInvestorCommoditySPMMMargin(CThostFtdcQryInvestorCommoditySPMMMarginField *pQryInvestorCommoditySPMMMargin, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInvestorCommoditySPMMMargin: nRequestID[%d]", nRequestID);
@@ -876,7 +769,6 @@ int CThostFtdcTraderApiMiddle::ReqQryInvestorCommoditySPMMMargin(CThostFtdcQryIn
 
 	return m_TraderApi->ReqQryInvestorCommoditySPMMMargin(pQryInvestorCommoditySPMMMargin, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInvestorCommodityGroupSPMMMargin(CThostFtdcQryInvestorCommodityGroupSPMMMarginField *pQryInvestorCommodityGroupSPMMMargin, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInvestorCommodityGroupSPMMMargin: nRequestID[%d]", nRequestID);
@@ -884,7 +776,6 @@ int CThostFtdcTraderApiMiddle::ReqQryInvestorCommodityGroupSPMMMargin(CThostFtdc
 
 	return m_TraderApi->ReqQryInvestorCommodityGroupSPMMMargin(pQryInvestorCommodityGroupSPMMMargin, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQrySPMMInstParam(CThostFtdcQrySPMMInstParamField *pQrySPMMInstParam, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQrySPMMInstParam: nRequestID[%d]", nRequestID);
@@ -892,7 +783,6 @@ int CThostFtdcTraderApiMiddle::ReqQrySPMMInstParam(CThostFtdcQrySPMMInstParamFie
 
 	return m_TraderApi->ReqQrySPMMInstParam(pQrySPMMInstParam, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQrySPMMProductParam(CThostFtdcQrySPMMProductParamField *pQrySPMMProductParam, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQrySPMMProductParam: nRequestID[%d]", nRequestID);
@@ -900,7 +790,6 @@ int CThostFtdcTraderApiMiddle::ReqQrySPMMProductParam(CThostFtdcQrySPMMProductPa
 
 	return m_TraderApi->ReqQrySPMMProductParam(pQrySPMMProductParam, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQrySPBMAddOnInterParameter(CThostFtdcQrySPBMAddOnInterParameterField *pQrySPBMAddOnInterParameter, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQrySPBMAddOnInterParameter: nRequestID[%d]", nRequestID);
@@ -908,7 +797,6 @@ int CThostFtdcTraderApiMiddle::ReqQrySPBMAddOnInterParameter(CThostFtdcQrySPBMAd
 
 	return m_TraderApi->ReqQrySPBMAddOnInterParameter(pQrySPBMAddOnInterParameter, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryRCAMSCombProductInfo(CThostFtdcQryRCAMSCombProductInfoField *pQryRCAMSCombProductInfo, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryRCAMSCombProductInfo: nRequestID[%d]", nRequestID);
@@ -916,7 +804,6 @@ int CThostFtdcTraderApiMiddle::ReqQryRCAMSCombProductInfo(CThostFtdcQryRCAMSComb
 
 	return m_TraderApi->ReqQryRCAMSCombProductInfo(pQryRCAMSCombProductInfo, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryRCAMSInstrParameter(CThostFtdcQryRCAMSInstrParameterField *pQryRCAMSInstrParameter, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryRCAMSInstrParameter: nRequestID[%d]", nRequestID);
@@ -924,7 +811,6 @@ int CThostFtdcTraderApiMiddle::ReqQryRCAMSInstrParameter(CThostFtdcQryRCAMSInstr
 
 	return m_TraderApi->ReqQryRCAMSInstrParameter(pQryRCAMSInstrParameter, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryRCAMSIntraParameter(CThostFtdcQryRCAMSIntraParameterField *pQryRCAMSIntraParameter, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryRCAMSIntraParameter: nRequestID[%d]", nRequestID);
@@ -932,7 +818,6 @@ int CThostFtdcTraderApiMiddle::ReqQryRCAMSIntraParameter(CThostFtdcQryRCAMSIntra
 
 	return m_TraderApi->ReqQryRCAMSIntraParameter(pQryRCAMSIntraParameter, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryRCAMSInterParameter(CThostFtdcQryRCAMSInterParameterField *pQryRCAMSInterParameter, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryRCAMSInterParameter: nRequestID[%d]", nRequestID);
@@ -940,7 +825,6 @@ int CThostFtdcTraderApiMiddle::ReqQryRCAMSInterParameter(CThostFtdcQryRCAMSInter
 
 	return m_TraderApi->ReqQryRCAMSInterParameter(pQryRCAMSInterParameter, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryRCAMSShortOptAdjustParam(CThostFtdcQryRCAMSShortOptAdjustParamField *pQryRCAMSShortOptAdjustParam, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryRCAMSShortOptAdjustParam: nRequestID[%d]", nRequestID);
@@ -948,7 +832,6 @@ int CThostFtdcTraderApiMiddle::ReqQryRCAMSShortOptAdjustParam(CThostFtdcQryRCAMS
 
 	return m_TraderApi->ReqQryRCAMSShortOptAdjustParam(pQryRCAMSShortOptAdjustParam, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryRCAMSInvestorCombPosition(CThostFtdcQryRCAMSInvestorCombPositionField *pQryRCAMSInvestorCombPosition, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryRCAMSInvestorCombPosition: nRequestID[%d]", nRequestID);
@@ -956,7 +839,6 @@ int CThostFtdcTraderApiMiddle::ReqQryRCAMSInvestorCombPosition(CThostFtdcQryRCAM
 
 	return m_TraderApi->ReqQryRCAMSInvestorCombPosition(pQryRCAMSInvestorCombPosition, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInvestorProdRCAMSMargin(CThostFtdcQryInvestorProdRCAMSMarginField *pQryInvestorProdRCAMSMargin, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInvestorProdRCAMSMargin: nRequestID[%d]", nRequestID);
@@ -964,7 +846,6 @@ int CThostFtdcTraderApiMiddle::ReqQryInvestorProdRCAMSMargin(CThostFtdcQryInvest
 
 	return m_TraderApi->ReqQryInvestorProdRCAMSMargin(pQryInvestorProdRCAMSMargin, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryRULEInstrParameter(CThostFtdcQryRULEInstrParameterField *pQryRULEInstrParameter, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryRULEInstrParameter: nRequestID[%d]", nRequestID);
@@ -972,7 +853,6 @@ int CThostFtdcTraderApiMiddle::ReqQryRULEInstrParameter(CThostFtdcQryRULEInstrPa
 
 	return m_TraderApi->ReqQryRULEInstrParameter(pQryRULEInstrParameter, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryRULEIntraParameter(CThostFtdcQryRULEIntraParameterField *pQryRULEIntraParameter, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryRULEIntraParameter: nRequestID[%d]", nRequestID);
@@ -980,7 +860,6 @@ int CThostFtdcTraderApiMiddle::ReqQryRULEIntraParameter(CThostFtdcQryRULEIntraPa
 
 	return m_TraderApi->ReqQryRULEIntraParameter(pQryRULEIntraParameter, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryRULEInterParameter(CThostFtdcQryRULEInterParameterField *pQryRULEInterParameter, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryRULEInterParameter: nRequestID[%d]", nRequestID);
@@ -988,7 +867,6 @@ int CThostFtdcTraderApiMiddle::ReqQryRULEInterParameter(CThostFtdcQryRULEInterPa
 
 	return m_TraderApi->ReqQryRULEInterParameter(pQryRULEInterParameter, nRequestID);
 }
-
 int CThostFtdcTraderApiMiddle::ReqQryInvestorProdRULEMargin(CThostFtdcQryInvestorProdRULEMarginField *pQryInvestorProdRULEMargin, int nRequestID)
 {
 	WriteLog(LogLevel::Info, "ReqQryInvestorProdRULEMargin: nRequestID[%d]", nRequestID);
@@ -996,4 +874,3 @@ int CThostFtdcTraderApiMiddle::ReqQryInvestorProdRULEMargin(CThostFtdcQryInvesto
 
 	return m_TraderApi->ReqQryInvestorProdRULEMargin(pQryInvestorProdRULEMargin, nRequestID);
 }
-

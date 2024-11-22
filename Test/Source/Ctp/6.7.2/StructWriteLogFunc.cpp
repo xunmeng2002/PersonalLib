@@ -10,7 +10,6 @@ void WriteDissemination(CThostFtdcDisseminationField* Dissemination)
 			Dissemination->SequenceSeries, Dissemination->SequenceNo);
 	}
 }
-
 void WriteReqUserLogin(CThostFtdcReqUserLoginField* ReqUserLogin)
 {
 	if(ReqUserLogin)
@@ -19,7 +18,6 @@ void WriteReqUserLogin(CThostFtdcReqUserLoginField* ReqUserLogin)
 			ReqUserLogin->TradingDay, ReqUserLogin->BrokerID, ReqUserLogin->UserID, ReqUserLogin->Password, ReqUserLogin->UserProductInfo, ReqUserLogin->InterfaceProductInfo, ReqUserLogin->ProtocolInfo, ReqUserLogin->MacAddress, ReqUserLogin->OneTimePassword, ReqUserLogin->reserve1, ReqUserLogin->LoginRemark, ReqUserLogin->ClientIPPort, ReqUserLogin->ClientIPAddress);
 	}
 }
-
 void WriteRspUserLogin(CThostFtdcRspUserLoginField* RspUserLogin)
 {
 	if(RspUserLogin)
@@ -28,7 +26,6 @@ void WriteRspUserLogin(CThostFtdcRspUserLoginField* RspUserLogin)
 			RspUserLogin->TradingDay, RspUserLogin->LoginTime, RspUserLogin->BrokerID, RspUserLogin->UserID, RspUserLogin->SystemName, RspUserLogin->FrontID, RspUserLogin->SessionID, RspUserLogin->MaxOrderRef, RspUserLogin->SHFETime, RspUserLogin->DCETime, RspUserLogin->CZCETime, RspUserLogin->FFEXTime, RspUserLogin->INETime, RspUserLogin->SysVersion, RspUserLogin->GFEXTime);
 	}
 }
-
 void WriteUserLogout(CThostFtdcUserLogoutField* UserLogout)
 {
 	if(UserLogout)
@@ -37,7 +34,6 @@ void WriteUserLogout(CThostFtdcUserLogoutField* UserLogout)
 			UserLogout->BrokerID, UserLogout->UserID);
 	}
 }
-
 void WriteForceUserLogout(CThostFtdcForceUserLogoutField* ForceUserLogout)
 {
 	if(ForceUserLogout)
@@ -46,7 +42,6 @@ void WriteForceUserLogout(CThostFtdcForceUserLogoutField* ForceUserLogout)
 			ForceUserLogout->BrokerID, ForceUserLogout->UserID);
 	}
 }
-
 void WriteReqAuthenticate(CThostFtdcReqAuthenticateField* ReqAuthenticate)
 {
 	if(ReqAuthenticate)
@@ -55,7 +50,6 @@ void WriteReqAuthenticate(CThostFtdcReqAuthenticateField* ReqAuthenticate)
 			ReqAuthenticate->BrokerID, ReqAuthenticate->UserID, ReqAuthenticate->UserProductInfo, ReqAuthenticate->AuthCode, ReqAuthenticate->AppID);
 	}
 }
-
 void WriteRspAuthenticate(CThostFtdcRspAuthenticateField* RspAuthenticate)
 {
 	if(RspAuthenticate)
@@ -64,7 +58,6 @@ void WriteRspAuthenticate(CThostFtdcRspAuthenticateField* RspAuthenticate)
 			RspAuthenticate->BrokerID, RspAuthenticate->UserID, RspAuthenticate->UserProductInfo, RspAuthenticate->AppID, RspAuthenticate->AppType);
 	}
 }
-
 void WriteAuthenticationInfo(CThostFtdcAuthenticationInfoField* AuthenticationInfo)
 {
 	if(AuthenticationInfo)
@@ -73,7 +66,6 @@ void WriteAuthenticationInfo(CThostFtdcAuthenticationInfoField* AuthenticationIn
 			AuthenticationInfo->BrokerID, AuthenticationInfo->UserID, AuthenticationInfo->UserProductInfo, AuthenticationInfo->AuthInfo, AuthenticationInfo->IsResult, AuthenticationInfo->AppID, AuthenticationInfo->AppType, AuthenticationInfo->reserve1, AuthenticationInfo->ClientIPAddress);
 	}
 }
-
 void WriteRspUserLogin2(CThostFtdcRspUserLogin2Field* RspUserLogin2)
 {
 	if(RspUserLogin2)
@@ -82,7 +74,6 @@ void WriteRspUserLogin2(CThostFtdcRspUserLogin2Field* RspUserLogin2)
 			RspUserLogin2->TradingDay, RspUserLogin2->LoginTime, RspUserLogin2->BrokerID, RspUserLogin2->UserID, RspUserLogin2->SystemName, RspUserLogin2->FrontID, RspUserLogin2->SessionID, RspUserLogin2->MaxOrderRef, RspUserLogin2->SHFETime, RspUserLogin2->DCETime, RspUserLogin2->CZCETime, RspUserLogin2->FFEXTime, RspUserLogin2->INETime, RspUserLogin2->RandomString);
 	}
 }
-
 void WriteTransferHeader(CThostFtdcTransferHeaderField* TransferHeader)
 {
 	if(TransferHeader)
@@ -91,7 +82,6 @@ void WriteTransferHeader(CThostFtdcTransferHeaderField* TransferHeader)
 			TransferHeader->Version, TransferHeader->TradeCode, TransferHeader->TradeDate, TransferHeader->TradeTime, TransferHeader->TradeSerial, TransferHeader->FutureID, TransferHeader->BankID, TransferHeader->BankBrchID, TransferHeader->OperNo, TransferHeader->DeviceID, TransferHeader->RecordNum, TransferHeader->SessionID, TransferHeader->RequestID);
 	}
 }
-
 void WriteTransferBankToFutureReq(CThostFtdcTransferBankToFutureReqField* TransferBankToFutureReq)
 {
 	if(TransferBankToFutureReq)
@@ -100,7 +90,6 @@ void WriteTransferBankToFutureReq(CThostFtdcTransferBankToFutureReqField* Transf
 			TransferBankToFutureReq->FutureAccount, TransferBankToFutureReq->FuturePwdFlag, TransferBankToFutureReq->FutureAccPwd, TransferBankToFutureReq->TradeAmt, TransferBankToFutureReq->CustFee, TransferBankToFutureReq->CurrencyCode);
 	}
 }
-
 void WriteTransferBankToFutureRsp(CThostFtdcTransferBankToFutureRspField* TransferBankToFutureRsp)
 {
 	if(TransferBankToFutureRsp)
@@ -109,7 +98,6 @@ void WriteTransferBankToFutureRsp(CThostFtdcTransferBankToFutureRspField* Transf
 			TransferBankToFutureRsp->RetCode, TransferBankToFutureRsp->RetInfo, TransferBankToFutureRsp->FutureAccount, TransferBankToFutureRsp->TradeAmt, TransferBankToFutureRsp->CustFee, TransferBankToFutureRsp->CurrencyCode);
 	}
 }
-
 void WriteTransferFutureToBankReq(CThostFtdcTransferFutureToBankReqField* TransferFutureToBankReq)
 {
 	if(TransferFutureToBankReq)
@@ -118,7 +106,6 @@ void WriteTransferFutureToBankReq(CThostFtdcTransferFutureToBankReqField* Transf
 			TransferFutureToBankReq->FutureAccount, TransferFutureToBankReq->FuturePwdFlag, TransferFutureToBankReq->FutureAccPwd, TransferFutureToBankReq->TradeAmt, TransferFutureToBankReq->CustFee, TransferFutureToBankReq->CurrencyCode);
 	}
 }
-
 void WriteTransferFutureToBankRsp(CThostFtdcTransferFutureToBankRspField* TransferFutureToBankRsp)
 {
 	if(TransferFutureToBankRsp)
@@ -127,7 +114,6 @@ void WriteTransferFutureToBankRsp(CThostFtdcTransferFutureToBankRspField* Transf
 			TransferFutureToBankRsp->RetCode, TransferFutureToBankRsp->RetInfo, TransferFutureToBankRsp->FutureAccount, TransferFutureToBankRsp->TradeAmt, TransferFutureToBankRsp->CustFee, TransferFutureToBankRsp->CurrencyCode);
 	}
 }
-
 void WriteTransferQryBankReq(CThostFtdcTransferQryBankReqField* TransferQryBankReq)
 {
 	if(TransferQryBankReq)
@@ -136,7 +122,6 @@ void WriteTransferQryBankReq(CThostFtdcTransferQryBankReqField* TransferQryBankR
 			TransferQryBankReq->FutureAccount, TransferQryBankReq->FuturePwdFlag, TransferQryBankReq->FutureAccPwd, TransferQryBankReq->CurrencyCode);
 	}
 }
-
 void WriteTransferQryBankRsp(CThostFtdcTransferQryBankRspField* TransferQryBankRsp)
 {
 	if(TransferQryBankRsp)
@@ -145,7 +130,6 @@ void WriteTransferQryBankRsp(CThostFtdcTransferQryBankRspField* TransferQryBankR
 			TransferQryBankRsp->RetCode, TransferQryBankRsp->RetInfo, TransferQryBankRsp->FutureAccount, TransferQryBankRsp->TradeAmt, TransferQryBankRsp->UseAmt, TransferQryBankRsp->FetchAmt, TransferQryBankRsp->CurrencyCode);
 	}
 }
-
 void WriteTransferQryDetailReq(CThostFtdcTransferQryDetailReqField* TransferQryDetailReq)
 {
 	if(TransferQryDetailReq)
@@ -154,7 +138,6 @@ void WriteTransferQryDetailReq(CThostFtdcTransferQryDetailReqField* TransferQryD
 			TransferQryDetailReq->FutureAccount);
 	}
 }
-
 void WriteTransferQryDetailRsp(CThostFtdcTransferQryDetailRspField* TransferQryDetailRsp)
 {
 	if(TransferQryDetailRsp)
@@ -163,7 +146,6 @@ void WriteTransferQryDetailRsp(CThostFtdcTransferQryDetailRspField* TransferQryD
 			TransferQryDetailRsp->TradeDate, TransferQryDetailRsp->TradeTime, TransferQryDetailRsp->TradeCode, TransferQryDetailRsp->FutureSerial, TransferQryDetailRsp->FutureID, TransferQryDetailRsp->FutureAccount, TransferQryDetailRsp->BankSerial, TransferQryDetailRsp->BankID, TransferQryDetailRsp->BankBrchID, TransferQryDetailRsp->BankAccount, TransferQryDetailRsp->CertCode, TransferQryDetailRsp->CurrencyCode, TransferQryDetailRsp->TxAmount, TransferQryDetailRsp->Flag);
 	}
 }
-
 void WriteRspInfo(CThostFtdcRspInfoField* RspInfo)
 {
 	if(RspInfo)
@@ -172,7 +154,6 @@ void WriteRspInfo(CThostFtdcRspInfoField* RspInfo)
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 	}
 }
-
 void WriteExchange(CThostFtdcExchangeField* Exchange)
 {
 	if(Exchange)
@@ -181,7 +162,6 @@ void WriteExchange(CThostFtdcExchangeField* Exchange)
 			Exchange->ExchangeID, Exchange->ExchangeName, Exchange->ExchangeProperty);
 	}
 }
-
 void WriteProduct(CThostFtdcProductField* Product)
 {
 	if(Product)
@@ -190,7 +170,6 @@ void WriteProduct(CThostFtdcProductField* Product)
 			Product->reserve1, Product->ProductName, Product->ExchangeID, Product->ProductClass, Product->VolumeMultiple, Product->PriceTick, Product->MaxMarketOrderVolume, Product->MinMarketOrderVolume, Product->MaxLimitOrderVolume, Product->MinLimitOrderVolume, Product->PositionType, Product->PositionDateType, Product->CloseDealType, Product->TradeCurrencyID, Product->MortgageFundUseRange, Product->reserve2, Product->UnderlyingMultiple, Product->ProductID, Product->ExchangeProductID, Product->OpenLimitControlLevel, Product->OrderFreqControlLevel);
 	}
 }
-
 void WriteInstrument(CThostFtdcInstrumentField* Instrument)
 {
 	if(Instrument)
@@ -199,7 +178,6 @@ void WriteInstrument(CThostFtdcInstrumentField* Instrument)
 			Instrument->reserve1, Instrument->ExchangeID, Instrument->InstrumentName, Instrument->reserve2, Instrument->reserve3, Instrument->ProductClass, Instrument->DeliveryYear, Instrument->DeliveryMonth, Instrument->MaxMarketOrderVolume, Instrument->MinMarketOrderVolume, Instrument->MaxLimitOrderVolume, Instrument->MinLimitOrderVolume, Instrument->VolumeMultiple, Instrument->PriceTick, Instrument->CreateDate, Instrument->OpenDate, Instrument->ExpireDate, Instrument->StartDelivDate, Instrument->EndDelivDate, Instrument->InstLifePhase, Instrument->IsTrading, Instrument->PositionType, Instrument->PositionDateType, Instrument->LongMarginRatio, Instrument->ShortMarginRatio, Instrument->MaxMarginSideAlgorithm, Instrument->reserve4, Instrument->StrikePrice, Instrument->OptionsType, Instrument->UnderlyingMultiple, Instrument->CombinationType, Instrument->InstrumentID, Instrument->ExchangeInstID, Instrument->ProductID, Instrument->UnderlyingInstrID);
 	}
 }
-
 void WriteBroker(CThostFtdcBrokerField* Broker)
 {
 	if(Broker)
@@ -208,7 +186,6 @@ void WriteBroker(CThostFtdcBrokerField* Broker)
 			Broker->BrokerID, Broker->BrokerAbbr, Broker->BrokerName, Broker->IsActive);
 	}
 }
-
 void WriteTrader(CThostFtdcTraderField* Trader)
 {
 	if(Trader)
@@ -217,7 +194,6 @@ void WriteTrader(CThostFtdcTraderField* Trader)
 			Trader->ExchangeID, Trader->TraderID, Trader->ParticipantID, Trader->Password, Trader->InstallCount, Trader->BrokerID, Trader->OrderCancelAlg, Trader->TradeInstallCount, Trader->MDInstallCount);
 	}
 }
-
 void WriteInvestor(CThostFtdcInvestorField* Investor)
 {
 	if(Investor)
@@ -226,7 +202,6 @@ void WriteInvestor(CThostFtdcInvestorField* Investor)
 			Investor->InvestorID, Investor->BrokerID, Investor->InvestorGroupID, Investor->InvestorName, Investor->IdentifiedCardType, Investor->IdentifiedCardNo, Investor->IsActive, Investor->Telephone, Investor->Address, Investor->OpenDate, Investor->Mobile, Investor->CommModelID, Investor->MarginModelID, Investor->IsOrderFreq, Investor->IsOpenVolLimit);
 	}
 }
-
 void WriteTradingCode(CThostFtdcTradingCodeField* TradingCode)
 {
 	if(TradingCode)
@@ -235,7 +210,6 @@ void WriteTradingCode(CThostFtdcTradingCodeField* TradingCode)
 			TradingCode->InvestorID, TradingCode->BrokerID, TradingCode->ExchangeID, TradingCode->ClientID, TradingCode->IsActive, TradingCode->ClientIDType, TradingCode->BranchID, TradingCode->BizType, TradingCode->InvestUnitID);
 	}
 }
-
 void WritePartBroker(CThostFtdcPartBrokerField* PartBroker)
 {
 	if(PartBroker)
@@ -244,7 +218,6 @@ void WritePartBroker(CThostFtdcPartBrokerField* PartBroker)
 			PartBroker->BrokerID, PartBroker->ExchangeID, PartBroker->ParticipantID, PartBroker->IsActive);
 	}
 }
-
 void WriteSuperUser(CThostFtdcSuperUserField* SuperUser)
 {
 	if(SuperUser)
@@ -253,7 +226,6 @@ void WriteSuperUser(CThostFtdcSuperUserField* SuperUser)
 			SuperUser->UserID, SuperUser->UserName, SuperUser->Password, SuperUser->IsActive);
 	}
 }
-
 void WriteSuperUserFunction(CThostFtdcSuperUserFunctionField* SuperUserFunction)
 {
 	if(SuperUserFunction)
@@ -262,7 +234,6 @@ void WriteSuperUserFunction(CThostFtdcSuperUserFunctionField* SuperUserFunction)
 			SuperUserFunction->UserID, SuperUserFunction->FunctionCode);
 	}
 }
-
 void WriteInvestorGroup(CThostFtdcInvestorGroupField* InvestorGroup)
 {
 	if(InvestorGroup)
@@ -271,7 +242,6 @@ void WriteInvestorGroup(CThostFtdcInvestorGroupField* InvestorGroup)
 			InvestorGroup->BrokerID, InvestorGroup->InvestorGroupID, InvestorGroup->InvestorGroupName);
 	}
 }
-
 void WriteTradingAccount(CThostFtdcTradingAccountField* TradingAccount)
 {
 	if(TradingAccount)
@@ -280,7 +250,6 @@ void WriteTradingAccount(CThostFtdcTradingAccountField* TradingAccount)
 			TradingAccount->BrokerID, TradingAccount->AccountID, TradingAccount->PreMortgage, TradingAccount->PreCredit, TradingAccount->PreDeposit, TradingAccount->PreBalance, TradingAccount->PreMargin, TradingAccount->InterestBase, TradingAccount->Interest, TradingAccount->Deposit, TradingAccount->Withdraw, TradingAccount->FrozenMargin, TradingAccount->FrozenCash, TradingAccount->FrozenCommission, TradingAccount->CurrMargin, TradingAccount->CashIn, TradingAccount->Commission, TradingAccount->CloseProfit, TradingAccount->PositionProfit, TradingAccount->Balance, TradingAccount->Available, TradingAccount->WithdrawQuota, TradingAccount->Reserve, TradingAccount->TradingDay, TradingAccount->SettlementID, TradingAccount->Credit, TradingAccount->Mortgage, TradingAccount->ExchangeMargin, TradingAccount->DeliveryMargin, TradingAccount->ExchangeDeliveryMargin, TradingAccount->ReserveBalance, TradingAccount->CurrencyID, TradingAccount->PreFundMortgageIn, TradingAccount->PreFundMortgageOut, TradingAccount->FundMortgageIn, TradingAccount->FundMortgageOut, TradingAccount->FundMortgageAvailable, TradingAccount->MortgageableFund, TradingAccount->SpecProductMargin, TradingAccount->SpecProductFrozenMargin, TradingAccount->SpecProductCommission, TradingAccount->SpecProductFrozenCommission, TradingAccount->SpecProductPositionProfit, TradingAccount->SpecProductCloseProfit, TradingAccount->SpecProductPositionProfitByAlg, TradingAccount->SpecProductExchangeMargin, TradingAccount->BizType, TradingAccount->FrozenSwap, TradingAccount->RemainSwap);
 	}
 }
-
 void WriteInvestorPosition(CThostFtdcInvestorPositionField* InvestorPosition)
 {
 	if(InvestorPosition)
@@ -289,7 +258,6 @@ void WriteInvestorPosition(CThostFtdcInvestorPositionField* InvestorPosition)
 			InvestorPosition->reserve1, InvestorPosition->BrokerID, InvestorPosition->InvestorID, InvestorPosition->PosiDirection, InvestorPosition->HedgeFlag, InvestorPosition->PositionDate, InvestorPosition->YdPosition, InvestorPosition->Position, InvestorPosition->LongFrozen, InvestorPosition->ShortFrozen, InvestorPosition->LongFrozenAmount, InvestorPosition->ShortFrozenAmount, InvestorPosition->OpenVolume, InvestorPosition->CloseVolume, InvestorPosition->OpenAmount, InvestorPosition->CloseAmount, InvestorPosition->PositionCost, InvestorPosition->PreMargin, InvestorPosition->UseMargin, InvestorPosition->FrozenMargin, InvestorPosition->FrozenCash, InvestorPosition->FrozenCommission, InvestorPosition->CashIn, InvestorPosition->Commission, InvestorPosition->CloseProfit, InvestorPosition->PositionProfit, InvestorPosition->PreSettlementPrice, InvestorPosition->SettlementPrice, InvestorPosition->TradingDay, InvestorPosition->SettlementID, InvestorPosition->OpenCost, InvestorPosition->ExchangeMargin, InvestorPosition->CombPosition, InvestorPosition->CombLongFrozen, InvestorPosition->CombShortFrozen, InvestorPosition->CloseProfitByDate, InvestorPosition->CloseProfitByTrade, InvestorPosition->TodayPosition, InvestorPosition->MarginRateByMoney, InvestorPosition->MarginRateByVolume, InvestorPosition->StrikeFrozen, InvestorPosition->StrikeFrozenAmount, InvestorPosition->AbandonFrozen, InvestorPosition->ExchangeID, InvestorPosition->YdStrikeFrozen, InvestorPosition->InvestUnitID, InvestorPosition->PositionCostOffset, InvestorPosition->TasPosition, InvestorPosition->TasPositionCost, InvestorPosition->InstrumentID);
 	}
 }
-
 void WriteInstrumentMarginRate(CThostFtdcInstrumentMarginRateField* InstrumentMarginRate)
 {
 	if(InstrumentMarginRate)
@@ -298,7 +266,6 @@ void WriteInstrumentMarginRate(CThostFtdcInstrumentMarginRateField* InstrumentMa
 			InstrumentMarginRate->reserve1, InstrumentMarginRate->InvestorRange, InstrumentMarginRate->BrokerID, InstrumentMarginRate->InvestorID, InstrumentMarginRate->HedgeFlag, InstrumentMarginRate->LongMarginRatioByMoney, InstrumentMarginRate->LongMarginRatioByVolume, InstrumentMarginRate->ShortMarginRatioByMoney, InstrumentMarginRate->ShortMarginRatioByVolume, InstrumentMarginRate->IsRelative, InstrumentMarginRate->ExchangeID, InstrumentMarginRate->InvestUnitID, InstrumentMarginRate->InstrumentID);
 	}
 }
-
 void WriteInstrumentCommissionRate(CThostFtdcInstrumentCommissionRateField* InstrumentCommissionRate)
 {
 	if(InstrumentCommissionRate)
@@ -307,7 +274,6 @@ void WriteInstrumentCommissionRate(CThostFtdcInstrumentCommissionRateField* Inst
 			InstrumentCommissionRate->reserve1, InstrumentCommissionRate->InvestorRange, InstrumentCommissionRate->BrokerID, InstrumentCommissionRate->InvestorID, InstrumentCommissionRate->OpenRatioByMoney, InstrumentCommissionRate->OpenRatioByVolume, InstrumentCommissionRate->CloseRatioByMoney, InstrumentCommissionRate->CloseRatioByVolume, InstrumentCommissionRate->CloseTodayRatioByMoney, InstrumentCommissionRate->CloseTodayRatioByVolume, InstrumentCommissionRate->ExchangeID, InstrumentCommissionRate->BizType, InstrumentCommissionRate->InvestUnitID, InstrumentCommissionRate->InstrumentID);
 	}
 }
-
 void WriteDepthMarketData(CThostFtdcDepthMarketDataField* DepthMarketData)
 {
 	if(DepthMarketData)
@@ -316,7 +282,6 @@ void WriteDepthMarketData(CThostFtdcDepthMarketDataField* DepthMarketData)
 			DepthMarketData->TradingDay, DepthMarketData->reserve1, DepthMarketData->ExchangeID, DepthMarketData->reserve2, DepthMarketData->LastPrice, DepthMarketData->PreSettlementPrice, DepthMarketData->PreClosePrice, DepthMarketData->PreOpenInterest, DepthMarketData->OpenPrice, DepthMarketData->HighestPrice, DepthMarketData->LowestPrice, DepthMarketData->Volume, DepthMarketData->Turnover, DepthMarketData->OpenInterest, DepthMarketData->ClosePrice, DepthMarketData->SettlementPrice, DepthMarketData->UpperLimitPrice, DepthMarketData->LowerLimitPrice, DepthMarketData->PreDelta, DepthMarketData->CurrDelta, DepthMarketData->UpdateTime, DepthMarketData->UpdateMillisec, DepthMarketData->BidPrice1, DepthMarketData->BidVolume1, DepthMarketData->AskPrice1, DepthMarketData->AskVolume1, DepthMarketData->BidPrice2, DepthMarketData->BidVolume2, DepthMarketData->AskPrice2, DepthMarketData->AskVolume2, DepthMarketData->BidPrice3, DepthMarketData->BidVolume3, DepthMarketData->AskPrice3, DepthMarketData->AskVolume3, DepthMarketData->BidPrice4, DepthMarketData->BidVolume4, DepthMarketData->AskPrice4, DepthMarketData->AskVolume4, DepthMarketData->BidPrice5, DepthMarketData->BidVolume5, DepthMarketData->AskPrice5, DepthMarketData->AskVolume5, DepthMarketData->AveragePrice, DepthMarketData->ActionDay, DepthMarketData->InstrumentID, DepthMarketData->ExchangeInstID, DepthMarketData->BandingUpperPrice, DepthMarketData->BandingLowerPrice);
 	}
 }
-
 void WriteInstrumentTradingRight(CThostFtdcInstrumentTradingRightField* InstrumentTradingRight)
 {
 	if(InstrumentTradingRight)
@@ -325,7 +290,6 @@ void WriteInstrumentTradingRight(CThostFtdcInstrumentTradingRightField* Instrume
 			InstrumentTradingRight->reserve1, InstrumentTradingRight->InvestorRange, InstrumentTradingRight->BrokerID, InstrumentTradingRight->InvestorID, InstrumentTradingRight->TradingRight, InstrumentTradingRight->InstrumentID);
 	}
 }
-
 void WriteBrokerUser(CThostFtdcBrokerUserField* BrokerUser)
 {
 	if(BrokerUser)
@@ -334,7 +298,6 @@ void WriteBrokerUser(CThostFtdcBrokerUserField* BrokerUser)
 			BrokerUser->BrokerID, BrokerUser->UserID, BrokerUser->UserName, BrokerUser->UserType, BrokerUser->IsActive, BrokerUser->IsUsingOTP, BrokerUser->IsAuthForce);
 	}
 }
-
 void WriteBrokerUserPassword(CThostFtdcBrokerUserPasswordField* BrokerUserPassword)
 {
 	if(BrokerUserPassword)
@@ -343,7 +306,6 @@ void WriteBrokerUserPassword(CThostFtdcBrokerUserPasswordField* BrokerUserPasswo
 			BrokerUserPassword->BrokerID, BrokerUserPassword->UserID, BrokerUserPassword->Password, BrokerUserPassword->LastUpdateTime, BrokerUserPassword->LastLoginTime, BrokerUserPassword->ExpireDate, BrokerUserPassword->WeakExpireDate);
 	}
 }
-
 void WriteBrokerUserFunction(CThostFtdcBrokerUserFunctionField* BrokerUserFunction)
 {
 	if(BrokerUserFunction)
@@ -352,7 +314,6 @@ void WriteBrokerUserFunction(CThostFtdcBrokerUserFunctionField* BrokerUserFuncti
 			BrokerUserFunction->BrokerID, BrokerUserFunction->UserID, BrokerUserFunction->BrokerFunctionCode);
 	}
 }
-
 void WriteTraderOffer(CThostFtdcTraderOfferField* TraderOffer)
 {
 	if(TraderOffer)
@@ -361,7 +322,6 @@ void WriteTraderOffer(CThostFtdcTraderOfferField* TraderOffer)
 			TraderOffer->ExchangeID, TraderOffer->TraderID, TraderOffer->ParticipantID, TraderOffer->Password, TraderOffer->InstallID, TraderOffer->OrderLocalID, TraderOffer->TraderConnectStatus, TraderOffer->ConnectRequestDate, TraderOffer->ConnectRequestTime, TraderOffer->LastReportDate, TraderOffer->LastReportTime, TraderOffer->ConnectDate, TraderOffer->ConnectTime, TraderOffer->StartDate, TraderOffer->StartTime, TraderOffer->TradingDay, TraderOffer->BrokerID, TraderOffer->MaxTradeID, TraderOffer->MaxOrderMessageReference, TraderOffer->OrderCancelAlg);
 	}
 }
-
 void WriteSettlementInfo(CThostFtdcSettlementInfoField* SettlementInfo)
 {
 	if(SettlementInfo)
@@ -370,7 +330,6 @@ void WriteSettlementInfo(CThostFtdcSettlementInfoField* SettlementInfo)
 			SettlementInfo->TradingDay, SettlementInfo->SettlementID, SettlementInfo->BrokerID, SettlementInfo->InvestorID, SettlementInfo->SequenceNo, SettlementInfo->Content, SettlementInfo->AccountID, SettlementInfo->CurrencyID);
 	}
 }
-
 void WriteInstrumentMarginRateAdjust(CThostFtdcInstrumentMarginRateAdjustField* InstrumentMarginRateAdjust)
 {
 	if(InstrumentMarginRateAdjust)
@@ -379,7 +338,6 @@ void WriteInstrumentMarginRateAdjust(CThostFtdcInstrumentMarginRateAdjustField* 
 			InstrumentMarginRateAdjust->reserve1, InstrumentMarginRateAdjust->InvestorRange, InstrumentMarginRateAdjust->BrokerID, InstrumentMarginRateAdjust->InvestorID, InstrumentMarginRateAdjust->HedgeFlag, InstrumentMarginRateAdjust->LongMarginRatioByMoney, InstrumentMarginRateAdjust->LongMarginRatioByVolume, InstrumentMarginRateAdjust->ShortMarginRatioByMoney, InstrumentMarginRateAdjust->ShortMarginRatioByVolume, InstrumentMarginRateAdjust->IsRelative, InstrumentMarginRateAdjust->InstrumentID);
 	}
 }
-
 void WriteExchangeMarginRate(CThostFtdcExchangeMarginRateField* ExchangeMarginRate)
 {
 	if(ExchangeMarginRate)
@@ -388,7 +346,6 @@ void WriteExchangeMarginRate(CThostFtdcExchangeMarginRateField* ExchangeMarginRa
 			ExchangeMarginRate->BrokerID, ExchangeMarginRate->reserve1, ExchangeMarginRate->HedgeFlag, ExchangeMarginRate->LongMarginRatioByMoney, ExchangeMarginRate->LongMarginRatioByVolume, ExchangeMarginRate->ShortMarginRatioByMoney, ExchangeMarginRate->ShortMarginRatioByVolume, ExchangeMarginRate->ExchangeID, ExchangeMarginRate->InstrumentID);
 	}
 }
-
 void WriteExchangeMarginRateAdjust(CThostFtdcExchangeMarginRateAdjustField* ExchangeMarginRateAdjust)
 {
 	if(ExchangeMarginRateAdjust)
@@ -397,7 +354,6 @@ void WriteExchangeMarginRateAdjust(CThostFtdcExchangeMarginRateAdjustField* Exch
 			ExchangeMarginRateAdjust->BrokerID, ExchangeMarginRateAdjust->reserve1, ExchangeMarginRateAdjust->HedgeFlag, ExchangeMarginRateAdjust->LongMarginRatioByMoney, ExchangeMarginRateAdjust->LongMarginRatioByVolume, ExchangeMarginRateAdjust->ShortMarginRatioByMoney, ExchangeMarginRateAdjust->ShortMarginRatioByVolume, ExchangeMarginRateAdjust->ExchLongMarginRatioByMoney, ExchangeMarginRateAdjust->ExchLongMarginRatioByVolume, ExchangeMarginRateAdjust->ExchShortMarginRatioByMoney, ExchangeMarginRateAdjust->ExchShortMarginRatioByVolume, ExchangeMarginRateAdjust->NoLongMarginRatioByMoney, ExchangeMarginRateAdjust->NoLongMarginRatioByVolume, ExchangeMarginRateAdjust->NoShortMarginRatioByMoney, ExchangeMarginRateAdjust->NoShortMarginRatioByVolume, ExchangeMarginRateAdjust->InstrumentID);
 	}
 }
-
 void WriteExchangeRate(CThostFtdcExchangeRateField* ExchangeRate)
 {
 	if(ExchangeRate)
@@ -406,7 +362,6 @@ void WriteExchangeRate(CThostFtdcExchangeRateField* ExchangeRate)
 			ExchangeRate->BrokerID, ExchangeRate->FromCurrencyID, ExchangeRate->FromCurrencyUnit, ExchangeRate->ToCurrencyID, ExchangeRate->ExchangeRate);
 	}
 }
-
 void WriteSettlementRef(CThostFtdcSettlementRefField* SettlementRef)
 {
 	if(SettlementRef)
@@ -415,7 +370,6 @@ void WriteSettlementRef(CThostFtdcSettlementRefField* SettlementRef)
 			SettlementRef->TradingDay, SettlementRef->SettlementID);
 	}
 }
-
 void WriteCurrentTime(CThostFtdcCurrentTimeField* CurrentTime)
 {
 	if(CurrentTime)
@@ -424,7 +378,6 @@ void WriteCurrentTime(CThostFtdcCurrentTimeField* CurrentTime)
 			CurrentTime->CurrDate, CurrentTime->CurrTime, CurrentTime->CurrMillisec, CurrentTime->ActionDay);
 	}
 }
-
 void WriteCommPhase(CThostFtdcCommPhaseField* CommPhase)
 {
 	if(CommPhase)
@@ -433,7 +386,6 @@ void WriteCommPhase(CThostFtdcCommPhaseField* CommPhase)
 			CommPhase->TradingDay, CommPhase->CommPhaseNo, CommPhase->SystemID);
 	}
 }
-
 void WriteLoginInfo(CThostFtdcLoginInfoField* LoginInfo)
 {
 	if(LoginInfo)
@@ -442,7 +394,6 @@ void WriteLoginInfo(CThostFtdcLoginInfoField* LoginInfo)
 			LoginInfo->FrontID, LoginInfo->SessionID, LoginInfo->BrokerID, LoginInfo->UserID, LoginInfo->LoginDate, LoginInfo->LoginTime, LoginInfo->reserve1, LoginInfo->UserProductInfo, LoginInfo->InterfaceProductInfo, LoginInfo->ProtocolInfo, LoginInfo->SystemName, LoginInfo->PasswordDeprecated, LoginInfo->MaxOrderRef, LoginInfo->SHFETime, LoginInfo->DCETime, LoginInfo->CZCETime, LoginInfo->FFEXTime, LoginInfo->MacAddress, LoginInfo->OneTimePassword, LoginInfo->INETime, LoginInfo->IsQryControl, LoginInfo->LoginRemark, LoginInfo->Password, LoginInfo->IPAddress);
 	}
 }
-
 void WriteLogoutAll(CThostFtdcLogoutAllField* LogoutAll)
 {
 	if(LogoutAll)
@@ -451,7 +402,6 @@ void WriteLogoutAll(CThostFtdcLogoutAllField* LogoutAll)
 			LogoutAll->FrontID, LogoutAll->SessionID, LogoutAll->SystemName);
 	}
 }
-
 void WriteFrontStatus(CThostFtdcFrontStatusField* FrontStatus)
 {
 	if(FrontStatus)
@@ -460,7 +410,6 @@ void WriteFrontStatus(CThostFtdcFrontStatusField* FrontStatus)
 			FrontStatus->FrontID, FrontStatus->LastReportDate, FrontStatus->LastReportTime, FrontStatus->IsActive);
 	}
 }
-
 void WriteUserPasswordUpdate(CThostFtdcUserPasswordUpdateField* UserPasswordUpdate)
 {
 	if(UserPasswordUpdate)
@@ -469,7 +418,6 @@ void WriteUserPasswordUpdate(CThostFtdcUserPasswordUpdateField* UserPasswordUpda
 			UserPasswordUpdate->BrokerID, UserPasswordUpdate->UserID, UserPasswordUpdate->OldPassword, UserPasswordUpdate->NewPassword);
 	}
 }
-
 void WriteInputOrder(CThostFtdcInputOrderField* InputOrder)
 {
 	if(InputOrder)
@@ -478,7 +426,6 @@ void WriteInputOrder(CThostFtdcInputOrderField* InputOrder)
 			InputOrder->BrokerID, InputOrder->InvestorID, InputOrder->reserve1, InputOrder->OrderRef, InputOrder->UserID, InputOrder->OrderPriceType, InputOrder->Direction, InputOrder->CombOffsetFlag, InputOrder->CombHedgeFlag, InputOrder->LimitPrice, InputOrder->VolumeTotalOriginal, InputOrder->TimeCondition, InputOrder->GTDDate, InputOrder->VolumeCondition, InputOrder->MinVolume, InputOrder->ContingentCondition, InputOrder->StopPrice, InputOrder->ForceCloseReason, InputOrder->IsAutoSuspend, InputOrder->BusinessUnit, InputOrder->RequestID, InputOrder->UserForceClose, InputOrder->IsSwapOrder, InputOrder->ExchangeID, InputOrder->InvestUnitID, InputOrder->AccountID, InputOrder->CurrencyID, InputOrder->ClientID, InputOrder->reserve2, InputOrder->MacAddress, InputOrder->InstrumentID, InputOrder->IPAddress);
 	}
 }
-
 void WriteOrder(CThostFtdcOrderField* Order)
 {
 	if(Order)
@@ -487,7 +434,6 @@ void WriteOrder(CThostFtdcOrderField* Order)
 			Order->BrokerID, Order->InvestorID, Order->reserve1, Order->OrderRef, Order->UserID, Order->OrderPriceType, Order->Direction, Order->CombOffsetFlag, Order->CombHedgeFlag, Order->LimitPrice, Order->VolumeTotalOriginal, Order->TimeCondition, Order->GTDDate, Order->VolumeCondition, Order->MinVolume, Order->ContingentCondition, Order->StopPrice, Order->ForceCloseReason, Order->IsAutoSuspend, Order->BusinessUnit, Order->RequestID, Order->OrderLocalID, Order->ExchangeID, Order->ParticipantID, Order->ClientID, Order->reserve2, Order->TraderID, Order->InstallID, Order->OrderSubmitStatus, Order->NotifySequence, Order->TradingDay, Order->SettlementID, Order->OrderSysID, Order->OrderSource, Order->OrderStatus, Order->OrderType, Order->VolumeTraded, Order->VolumeTotal, Order->InsertDate, Order->InsertTime, Order->ActiveTime, Order->SuspendTime, Order->UpdateTime, Order->CancelTime, Order->ActiveTraderID, Order->ClearingPartID, Order->SequenceNo, Order->FrontID, Order->SessionID, Order->UserProductInfo, Order->StatusMsg, Order->UserForceClose, Order->ActiveUserID, Order->BrokerOrderSeq, Order->RelativeOrderSysID, Order->ZCETotalTradedVolume, Order->IsSwapOrder, Order->BranchID, Order->InvestUnitID, Order->AccountID, Order->CurrencyID, Order->reserve3, Order->MacAddress, Order->InstrumentID, Order->ExchangeInstID, Order->IPAddress);
 	}
 }
-
 void WriteExchangeOrder(CThostFtdcExchangeOrderField* ExchangeOrder)
 {
 	if(ExchangeOrder)
@@ -496,7 +442,6 @@ void WriteExchangeOrder(CThostFtdcExchangeOrderField* ExchangeOrder)
 			ExchangeOrder->OrderPriceType, ExchangeOrder->Direction, ExchangeOrder->CombOffsetFlag, ExchangeOrder->CombHedgeFlag, ExchangeOrder->LimitPrice, ExchangeOrder->VolumeTotalOriginal, ExchangeOrder->TimeCondition, ExchangeOrder->GTDDate, ExchangeOrder->VolumeCondition, ExchangeOrder->MinVolume, ExchangeOrder->ContingentCondition, ExchangeOrder->StopPrice, ExchangeOrder->ForceCloseReason, ExchangeOrder->IsAutoSuspend, ExchangeOrder->BusinessUnit, ExchangeOrder->RequestID, ExchangeOrder->OrderLocalID, ExchangeOrder->ExchangeID, ExchangeOrder->ParticipantID, ExchangeOrder->ClientID, ExchangeOrder->reserve1, ExchangeOrder->TraderID, ExchangeOrder->InstallID, ExchangeOrder->OrderSubmitStatus, ExchangeOrder->NotifySequence, ExchangeOrder->TradingDay, ExchangeOrder->SettlementID, ExchangeOrder->OrderSysID, ExchangeOrder->OrderSource, ExchangeOrder->OrderStatus, ExchangeOrder->OrderType, ExchangeOrder->VolumeTraded, ExchangeOrder->VolumeTotal, ExchangeOrder->InsertDate, ExchangeOrder->InsertTime, ExchangeOrder->ActiveTime, ExchangeOrder->SuspendTime, ExchangeOrder->UpdateTime, ExchangeOrder->CancelTime, ExchangeOrder->ActiveTraderID, ExchangeOrder->ClearingPartID, ExchangeOrder->SequenceNo, ExchangeOrder->BranchID, ExchangeOrder->reserve2, ExchangeOrder->MacAddress, ExchangeOrder->ExchangeInstID, ExchangeOrder->IPAddress);
 	}
 }
-
 void WriteExchangeOrderInsertError(CThostFtdcExchangeOrderInsertErrorField* ExchangeOrderInsertError)
 {
 	if(ExchangeOrderInsertError)
@@ -505,7 +450,6 @@ void WriteExchangeOrderInsertError(CThostFtdcExchangeOrderInsertErrorField* Exch
 			ExchangeOrderInsertError->ExchangeID, ExchangeOrderInsertError->ParticipantID, ExchangeOrderInsertError->TraderID, ExchangeOrderInsertError->InstallID, ExchangeOrderInsertError->OrderLocalID, ExchangeOrderInsertError->ErrorID, ExchangeOrderInsertError->ErrorMsg);
 	}
 }
-
 void WriteInputOrderAction(CThostFtdcInputOrderActionField* InputOrderAction)
 {
 	if(InputOrderAction)
@@ -514,7 +458,6 @@ void WriteInputOrderAction(CThostFtdcInputOrderActionField* InputOrderAction)
 			InputOrderAction->BrokerID, InputOrderAction->InvestorID, InputOrderAction->OrderActionRef, InputOrderAction->OrderRef, InputOrderAction->RequestID, InputOrderAction->FrontID, InputOrderAction->SessionID, InputOrderAction->ExchangeID, InputOrderAction->OrderSysID, InputOrderAction->ActionFlag, InputOrderAction->LimitPrice, InputOrderAction->VolumeChange, InputOrderAction->UserID, InputOrderAction->reserve1, InputOrderAction->InvestUnitID, InputOrderAction->reserve2, InputOrderAction->MacAddress, InputOrderAction->InstrumentID, InputOrderAction->IPAddress);
 	}
 }
-
 void WriteOrderAction(CThostFtdcOrderActionField* OrderAction)
 {
 	if(OrderAction)
@@ -523,7 +466,6 @@ void WriteOrderAction(CThostFtdcOrderActionField* OrderAction)
 			OrderAction->BrokerID, OrderAction->InvestorID, OrderAction->OrderActionRef, OrderAction->OrderRef, OrderAction->RequestID, OrderAction->FrontID, OrderAction->SessionID, OrderAction->ExchangeID, OrderAction->OrderSysID, OrderAction->ActionFlag, OrderAction->LimitPrice, OrderAction->VolumeChange, OrderAction->ActionDate, OrderAction->ActionTime, OrderAction->TraderID, OrderAction->InstallID, OrderAction->OrderLocalID, OrderAction->ActionLocalID, OrderAction->ParticipantID, OrderAction->ClientID, OrderAction->BusinessUnit, OrderAction->OrderActionStatus, OrderAction->UserID, OrderAction->StatusMsg, OrderAction->reserve1, OrderAction->BranchID, OrderAction->InvestUnitID, OrderAction->reserve2, OrderAction->MacAddress, OrderAction->InstrumentID, OrderAction->IPAddress);
 	}
 }
-
 void WriteExchangeOrderAction(CThostFtdcExchangeOrderActionField* ExchangeOrderAction)
 {
 	if(ExchangeOrderAction)
@@ -532,7 +474,6 @@ void WriteExchangeOrderAction(CThostFtdcExchangeOrderActionField* ExchangeOrderA
 			ExchangeOrderAction->ExchangeID, ExchangeOrderAction->OrderSysID, ExchangeOrderAction->ActionFlag, ExchangeOrderAction->LimitPrice, ExchangeOrderAction->VolumeChange, ExchangeOrderAction->ActionDate, ExchangeOrderAction->ActionTime, ExchangeOrderAction->TraderID, ExchangeOrderAction->InstallID, ExchangeOrderAction->OrderLocalID, ExchangeOrderAction->ActionLocalID, ExchangeOrderAction->ParticipantID, ExchangeOrderAction->ClientID, ExchangeOrderAction->BusinessUnit, ExchangeOrderAction->OrderActionStatus, ExchangeOrderAction->UserID, ExchangeOrderAction->BranchID, ExchangeOrderAction->reserve1, ExchangeOrderAction->MacAddress, ExchangeOrderAction->IPAddress);
 	}
 }
-
 void WriteExchangeOrderActionError(CThostFtdcExchangeOrderActionErrorField* ExchangeOrderActionError)
 {
 	if(ExchangeOrderActionError)
@@ -541,7 +482,6 @@ void WriteExchangeOrderActionError(CThostFtdcExchangeOrderActionErrorField* Exch
 			ExchangeOrderActionError->ExchangeID, ExchangeOrderActionError->OrderSysID, ExchangeOrderActionError->TraderID, ExchangeOrderActionError->InstallID, ExchangeOrderActionError->OrderLocalID, ExchangeOrderActionError->ActionLocalID, ExchangeOrderActionError->ErrorID, ExchangeOrderActionError->ErrorMsg);
 	}
 }
-
 void WriteExchangeTrade(CThostFtdcExchangeTradeField* ExchangeTrade)
 {
 	if(ExchangeTrade)
@@ -550,7 +490,6 @@ void WriteExchangeTrade(CThostFtdcExchangeTradeField* ExchangeTrade)
 			ExchangeTrade->ExchangeID, ExchangeTrade->TradeID, ExchangeTrade->Direction, ExchangeTrade->OrderSysID, ExchangeTrade->ParticipantID, ExchangeTrade->ClientID, ExchangeTrade->TradingRole, ExchangeTrade->reserve1, ExchangeTrade->OffsetFlag, ExchangeTrade->HedgeFlag, ExchangeTrade->Price, ExchangeTrade->Volume, ExchangeTrade->TradeDate, ExchangeTrade->TradeTime, ExchangeTrade->TradeType, ExchangeTrade->PriceSource, ExchangeTrade->TraderID, ExchangeTrade->OrderLocalID, ExchangeTrade->ClearingPartID, ExchangeTrade->BusinessUnit, ExchangeTrade->SequenceNo, ExchangeTrade->TradeSource, ExchangeTrade->ExchangeInstID);
 	}
 }
-
 void WriteTrade(CThostFtdcTradeField* Trade)
 {
 	if(Trade)
@@ -559,7 +498,6 @@ void WriteTrade(CThostFtdcTradeField* Trade)
 			Trade->BrokerID, Trade->InvestorID, Trade->reserve1, Trade->OrderRef, Trade->UserID, Trade->ExchangeID, Trade->TradeID, Trade->Direction, Trade->OrderSysID, Trade->ParticipantID, Trade->ClientID, Trade->TradingRole, Trade->reserve2, Trade->OffsetFlag, Trade->HedgeFlag, Trade->Price, Trade->Volume, Trade->TradeDate, Trade->TradeTime, Trade->TradeType, Trade->PriceSource, Trade->TraderID, Trade->OrderLocalID, Trade->ClearingPartID, Trade->BusinessUnit, Trade->SequenceNo, Trade->TradingDay, Trade->SettlementID, Trade->BrokerOrderSeq, Trade->TradeSource, Trade->InvestUnitID, Trade->InstrumentID, Trade->ExchangeInstID);
 	}
 }
-
 void WriteUserSession(CThostFtdcUserSessionField* UserSession)
 {
 	if(UserSession)
@@ -568,7 +506,6 @@ void WriteUserSession(CThostFtdcUserSessionField* UserSession)
 			UserSession->FrontID, UserSession->SessionID, UserSession->BrokerID, UserSession->UserID, UserSession->LoginDate, UserSession->LoginTime, UserSession->reserve1, UserSession->UserProductInfo, UserSession->InterfaceProductInfo, UserSession->ProtocolInfo, UserSession->MacAddress, UserSession->LoginRemark, UserSession->IPAddress);
 	}
 }
-
 void WriteQryMaxOrderVolume(CThostFtdcQryMaxOrderVolumeField* QryMaxOrderVolume)
 {
 	if(QryMaxOrderVolume)
@@ -577,7 +514,6 @@ void WriteQryMaxOrderVolume(CThostFtdcQryMaxOrderVolumeField* QryMaxOrderVolume)
 			QryMaxOrderVolume->BrokerID, QryMaxOrderVolume->InvestorID, QryMaxOrderVolume->reserve1, QryMaxOrderVolume->Direction, QryMaxOrderVolume->OffsetFlag, QryMaxOrderVolume->HedgeFlag, QryMaxOrderVolume->MaxVolume, QryMaxOrderVolume->ExchangeID, QryMaxOrderVolume->InvestUnitID, QryMaxOrderVolume->InstrumentID);
 	}
 }
-
 void WriteSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField* SettlementInfoConfirm)
 {
 	if(SettlementInfoConfirm)
@@ -586,7 +522,6 @@ void WriteSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField* Settlement
 			SettlementInfoConfirm->BrokerID, SettlementInfoConfirm->InvestorID, SettlementInfoConfirm->ConfirmDate, SettlementInfoConfirm->ConfirmTime, SettlementInfoConfirm->SettlementID, SettlementInfoConfirm->AccountID, SettlementInfoConfirm->CurrencyID);
 	}
 }
-
 void WriteSyncDeposit(CThostFtdcSyncDepositField* SyncDeposit)
 {
 	if(SyncDeposit)
@@ -595,7 +530,6 @@ void WriteSyncDeposit(CThostFtdcSyncDepositField* SyncDeposit)
 			SyncDeposit->DepositSeqNo, SyncDeposit->BrokerID, SyncDeposit->InvestorID, SyncDeposit->Deposit, SyncDeposit->IsForce, SyncDeposit->CurrencyID, SyncDeposit->IsFromSopt, SyncDeposit->TradingPassword);
 	}
 }
-
 void WriteSyncFundMortgage(CThostFtdcSyncFundMortgageField* SyncFundMortgage)
 {
 	if(SyncFundMortgage)
@@ -604,7 +538,6 @@ void WriteSyncFundMortgage(CThostFtdcSyncFundMortgageField* SyncFundMortgage)
 			SyncFundMortgage->MortgageSeqNo, SyncFundMortgage->BrokerID, SyncFundMortgage->InvestorID, SyncFundMortgage->FromCurrencyID, SyncFundMortgage->MortgageAmount, SyncFundMortgage->ToCurrencyID);
 	}
 }
-
 void WriteBrokerSync(CThostFtdcBrokerSyncField* BrokerSync)
 {
 	if(BrokerSync)
@@ -613,7 +546,6 @@ void WriteBrokerSync(CThostFtdcBrokerSyncField* BrokerSync)
 			BrokerSync->BrokerID);
 	}
 }
-
 void WriteSyncingInvestor(CThostFtdcSyncingInvestorField* SyncingInvestor)
 {
 	if(SyncingInvestor)
@@ -622,7 +554,6 @@ void WriteSyncingInvestor(CThostFtdcSyncingInvestorField* SyncingInvestor)
 			SyncingInvestor->InvestorID, SyncingInvestor->BrokerID, SyncingInvestor->InvestorGroupID, SyncingInvestor->InvestorName, SyncingInvestor->IdentifiedCardType, SyncingInvestor->IdentifiedCardNo, SyncingInvestor->IsActive, SyncingInvestor->Telephone, SyncingInvestor->Address, SyncingInvestor->OpenDate, SyncingInvestor->Mobile, SyncingInvestor->CommModelID, SyncingInvestor->MarginModelID, SyncingInvestor->IsOrderFreq, SyncingInvestor->IsOpenVolLimit);
 	}
 }
-
 void WriteSyncingTradingCode(CThostFtdcSyncingTradingCodeField* SyncingTradingCode)
 {
 	if(SyncingTradingCode)
@@ -631,7 +562,6 @@ void WriteSyncingTradingCode(CThostFtdcSyncingTradingCodeField* SyncingTradingCo
 			SyncingTradingCode->InvestorID, SyncingTradingCode->BrokerID, SyncingTradingCode->ExchangeID, SyncingTradingCode->ClientID, SyncingTradingCode->IsActive, SyncingTradingCode->ClientIDType);
 	}
 }
-
 void WriteSyncingInvestorGroup(CThostFtdcSyncingInvestorGroupField* SyncingInvestorGroup)
 {
 	if(SyncingInvestorGroup)
@@ -640,7 +570,6 @@ void WriteSyncingInvestorGroup(CThostFtdcSyncingInvestorGroupField* SyncingInves
 			SyncingInvestorGroup->BrokerID, SyncingInvestorGroup->InvestorGroupID, SyncingInvestorGroup->InvestorGroupName);
 	}
 }
-
 void WriteSyncingTradingAccount(CThostFtdcSyncingTradingAccountField* SyncingTradingAccount)
 {
 	if(SyncingTradingAccount)
@@ -649,7 +578,6 @@ void WriteSyncingTradingAccount(CThostFtdcSyncingTradingAccountField* SyncingTra
 			SyncingTradingAccount->BrokerID, SyncingTradingAccount->AccountID, SyncingTradingAccount->PreMortgage, SyncingTradingAccount->PreCredit, SyncingTradingAccount->PreDeposit, SyncingTradingAccount->PreBalance, SyncingTradingAccount->PreMargin, SyncingTradingAccount->InterestBase, SyncingTradingAccount->Interest, SyncingTradingAccount->Deposit, SyncingTradingAccount->Withdraw, SyncingTradingAccount->FrozenMargin, SyncingTradingAccount->FrozenCash, SyncingTradingAccount->FrozenCommission, SyncingTradingAccount->CurrMargin, SyncingTradingAccount->CashIn, SyncingTradingAccount->Commission, SyncingTradingAccount->CloseProfit, SyncingTradingAccount->PositionProfit, SyncingTradingAccount->Balance, SyncingTradingAccount->Available, SyncingTradingAccount->WithdrawQuota, SyncingTradingAccount->Reserve, SyncingTradingAccount->TradingDay, SyncingTradingAccount->SettlementID, SyncingTradingAccount->Credit, SyncingTradingAccount->Mortgage, SyncingTradingAccount->ExchangeMargin, SyncingTradingAccount->DeliveryMargin, SyncingTradingAccount->ExchangeDeliveryMargin, SyncingTradingAccount->ReserveBalance, SyncingTradingAccount->CurrencyID, SyncingTradingAccount->PreFundMortgageIn, SyncingTradingAccount->PreFundMortgageOut, SyncingTradingAccount->FundMortgageIn, SyncingTradingAccount->FundMortgageOut, SyncingTradingAccount->FundMortgageAvailable, SyncingTradingAccount->MortgageableFund, SyncingTradingAccount->SpecProductMargin, SyncingTradingAccount->SpecProductFrozenMargin, SyncingTradingAccount->SpecProductCommission, SyncingTradingAccount->SpecProductFrozenCommission, SyncingTradingAccount->SpecProductPositionProfit, SyncingTradingAccount->SpecProductCloseProfit, SyncingTradingAccount->SpecProductPositionProfitByAlg, SyncingTradingAccount->SpecProductExchangeMargin, SyncingTradingAccount->FrozenSwap, SyncingTradingAccount->RemainSwap);
 	}
 }
-
 void WriteSyncingInvestorPosition(CThostFtdcSyncingInvestorPositionField* SyncingInvestorPosition)
 {
 	if(SyncingInvestorPosition)
@@ -658,7 +586,6 @@ void WriteSyncingInvestorPosition(CThostFtdcSyncingInvestorPositionField* Syncin
 			SyncingInvestorPosition->reserve1, SyncingInvestorPosition->BrokerID, SyncingInvestorPosition->InvestorID, SyncingInvestorPosition->PosiDirection, SyncingInvestorPosition->HedgeFlag, SyncingInvestorPosition->PositionDate, SyncingInvestorPosition->YdPosition, SyncingInvestorPosition->Position, SyncingInvestorPosition->LongFrozen, SyncingInvestorPosition->ShortFrozen, SyncingInvestorPosition->LongFrozenAmount, SyncingInvestorPosition->ShortFrozenAmount, SyncingInvestorPosition->OpenVolume, SyncingInvestorPosition->CloseVolume, SyncingInvestorPosition->OpenAmount, SyncingInvestorPosition->CloseAmount, SyncingInvestorPosition->PositionCost, SyncingInvestorPosition->PreMargin, SyncingInvestorPosition->UseMargin, SyncingInvestorPosition->FrozenMargin, SyncingInvestorPosition->FrozenCash, SyncingInvestorPosition->FrozenCommission, SyncingInvestorPosition->CashIn, SyncingInvestorPosition->Commission, SyncingInvestorPosition->CloseProfit, SyncingInvestorPosition->PositionProfit, SyncingInvestorPosition->PreSettlementPrice, SyncingInvestorPosition->SettlementPrice, SyncingInvestorPosition->TradingDay, SyncingInvestorPosition->SettlementID, SyncingInvestorPosition->OpenCost, SyncingInvestorPosition->ExchangeMargin, SyncingInvestorPosition->CombPosition, SyncingInvestorPosition->CombLongFrozen, SyncingInvestorPosition->CombShortFrozen, SyncingInvestorPosition->CloseProfitByDate, SyncingInvestorPosition->CloseProfitByTrade, SyncingInvestorPosition->TodayPosition, SyncingInvestorPosition->MarginRateByMoney, SyncingInvestorPosition->MarginRateByVolume, SyncingInvestorPosition->StrikeFrozen, SyncingInvestorPosition->StrikeFrozenAmount, SyncingInvestorPosition->AbandonFrozen, SyncingInvestorPosition->ExchangeID, SyncingInvestorPosition->YdStrikeFrozen, SyncingInvestorPosition->InvestUnitID, SyncingInvestorPosition->PositionCostOffset, SyncingInvestorPosition->TasPosition, SyncingInvestorPosition->TasPositionCost, SyncingInvestorPosition->InstrumentID);
 	}
 }
-
 void WriteSyncingInstrumentMarginRate(CThostFtdcSyncingInstrumentMarginRateField* SyncingInstrumentMarginRate)
 {
 	if(SyncingInstrumentMarginRate)
@@ -667,7 +594,6 @@ void WriteSyncingInstrumentMarginRate(CThostFtdcSyncingInstrumentMarginRateField
 			SyncingInstrumentMarginRate->reserve1, SyncingInstrumentMarginRate->InvestorRange, SyncingInstrumentMarginRate->BrokerID, SyncingInstrumentMarginRate->InvestorID, SyncingInstrumentMarginRate->HedgeFlag, SyncingInstrumentMarginRate->LongMarginRatioByMoney, SyncingInstrumentMarginRate->LongMarginRatioByVolume, SyncingInstrumentMarginRate->ShortMarginRatioByMoney, SyncingInstrumentMarginRate->ShortMarginRatioByVolume, SyncingInstrumentMarginRate->IsRelative, SyncingInstrumentMarginRate->InstrumentID);
 	}
 }
-
 void WriteSyncingInstrumentCommissionRate(CThostFtdcSyncingInstrumentCommissionRateField* SyncingInstrumentCommissionRate)
 {
 	if(SyncingInstrumentCommissionRate)
@@ -676,7 +602,6 @@ void WriteSyncingInstrumentCommissionRate(CThostFtdcSyncingInstrumentCommissionR
 			SyncingInstrumentCommissionRate->reserve1, SyncingInstrumentCommissionRate->InvestorRange, SyncingInstrumentCommissionRate->BrokerID, SyncingInstrumentCommissionRate->InvestorID, SyncingInstrumentCommissionRate->OpenRatioByMoney, SyncingInstrumentCommissionRate->OpenRatioByVolume, SyncingInstrumentCommissionRate->CloseRatioByMoney, SyncingInstrumentCommissionRate->CloseRatioByVolume, SyncingInstrumentCommissionRate->CloseTodayRatioByMoney, SyncingInstrumentCommissionRate->CloseTodayRatioByVolume, SyncingInstrumentCommissionRate->InstrumentID);
 	}
 }
-
 void WriteSyncingInstrumentTradingRight(CThostFtdcSyncingInstrumentTradingRightField* SyncingInstrumentTradingRight)
 {
 	if(SyncingInstrumentTradingRight)
@@ -685,7 +610,6 @@ void WriteSyncingInstrumentTradingRight(CThostFtdcSyncingInstrumentTradingRightF
 			SyncingInstrumentTradingRight->reserve1, SyncingInstrumentTradingRight->InvestorRange, SyncingInstrumentTradingRight->BrokerID, SyncingInstrumentTradingRight->InvestorID, SyncingInstrumentTradingRight->TradingRight, SyncingInstrumentTradingRight->InstrumentID);
 	}
 }
-
 void WriteQryOrder(CThostFtdcQryOrderField* QryOrder)
 {
 	if(QryOrder)
@@ -694,7 +618,6 @@ void WriteQryOrder(CThostFtdcQryOrderField* QryOrder)
 			QryOrder->BrokerID, QryOrder->InvestorID, QryOrder->reserve1, QryOrder->ExchangeID, QryOrder->OrderSysID, QryOrder->InsertTimeStart, QryOrder->InsertTimeEnd, QryOrder->InvestUnitID, QryOrder->InstrumentID);
 	}
 }
-
 void WriteQryTrade(CThostFtdcQryTradeField* QryTrade)
 {
 	if(QryTrade)
@@ -703,7 +626,6 @@ void WriteQryTrade(CThostFtdcQryTradeField* QryTrade)
 			QryTrade->BrokerID, QryTrade->InvestorID, QryTrade->reserve1, QryTrade->ExchangeID, QryTrade->TradeID, QryTrade->TradeTimeStart, QryTrade->TradeTimeEnd, QryTrade->InvestUnitID, QryTrade->InstrumentID);
 	}
 }
-
 void WriteQryInvestorPosition(CThostFtdcQryInvestorPositionField* QryInvestorPosition)
 {
 	if(QryInvestorPosition)
@@ -712,7 +634,6 @@ void WriteQryInvestorPosition(CThostFtdcQryInvestorPositionField* QryInvestorPos
 			QryInvestorPosition->BrokerID, QryInvestorPosition->InvestorID, QryInvestorPosition->reserve1, QryInvestorPosition->ExchangeID, QryInvestorPosition->InvestUnitID, QryInvestorPosition->InstrumentID);
 	}
 }
-
 void WriteQryTradingAccount(CThostFtdcQryTradingAccountField* QryTradingAccount)
 {
 	if(QryTradingAccount)
@@ -721,7 +642,6 @@ void WriteQryTradingAccount(CThostFtdcQryTradingAccountField* QryTradingAccount)
 			QryTradingAccount->BrokerID, QryTradingAccount->InvestorID, QryTradingAccount->CurrencyID, QryTradingAccount->BizType, QryTradingAccount->AccountID);
 	}
 }
-
 void WriteQryInvestor(CThostFtdcQryInvestorField* QryInvestor)
 {
 	if(QryInvestor)
@@ -730,7 +650,6 @@ void WriteQryInvestor(CThostFtdcQryInvestorField* QryInvestor)
 			QryInvestor->BrokerID, QryInvestor->InvestorID);
 	}
 }
-
 void WriteQryTradingCode(CThostFtdcQryTradingCodeField* QryTradingCode)
 {
 	if(QryTradingCode)
@@ -739,7 +658,6 @@ void WriteQryTradingCode(CThostFtdcQryTradingCodeField* QryTradingCode)
 			QryTradingCode->BrokerID, QryTradingCode->InvestorID, QryTradingCode->ExchangeID, QryTradingCode->ClientID, QryTradingCode->ClientIDType, QryTradingCode->InvestUnitID);
 	}
 }
-
 void WriteQryInvestorGroup(CThostFtdcQryInvestorGroupField* QryInvestorGroup)
 {
 	if(QryInvestorGroup)
@@ -748,7 +666,6 @@ void WriteQryInvestorGroup(CThostFtdcQryInvestorGroupField* QryInvestorGroup)
 			QryInvestorGroup->BrokerID);
 	}
 }
-
 void WriteQryInstrumentMarginRate(CThostFtdcQryInstrumentMarginRateField* QryInstrumentMarginRate)
 {
 	if(QryInstrumentMarginRate)
@@ -757,7 +674,6 @@ void WriteQryInstrumentMarginRate(CThostFtdcQryInstrumentMarginRateField* QryIns
 			QryInstrumentMarginRate->BrokerID, QryInstrumentMarginRate->InvestorID, QryInstrumentMarginRate->reserve1, QryInstrumentMarginRate->HedgeFlag, QryInstrumentMarginRate->ExchangeID, QryInstrumentMarginRate->InvestUnitID, QryInstrumentMarginRate->InstrumentID);
 	}
 }
-
 void WriteQryInstrumentCommissionRate(CThostFtdcQryInstrumentCommissionRateField* QryInstrumentCommissionRate)
 {
 	if(QryInstrumentCommissionRate)
@@ -766,7 +682,6 @@ void WriteQryInstrumentCommissionRate(CThostFtdcQryInstrumentCommissionRateField
 			QryInstrumentCommissionRate->BrokerID, QryInstrumentCommissionRate->InvestorID, QryInstrumentCommissionRate->reserve1, QryInstrumentCommissionRate->ExchangeID, QryInstrumentCommissionRate->InvestUnitID, QryInstrumentCommissionRate->InstrumentID);
 	}
 }
-
 void WriteQryInstrumentTradingRight(CThostFtdcQryInstrumentTradingRightField* QryInstrumentTradingRight)
 {
 	if(QryInstrumentTradingRight)
@@ -775,7 +690,6 @@ void WriteQryInstrumentTradingRight(CThostFtdcQryInstrumentTradingRightField* Qr
 			QryInstrumentTradingRight->BrokerID, QryInstrumentTradingRight->InvestorID, QryInstrumentTradingRight->reserve1, QryInstrumentTradingRight->InstrumentID);
 	}
 }
-
 void WriteQryBroker(CThostFtdcQryBrokerField* QryBroker)
 {
 	if(QryBroker)
@@ -784,7 +698,6 @@ void WriteQryBroker(CThostFtdcQryBrokerField* QryBroker)
 			QryBroker->BrokerID);
 	}
 }
-
 void WriteQryTrader(CThostFtdcQryTraderField* QryTrader)
 {
 	if(QryTrader)
@@ -793,7 +706,6 @@ void WriteQryTrader(CThostFtdcQryTraderField* QryTrader)
 			QryTrader->ExchangeID, QryTrader->ParticipantID, QryTrader->TraderID);
 	}
 }
-
 void WriteQrySuperUserFunction(CThostFtdcQrySuperUserFunctionField* QrySuperUserFunction)
 {
 	if(QrySuperUserFunction)
@@ -802,7 +714,6 @@ void WriteQrySuperUserFunction(CThostFtdcQrySuperUserFunctionField* QrySuperUser
 			QrySuperUserFunction->UserID);
 	}
 }
-
 void WriteQryUserSession(CThostFtdcQryUserSessionField* QryUserSession)
 {
 	if(QryUserSession)
@@ -811,7 +722,6 @@ void WriteQryUserSession(CThostFtdcQryUserSessionField* QryUserSession)
 			QryUserSession->FrontID, QryUserSession->SessionID, QryUserSession->BrokerID, QryUserSession->UserID);
 	}
 }
-
 void WriteQryPartBroker(CThostFtdcQryPartBrokerField* QryPartBroker)
 {
 	if(QryPartBroker)
@@ -820,7 +730,6 @@ void WriteQryPartBroker(CThostFtdcQryPartBrokerField* QryPartBroker)
 			QryPartBroker->ExchangeID, QryPartBroker->BrokerID, QryPartBroker->ParticipantID);
 	}
 }
-
 void WriteQryFrontStatus(CThostFtdcQryFrontStatusField* QryFrontStatus)
 {
 	if(QryFrontStatus)
@@ -829,7 +738,6 @@ void WriteQryFrontStatus(CThostFtdcQryFrontStatusField* QryFrontStatus)
 			QryFrontStatus->FrontID);
 	}
 }
-
 void WriteQryExchangeOrder(CThostFtdcQryExchangeOrderField* QryExchangeOrder)
 {
 	if(QryExchangeOrder)
@@ -838,7 +746,6 @@ void WriteQryExchangeOrder(CThostFtdcQryExchangeOrderField* QryExchangeOrder)
 			QryExchangeOrder->ParticipantID, QryExchangeOrder->ClientID, QryExchangeOrder->reserve1, QryExchangeOrder->ExchangeID, QryExchangeOrder->TraderID, QryExchangeOrder->ExchangeInstID);
 	}
 }
-
 void WriteQryOrderAction(CThostFtdcQryOrderActionField* QryOrderAction)
 {
 	if(QryOrderAction)
@@ -847,7 +754,6 @@ void WriteQryOrderAction(CThostFtdcQryOrderActionField* QryOrderAction)
 			QryOrderAction->BrokerID, QryOrderAction->InvestorID, QryOrderAction->ExchangeID);
 	}
 }
-
 void WriteQryExchangeOrderAction(CThostFtdcQryExchangeOrderActionField* QryExchangeOrderAction)
 {
 	if(QryExchangeOrderAction)
@@ -856,7 +762,6 @@ void WriteQryExchangeOrderAction(CThostFtdcQryExchangeOrderActionField* QryExcha
 			QryExchangeOrderAction->ParticipantID, QryExchangeOrderAction->ClientID, QryExchangeOrderAction->ExchangeID, QryExchangeOrderAction->TraderID);
 	}
 }
-
 void WriteQrySuperUser(CThostFtdcQrySuperUserField* QrySuperUser)
 {
 	if(QrySuperUser)
@@ -865,7 +770,6 @@ void WriteQrySuperUser(CThostFtdcQrySuperUserField* QrySuperUser)
 			QrySuperUser->UserID);
 	}
 }
-
 void WriteQryExchange(CThostFtdcQryExchangeField* QryExchange)
 {
 	if(QryExchange)
@@ -874,7 +778,6 @@ void WriteQryExchange(CThostFtdcQryExchangeField* QryExchange)
 			QryExchange->ExchangeID);
 	}
 }
-
 void WriteQryProduct(CThostFtdcQryProductField* QryProduct)
 {
 	if(QryProduct)
@@ -883,7 +786,6 @@ void WriteQryProduct(CThostFtdcQryProductField* QryProduct)
 			QryProduct->reserve1, QryProduct->ProductClass, QryProduct->ExchangeID, QryProduct->ProductID);
 	}
 }
-
 void WriteQryInstrument(CThostFtdcQryInstrumentField* QryInstrument)
 {
 	if(QryInstrument)
@@ -892,7 +794,6 @@ void WriteQryInstrument(CThostFtdcQryInstrumentField* QryInstrument)
 			QryInstrument->reserve1, QryInstrument->ExchangeID, QryInstrument->reserve2, QryInstrument->reserve3, QryInstrument->InstrumentID, QryInstrument->ExchangeInstID, QryInstrument->ProductID);
 	}
 }
-
 void WriteQryDepthMarketData(CThostFtdcQryDepthMarketDataField* QryDepthMarketData)
 {
 	if(QryDepthMarketData)
@@ -901,7 +802,6 @@ void WriteQryDepthMarketData(CThostFtdcQryDepthMarketDataField* QryDepthMarketDa
 			QryDepthMarketData->reserve1, QryDepthMarketData->ExchangeID, QryDepthMarketData->InstrumentID);
 	}
 }
-
 void WriteQryBrokerUser(CThostFtdcQryBrokerUserField* QryBrokerUser)
 {
 	if(QryBrokerUser)
@@ -910,7 +810,6 @@ void WriteQryBrokerUser(CThostFtdcQryBrokerUserField* QryBrokerUser)
 			QryBrokerUser->BrokerID, QryBrokerUser->UserID);
 	}
 }
-
 void WriteQryBrokerUserFunction(CThostFtdcQryBrokerUserFunctionField* QryBrokerUserFunction)
 {
 	if(QryBrokerUserFunction)
@@ -919,7 +818,6 @@ void WriteQryBrokerUserFunction(CThostFtdcQryBrokerUserFunctionField* QryBrokerU
 			QryBrokerUserFunction->BrokerID, QryBrokerUserFunction->UserID);
 	}
 }
-
 void WriteQryTraderOffer(CThostFtdcQryTraderOfferField* QryTraderOffer)
 {
 	if(QryTraderOffer)
@@ -928,7 +826,6 @@ void WriteQryTraderOffer(CThostFtdcQryTraderOfferField* QryTraderOffer)
 			QryTraderOffer->ExchangeID, QryTraderOffer->ParticipantID, QryTraderOffer->TraderID);
 	}
 }
-
 void WriteQrySyncDeposit(CThostFtdcQrySyncDepositField* QrySyncDeposit)
 {
 	if(QrySyncDeposit)
@@ -937,7 +834,6 @@ void WriteQrySyncDeposit(CThostFtdcQrySyncDepositField* QrySyncDeposit)
 			QrySyncDeposit->BrokerID, QrySyncDeposit->DepositSeqNo);
 	}
 }
-
 void WriteQrySettlementInfo(CThostFtdcQrySettlementInfoField* QrySettlementInfo)
 {
 	if(QrySettlementInfo)
@@ -946,7 +842,6 @@ void WriteQrySettlementInfo(CThostFtdcQrySettlementInfoField* QrySettlementInfo)
 			QrySettlementInfo->BrokerID, QrySettlementInfo->InvestorID, QrySettlementInfo->TradingDay, QrySettlementInfo->AccountID, QrySettlementInfo->CurrencyID);
 	}
 }
-
 void WriteQryExchangeMarginRate(CThostFtdcQryExchangeMarginRateField* QryExchangeMarginRate)
 {
 	if(QryExchangeMarginRate)
@@ -955,7 +850,6 @@ void WriteQryExchangeMarginRate(CThostFtdcQryExchangeMarginRateField* QryExchang
 			QryExchangeMarginRate->BrokerID, QryExchangeMarginRate->reserve1, QryExchangeMarginRate->HedgeFlag, QryExchangeMarginRate->ExchangeID, QryExchangeMarginRate->InstrumentID);
 	}
 }
-
 void WriteQryExchangeMarginRateAdjust(CThostFtdcQryExchangeMarginRateAdjustField* QryExchangeMarginRateAdjust)
 {
 	if(QryExchangeMarginRateAdjust)
@@ -964,7 +858,6 @@ void WriteQryExchangeMarginRateAdjust(CThostFtdcQryExchangeMarginRateAdjustField
 			QryExchangeMarginRateAdjust->BrokerID, QryExchangeMarginRateAdjust->reserve1, QryExchangeMarginRateAdjust->HedgeFlag, QryExchangeMarginRateAdjust->InstrumentID);
 	}
 }
-
 void WriteQryExchangeRate(CThostFtdcQryExchangeRateField* QryExchangeRate)
 {
 	if(QryExchangeRate)
@@ -973,7 +866,6 @@ void WriteQryExchangeRate(CThostFtdcQryExchangeRateField* QryExchangeRate)
 			QryExchangeRate->BrokerID, QryExchangeRate->FromCurrencyID, QryExchangeRate->ToCurrencyID);
 	}
 }
-
 void WriteQrySyncFundMortgage(CThostFtdcQrySyncFundMortgageField* QrySyncFundMortgage)
 {
 	if(QrySyncFundMortgage)
@@ -982,7 +874,6 @@ void WriteQrySyncFundMortgage(CThostFtdcQrySyncFundMortgageField* QrySyncFundMor
 			QrySyncFundMortgage->BrokerID, QrySyncFundMortgage->MortgageSeqNo);
 	}
 }
-
 void WriteQryHisOrder(CThostFtdcQryHisOrderField* QryHisOrder)
 {
 	if(QryHisOrder)
@@ -991,7 +882,6 @@ void WriteQryHisOrder(CThostFtdcQryHisOrderField* QryHisOrder)
 			QryHisOrder->BrokerID, QryHisOrder->InvestorID, QryHisOrder->reserve1, QryHisOrder->ExchangeID, QryHisOrder->OrderSysID, QryHisOrder->InsertTimeStart, QryHisOrder->InsertTimeEnd, QryHisOrder->TradingDay, QryHisOrder->SettlementID, QryHisOrder->InstrumentID);
 	}
 }
-
 void WriteOptionInstrMiniMargin(CThostFtdcOptionInstrMiniMarginField* OptionInstrMiniMargin)
 {
 	if(OptionInstrMiniMargin)
@@ -1000,7 +890,6 @@ void WriteOptionInstrMiniMargin(CThostFtdcOptionInstrMiniMarginField* OptionInst
 			OptionInstrMiniMargin->reserve1, OptionInstrMiniMargin->InvestorRange, OptionInstrMiniMargin->BrokerID, OptionInstrMiniMargin->InvestorID, OptionInstrMiniMargin->MinMargin, OptionInstrMiniMargin->ValueMethod, OptionInstrMiniMargin->IsRelative, OptionInstrMiniMargin->InstrumentID);
 	}
 }
-
 void WriteOptionInstrMarginAdjust(CThostFtdcOptionInstrMarginAdjustField* OptionInstrMarginAdjust)
 {
 	if(OptionInstrMarginAdjust)
@@ -1009,7 +898,6 @@ void WriteOptionInstrMarginAdjust(CThostFtdcOptionInstrMarginAdjustField* Option
 			OptionInstrMarginAdjust->reserve1, OptionInstrMarginAdjust->InvestorRange, OptionInstrMarginAdjust->BrokerID, OptionInstrMarginAdjust->InvestorID, OptionInstrMarginAdjust->SShortMarginRatioByMoney, OptionInstrMarginAdjust->SShortMarginRatioByVolume, OptionInstrMarginAdjust->HShortMarginRatioByMoney, OptionInstrMarginAdjust->HShortMarginRatioByVolume, OptionInstrMarginAdjust->AShortMarginRatioByMoney, OptionInstrMarginAdjust->AShortMarginRatioByVolume, OptionInstrMarginAdjust->IsRelative, OptionInstrMarginAdjust->MShortMarginRatioByMoney, OptionInstrMarginAdjust->MShortMarginRatioByVolume, OptionInstrMarginAdjust->InstrumentID);
 	}
 }
-
 void WriteOptionInstrCommRate(CThostFtdcOptionInstrCommRateField* OptionInstrCommRate)
 {
 	if(OptionInstrCommRate)
@@ -1018,7 +906,6 @@ void WriteOptionInstrCommRate(CThostFtdcOptionInstrCommRateField* OptionInstrCom
 			OptionInstrCommRate->reserve1, OptionInstrCommRate->InvestorRange, OptionInstrCommRate->BrokerID, OptionInstrCommRate->InvestorID, OptionInstrCommRate->OpenRatioByMoney, OptionInstrCommRate->OpenRatioByVolume, OptionInstrCommRate->CloseRatioByMoney, OptionInstrCommRate->CloseRatioByVolume, OptionInstrCommRate->CloseTodayRatioByMoney, OptionInstrCommRate->CloseTodayRatioByVolume, OptionInstrCommRate->StrikeRatioByMoney, OptionInstrCommRate->StrikeRatioByVolume, OptionInstrCommRate->ExchangeID, OptionInstrCommRate->InvestUnitID, OptionInstrCommRate->InstrumentID);
 	}
 }
-
 void WriteOptionInstrTradeCost(CThostFtdcOptionInstrTradeCostField* OptionInstrTradeCost)
 {
 	if(OptionInstrTradeCost)
@@ -1027,7 +914,6 @@ void WriteOptionInstrTradeCost(CThostFtdcOptionInstrTradeCostField* OptionInstrT
 			OptionInstrTradeCost->BrokerID, OptionInstrTradeCost->InvestorID, OptionInstrTradeCost->reserve1, OptionInstrTradeCost->HedgeFlag, OptionInstrTradeCost->FixedMargin, OptionInstrTradeCost->MiniMargin, OptionInstrTradeCost->Royalty, OptionInstrTradeCost->ExchFixedMargin, OptionInstrTradeCost->ExchMiniMargin, OptionInstrTradeCost->ExchangeID, OptionInstrTradeCost->InvestUnitID, OptionInstrTradeCost->InstrumentID);
 	}
 }
-
 void WriteQryOptionInstrTradeCost(CThostFtdcQryOptionInstrTradeCostField* QryOptionInstrTradeCost)
 {
 	if(QryOptionInstrTradeCost)
@@ -1036,7 +922,6 @@ void WriteQryOptionInstrTradeCost(CThostFtdcQryOptionInstrTradeCostField* QryOpt
 			QryOptionInstrTradeCost->BrokerID, QryOptionInstrTradeCost->InvestorID, QryOptionInstrTradeCost->reserve1, QryOptionInstrTradeCost->HedgeFlag, QryOptionInstrTradeCost->InputPrice, QryOptionInstrTradeCost->UnderlyingPrice, QryOptionInstrTradeCost->ExchangeID, QryOptionInstrTradeCost->InvestUnitID, QryOptionInstrTradeCost->InstrumentID);
 	}
 }
-
 void WriteQryOptionInstrCommRate(CThostFtdcQryOptionInstrCommRateField* QryOptionInstrCommRate)
 {
 	if(QryOptionInstrCommRate)
@@ -1045,7 +930,6 @@ void WriteQryOptionInstrCommRate(CThostFtdcQryOptionInstrCommRateField* QryOptio
 			QryOptionInstrCommRate->BrokerID, QryOptionInstrCommRate->InvestorID, QryOptionInstrCommRate->reserve1, QryOptionInstrCommRate->ExchangeID, QryOptionInstrCommRate->InvestUnitID, QryOptionInstrCommRate->InstrumentID);
 	}
 }
-
 void WriteIndexPrice(CThostFtdcIndexPriceField* IndexPrice)
 {
 	if(IndexPrice)
@@ -1054,7 +938,6 @@ void WriteIndexPrice(CThostFtdcIndexPriceField* IndexPrice)
 			IndexPrice->BrokerID, IndexPrice->reserve1, IndexPrice->ClosePrice, IndexPrice->InstrumentID);
 	}
 }
-
 void WriteInputExecOrder(CThostFtdcInputExecOrderField* InputExecOrder)
 {
 	if(InputExecOrder)
@@ -1063,7 +946,6 @@ void WriteInputExecOrder(CThostFtdcInputExecOrderField* InputExecOrder)
 			InputExecOrder->BrokerID, InputExecOrder->InvestorID, InputExecOrder->reserve1, InputExecOrder->ExecOrderRef, InputExecOrder->UserID, InputExecOrder->Volume, InputExecOrder->RequestID, InputExecOrder->BusinessUnit, InputExecOrder->OffsetFlag, InputExecOrder->HedgeFlag, InputExecOrder->ActionType, InputExecOrder->PosiDirection, InputExecOrder->ReservePositionFlag, InputExecOrder->CloseFlag, InputExecOrder->ExchangeID, InputExecOrder->InvestUnitID, InputExecOrder->AccountID, InputExecOrder->CurrencyID, InputExecOrder->ClientID, InputExecOrder->reserve2, InputExecOrder->MacAddress, InputExecOrder->InstrumentID, InputExecOrder->IPAddress);
 	}
 }
-
 void WriteInputExecOrderAction(CThostFtdcInputExecOrderActionField* InputExecOrderAction)
 {
 	if(InputExecOrderAction)
@@ -1072,7 +954,6 @@ void WriteInputExecOrderAction(CThostFtdcInputExecOrderActionField* InputExecOrd
 			InputExecOrderAction->BrokerID, InputExecOrderAction->InvestorID, InputExecOrderAction->ExecOrderActionRef, InputExecOrderAction->ExecOrderRef, InputExecOrderAction->RequestID, InputExecOrderAction->FrontID, InputExecOrderAction->SessionID, InputExecOrderAction->ExchangeID, InputExecOrderAction->ExecOrderSysID, InputExecOrderAction->ActionFlag, InputExecOrderAction->UserID, InputExecOrderAction->reserve1, InputExecOrderAction->InvestUnitID, InputExecOrderAction->reserve2, InputExecOrderAction->MacAddress, InputExecOrderAction->InstrumentID, InputExecOrderAction->IPAddress);
 	}
 }
-
 void WriteExecOrder(CThostFtdcExecOrderField* ExecOrder)
 {
 	if(ExecOrder)
@@ -1081,7 +962,6 @@ void WriteExecOrder(CThostFtdcExecOrderField* ExecOrder)
 			ExecOrder->BrokerID, ExecOrder->InvestorID, ExecOrder->reserve1, ExecOrder->ExecOrderRef, ExecOrder->UserID, ExecOrder->Volume, ExecOrder->RequestID, ExecOrder->BusinessUnit, ExecOrder->OffsetFlag, ExecOrder->HedgeFlag, ExecOrder->ActionType, ExecOrder->PosiDirection, ExecOrder->ReservePositionFlag, ExecOrder->CloseFlag, ExecOrder->ExecOrderLocalID, ExecOrder->ExchangeID, ExecOrder->ParticipantID, ExecOrder->ClientID, ExecOrder->reserve2, ExecOrder->TraderID, ExecOrder->InstallID, ExecOrder->OrderSubmitStatus, ExecOrder->NotifySequence, ExecOrder->TradingDay, ExecOrder->SettlementID, ExecOrder->ExecOrderSysID, ExecOrder->InsertDate, ExecOrder->InsertTime, ExecOrder->CancelTime, ExecOrder->ExecResult, ExecOrder->ClearingPartID, ExecOrder->SequenceNo, ExecOrder->FrontID, ExecOrder->SessionID, ExecOrder->UserProductInfo, ExecOrder->StatusMsg, ExecOrder->ActiveUserID, ExecOrder->BrokerExecOrderSeq, ExecOrder->BranchID, ExecOrder->InvestUnitID, ExecOrder->AccountID, ExecOrder->CurrencyID, ExecOrder->reserve3, ExecOrder->MacAddress, ExecOrder->InstrumentID, ExecOrder->ExchangeInstID, ExecOrder->IPAddress);
 	}
 }
-
 void WriteExecOrderAction(CThostFtdcExecOrderActionField* ExecOrderAction)
 {
 	if(ExecOrderAction)
@@ -1090,7 +970,6 @@ void WriteExecOrderAction(CThostFtdcExecOrderActionField* ExecOrderAction)
 			ExecOrderAction->BrokerID, ExecOrderAction->InvestorID, ExecOrderAction->ExecOrderActionRef, ExecOrderAction->ExecOrderRef, ExecOrderAction->RequestID, ExecOrderAction->FrontID, ExecOrderAction->SessionID, ExecOrderAction->ExchangeID, ExecOrderAction->ExecOrderSysID, ExecOrderAction->ActionFlag, ExecOrderAction->ActionDate, ExecOrderAction->ActionTime, ExecOrderAction->TraderID, ExecOrderAction->InstallID, ExecOrderAction->ExecOrderLocalID, ExecOrderAction->ActionLocalID, ExecOrderAction->ParticipantID, ExecOrderAction->ClientID, ExecOrderAction->BusinessUnit, ExecOrderAction->OrderActionStatus, ExecOrderAction->UserID, ExecOrderAction->ActionType, ExecOrderAction->StatusMsg, ExecOrderAction->reserve1, ExecOrderAction->BranchID, ExecOrderAction->InvestUnitID, ExecOrderAction->reserve2, ExecOrderAction->MacAddress, ExecOrderAction->InstrumentID, ExecOrderAction->IPAddress);
 	}
 }
-
 void WriteQryExecOrder(CThostFtdcQryExecOrderField* QryExecOrder)
 {
 	if(QryExecOrder)
@@ -1099,7 +978,6 @@ void WriteQryExecOrder(CThostFtdcQryExecOrderField* QryExecOrder)
 			QryExecOrder->BrokerID, QryExecOrder->InvestorID, QryExecOrder->reserve1, QryExecOrder->ExchangeID, QryExecOrder->ExecOrderSysID, QryExecOrder->InsertTimeStart, QryExecOrder->InsertTimeEnd, QryExecOrder->InstrumentID);
 	}
 }
-
 void WriteExchangeExecOrder(CThostFtdcExchangeExecOrderField* ExchangeExecOrder)
 {
 	if(ExchangeExecOrder)
@@ -1108,7 +986,6 @@ void WriteExchangeExecOrder(CThostFtdcExchangeExecOrderField* ExchangeExecOrder)
 			ExchangeExecOrder->Volume, ExchangeExecOrder->RequestID, ExchangeExecOrder->BusinessUnit, ExchangeExecOrder->OffsetFlag, ExchangeExecOrder->HedgeFlag, ExchangeExecOrder->ActionType, ExchangeExecOrder->PosiDirection, ExchangeExecOrder->ReservePositionFlag, ExchangeExecOrder->CloseFlag, ExchangeExecOrder->ExecOrderLocalID, ExchangeExecOrder->ExchangeID, ExchangeExecOrder->ParticipantID, ExchangeExecOrder->ClientID, ExchangeExecOrder->reserve1, ExchangeExecOrder->TraderID, ExchangeExecOrder->InstallID, ExchangeExecOrder->OrderSubmitStatus, ExchangeExecOrder->NotifySequence, ExchangeExecOrder->TradingDay, ExchangeExecOrder->SettlementID, ExchangeExecOrder->ExecOrderSysID, ExchangeExecOrder->InsertDate, ExchangeExecOrder->InsertTime, ExchangeExecOrder->CancelTime, ExchangeExecOrder->ExecResult, ExchangeExecOrder->ClearingPartID, ExchangeExecOrder->SequenceNo, ExchangeExecOrder->BranchID, ExchangeExecOrder->reserve2, ExchangeExecOrder->MacAddress, ExchangeExecOrder->ExchangeInstID, ExchangeExecOrder->IPAddress);
 	}
 }
-
 void WriteQryExchangeExecOrder(CThostFtdcQryExchangeExecOrderField* QryExchangeExecOrder)
 {
 	if(QryExchangeExecOrder)
@@ -1117,7 +994,6 @@ void WriteQryExchangeExecOrder(CThostFtdcQryExchangeExecOrderField* QryExchangeE
 			QryExchangeExecOrder->ParticipantID, QryExchangeExecOrder->ClientID, QryExchangeExecOrder->reserve1, QryExchangeExecOrder->ExchangeID, QryExchangeExecOrder->TraderID, QryExchangeExecOrder->ExchangeInstID);
 	}
 }
-
 void WriteQryExecOrderAction(CThostFtdcQryExecOrderActionField* QryExecOrderAction)
 {
 	if(QryExecOrderAction)
@@ -1126,7 +1002,6 @@ void WriteQryExecOrderAction(CThostFtdcQryExecOrderActionField* QryExecOrderActi
 			QryExecOrderAction->BrokerID, QryExecOrderAction->InvestorID, QryExecOrderAction->ExchangeID);
 	}
 }
-
 void WriteExchangeExecOrderAction(CThostFtdcExchangeExecOrderActionField* ExchangeExecOrderAction)
 {
 	if(ExchangeExecOrderAction)
@@ -1135,7 +1010,6 @@ void WriteExchangeExecOrderAction(CThostFtdcExchangeExecOrderActionField* Exchan
 			ExchangeExecOrderAction->ExchangeID, ExchangeExecOrderAction->ExecOrderSysID, ExchangeExecOrderAction->ActionFlag, ExchangeExecOrderAction->ActionDate, ExchangeExecOrderAction->ActionTime, ExchangeExecOrderAction->TraderID, ExchangeExecOrderAction->InstallID, ExchangeExecOrderAction->ExecOrderLocalID, ExchangeExecOrderAction->ActionLocalID, ExchangeExecOrderAction->ParticipantID, ExchangeExecOrderAction->ClientID, ExchangeExecOrderAction->BusinessUnit, ExchangeExecOrderAction->OrderActionStatus, ExchangeExecOrderAction->UserID, ExchangeExecOrderAction->ActionType, ExchangeExecOrderAction->BranchID, ExchangeExecOrderAction->reserve1, ExchangeExecOrderAction->MacAddress, ExchangeExecOrderAction->reserve2, ExchangeExecOrderAction->Volume, ExchangeExecOrderAction->IPAddress, ExchangeExecOrderAction->ExchangeInstID);
 	}
 }
-
 void WriteQryExchangeExecOrderAction(CThostFtdcQryExchangeExecOrderActionField* QryExchangeExecOrderAction)
 {
 	if(QryExchangeExecOrderAction)
@@ -1144,7 +1018,6 @@ void WriteQryExchangeExecOrderAction(CThostFtdcQryExchangeExecOrderActionField* 
 			QryExchangeExecOrderAction->ParticipantID, QryExchangeExecOrderAction->ClientID, QryExchangeExecOrderAction->ExchangeID, QryExchangeExecOrderAction->TraderID);
 	}
 }
-
 void WriteErrExecOrder(CThostFtdcErrExecOrderField* ErrExecOrder)
 {
 	if(ErrExecOrder)
@@ -1153,7 +1026,6 @@ void WriteErrExecOrder(CThostFtdcErrExecOrderField* ErrExecOrder)
 			ErrExecOrder->BrokerID, ErrExecOrder->InvestorID, ErrExecOrder->reserve1, ErrExecOrder->ExecOrderRef, ErrExecOrder->UserID, ErrExecOrder->Volume, ErrExecOrder->RequestID, ErrExecOrder->BusinessUnit, ErrExecOrder->OffsetFlag, ErrExecOrder->HedgeFlag, ErrExecOrder->ActionType, ErrExecOrder->PosiDirection, ErrExecOrder->ReservePositionFlag, ErrExecOrder->CloseFlag, ErrExecOrder->ExchangeID, ErrExecOrder->InvestUnitID, ErrExecOrder->AccountID, ErrExecOrder->CurrencyID, ErrExecOrder->ClientID, ErrExecOrder->reserve2, ErrExecOrder->MacAddress, ErrExecOrder->ErrorID, ErrExecOrder->ErrorMsg, ErrExecOrder->InstrumentID, ErrExecOrder->IPAddress);
 	}
 }
-
 void WriteQryErrExecOrder(CThostFtdcQryErrExecOrderField* QryErrExecOrder)
 {
 	if(QryErrExecOrder)
@@ -1162,7 +1034,6 @@ void WriteQryErrExecOrder(CThostFtdcQryErrExecOrderField* QryErrExecOrder)
 			QryErrExecOrder->BrokerID, QryErrExecOrder->InvestorID);
 	}
 }
-
 void WriteErrExecOrderAction(CThostFtdcErrExecOrderActionField* ErrExecOrderAction)
 {
 	if(ErrExecOrderAction)
@@ -1171,7 +1042,6 @@ void WriteErrExecOrderAction(CThostFtdcErrExecOrderActionField* ErrExecOrderActi
 			ErrExecOrderAction->BrokerID, ErrExecOrderAction->InvestorID, ErrExecOrderAction->ExecOrderActionRef, ErrExecOrderAction->ExecOrderRef, ErrExecOrderAction->RequestID, ErrExecOrderAction->FrontID, ErrExecOrderAction->SessionID, ErrExecOrderAction->ExchangeID, ErrExecOrderAction->ExecOrderSysID, ErrExecOrderAction->ActionFlag, ErrExecOrderAction->UserID, ErrExecOrderAction->reserve1, ErrExecOrderAction->InvestUnitID, ErrExecOrderAction->reserve2, ErrExecOrderAction->MacAddress, ErrExecOrderAction->ErrorID, ErrExecOrderAction->ErrorMsg, ErrExecOrderAction->InstrumentID, ErrExecOrderAction->IPAddress);
 	}
 }
-
 void WriteQryErrExecOrderAction(CThostFtdcQryErrExecOrderActionField* QryErrExecOrderAction)
 {
 	if(QryErrExecOrderAction)
@@ -1180,7 +1050,6 @@ void WriteQryErrExecOrderAction(CThostFtdcQryErrExecOrderActionField* QryErrExec
 			QryErrExecOrderAction->BrokerID, QryErrExecOrderAction->InvestorID);
 	}
 }
-
 void WriteOptionInstrTradingRight(CThostFtdcOptionInstrTradingRightField* OptionInstrTradingRight)
 {
 	if(OptionInstrTradingRight)
@@ -1189,7 +1058,6 @@ void WriteOptionInstrTradingRight(CThostFtdcOptionInstrTradingRightField* Option
 			OptionInstrTradingRight->reserve1, OptionInstrTradingRight->InvestorRange, OptionInstrTradingRight->BrokerID, OptionInstrTradingRight->InvestorID, OptionInstrTradingRight->Direction, OptionInstrTradingRight->TradingRight, OptionInstrTradingRight->InstrumentID);
 	}
 }
-
 void WriteQryOptionInstrTradingRight(CThostFtdcQryOptionInstrTradingRightField* QryOptionInstrTradingRight)
 {
 	if(QryOptionInstrTradingRight)
@@ -1198,7 +1066,6 @@ void WriteQryOptionInstrTradingRight(CThostFtdcQryOptionInstrTradingRightField* 
 			QryOptionInstrTradingRight->BrokerID, QryOptionInstrTradingRight->InvestorID, QryOptionInstrTradingRight->reserve1, QryOptionInstrTradingRight->Direction, QryOptionInstrTradingRight->InstrumentID);
 	}
 }
-
 void WriteInputForQuote(CThostFtdcInputForQuoteField* InputForQuote)
 {
 	if(InputForQuote)
@@ -1207,7 +1074,6 @@ void WriteInputForQuote(CThostFtdcInputForQuoteField* InputForQuote)
 			InputForQuote->BrokerID, InputForQuote->InvestorID, InputForQuote->reserve1, InputForQuote->ForQuoteRef, InputForQuote->UserID, InputForQuote->ExchangeID, InputForQuote->InvestUnitID, InputForQuote->reserve2, InputForQuote->MacAddress, InputForQuote->InstrumentID, InputForQuote->IPAddress);
 	}
 }
-
 void WriteForQuote(CThostFtdcForQuoteField* ForQuote)
 {
 	if(ForQuote)
@@ -1216,7 +1082,6 @@ void WriteForQuote(CThostFtdcForQuoteField* ForQuote)
 			ForQuote->BrokerID, ForQuote->InvestorID, ForQuote->reserve1, ForQuote->ForQuoteRef, ForQuote->UserID, ForQuote->ForQuoteLocalID, ForQuote->ExchangeID, ForQuote->ParticipantID, ForQuote->ClientID, ForQuote->reserve2, ForQuote->TraderID, ForQuote->InstallID, ForQuote->InsertDate, ForQuote->InsertTime, ForQuote->ForQuoteStatus, ForQuote->FrontID, ForQuote->SessionID, ForQuote->StatusMsg, ForQuote->ActiveUserID, ForQuote->BrokerForQutoSeq, ForQuote->InvestUnitID, ForQuote->reserve3, ForQuote->MacAddress, ForQuote->InstrumentID, ForQuote->ExchangeInstID, ForQuote->IPAddress);
 	}
 }
-
 void WriteQryForQuote(CThostFtdcQryForQuoteField* QryForQuote)
 {
 	if(QryForQuote)
@@ -1225,7 +1090,6 @@ void WriteQryForQuote(CThostFtdcQryForQuoteField* QryForQuote)
 			QryForQuote->BrokerID, QryForQuote->InvestorID, QryForQuote->reserve1, QryForQuote->ExchangeID, QryForQuote->InsertTimeStart, QryForQuote->InsertTimeEnd, QryForQuote->InvestUnitID, QryForQuote->InstrumentID);
 	}
 }
-
 void WriteExchangeForQuote(CThostFtdcExchangeForQuoteField* ExchangeForQuote)
 {
 	if(ExchangeForQuote)
@@ -1234,7 +1098,6 @@ void WriteExchangeForQuote(CThostFtdcExchangeForQuoteField* ExchangeForQuote)
 			ExchangeForQuote->ForQuoteLocalID, ExchangeForQuote->ExchangeID, ExchangeForQuote->ParticipantID, ExchangeForQuote->ClientID, ExchangeForQuote->reserve1, ExchangeForQuote->TraderID, ExchangeForQuote->InstallID, ExchangeForQuote->InsertDate, ExchangeForQuote->InsertTime, ExchangeForQuote->ForQuoteStatus, ExchangeForQuote->reserve2, ExchangeForQuote->MacAddress, ExchangeForQuote->ExchangeInstID, ExchangeForQuote->IPAddress);
 	}
 }
-
 void WriteQryExchangeForQuote(CThostFtdcQryExchangeForQuoteField* QryExchangeForQuote)
 {
 	if(QryExchangeForQuote)
@@ -1243,7 +1106,6 @@ void WriteQryExchangeForQuote(CThostFtdcQryExchangeForQuoteField* QryExchangeFor
 			QryExchangeForQuote->ParticipantID, QryExchangeForQuote->ClientID, QryExchangeForQuote->reserve1, QryExchangeForQuote->ExchangeID, QryExchangeForQuote->TraderID, QryExchangeForQuote->ExchangeInstID);
 	}
 }
-
 void WriteInputQuote(CThostFtdcInputQuoteField* InputQuote)
 {
 	if(InputQuote)
@@ -1252,7 +1114,6 @@ void WriteInputQuote(CThostFtdcInputQuoteField* InputQuote)
 			InputQuote->BrokerID, InputQuote->InvestorID, InputQuote->reserve1, InputQuote->QuoteRef, InputQuote->UserID, InputQuote->AskPrice, InputQuote->BidPrice, InputQuote->AskVolume, InputQuote->BidVolume, InputQuote->RequestID, InputQuote->BusinessUnit, InputQuote->AskOffsetFlag, InputQuote->BidOffsetFlag, InputQuote->AskHedgeFlag, InputQuote->BidHedgeFlag, InputQuote->AskOrderRef, InputQuote->BidOrderRef, InputQuote->ForQuoteSysID, InputQuote->ExchangeID, InputQuote->InvestUnitID, InputQuote->ClientID, InputQuote->reserve2, InputQuote->MacAddress, InputQuote->InstrumentID, InputQuote->IPAddress, InputQuote->ReplaceSysID, InputQuote->TimeCondition);
 	}
 }
-
 void WriteInputQuoteAction(CThostFtdcInputQuoteActionField* InputQuoteAction)
 {
 	if(InputQuoteAction)
@@ -1261,7 +1122,6 @@ void WriteInputQuoteAction(CThostFtdcInputQuoteActionField* InputQuoteAction)
 			InputQuoteAction->BrokerID, InputQuoteAction->InvestorID, InputQuoteAction->QuoteActionRef, InputQuoteAction->QuoteRef, InputQuoteAction->RequestID, InputQuoteAction->FrontID, InputQuoteAction->SessionID, InputQuoteAction->ExchangeID, InputQuoteAction->QuoteSysID, InputQuoteAction->ActionFlag, InputQuoteAction->UserID, InputQuoteAction->reserve1, InputQuoteAction->InvestUnitID, InputQuoteAction->ClientID, InputQuoteAction->reserve2, InputQuoteAction->MacAddress, InputQuoteAction->InstrumentID, InputQuoteAction->IPAddress);
 	}
 }
-
 void WriteQuote(CThostFtdcQuoteField* Quote)
 {
 	if(Quote)
@@ -1270,7 +1130,6 @@ void WriteQuote(CThostFtdcQuoteField* Quote)
 			Quote->BrokerID, Quote->InvestorID, Quote->reserve1, Quote->QuoteRef, Quote->UserID, Quote->AskPrice, Quote->BidPrice, Quote->AskVolume, Quote->BidVolume, Quote->RequestID, Quote->BusinessUnit, Quote->AskOffsetFlag, Quote->BidOffsetFlag, Quote->AskHedgeFlag, Quote->BidHedgeFlag, Quote->QuoteLocalID, Quote->ExchangeID, Quote->ParticipantID, Quote->ClientID, Quote->reserve2, Quote->TraderID, Quote->InstallID, Quote->NotifySequence, Quote->OrderSubmitStatus, Quote->TradingDay, Quote->SettlementID, Quote->QuoteSysID, Quote->InsertDate, Quote->InsertTime, Quote->CancelTime, Quote->QuoteStatus, Quote->ClearingPartID, Quote->SequenceNo, Quote->AskOrderSysID, Quote->BidOrderSysID, Quote->FrontID, Quote->SessionID, Quote->UserProductInfo, Quote->StatusMsg, Quote->ActiveUserID, Quote->BrokerQuoteSeq, Quote->AskOrderRef, Quote->BidOrderRef, Quote->ForQuoteSysID, Quote->BranchID, Quote->InvestUnitID, Quote->AccountID, Quote->CurrencyID, Quote->reserve3, Quote->MacAddress, Quote->InstrumentID, Quote->ExchangeInstID, Quote->IPAddress, Quote->ReplaceSysID, Quote->TimeCondition);
 	}
 }
-
 void WriteQuoteAction(CThostFtdcQuoteActionField* QuoteAction)
 {
 	if(QuoteAction)
@@ -1279,7 +1138,6 @@ void WriteQuoteAction(CThostFtdcQuoteActionField* QuoteAction)
 			QuoteAction->BrokerID, QuoteAction->InvestorID, QuoteAction->QuoteActionRef, QuoteAction->QuoteRef, QuoteAction->RequestID, QuoteAction->FrontID, QuoteAction->SessionID, QuoteAction->ExchangeID, QuoteAction->QuoteSysID, QuoteAction->ActionFlag, QuoteAction->ActionDate, QuoteAction->ActionTime, QuoteAction->TraderID, QuoteAction->InstallID, QuoteAction->QuoteLocalID, QuoteAction->ActionLocalID, QuoteAction->ParticipantID, QuoteAction->ClientID, QuoteAction->BusinessUnit, QuoteAction->OrderActionStatus, QuoteAction->UserID, QuoteAction->StatusMsg, QuoteAction->reserve1, QuoteAction->BranchID, QuoteAction->InvestUnitID, QuoteAction->reserve2, QuoteAction->MacAddress, QuoteAction->InstrumentID, QuoteAction->IPAddress);
 	}
 }
-
 void WriteQryQuote(CThostFtdcQryQuoteField* QryQuote)
 {
 	if(QryQuote)
@@ -1288,7 +1146,6 @@ void WriteQryQuote(CThostFtdcQryQuoteField* QryQuote)
 			QryQuote->BrokerID, QryQuote->InvestorID, QryQuote->reserve1, QryQuote->ExchangeID, QryQuote->QuoteSysID, QryQuote->InsertTimeStart, QryQuote->InsertTimeEnd, QryQuote->InvestUnitID, QryQuote->InstrumentID);
 	}
 }
-
 void WriteExchangeQuote(CThostFtdcExchangeQuoteField* ExchangeQuote)
 {
 	if(ExchangeQuote)
@@ -1297,7 +1154,6 @@ void WriteExchangeQuote(CThostFtdcExchangeQuoteField* ExchangeQuote)
 			ExchangeQuote->AskPrice, ExchangeQuote->BidPrice, ExchangeQuote->AskVolume, ExchangeQuote->BidVolume, ExchangeQuote->RequestID, ExchangeQuote->BusinessUnit, ExchangeQuote->AskOffsetFlag, ExchangeQuote->BidOffsetFlag, ExchangeQuote->AskHedgeFlag, ExchangeQuote->BidHedgeFlag, ExchangeQuote->QuoteLocalID, ExchangeQuote->ExchangeID, ExchangeQuote->ParticipantID, ExchangeQuote->ClientID, ExchangeQuote->reserve1, ExchangeQuote->TraderID, ExchangeQuote->InstallID, ExchangeQuote->NotifySequence, ExchangeQuote->OrderSubmitStatus, ExchangeQuote->TradingDay, ExchangeQuote->SettlementID, ExchangeQuote->QuoteSysID, ExchangeQuote->InsertDate, ExchangeQuote->InsertTime, ExchangeQuote->CancelTime, ExchangeQuote->QuoteStatus, ExchangeQuote->ClearingPartID, ExchangeQuote->SequenceNo, ExchangeQuote->AskOrderSysID, ExchangeQuote->BidOrderSysID, ExchangeQuote->ForQuoteSysID, ExchangeQuote->BranchID, ExchangeQuote->reserve2, ExchangeQuote->MacAddress, ExchangeQuote->ExchangeInstID, ExchangeQuote->IPAddress, ExchangeQuote->TimeCondition);
 	}
 }
-
 void WriteQryExchangeQuote(CThostFtdcQryExchangeQuoteField* QryExchangeQuote)
 {
 	if(QryExchangeQuote)
@@ -1306,7 +1162,6 @@ void WriteQryExchangeQuote(CThostFtdcQryExchangeQuoteField* QryExchangeQuote)
 			QryExchangeQuote->ParticipantID, QryExchangeQuote->ClientID, QryExchangeQuote->reserve1, QryExchangeQuote->ExchangeID, QryExchangeQuote->TraderID, QryExchangeQuote->ExchangeInstID);
 	}
 }
-
 void WriteQryQuoteAction(CThostFtdcQryQuoteActionField* QryQuoteAction)
 {
 	if(QryQuoteAction)
@@ -1315,7 +1170,6 @@ void WriteQryQuoteAction(CThostFtdcQryQuoteActionField* QryQuoteAction)
 			QryQuoteAction->BrokerID, QryQuoteAction->InvestorID, QryQuoteAction->ExchangeID);
 	}
 }
-
 void WriteExchangeQuoteAction(CThostFtdcExchangeQuoteActionField* ExchangeQuoteAction)
 {
 	if(ExchangeQuoteAction)
@@ -1324,7 +1178,6 @@ void WriteExchangeQuoteAction(CThostFtdcExchangeQuoteActionField* ExchangeQuoteA
 			ExchangeQuoteAction->ExchangeID, ExchangeQuoteAction->QuoteSysID, ExchangeQuoteAction->ActionFlag, ExchangeQuoteAction->ActionDate, ExchangeQuoteAction->ActionTime, ExchangeQuoteAction->TraderID, ExchangeQuoteAction->InstallID, ExchangeQuoteAction->QuoteLocalID, ExchangeQuoteAction->ActionLocalID, ExchangeQuoteAction->ParticipantID, ExchangeQuoteAction->ClientID, ExchangeQuoteAction->BusinessUnit, ExchangeQuoteAction->OrderActionStatus, ExchangeQuoteAction->UserID, ExchangeQuoteAction->reserve1, ExchangeQuoteAction->MacAddress, ExchangeQuoteAction->IPAddress);
 	}
 }
-
 void WriteQryExchangeQuoteAction(CThostFtdcQryExchangeQuoteActionField* QryExchangeQuoteAction)
 {
 	if(QryExchangeQuoteAction)
@@ -1333,7 +1186,6 @@ void WriteQryExchangeQuoteAction(CThostFtdcQryExchangeQuoteActionField* QryExcha
 			QryExchangeQuoteAction->ParticipantID, QryExchangeQuoteAction->ClientID, QryExchangeQuoteAction->ExchangeID, QryExchangeQuoteAction->TraderID);
 	}
 }
-
 void WriteOptionInstrDelta(CThostFtdcOptionInstrDeltaField* OptionInstrDelta)
 {
 	if(OptionInstrDelta)
@@ -1342,7 +1194,6 @@ void WriteOptionInstrDelta(CThostFtdcOptionInstrDeltaField* OptionInstrDelta)
 			OptionInstrDelta->reserve1, OptionInstrDelta->InvestorRange, OptionInstrDelta->BrokerID, OptionInstrDelta->InvestorID, OptionInstrDelta->Delta, OptionInstrDelta->InstrumentID);
 	}
 }
-
 void WriteForQuoteRsp(CThostFtdcForQuoteRspField* ForQuoteRsp)
 {
 	if(ForQuoteRsp)
@@ -1351,7 +1202,6 @@ void WriteForQuoteRsp(CThostFtdcForQuoteRspField* ForQuoteRsp)
 			ForQuoteRsp->TradingDay, ForQuoteRsp->reserve1, ForQuoteRsp->ForQuoteSysID, ForQuoteRsp->ForQuoteTime, ForQuoteRsp->ActionDay, ForQuoteRsp->ExchangeID, ForQuoteRsp->InstrumentID);
 	}
 }
-
 void WriteStrikeOffset(CThostFtdcStrikeOffsetField* StrikeOffset)
 {
 	if(StrikeOffset)
@@ -1360,7 +1210,6 @@ void WriteStrikeOffset(CThostFtdcStrikeOffsetField* StrikeOffset)
 			StrikeOffset->reserve1, StrikeOffset->InvestorRange, StrikeOffset->BrokerID, StrikeOffset->InvestorID, StrikeOffset->Offset, StrikeOffset->OffsetType, StrikeOffset->InstrumentID);
 	}
 }
-
 void WriteQryStrikeOffset(CThostFtdcQryStrikeOffsetField* QryStrikeOffset)
 {
 	if(QryStrikeOffset)
@@ -1369,7 +1218,6 @@ void WriteQryStrikeOffset(CThostFtdcQryStrikeOffsetField* QryStrikeOffset)
 			QryStrikeOffset->BrokerID, QryStrikeOffset->InvestorID, QryStrikeOffset->reserve1, QryStrikeOffset->InstrumentID);
 	}
 }
-
 void WriteInputBatchOrderAction(CThostFtdcInputBatchOrderActionField* InputBatchOrderAction)
 {
 	if(InputBatchOrderAction)
@@ -1378,7 +1226,6 @@ void WriteInputBatchOrderAction(CThostFtdcInputBatchOrderActionField* InputBatch
 			InputBatchOrderAction->BrokerID, InputBatchOrderAction->InvestorID, InputBatchOrderAction->OrderActionRef, InputBatchOrderAction->RequestID, InputBatchOrderAction->FrontID, InputBatchOrderAction->SessionID, InputBatchOrderAction->ExchangeID, InputBatchOrderAction->UserID, InputBatchOrderAction->InvestUnitID, InputBatchOrderAction->reserve1, InputBatchOrderAction->MacAddress, InputBatchOrderAction->IPAddress);
 	}
 }
-
 void WriteBatchOrderAction(CThostFtdcBatchOrderActionField* BatchOrderAction)
 {
 	if(BatchOrderAction)
@@ -1387,7 +1234,6 @@ void WriteBatchOrderAction(CThostFtdcBatchOrderActionField* BatchOrderAction)
 			BatchOrderAction->BrokerID, BatchOrderAction->InvestorID, BatchOrderAction->OrderActionRef, BatchOrderAction->RequestID, BatchOrderAction->FrontID, BatchOrderAction->SessionID, BatchOrderAction->ExchangeID, BatchOrderAction->ActionDate, BatchOrderAction->ActionTime, BatchOrderAction->TraderID, BatchOrderAction->InstallID, BatchOrderAction->ActionLocalID, BatchOrderAction->ParticipantID, BatchOrderAction->ClientID, BatchOrderAction->BusinessUnit, BatchOrderAction->OrderActionStatus, BatchOrderAction->UserID, BatchOrderAction->StatusMsg, BatchOrderAction->InvestUnitID, BatchOrderAction->reserve1, BatchOrderAction->MacAddress, BatchOrderAction->IPAddress);
 	}
 }
-
 void WriteExchangeBatchOrderAction(CThostFtdcExchangeBatchOrderActionField* ExchangeBatchOrderAction)
 {
 	if(ExchangeBatchOrderAction)
@@ -1396,7 +1242,6 @@ void WriteExchangeBatchOrderAction(CThostFtdcExchangeBatchOrderActionField* Exch
 			ExchangeBatchOrderAction->ExchangeID, ExchangeBatchOrderAction->ActionDate, ExchangeBatchOrderAction->ActionTime, ExchangeBatchOrderAction->TraderID, ExchangeBatchOrderAction->InstallID, ExchangeBatchOrderAction->ActionLocalID, ExchangeBatchOrderAction->ParticipantID, ExchangeBatchOrderAction->ClientID, ExchangeBatchOrderAction->BusinessUnit, ExchangeBatchOrderAction->OrderActionStatus, ExchangeBatchOrderAction->UserID, ExchangeBatchOrderAction->reserve1, ExchangeBatchOrderAction->MacAddress, ExchangeBatchOrderAction->IPAddress);
 	}
 }
-
 void WriteQryBatchOrderAction(CThostFtdcQryBatchOrderActionField* QryBatchOrderAction)
 {
 	if(QryBatchOrderAction)
@@ -1405,7 +1250,6 @@ void WriteQryBatchOrderAction(CThostFtdcQryBatchOrderActionField* QryBatchOrderA
 			QryBatchOrderAction->BrokerID, QryBatchOrderAction->InvestorID, QryBatchOrderAction->ExchangeID);
 	}
 }
-
 void WriteCombInstrumentGuard(CThostFtdcCombInstrumentGuardField* CombInstrumentGuard)
 {
 	if(CombInstrumentGuard)
@@ -1414,7 +1258,6 @@ void WriteCombInstrumentGuard(CThostFtdcCombInstrumentGuardField* CombInstrument
 			CombInstrumentGuard->BrokerID, CombInstrumentGuard->reserve1, CombInstrumentGuard->GuarantRatio, CombInstrumentGuard->ExchangeID, CombInstrumentGuard->InstrumentID);
 	}
 }
-
 void WriteQryCombInstrumentGuard(CThostFtdcQryCombInstrumentGuardField* QryCombInstrumentGuard)
 {
 	if(QryCombInstrumentGuard)
@@ -1423,7 +1266,6 @@ void WriteQryCombInstrumentGuard(CThostFtdcQryCombInstrumentGuardField* QryCombI
 			QryCombInstrumentGuard->BrokerID, QryCombInstrumentGuard->reserve1, QryCombInstrumentGuard->ExchangeID, QryCombInstrumentGuard->InstrumentID);
 	}
 }
-
 void WriteInputCombAction(CThostFtdcInputCombActionField* InputCombAction)
 {
 	if(InputCombAction)
@@ -1432,7 +1274,6 @@ void WriteInputCombAction(CThostFtdcInputCombActionField* InputCombAction)
 			InputCombAction->BrokerID, InputCombAction->InvestorID, InputCombAction->reserve1, InputCombAction->CombActionRef, InputCombAction->UserID, InputCombAction->Direction, InputCombAction->Volume, InputCombAction->CombDirection, InputCombAction->HedgeFlag, InputCombAction->ExchangeID, InputCombAction->reserve2, InputCombAction->MacAddress, InputCombAction->InvestUnitID, InputCombAction->FrontID, InputCombAction->SessionID, InputCombAction->InstrumentID, InputCombAction->IPAddress);
 	}
 }
-
 void WriteCombAction(CThostFtdcCombActionField* CombAction)
 {
 	if(CombAction)
@@ -1441,7 +1282,6 @@ void WriteCombAction(CThostFtdcCombActionField* CombAction)
 			CombAction->BrokerID, CombAction->InvestorID, CombAction->reserve1, CombAction->CombActionRef, CombAction->UserID, CombAction->Direction, CombAction->Volume, CombAction->CombDirection, CombAction->HedgeFlag, CombAction->ActionLocalID, CombAction->ExchangeID, CombAction->ParticipantID, CombAction->ClientID, CombAction->reserve2, CombAction->TraderID, CombAction->InstallID, CombAction->ActionStatus, CombAction->NotifySequence, CombAction->TradingDay, CombAction->SettlementID, CombAction->SequenceNo, CombAction->FrontID, CombAction->SessionID, CombAction->UserProductInfo, CombAction->StatusMsg, CombAction->reserve3, CombAction->MacAddress, CombAction->ComTradeID, CombAction->BranchID, CombAction->InvestUnitID, CombAction->InstrumentID, CombAction->ExchangeInstID, CombAction->IPAddress);
 	}
 }
-
 void WriteQryCombAction(CThostFtdcQryCombActionField* QryCombAction)
 {
 	if(QryCombAction)
@@ -1450,7 +1290,6 @@ void WriteQryCombAction(CThostFtdcQryCombActionField* QryCombAction)
 			QryCombAction->BrokerID, QryCombAction->InvestorID, QryCombAction->reserve1, QryCombAction->ExchangeID, QryCombAction->InvestUnitID, QryCombAction->InstrumentID);
 	}
 }
-
 void WriteExchangeCombAction(CThostFtdcExchangeCombActionField* ExchangeCombAction)
 {
 	if(ExchangeCombAction)
@@ -1459,7 +1298,6 @@ void WriteExchangeCombAction(CThostFtdcExchangeCombActionField* ExchangeCombActi
 			ExchangeCombAction->Direction, ExchangeCombAction->Volume, ExchangeCombAction->CombDirection, ExchangeCombAction->HedgeFlag, ExchangeCombAction->ActionLocalID, ExchangeCombAction->ExchangeID, ExchangeCombAction->ParticipantID, ExchangeCombAction->ClientID, ExchangeCombAction->reserve1, ExchangeCombAction->TraderID, ExchangeCombAction->InstallID, ExchangeCombAction->ActionStatus, ExchangeCombAction->NotifySequence, ExchangeCombAction->TradingDay, ExchangeCombAction->SettlementID, ExchangeCombAction->SequenceNo, ExchangeCombAction->reserve2, ExchangeCombAction->MacAddress, ExchangeCombAction->ComTradeID, ExchangeCombAction->BranchID, ExchangeCombAction->ExchangeInstID, ExchangeCombAction->IPAddress);
 	}
 }
-
 void WriteQryExchangeCombAction(CThostFtdcQryExchangeCombActionField* QryExchangeCombAction)
 {
 	if(QryExchangeCombAction)
@@ -1468,7 +1306,6 @@ void WriteQryExchangeCombAction(CThostFtdcQryExchangeCombActionField* QryExchang
 			QryExchangeCombAction->ParticipantID, QryExchangeCombAction->ClientID, QryExchangeCombAction->reserve1, QryExchangeCombAction->ExchangeID, QryExchangeCombAction->TraderID, QryExchangeCombAction->ExchangeInstID);
 	}
 }
-
 void WriteProductExchRate(CThostFtdcProductExchRateField* ProductExchRate)
 {
 	if(ProductExchRate)
@@ -1477,7 +1314,6 @@ void WriteProductExchRate(CThostFtdcProductExchRateField* ProductExchRate)
 			ProductExchRate->reserve1, ProductExchRate->QuoteCurrencyID, ProductExchRate->ExchangeRate, ProductExchRate->ExchangeID, ProductExchRate->ProductID);
 	}
 }
-
 void WriteQryProductExchRate(CThostFtdcQryProductExchRateField* QryProductExchRate)
 {
 	if(QryProductExchRate)
@@ -1486,7 +1322,6 @@ void WriteQryProductExchRate(CThostFtdcQryProductExchRateField* QryProductExchRa
 			QryProductExchRate->reserve1, QryProductExchRate->ExchangeID, QryProductExchRate->ProductID);
 	}
 }
-
 void WriteQryForQuoteParam(CThostFtdcQryForQuoteParamField* QryForQuoteParam)
 {
 	if(QryForQuoteParam)
@@ -1495,7 +1330,6 @@ void WriteQryForQuoteParam(CThostFtdcQryForQuoteParamField* QryForQuoteParam)
 			QryForQuoteParam->BrokerID, QryForQuoteParam->reserve1, QryForQuoteParam->ExchangeID, QryForQuoteParam->InstrumentID);
 	}
 }
-
 void WriteForQuoteParam(CThostFtdcForQuoteParamField* ForQuoteParam)
 {
 	if(ForQuoteParam)
@@ -1504,7 +1338,6 @@ void WriteForQuoteParam(CThostFtdcForQuoteParamField* ForQuoteParam)
 			ForQuoteParam->BrokerID, ForQuoteParam->reserve1, ForQuoteParam->ExchangeID, ForQuoteParam->LastPrice, ForQuoteParam->PriceInterval, ForQuoteParam->InstrumentID);
 	}
 }
-
 void WriteMMOptionInstrCommRate(CThostFtdcMMOptionInstrCommRateField* MMOptionInstrCommRate)
 {
 	if(MMOptionInstrCommRate)
@@ -1513,7 +1346,6 @@ void WriteMMOptionInstrCommRate(CThostFtdcMMOptionInstrCommRateField* MMOptionIn
 			MMOptionInstrCommRate->reserve1, MMOptionInstrCommRate->InvestorRange, MMOptionInstrCommRate->BrokerID, MMOptionInstrCommRate->InvestorID, MMOptionInstrCommRate->OpenRatioByMoney, MMOptionInstrCommRate->OpenRatioByVolume, MMOptionInstrCommRate->CloseRatioByMoney, MMOptionInstrCommRate->CloseRatioByVolume, MMOptionInstrCommRate->CloseTodayRatioByMoney, MMOptionInstrCommRate->CloseTodayRatioByVolume, MMOptionInstrCommRate->StrikeRatioByMoney, MMOptionInstrCommRate->StrikeRatioByVolume, MMOptionInstrCommRate->InstrumentID);
 	}
 }
-
 void WriteQryMMOptionInstrCommRate(CThostFtdcQryMMOptionInstrCommRateField* QryMMOptionInstrCommRate)
 {
 	if(QryMMOptionInstrCommRate)
@@ -1522,7 +1354,6 @@ void WriteQryMMOptionInstrCommRate(CThostFtdcQryMMOptionInstrCommRateField* QryM
 			QryMMOptionInstrCommRate->BrokerID, QryMMOptionInstrCommRate->InvestorID, QryMMOptionInstrCommRate->reserve1, QryMMOptionInstrCommRate->InstrumentID);
 	}
 }
-
 void WriteMMInstrumentCommissionRate(CThostFtdcMMInstrumentCommissionRateField* MMInstrumentCommissionRate)
 {
 	if(MMInstrumentCommissionRate)
@@ -1531,7 +1362,6 @@ void WriteMMInstrumentCommissionRate(CThostFtdcMMInstrumentCommissionRateField* 
 			MMInstrumentCommissionRate->reserve1, MMInstrumentCommissionRate->InvestorRange, MMInstrumentCommissionRate->BrokerID, MMInstrumentCommissionRate->InvestorID, MMInstrumentCommissionRate->OpenRatioByMoney, MMInstrumentCommissionRate->OpenRatioByVolume, MMInstrumentCommissionRate->CloseRatioByMoney, MMInstrumentCommissionRate->CloseRatioByVolume, MMInstrumentCommissionRate->CloseTodayRatioByMoney, MMInstrumentCommissionRate->CloseTodayRatioByVolume, MMInstrumentCommissionRate->InstrumentID);
 	}
 }
-
 void WriteQryMMInstrumentCommissionRate(CThostFtdcQryMMInstrumentCommissionRateField* QryMMInstrumentCommissionRate)
 {
 	if(QryMMInstrumentCommissionRate)
@@ -1540,7 +1370,6 @@ void WriteQryMMInstrumentCommissionRate(CThostFtdcQryMMInstrumentCommissionRateF
 			QryMMInstrumentCommissionRate->BrokerID, QryMMInstrumentCommissionRate->InvestorID, QryMMInstrumentCommissionRate->reserve1, QryMMInstrumentCommissionRate->InstrumentID);
 	}
 }
-
 void WriteInstrumentOrderCommRate(CThostFtdcInstrumentOrderCommRateField* InstrumentOrderCommRate)
 {
 	if(InstrumentOrderCommRate)
@@ -1549,7 +1378,6 @@ void WriteInstrumentOrderCommRate(CThostFtdcInstrumentOrderCommRateField* Instru
 			InstrumentOrderCommRate->reserve1, InstrumentOrderCommRate->InvestorRange, InstrumentOrderCommRate->BrokerID, InstrumentOrderCommRate->InvestorID, InstrumentOrderCommRate->HedgeFlag, InstrumentOrderCommRate->OrderCommByVolume, InstrumentOrderCommRate->OrderActionCommByVolume, InstrumentOrderCommRate->ExchangeID, InstrumentOrderCommRate->InvestUnitID, InstrumentOrderCommRate->InstrumentID, InstrumentOrderCommRate->OrderCommByTrade, InstrumentOrderCommRate->OrderActionCommByTrade);
 	}
 }
-
 void WriteQryInstrumentOrderCommRate(CThostFtdcQryInstrumentOrderCommRateField* QryInstrumentOrderCommRate)
 {
 	if(QryInstrumentOrderCommRate)
@@ -1558,7 +1386,6 @@ void WriteQryInstrumentOrderCommRate(CThostFtdcQryInstrumentOrderCommRateField* 
 			QryInstrumentOrderCommRate->BrokerID, QryInstrumentOrderCommRate->InvestorID, QryInstrumentOrderCommRate->reserve1, QryInstrumentOrderCommRate->InstrumentID);
 	}
 }
-
 void WriteTradeParam(CThostFtdcTradeParamField* TradeParam)
 {
 	if(TradeParam)
@@ -1567,7 +1394,6 @@ void WriteTradeParam(CThostFtdcTradeParamField* TradeParam)
 			TradeParam->BrokerID, TradeParam->TradeParamID, TradeParam->TradeParamValue, TradeParam->Memo);
 	}
 }
-
 void WriteInstrumentMarginRateUL(CThostFtdcInstrumentMarginRateULField* InstrumentMarginRateUL)
 {
 	if(InstrumentMarginRateUL)
@@ -1576,7 +1402,6 @@ void WriteInstrumentMarginRateUL(CThostFtdcInstrumentMarginRateULField* Instrume
 			InstrumentMarginRateUL->reserve1, InstrumentMarginRateUL->InvestorRange, InstrumentMarginRateUL->BrokerID, InstrumentMarginRateUL->InvestorID, InstrumentMarginRateUL->HedgeFlag, InstrumentMarginRateUL->LongMarginRatioByMoney, InstrumentMarginRateUL->LongMarginRatioByVolume, InstrumentMarginRateUL->ShortMarginRatioByMoney, InstrumentMarginRateUL->ShortMarginRatioByVolume, InstrumentMarginRateUL->InstrumentID);
 	}
 }
-
 void WriteFutureLimitPosiParam(CThostFtdcFutureLimitPosiParamField* FutureLimitPosiParam)
 {
 	if(FutureLimitPosiParam)
@@ -1585,7 +1410,6 @@ void WriteFutureLimitPosiParam(CThostFtdcFutureLimitPosiParamField* FutureLimitP
 			FutureLimitPosiParam->InvestorRange, FutureLimitPosiParam->BrokerID, FutureLimitPosiParam->InvestorID, FutureLimitPosiParam->reserve1, FutureLimitPosiParam->SpecOpenVolume, FutureLimitPosiParam->ArbiOpenVolume, FutureLimitPosiParam->OpenVolume, FutureLimitPosiParam->ProductID);
 	}
 }
-
 void WriteLoginForbiddenIP(CThostFtdcLoginForbiddenIPField* LoginForbiddenIP)
 {
 	if(LoginForbiddenIP)
@@ -1594,7 +1418,6 @@ void WriteLoginForbiddenIP(CThostFtdcLoginForbiddenIPField* LoginForbiddenIP)
 			LoginForbiddenIP->reserve1, LoginForbiddenIP->IPAddress);
 	}
 }
-
 void WriteIPList(CThostFtdcIPListField* IPList)
 {
 	if(IPList)
@@ -1603,7 +1426,6 @@ void WriteIPList(CThostFtdcIPListField* IPList)
 			IPList->reserve1, IPList->IsWhite, IPList->IPAddress);
 	}
 }
-
 void WriteInputOptionSelfClose(CThostFtdcInputOptionSelfCloseField* InputOptionSelfClose)
 {
 	if(InputOptionSelfClose)
@@ -1612,7 +1434,6 @@ void WriteInputOptionSelfClose(CThostFtdcInputOptionSelfCloseField* InputOptionS
 			InputOptionSelfClose->BrokerID, InputOptionSelfClose->InvestorID, InputOptionSelfClose->reserve1, InputOptionSelfClose->OptionSelfCloseRef, InputOptionSelfClose->UserID, InputOptionSelfClose->Volume, InputOptionSelfClose->RequestID, InputOptionSelfClose->BusinessUnit, InputOptionSelfClose->HedgeFlag, InputOptionSelfClose->OptSelfCloseFlag, InputOptionSelfClose->ExchangeID, InputOptionSelfClose->InvestUnitID, InputOptionSelfClose->AccountID, InputOptionSelfClose->CurrencyID, InputOptionSelfClose->ClientID, InputOptionSelfClose->reserve2, InputOptionSelfClose->MacAddress, InputOptionSelfClose->InstrumentID, InputOptionSelfClose->IPAddress);
 	}
 }
-
 void WriteInputOptionSelfCloseAction(CThostFtdcInputOptionSelfCloseActionField* InputOptionSelfCloseAction)
 {
 	if(InputOptionSelfCloseAction)
@@ -1621,7 +1442,6 @@ void WriteInputOptionSelfCloseAction(CThostFtdcInputOptionSelfCloseActionField* 
 			InputOptionSelfCloseAction->BrokerID, InputOptionSelfCloseAction->InvestorID, InputOptionSelfCloseAction->OptionSelfCloseActionRef, InputOptionSelfCloseAction->OptionSelfCloseRef, InputOptionSelfCloseAction->RequestID, InputOptionSelfCloseAction->FrontID, InputOptionSelfCloseAction->SessionID, InputOptionSelfCloseAction->ExchangeID, InputOptionSelfCloseAction->OptionSelfCloseSysID, InputOptionSelfCloseAction->ActionFlag, InputOptionSelfCloseAction->UserID, InputOptionSelfCloseAction->reserve1, InputOptionSelfCloseAction->InvestUnitID, InputOptionSelfCloseAction->reserve2, InputOptionSelfCloseAction->MacAddress, InputOptionSelfCloseAction->InstrumentID, InputOptionSelfCloseAction->IPAddress);
 	}
 }
-
 void WriteOptionSelfClose(CThostFtdcOptionSelfCloseField* OptionSelfClose)
 {
 	if(OptionSelfClose)
@@ -1630,7 +1450,6 @@ void WriteOptionSelfClose(CThostFtdcOptionSelfCloseField* OptionSelfClose)
 			OptionSelfClose->BrokerID, OptionSelfClose->InvestorID, OptionSelfClose->reserve1, OptionSelfClose->OptionSelfCloseRef, OptionSelfClose->UserID, OptionSelfClose->Volume, OptionSelfClose->RequestID, OptionSelfClose->BusinessUnit, OptionSelfClose->HedgeFlag, OptionSelfClose->OptSelfCloseFlag, OptionSelfClose->OptionSelfCloseLocalID, OptionSelfClose->ExchangeID, OptionSelfClose->ParticipantID, OptionSelfClose->ClientID, OptionSelfClose->reserve2, OptionSelfClose->TraderID, OptionSelfClose->InstallID, OptionSelfClose->OrderSubmitStatus, OptionSelfClose->NotifySequence, OptionSelfClose->TradingDay, OptionSelfClose->SettlementID, OptionSelfClose->OptionSelfCloseSysID, OptionSelfClose->InsertDate, OptionSelfClose->InsertTime, OptionSelfClose->CancelTime, OptionSelfClose->ExecResult, OptionSelfClose->ClearingPartID, OptionSelfClose->SequenceNo, OptionSelfClose->FrontID, OptionSelfClose->SessionID, OptionSelfClose->UserProductInfo, OptionSelfClose->StatusMsg, OptionSelfClose->ActiveUserID, OptionSelfClose->BrokerOptionSelfCloseSeq, OptionSelfClose->BranchID, OptionSelfClose->InvestUnitID, OptionSelfClose->AccountID, OptionSelfClose->CurrencyID, OptionSelfClose->reserve3, OptionSelfClose->MacAddress, OptionSelfClose->InstrumentID, OptionSelfClose->ExchangeInstID, OptionSelfClose->IPAddress);
 	}
 }
-
 void WriteOptionSelfCloseAction(CThostFtdcOptionSelfCloseActionField* OptionSelfCloseAction)
 {
 	if(OptionSelfCloseAction)
@@ -1639,7 +1458,6 @@ void WriteOptionSelfCloseAction(CThostFtdcOptionSelfCloseActionField* OptionSelf
 			OptionSelfCloseAction->BrokerID, OptionSelfCloseAction->InvestorID, OptionSelfCloseAction->OptionSelfCloseActionRef, OptionSelfCloseAction->OptionSelfCloseRef, OptionSelfCloseAction->RequestID, OptionSelfCloseAction->FrontID, OptionSelfCloseAction->SessionID, OptionSelfCloseAction->ExchangeID, OptionSelfCloseAction->OptionSelfCloseSysID, OptionSelfCloseAction->ActionFlag, OptionSelfCloseAction->ActionDate, OptionSelfCloseAction->ActionTime, OptionSelfCloseAction->TraderID, OptionSelfCloseAction->InstallID, OptionSelfCloseAction->OptionSelfCloseLocalID, OptionSelfCloseAction->ActionLocalID, OptionSelfCloseAction->ParticipantID, OptionSelfCloseAction->ClientID, OptionSelfCloseAction->BusinessUnit, OptionSelfCloseAction->OrderActionStatus, OptionSelfCloseAction->UserID, OptionSelfCloseAction->StatusMsg, OptionSelfCloseAction->reserve1, OptionSelfCloseAction->BranchID, OptionSelfCloseAction->InvestUnitID, OptionSelfCloseAction->reserve2, OptionSelfCloseAction->MacAddress, OptionSelfCloseAction->InstrumentID, OptionSelfCloseAction->IPAddress);
 	}
 }
-
 void WriteQryOptionSelfClose(CThostFtdcQryOptionSelfCloseField* QryOptionSelfClose)
 {
 	if(QryOptionSelfClose)
@@ -1648,7 +1466,6 @@ void WriteQryOptionSelfClose(CThostFtdcQryOptionSelfCloseField* QryOptionSelfClo
 			QryOptionSelfClose->BrokerID, QryOptionSelfClose->InvestorID, QryOptionSelfClose->reserve1, QryOptionSelfClose->ExchangeID, QryOptionSelfClose->OptionSelfCloseSysID, QryOptionSelfClose->InsertTimeStart, QryOptionSelfClose->InsertTimeEnd, QryOptionSelfClose->InstrumentID);
 	}
 }
-
 void WriteExchangeOptionSelfClose(CThostFtdcExchangeOptionSelfCloseField* ExchangeOptionSelfClose)
 {
 	if(ExchangeOptionSelfClose)
@@ -1657,7 +1474,6 @@ void WriteExchangeOptionSelfClose(CThostFtdcExchangeOptionSelfCloseField* Exchan
 			ExchangeOptionSelfClose->Volume, ExchangeOptionSelfClose->RequestID, ExchangeOptionSelfClose->BusinessUnit, ExchangeOptionSelfClose->HedgeFlag, ExchangeOptionSelfClose->OptSelfCloseFlag, ExchangeOptionSelfClose->OptionSelfCloseLocalID, ExchangeOptionSelfClose->ExchangeID, ExchangeOptionSelfClose->ParticipantID, ExchangeOptionSelfClose->ClientID, ExchangeOptionSelfClose->reserve1, ExchangeOptionSelfClose->TraderID, ExchangeOptionSelfClose->InstallID, ExchangeOptionSelfClose->OrderSubmitStatus, ExchangeOptionSelfClose->NotifySequence, ExchangeOptionSelfClose->TradingDay, ExchangeOptionSelfClose->SettlementID, ExchangeOptionSelfClose->OptionSelfCloseSysID, ExchangeOptionSelfClose->InsertDate, ExchangeOptionSelfClose->InsertTime, ExchangeOptionSelfClose->CancelTime, ExchangeOptionSelfClose->ExecResult, ExchangeOptionSelfClose->ClearingPartID, ExchangeOptionSelfClose->SequenceNo, ExchangeOptionSelfClose->BranchID, ExchangeOptionSelfClose->reserve2, ExchangeOptionSelfClose->MacAddress, ExchangeOptionSelfClose->ExchangeInstID, ExchangeOptionSelfClose->IPAddress);
 	}
 }
-
 void WriteQryOptionSelfCloseAction(CThostFtdcQryOptionSelfCloseActionField* QryOptionSelfCloseAction)
 {
 	if(QryOptionSelfCloseAction)
@@ -1666,7 +1482,6 @@ void WriteQryOptionSelfCloseAction(CThostFtdcQryOptionSelfCloseActionField* QryO
 			QryOptionSelfCloseAction->BrokerID, QryOptionSelfCloseAction->InvestorID, QryOptionSelfCloseAction->ExchangeID);
 	}
 }
-
 void WriteExchangeOptionSelfCloseAction(CThostFtdcExchangeOptionSelfCloseActionField* ExchangeOptionSelfCloseAction)
 {
 	if(ExchangeOptionSelfCloseAction)
@@ -1675,7 +1490,6 @@ void WriteExchangeOptionSelfCloseAction(CThostFtdcExchangeOptionSelfCloseActionF
 			ExchangeOptionSelfCloseAction->ExchangeID, ExchangeOptionSelfCloseAction->OptionSelfCloseSysID, ExchangeOptionSelfCloseAction->ActionFlag, ExchangeOptionSelfCloseAction->ActionDate, ExchangeOptionSelfCloseAction->ActionTime, ExchangeOptionSelfCloseAction->TraderID, ExchangeOptionSelfCloseAction->InstallID, ExchangeOptionSelfCloseAction->OptionSelfCloseLocalID, ExchangeOptionSelfCloseAction->ActionLocalID, ExchangeOptionSelfCloseAction->ParticipantID, ExchangeOptionSelfCloseAction->ClientID, ExchangeOptionSelfCloseAction->BusinessUnit, ExchangeOptionSelfCloseAction->OrderActionStatus, ExchangeOptionSelfCloseAction->UserID, ExchangeOptionSelfCloseAction->BranchID, ExchangeOptionSelfCloseAction->reserve1, ExchangeOptionSelfCloseAction->MacAddress, ExchangeOptionSelfCloseAction->reserve2, ExchangeOptionSelfCloseAction->OptSelfCloseFlag, ExchangeOptionSelfCloseAction->IPAddress, ExchangeOptionSelfCloseAction->ExchangeInstID);
 	}
 }
-
 void WriteSyncDelaySwap(CThostFtdcSyncDelaySwapField* SyncDelaySwap)
 {
 	if(SyncDelaySwap)
@@ -1684,7 +1498,6 @@ void WriteSyncDelaySwap(CThostFtdcSyncDelaySwapField* SyncDelaySwap)
 			SyncDelaySwap->DelaySwapSeqNo, SyncDelaySwap->BrokerID, SyncDelaySwap->InvestorID, SyncDelaySwap->FromCurrencyID, SyncDelaySwap->FromAmount, SyncDelaySwap->FromFrozenSwap, SyncDelaySwap->FromRemainSwap, SyncDelaySwap->ToCurrencyID, SyncDelaySwap->ToAmount, SyncDelaySwap->IsManualSwap, SyncDelaySwap->IsAllRemainSetZero);
 	}
 }
-
 void WriteQrySyncDelaySwap(CThostFtdcQrySyncDelaySwapField* QrySyncDelaySwap)
 {
 	if(QrySyncDelaySwap)
@@ -1693,7 +1506,6 @@ void WriteQrySyncDelaySwap(CThostFtdcQrySyncDelaySwapField* QrySyncDelaySwap)
 			QrySyncDelaySwap->BrokerID, QrySyncDelaySwap->DelaySwapSeqNo);
 	}
 }
-
 void WriteInvestUnit(CThostFtdcInvestUnitField* InvestUnit)
 {
 	if(InvestUnit)
@@ -1702,7 +1514,6 @@ void WriteInvestUnit(CThostFtdcInvestUnitField* InvestUnit)
 			InvestUnit->BrokerID, InvestUnit->InvestorID, InvestUnit->InvestUnitID, InvestUnit->InvestorUnitName, InvestUnit->InvestorGroupID, InvestUnit->CommModelID, InvestUnit->MarginModelID, InvestUnit->AccountID, InvestUnit->CurrencyID);
 	}
 }
-
 void WriteQryInvestUnit(CThostFtdcQryInvestUnitField* QryInvestUnit)
 {
 	if(QryInvestUnit)
@@ -1711,7 +1522,6 @@ void WriteQryInvestUnit(CThostFtdcQryInvestUnitField* QryInvestUnit)
 			QryInvestUnit->BrokerID, QryInvestUnit->InvestorID, QryInvestUnit->InvestUnitID);
 	}
 }
-
 void WriteSecAgentCheckMode(CThostFtdcSecAgentCheckModeField* SecAgentCheckMode)
 {
 	if(SecAgentCheckMode)
@@ -1720,7 +1530,6 @@ void WriteSecAgentCheckMode(CThostFtdcSecAgentCheckModeField* SecAgentCheckMode)
 			SecAgentCheckMode->InvestorID, SecAgentCheckMode->BrokerID, SecAgentCheckMode->CurrencyID, SecAgentCheckMode->BrokerSecAgentID, SecAgentCheckMode->CheckSelfAccount);
 	}
 }
-
 void WriteSecAgentTradeInfo(CThostFtdcSecAgentTradeInfoField* SecAgentTradeInfo)
 {
 	if(SecAgentTradeInfo)
@@ -1729,7 +1538,6 @@ void WriteSecAgentTradeInfo(CThostFtdcSecAgentTradeInfoField* SecAgentTradeInfo)
 			SecAgentTradeInfo->BrokerID, SecAgentTradeInfo->BrokerSecAgentID, SecAgentTradeInfo->InvestorID, SecAgentTradeInfo->LongCustomerName);
 	}
 }
-
 void WriteMarketData(CThostFtdcMarketDataField* MarketData)
 {
 	if(MarketData)
@@ -1738,7 +1546,6 @@ void WriteMarketData(CThostFtdcMarketDataField* MarketData)
 			MarketData->TradingDay, MarketData->reserve1, MarketData->ExchangeID, MarketData->reserve2, MarketData->LastPrice, MarketData->PreSettlementPrice, MarketData->PreClosePrice, MarketData->PreOpenInterest, MarketData->OpenPrice, MarketData->HighestPrice, MarketData->LowestPrice, MarketData->Volume, MarketData->Turnover, MarketData->OpenInterest, MarketData->ClosePrice, MarketData->SettlementPrice, MarketData->UpperLimitPrice, MarketData->LowerLimitPrice, MarketData->PreDelta, MarketData->CurrDelta, MarketData->UpdateTime, MarketData->UpdateMillisec, MarketData->ActionDay, MarketData->InstrumentID, MarketData->ExchangeInstID);
 	}
 }
-
 void WriteMarketDataBase(CThostFtdcMarketDataBaseField* MarketDataBase)
 {
 	if(MarketDataBase)
@@ -1747,7 +1554,6 @@ void WriteMarketDataBase(CThostFtdcMarketDataBaseField* MarketDataBase)
 			MarketDataBase->TradingDay, MarketDataBase->PreSettlementPrice, MarketDataBase->PreClosePrice, MarketDataBase->PreOpenInterest, MarketDataBase->PreDelta);
 	}
 }
-
 void WriteMarketDataStatic(CThostFtdcMarketDataStaticField* MarketDataStatic)
 {
 	if(MarketDataStatic)
@@ -1756,7 +1562,6 @@ void WriteMarketDataStatic(CThostFtdcMarketDataStaticField* MarketDataStatic)
 			MarketDataStatic->OpenPrice, MarketDataStatic->HighestPrice, MarketDataStatic->LowestPrice, MarketDataStatic->ClosePrice, MarketDataStatic->UpperLimitPrice, MarketDataStatic->LowerLimitPrice, MarketDataStatic->SettlementPrice, MarketDataStatic->CurrDelta);
 	}
 }
-
 void WriteMarketDataLastMatch(CThostFtdcMarketDataLastMatchField* MarketDataLastMatch)
 {
 	if(MarketDataLastMatch)
@@ -1765,7 +1570,6 @@ void WriteMarketDataLastMatch(CThostFtdcMarketDataLastMatchField* MarketDataLast
 			MarketDataLastMatch->LastPrice, MarketDataLastMatch->Volume, MarketDataLastMatch->Turnover, MarketDataLastMatch->OpenInterest);
 	}
 }
-
 void WriteMarketDataBestPrice(CThostFtdcMarketDataBestPriceField* MarketDataBestPrice)
 {
 	if(MarketDataBestPrice)
@@ -1774,7 +1578,6 @@ void WriteMarketDataBestPrice(CThostFtdcMarketDataBestPriceField* MarketDataBest
 			MarketDataBestPrice->BidPrice1, MarketDataBestPrice->BidVolume1, MarketDataBestPrice->AskPrice1, MarketDataBestPrice->AskVolume1);
 	}
 }
-
 void WriteMarketDataBid23(CThostFtdcMarketDataBid23Field* MarketDataBid23)
 {
 	if(MarketDataBid23)
@@ -1783,7 +1586,6 @@ void WriteMarketDataBid23(CThostFtdcMarketDataBid23Field* MarketDataBid23)
 			MarketDataBid23->BidPrice2, MarketDataBid23->BidVolume2, MarketDataBid23->BidPrice3, MarketDataBid23->BidVolume3);
 	}
 }
-
 void WriteMarketDataAsk23(CThostFtdcMarketDataAsk23Field* MarketDataAsk23)
 {
 	if(MarketDataAsk23)
@@ -1792,7 +1594,6 @@ void WriteMarketDataAsk23(CThostFtdcMarketDataAsk23Field* MarketDataAsk23)
 			MarketDataAsk23->AskPrice2, MarketDataAsk23->AskVolume2, MarketDataAsk23->AskPrice3, MarketDataAsk23->AskVolume3);
 	}
 }
-
 void WriteMarketDataBid45(CThostFtdcMarketDataBid45Field* MarketDataBid45)
 {
 	if(MarketDataBid45)
@@ -1801,7 +1602,6 @@ void WriteMarketDataBid45(CThostFtdcMarketDataBid45Field* MarketDataBid45)
 			MarketDataBid45->BidPrice4, MarketDataBid45->BidVolume4, MarketDataBid45->BidPrice5, MarketDataBid45->BidVolume5);
 	}
 }
-
 void WriteMarketDataAsk45(CThostFtdcMarketDataAsk45Field* MarketDataAsk45)
 {
 	if(MarketDataAsk45)
@@ -1810,7 +1610,6 @@ void WriteMarketDataAsk45(CThostFtdcMarketDataAsk45Field* MarketDataAsk45)
 			MarketDataAsk45->AskPrice4, MarketDataAsk45->AskVolume4, MarketDataAsk45->AskPrice5, MarketDataAsk45->AskVolume5);
 	}
 }
-
 void WriteMarketDataUpdateTime(CThostFtdcMarketDataUpdateTimeField* MarketDataUpdateTime)
 {
 	if(MarketDataUpdateTime)
@@ -1819,7 +1618,6 @@ void WriteMarketDataUpdateTime(CThostFtdcMarketDataUpdateTimeField* MarketDataUp
 			MarketDataUpdateTime->reserve1, MarketDataUpdateTime->UpdateTime, MarketDataUpdateTime->UpdateMillisec, MarketDataUpdateTime->ActionDay, MarketDataUpdateTime->InstrumentID);
 	}
 }
-
 void WriteMarketDataBandingPrice(CThostFtdcMarketDataBandingPriceField* MarketDataBandingPrice)
 {
 	if(MarketDataBandingPrice)
@@ -1828,7 +1626,6 @@ void WriteMarketDataBandingPrice(CThostFtdcMarketDataBandingPriceField* MarketDa
 			MarketDataBandingPrice->BandingUpperPrice, MarketDataBandingPrice->BandingLowerPrice);
 	}
 }
-
 void WriteMarketDataExchange(CThostFtdcMarketDataExchangeField* MarketDataExchange)
 {
 	if(MarketDataExchange)
@@ -1837,7 +1634,6 @@ void WriteMarketDataExchange(CThostFtdcMarketDataExchangeField* MarketDataExchan
 			MarketDataExchange->ExchangeID);
 	}
 }
-
 void WriteSpecificInstrument(CThostFtdcSpecificInstrumentField* SpecificInstrument)
 {
 	if(SpecificInstrument)
@@ -1846,7 +1642,6 @@ void WriteSpecificInstrument(CThostFtdcSpecificInstrumentField* SpecificInstrume
 			SpecificInstrument->reserve1, SpecificInstrument->InstrumentID);
 	}
 }
-
 void WriteInstrumentStatus(CThostFtdcInstrumentStatusField* InstrumentStatus)
 {
 	if(InstrumentStatus)
@@ -1855,7 +1650,6 @@ void WriteInstrumentStatus(CThostFtdcInstrumentStatusField* InstrumentStatus)
 			InstrumentStatus->ExchangeID, InstrumentStatus->reserve1, InstrumentStatus->SettlementGroupID, InstrumentStatus->reserve2, InstrumentStatus->InstrumentStatus, InstrumentStatus->TradingSegmentSN, InstrumentStatus->EnterTime, InstrumentStatus->EnterReason, InstrumentStatus->ExchangeInstID, InstrumentStatus->InstrumentID);
 	}
 }
-
 void WriteQryInstrumentStatus(CThostFtdcQryInstrumentStatusField* QryInstrumentStatus)
 {
 	if(QryInstrumentStatus)
@@ -1864,7 +1658,6 @@ void WriteQryInstrumentStatus(CThostFtdcQryInstrumentStatusField* QryInstrumentS
 			QryInstrumentStatus->ExchangeID, QryInstrumentStatus->reserve1, QryInstrumentStatus->ExchangeInstID);
 	}
 }
-
 void WriteInvestorAccount(CThostFtdcInvestorAccountField* InvestorAccount)
 {
 	if(InvestorAccount)
@@ -1873,7 +1666,6 @@ void WriteInvestorAccount(CThostFtdcInvestorAccountField* InvestorAccount)
 			InvestorAccount->BrokerID, InvestorAccount->InvestorID, InvestorAccount->AccountID, InvestorAccount->CurrencyID);
 	}
 }
-
 void WritePositionProfitAlgorithm(CThostFtdcPositionProfitAlgorithmField* PositionProfitAlgorithm)
 {
 	if(PositionProfitAlgorithm)
@@ -1882,7 +1674,6 @@ void WritePositionProfitAlgorithm(CThostFtdcPositionProfitAlgorithmField* Positi
 			PositionProfitAlgorithm->BrokerID, PositionProfitAlgorithm->AccountID, PositionProfitAlgorithm->Algorithm, PositionProfitAlgorithm->Memo, PositionProfitAlgorithm->CurrencyID);
 	}
 }
-
 void WriteDiscount(CThostFtdcDiscountField* Discount)
 {
 	if(Discount)
@@ -1891,7 +1682,6 @@ void WriteDiscount(CThostFtdcDiscountField* Discount)
 			Discount->BrokerID, Discount->InvestorRange, Discount->InvestorID, Discount->Discount);
 	}
 }
-
 void WriteQryTransferBank(CThostFtdcQryTransferBankField* QryTransferBank)
 {
 	if(QryTransferBank)
@@ -1900,7 +1690,6 @@ void WriteQryTransferBank(CThostFtdcQryTransferBankField* QryTransferBank)
 			QryTransferBank->BankID, QryTransferBank->BankBrchID);
 	}
 }
-
 void WriteTransferBank(CThostFtdcTransferBankField* TransferBank)
 {
 	if(TransferBank)
@@ -1909,7 +1698,6 @@ void WriteTransferBank(CThostFtdcTransferBankField* TransferBank)
 			TransferBank->BankID, TransferBank->BankBrchID, TransferBank->BankName, TransferBank->IsActive);
 	}
 }
-
 void WriteQryInvestorPositionDetail(CThostFtdcQryInvestorPositionDetailField* QryInvestorPositionDetail)
 {
 	if(QryInvestorPositionDetail)
@@ -1918,7 +1706,6 @@ void WriteQryInvestorPositionDetail(CThostFtdcQryInvestorPositionDetailField* Qr
 			QryInvestorPositionDetail->BrokerID, QryInvestorPositionDetail->InvestorID, QryInvestorPositionDetail->reserve1, QryInvestorPositionDetail->ExchangeID, QryInvestorPositionDetail->InvestUnitID, QryInvestorPositionDetail->InstrumentID);
 	}
 }
-
 void WriteInvestorPositionDetail(CThostFtdcInvestorPositionDetailField* InvestorPositionDetail)
 {
 	if(InvestorPositionDetail)
@@ -1927,7 +1714,6 @@ void WriteInvestorPositionDetail(CThostFtdcInvestorPositionDetailField* Investor
 			InvestorPositionDetail->reserve1, InvestorPositionDetail->BrokerID, InvestorPositionDetail->InvestorID, InvestorPositionDetail->HedgeFlag, InvestorPositionDetail->Direction, InvestorPositionDetail->OpenDate, InvestorPositionDetail->TradeID, InvestorPositionDetail->Volume, InvestorPositionDetail->OpenPrice, InvestorPositionDetail->TradingDay, InvestorPositionDetail->SettlementID, InvestorPositionDetail->TradeType, InvestorPositionDetail->reserve2, InvestorPositionDetail->ExchangeID, InvestorPositionDetail->CloseProfitByDate, InvestorPositionDetail->CloseProfitByTrade, InvestorPositionDetail->PositionProfitByDate, InvestorPositionDetail->PositionProfitByTrade, InvestorPositionDetail->Margin, InvestorPositionDetail->ExchMargin, InvestorPositionDetail->MarginRateByMoney, InvestorPositionDetail->MarginRateByVolume, InvestorPositionDetail->LastSettlementPrice, InvestorPositionDetail->SettlementPrice, InvestorPositionDetail->CloseVolume, InvestorPositionDetail->CloseAmount, InvestorPositionDetail->TimeFirstVolume, InvestorPositionDetail->InvestUnitID, InvestorPositionDetail->SpecPosiType, InvestorPositionDetail->InstrumentID, InvestorPositionDetail->CombInstrumentID);
 	}
 }
-
 void WriteTradingAccountPassword(CThostFtdcTradingAccountPasswordField* TradingAccountPassword)
 {
 	if(TradingAccountPassword)
@@ -1936,7 +1722,6 @@ void WriteTradingAccountPassword(CThostFtdcTradingAccountPasswordField* TradingA
 			TradingAccountPassword->BrokerID, TradingAccountPassword->AccountID, TradingAccountPassword->Password, TradingAccountPassword->CurrencyID);
 	}
 }
-
 void WriteMDTraderOffer(CThostFtdcMDTraderOfferField* MDTraderOffer)
 {
 	if(MDTraderOffer)
@@ -1945,7 +1730,6 @@ void WriteMDTraderOffer(CThostFtdcMDTraderOfferField* MDTraderOffer)
 			MDTraderOffer->ExchangeID, MDTraderOffer->TraderID, MDTraderOffer->ParticipantID, MDTraderOffer->Password, MDTraderOffer->InstallID, MDTraderOffer->OrderLocalID, MDTraderOffer->TraderConnectStatus, MDTraderOffer->ConnectRequestDate, MDTraderOffer->ConnectRequestTime, MDTraderOffer->LastReportDate, MDTraderOffer->LastReportTime, MDTraderOffer->ConnectDate, MDTraderOffer->ConnectTime, MDTraderOffer->StartDate, MDTraderOffer->StartTime, MDTraderOffer->TradingDay, MDTraderOffer->BrokerID, MDTraderOffer->MaxTradeID, MDTraderOffer->MaxOrderMessageReference, MDTraderOffer->OrderCancelAlg);
 	}
 }
-
 void WriteQryMDTraderOffer(CThostFtdcQryMDTraderOfferField* QryMDTraderOffer)
 {
 	if(QryMDTraderOffer)
@@ -1954,7 +1738,6 @@ void WriteQryMDTraderOffer(CThostFtdcQryMDTraderOfferField* QryMDTraderOffer)
 			QryMDTraderOffer->ExchangeID, QryMDTraderOffer->ParticipantID, QryMDTraderOffer->TraderID);
 	}
 }
-
 void WriteQryNotice(CThostFtdcQryNoticeField* QryNotice)
 {
 	if(QryNotice)
@@ -1963,7 +1746,6 @@ void WriteQryNotice(CThostFtdcQryNoticeField* QryNotice)
 			QryNotice->BrokerID);
 	}
 }
-
 void WriteNotice(CThostFtdcNoticeField* Notice)
 {
 	if(Notice)
@@ -1972,7 +1754,6 @@ void WriteNotice(CThostFtdcNoticeField* Notice)
 			Notice->BrokerID, Notice->Content, Notice->SequenceLabel);
 	}
 }
-
 void WriteUserRight(CThostFtdcUserRightField* UserRight)
 {
 	if(UserRight)
@@ -1981,7 +1762,6 @@ void WriteUserRight(CThostFtdcUserRightField* UserRight)
 			UserRight->BrokerID, UserRight->UserID, UserRight->UserRightType, UserRight->IsForbidden);
 	}
 }
-
 void WriteQrySettlementInfoConfirm(CThostFtdcQrySettlementInfoConfirmField* QrySettlementInfoConfirm)
 {
 	if(QrySettlementInfoConfirm)
@@ -1990,7 +1770,6 @@ void WriteQrySettlementInfoConfirm(CThostFtdcQrySettlementInfoConfirmField* QryS
 			QrySettlementInfoConfirm->BrokerID, QrySettlementInfoConfirm->InvestorID, QrySettlementInfoConfirm->AccountID, QrySettlementInfoConfirm->CurrencyID);
 	}
 }
-
 void WriteLoadSettlementInfo(CThostFtdcLoadSettlementInfoField* LoadSettlementInfo)
 {
 	if(LoadSettlementInfo)
@@ -1999,7 +1778,6 @@ void WriteLoadSettlementInfo(CThostFtdcLoadSettlementInfoField* LoadSettlementIn
 			LoadSettlementInfo->BrokerID);
 	}
 }
-
 void WriteBrokerWithdrawAlgorithm(CThostFtdcBrokerWithdrawAlgorithmField* BrokerWithdrawAlgorithm)
 {
 	if(BrokerWithdrawAlgorithm)
@@ -2008,7 +1786,6 @@ void WriteBrokerWithdrawAlgorithm(CThostFtdcBrokerWithdrawAlgorithmField* Broker
 			BrokerWithdrawAlgorithm->BrokerID, BrokerWithdrawAlgorithm->WithdrawAlgorithm, BrokerWithdrawAlgorithm->UsingRatio, BrokerWithdrawAlgorithm->IncludeCloseProfit, BrokerWithdrawAlgorithm->AllWithoutTrade, BrokerWithdrawAlgorithm->AvailIncludeCloseProfit, BrokerWithdrawAlgorithm->IsBrokerUserEvent, BrokerWithdrawAlgorithm->CurrencyID, BrokerWithdrawAlgorithm->FundMortgageRatio, BrokerWithdrawAlgorithm->BalanceAlgorithm);
 	}
 }
-
 void WriteTradingAccountPasswordUpdateV1(CThostFtdcTradingAccountPasswordUpdateV1Field* TradingAccountPasswordUpdateV1)
 {
 	if(TradingAccountPasswordUpdateV1)
@@ -2017,7 +1794,6 @@ void WriteTradingAccountPasswordUpdateV1(CThostFtdcTradingAccountPasswordUpdateV
 			TradingAccountPasswordUpdateV1->BrokerID, TradingAccountPasswordUpdateV1->InvestorID, TradingAccountPasswordUpdateV1->OldPassword, TradingAccountPasswordUpdateV1->NewPassword);
 	}
 }
-
 void WriteTradingAccountPasswordUpdate(CThostFtdcTradingAccountPasswordUpdateField* TradingAccountPasswordUpdate)
 {
 	if(TradingAccountPasswordUpdate)
@@ -2026,7 +1802,6 @@ void WriteTradingAccountPasswordUpdate(CThostFtdcTradingAccountPasswordUpdateFie
 			TradingAccountPasswordUpdate->BrokerID, TradingAccountPasswordUpdate->AccountID, TradingAccountPasswordUpdate->OldPassword, TradingAccountPasswordUpdate->NewPassword, TradingAccountPasswordUpdate->CurrencyID);
 	}
 }
-
 void WriteQryCombinationLeg(CThostFtdcQryCombinationLegField* QryCombinationLeg)
 {
 	if(QryCombinationLeg)
@@ -2035,7 +1810,6 @@ void WriteQryCombinationLeg(CThostFtdcQryCombinationLegField* QryCombinationLeg)
 			QryCombinationLeg->reserve1, QryCombinationLeg->LegID, QryCombinationLeg->reserve2, QryCombinationLeg->CombInstrumentID, QryCombinationLeg->LegInstrumentID);
 	}
 }
-
 void WriteQrySyncStatus(CThostFtdcQrySyncStatusField* QrySyncStatus)
 {
 	if(QrySyncStatus)
@@ -2044,7 +1818,6 @@ void WriteQrySyncStatus(CThostFtdcQrySyncStatusField* QrySyncStatus)
 			QrySyncStatus->TradingDay);
 	}
 }
-
 void WriteCombinationLeg(CThostFtdcCombinationLegField* CombinationLeg)
 {
 	if(CombinationLeg)
@@ -2053,7 +1826,6 @@ void WriteCombinationLeg(CThostFtdcCombinationLegField* CombinationLeg)
 			CombinationLeg->reserve1, CombinationLeg->LegID, CombinationLeg->reserve2, CombinationLeg->Direction, CombinationLeg->LegMultiple, CombinationLeg->ImplyLevel, CombinationLeg->CombInstrumentID, CombinationLeg->LegInstrumentID);
 	}
 }
-
 void WriteSyncStatus(CThostFtdcSyncStatusField* SyncStatus)
 {
 	if(SyncStatus)
@@ -2062,7 +1834,6 @@ void WriteSyncStatus(CThostFtdcSyncStatusField* SyncStatus)
 			SyncStatus->TradingDay, SyncStatus->DataSyncStatus);
 	}
 }
-
 void WriteQryLinkMan(CThostFtdcQryLinkManField* QryLinkMan)
 {
 	if(QryLinkMan)
@@ -2071,7 +1842,6 @@ void WriteQryLinkMan(CThostFtdcQryLinkManField* QryLinkMan)
 			QryLinkMan->BrokerID, QryLinkMan->InvestorID);
 	}
 }
-
 void WriteLinkMan(CThostFtdcLinkManField* LinkMan)
 {
 	if(LinkMan)
@@ -2080,7 +1850,6 @@ void WriteLinkMan(CThostFtdcLinkManField* LinkMan)
 			LinkMan->BrokerID, LinkMan->InvestorID, LinkMan->PersonType, LinkMan->IdentifiedCardType, LinkMan->IdentifiedCardNo, LinkMan->PersonName, LinkMan->Telephone, LinkMan->Address, LinkMan->ZipCode, LinkMan->Priority, LinkMan->UOAZipCode, LinkMan->PersonFullName);
 	}
 }
-
 void WriteQryBrokerUserEvent(CThostFtdcQryBrokerUserEventField* QryBrokerUserEvent)
 {
 	if(QryBrokerUserEvent)
@@ -2089,7 +1858,6 @@ void WriteQryBrokerUserEvent(CThostFtdcQryBrokerUserEventField* QryBrokerUserEve
 			QryBrokerUserEvent->BrokerID, QryBrokerUserEvent->UserID, QryBrokerUserEvent->UserEventType);
 	}
 }
-
 void WriteBrokerUserEvent(CThostFtdcBrokerUserEventField* BrokerUserEvent)
 {
 	if(BrokerUserEvent)
@@ -2098,7 +1866,6 @@ void WriteBrokerUserEvent(CThostFtdcBrokerUserEventField* BrokerUserEvent)
 			BrokerUserEvent->BrokerID, BrokerUserEvent->UserID, BrokerUserEvent->UserEventType, BrokerUserEvent->EventSequenceNo, BrokerUserEvent->EventDate, BrokerUserEvent->EventTime, BrokerUserEvent->UserEventInfo, BrokerUserEvent->InvestorID, BrokerUserEvent->reserve1, BrokerUserEvent->InstrumentID, BrokerUserEvent->DRIdentityID, BrokerUserEvent->TradingDay);
 	}
 }
-
 void WriteQryContractBank(CThostFtdcQryContractBankField* QryContractBank)
 {
 	if(QryContractBank)
@@ -2107,7 +1874,6 @@ void WriteQryContractBank(CThostFtdcQryContractBankField* QryContractBank)
 			QryContractBank->BrokerID, QryContractBank->BankID, QryContractBank->BankBrchID);
 	}
 }
-
 void WriteContractBank(CThostFtdcContractBankField* ContractBank)
 {
 	if(ContractBank)
@@ -2116,7 +1882,6 @@ void WriteContractBank(CThostFtdcContractBankField* ContractBank)
 			ContractBank->BrokerID, ContractBank->BankID, ContractBank->BankBrchID, ContractBank->BankName);
 	}
 }
-
 void WriteInvestorPositionCombineDetail(CThostFtdcInvestorPositionCombineDetailField* InvestorPositionCombineDetail)
 {
 	if(InvestorPositionCombineDetail)
@@ -2125,7 +1890,6 @@ void WriteInvestorPositionCombineDetail(CThostFtdcInvestorPositionCombineDetailF
 			InvestorPositionCombineDetail->TradingDay, InvestorPositionCombineDetail->OpenDate, InvestorPositionCombineDetail->ExchangeID, InvestorPositionCombineDetail->SettlementID, InvestorPositionCombineDetail->BrokerID, InvestorPositionCombineDetail->InvestorID, InvestorPositionCombineDetail->ComTradeID, InvestorPositionCombineDetail->TradeID, InvestorPositionCombineDetail->reserve1, InvestorPositionCombineDetail->HedgeFlag, InvestorPositionCombineDetail->Direction, InvestorPositionCombineDetail->TotalAmt, InvestorPositionCombineDetail->Margin, InvestorPositionCombineDetail->ExchMargin, InvestorPositionCombineDetail->MarginRateByMoney, InvestorPositionCombineDetail->MarginRateByVolume, InvestorPositionCombineDetail->LegID, InvestorPositionCombineDetail->LegMultiple, InvestorPositionCombineDetail->reserve2, InvestorPositionCombineDetail->TradeGroupID, InvestorPositionCombineDetail->InvestUnitID, InvestorPositionCombineDetail->InstrumentID, InvestorPositionCombineDetail->CombInstrumentID);
 	}
 }
-
 void WriteParkedOrder(CThostFtdcParkedOrderField* ParkedOrder)
 {
 	if(ParkedOrder)
@@ -2134,7 +1898,6 @@ void WriteParkedOrder(CThostFtdcParkedOrderField* ParkedOrder)
 			ParkedOrder->BrokerID, ParkedOrder->InvestorID, ParkedOrder->reserve1, ParkedOrder->OrderRef, ParkedOrder->UserID, ParkedOrder->OrderPriceType, ParkedOrder->Direction, ParkedOrder->CombOffsetFlag, ParkedOrder->CombHedgeFlag, ParkedOrder->LimitPrice, ParkedOrder->VolumeTotalOriginal, ParkedOrder->TimeCondition, ParkedOrder->GTDDate, ParkedOrder->VolumeCondition, ParkedOrder->MinVolume, ParkedOrder->ContingentCondition, ParkedOrder->StopPrice, ParkedOrder->ForceCloseReason, ParkedOrder->IsAutoSuspend, ParkedOrder->BusinessUnit, ParkedOrder->RequestID, ParkedOrder->UserForceClose, ParkedOrder->ExchangeID, ParkedOrder->ParkedOrderID, ParkedOrder->UserType, ParkedOrder->Status, ParkedOrder->ErrorID, ParkedOrder->ErrorMsg, ParkedOrder->IsSwapOrder, ParkedOrder->AccountID, ParkedOrder->CurrencyID, ParkedOrder->ClientID, ParkedOrder->InvestUnitID, ParkedOrder->reserve2, ParkedOrder->MacAddress, ParkedOrder->InstrumentID, ParkedOrder->IPAddress);
 	}
 }
-
 void WriteParkedOrderAction(CThostFtdcParkedOrderActionField* ParkedOrderAction)
 {
 	if(ParkedOrderAction)
@@ -2143,7 +1906,6 @@ void WriteParkedOrderAction(CThostFtdcParkedOrderActionField* ParkedOrderAction)
 			ParkedOrderAction->BrokerID, ParkedOrderAction->InvestorID, ParkedOrderAction->OrderActionRef, ParkedOrderAction->OrderRef, ParkedOrderAction->RequestID, ParkedOrderAction->FrontID, ParkedOrderAction->SessionID, ParkedOrderAction->ExchangeID, ParkedOrderAction->OrderSysID, ParkedOrderAction->ActionFlag, ParkedOrderAction->LimitPrice, ParkedOrderAction->VolumeChange, ParkedOrderAction->UserID, ParkedOrderAction->reserve1, ParkedOrderAction->ParkedOrderActionID, ParkedOrderAction->UserType, ParkedOrderAction->Status, ParkedOrderAction->ErrorID, ParkedOrderAction->ErrorMsg, ParkedOrderAction->InvestUnitID, ParkedOrderAction->reserve2, ParkedOrderAction->MacAddress, ParkedOrderAction->InstrumentID, ParkedOrderAction->IPAddress);
 	}
 }
-
 void WriteQryParkedOrder(CThostFtdcQryParkedOrderField* QryParkedOrder)
 {
 	if(QryParkedOrder)
@@ -2152,7 +1914,6 @@ void WriteQryParkedOrder(CThostFtdcQryParkedOrderField* QryParkedOrder)
 			QryParkedOrder->BrokerID, QryParkedOrder->InvestorID, QryParkedOrder->reserve1, QryParkedOrder->ExchangeID, QryParkedOrder->InvestUnitID, QryParkedOrder->InstrumentID);
 	}
 }
-
 void WriteQryParkedOrderAction(CThostFtdcQryParkedOrderActionField* QryParkedOrderAction)
 {
 	if(QryParkedOrderAction)
@@ -2161,7 +1922,6 @@ void WriteQryParkedOrderAction(CThostFtdcQryParkedOrderActionField* QryParkedOrd
 			QryParkedOrderAction->BrokerID, QryParkedOrderAction->InvestorID, QryParkedOrderAction->reserve1, QryParkedOrderAction->ExchangeID, QryParkedOrderAction->InvestUnitID, QryParkedOrderAction->InstrumentID);
 	}
 }
-
 void WriteRemoveParkedOrder(CThostFtdcRemoveParkedOrderField* RemoveParkedOrder)
 {
 	if(RemoveParkedOrder)
@@ -2170,7 +1930,6 @@ void WriteRemoveParkedOrder(CThostFtdcRemoveParkedOrderField* RemoveParkedOrder)
 			RemoveParkedOrder->BrokerID, RemoveParkedOrder->InvestorID, RemoveParkedOrder->ParkedOrderID, RemoveParkedOrder->InvestUnitID);
 	}
 }
-
 void WriteRemoveParkedOrderAction(CThostFtdcRemoveParkedOrderActionField* RemoveParkedOrderAction)
 {
 	if(RemoveParkedOrderAction)
@@ -2179,7 +1938,6 @@ void WriteRemoveParkedOrderAction(CThostFtdcRemoveParkedOrderActionField* Remove
 			RemoveParkedOrderAction->BrokerID, RemoveParkedOrderAction->InvestorID, RemoveParkedOrderAction->ParkedOrderActionID, RemoveParkedOrderAction->InvestUnitID);
 	}
 }
-
 void WriteInvestorWithdrawAlgorithm(CThostFtdcInvestorWithdrawAlgorithmField* InvestorWithdrawAlgorithm)
 {
 	if(InvestorWithdrawAlgorithm)
@@ -2188,7 +1946,6 @@ void WriteInvestorWithdrawAlgorithm(CThostFtdcInvestorWithdrawAlgorithmField* In
 			InvestorWithdrawAlgorithm->BrokerID, InvestorWithdrawAlgorithm->InvestorRange, InvestorWithdrawAlgorithm->InvestorID, InvestorWithdrawAlgorithm->UsingRatio, InvestorWithdrawAlgorithm->CurrencyID, InvestorWithdrawAlgorithm->FundMortgageRatio);
 	}
 }
-
 void WriteQryInvestorPositionCombineDetail(CThostFtdcQryInvestorPositionCombineDetailField* QryInvestorPositionCombineDetail)
 {
 	if(QryInvestorPositionCombineDetail)
@@ -2197,7 +1954,6 @@ void WriteQryInvestorPositionCombineDetail(CThostFtdcQryInvestorPositionCombineD
 			QryInvestorPositionCombineDetail->BrokerID, QryInvestorPositionCombineDetail->InvestorID, QryInvestorPositionCombineDetail->reserve1, QryInvestorPositionCombineDetail->ExchangeID, QryInvestorPositionCombineDetail->InvestUnitID, QryInvestorPositionCombineDetail->CombInstrumentID);
 	}
 }
-
 void WriteMarketDataAveragePrice(CThostFtdcMarketDataAveragePriceField* MarketDataAveragePrice)
 {
 	if(MarketDataAveragePrice)
@@ -2206,7 +1962,6 @@ void WriteMarketDataAveragePrice(CThostFtdcMarketDataAveragePriceField* MarketDa
 			MarketDataAveragePrice->AveragePrice);
 	}
 }
-
 void WriteVerifyInvestorPassword(CThostFtdcVerifyInvestorPasswordField* VerifyInvestorPassword)
 {
 	if(VerifyInvestorPassword)
@@ -2215,7 +1970,6 @@ void WriteVerifyInvestorPassword(CThostFtdcVerifyInvestorPasswordField* VerifyIn
 			VerifyInvestorPassword->BrokerID, VerifyInvestorPassword->InvestorID, VerifyInvestorPassword->Password);
 	}
 }
-
 void WriteUserIP(CThostFtdcUserIPField* UserIP)
 {
 	if(UserIP)
@@ -2224,7 +1978,6 @@ void WriteUserIP(CThostFtdcUserIPField* UserIP)
 			UserIP->BrokerID, UserIP->UserID, UserIP->reserve1, UserIP->reserve2, UserIP->MacAddress, UserIP->IPAddress, UserIP->IPMask);
 	}
 }
-
 void WriteTradingNoticeInfo(CThostFtdcTradingNoticeInfoField* TradingNoticeInfo)
 {
 	if(TradingNoticeInfo)
@@ -2233,7 +1986,6 @@ void WriteTradingNoticeInfo(CThostFtdcTradingNoticeInfoField* TradingNoticeInfo)
 			TradingNoticeInfo->BrokerID, TradingNoticeInfo->InvestorID, TradingNoticeInfo->SendTime, TradingNoticeInfo->FieldContent, TradingNoticeInfo->SequenceSeries, TradingNoticeInfo->SequenceNo, TradingNoticeInfo->InvestUnitID);
 	}
 }
-
 void WriteTradingNotice(CThostFtdcTradingNoticeField* TradingNotice)
 {
 	if(TradingNotice)
@@ -2242,7 +1994,6 @@ void WriteTradingNotice(CThostFtdcTradingNoticeField* TradingNotice)
 			TradingNotice->BrokerID, TradingNotice->InvestorRange, TradingNotice->InvestorID, TradingNotice->SequenceSeries, TradingNotice->UserID, TradingNotice->SendTime, TradingNotice->SequenceNo, TradingNotice->FieldContent, TradingNotice->InvestUnitID);
 	}
 }
-
 void WriteQryTradingNotice(CThostFtdcQryTradingNoticeField* QryTradingNotice)
 {
 	if(QryTradingNotice)
@@ -2251,7 +2002,6 @@ void WriteQryTradingNotice(CThostFtdcQryTradingNoticeField* QryTradingNotice)
 			QryTradingNotice->BrokerID, QryTradingNotice->InvestorID, QryTradingNotice->InvestUnitID);
 	}
 }
-
 void WriteQryErrOrder(CThostFtdcQryErrOrderField* QryErrOrder)
 {
 	if(QryErrOrder)
@@ -2260,7 +2010,6 @@ void WriteQryErrOrder(CThostFtdcQryErrOrderField* QryErrOrder)
 			QryErrOrder->BrokerID, QryErrOrder->InvestorID);
 	}
 }
-
 void WriteErrOrder(CThostFtdcErrOrderField* ErrOrder)
 {
 	if(ErrOrder)
@@ -2269,7 +2018,6 @@ void WriteErrOrder(CThostFtdcErrOrderField* ErrOrder)
 			ErrOrder->BrokerID, ErrOrder->InvestorID, ErrOrder->reserve1, ErrOrder->OrderRef, ErrOrder->UserID, ErrOrder->OrderPriceType, ErrOrder->Direction, ErrOrder->CombOffsetFlag, ErrOrder->CombHedgeFlag, ErrOrder->LimitPrice, ErrOrder->VolumeTotalOriginal, ErrOrder->TimeCondition, ErrOrder->GTDDate, ErrOrder->VolumeCondition, ErrOrder->MinVolume, ErrOrder->ContingentCondition, ErrOrder->StopPrice, ErrOrder->ForceCloseReason, ErrOrder->IsAutoSuspend, ErrOrder->BusinessUnit, ErrOrder->RequestID, ErrOrder->UserForceClose, ErrOrder->ErrorID, ErrOrder->ErrorMsg, ErrOrder->IsSwapOrder, ErrOrder->ExchangeID, ErrOrder->InvestUnitID, ErrOrder->AccountID, ErrOrder->CurrencyID, ErrOrder->ClientID, ErrOrder->reserve2, ErrOrder->MacAddress, ErrOrder->InstrumentID, ErrOrder->IPAddress);
 	}
 }
-
 void WriteErrorConditionalOrder(CThostFtdcErrorConditionalOrderField* ErrorConditionalOrder)
 {
 	if(ErrorConditionalOrder)
@@ -2278,7 +2026,6 @@ void WriteErrorConditionalOrder(CThostFtdcErrorConditionalOrderField* ErrorCondi
 			ErrorConditionalOrder->BrokerID, ErrorConditionalOrder->InvestorID, ErrorConditionalOrder->reserve1, ErrorConditionalOrder->OrderRef, ErrorConditionalOrder->UserID, ErrorConditionalOrder->OrderPriceType, ErrorConditionalOrder->Direction, ErrorConditionalOrder->CombOffsetFlag, ErrorConditionalOrder->CombHedgeFlag, ErrorConditionalOrder->LimitPrice, ErrorConditionalOrder->VolumeTotalOriginal, ErrorConditionalOrder->TimeCondition, ErrorConditionalOrder->GTDDate, ErrorConditionalOrder->VolumeCondition, ErrorConditionalOrder->MinVolume, ErrorConditionalOrder->ContingentCondition, ErrorConditionalOrder->StopPrice, ErrorConditionalOrder->ForceCloseReason, ErrorConditionalOrder->IsAutoSuspend, ErrorConditionalOrder->BusinessUnit, ErrorConditionalOrder->RequestID, ErrorConditionalOrder->OrderLocalID, ErrorConditionalOrder->ExchangeID, ErrorConditionalOrder->ParticipantID, ErrorConditionalOrder->ClientID, ErrorConditionalOrder->reserve2, ErrorConditionalOrder->TraderID, ErrorConditionalOrder->InstallID, ErrorConditionalOrder->OrderSubmitStatus, ErrorConditionalOrder->NotifySequence, ErrorConditionalOrder->TradingDay, ErrorConditionalOrder->SettlementID, ErrorConditionalOrder->OrderSysID, ErrorConditionalOrder->OrderSource, ErrorConditionalOrder->OrderStatus, ErrorConditionalOrder->OrderType, ErrorConditionalOrder->VolumeTraded, ErrorConditionalOrder->VolumeTotal, ErrorConditionalOrder->InsertDate, ErrorConditionalOrder->InsertTime, ErrorConditionalOrder->ActiveTime, ErrorConditionalOrder->SuspendTime, ErrorConditionalOrder->UpdateTime, ErrorConditionalOrder->CancelTime, ErrorConditionalOrder->ActiveTraderID, ErrorConditionalOrder->ClearingPartID, ErrorConditionalOrder->SequenceNo, ErrorConditionalOrder->FrontID, ErrorConditionalOrder->SessionID, ErrorConditionalOrder->UserProductInfo, ErrorConditionalOrder->StatusMsg, ErrorConditionalOrder->UserForceClose, ErrorConditionalOrder->ActiveUserID, ErrorConditionalOrder->BrokerOrderSeq, ErrorConditionalOrder->RelativeOrderSysID, ErrorConditionalOrder->ZCETotalTradedVolume, ErrorConditionalOrder->ErrorID, ErrorConditionalOrder->ErrorMsg, ErrorConditionalOrder->IsSwapOrder, ErrorConditionalOrder->BranchID, ErrorConditionalOrder->InvestUnitID, ErrorConditionalOrder->AccountID, ErrorConditionalOrder->CurrencyID, ErrorConditionalOrder->reserve3, ErrorConditionalOrder->MacAddress, ErrorConditionalOrder->InstrumentID, ErrorConditionalOrder->ExchangeInstID, ErrorConditionalOrder->IPAddress);
 	}
 }
-
 void WriteQryErrOrderAction(CThostFtdcQryErrOrderActionField* QryErrOrderAction)
 {
 	if(QryErrOrderAction)
@@ -2287,7 +2034,6 @@ void WriteQryErrOrderAction(CThostFtdcQryErrOrderActionField* QryErrOrderAction)
 			QryErrOrderAction->BrokerID, QryErrOrderAction->InvestorID);
 	}
 }
-
 void WriteErrOrderAction(CThostFtdcErrOrderActionField* ErrOrderAction)
 {
 	if(ErrOrderAction)
@@ -2296,7 +2042,6 @@ void WriteErrOrderAction(CThostFtdcErrOrderActionField* ErrOrderAction)
 			ErrOrderAction->BrokerID, ErrOrderAction->InvestorID, ErrOrderAction->OrderActionRef, ErrOrderAction->OrderRef, ErrOrderAction->RequestID, ErrOrderAction->FrontID, ErrOrderAction->SessionID, ErrOrderAction->ExchangeID, ErrOrderAction->OrderSysID, ErrOrderAction->ActionFlag, ErrOrderAction->LimitPrice, ErrOrderAction->VolumeChange, ErrOrderAction->ActionDate, ErrOrderAction->ActionTime, ErrOrderAction->TraderID, ErrOrderAction->InstallID, ErrOrderAction->OrderLocalID, ErrOrderAction->ActionLocalID, ErrOrderAction->ParticipantID, ErrOrderAction->ClientID, ErrOrderAction->BusinessUnit, ErrOrderAction->OrderActionStatus, ErrOrderAction->UserID, ErrOrderAction->StatusMsg, ErrOrderAction->reserve1, ErrOrderAction->BranchID, ErrOrderAction->InvestUnitID, ErrOrderAction->reserve2, ErrOrderAction->MacAddress, ErrOrderAction->ErrorID, ErrOrderAction->ErrorMsg, ErrOrderAction->InstrumentID, ErrOrderAction->IPAddress);
 	}
 }
-
 void WriteQryExchangeSequence(CThostFtdcQryExchangeSequenceField* QryExchangeSequence)
 {
 	if(QryExchangeSequence)
@@ -2305,7 +2050,6 @@ void WriteQryExchangeSequence(CThostFtdcQryExchangeSequenceField* QryExchangeSeq
 			QryExchangeSequence->ExchangeID);
 	}
 }
-
 void WriteExchangeSequence(CThostFtdcExchangeSequenceField* ExchangeSequence)
 {
 	if(ExchangeSequence)
@@ -2314,7 +2058,6 @@ void WriteExchangeSequence(CThostFtdcExchangeSequenceField* ExchangeSequence)
 			ExchangeSequence->ExchangeID, ExchangeSequence->SequenceNo, ExchangeSequence->MarketStatus);
 	}
 }
-
 void WriteQryMaxOrderVolumeWithPrice(CThostFtdcQryMaxOrderVolumeWithPriceField* QryMaxOrderVolumeWithPrice)
 {
 	if(QryMaxOrderVolumeWithPrice)
@@ -2323,7 +2066,6 @@ void WriteQryMaxOrderVolumeWithPrice(CThostFtdcQryMaxOrderVolumeWithPriceField* 
 			QryMaxOrderVolumeWithPrice->BrokerID, QryMaxOrderVolumeWithPrice->InvestorID, QryMaxOrderVolumeWithPrice->reserve1, QryMaxOrderVolumeWithPrice->Direction, QryMaxOrderVolumeWithPrice->OffsetFlag, QryMaxOrderVolumeWithPrice->HedgeFlag, QryMaxOrderVolumeWithPrice->MaxVolume, QryMaxOrderVolumeWithPrice->Price, QryMaxOrderVolumeWithPrice->ExchangeID, QryMaxOrderVolumeWithPrice->InvestUnitID, QryMaxOrderVolumeWithPrice->InstrumentID);
 	}
 }
-
 void WriteQryBrokerTradingParams(CThostFtdcQryBrokerTradingParamsField* QryBrokerTradingParams)
 {
 	if(QryBrokerTradingParams)
@@ -2332,7 +2074,6 @@ void WriteQryBrokerTradingParams(CThostFtdcQryBrokerTradingParamsField* QryBroke
 			QryBrokerTradingParams->BrokerID, QryBrokerTradingParams->InvestorID, QryBrokerTradingParams->CurrencyID, QryBrokerTradingParams->AccountID);
 	}
 }
-
 void WriteBrokerTradingParams(CThostFtdcBrokerTradingParamsField* BrokerTradingParams)
 {
 	if(BrokerTradingParams)
@@ -2341,7 +2082,6 @@ void WriteBrokerTradingParams(CThostFtdcBrokerTradingParamsField* BrokerTradingP
 			BrokerTradingParams->BrokerID, BrokerTradingParams->InvestorID, BrokerTradingParams->MarginPriceType, BrokerTradingParams->Algorithm, BrokerTradingParams->AvailIncludeCloseProfit, BrokerTradingParams->CurrencyID, BrokerTradingParams->OptionRoyaltyPriceType, BrokerTradingParams->AccountID);
 	}
 }
-
 void WriteQryBrokerTradingAlgos(CThostFtdcQryBrokerTradingAlgosField* QryBrokerTradingAlgos)
 {
 	if(QryBrokerTradingAlgos)
@@ -2350,7 +2090,6 @@ void WriteQryBrokerTradingAlgos(CThostFtdcQryBrokerTradingAlgosField* QryBrokerT
 			QryBrokerTradingAlgos->BrokerID, QryBrokerTradingAlgos->ExchangeID, QryBrokerTradingAlgos->reserve1, QryBrokerTradingAlgos->InstrumentID);
 	}
 }
-
 void WriteBrokerTradingAlgos(CThostFtdcBrokerTradingAlgosField* BrokerTradingAlgos)
 {
 	if(BrokerTradingAlgos)
@@ -2359,7 +2098,6 @@ void WriteBrokerTradingAlgos(CThostFtdcBrokerTradingAlgosField* BrokerTradingAlg
 			BrokerTradingAlgos->BrokerID, BrokerTradingAlgos->ExchangeID, BrokerTradingAlgos->reserve1, BrokerTradingAlgos->HandlePositionAlgoID, BrokerTradingAlgos->FindMarginRateAlgoID, BrokerTradingAlgos->HandleTradingAccountAlgoID, BrokerTradingAlgos->InstrumentID);
 	}
 }
-
 void WriteQueryBrokerDeposit(CThostFtdcQueryBrokerDepositField* QueryBrokerDeposit)
 {
 	if(QueryBrokerDeposit)
@@ -2368,7 +2106,6 @@ void WriteQueryBrokerDeposit(CThostFtdcQueryBrokerDepositField* QueryBrokerDepos
 			QueryBrokerDeposit->BrokerID, QueryBrokerDeposit->ExchangeID);
 	}
 }
-
 void WriteBrokerDeposit(CThostFtdcBrokerDepositField* BrokerDeposit)
 {
 	if(BrokerDeposit)
@@ -2377,7 +2114,6 @@ void WriteBrokerDeposit(CThostFtdcBrokerDepositField* BrokerDeposit)
 			BrokerDeposit->TradingDay, BrokerDeposit->BrokerID, BrokerDeposit->ParticipantID, BrokerDeposit->ExchangeID, BrokerDeposit->PreBalance, BrokerDeposit->CurrMargin, BrokerDeposit->CloseProfit, BrokerDeposit->Balance, BrokerDeposit->Deposit, BrokerDeposit->Withdraw, BrokerDeposit->Available, BrokerDeposit->Reserve, BrokerDeposit->FrozenMargin);
 	}
 }
-
 void WriteQryCFMMCBrokerKey(CThostFtdcQryCFMMCBrokerKeyField* QryCFMMCBrokerKey)
 {
 	if(QryCFMMCBrokerKey)
@@ -2386,7 +2122,6 @@ void WriteQryCFMMCBrokerKey(CThostFtdcQryCFMMCBrokerKeyField* QryCFMMCBrokerKey)
 			QryCFMMCBrokerKey->BrokerID);
 	}
 }
-
 void WriteCFMMCBrokerKey(CThostFtdcCFMMCBrokerKeyField* CFMMCBrokerKey)
 {
 	if(CFMMCBrokerKey)
@@ -2395,7 +2130,6 @@ void WriteCFMMCBrokerKey(CThostFtdcCFMMCBrokerKeyField* CFMMCBrokerKey)
 			CFMMCBrokerKey->BrokerID, CFMMCBrokerKey->ParticipantID, CFMMCBrokerKey->CreateDate, CFMMCBrokerKey->CreateTime, CFMMCBrokerKey->KeyID, CFMMCBrokerKey->CurrentKey, CFMMCBrokerKey->KeyKind);
 	}
 }
-
 void WriteCFMMCTradingAccountKey(CThostFtdcCFMMCTradingAccountKeyField* CFMMCTradingAccountKey)
 {
 	if(CFMMCTradingAccountKey)
@@ -2404,7 +2138,6 @@ void WriteCFMMCTradingAccountKey(CThostFtdcCFMMCTradingAccountKeyField* CFMMCTra
 			CFMMCTradingAccountKey->BrokerID, CFMMCTradingAccountKey->ParticipantID, CFMMCTradingAccountKey->AccountID, CFMMCTradingAccountKey->KeyID, CFMMCTradingAccountKey->CurrentKey);
 	}
 }
-
 void WriteQryCFMMCTradingAccountKey(CThostFtdcQryCFMMCTradingAccountKeyField* QryCFMMCTradingAccountKey)
 {
 	if(QryCFMMCTradingAccountKey)
@@ -2413,7 +2146,6 @@ void WriteQryCFMMCTradingAccountKey(CThostFtdcQryCFMMCTradingAccountKeyField* Qr
 			QryCFMMCTradingAccountKey->BrokerID, QryCFMMCTradingAccountKey->InvestorID);
 	}
 }
-
 void WriteBrokerUserOTPParam(CThostFtdcBrokerUserOTPParamField* BrokerUserOTPParam)
 {
 	if(BrokerUserOTPParam)
@@ -2422,7 +2154,6 @@ void WriteBrokerUserOTPParam(CThostFtdcBrokerUserOTPParamField* BrokerUserOTPPar
 			BrokerUserOTPParam->BrokerID, BrokerUserOTPParam->UserID, BrokerUserOTPParam->OTPVendorsID, BrokerUserOTPParam->SerialNumber, BrokerUserOTPParam->AuthKey, BrokerUserOTPParam->LastDrift, BrokerUserOTPParam->LastSuccess, BrokerUserOTPParam->OTPType);
 	}
 }
-
 void WriteManualSyncBrokerUserOTP(CThostFtdcManualSyncBrokerUserOTPField* ManualSyncBrokerUserOTP)
 {
 	if(ManualSyncBrokerUserOTP)
@@ -2431,7 +2162,6 @@ void WriteManualSyncBrokerUserOTP(CThostFtdcManualSyncBrokerUserOTPField* Manual
 			ManualSyncBrokerUserOTP->BrokerID, ManualSyncBrokerUserOTP->UserID, ManualSyncBrokerUserOTP->OTPType, ManualSyncBrokerUserOTP->FirstOTP, ManualSyncBrokerUserOTP->SecondOTP);
 	}
 }
-
 void WriteCommRateModel(CThostFtdcCommRateModelField* CommRateModel)
 {
 	if(CommRateModel)
@@ -2440,7 +2170,6 @@ void WriteCommRateModel(CThostFtdcCommRateModelField* CommRateModel)
 			CommRateModel->BrokerID, CommRateModel->CommModelID, CommRateModel->CommModelName);
 	}
 }
-
 void WriteQryCommRateModel(CThostFtdcQryCommRateModelField* QryCommRateModel)
 {
 	if(QryCommRateModel)
@@ -2449,7 +2178,6 @@ void WriteQryCommRateModel(CThostFtdcQryCommRateModelField* QryCommRateModel)
 			QryCommRateModel->BrokerID, QryCommRateModel->CommModelID);
 	}
 }
-
 void WriteMarginModel(CThostFtdcMarginModelField* MarginModel)
 {
 	if(MarginModel)
@@ -2458,7 +2186,6 @@ void WriteMarginModel(CThostFtdcMarginModelField* MarginModel)
 			MarginModel->BrokerID, MarginModel->MarginModelID, MarginModel->MarginModelName);
 	}
 }
-
 void WriteQryMarginModel(CThostFtdcQryMarginModelField* QryMarginModel)
 {
 	if(QryMarginModel)
@@ -2467,7 +2194,6 @@ void WriteQryMarginModel(CThostFtdcQryMarginModelField* QryMarginModel)
 			QryMarginModel->BrokerID, QryMarginModel->MarginModelID);
 	}
 }
-
 void WriteEWarrantOffset(CThostFtdcEWarrantOffsetField* EWarrantOffset)
 {
 	if(EWarrantOffset)
@@ -2476,7 +2202,6 @@ void WriteEWarrantOffset(CThostFtdcEWarrantOffsetField* EWarrantOffset)
 			EWarrantOffset->TradingDay, EWarrantOffset->BrokerID, EWarrantOffset->InvestorID, EWarrantOffset->ExchangeID, EWarrantOffset->reserve1, EWarrantOffset->Direction, EWarrantOffset->HedgeFlag, EWarrantOffset->Volume, EWarrantOffset->InvestUnitID, EWarrantOffset->InstrumentID);
 	}
 }
-
 void WriteQryEWarrantOffset(CThostFtdcQryEWarrantOffsetField* QryEWarrantOffset)
 {
 	if(QryEWarrantOffset)
@@ -2485,7 +2210,6 @@ void WriteQryEWarrantOffset(CThostFtdcQryEWarrantOffsetField* QryEWarrantOffset)
 			QryEWarrantOffset->BrokerID, QryEWarrantOffset->InvestorID, QryEWarrantOffset->ExchangeID, QryEWarrantOffset->reserve1, QryEWarrantOffset->InvestUnitID, QryEWarrantOffset->InstrumentID);
 	}
 }
-
 void WriteQryInvestorProductGroupMargin(CThostFtdcQryInvestorProductGroupMarginField* QryInvestorProductGroupMargin)
 {
 	if(QryInvestorProductGroupMargin)
@@ -2494,7 +2218,6 @@ void WriteQryInvestorProductGroupMargin(CThostFtdcQryInvestorProductGroupMarginF
 			QryInvestorProductGroupMargin->BrokerID, QryInvestorProductGroupMargin->InvestorID, QryInvestorProductGroupMargin->reserve1, QryInvestorProductGroupMargin->HedgeFlag, QryInvestorProductGroupMargin->ExchangeID, QryInvestorProductGroupMargin->InvestUnitID, QryInvestorProductGroupMargin->ProductGroupID);
 	}
 }
-
 void WriteInvestorProductGroupMargin(CThostFtdcInvestorProductGroupMarginField* InvestorProductGroupMargin)
 {
 	if(InvestorProductGroupMargin)
@@ -2503,7 +2226,6 @@ void WriteInvestorProductGroupMargin(CThostFtdcInvestorProductGroupMarginField* 
 			InvestorProductGroupMargin->reserve1, InvestorProductGroupMargin->BrokerID, InvestorProductGroupMargin->InvestorID, InvestorProductGroupMargin->TradingDay, InvestorProductGroupMargin->SettlementID, InvestorProductGroupMargin->FrozenMargin, InvestorProductGroupMargin->LongFrozenMargin, InvestorProductGroupMargin->ShortFrozenMargin, InvestorProductGroupMargin->UseMargin, InvestorProductGroupMargin->LongUseMargin, InvestorProductGroupMargin->ShortUseMargin, InvestorProductGroupMargin->ExchMargin, InvestorProductGroupMargin->LongExchMargin, InvestorProductGroupMargin->ShortExchMargin, InvestorProductGroupMargin->CloseProfit, InvestorProductGroupMargin->FrozenCommission, InvestorProductGroupMargin->Commission, InvestorProductGroupMargin->FrozenCash, InvestorProductGroupMargin->CashIn, InvestorProductGroupMargin->PositionProfit, InvestorProductGroupMargin->OffsetAmount, InvestorProductGroupMargin->LongOffsetAmount, InvestorProductGroupMargin->ShortOffsetAmount, InvestorProductGroupMargin->ExchOffsetAmount, InvestorProductGroupMargin->LongExchOffsetAmount, InvestorProductGroupMargin->ShortExchOffsetAmount, InvestorProductGroupMargin->HedgeFlag, InvestorProductGroupMargin->ExchangeID, InvestorProductGroupMargin->InvestUnitID, InvestorProductGroupMargin->ProductGroupID);
 	}
 }
-
 void WriteQueryCFMMCTradingAccountToken(CThostFtdcQueryCFMMCTradingAccountTokenField* QueryCFMMCTradingAccountToken)
 {
 	if(QueryCFMMCTradingAccountToken)
@@ -2512,7 +2234,6 @@ void WriteQueryCFMMCTradingAccountToken(CThostFtdcQueryCFMMCTradingAccountTokenF
 			QueryCFMMCTradingAccountToken->BrokerID, QueryCFMMCTradingAccountToken->InvestorID, QueryCFMMCTradingAccountToken->InvestUnitID);
 	}
 }
-
 void WriteCFMMCTradingAccountToken(CThostFtdcCFMMCTradingAccountTokenField* CFMMCTradingAccountToken)
 {
 	if(CFMMCTradingAccountToken)
@@ -2521,7 +2242,6 @@ void WriteCFMMCTradingAccountToken(CThostFtdcCFMMCTradingAccountTokenField* CFMM
 			CFMMCTradingAccountToken->BrokerID, CFMMCTradingAccountToken->ParticipantID, CFMMCTradingAccountToken->AccountID, CFMMCTradingAccountToken->KeyID, CFMMCTradingAccountToken->Token);
 	}
 }
-
 void WriteQryProductGroup(CThostFtdcQryProductGroupField* QryProductGroup)
 {
 	if(QryProductGroup)
@@ -2530,7 +2250,6 @@ void WriteQryProductGroup(CThostFtdcQryProductGroupField* QryProductGroup)
 			QryProductGroup->reserve1, QryProductGroup->ExchangeID, QryProductGroup->ProductID);
 	}
 }
-
 void WriteProductGroup(CThostFtdcProductGroupField* ProductGroup)
 {
 	if(ProductGroup)
@@ -2539,7 +2258,6 @@ void WriteProductGroup(CThostFtdcProductGroupField* ProductGroup)
 			ProductGroup->reserve1, ProductGroup->ExchangeID, ProductGroup->reserve2, ProductGroup->ProductID, ProductGroup->ProductGroupID);
 	}
 }
-
 void WriteBulletin(CThostFtdcBulletinField* Bulletin)
 {
 	if(Bulletin)
@@ -2548,7 +2266,6 @@ void WriteBulletin(CThostFtdcBulletinField* Bulletin)
 			Bulletin->ExchangeID, Bulletin->TradingDay, Bulletin->BulletinID, Bulletin->SequenceNo, Bulletin->NewsType, Bulletin->NewsUrgency, Bulletin->SendTime, Bulletin->Abstract, Bulletin->ComeFrom, Bulletin->Content, Bulletin->URLLink, Bulletin->MarketID);
 	}
 }
-
 void WriteQryBulletin(CThostFtdcQryBulletinField* QryBulletin)
 {
 	if(QryBulletin)
@@ -2557,7 +2274,6 @@ void WriteQryBulletin(CThostFtdcQryBulletinField* QryBulletin)
 			QryBulletin->ExchangeID, QryBulletin->BulletinID, QryBulletin->SequenceNo, QryBulletin->NewsType, QryBulletin->NewsUrgency);
 	}
 }
-
 void WriteMulticastInstrument(CThostFtdcMulticastInstrumentField* MulticastInstrument)
 {
 	if(MulticastInstrument)
@@ -2566,7 +2282,6 @@ void WriteMulticastInstrument(CThostFtdcMulticastInstrumentField* MulticastInstr
 			MulticastInstrument->TopicID, MulticastInstrument->reserve1, MulticastInstrument->InstrumentNo, MulticastInstrument->CodePrice, MulticastInstrument->VolumeMultiple, MulticastInstrument->PriceTick, MulticastInstrument->InstrumentID);
 	}
 }
-
 void WriteQryMulticastInstrument(CThostFtdcQryMulticastInstrumentField* QryMulticastInstrument)
 {
 	if(QryMulticastInstrument)
@@ -2575,7 +2290,6 @@ void WriteQryMulticastInstrument(CThostFtdcQryMulticastInstrumentField* QryMulti
 			QryMulticastInstrument->TopicID, QryMulticastInstrument->reserve1, QryMulticastInstrument->InstrumentID);
 	}
 }
-
 void WriteAppIDAuthAssign(CThostFtdcAppIDAuthAssignField* AppIDAuthAssign)
 {
 	if(AppIDAuthAssign)
@@ -2584,7 +2298,6 @@ void WriteAppIDAuthAssign(CThostFtdcAppIDAuthAssignField* AppIDAuthAssign)
 			AppIDAuthAssign->BrokerID, AppIDAuthAssign->AppID, AppIDAuthAssign->DRIdentityID);
 	}
 }
-
 void WriteReqOpenAccount(CThostFtdcReqOpenAccountField* ReqOpenAccount)
 {
 	if(ReqOpenAccount)
@@ -2593,7 +2306,6 @@ void WriteReqOpenAccount(CThostFtdcReqOpenAccountField* ReqOpenAccount)
 			ReqOpenAccount->TradeCode, ReqOpenAccount->BankID, ReqOpenAccount->BankBranchID, ReqOpenAccount->BrokerID, ReqOpenAccount->BrokerBranchID, ReqOpenAccount->TradeDate, ReqOpenAccount->TradeTime, ReqOpenAccount->BankSerial, ReqOpenAccount->TradingDay, ReqOpenAccount->PlateSerial, ReqOpenAccount->LastFragment, ReqOpenAccount->SessionID, ReqOpenAccount->CustomerName, ReqOpenAccount->IdCardType, ReqOpenAccount->IdentifiedCardNo, ReqOpenAccount->Gender, ReqOpenAccount->CountryCode, ReqOpenAccount->CustType, ReqOpenAccount->Address, ReqOpenAccount->ZipCode, ReqOpenAccount->Telephone, ReqOpenAccount->MobilePhone, ReqOpenAccount->Fax, ReqOpenAccount->EMail, ReqOpenAccount->MoneyAccountStatus, ReqOpenAccount->BankAccount, ReqOpenAccount->BankPassWord, ReqOpenAccount->AccountID, ReqOpenAccount->Password, ReqOpenAccount->InstallID, ReqOpenAccount->VerifyCertNoFlag, ReqOpenAccount->CurrencyID, ReqOpenAccount->CashExchangeCode, ReqOpenAccount->Digest, ReqOpenAccount->BankAccType, ReqOpenAccount->DeviceID, ReqOpenAccount->BankSecuAccType, ReqOpenAccount->BrokerIDByBank, ReqOpenAccount->BankSecuAcc, ReqOpenAccount->BankPwdFlag, ReqOpenAccount->SecuPwdFlag, ReqOpenAccount->OperNo, ReqOpenAccount->TID, ReqOpenAccount->UserID, ReqOpenAccount->LongCustomerName);
 	}
 }
-
 void WriteReqCancelAccount(CThostFtdcReqCancelAccountField* ReqCancelAccount)
 {
 	if(ReqCancelAccount)
@@ -2602,7 +2314,6 @@ void WriteReqCancelAccount(CThostFtdcReqCancelAccountField* ReqCancelAccount)
 			ReqCancelAccount->TradeCode, ReqCancelAccount->BankID, ReqCancelAccount->BankBranchID, ReqCancelAccount->BrokerID, ReqCancelAccount->BrokerBranchID, ReqCancelAccount->TradeDate, ReqCancelAccount->TradeTime, ReqCancelAccount->BankSerial, ReqCancelAccount->TradingDay, ReqCancelAccount->PlateSerial, ReqCancelAccount->LastFragment, ReqCancelAccount->SessionID, ReqCancelAccount->CustomerName, ReqCancelAccount->IdCardType, ReqCancelAccount->IdentifiedCardNo, ReqCancelAccount->Gender, ReqCancelAccount->CountryCode, ReqCancelAccount->CustType, ReqCancelAccount->Address, ReqCancelAccount->ZipCode, ReqCancelAccount->Telephone, ReqCancelAccount->MobilePhone, ReqCancelAccount->Fax, ReqCancelAccount->EMail, ReqCancelAccount->MoneyAccountStatus, ReqCancelAccount->BankAccount, ReqCancelAccount->BankPassWord, ReqCancelAccount->AccountID, ReqCancelAccount->Password, ReqCancelAccount->InstallID, ReqCancelAccount->VerifyCertNoFlag, ReqCancelAccount->CurrencyID, ReqCancelAccount->CashExchangeCode, ReqCancelAccount->Digest, ReqCancelAccount->BankAccType, ReqCancelAccount->DeviceID, ReqCancelAccount->BankSecuAccType, ReqCancelAccount->BrokerIDByBank, ReqCancelAccount->BankSecuAcc, ReqCancelAccount->BankPwdFlag, ReqCancelAccount->SecuPwdFlag, ReqCancelAccount->OperNo, ReqCancelAccount->TID, ReqCancelAccount->UserID, ReqCancelAccount->LongCustomerName);
 	}
 }
-
 void WriteReqChangeAccount(CThostFtdcReqChangeAccountField* ReqChangeAccount)
 {
 	if(ReqChangeAccount)
@@ -2611,7 +2322,6 @@ void WriteReqChangeAccount(CThostFtdcReqChangeAccountField* ReqChangeAccount)
 			ReqChangeAccount->TradeCode, ReqChangeAccount->BankID, ReqChangeAccount->BankBranchID, ReqChangeAccount->BrokerID, ReqChangeAccount->BrokerBranchID, ReqChangeAccount->TradeDate, ReqChangeAccount->TradeTime, ReqChangeAccount->BankSerial, ReqChangeAccount->TradingDay, ReqChangeAccount->PlateSerial, ReqChangeAccount->LastFragment, ReqChangeAccount->SessionID, ReqChangeAccount->CustomerName, ReqChangeAccount->IdCardType, ReqChangeAccount->IdentifiedCardNo, ReqChangeAccount->Gender, ReqChangeAccount->CountryCode, ReqChangeAccount->CustType, ReqChangeAccount->Address, ReqChangeAccount->ZipCode, ReqChangeAccount->Telephone, ReqChangeAccount->MobilePhone, ReqChangeAccount->Fax, ReqChangeAccount->EMail, ReqChangeAccount->MoneyAccountStatus, ReqChangeAccount->BankAccount, ReqChangeAccount->BankPassWord, ReqChangeAccount->NewBankAccount, ReqChangeAccount->NewBankPassWord, ReqChangeAccount->AccountID, ReqChangeAccount->Password, ReqChangeAccount->BankAccType, ReqChangeAccount->InstallID, ReqChangeAccount->VerifyCertNoFlag, ReqChangeAccount->CurrencyID, ReqChangeAccount->BrokerIDByBank, ReqChangeAccount->BankPwdFlag, ReqChangeAccount->SecuPwdFlag, ReqChangeAccount->TID, ReqChangeAccount->Digest, ReqChangeAccount->LongCustomerName);
 	}
 }
-
 void WriteReqTransfer(CThostFtdcReqTransferField* ReqTransfer)
 {
 	if(ReqTransfer)
@@ -2620,7 +2330,6 @@ void WriteReqTransfer(CThostFtdcReqTransferField* ReqTransfer)
 			ReqTransfer->TradeCode, ReqTransfer->BankID, ReqTransfer->BankBranchID, ReqTransfer->BrokerID, ReqTransfer->BrokerBranchID, ReqTransfer->TradeDate, ReqTransfer->TradeTime, ReqTransfer->BankSerial, ReqTransfer->TradingDay, ReqTransfer->PlateSerial, ReqTransfer->LastFragment, ReqTransfer->SessionID, ReqTransfer->CustomerName, ReqTransfer->IdCardType, ReqTransfer->IdentifiedCardNo, ReqTransfer->CustType, ReqTransfer->BankAccount, ReqTransfer->BankPassWord, ReqTransfer->AccountID, ReqTransfer->Password, ReqTransfer->InstallID, ReqTransfer->FutureSerial, ReqTransfer->UserID, ReqTransfer->VerifyCertNoFlag, ReqTransfer->CurrencyID, ReqTransfer->TradeAmount, ReqTransfer->FutureFetchAmount, ReqTransfer->FeePayFlag, ReqTransfer->CustFee, ReqTransfer->BrokerFee, ReqTransfer->Message, ReqTransfer->Digest, ReqTransfer->BankAccType, ReqTransfer->DeviceID, ReqTransfer->BankSecuAccType, ReqTransfer->BrokerIDByBank, ReqTransfer->BankSecuAcc, ReqTransfer->BankPwdFlag, ReqTransfer->SecuPwdFlag, ReqTransfer->OperNo, ReqTransfer->RequestID, ReqTransfer->TID, ReqTransfer->TransferStatus, ReqTransfer->LongCustomerName);
 	}
 }
-
 void WriteRspTransfer(CThostFtdcRspTransferField* RspTransfer)
 {
 	if(RspTransfer)
@@ -2629,7 +2338,6 @@ void WriteRspTransfer(CThostFtdcRspTransferField* RspTransfer)
 			RspTransfer->TradeCode, RspTransfer->BankID, RspTransfer->BankBranchID, RspTransfer->BrokerID, RspTransfer->BrokerBranchID, RspTransfer->TradeDate, RspTransfer->TradeTime, RspTransfer->BankSerial, RspTransfer->TradingDay, RspTransfer->PlateSerial, RspTransfer->LastFragment, RspTransfer->SessionID, RspTransfer->CustomerName, RspTransfer->IdCardType, RspTransfer->IdentifiedCardNo, RspTransfer->CustType, RspTransfer->BankAccount, RspTransfer->BankPassWord, RspTransfer->AccountID, RspTransfer->Password, RspTransfer->InstallID, RspTransfer->FutureSerial, RspTransfer->UserID, RspTransfer->VerifyCertNoFlag, RspTransfer->CurrencyID, RspTransfer->TradeAmount, RspTransfer->FutureFetchAmount, RspTransfer->FeePayFlag, RspTransfer->CustFee, RspTransfer->BrokerFee, RspTransfer->Message, RspTransfer->Digest, RspTransfer->BankAccType, RspTransfer->DeviceID, RspTransfer->BankSecuAccType, RspTransfer->BrokerIDByBank, RspTransfer->BankSecuAcc, RspTransfer->BankPwdFlag, RspTransfer->SecuPwdFlag, RspTransfer->OperNo, RspTransfer->RequestID, RspTransfer->TID, RspTransfer->TransferStatus, RspTransfer->ErrorID, RspTransfer->ErrorMsg, RspTransfer->LongCustomerName);
 	}
 }
-
 void WriteReqRepeal(CThostFtdcReqRepealField* ReqRepeal)
 {
 	if(ReqRepeal)
@@ -2638,7 +2346,6 @@ void WriteReqRepeal(CThostFtdcReqRepealField* ReqRepeal)
 			ReqRepeal->RepealTimeInterval, ReqRepeal->RepealedTimes, ReqRepeal->BankRepealFlag, ReqRepeal->BrokerRepealFlag, ReqRepeal->PlateRepealSerial, ReqRepeal->BankRepealSerial, ReqRepeal->FutureRepealSerial, ReqRepeal->TradeCode, ReqRepeal->BankID, ReqRepeal->BankBranchID, ReqRepeal->BrokerID, ReqRepeal->BrokerBranchID, ReqRepeal->TradeDate, ReqRepeal->TradeTime, ReqRepeal->BankSerial, ReqRepeal->TradingDay, ReqRepeal->PlateSerial, ReqRepeal->LastFragment, ReqRepeal->SessionID, ReqRepeal->CustomerName, ReqRepeal->IdCardType, ReqRepeal->IdentifiedCardNo, ReqRepeal->CustType, ReqRepeal->BankAccount, ReqRepeal->BankPassWord, ReqRepeal->AccountID, ReqRepeal->Password, ReqRepeal->InstallID, ReqRepeal->FutureSerial, ReqRepeal->UserID, ReqRepeal->VerifyCertNoFlag, ReqRepeal->CurrencyID, ReqRepeal->TradeAmount, ReqRepeal->FutureFetchAmount, ReqRepeal->FeePayFlag, ReqRepeal->CustFee, ReqRepeal->BrokerFee, ReqRepeal->Message, ReqRepeal->Digest, ReqRepeal->BankAccType, ReqRepeal->DeviceID, ReqRepeal->BankSecuAccType, ReqRepeal->BrokerIDByBank, ReqRepeal->BankSecuAcc, ReqRepeal->BankPwdFlag, ReqRepeal->SecuPwdFlag, ReqRepeal->OperNo, ReqRepeal->RequestID, ReqRepeal->TID, ReqRepeal->TransferStatus, ReqRepeal->LongCustomerName);
 	}
 }
-
 void WriteRspRepeal(CThostFtdcRspRepealField* RspRepeal)
 {
 	if(RspRepeal)
@@ -2647,7 +2354,6 @@ void WriteRspRepeal(CThostFtdcRspRepealField* RspRepeal)
 			RspRepeal->RepealTimeInterval, RspRepeal->RepealedTimes, RspRepeal->BankRepealFlag, RspRepeal->BrokerRepealFlag, RspRepeal->PlateRepealSerial, RspRepeal->BankRepealSerial, RspRepeal->FutureRepealSerial, RspRepeal->TradeCode, RspRepeal->BankID, RspRepeal->BankBranchID, RspRepeal->BrokerID, RspRepeal->BrokerBranchID, RspRepeal->TradeDate, RspRepeal->TradeTime, RspRepeal->BankSerial, RspRepeal->TradingDay, RspRepeal->PlateSerial, RspRepeal->LastFragment, RspRepeal->SessionID, RspRepeal->CustomerName, RspRepeal->IdCardType, RspRepeal->IdentifiedCardNo, RspRepeal->CustType, RspRepeal->BankAccount, RspRepeal->BankPassWord, RspRepeal->AccountID, RspRepeal->Password, RspRepeal->InstallID, RspRepeal->FutureSerial, RspRepeal->UserID, RspRepeal->VerifyCertNoFlag, RspRepeal->CurrencyID, RspRepeal->TradeAmount, RspRepeal->FutureFetchAmount, RspRepeal->FeePayFlag, RspRepeal->CustFee, RspRepeal->BrokerFee, RspRepeal->Message, RspRepeal->Digest, RspRepeal->BankAccType, RspRepeal->DeviceID, RspRepeal->BankSecuAccType, RspRepeal->BrokerIDByBank, RspRepeal->BankSecuAcc, RspRepeal->BankPwdFlag, RspRepeal->SecuPwdFlag, RspRepeal->OperNo, RspRepeal->RequestID, RspRepeal->TID, RspRepeal->TransferStatus, RspRepeal->ErrorID, RspRepeal->ErrorMsg, RspRepeal->LongCustomerName);
 	}
 }
-
 void WriteReqQueryAccount(CThostFtdcReqQueryAccountField* ReqQueryAccount)
 {
 	if(ReqQueryAccount)
@@ -2656,7 +2362,6 @@ void WriteReqQueryAccount(CThostFtdcReqQueryAccountField* ReqQueryAccount)
 			ReqQueryAccount->TradeCode, ReqQueryAccount->BankID, ReqQueryAccount->BankBranchID, ReqQueryAccount->BrokerID, ReqQueryAccount->BrokerBranchID, ReqQueryAccount->TradeDate, ReqQueryAccount->TradeTime, ReqQueryAccount->BankSerial, ReqQueryAccount->TradingDay, ReqQueryAccount->PlateSerial, ReqQueryAccount->LastFragment, ReqQueryAccount->SessionID, ReqQueryAccount->CustomerName, ReqQueryAccount->IdCardType, ReqQueryAccount->IdentifiedCardNo, ReqQueryAccount->CustType, ReqQueryAccount->BankAccount, ReqQueryAccount->BankPassWord, ReqQueryAccount->AccountID, ReqQueryAccount->Password, ReqQueryAccount->FutureSerial, ReqQueryAccount->InstallID, ReqQueryAccount->UserID, ReqQueryAccount->VerifyCertNoFlag, ReqQueryAccount->CurrencyID, ReqQueryAccount->Digest, ReqQueryAccount->BankAccType, ReqQueryAccount->DeviceID, ReqQueryAccount->BankSecuAccType, ReqQueryAccount->BrokerIDByBank, ReqQueryAccount->BankSecuAcc, ReqQueryAccount->BankPwdFlag, ReqQueryAccount->SecuPwdFlag, ReqQueryAccount->OperNo, ReqQueryAccount->RequestID, ReqQueryAccount->TID, ReqQueryAccount->LongCustomerName);
 	}
 }
-
 void WriteRspQueryAccount(CThostFtdcRspQueryAccountField* RspQueryAccount)
 {
 	if(RspQueryAccount)
@@ -2665,7 +2370,6 @@ void WriteRspQueryAccount(CThostFtdcRspQueryAccountField* RspQueryAccount)
 			RspQueryAccount->TradeCode, RspQueryAccount->BankID, RspQueryAccount->BankBranchID, RspQueryAccount->BrokerID, RspQueryAccount->BrokerBranchID, RspQueryAccount->TradeDate, RspQueryAccount->TradeTime, RspQueryAccount->BankSerial, RspQueryAccount->TradingDay, RspQueryAccount->PlateSerial, RspQueryAccount->LastFragment, RspQueryAccount->SessionID, RspQueryAccount->CustomerName, RspQueryAccount->IdCardType, RspQueryAccount->IdentifiedCardNo, RspQueryAccount->CustType, RspQueryAccount->BankAccount, RspQueryAccount->BankPassWord, RspQueryAccount->AccountID, RspQueryAccount->Password, RspQueryAccount->FutureSerial, RspQueryAccount->InstallID, RspQueryAccount->UserID, RspQueryAccount->VerifyCertNoFlag, RspQueryAccount->CurrencyID, RspQueryAccount->Digest, RspQueryAccount->BankAccType, RspQueryAccount->DeviceID, RspQueryAccount->BankSecuAccType, RspQueryAccount->BrokerIDByBank, RspQueryAccount->BankSecuAcc, RspQueryAccount->BankPwdFlag, RspQueryAccount->SecuPwdFlag, RspQueryAccount->OperNo, RspQueryAccount->RequestID, RspQueryAccount->TID, RspQueryAccount->BankUseAmount, RspQueryAccount->BankFetchAmount, RspQueryAccount->LongCustomerName);
 	}
 }
-
 void WriteFutureSignIO(CThostFtdcFutureSignIOField* FutureSignIO)
 {
 	if(FutureSignIO)
@@ -2674,7 +2378,6 @@ void WriteFutureSignIO(CThostFtdcFutureSignIOField* FutureSignIO)
 			FutureSignIO->TradeCode, FutureSignIO->BankID, FutureSignIO->BankBranchID, FutureSignIO->BrokerID, FutureSignIO->BrokerBranchID, FutureSignIO->TradeDate, FutureSignIO->TradeTime, FutureSignIO->BankSerial, FutureSignIO->TradingDay, FutureSignIO->PlateSerial, FutureSignIO->LastFragment, FutureSignIO->SessionID, FutureSignIO->InstallID, FutureSignIO->UserID, FutureSignIO->Digest, FutureSignIO->CurrencyID, FutureSignIO->DeviceID, FutureSignIO->BrokerIDByBank, FutureSignIO->OperNo, FutureSignIO->RequestID, FutureSignIO->TID);
 	}
 }
-
 void WriteRspFutureSignIn(CThostFtdcRspFutureSignInField* RspFutureSignIn)
 {
 	if(RspFutureSignIn)
@@ -2683,7 +2386,6 @@ void WriteRspFutureSignIn(CThostFtdcRspFutureSignInField* RspFutureSignIn)
 			RspFutureSignIn->TradeCode, RspFutureSignIn->BankID, RspFutureSignIn->BankBranchID, RspFutureSignIn->BrokerID, RspFutureSignIn->BrokerBranchID, RspFutureSignIn->TradeDate, RspFutureSignIn->TradeTime, RspFutureSignIn->BankSerial, RspFutureSignIn->TradingDay, RspFutureSignIn->PlateSerial, RspFutureSignIn->LastFragment, RspFutureSignIn->SessionID, RspFutureSignIn->InstallID, RspFutureSignIn->UserID, RspFutureSignIn->Digest, RspFutureSignIn->CurrencyID, RspFutureSignIn->DeviceID, RspFutureSignIn->BrokerIDByBank, RspFutureSignIn->OperNo, RspFutureSignIn->RequestID, RspFutureSignIn->TID, RspFutureSignIn->ErrorID, RspFutureSignIn->ErrorMsg, RspFutureSignIn->PinKey, RspFutureSignIn->MacKey);
 	}
 }
-
 void WriteReqFutureSignOut(CThostFtdcReqFutureSignOutField* ReqFutureSignOut)
 {
 	if(ReqFutureSignOut)
@@ -2692,7 +2394,6 @@ void WriteReqFutureSignOut(CThostFtdcReqFutureSignOutField* ReqFutureSignOut)
 			ReqFutureSignOut->TradeCode, ReqFutureSignOut->BankID, ReqFutureSignOut->BankBranchID, ReqFutureSignOut->BrokerID, ReqFutureSignOut->BrokerBranchID, ReqFutureSignOut->TradeDate, ReqFutureSignOut->TradeTime, ReqFutureSignOut->BankSerial, ReqFutureSignOut->TradingDay, ReqFutureSignOut->PlateSerial, ReqFutureSignOut->LastFragment, ReqFutureSignOut->SessionID, ReqFutureSignOut->InstallID, ReqFutureSignOut->UserID, ReqFutureSignOut->Digest, ReqFutureSignOut->CurrencyID, ReqFutureSignOut->DeviceID, ReqFutureSignOut->BrokerIDByBank, ReqFutureSignOut->OperNo, ReqFutureSignOut->RequestID, ReqFutureSignOut->TID);
 	}
 }
-
 void WriteRspFutureSignOut(CThostFtdcRspFutureSignOutField* RspFutureSignOut)
 {
 	if(RspFutureSignOut)
@@ -2701,7 +2402,6 @@ void WriteRspFutureSignOut(CThostFtdcRspFutureSignOutField* RspFutureSignOut)
 			RspFutureSignOut->TradeCode, RspFutureSignOut->BankID, RspFutureSignOut->BankBranchID, RspFutureSignOut->BrokerID, RspFutureSignOut->BrokerBranchID, RspFutureSignOut->TradeDate, RspFutureSignOut->TradeTime, RspFutureSignOut->BankSerial, RspFutureSignOut->TradingDay, RspFutureSignOut->PlateSerial, RspFutureSignOut->LastFragment, RspFutureSignOut->SessionID, RspFutureSignOut->InstallID, RspFutureSignOut->UserID, RspFutureSignOut->Digest, RspFutureSignOut->CurrencyID, RspFutureSignOut->DeviceID, RspFutureSignOut->BrokerIDByBank, RspFutureSignOut->OperNo, RspFutureSignOut->RequestID, RspFutureSignOut->TID, RspFutureSignOut->ErrorID, RspFutureSignOut->ErrorMsg);
 	}
 }
-
 void WriteReqQueryTradeResultBySerial(CThostFtdcReqQueryTradeResultBySerialField* ReqQueryTradeResultBySerial)
 {
 	if(ReqQueryTradeResultBySerial)
@@ -2710,7 +2410,6 @@ void WriteReqQueryTradeResultBySerial(CThostFtdcReqQueryTradeResultBySerialField
 			ReqQueryTradeResultBySerial->TradeCode, ReqQueryTradeResultBySerial->BankID, ReqQueryTradeResultBySerial->BankBranchID, ReqQueryTradeResultBySerial->BrokerID, ReqQueryTradeResultBySerial->BrokerBranchID, ReqQueryTradeResultBySerial->TradeDate, ReqQueryTradeResultBySerial->TradeTime, ReqQueryTradeResultBySerial->BankSerial, ReqQueryTradeResultBySerial->TradingDay, ReqQueryTradeResultBySerial->PlateSerial, ReqQueryTradeResultBySerial->LastFragment, ReqQueryTradeResultBySerial->SessionID, ReqQueryTradeResultBySerial->Reference, ReqQueryTradeResultBySerial->RefrenceIssureType, ReqQueryTradeResultBySerial->RefrenceIssure, ReqQueryTradeResultBySerial->CustomerName, ReqQueryTradeResultBySerial->IdCardType, ReqQueryTradeResultBySerial->IdentifiedCardNo, ReqQueryTradeResultBySerial->CustType, ReqQueryTradeResultBySerial->BankAccount, ReqQueryTradeResultBySerial->BankPassWord, ReqQueryTradeResultBySerial->AccountID, ReqQueryTradeResultBySerial->Password, ReqQueryTradeResultBySerial->CurrencyID, ReqQueryTradeResultBySerial->TradeAmount, ReqQueryTradeResultBySerial->Digest, ReqQueryTradeResultBySerial->LongCustomerName);
 	}
 }
-
 void WriteRspQueryTradeResultBySerial(CThostFtdcRspQueryTradeResultBySerialField* RspQueryTradeResultBySerial)
 {
 	if(RspQueryTradeResultBySerial)
@@ -2719,7 +2418,6 @@ void WriteRspQueryTradeResultBySerial(CThostFtdcRspQueryTradeResultBySerialField
 			RspQueryTradeResultBySerial->TradeCode, RspQueryTradeResultBySerial->BankID, RspQueryTradeResultBySerial->BankBranchID, RspQueryTradeResultBySerial->BrokerID, RspQueryTradeResultBySerial->BrokerBranchID, RspQueryTradeResultBySerial->TradeDate, RspQueryTradeResultBySerial->TradeTime, RspQueryTradeResultBySerial->BankSerial, RspQueryTradeResultBySerial->TradingDay, RspQueryTradeResultBySerial->PlateSerial, RspQueryTradeResultBySerial->LastFragment, RspQueryTradeResultBySerial->SessionID, RspQueryTradeResultBySerial->ErrorID, RspQueryTradeResultBySerial->ErrorMsg, RspQueryTradeResultBySerial->Reference, RspQueryTradeResultBySerial->RefrenceIssureType, RspQueryTradeResultBySerial->RefrenceIssure, RspQueryTradeResultBySerial->OriginReturnCode, RspQueryTradeResultBySerial->OriginDescrInfoForReturnCode, RspQueryTradeResultBySerial->BankAccount, RspQueryTradeResultBySerial->BankPassWord, RspQueryTradeResultBySerial->AccountID, RspQueryTradeResultBySerial->Password, RspQueryTradeResultBySerial->CurrencyID, RspQueryTradeResultBySerial->TradeAmount, RspQueryTradeResultBySerial->Digest);
 	}
 }
-
 void WriteReqDayEndFileReady(CThostFtdcReqDayEndFileReadyField* ReqDayEndFileReady)
 {
 	if(ReqDayEndFileReady)
@@ -2728,7 +2426,6 @@ void WriteReqDayEndFileReady(CThostFtdcReqDayEndFileReadyField* ReqDayEndFileRea
 			ReqDayEndFileReady->TradeCode, ReqDayEndFileReady->BankID, ReqDayEndFileReady->BankBranchID, ReqDayEndFileReady->BrokerID, ReqDayEndFileReady->BrokerBranchID, ReqDayEndFileReady->TradeDate, ReqDayEndFileReady->TradeTime, ReqDayEndFileReady->BankSerial, ReqDayEndFileReady->TradingDay, ReqDayEndFileReady->PlateSerial, ReqDayEndFileReady->LastFragment, ReqDayEndFileReady->SessionID, ReqDayEndFileReady->FileBusinessCode, ReqDayEndFileReady->Digest);
 	}
 }
-
 void WriteReturnResult(CThostFtdcReturnResultField* ReturnResult)
 {
 	if(ReturnResult)
@@ -2737,7 +2434,6 @@ void WriteReturnResult(CThostFtdcReturnResultField* ReturnResult)
 			ReturnResult->ReturnCode, ReturnResult->DescrInfoForReturnCode);
 	}
 }
-
 void WriteVerifyFuturePassword(CThostFtdcVerifyFuturePasswordField* VerifyFuturePassword)
 {
 	if(VerifyFuturePassword)
@@ -2746,7 +2442,6 @@ void WriteVerifyFuturePassword(CThostFtdcVerifyFuturePasswordField* VerifyFuture
 			VerifyFuturePassword->TradeCode, VerifyFuturePassword->BankID, VerifyFuturePassword->BankBranchID, VerifyFuturePassword->BrokerID, VerifyFuturePassword->BrokerBranchID, VerifyFuturePassword->TradeDate, VerifyFuturePassword->TradeTime, VerifyFuturePassword->BankSerial, VerifyFuturePassword->TradingDay, VerifyFuturePassword->PlateSerial, VerifyFuturePassword->LastFragment, VerifyFuturePassword->SessionID, VerifyFuturePassword->AccountID, VerifyFuturePassword->Password, VerifyFuturePassword->BankAccount, VerifyFuturePassword->BankPassWord, VerifyFuturePassword->InstallID, VerifyFuturePassword->TID, VerifyFuturePassword->CurrencyID);
 	}
 }
-
 void WriteVerifyCustInfo(CThostFtdcVerifyCustInfoField* VerifyCustInfo)
 {
 	if(VerifyCustInfo)
@@ -2755,7 +2450,6 @@ void WriteVerifyCustInfo(CThostFtdcVerifyCustInfoField* VerifyCustInfo)
 			VerifyCustInfo->CustomerName, VerifyCustInfo->IdCardType, VerifyCustInfo->IdentifiedCardNo, VerifyCustInfo->CustType, VerifyCustInfo->LongCustomerName);
 	}
 }
-
 void WriteVerifyFuturePasswordAndCustInfo(CThostFtdcVerifyFuturePasswordAndCustInfoField* VerifyFuturePasswordAndCustInfo)
 {
 	if(VerifyFuturePasswordAndCustInfo)
@@ -2764,7 +2458,6 @@ void WriteVerifyFuturePasswordAndCustInfo(CThostFtdcVerifyFuturePasswordAndCustI
 			VerifyFuturePasswordAndCustInfo->CustomerName, VerifyFuturePasswordAndCustInfo->IdCardType, VerifyFuturePasswordAndCustInfo->IdentifiedCardNo, VerifyFuturePasswordAndCustInfo->CustType, VerifyFuturePasswordAndCustInfo->AccountID, VerifyFuturePasswordAndCustInfo->Password, VerifyFuturePasswordAndCustInfo->CurrencyID, VerifyFuturePasswordAndCustInfo->LongCustomerName);
 	}
 }
-
 void WriteDepositResultInform(CThostFtdcDepositResultInformField* DepositResultInform)
 {
 	if(DepositResultInform)
@@ -2773,7 +2466,6 @@ void WriteDepositResultInform(CThostFtdcDepositResultInformField* DepositResultI
 			DepositResultInform->DepositSeqNo, DepositResultInform->BrokerID, DepositResultInform->InvestorID, DepositResultInform->Deposit, DepositResultInform->RequestID, DepositResultInform->ReturnCode, DepositResultInform->DescrInfoForReturnCode);
 	}
 }
-
 void WriteReqSyncKey(CThostFtdcReqSyncKeyField* ReqSyncKey)
 {
 	if(ReqSyncKey)
@@ -2782,7 +2474,6 @@ void WriteReqSyncKey(CThostFtdcReqSyncKeyField* ReqSyncKey)
 			ReqSyncKey->TradeCode, ReqSyncKey->BankID, ReqSyncKey->BankBranchID, ReqSyncKey->BrokerID, ReqSyncKey->BrokerBranchID, ReqSyncKey->TradeDate, ReqSyncKey->TradeTime, ReqSyncKey->BankSerial, ReqSyncKey->TradingDay, ReqSyncKey->PlateSerial, ReqSyncKey->LastFragment, ReqSyncKey->SessionID, ReqSyncKey->InstallID, ReqSyncKey->UserID, ReqSyncKey->Message, ReqSyncKey->DeviceID, ReqSyncKey->BrokerIDByBank, ReqSyncKey->OperNo, ReqSyncKey->RequestID, ReqSyncKey->TID);
 	}
 }
-
 void WriteRspSyncKey(CThostFtdcRspSyncKeyField* RspSyncKey)
 {
 	if(RspSyncKey)
@@ -2791,7 +2482,6 @@ void WriteRspSyncKey(CThostFtdcRspSyncKeyField* RspSyncKey)
 			RspSyncKey->TradeCode, RspSyncKey->BankID, RspSyncKey->BankBranchID, RspSyncKey->BrokerID, RspSyncKey->BrokerBranchID, RspSyncKey->TradeDate, RspSyncKey->TradeTime, RspSyncKey->BankSerial, RspSyncKey->TradingDay, RspSyncKey->PlateSerial, RspSyncKey->LastFragment, RspSyncKey->SessionID, RspSyncKey->InstallID, RspSyncKey->UserID, RspSyncKey->Message, RspSyncKey->DeviceID, RspSyncKey->BrokerIDByBank, RspSyncKey->OperNo, RspSyncKey->RequestID, RspSyncKey->TID, RspSyncKey->ErrorID, RspSyncKey->ErrorMsg);
 	}
 }
-
 void WriteNotifyQueryAccount(CThostFtdcNotifyQueryAccountField* NotifyQueryAccount)
 {
 	if(NotifyQueryAccount)
@@ -2800,7 +2490,6 @@ void WriteNotifyQueryAccount(CThostFtdcNotifyQueryAccountField* NotifyQueryAccou
 			NotifyQueryAccount->TradeCode, NotifyQueryAccount->BankID, NotifyQueryAccount->BankBranchID, NotifyQueryAccount->BrokerID, NotifyQueryAccount->BrokerBranchID, NotifyQueryAccount->TradeDate, NotifyQueryAccount->TradeTime, NotifyQueryAccount->BankSerial, NotifyQueryAccount->TradingDay, NotifyQueryAccount->PlateSerial, NotifyQueryAccount->LastFragment, NotifyQueryAccount->SessionID, NotifyQueryAccount->CustomerName, NotifyQueryAccount->IdCardType, NotifyQueryAccount->IdentifiedCardNo, NotifyQueryAccount->CustType, NotifyQueryAccount->BankAccount, NotifyQueryAccount->BankPassWord, NotifyQueryAccount->AccountID, NotifyQueryAccount->Password, NotifyQueryAccount->FutureSerial, NotifyQueryAccount->InstallID, NotifyQueryAccount->UserID, NotifyQueryAccount->VerifyCertNoFlag, NotifyQueryAccount->CurrencyID, NotifyQueryAccount->Digest, NotifyQueryAccount->BankAccType, NotifyQueryAccount->DeviceID, NotifyQueryAccount->BankSecuAccType, NotifyQueryAccount->BrokerIDByBank, NotifyQueryAccount->BankSecuAcc, NotifyQueryAccount->BankPwdFlag, NotifyQueryAccount->SecuPwdFlag, NotifyQueryAccount->OperNo, NotifyQueryAccount->RequestID, NotifyQueryAccount->TID, NotifyQueryAccount->BankUseAmount, NotifyQueryAccount->BankFetchAmount, NotifyQueryAccount->ErrorID, NotifyQueryAccount->ErrorMsg, NotifyQueryAccount->LongCustomerName);
 	}
 }
-
 void WriteTransferSerial(CThostFtdcTransferSerialField* TransferSerial)
 {
 	if(TransferSerial)
@@ -2809,7 +2498,6 @@ void WriteTransferSerial(CThostFtdcTransferSerialField* TransferSerial)
 			TransferSerial->PlateSerial, TransferSerial->TradeDate, TransferSerial->TradingDay, TransferSerial->TradeTime, TransferSerial->TradeCode, TransferSerial->SessionID, TransferSerial->BankID, TransferSerial->BankBranchID, TransferSerial->BankAccType, TransferSerial->BankAccount, TransferSerial->BankSerial, TransferSerial->BrokerID, TransferSerial->BrokerBranchID, TransferSerial->FutureAccType, TransferSerial->AccountID, TransferSerial->InvestorID, TransferSerial->FutureSerial, TransferSerial->IdCardType, TransferSerial->IdentifiedCardNo, TransferSerial->CurrencyID, TransferSerial->TradeAmount, TransferSerial->CustFee, TransferSerial->BrokerFee, TransferSerial->AvailabilityFlag, TransferSerial->OperatorCode, TransferSerial->BankNewAccount, TransferSerial->ErrorID, TransferSerial->ErrorMsg);
 	}
 }
-
 void WriteQryTransferSerial(CThostFtdcQryTransferSerialField* QryTransferSerial)
 {
 	if(QryTransferSerial)
@@ -2818,7 +2506,6 @@ void WriteQryTransferSerial(CThostFtdcQryTransferSerialField* QryTransferSerial)
 			QryTransferSerial->BrokerID, QryTransferSerial->AccountID, QryTransferSerial->BankID, QryTransferSerial->CurrencyID);
 	}
 }
-
 void WriteNotifyFutureSignIn(CThostFtdcNotifyFutureSignInField* NotifyFutureSignIn)
 {
 	if(NotifyFutureSignIn)
@@ -2827,7 +2514,6 @@ void WriteNotifyFutureSignIn(CThostFtdcNotifyFutureSignInField* NotifyFutureSign
 			NotifyFutureSignIn->TradeCode, NotifyFutureSignIn->BankID, NotifyFutureSignIn->BankBranchID, NotifyFutureSignIn->BrokerID, NotifyFutureSignIn->BrokerBranchID, NotifyFutureSignIn->TradeDate, NotifyFutureSignIn->TradeTime, NotifyFutureSignIn->BankSerial, NotifyFutureSignIn->TradingDay, NotifyFutureSignIn->PlateSerial, NotifyFutureSignIn->LastFragment, NotifyFutureSignIn->SessionID, NotifyFutureSignIn->InstallID, NotifyFutureSignIn->UserID, NotifyFutureSignIn->Digest, NotifyFutureSignIn->CurrencyID, NotifyFutureSignIn->DeviceID, NotifyFutureSignIn->BrokerIDByBank, NotifyFutureSignIn->OperNo, NotifyFutureSignIn->RequestID, NotifyFutureSignIn->TID, NotifyFutureSignIn->ErrorID, NotifyFutureSignIn->ErrorMsg, NotifyFutureSignIn->PinKey, NotifyFutureSignIn->MacKey);
 	}
 }
-
 void WriteNotifyFutureSignOut(CThostFtdcNotifyFutureSignOutField* NotifyFutureSignOut)
 {
 	if(NotifyFutureSignOut)
@@ -2836,7 +2522,6 @@ void WriteNotifyFutureSignOut(CThostFtdcNotifyFutureSignOutField* NotifyFutureSi
 			NotifyFutureSignOut->TradeCode, NotifyFutureSignOut->BankID, NotifyFutureSignOut->BankBranchID, NotifyFutureSignOut->BrokerID, NotifyFutureSignOut->BrokerBranchID, NotifyFutureSignOut->TradeDate, NotifyFutureSignOut->TradeTime, NotifyFutureSignOut->BankSerial, NotifyFutureSignOut->TradingDay, NotifyFutureSignOut->PlateSerial, NotifyFutureSignOut->LastFragment, NotifyFutureSignOut->SessionID, NotifyFutureSignOut->InstallID, NotifyFutureSignOut->UserID, NotifyFutureSignOut->Digest, NotifyFutureSignOut->CurrencyID, NotifyFutureSignOut->DeviceID, NotifyFutureSignOut->BrokerIDByBank, NotifyFutureSignOut->OperNo, NotifyFutureSignOut->RequestID, NotifyFutureSignOut->TID, NotifyFutureSignOut->ErrorID, NotifyFutureSignOut->ErrorMsg);
 	}
 }
-
 void WriteNotifySyncKey(CThostFtdcNotifySyncKeyField* NotifySyncKey)
 {
 	if(NotifySyncKey)
@@ -2845,7 +2530,6 @@ void WriteNotifySyncKey(CThostFtdcNotifySyncKeyField* NotifySyncKey)
 			NotifySyncKey->TradeCode, NotifySyncKey->BankID, NotifySyncKey->BankBranchID, NotifySyncKey->BrokerID, NotifySyncKey->BrokerBranchID, NotifySyncKey->TradeDate, NotifySyncKey->TradeTime, NotifySyncKey->BankSerial, NotifySyncKey->TradingDay, NotifySyncKey->PlateSerial, NotifySyncKey->LastFragment, NotifySyncKey->SessionID, NotifySyncKey->InstallID, NotifySyncKey->UserID, NotifySyncKey->Message, NotifySyncKey->DeviceID, NotifySyncKey->BrokerIDByBank, NotifySyncKey->OperNo, NotifySyncKey->RequestID, NotifySyncKey->TID, NotifySyncKey->ErrorID, NotifySyncKey->ErrorMsg);
 	}
 }
-
 void WriteQryAccountregister(CThostFtdcQryAccountregisterField* QryAccountregister)
 {
 	if(QryAccountregister)
@@ -2854,7 +2538,6 @@ void WriteQryAccountregister(CThostFtdcQryAccountregisterField* QryAccountregist
 			QryAccountregister->BrokerID, QryAccountregister->AccountID, QryAccountregister->BankID, QryAccountregister->BankBranchID, QryAccountregister->CurrencyID);
 	}
 }
-
 void WriteAccountregister(CThostFtdcAccountregisterField* Accountregister)
 {
 	if(Accountregister)
@@ -2863,7 +2546,6 @@ void WriteAccountregister(CThostFtdcAccountregisterField* Accountregister)
 			Accountregister->TradeDay, Accountregister->BankID, Accountregister->BankBranchID, Accountregister->BankAccount, Accountregister->BrokerID, Accountregister->BrokerBranchID, Accountregister->AccountID, Accountregister->IdCardType, Accountregister->IdentifiedCardNo, Accountregister->CustomerName, Accountregister->CurrencyID, Accountregister->OpenOrDestroy, Accountregister->RegDate, Accountregister->OutDate, Accountregister->TID, Accountregister->CustType, Accountregister->BankAccType, Accountregister->LongCustomerName);
 	}
 }
-
 void WriteOpenAccount(CThostFtdcOpenAccountField* OpenAccount)
 {
 	if(OpenAccount)
@@ -2872,7 +2554,6 @@ void WriteOpenAccount(CThostFtdcOpenAccountField* OpenAccount)
 			OpenAccount->TradeCode, OpenAccount->BankID, OpenAccount->BankBranchID, OpenAccount->BrokerID, OpenAccount->BrokerBranchID, OpenAccount->TradeDate, OpenAccount->TradeTime, OpenAccount->BankSerial, OpenAccount->TradingDay, OpenAccount->PlateSerial, OpenAccount->LastFragment, OpenAccount->SessionID, OpenAccount->CustomerName, OpenAccount->IdCardType, OpenAccount->IdentifiedCardNo, OpenAccount->Gender, OpenAccount->CountryCode, OpenAccount->CustType, OpenAccount->Address, OpenAccount->ZipCode, OpenAccount->Telephone, OpenAccount->MobilePhone, OpenAccount->Fax, OpenAccount->EMail, OpenAccount->MoneyAccountStatus, OpenAccount->BankAccount, OpenAccount->BankPassWord, OpenAccount->AccountID, OpenAccount->Password, OpenAccount->InstallID, OpenAccount->VerifyCertNoFlag, OpenAccount->CurrencyID, OpenAccount->CashExchangeCode, OpenAccount->Digest, OpenAccount->BankAccType, OpenAccount->DeviceID, OpenAccount->BankSecuAccType, OpenAccount->BrokerIDByBank, OpenAccount->BankSecuAcc, OpenAccount->BankPwdFlag, OpenAccount->SecuPwdFlag, OpenAccount->OperNo, OpenAccount->TID, OpenAccount->UserID, OpenAccount->ErrorID, OpenAccount->ErrorMsg, OpenAccount->LongCustomerName);
 	}
 }
-
 void WriteCancelAccount(CThostFtdcCancelAccountField* CancelAccount)
 {
 	if(CancelAccount)
@@ -2881,7 +2562,6 @@ void WriteCancelAccount(CThostFtdcCancelAccountField* CancelAccount)
 			CancelAccount->TradeCode, CancelAccount->BankID, CancelAccount->BankBranchID, CancelAccount->BrokerID, CancelAccount->BrokerBranchID, CancelAccount->TradeDate, CancelAccount->TradeTime, CancelAccount->BankSerial, CancelAccount->TradingDay, CancelAccount->PlateSerial, CancelAccount->LastFragment, CancelAccount->SessionID, CancelAccount->CustomerName, CancelAccount->IdCardType, CancelAccount->IdentifiedCardNo, CancelAccount->Gender, CancelAccount->CountryCode, CancelAccount->CustType, CancelAccount->Address, CancelAccount->ZipCode, CancelAccount->Telephone, CancelAccount->MobilePhone, CancelAccount->Fax, CancelAccount->EMail, CancelAccount->MoneyAccountStatus, CancelAccount->BankAccount, CancelAccount->BankPassWord, CancelAccount->AccountID, CancelAccount->Password, CancelAccount->InstallID, CancelAccount->VerifyCertNoFlag, CancelAccount->CurrencyID, CancelAccount->CashExchangeCode, CancelAccount->Digest, CancelAccount->BankAccType, CancelAccount->DeviceID, CancelAccount->BankSecuAccType, CancelAccount->BrokerIDByBank, CancelAccount->BankSecuAcc, CancelAccount->BankPwdFlag, CancelAccount->SecuPwdFlag, CancelAccount->OperNo, CancelAccount->TID, CancelAccount->UserID, CancelAccount->ErrorID, CancelAccount->ErrorMsg, CancelAccount->LongCustomerName);
 	}
 }
-
 void WriteChangeAccount(CThostFtdcChangeAccountField* ChangeAccount)
 {
 	if(ChangeAccount)
@@ -2890,7 +2570,6 @@ void WriteChangeAccount(CThostFtdcChangeAccountField* ChangeAccount)
 			ChangeAccount->TradeCode, ChangeAccount->BankID, ChangeAccount->BankBranchID, ChangeAccount->BrokerID, ChangeAccount->BrokerBranchID, ChangeAccount->TradeDate, ChangeAccount->TradeTime, ChangeAccount->BankSerial, ChangeAccount->TradingDay, ChangeAccount->PlateSerial, ChangeAccount->LastFragment, ChangeAccount->SessionID, ChangeAccount->CustomerName, ChangeAccount->IdCardType, ChangeAccount->IdentifiedCardNo, ChangeAccount->Gender, ChangeAccount->CountryCode, ChangeAccount->CustType, ChangeAccount->Address, ChangeAccount->ZipCode, ChangeAccount->Telephone, ChangeAccount->MobilePhone, ChangeAccount->Fax, ChangeAccount->EMail, ChangeAccount->MoneyAccountStatus, ChangeAccount->BankAccount, ChangeAccount->BankPassWord, ChangeAccount->NewBankAccount, ChangeAccount->NewBankPassWord, ChangeAccount->AccountID, ChangeAccount->Password, ChangeAccount->BankAccType, ChangeAccount->InstallID, ChangeAccount->VerifyCertNoFlag, ChangeAccount->CurrencyID, ChangeAccount->BrokerIDByBank, ChangeAccount->BankPwdFlag, ChangeAccount->SecuPwdFlag, ChangeAccount->TID, ChangeAccount->Digest, ChangeAccount->ErrorID, ChangeAccount->ErrorMsg, ChangeAccount->LongCustomerName);
 	}
 }
-
 void WriteSecAgentACIDMap(CThostFtdcSecAgentACIDMapField* SecAgentACIDMap)
 {
 	if(SecAgentACIDMap)
@@ -2899,7 +2578,6 @@ void WriteSecAgentACIDMap(CThostFtdcSecAgentACIDMapField* SecAgentACIDMap)
 			SecAgentACIDMap->BrokerID, SecAgentACIDMap->UserID, SecAgentACIDMap->AccountID, SecAgentACIDMap->CurrencyID, SecAgentACIDMap->BrokerSecAgentID);
 	}
 }
-
 void WriteQrySecAgentACIDMap(CThostFtdcQrySecAgentACIDMapField* QrySecAgentACIDMap)
 {
 	if(QrySecAgentACIDMap)
@@ -2908,7 +2586,6 @@ void WriteQrySecAgentACIDMap(CThostFtdcQrySecAgentACIDMapField* QrySecAgentACIDM
 			QrySecAgentACIDMap->BrokerID, QrySecAgentACIDMap->UserID, QrySecAgentACIDMap->AccountID, QrySecAgentACIDMap->CurrencyID);
 	}
 }
-
 void WriteUserRightsAssign(CThostFtdcUserRightsAssignField* UserRightsAssign)
 {
 	if(UserRightsAssign)
@@ -2917,7 +2594,6 @@ void WriteUserRightsAssign(CThostFtdcUserRightsAssignField* UserRightsAssign)
 			UserRightsAssign->BrokerID, UserRightsAssign->UserID, UserRightsAssign->DRIdentityID);
 	}
 }
-
 void WriteBrokerUserRightAssign(CThostFtdcBrokerUserRightAssignField* BrokerUserRightAssign)
 {
 	if(BrokerUserRightAssign)
@@ -2926,7 +2602,6 @@ void WriteBrokerUserRightAssign(CThostFtdcBrokerUserRightAssignField* BrokerUser
 			BrokerUserRightAssign->BrokerID, BrokerUserRightAssign->DRIdentityID, BrokerUserRightAssign->Tradeable);
 	}
 }
-
 void WriteDRTransfer(CThostFtdcDRTransferField* DRTransfer)
 {
 	if(DRTransfer)
@@ -2935,7 +2610,6 @@ void WriteDRTransfer(CThostFtdcDRTransferField* DRTransfer)
 			DRTransfer->OrigDRIdentityID, DRTransfer->DestDRIdentityID, DRTransfer->OrigBrokerID, DRTransfer->DestBrokerID);
 	}
 }
-
 void WriteFensUserInfo(CThostFtdcFensUserInfoField* FensUserInfo)
 {
 	if(FensUserInfo)
@@ -2944,7 +2618,6 @@ void WriteFensUserInfo(CThostFtdcFensUserInfoField* FensUserInfo)
 			FensUserInfo->BrokerID, FensUserInfo->UserID, FensUserInfo->LoginMode);
 	}
 }
-
 void WriteCurrTransferIdentity(CThostFtdcCurrTransferIdentityField* CurrTransferIdentity)
 {
 	if(CurrTransferIdentity)
@@ -2953,7 +2626,6 @@ void WriteCurrTransferIdentity(CThostFtdcCurrTransferIdentityField* CurrTransfer
 			CurrTransferIdentity->IdentityID);
 	}
 }
-
 void WriteLoginForbiddenUser(CThostFtdcLoginForbiddenUserField* LoginForbiddenUser)
 {
 	if(LoginForbiddenUser)
@@ -2962,7 +2634,6 @@ void WriteLoginForbiddenUser(CThostFtdcLoginForbiddenUserField* LoginForbiddenUs
 			LoginForbiddenUser->BrokerID, LoginForbiddenUser->UserID, LoginForbiddenUser->reserve1, LoginForbiddenUser->IPAddress);
 	}
 }
-
 void WriteQryLoginForbiddenUser(CThostFtdcQryLoginForbiddenUserField* QryLoginForbiddenUser)
 {
 	if(QryLoginForbiddenUser)
@@ -2971,7 +2642,6 @@ void WriteQryLoginForbiddenUser(CThostFtdcQryLoginForbiddenUserField* QryLoginFo
 			QryLoginForbiddenUser->BrokerID, QryLoginForbiddenUser->UserID);
 	}
 }
-
 void WriteTradingAccountReserve(CThostFtdcTradingAccountReserveField* TradingAccountReserve)
 {
 	if(TradingAccountReserve)
@@ -2980,7 +2650,6 @@ void WriteTradingAccountReserve(CThostFtdcTradingAccountReserveField* TradingAcc
 			TradingAccountReserve->BrokerID, TradingAccountReserve->AccountID, TradingAccountReserve->Reserve, TradingAccountReserve->CurrencyID);
 	}
 }
-
 void WriteQryLoginForbiddenIP(CThostFtdcQryLoginForbiddenIPField* QryLoginForbiddenIP)
 {
 	if(QryLoginForbiddenIP)
@@ -2989,7 +2658,6 @@ void WriteQryLoginForbiddenIP(CThostFtdcQryLoginForbiddenIPField* QryLoginForbid
 			QryLoginForbiddenIP->reserve1, QryLoginForbiddenIP->IPAddress);
 	}
 }
-
 void WriteQryIPList(CThostFtdcQryIPListField* QryIPList)
 {
 	if(QryIPList)
@@ -2998,7 +2666,6 @@ void WriteQryIPList(CThostFtdcQryIPListField* QryIPList)
 			QryIPList->reserve1, QryIPList->IPAddress);
 	}
 }
-
 void WriteQryUserRightsAssign(CThostFtdcQryUserRightsAssignField* QryUserRightsAssign)
 {
 	if(QryUserRightsAssign)
@@ -3007,7 +2674,6 @@ void WriteQryUserRightsAssign(CThostFtdcQryUserRightsAssignField* QryUserRightsA
 			QryUserRightsAssign->BrokerID, QryUserRightsAssign->UserID);
 	}
 }
-
 void WriteReserveOpenAccountConfirm(CThostFtdcReserveOpenAccountConfirmField* ReserveOpenAccountConfirm)
 {
 	if(ReserveOpenAccountConfirm)
@@ -3016,7 +2682,6 @@ void WriteReserveOpenAccountConfirm(CThostFtdcReserveOpenAccountConfirmField* Re
 			ReserveOpenAccountConfirm->TradeCode, ReserveOpenAccountConfirm->BankID, ReserveOpenAccountConfirm->BankBranchID, ReserveOpenAccountConfirm->BrokerID, ReserveOpenAccountConfirm->BrokerBranchID, ReserveOpenAccountConfirm->TradeDate, ReserveOpenAccountConfirm->TradeTime, ReserveOpenAccountConfirm->BankSerial, ReserveOpenAccountConfirm->TradingDay, ReserveOpenAccountConfirm->PlateSerial, ReserveOpenAccountConfirm->LastFragment, ReserveOpenAccountConfirm->SessionID, ReserveOpenAccountConfirm->CustomerName, ReserveOpenAccountConfirm->IdCardType, ReserveOpenAccountConfirm->IdentifiedCardNo, ReserveOpenAccountConfirm->Gender, ReserveOpenAccountConfirm->CountryCode, ReserveOpenAccountConfirm->CustType, ReserveOpenAccountConfirm->Address, ReserveOpenAccountConfirm->ZipCode, ReserveOpenAccountConfirm->Telephone, ReserveOpenAccountConfirm->MobilePhone, ReserveOpenAccountConfirm->Fax, ReserveOpenAccountConfirm->EMail, ReserveOpenAccountConfirm->MoneyAccountStatus, ReserveOpenAccountConfirm->BankAccount, ReserveOpenAccountConfirm->BankPassWord, ReserveOpenAccountConfirm->InstallID, ReserveOpenAccountConfirm->VerifyCertNoFlag, ReserveOpenAccountConfirm->CurrencyID, ReserveOpenAccountConfirm->Digest, ReserveOpenAccountConfirm->BankAccType, ReserveOpenAccountConfirm->BrokerIDByBank, ReserveOpenAccountConfirm->TID, ReserveOpenAccountConfirm->AccountID, ReserveOpenAccountConfirm->Password, ReserveOpenAccountConfirm->BankReserveOpenSeq, ReserveOpenAccountConfirm->BookDate, ReserveOpenAccountConfirm->BookPsw, ReserveOpenAccountConfirm->ErrorID, ReserveOpenAccountConfirm->ErrorMsg);
 	}
 }
-
 void WriteReserveOpenAccount(CThostFtdcReserveOpenAccountField* ReserveOpenAccount)
 {
 	if(ReserveOpenAccount)
@@ -3025,7 +2690,6 @@ void WriteReserveOpenAccount(CThostFtdcReserveOpenAccountField* ReserveOpenAccou
 			ReserveOpenAccount->TradeCode, ReserveOpenAccount->BankID, ReserveOpenAccount->BankBranchID, ReserveOpenAccount->BrokerID, ReserveOpenAccount->BrokerBranchID, ReserveOpenAccount->TradeDate, ReserveOpenAccount->TradeTime, ReserveOpenAccount->BankSerial, ReserveOpenAccount->TradingDay, ReserveOpenAccount->PlateSerial, ReserveOpenAccount->LastFragment, ReserveOpenAccount->SessionID, ReserveOpenAccount->CustomerName, ReserveOpenAccount->IdCardType, ReserveOpenAccount->IdentifiedCardNo, ReserveOpenAccount->Gender, ReserveOpenAccount->CountryCode, ReserveOpenAccount->CustType, ReserveOpenAccount->Address, ReserveOpenAccount->ZipCode, ReserveOpenAccount->Telephone, ReserveOpenAccount->MobilePhone, ReserveOpenAccount->Fax, ReserveOpenAccount->EMail, ReserveOpenAccount->MoneyAccountStatus, ReserveOpenAccount->BankAccount, ReserveOpenAccount->BankPassWord, ReserveOpenAccount->InstallID, ReserveOpenAccount->VerifyCertNoFlag, ReserveOpenAccount->CurrencyID, ReserveOpenAccount->Digest, ReserveOpenAccount->BankAccType, ReserveOpenAccount->BrokerIDByBank, ReserveOpenAccount->TID, ReserveOpenAccount->ReserveOpenAccStas, ReserveOpenAccount->ErrorID, ReserveOpenAccount->ErrorMsg);
 	}
 }
-
 void WriteAccountProperty(CThostFtdcAccountPropertyField* AccountProperty)
 {
 	if(AccountProperty)
@@ -3034,7 +2698,6 @@ void WriteAccountProperty(CThostFtdcAccountPropertyField* AccountProperty)
 			AccountProperty->BrokerID, AccountProperty->AccountID, AccountProperty->BankID, AccountProperty->BankAccount, AccountProperty->OpenName, AccountProperty->OpenBank, AccountProperty->IsActive, AccountProperty->AccountSourceType, AccountProperty->OpenDate, AccountProperty->CancelDate, AccountProperty->OperatorID, AccountProperty->OperateDate, AccountProperty->OperateTime, AccountProperty->CurrencyID);
 	}
 }
-
 void WriteQryCurrDRIdentity(CThostFtdcQryCurrDRIdentityField* QryCurrDRIdentity)
 {
 	if(QryCurrDRIdentity)
@@ -3043,7 +2706,6 @@ void WriteQryCurrDRIdentity(CThostFtdcQryCurrDRIdentityField* QryCurrDRIdentity)
 			QryCurrDRIdentity->DRIdentityID);
 	}
 }
-
 void WriteCurrDRIdentity(CThostFtdcCurrDRIdentityField* CurrDRIdentity)
 {
 	if(CurrDRIdentity)
@@ -3052,7 +2714,6 @@ void WriteCurrDRIdentity(CThostFtdcCurrDRIdentityField* CurrDRIdentity)
 			CurrDRIdentity->DRIdentityID);
 	}
 }
-
 void WriteQrySecAgentCheckMode(CThostFtdcQrySecAgentCheckModeField* QrySecAgentCheckMode)
 {
 	if(QrySecAgentCheckMode)
@@ -3061,7 +2722,6 @@ void WriteQrySecAgentCheckMode(CThostFtdcQrySecAgentCheckModeField* QrySecAgentC
 			QrySecAgentCheckMode->BrokerID, QrySecAgentCheckMode->InvestorID);
 	}
 }
-
 void WriteQrySecAgentTradeInfo(CThostFtdcQrySecAgentTradeInfoField* QrySecAgentTradeInfo)
 {
 	if(QrySecAgentTradeInfo)
@@ -3070,7 +2730,6 @@ void WriteQrySecAgentTradeInfo(CThostFtdcQrySecAgentTradeInfoField* QrySecAgentT
 			QrySecAgentTradeInfo->BrokerID, QrySecAgentTradeInfo->BrokerSecAgentID);
 	}
 }
-
 void WriteReqUserAuthMethod(CThostFtdcReqUserAuthMethodField* ReqUserAuthMethod)
 {
 	if(ReqUserAuthMethod)
@@ -3079,7 +2738,6 @@ void WriteReqUserAuthMethod(CThostFtdcReqUserAuthMethodField* ReqUserAuthMethod)
 			ReqUserAuthMethod->TradingDay, ReqUserAuthMethod->BrokerID, ReqUserAuthMethod->UserID);
 	}
 }
-
 void WriteRspUserAuthMethod(CThostFtdcRspUserAuthMethodField* RspUserAuthMethod)
 {
 	if(RspUserAuthMethod)
@@ -3088,7 +2746,6 @@ void WriteRspUserAuthMethod(CThostFtdcRspUserAuthMethodField* RspUserAuthMethod)
 			RspUserAuthMethod->UsableAuthMethod);
 	}
 }
-
 void WriteReqGenUserCaptcha(CThostFtdcReqGenUserCaptchaField* ReqGenUserCaptcha)
 {
 	if(ReqGenUserCaptcha)
@@ -3097,7 +2754,6 @@ void WriteReqGenUserCaptcha(CThostFtdcReqGenUserCaptchaField* ReqGenUserCaptcha)
 			ReqGenUserCaptcha->TradingDay, ReqGenUserCaptcha->BrokerID, ReqGenUserCaptcha->UserID);
 	}
 }
-
 void WriteRspGenUserCaptcha(CThostFtdcRspGenUserCaptchaField* RspGenUserCaptcha)
 {
 	if(RspGenUserCaptcha)
@@ -3106,7 +2762,6 @@ void WriteRspGenUserCaptcha(CThostFtdcRspGenUserCaptchaField* RspGenUserCaptcha)
 			RspGenUserCaptcha->BrokerID, RspGenUserCaptcha->UserID, RspGenUserCaptcha->CaptchaInfoLen, RspGenUserCaptcha->CaptchaInfo);
 	}
 }
-
 void WriteReqGenUserText(CThostFtdcReqGenUserTextField* ReqGenUserText)
 {
 	if(ReqGenUserText)
@@ -3115,7 +2770,6 @@ void WriteReqGenUserText(CThostFtdcReqGenUserTextField* ReqGenUserText)
 			ReqGenUserText->TradingDay, ReqGenUserText->BrokerID, ReqGenUserText->UserID);
 	}
 }
-
 void WriteRspGenUserText(CThostFtdcRspGenUserTextField* RspGenUserText)
 {
 	if(RspGenUserText)
@@ -3124,7 +2778,6 @@ void WriteRspGenUserText(CThostFtdcRspGenUserTextField* RspGenUserText)
 			RspGenUserText->UserTextSeq);
 	}
 }
-
 void WriteReqUserLoginWithCaptcha(CThostFtdcReqUserLoginWithCaptchaField* ReqUserLoginWithCaptcha)
 {
 	if(ReqUserLoginWithCaptcha)
@@ -3133,7 +2786,6 @@ void WriteReqUserLoginWithCaptcha(CThostFtdcReqUserLoginWithCaptchaField* ReqUse
 			ReqUserLoginWithCaptcha->TradingDay, ReqUserLoginWithCaptcha->BrokerID, ReqUserLoginWithCaptcha->UserID, ReqUserLoginWithCaptcha->Password, ReqUserLoginWithCaptcha->UserProductInfo, ReqUserLoginWithCaptcha->InterfaceProductInfo, ReqUserLoginWithCaptcha->ProtocolInfo, ReqUserLoginWithCaptcha->MacAddress, ReqUserLoginWithCaptcha->reserve1, ReqUserLoginWithCaptcha->LoginRemark, ReqUserLoginWithCaptcha->Captcha, ReqUserLoginWithCaptcha->ClientIPPort, ReqUserLoginWithCaptcha->ClientIPAddress);
 	}
 }
-
 void WriteReqUserLoginWithText(CThostFtdcReqUserLoginWithTextField* ReqUserLoginWithText)
 {
 	if(ReqUserLoginWithText)
@@ -3142,7 +2794,6 @@ void WriteReqUserLoginWithText(CThostFtdcReqUserLoginWithTextField* ReqUserLogin
 			ReqUserLoginWithText->TradingDay, ReqUserLoginWithText->BrokerID, ReqUserLoginWithText->UserID, ReqUserLoginWithText->Password, ReqUserLoginWithText->UserProductInfo, ReqUserLoginWithText->InterfaceProductInfo, ReqUserLoginWithText->ProtocolInfo, ReqUserLoginWithText->MacAddress, ReqUserLoginWithText->reserve1, ReqUserLoginWithText->LoginRemark, ReqUserLoginWithText->Text, ReqUserLoginWithText->ClientIPPort, ReqUserLoginWithText->ClientIPAddress);
 	}
 }
-
 void WriteReqUserLoginWithOTP(CThostFtdcReqUserLoginWithOTPField* ReqUserLoginWithOTP)
 {
 	if(ReqUserLoginWithOTP)
@@ -3151,7 +2802,6 @@ void WriteReqUserLoginWithOTP(CThostFtdcReqUserLoginWithOTPField* ReqUserLoginWi
 			ReqUserLoginWithOTP->TradingDay, ReqUserLoginWithOTP->BrokerID, ReqUserLoginWithOTP->UserID, ReqUserLoginWithOTP->Password, ReqUserLoginWithOTP->UserProductInfo, ReqUserLoginWithOTP->InterfaceProductInfo, ReqUserLoginWithOTP->ProtocolInfo, ReqUserLoginWithOTP->MacAddress, ReqUserLoginWithOTP->reserve1, ReqUserLoginWithOTP->LoginRemark, ReqUserLoginWithOTP->OTPPassword, ReqUserLoginWithOTP->ClientIPPort, ReqUserLoginWithOTP->ClientIPAddress);
 	}
 }
-
 void WriteReqApiHandshake(CThostFtdcReqApiHandshakeField* ReqApiHandshake)
 {
 	if(ReqApiHandshake)
@@ -3160,7 +2810,6 @@ void WriteReqApiHandshake(CThostFtdcReqApiHandshakeField* ReqApiHandshake)
 			ReqApiHandshake->CryptoKeyVersion);
 	}
 }
-
 void WriteRspApiHandshake(CThostFtdcRspApiHandshakeField* RspApiHandshake)
 {
 	if(RspApiHandshake)
@@ -3169,7 +2818,6 @@ void WriteRspApiHandshake(CThostFtdcRspApiHandshakeField* RspApiHandshake)
 			RspApiHandshake->FrontHandshakeDataLen, RspApiHandshake->FrontHandshakeData, RspApiHandshake->IsApiAuthEnabled);
 	}
 }
-
 void WriteReqVerifyApiKey(CThostFtdcReqVerifyApiKeyField* ReqVerifyApiKey)
 {
 	if(ReqVerifyApiKey)
@@ -3178,7 +2826,6 @@ void WriteReqVerifyApiKey(CThostFtdcReqVerifyApiKeyField* ReqVerifyApiKey)
 			ReqVerifyApiKey->ApiHandshakeDataLen, ReqVerifyApiKey->ApiHandshakeData);
 	}
 }
-
 void WriteDepartmentUser(CThostFtdcDepartmentUserField* DepartmentUser)
 {
 	if(DepartmentUser)
@@ -3187,7 +2834,6 @@ void WriteDepartmentUser(CThostFtdcDepartmentUserField* DepartmentUser)
 			DepartmentUser->BrokerID, DepartmentUser->UserID, DepartmentUser->InvestorRange, DepartmentUser->InvestorID);
 	}
 }
-
 void WriteQueryFreq(CThostFtdcQueryFreqField* QueryFreq)
 {
 	if(QueryFreq)
@@ -3196,7 +2842,6 @@ void WriteQueryFreq(CThostFtdcQueryFreqField* QueryFreq)
 			QueryFreq->QueryFreq);
 	}
 }
-
 void WriteAuthForbiddenIP(CThostFtdcAuthForbiddenIPField* AuthForbiddenIP)
 {
 	if(AuthForbiddenIP)
@@ -3205,7 +2850,6 @@ void WriteAuthForbiddenIP(CThostFtdcAuthForbiddenIPField* AuthForbiddenIP)
 			AuthForbiddenIP->IPAddress);
 	}
 }
-
 void WriteQryAuthForbiddenIP(CThostFtdcQryAuthForbiddenIPField* QryAuthForbiddenIP)
 {
 	if(QryAuthForbiddenIP)
@@ -3214,7 +2858,6 @@ void WriteQryAuthForbiddenIP(CThostFtdcQryAuthForbiddenIPField* QryAuthForbidden
 			QryAuthForbiddenIP->IPAddress);
 	}
 }
-
 void WriteSyncDelaySwapFrozen(CThostFtdcSyncDelaySwapFrozenField* SyncDelaySwapFrozen)
 {
 	if(SyncDelaySwapFrozen)
@@ -3223,7 +2866,6 @@ void WriteSyncDelaySwapFrozen(CThostFtdcSyncDelaySwapFrozenField* SyncDelaySwapF
 			SyncDelaySwapFrozen->DelaySwapSeqNo, SyncDelaySwapFrozen->BrokerID, SyncDelaySwapFrozen->InvestorID, SyncDelaySwapFrozen->FromCurrencyID, SyncDelaySwapFrozen->FromRemainSwap, SyncDelaySwapFrozen->IsManualSwap);
 	}
 }
-
 void WriteUserSystemInfo(CThostFtdcUserSystemInfoField* UserSystemInfo)
 {
 	if(UserSystemInfo)
@@ -3232,7 +2874,6 @@ void WriteUserSystemInfo(CThostFtdcUserSystemInfoField* UserSystemInfo)
 			UserSystemInfo->BrokerID, UserSystemInfo->UserID, UserSystemInfo->ClientSystemInfoLen, UserSystemInfo->ClientSystemInfo, UserSystemInfo->reserve1, UserSystemInfo->ClientIPPort, UserSystemInfo->ClientLoginTime, UserSystemInfo->ClientAppID, UserSystemInfo->ClientPublicIP, UserSystemInfo->ClientLoginRemark);
 	}
 }
-
 void WriteAuthUserID(CThostFtdcAuthUserIDField* AuthUserID)
 {
 	if(AuthUserID)
@@ -3241,7 +2882,6 @@ void WriteAuthUserID(CThostFtdcAuthUserIDField* AuthUserID)
 			AuthUserID->BrokerID, AuthUserID->AppID, AuthUserID->UserID, AuthUserID->AuthType);
 	}
 }
-
 void WriteAuthIP(CThostFtdcAuthIPField* AuthIP)
 {
 	if(AuthIP)
@@ -3250,7 +2890,6 @@ void WriteAuthIP(CThostFtdcAuthIPField* AuthIP)
 			AuthIP->BrokerID, AuthIP->AppID, AuthIP->IPAddress);
 	}
 }
-
 void WriteQryClassifiedInstrument(CThostFtdcQryClassifiedInstrumentField* QryClassifiedInstrument)
 {
 	if(QryClassifiedInstrument)
@@ -3259,7 +2898,6 @@ void WriteQryClassifiedInstrument(CThostFtdcQryClassifiedInstrumentField* QryCla
 			QryClassifiedInstrument->InstrumentID, QryClassifiedInstrument->ExchangeID, QryClassifiedInstrument->ExchangeInstID, QryClassifiedInstrument->ProductID, QryClassifiedInstrument->TradingType, QryClassifiedInstrument->ClassType);
 	}
 }
-
 void WriteQryCombPromotionParam(CThostFtdcQryCombPromotionParamField* QryCombPromotionParam)
 {
 	if(QryCombPromotionParam)
@@ -3268,7 +2906,6 @@ void WriteQryCombPromotionParam(CThostFtdcQryCombPromotionParamField* QryCombPro
 			QryCombPromotionParam->ExchangeID, QryCombPromotionParam->InstrumentID);
 	}
 }
-
 void WriteCombPromotionParam(CThostFtdcCombPromotionParamField* CombPromotionParam)
 {
 	if(CombPromotionParam)
@@ -3277,7 +2914,6 @@ void WriteCombPromotionParam(CThostFtdcCombPromotionParamField* CombPromotionPar
 			CombPromotionParam->ExchangeID, CombPromotionParam->InstrumentID, CombPromotionParam->CombHedgeFlag, CombPromotionParam->Xparameter);
 	}
 }
-
 void WriteReqUserLoginSC(CThostFtdcReqUserLoginSCField* ReqUserLoginSC)
 {
 	if(ReqUserLoginSC)
@@ -3286,7 +2922,6 @@ void WriteReqUserLoginSC(CThostFtdcReqUserLoginSCField* ReqUserLoginSC)
 			ReqUserLoginSC->TradingDay, ReqUserLoginSC->BrokerID, ReqUserLoginSC->UserID, ReqUserLoginSC->Password, ReqUserLoginSC->UserProductInfo, ReqUserLoginSC->InterfaceProductInfo, ReqUserLoginSC->ProtocolInfo, ReqUserLoginSC->MacAddress, ReqUserLoginSC->OneTimePassword, ReqUserLoginSC->ClientIPAddress, ReqUserLoginSC->LoginRemark, ReqUserLoginSC->ClientIPPort, ReqUserLoginSC->AuthCode, ReqUserLoginSC->AppID);
 	}
 }
-
 void WriteQryRiskSettleInvstPosition(CThostFtdcQryRiskSettleInvstPositionField* QryRiskSettleInvstPosition)
 {
 	if(QryRiskSettleInvstPosition)
@@ -3295,7 +2930,6 @@ void WriteQryRiskSettleInvstPosition(CThostFtdcQryRiskSettleInvstPositionField* 
 			QryRiskSettleInvstPosition->BrokerID, QryRiskSettleInvstPosition->InvestorID, QryRiskSettleInvstPosition->InstrumentID);
 	}
 }
-
 void WriteQryRiskSettleProductStatus(CThostFtdcQryRiskSettleProductStatusField* QryRiskSettleProductStatus)
 {
 	if(QryRiskSettleProductStatus)
@@ -3304,7 +2938,6 @@ void WriteQryRiskSettleProductStatus(CThostFtdcQryRiskSettleProductStatusField* 
 			QryRiskSettleProductStatus->ProductID);
 	}
 }
-
 void WriteRiskSettleInvstPosition(CThostFtdcRiskSettleInvstPositionField* RiskSettleInvstPosition)
 {
 	if(RiskSettleInvstPosition)
@@ -3313,7 +2946,6 @@ void WriteRiskSettleInvstPosition(CThostFtdcRiskSettleInvstPositionField* RiskSe
 			RiskSettleInvstPosition->InstrumentID, RiskSettleInvstPosition->BrokerID, RiskSettleInvstPosition->InvestorID, RiskSettleInvstPosition->PosiDirection, RiskSettleInvstPosition->HedgeFlag, RiskSettleInvstPosition->PositionDate, RiskSettleInvstPosition->YdPosition, RiskSettleInvstPosition->Position, RiskSettleInvstPosition->LongFrozen, RiskSettleInvstPosition->ShortFrozen, RiskSettleInvstPosition->LongFrozenAmount, RiskSettleInvstPosition->ShortFrozenAmount, RiskSettleInvstPosition->OpenVolume, RiskSettleInvstPosition->CloseVolume, RiskSettleInvstPosition->OpenAmount, RiskSettleInvstPosition->CloseAmount, RiskSettleInvstPosition->PositionCost, RiskSettleInvstPosition->PreMargin, RiskSettleInvstPosition->UseMargin, RiskSettleInvstPosition->FrozenMargin, RiskSettleInvstPosition->FrozenCash, RiskSettleInvstPosition->FrozenCommission, RiskSettleInvstPosition->CashIn, RiskSettleInvstPosition->Commission, RiskSettleInvstPosition->CloseProfit, RiskSettleInvstPosition->PositionProfit, RiskSettleInvstPosition->PreSettlementPrice, RiskSettleInvstPosition->SettlementPrice, RiskSettleInvstPosition->TradingDay, RiskSettleInvstPosition->SettlementID, RiskSettleInvstPosition->OpenCost, RiskSettleInvstPosition->ExchangeMargin, RiskSettleInvstPosition->CombPosition, RiskSettleInvstPosition->CombLongFrozen, RiskSettleInvstPosition->CombShortFrozen, RiskSettleInvstPosition->CloseProfitByDate, RiskSettleInvstPosition->CloseProfitByTrade, RiskSettleInvstPosition->TodayPosition, RiskSettleInvstPosition->MarginRateByMoney, RiskSettleInvstPosition->MarginRateByVolume, RiskSettleInvstPosition->StrikeFrozen, RiskSettleInvstPosition->StrikeFrozenAmount, RiskSettleInvstPosition->AbandonFrozen, RiskSettleInvstPosition->ExchangeID, RiskSettleInvstPosition->YdStrikeFrozen, RiskSettleInvstPosition->InvestUnitID, RiskSettleInvstPosition->PositionCostOffset, RiskSettleInvstPosition->TasPosition, RiskSettleInvstPosition->TasPositionCost);
 	}
 }
-
 void WriteRiskSettleProductStatus(CThostFtdcRiskSettleProductStatusField* RiskSettleProductStatus)
 {
 	if(RiskSettleProductStatus)
@@ -3322,7 +2954,6 @@ void WriteRiskSettleProductStatus(CThostFtdcRiskSettleProductStatusField* RiskSe
 			RiskSettleProductStatus->ExchangeID, RiskSettleProductStatus->ProductID, RiskSettleProductStatus->ProductStatus);
 	}
 }
-
 void WriteSyncDeltaInfo(CThostFtdcSyncDeltaInfoField* SyncDeltaInfo)
 {
 	if(SyncDeltaInfo)
@@ -3331,7 +2962,6 @@ void WriteSyncDeltaInfo(CThostFtdcSyncDeltaInfoField* SyncDeltaInfo)
 			SyncDeltaInfo->SyncDeltaSequenceNo, SyncDeltaInfo->SyncDeltaStatus, SyncDeltaInfo->SyncDescription, SyncDeltaInfo->IsOnlyTrdDelta);
 	}
 }
-
 void WriteSyncDeltaProductStatus(CThostFtdcSyncDeltaProductStatusField* SyncDeltaProductStatus)
 {
 	if(SyncDeltaProductStatus)
@@ -3340,7 +2970,6 @@ void WriteSyncDeltaProductStatus(CThostFtdcSyncDeltaProductStatusField* SyncDelt
 			SyncDeltaProductStatus->SyncDeltaSequenceNo, SyncDeltaProductStatus->ExchangeID, SyncDeltaProductStatus->ProductID, SyncDeltaProductStatus->ProductStatus);
 	}
 }
-
 void WriteSyncDeltaInvstPosDtl(CThostFtdcSyncDeltaInvstPosDtlField* SyncDeltaInvstPosDtl)
 {
 	if(SyncDeltaInvstPosDtl)
@@ -3349,7 +2978,6 @@ void WriteSyncDeltaInvstPosDtl(CThostFtdcSyncDeltaInvstPosDtlField* SyncDeltaInv
 			SyncDeltaInvstPosDtl->InstrumentID, SyncDeltaInvstPosDtl->BrokerID, SyncDeltaInvstPosDtl->InvestorID, SyncDeltaInvstPosDtl->HedgeFlag, SyncDeltaInvstPosDtl->Direction, SyncDeltaInvstPosDtl->OpenDate, SyncDeltaInvstPosDtl->TradeID, SyncDeltaInvstPosDtl->Volume, SyncDeltaInvstPosDtl->OpenPrice, SyncDeltaInvstPosDtl->TradingDay, SyncDeltaInvstPosDtl->SettlementID, SyncDeltaInvstPosDtl->TradeType, SyncDeltaInvstPosDtl->CombInstrumentID, SyncDeltaInvstPosDtl->ExchangeID, SyncDeltaInvstPosDtl->CloseProfitByDate, SyncDeltaInvstPosDtl->CloseProfitByTrade, SyncDeltaInvstPosDtl->PositionProfitByDate, SyncDeltaInvstPosDtl->PositionProfitByTrade, SyncDeltaInvstPosDtl->Margin, SyncDeltaInvstPosDtl->ExchMargin, SyncDeltaInvstPosDtl->MarginRateByMoney, SyncDeltaInvstPosDtl->MarginRateByVolume, SyncDeltaInvstPosDtl->LastSettlementPrice, SyncDeltaInvstPosDtl->SettlementPrice, SyncDeltaInvstPosDtl->CloseVolume, SyncDeltaInvstPosDtl->CloseAmount, SyncDeltaInvstPosDtl->TimeFirstVolume, SyncDeltaInvstPosDtl->SpecPosiType, SyncDeltaInvstPosDtl->ActionDirection, SyncDeltaInvstPosDtl->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaInvstPosCombDtl(CThostFtdcSyncDeltaInvstPosCombDtlField* SyncDeltaInvstPosCombDtl)
 {
 	if(SyncDeltaInvstPosCombDtl)
@@ -3358,7 +2986,6 @@ void WriteSyncDeltaInvstPosCombDtl(CThostFtdcSyncDeltaInvstPosCombDtlField* Sync
 			SyncDeltaInvstPosCombDtl->TradingDay, SyncDeltaInvstPosCombDtl->OpenDate, SyncDeltaInvstPosCombDtl->ExchangeID, SyncDeltaInvstPosCombDtl->SettlementID, SyncDeltaInvstPosCombDtl->BrokerID, SyncDeltaInvstPosCombDtl->InvestorID, SyncDeltaInvstPosCombDtl->ComTradeID, SyncDeltaInvstPosCombDtl->TradeID, SyncDeltaInvstPosCombDtl->InstrumentID, SyncDeltaInvstPosCombDtl->HedgeFlag, SyncDeltaInvstPosCombDtl->Direction, SyncDeltaInvstPosCombDtl->TotalAmt, SyncDeltaInvstPosCombDtl->Margin, SyncDeltaInvstPosCombDtl->ExchMargin, SyncDeltaInvstPosCombDtl->MarginRateByMoney, SyncDeltaInvstPosCombDtl->MarginRateByVolume, SyncDeltaInvstPosCombDtl->LegID, SyncDeltaInvstPosCombDtl->LegMultiple, SyncDeltaInvstPosCombDtl->TradeGroupID, SyncDeltaInvstPosCombDtl->ActionDirection, SyncDeltaInvstPosCombDtl->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaTradingAccount(CThostFtdcSyncDeltaTradingAccountField* SyncDeltaTradingAccount)
 {
 	if(SyncDeltaTradingAccount)
@@ -3367,7 +2994,6 @@ void WriteSyncDeltaTradingAccount(CThostFtdcSyncDeltaTradingAccountField* SyncDe
 			SyncDeltaTradingAccount->BrokerID, SyncDeltaTradingAccount->AccountID, SyncDeltaTradingAccount->PreMortgage, SyncDeltaTradingAccount->PreCredit, SyncDeltaTradingAccount->PreDeposit, SyncDeltaTradingAccount->PreBalance, SyncDeltaTradingAccount->PreMargin, SyncDeltaTradingAccount->InterestBase, SyncDeltaTradingAccount->Interest, SyncDeltaTradingAccount->Deposit, SyncDeltaTradingAccount->Withdraw, SyncDeltaTradingAccount->FrozenMargin, SyncDeltaTradingAccount->FrozenCash, SyncDeltaTradingAccount->FrozenCommission, SyncDeltaTradingAccount->CurrMargin, SyncDeltaTradingAccount->CashIn, SyncDeltaTradingAccount->Commission, SyncDeltaTradingAccount->CloseProfit, SyncDeltaTradingAccount->PositionProfit, SyncDeltaTradingAccount->Balance, SyncDeltaTradingAccount->Available, SyncDeltaTradingAccount->WithdrawQuota, SyncDeltaTradingAccount->Reserve, SyncDeltaTradingAccount->TradingDay, SyncDeltaTradingAccount->SettlementID, SyncDeltaTradingAccount->Credit, SyncDeltaTradingAccount->Mortgage, SyncDeltaTradingAccount->ExchangeMargin, SyncDeltaTradingAccount->DeliveryMargin, SyncDeltaTradingAccount->ExchangeDeliveryMargin, SyncDeltaTradingAccount->ReserveBalance, SyncDeltaTradingAccount->CurrencyID, SyncDeltaTradingAccount->PreFundMortgageIn, SyncDeltaTradingAccount->PreFundMortgageOut, SyncDeltaTradingAccount->FundMortgageIn, SyncDeltaTradingAccount->FundMortgageOut, SyncDeltaTradingAccount->FundMortgageAvailable, SyncDeltaTradingAccount->MortgageableFund, SyncDeltaTradingAccount->SpecProductMargin, SyncDeltaTradingAccount->SpecProductFrozenMargin, SyncDeltaTradingAccount->SpecProductCommission, SyncDeltaTradingAccount->SpecProductFrozenCommission, SyncDeltaTradingAccount->SpecProductPositionProfit, SyncDeltaTradingAccount->SpecProductCloseProfit, SyncDeltaTradingAccount->SpecProductPositionProfitByAlg, SyncDeltaTradingAccount->SpecProductExchangeMargin, SyncDeltaTradingAccount->FrozenSwap, SyncDeltaTradingAccount->RemainSwap, SyncDeltaTradingAccount->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaInitInvstMargin(CThostFtdcSyncDeltaInitInvstMarginField* SyncDeltaInitInvstMargin)
 {
 	if(SyncDeltaInitInvstMargin)
@@ -3376,7 +3002,6 @@ void WriteSyncDeltaInitInvstMargin(CThostFtdcSyncDeltaInitInvstMarginField* Sync
 			SyncDeltaInitInvstMargin->BrokerID, SyncDeltaInitInvstMargin->InvestorID, SyncDeltaInitInvstMargin->LastRiskTotalInvstMargin, SyncDeltaInitInvstMargin->LastRiskTotalExchMargin, SyncDeltaInitInvstMargin->ThisSyncInvstMargin, SyncDeltaInitInvstMargin->ThisSyncExchMargin, SyncDeltaInitInvstMargin->RemainRiskInvstMargin, SyncDeltaInitInvstMargin->RemainRiskExchMargin, SyncDeltaInitInvstMargin->LastRiskSpecTotalInvstMargin, SyncDeltaInitInvstMargin->LastRiskSpecTotalExchMargin, SyncDeltaInitInvstMargin->ThisSyncSpecInvstMargin, SyncDeltaInitInvstMargin->ThisSyncSpecExchMargin, SyncDeltaInitInvstMargin->RemainRiskSpecInvstMargin, SyncDeltaInitInvstMargin->RemainRiskSpecExchMargin, SyncDeltaInitInvstMargin->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaDceCombInstrument(CThostFtdcSyncDeltaDceCombInstrumentField* SyncDeltaDceCombInstrument)
 {
 	if(SyncDeltaDceCombInstrument)
@@ -3385,7 +3010,6 @@ void WriteSyncDeltaDceCombInstrument(CThostFtdcSyncDeltaDceCombInstrumentField* 
 			SyncDeltaDceCombInstrument->CombInstrumentID, SyncDeltaDceCombInstrument->ExchangeID, SyncDeltaDceCombInstrument->ExchangeInstID, SyncDeltaDceCombInstrument->TradeGroupID, SyncDeltaDceCombInstrument->CombHedgeFlag, SyncDeltaDceCombInstrument->CombinationType, SyncDeltaDceCombInstrument->Direction, SyncDeltaDceCombInstrument->ProductID, SyncDeltaDceCombInstrument->Xparameter, SyncDeltaDceCombInstrument->ActionDirection, SyncDeltaDceCombInstrument->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaInvstMarginRate(CThostFtdcSyncDeltaInvstMarginRateField* SyncDeltaInvstMarginRate)
 {
 	if(SyncDeltaInvstMarginRate)
@@ -3394,7 +3018,6 @@ void WriteSyncDeltaInvstMarginRate(CThostFtdcSyncDeltaInvstMarginRateField* Sync
 			SyncDeltaInvstMarginRate->InstrumentID, SyncDeltaInvstMarginRate->InvestorRange, SyncDeltaInvstMarginRate->BrokerID, SyncDeltaInvstMarginRate->InvestorID, SyncDeltaInvstMarginRate->HedgeFlag, SyncDeltaInvstMarginRate->LongMarginRatioByMoney, SyncDeltaInvstMarginRate->LongMarginRatioByVolume, SyncDeltaInvstMarginRate->ShortMarginRatioByMoney, SyncDeltaInvstMarginRate->ShortMarginRatioByVolume, SyncDeltaInvstMarginRate->IsRelative, SyncDeltaInvstMarginRate->ActionDirection, SyncDeltaInvstMarginRate->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaExchMarginRate(CThostFtdcSyncDeltaExchMarginRateField* SyncDeltaExchMarginRate)
 {
 	if(SyncDeltaExchMarginRate)
@@ -3403,7 +3026,6 @@ void WriteSyncDeltaExchMarginRate(CThostFtdcSyncDeltaExchMarginRateField* SyncDe
 			SyncDeltaExchMarginRate->BrokerID, SyncDeltaExchMarginRate->InstrumentID, SyncDeltaExchMarginRate->HedgeFlag, SyncDeltaExchMarginRate->LongMarginRatioByMoney, SyncDeltaExchMarginRate->LongMarginRatioByVolume, SyncDeltaExchMarginRate->ShortMarginRatioByMoney, SyncDeltaExchMarginRate->ShortMarginRatioByVolume, SyncDeltaExchMarginRate->ActionDirection, SyncDeltaExchMarginRate->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaOptExchMargin(CThostFtdcSyncDeltaOptExchMarginField* SyncDeltaOptExchMargin)
 {
 	if(SyncDeltaOptExchMargin)
@@ -3412,7 +3034,6 @@ void WriteSyncDeltaOptExchMargin(CThostFtdcSyncDeltaOptExchMarginField* SyncDelt
 			SyncDeltaOptExchMargin->BrokerID, SyncDeltaOptExchMargin->InstrumentID, SyncDeltaOptExchMargin->SShortMarginRatioByMoney, SyncDeltaOptExchMargin->SShortMarginRatioByVolume, SyncDeltaOptExchMargin->HShortMarginRatioByMoney, SyncDeltaOptExchMargin->HShortMarginRatioByVolume, SyncDeltaOptExchMargin->AShortMarginRatioByMoney, SyncDeltaOptExchMargin->AShortMarginRatioByVolume, SyncDeltaOptExchMargin->MShortMarginRatioByMoney, SyncDeltaOptExchMargin->MShortMarginRatioByVolume, SyncDeltaOptExchMargin->ActionDirection, SyncDeltaOptExchMargin->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaOptInvstMargin(CThostFtdcSyncDeltaOptInvstMarginField* SyncDeltaOptInvstMargin)
 {
 	if(SyncDeltaOptInvstMargin)
@@ -3421,7 +3042,6 @@ void WriteSyncDeltaOptInvstMargin(CThostFtdcSyncDeltaOptInvstMarginField* SyncDe
 			SyncDeltaOptInvstMargin->InstrumentID, SyncDeltaOptInvstMargin->InvestorRange, SyncDeltaOptInvstMargin->BrokerID, SyncDeltaOptInvstMargin->InvestorID, SyncDeltaOptInvstMargin->SShortMarginRatioByMoney, SyncDeltaOptInvstMargin->SShortMarginRatioByVolume, SyncDeltaOptInvstMargin->HShortMarginRatioByMoney, SyncDeltaOptInvstMargin->HShortMarginRatioByVolume, SyncDeltaOptInvstMargin->AShortMarginRatioByMoney, SyncDeltaOptInvstMargin->AShortMarginRatioByVolume, SyncDeltaOptInvstMargin->IsRelative, SyncDeltaOptInvstMargin->MShortMarginRatioByMoney, SyncDeltaOptInvstMargin->MShortMarginRatioByVolume, SyncDeltaOptInvstMargin->ActionDirection, SyncDeltaOptInvstMargin->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaInvstMarginRateUL(CThostFtdcSyncDeltaInvstMarginRateULField* SyncDeltaInvstMarginRateUL)
 {
 	if(SyncDeltaInvstMarginRateUL)
@@ -3430,7 +3050,6 @@ void WriteSyncDeltaInvstMarginRateUL(CThostFtdcSyncDeltaInvstMarginRateULField* 
 			SyncDeltaInvstMarginRateUL->InstrumentID, SyncDeltaInvstMarginRateUL->InvestorRange, SyncDeltaInvstMarginRateUL->BrokerID, SyncDeltaInvstMarginRateUL->InvestorID, SyncDeltaInvstMarginRateUL->HedgeFlag, SyncDeltaInvstMarginRateUL->LongMarginRatioByMoney, SyncDeltaInvstMarginRateUL->LongMarginRatioByVolume, SyncDeltaInvstMarginRateUL->ShortMarginRatioByMoney, SyncDeltaInvstMarginRateUL->ShortMarginRatioByVolume, SyncDeltaInvstMarginRateUL->ActionDirection, SyncDeltaInvstMarginRateUL->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaOptInvstCommRate(CThostFtdcSyncDeltaOptInvstCommRateField* SyncDeltaOptInvstCommRate)
 {
 	if(SyncDeltaOptInvstCommRate)
@@ -3439,7 +3058,6 @@ void WriteSyncDeltaOptInvstCommRate(CThostFtdcSyncDeltaOptInvstCommRateField* Sy
 			SyncDeltaOptInvstCommRate->InstrumentID, SyncDeltaOptInvstCommRate->InvestorRange, SyncDeltaOptInvstCommRate->BrokerID, SyncDeltaOptInvstCommRate->InvestorID, SyncDeltaOptInvstCommRate->OpenRatioByMoney, SyncDeltaOptInvstCommRate->OpenRatioByVolume, SyncDeltaOptInvstCommRate->CloseRatioByMoney, SyncDeltaOptInvstCommRate->CloseRatioByVolume, SyncDeltaOptInvstCommRate->CloseTodayRatioByMoney, SyncDeltaOptInvstCommRate->CloseTodayRatioByVolume, SyncDeltaOptInvstCommRate->StrikeRatioByMoney, SyncDeltaOptInvstCommRate->StrikeRatioByVolume, SyncDeltaOptInvstCommRate->ActionDirection, SyncDeltaOptInvstCommRate->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaInvstCommRate(CThostFtdcSyncDeltaInvstCommRateField* SyncDeltaInvstCommRate)
 {
 	if(SyncDeltaInvstCommRate)
@@ -3448,7 +3066,6 @@ void WriteSyncDeltaInvstCommRate(CThostFtdcSyncDeltaInvstCommRateField* SyncDelt
 			SyncDeltaInvstCommRate->InstrumentID, SyncDeltaInvstCommRate->InvestorRange, SyncDeltaInvstCommRate->BrokerID, SyncDeltaInvstCommRate->InvestorID, SyncDeltaInvstCommRate->OpenRatioByMoney, SyncDeltaInvstCommRate->OpenRatioByVolume, SyncDeltaInvstCommRate->CloseRatioByMoney, SyncDeltaInvstCommRate->CloseRatioByVolume, SyncDeltaInvstCommRate->CloseTodayRatioByMoney, SyncDeltaInvstCommRate->CloseTodayRatioByVolume, SyncDeltaInvstCommRate->ActionDirection, SyncDeltaInvstCommRate->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaProductExchRate(CThostFtdcSyncDeltaProductExchRateField* SyncDeltaProductExchRate)
 {
 	if(SyncDeltaProductExchRate)
@@ -3457,7 +3074,6 @@ void WriteSyncDeltaProductExchRate(CThostFtdcSyncDeltaProductExchRateField* Sync
 			SyncDeltaProductExchRate->ProductID, SyncDeltaProductExchRate->QuoteCurrencyID, SyncDeltaProductExchRate->ExchangeRate, SyncDeltaProductExchRate->ActionDirection, SyncDeltaProductExchRate->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaDepthMarketData(CThostFtdcSyncDeltaDepthMarketDataField* SyncDeltaDepthMarketData)
 {
 	if(SyncDeltaDepthMarketData)
@@ -3466,7 +3082,6 @@ void WriteSyncDeltaDepthMarketData(CThostFtdcSyncDeltaDepthMarketDataField* Sync
 			SyncDeltaDepthMarketData->TradingDay, SyncDeltaDepthMarketData->InstrumentID, SyncDeltaDepthMarketData->ExchangeID, SyncDeltaDepthMarketData->ExchangeInstID, SyncDeltaDepthMarketData->LastPrice, SyncDeltaDepthMarketData->PreSettlementPrice, SyncDeltaDepthMarketData->PreClosePrice, SyncDeltaDepthMarketData->PreOpenInterest, SyncDeltaDepthMarketData->OpenPrice, SyncDeltaDepthMarketData->HighestPrice, SyncDeltaDepthMarketData->LowestPrice, SyncDeltaDepthMarketData->Volume, SyncDeltaDepthMarketData->Turnover, SyncDeltaDepthMarketData->OpenInterest, SyncDeltaDepthMarketData->ClosePrice, SyncDeltaDepthMarketData->SettlementPrice, SyncDeltaDepthMarketData->UpperLimitPrice, SyncDeltaDepthMarketData->LowerLimitPrice, SyncDeltaDepthMarketData->PreDelta, SyncDeltaDepthMarketData->CurrDelta, SyncDeltaDepthMarketData->UpdateTime, SyncDeltaDepthMarketData->UpdateMillisec, SyncDeltaDepthMarketData->BidPrice1, SyncDeltaDepthMarketData->BidVolume1, SyncDeltaDepthMarketData->AskPrice1, SyncDeltaDepthMarketData->AskVolume1, SyncDeltaDepthMarketData->BidPrice2, SyncDeltaDepthMarketData->BidVolume2, SyncDeltaDepthMarketData->AskPrice2, SyncDeltaDepthMarketData->AskVolume2, SyncDeltaDepthMarketData->BidPrice3, SyncDeltaDepthMarketData->BidVolume3, SyncDeltaDepthMarketData->AskPrice3, SyncDeltaDepthMarketData->AskVolume3, SyncDeltaDepthMarketData->BidPrice4, SyncDeltaDepthMarketData->BidVolume4, SyncDeltaDepthMarketData->AskPrice4, SyncDeltaDepthMarketData->AskVolume4, SyncDeltaDepthMarketData->BidPrice5, SyncDeltaDepthMarketData->BidVolume5, SyncDeltaDepthMarketData->AskPrice5, SyncDeltaDepthMarketData->AskVolume5, SyncDeltaDepthMarketData->AveragePrice, SyncDeltaDepthMarketData->ActionDay, SyncDeltaDepthMarketData->BandingUpperPrice, SyncDeltaDepthMarketData->BandingLowerPrice, SyncDeltaDepthMarketData->ActionDirection, SyncDeltaDepthMarketData->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaIndexPrice(CThostFtdcSyncDeltaIndexPriceField* SyncDeltaIndexPrice)
 {
 	if(SyncDeltaIndexPrice)
@@ -3475,7 +3090,6 @@ void WriteSyncDeltaIndexPrice(CThostFtdcSyncDeltaIndexPriceField* SyncDeltaIndex
 			SyncDeltaIndexPrice->BrokerID, SyncDeltaIndexPrice->InstrumentID, SyncDeltaIndexPrice->ClosePrice, SyncDeltaIndexPrice->ActionDirection, SyncDeltaIndexPrice->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaEWarrantOffset(CThostFtdcSyncDeltaEWarrantOffsetField* SyncDeltaEWarrantOffset)
 {
 	if(SyncDeltaEWarrantOffset)
@@ -3484,7 +3098,6 @@ void WriteSyncDeltaEWarrantOffset(CThostFtdcSyncDeltaEWarrantOffsetField* SyncDe
 			SyncDeltaEWarrantOffset->TradingDay, SyncDeltaEWarrantOffset->BrokerID, SyncDeltaEWarrantOffset->InvestorID, SyncDeltaEWarrantOffset->ExchangeID, SyncDeltaEWarrantOffset->InstrumentID, SyncDeltaEWarrantOffset->Direction, SyncDeltaEWarrantOffset->HedgeFlag, SyncDeltaEWarrantOffset->Volume, SyncDeltaEWarrantOffset->ActionDirection, SyncDeltaEWarrantOffset->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSPBMFutureParameter(CThostFtdcSPBMFutureParameterField* SPBMFutureParameter)
 {
 	if(SPBMFutureParameter)
@@ -3493,7 +3106,6 @@ void WriteSPBMFutureParameter(CThostFtdcSPBMFutureParameterField* SPBMFuturePara
 			SPBMFutureParameter->TradingDay, SPBMFutureParameter->ExchangeID, SPBMFutureParameter->InstrumentID, SPBMFutureParameter->ProdFamilyCode, SPBMFutureParameter->Cvf, SPBMFutureParameter->TimeRange, SPBMFutureParameter->MarginRate, SPBMFutureParameter->LockRateX, SPBMFutureParameter->AddOnRate, SPBMFutureParameter->PreSettlementPrice, SPBMFutureParameter->AddOnLockRateX2);
 	}
 }
-
 void WriteSPBMOptionParameter(CThostFtdcSPBMOptionParameterField* SPBMOptionParameter)
 {
 	if(SPBMOptionParameter)
@@ -3502,7 +3114,6 @@ void WriteSPBMOptionParameter(CThostFtdcSPBMOptionParameterField* SPBMOptionPara
 			SPBMOptionParameter->TradingDay, SPBMOptionParameter->ExchangeID, SPBMOptionParameter->InstrumentID, SPBMOptionParameter->ProdFamilyCode, SPBMOptionParameter->Cvf, SPBMOptionParameter->DownPrice, SPBMOptionParameter->Delta, SPBMOptionParameter->SlimiDelta, SPBMOptionParameter->PreSettlementPrice);
 	}
 }
-
 void WriteSPBMIntraParameter(CThostFtdcSPBMIntraParameterField* SPBMIntraParameter)
 {
 	if(SPBMIntraParameter)
@@ -3511,7 +3122,6 @@ void WriteSPBMIntraParameter(CThostFtdcSPBMIntraParameterField* SPBMIntraParamet
 			SPBMIntraParameter->TradingDay, SPBMIntraParameter->ExchangeID, SPBMIntraParameter->ProdFamilyCode, SPBMIntraParameter->IntraRateY, SPBMIntraParameter->AddOnIntraRateY2);
 	}
 }
-
 void WriteSPBMInterParameter(CThostFtdcSPBMInterParameterField* SPBMInterParameter)
 {
 	if(SPBMInterParameter)
@@ -3520,7 +3130,6 @@ void WriteSPBMInterParameter(CThostFtdcSPBMInterParameterField* SPBMInterParamet
 			SPBMInterParameter->TradingDay, SPBMInterParameter->ExchangeID, SPBMInterParameter->SpreadId, SPBMInterParameter->InterRateZ, SPBMInterParameter->Leg1ProdFamilyCode, SPBMInterParameter->Leg2ProdFamilyCode);
 	}
 }
-
 void WriteSyncSPBMParameterEnd(CThostFtdcSyncSPBMParameterEndField* SyncSPBMParameterEnd)
 {
 	if(SyncSPBMParameterEnd)
@@ -3529,7 +3138,6 @@ void WriteSyncSPBMParameterEnd(CThostFtdcSyncSPBMParameterEndField* SyncSPBMPara
 			SyncSPBMParameterEnd->TradingDay);
 	}
 }
-
 void WriteQrySPBMFutureParameter(CThostFtdcQrySPBMFutureParameterField* QrySPBMFutureParameter)
 {
 	if(QrySPBMFutureParameter)
@@ -3538,7 +3146,6 @@ void WriteQrySPBMFutureParameter(CThostFtdcQrySPBMFutureParameterField* QrySPBMF
 			QrySPBMFutureParameter->ExchangeID, QrySPBMFutureParameter->InstrumentID, QrySPBMFutureParameter->ProdFamilyCode);
 	}
 }
-
 void WriteQrySPBMOptionParameter(CThostFtdcQrySPBMOptionParameterField* QrySPBMOptionParameter)
 {
 	if(QrySPBMOptionParameter)
@@ -3547,7 +3154,6 @@ void WriteQrySPBMOptionParameter(CThostFtdcQrySPBMOptionParameterField* QrySPBMO
 			QrySPBMOptionParameter->ExchangeID, QrySPBMOptionParameter->InstrumentID, QrySPBMOptionParameter->ProdFamilyCode);
 	}
 }
-
 void WriteQrySPBMIntraParameter(CThostFtdcQrySPBMIntraParameterField* QrySPBMIntraParameter)
 {
 	if(QrySPBMIntraParameter)
@@ -3556,7 +3162,6 @@ void WriteQrySPBMIntraParameter(CThostFtdcQrySPBMIntraParameterField* QrySPBMInt
 			QrySPBMIntraParameter->ExchangeID, QrySPBMIntraParameter->ProdFamilyCode);
 	}
 }
-
 void WriteQrySPBMInterParameter(CThostFtdcQrySPBMInterParameterField* QrySPBMInterParameter)
 {
 	if(QrySPBMInterParameter)
@@ -3565,7 +3170,6 @@ void WriteQrySPBMInterParameter(CThostFtdcQrySPBMInterParameterField* QrySPBMInt
 			QrySPBMInterParameter->ExchangeID, QrySPBMInterParameter->Leg1ProdFamilyCode, QrySPBMInterParameter->Leg2ProdFamilyCode);
 	}
 }
-
 void WriteSPBMPortfDefinition(CThostFtdcSPBMPortfDefinitionField* SPBMPortfDefinition)
 {
 	if(SPBMPortfDefinition)
@@ -3574,7 +3178,6 @@ void WriteSPBMPortfDefinition(CThostFtdcSPBMPortfDefinitionField* SPBMPortfDefin
 			SPBMPortfDefinition->ExchangeID, SPBMPortfDefinition->PortfolioDefID, SPBMPortfDefinition->ProdFamilyCode, SPBMPortfDefinition->IsSPBM);
 	}
 }
-
 void WriteSPBMInvestorPortfDef(CThostFtdcSPBMInvestorPortfDefField* SPBMInvestorPortfDef)
 {
 	if(SPBMInvestorPortfDef)
@@ -3583,7 +3186,6 @@ void WriteSPBMInvestorPortfDef(CThostFtdcSPBMInvestorPortfDefField* SPBMInvestor
 			SPBMInvestorPortfDef->ExchangeID, SPBMInvestorPortfDef->BrokerID, SPBMInvestorPortfDef->InvestorID, SPBMInvestorPortfDef->PortfolioDefID);
 	}
 }
-
 void WriteInvestorPortfMarginRatio(CThostFtdcInvestorPortfMarginRatioField* InvestorPortfMarginRatio)
 {
 	if(InvestorPortfMarginRatio)
@@ -3592,7 +3194,6 @@ void WriteInvestorPortfMarginRatio(CThostFtdcInvestorPortfMarginRatioField* Inve
 			InvestorPortfMarginRatio->InvestorRange, InvestorPortfMarginRatio->BrokerID, InvestorPortfMarginRatio->InvestorID, InvestorPortfMarginRatio->ExchangeID, InvestorPortfMarginRatio->MarginRatio);
 	}
 }
-
 void WriteQrySPBMPortfDefinition(CThostFtdcQrySPBMPortfDefinitionField* QrySPBMPortfDefinition)
 {
 	if(QrySPBMPortfDefinition)
@@ -3601,7 +3202,6 @@ void WriteQrySPBMPortfDefinition(CThostFtdcQrySPBMPortfDefinitionField* QrySPBMP
 			QrySPBMPortfDefinition->ExchangeID, QrySPBMPortfDefinition->PortfolioDefID, QrySPBMPortfDefinition->ProdFamilyCode);
 	}
 }
-
 void WriteQrySPBMInvestorPortfDef(CThostFtdcQrySPBMInvestorPortfDefField* QrySPBMInvestorPortfDef)
 {
 	if(QrySPBMInvestorPortfDef)
@@ -3610,7 +3210,6 @@ void WriteQrySPBMInvestorPortfDef(CThostFtdcQrySPBMInvestorPortfDefField* QrySPB
 			QrySPBMInvestorPortfDef->ExchangeID, QrySPBMInvestorPortfDef->BrokerID, QrySPBMInvestorPortfDef->InvestorID);
 	}
 }
-
 void WriteQryInvestorPortfMarginRatio(CThostFtdcQryInvestorPortfMarginRatioField* QryInvestorPortfMarginRatio)
 {
 	if(QryInvestorPortfMarginRatio)
@@ -3619,7 +3218,6 @@ void WriteQryInvestorPortfMarginRatio(CThostFtdcQryInvestorPortfMarginRatioField
 			QryInvestorPortfMarginRatio->BrokerID, QryInvestorPortfMarginRatio->InvestorID, QryInvestorPortfMarginRatio->ExchangeID);
 	}
 }
-
 void WriteInvestorProdSPBMDetail(CThostFtdcInvestorProdSPBMDetailField* InvestorProdSPBMDetail)
 {
 	if(InvestorProdSPBMDetail)
@@ -3628,7 +3226,6 @@ void WriteInvestorProdSPBMDetail(CThostFtdcInvestorProdSPBMDetailField* Investor
 			InvestorProdSPBMDetail->ExchangeID, InvestorProdSPBMDetail->BrokerID, InvestorProdSPBMDetail->InvestorID, InvestorProdSPBMDetail->ProdFamilyCode, InvestorProdSPBMDetail->IntraInstrMargin, InvestorProdSPBMDetail->BCollectingMargin, InvestorProdSPBMDetail->SCollectingMargin, InvestorProdSPBMDetail->IntraProdMargin, InvestorProdSPBMDetail->NetMargin, InvestorProdSPBMDetail->InterProdMargin, InvestorProdSPBMDetail->SingleMargin, InvestorProdSPBMDetail->AddOnMargin, InvestorProdSPBMDetail->DeliveryMargin, InvestorProdSPBMDetail->CallOptionMinRisk, InvestorProdSPBMDetail->PutOptionMinRisk, InvestorProdSPBMDetail->OptionMinRisk, InvestorProdSPBMDetail->OptionValueOffset, InvestorProdSPBMDetail->OptionRoyalty, InvestorProdSPBMDetail->RealOptionValueOffset, InvestorProdSPBMDetail->Margin, InvestorProdSPBMDetail->ExchMargin);
 	}
 }
-
 void WriteQryInvestorProdSPBMDetail(CThostFtdcQryInvestorProdSPBMDetailField* QryInvestorProdSPBMDetail)
 {
 	if(QryInvestorProdSPBMDetail)
@@ -3637,7 +3234,6 @@ void WriteQryInvestorProdSPBMDetail(CThostFtdcQryInvestorProdSPBMDetailField* Qr
 			QryInvestorProdSPBMDetail->ExchangeID, QryInvestorProdSPBMDetail->BrokerID, QryInvestorProdSPBMDetail->InvestorID, QryInvestorProdSPBMDetail->ProdFamilyCode);
 	}
 }
-
 void WritePortfTradeParamSetting(CThostFtdcPortfTradeParamSettingField* PortfTradeParamSetting)
 {
 	if(PortfTradeParamSetting)
@@ -3646,7 +3242,6 @@ void WritePortfTradeParamSetting(CThostFtdcPortfTradeParamSettingField* PortfTra
 			PortfTradeParamSetting->ExchangeID, PortfTradeParamSetting->BrokerID, PortfTradeParamSetting->InvestorID, PortfTradeParamSetting->Portfolio, PortfTradeParamSetting->IsActionVerify, PortfTradeParamSetting->IsCloseVerify);
 	}
 }
-
 void WriteInvestorTradingRight(CThostFtdcInvestorTradingRightField* InvestorTradingRight)
 {
 	if(InvestorTradingRight)
@@ -3655,7 +3250,6 @@ void WriteInvestorTradingRight(CThostFtdcInvestorTradingRightField* InvestorTrad
 			InvestorTradingRight->BrokerID, InvestorTradingRight->InvestorID, InvestorTradingRight->InvstTradingRight);
 	}
 }
-
 void WriteMortgageParam(CThostFtdcMortgageParamField* MortgageParam)
 {
 	if(MortgageParam)
@@ -3664,7 +3258,6 @@ void WriteMortgageParam(CThostFtdcMortgageParamField* MortgageParam)
 			MortgageParam->BrokerID, MortgageParam->AccountID, MortgageParam->MortgageBalance, MortgageParam->CheckMortgageRatio);
 	}
 }
-
 void WriteWithDrawParam(CThostFtdcWithDrawParamField* WithDrawParam)
 {
 	if(WithDrawParam)
@@ -3673,7 +3266,6 @@ void WriteWithDrawParam(CThostFtdcWithDrawParamField* WithDrawParam)
 			WithDrawParam->BrokerID, WithDrawParam->AccountID, WithDrawParam->WithDrawParamID, WithDrawParam->WithDrawParamValue);
 	}
 }
-
 void WriteThostUserFunction(CThostFtdcThostUserFunctionField* ThostUserFunction)
 {
 	if(ThostUserFunction)
@@ -3682,7 +3274,6 @@ void WriteThostUserFunction(CThostFtdcThostUserFunctionField* ThostUserFunction)
 			ThostUserFunction->BrokerID, ThostUserFunction->UserID, ThostUserFunction->ThostFunctionCode);
 	}
 }
-
 void WriteQryThostUserFunction(CThostFtdcQryThostUserFunctionField* QryThostUserFunction)
 {
 	if(QryThostUserFunction)
@@ -3691,7 +3282,6 @@ void WriteQryThostUserFunction(CThostFtdcQryThostUserFunctionField* QryThostUser
 			QryThostUserFunction->BrokerID, QryThostUserFunction->UserID);
 	}
 }
-
 void WriteSPBMAddOnInterParameter(CThostFtdcSPBMAddOnInterParameterField* SPBMAddOnInterParameter)
 {
 	if(SPBMAddOnInterParameter)
@@ -3700,7 +3290,6 @@ void WriteSPBMAddOnInterParameter(CThostFtdcSPBMAddOnInterParameterField* SPBMAd
 			SPBMAddOnInterParameter->TradingDay, SPBMAddOnInterParameter->ExchangeID, SPBMAddOnInterParameter->SpreadId, SPBMAddOnInterParameter->AddOnInterRateZ2, SPBMAddOnInterParameter->Leg1ProdFamilyCode, SPBMAddOnInterParameter->Leg2ProdFamilyCode);
 	}
 }
-
 void WriteQrySPBMAddOnInterParameter(CThostFtdcQrySPBMAddOnInterParameterField* QrySPBMAddOnInterParameter)
 {
 	if(QrySPBMAddOnInterParameter)
@@ -3709,7 +3298,6 @@ void WriteQrySPBMAddOnInterParameter(CThostFtdcQrySPBMAddOnInterParameterField* 
 			QrySPBMAddOnInterParameter->ExchangeID, QrySPBMAddOnInterParameter->Leg1ProdFamilyCode, QrySPBMAddOnInterParameter->Leg2ProdFamilyCode);
 	}
 }
-
 void WriteQryInvestorCommoditySPMMMargin(CThostFtdcQryInvestorCommoditySPMMMarginField* QryInvestorCommoditySPMMMargin)
 {
 	if(QryInvestorCommoditySPMMMargin)
@@ -3718,7 +3306,6 @@ void WriteQryInvestorCommoditySPMMMargin(CThostFtdcQryInvestorCommoditySPMMMargi
 			QryInvestorCommoditySPMMMargin->BrokerID, QryInvestorCommoditySPMMMargin->InvestorID, QryInvestorCommoditySPMMMargin->CommodityID);
 	}
 }
-
 void WriteQryInvestorCommodityGroupSPMMMargin(CThostFtdcQryInvestorCommodityGroupSPMMMarginField* QryInvestorCommodityGroupSPMMMargin)
 {
 	if(QryInvestorCommodityGroupSPMMMargin)
@@ -3727,7 +3314,6 @@ void WriteQryInvestorCommodityGroupSPMMMargin(CThostFtdcQryInvestorCommodityGrou
 			QryInvestorCommodityGroupSPMMMargin->BrokerID, QryInvestorCommodityGroupSPMMMargin->InvestorID, QryInvestorCommodityGroupSPMMMargin->CommodityGroupID);
 	}
 }
-
 void WriteQrySPMMInstParam(CThostFtdcQrySPMMInstParamField* QrySPMMInstParam)
 {
 	if(QrySPMMInstParam)
@@ -3736,7 +3322,6 @@ void WriteQrySPMMInstParam(CThostFtdcQrySPMMInstParamField* QrySPMMInstParam)
 			QrySPMMInstParam->InstrumentID);
 	}
 }
-
 void WriteQrySPMMProductParam(CThostFtdcQrySPMMProductParamField* QrySPMMProductParam)
 {
 	if(QrySPMMProductParam)
@@ -3745,7 +3330,6 @@ void WriteQrySPMMProductParam(CThostFtdcQrySPMMProductParamField* QrySPMMProduct
 			QrySPMMProductParam->ProductID);
 	}
 }
-
 void WriteInvestorCommoditySPMMMargin(CThostFtdcInvestorCommoditySPMMMarginField* InvestorCommoditySPMMMargin)
 {
 	if(InvestorCommoditySPMMMargin)
@@ -3754,7 +3338,6 @@ void WriteInvestorCommoditySPMMMargin(CThostFtdcInvestorCommoditySPMMMarginField
 			InvestorCommoditySPMMMargin->ExchangeID, InvestorCommoditySPMMMargin->BrokerID, InvestorCommoditySPMMMargin->InvestorID, InvestorCommoditySPMMMargin->CommodityID, InvestorCommoditySPMMMargin->MarginBeforeDiscount, InvestorCommoditySPMMMargin->MarginNoDiscount, InvestorCommoditySPMMMargin->LongPosRisk, InvestorCommoditySPMMMargin->LongOpenFrozenRisk, InvestorCommoditySPMMMargin->LongCloseFrozenRisk, InvestorCommoditySPMMMargin->ShortPosRisk, InvestorCommoditySPMMMargin->ShortOpenFrozenRisk, InvestorCommoditySPMMMargin->ShortCloseFrozenRisk, InvestorCommoditySPMMMargin->IntraCommodityRate, InvestorCommoditySPMMMargin->OptionDiscountRate, InvestorCommoditySPMMMargin->PosDiscount, InvestorCommoditySPMMMargin->OpenFrozenDiscount, InvestorCommoditySPMMMargin->NetRisk, InvestorCommoditySPMMMargin->CloseFrozenMargin, InvestorCommoditySPMMMargin->FrozenCommission, InvestorCommoditySPMMMargin->Commission, InvestorCommoditySPMMMargin->FrozenCash, InvestorCommoditySPMMMargin->CashIn, InvestorCommoditySPMMMargin->StrikeFrozenMargin);
 	}
 }
-
 void WriteInvestorCommodityGroupSPMMMargin(CThostFtdcInvestorCommodityGroupSPMMMarginField* InvestorCommodityGroupSPMMMargin)
 {
 	if(InvestorCommodityGroupSPMMMargin)
@@ -3763,7 +3346,6 @@ void WriteInvestorCommodityGroupSPMMMargin(CThostFtdcInvestorCommodityGroupSPMMM
 			InvestorCommodityGroupSPMMMargin->ExchangeID, InvestorCommodityGroupSPMMMargin->BrokerID, InvestorCommodityGroupSPMMMargin->InvestorID, InvestorCommodityGroupSPMMMargin->CommodityGroupID, InvestorCommodityGroupSPMMMargin->MarginBeforeDiscount, InvestorCommodityGroupSPMMMargin->MarginNoDiscount, InvestorCommodityGroupSPMMMargin->LongRisk, InvestorCommodityGroupSPMMMargin->ShortRisk, InvestorCommodityGroupSPMMMargin->CloseFrozenMargin, InvestorCommodityGroupSPMMMargin->InterCommodityRate, InvestorCommodityGroupSPMMMargin->MiniMarginRatio, InvestorCommodityGroupSPMMMargin->AdjustRatio, InvestorCommodityGroupSPMMMargin->IntraCommodityDiscount, InvestorCommodityGroupSPMMMargin->InterCommodityDiscount, InvestorCommodityGroupSPMMMargin->ExchMargin, InvestorCommodityGroupSPMMMargin->InvestorMargin, InvestorCommodityGroupSPMMMargin->FrozenCommission, InvestorCommodityGroupSPMMMargin->Commission, InvestorCommodityGroupSPMMMargin->FrozenCash, InvestorCommodityGroupSPMMMargin->CashIn, InvestorCommodityGroupSPMMMargin->StrikeFrozenMargin);
 	}
 }
-
 void WriteSPMMInstParam(CThostFtdcSPMMInstParamField* SPMMInstParam)
 {
 	if(SPMMInstParam)
@@ -3772,7 +3354,6 @@ void WriteSPMMInstParam(CThostFtdcSPMMInstParamField* SPMMInstParam)
 			SPMMInstParam->ExchangeID, SPMMInstParam->InstrumentID, SPMMInstParam->InstMarginCalID, SPMMInstParam->CommodityID, SPMMInstParam->CommodityGroupID);
 	}
 }
-
 void WriteSPMMProductParam(CThostFtdcSPMMProductParamField* SPMMProductParam)
 {
 	if(SPMMProductParam)
@@ -3781,7 +3362,6 @@ void WriteSPMMProductParam(CThostFtdcSPMMProductParamField* SPMMProductParam)
 			SPMMProductParam->ExchangeID, SPMMProductParam->ProductID, SPMMProductParam->CommodityID, SPMMProductParam->CommodityGroupID);
 	}
 }
-
 void WriteQryTraderAssign(CThostFtdcQryTraderAssignField* QryTraderAssign)
 {
 	if(QryTraderAssign)
@@ -3790,7 +3370,6 @@ void WriteQryTraderAssign(CThostFtdcQryTraderAssignField* QryTraderAssign)
 			QryTraderAssign->TraderID);
 	}
 }
-
 void WriteTraderAssign(CThostFtdcTraderAssignField* TraderAssign)
 {
 	if(TraderAssign)
@@ -3799,7 +3378,6 @@ void WriteTraderAssign(CThostFtdcTraderAssignField* TraderAssign)
 			TraderAssign->BrokerID, TraderAssign->ExchangeID, TraderAssign->TraderID, TraderAssign->ParticipantID, TraderAssign->DRIdentityID);
 	}
 }
-
 void WriteInvestorInfoCntSetting(CThostFtdcInvestorInfoCntSettingField* InvestorInfoCntSetting)
 {
 	if(InvestorInfoCntSetting)
@@ -3808,7 +3386,6 @@ void WriteInvestorInfoCntSetting(CThostFtdcInvestorInfoCntSettingField* Investor
 			InvestorInfoCntSetting->ExchangeID, InvestorInfoCntSetting->BrokerID, InvestorInfoCntSetting->InvestorID, InvestorInfoCntSetting->ProductID, InvestorInfoCntSetting->IsCalInfoComm, InvestorInfoCntSetting->IsLimitInfoMax, InvestorInfoCntSetting->InfoMaxLimit);
 	}
 }
-
 void WriteRCAMSCombProductInfo(CThostFtdcRCAMSCombProductInfoField* RCAMSCombProductInfo)
 {
 	if(RCAMSCombProductInfo)
@@ -3817,7 +3394,6 @@ void WriteRCAMSCombProductInfo(CThostFtdcRCAMSCombProductInfoField* RCAMSCombPro
 			RCAMSCombProductInfo->TradingDay, RCAMSCombProductInfo->ExchangeID, RCAMSCombProductInfo->ProductID, RCAMSCombProductInfo->CombProductID, RCAMSCombProductInfo->ProductGroupID);
 	}
 }
-
 void WriteRCAMSInstrParameter(CThostFtdcRCAMSInstrParameterField* RCAMSInstrParameter)
 {
 	if(RCAMSInstrParameter)
@@ -3826,7 +3402,6 @@ void WriteRCAMSInstrParameter(CThostFtdcRCAMSInstrParameterField* RCAMSInstrPara
 			RCAMSInstrParameter->TradingDay, RCAMSInstrParameter->ExchangeID, RCAMSInstrParameter->ProductID, RCAMSInstrParameter->HedgeRate);
 	}
 }
-
 void WriteRCAMSIntraParameter(CThostFtdcRCAMSIntraParameterField* RCAMSIntraParameter)
 {
 	if(RCAMSIntraParameter)
@@ -3835,7 +3410,6 @@ void WriteRCAMSIntraParameter(CThostFtdcRCAMSIntraParameterField* RCAMSIntraPara
 			RCAMSIntraParameter->TradingDay, RCAMSIntraParameter->ExchangeID, RCAMSIntraParameter->CombProductID, RCAMSIntraParameter->HedgeRate);
 	}
 }
-
 void WriteRCAMSInterParameter(CThostFtdcRCAMSInterParameterField* RCAMSInterParameter)
 {
 	if(RCAMSInterParameter)
@@ -3844,7 +3418,6 @@ void WriteRCAMSInterParameter(CThostFtdcRCAMSInterParameterField* RCAMSInterPara
 			RCAMSInterParameter->TradingDay, RCAMSInterParameter->ExchangeID, RCAMSInterParameter->ProductGroupID, RCAMSInterParameter->Priority, RCAMSInterParameter->CreditRate, RCAMSInterParameter->CombProduct1, RCAMSInterParameter->CombProduct2);
 	}
 }
-
 void WriteRCAMSShortOptAdjustParam(CThostFtdcRCAMSShortOptAdjustParamField* RCAMSShortOptAdjustParam)
 {
 	if(RCAMSShortOptAdjustParam)
@@ -3853,7 +3426,6 @@ void WriteRCAMSShortOptAdjustParam(CThostFtdcRCAMSShortOptAdjustParamField* RCAM
 			RCAMSShortOptAdjustParam->TradingDay, RCAMSShortOptAdjustParam->ExchangeID, RCAMSShortOptAdjustParam->CombProductID, RCAMSShortOptAdjustParam->HedgeFlag, RCAMSShortOptAdjustParam->AdjustValue);
 	}
 }
-
 void WriteRCAMSInvestorCombPosition(CThostFtdcRCAMSInvestorCombPositionField* RCAMSInvestorCombPosition)
 {
 	if(RCAMSInvestorCombPosition)
@@ -3862,7 +3434,6 @@ void WriteRCAMSInvestorCombPosition(CThostFtdcRCAMSInvestorCombPositionField* RC
 			RCAMSInvestorCombPosition->ExchangeID, RCAMSInvestorCombPosition->BrokerID, RCAMSInvestorCombPosition->InvestorID, RCAMSInvestorCombPosition->InstrumentID, RCAMSInvestorCombPosition->HedgeFlag, RCAMSInvestorCombPosition->PosiDirection, RCAMSInvestorCombPosition->CombInstrumentID, RCAMSInvestorCombPosition->LegID, RCAMSInvestorCombPosition->ExchangeInstID, RCAMSInvestorCombPosition->TotalAmt, RCAMSInvestorCombPosition->ExchMargin, RCAMSInvestorCombPosition->Margin);
 	}
 }
-
 void WriteInvestorProdRCAMSMargin(CThostFtdcInvestorProdRCAMSMarginField* InvestorProdRCAMSMargin)
 {
 	if(InvestorProdRCAMSMargin)
@@ -3871,7 +3442,6 @@ void WriteInvestorProdRCAMSMargin(CThostFtdcInvestorProdRCAMSMarginField* Invest
 			InvestorProdRCAMSMargin->ExchangeID, InvestorProdRCAMSMargin->BrokerID, InvestorProdRCAMSMargin->InvestorID, InvestorProdRCAMSMargin->CombProductID, InvestorProdRCAMSMargin->HedgeFlag, InvestorProdRCAMSMargin->ProductGroupID, InvestorProdRCAMSMargin->RiskBeforeDiscount, InvestorProdRCAMSMargin->IntraInstrRisk, InvestorProdRCAMSMargin->BPosRisk, InvestorProdRCAMSMargin->SPosRisk, InvestorProdRCAMSMargin->IntraProdRisk, InvestorProdRCAMSMargin->NetRisk, InvestorProdRCAMSMargin->InterProdRisk, InvestorProdRCAMSMargin->ShortOptRiskAdj, InvestorProdRCAMSMargin->OptionRoyalty, InvestorProdRCAMSMargin->MMSACloseFrozenMargin, InvestorProdRCAMSMargin->CloseCombFrozenMargin, InvestorProdRCAMSMargin->CloseFrozenMargin, InvestorProdRCAMSMargin->MMSAOpenFrozenMargin, InvestorProdRCAMSMargin->DeliveryOpenFrozenMargin, InvestorProdRCAMSMargin->OpenFrozenMargin, InvestorProdRCAMSMargin->UseFrozenMargin, InvestorProdRCAMSMargin->MMSAExchMargin, InvestorProdRCAMSMargin->DeliveryExchMargin, InvestorProdRCAMSMargin->CombExchMargin, InvestorProdRCAMSMargin->ExchMargin, InvestorProdRCAMSMargin->UseMargin);
 	}
 }
-
 void WriteQryRCAMSCombProductInfo(CThostFtdcQryRCAMSCombProductInfoField* QryRCAMSCombProductInfo)
 {
 	if(QryRCAMSCombProductInfo)
@@ -3880,7 +3450,6 @@ void WriteQryRCAMSCombProductInfo(CThostFtdcQryRCAMSCombProductInfoField* QryRCA
 			QryRCAMSCombProductInfo->ProductID, QryRCAMSCombProductInfo->CombProductID, QryRCAMSCombProductInfo->ProductGroupID);
 	}
 }
-
 void WriteQryRCAMSInstrParameter(CThostFtdcQryRCAMSInstrParameterField* QryRCAMSInstrParameter)
 {
 	if(QryRCAMSInstrParameter)
@@ -3889,7 +3458,6 @@ void WriteQryRCAMSInstrParameter(CThostFtdcQryRCAMSInstrParameterField* QryRCAMS
 			QryRCAMSInstrParameter->ProductID);
 	}
 }
-
 void WriteQryRCAMSIntraParameter(CThostFtdcQryRCAMSIntraParameterField* QryRCAMSIntraParameter)
 {
 	if(QryRCAMSIntraParameter)
@@ -3898,7 +3466,6 @@ void WriteQryRCAMSIntraParameter(CThostFtdcQryRCAMSIntraParameterField* QryRCAMS
 			QryRCAMSIntraParameter->CombProductID);
 	}
 }
-
 void WriteQryRCAMSInterParameter(CThostFtdcQryRCAMSInterParameterField* QryRCAMSInterParameter)
 {
 	if(QryRCAMSInterParameter)
@@ -3907,7 +3474,6 @@ void WriteQryRCAMSInterParameter(CThostFtdcQryRCAMSInterParameterField* QryRCAMS
 			QryRCAMSInterParameter->ProductGroupID, QryRCAMSInterParameter->CombProduct1, QryRCAMSInterParameter->CombProduct2);
 	}
 }
-
 void WriteQryRCAMSShortOptAdjustParam(CThostFtdcQryRCAMSShortOptAdjustParamField* QryRCAMSShortOptAdjustParam)
 {
 	if(QryRCAMSShortOptAdjustParam)
@@ -3916,7 +3482,6 @@ void WriteQryRCAMSShortOptAdjustParam(CThostFtdcQryRCAMSShortOptAdjustParamField
 			QryRCAMSShortOptAdjustParam->CombProductID);
 	}
 }
-
 void WriteQryRCAMSInvestorCombPosition(CThostFtdcQryRCAMSInvestorCombPositionField* QryRCAMSInvestorCombPosition)
 {
 	if(QryRCAMSInvestorCombPosition)
@@ -3925,7 +3490,6 @@ void WriteQryRCAMSInvestorCombPosition(CThostFtdcQryRCAMSInvestorCombPositionFie
 			QryRCAMSInvestorCombPosition->BrokerID, QryRCAMSInvestorCombPosition->InvestorID, QryRCAMSInvestorCombPosition->InstrumentID, QryRCAMSInvestorCombPosition->CombInstrumentID);
 	}
 }
-
 void WriteQryInvestorProdRCAMSMargin(CThostFtdcQryInvestorProdRCAMSMarginField* QryInvestorProdRCAMSMargin)
 {
 	if(QryInvestorProdRCAMSMargin)
@@ -3934,7 +3498,6 @@ void WriteQryInvestorProdRCAMSMargin(CThostFtdcQryInvestorProdRCAMSMarginField* 
 			QryInvestorProdRCAMSMargin->BrokerID, QryInvestorProdRCAMSMargin->InvestorID, QryInvestorProdRCAMSMargin->CombProductID, QryInvestorProdRCAMSMargin->ProductGroupID);
 	}
 }
-
 void WriteRULEInstrParameter(CThostFtdcRULEInstrParameterField* RULEInstrParameter)
 {
 	if(RULEInstrParameter)
@@ -3943,7 +3506,6 @@ void WriteRULEInstrParameter(CThostFtdcRULEInstrParameterField* RULEInstrParamet
 			RULEInstrParameter->TradingDay, RULEInstrParameter->ExchangeID, RULEInstrParameter->InstrumentID, RULEInstrParameter->InstrumentClass, RULEInstrParameter->StdInstrumentID, RULEInstrParameter->BSpecRatio, RULEInstrParameter->SSpecRatio, RULEInstrParameter->BHedgeRatio, RULEInstrParameter->SHedgeRatio, RULEInstrParameter->BAddOnMargin, RULEInstrParameter->SAddOnMargin, RULEInstrParameter->CommodityGroupID);
 	}
 }
-
 void WriteRULEIntraParameter(CThostFtdcRULEIntraParameterField* RULEIntraParameter)
 {
 	if(RULEIntraParameter)
@@ -3952,7 +3514,6 @@ void WriteRULEIntraParameter(CThostFtdcRULEIntraParameterField* RULEIntraParamet
 			RULEIntraParameter->TradingDay, RULEIntraParameter->ExchangeID, RULEIntraParameter->ProdFamilyCode, RULEIntraParameter->StdInstrumentID, RULEIntraParameter->StdInstrMargin, RULEIntraParameter->UsualIntraRate, RULEIntraParameter->DeliveryIntraRate);
 	}
 }
-
 void WriteRULEInterParameter(CThostFtdcRULEInterParameterField* RULEInterParameter)
 {
 	if(RULEInterParameter)
@@ -3961,7 +3522,6 @@ void WriteRULEInterParameter(CThostFtdcRULEInterParameterField* RULEInterParamet
 			RULEInterParameter->TradingDay, RULEInterParameter->ExchangeID, RULEInterParameter->SpreadId, RULEInterParameter->InterRate, RULEInterParameter->Leg1ProdFamilyCode, RULEInterParameter->Leg2ProdFamilyCode, RULEInterParameter->Leg1PropFactor, RULEInterParameter->Leg2PropFactor, RULEInterParameter->CommodityGroupID, RULEInterParameter->CommodityGroupName);
 	}
 }
-
 void WriteQryRULEInstrParameter(CThostFtdcQryRULEInstrParameterField* QryRULEInstrParameter)
 {
 	if(QryRULEInstrParameter)
@@ -3970,7 +3530,6 @@ void WriteQryRULEInstrParameter(CThostFtdcQryRULEInstrParameterField* QryRULEIns
 			QryRULEInstrParameter->ExchangeID, QryRULEInstrParameter->InstrumentID);
 	}
 }
-
 void WriteQryRULEIntraParameter(CThostFtdcQryRULEIntraParameterField* QryRULEIntraParameter)
 {
 	if(QryRULEIntraParameter)
@@ -3979,7 +3538,6 @@ void WriteQryRULEIntraParameter(CThostFtdcQryRULEIntraParameterField* QryRULEInt
 			QryRULEIntraParameter->ExchangeID, QryRULEIntraParameter->ProdFamilyCode);
 	}
 }
-
 void WriteQryRULEInterParameter(CThostFtdcQryRULEInterParameterField* QryRULEInterParameter)
 {
 	if(QryRULEInterParameter)
@@ -3988,7 +3546,6 @@ void WriteQryRULEInterParameter(CThostFtdcQryRULEInterParameterField* QryRULEInt
 			QryRULEInterParameter->ExchangeID, QryRULEInterParameter->Leg1ProdFamilyCode, QryRULEInterParameter->Leg2ProdFamilyCode, QryRULEInterParameter->CommodityGroupID);
 	}
 }
-
 void WriteInvestorProdRULEMargin(CThostFtdcInvestorProdRULEMarginField* InvestorProdRULEMargin)
 {
 	if(InvestorProdRULEMargin)
@@ -3997,7 +3554,6 @@ void WriteInvestorProdRULEMargin(CThostFtdcInvestorProdRULEMarginField* Investor
 			InvestorProdRULEMargin->ExchangeID, InvestorProdRULEMargin->BrokerID, InvestorProdRULEMargin->InvestorID, InvestorProdRULEMargin->ProdFamilyCode, InvestorProdRULEMargin->InstrumentClass, InvestorProdRULEMargin->CommodityGroupID, InvestorProdRULEMargin->BStdPosition, InvestorProdRULEMargin->SStdPosition, InvestorProdRULEMargin->BStdOpenFrozen, InvestorProdRULEMargin->SStdOpenFrozen, InvestorProdRULEMargin->BStdCloseFrozen, InvestorProdRULEMargin->SStdCloseFrozen, InvestorProdRULEMargin->IntraProdStdPosition, InvestorProdRULEMargin->NetStdPosition, InvestorProdRULEMargin->InterProdStdPosition, InvestorProdRULEMargin->SingleStdPosition, InvestorProdRULEMargin->IntraProdMargin, InvestorProdRULEMargin->InterProdMargin, InvestorProdRULEMargin->SingleMargin, InvestorProdRULEMargin->NonCombMargin, InvestorProdRULEMargin->AddOnMargin, InvestorProdRULEMargin->ExchMargin, InvestorProdRULEMargin->AddOnFrozenMargin, InvestorProdRULEMargin->OpenFrozenMargin, InvestorProdRULEMargin->CloseFrozenMargin, InvestorProdRULEMargin->Margin, InvestorProdRULEMargin->FrozenMargin);
 	}
 }
-
 void WriteQryInvestorProdRULEMargin(CThostFtdcQryInvestorProdRULEMarginField* QryInvestorProdRULEMargin)
 {
 	if(QryInvestorProdRULEMargin)
@@ -4006,7 +3562,6 @@ void WriteQryInvestorProdRULEMargin(CThostFtdcQryInvestorProdRULEMarginField* Qr
 			QryInvestorProdRULEMargin->ExchangeID, QryInvestorProdRULEMargin->BrokerID, QryInvestorProdRULEMargin->InvestorID, QryInvestorProdRULEMargin->ProdFamilyCode, QryInvestorProdRULEMargin->CommodityGroupID);
 	}
 }
-
 void WriteSyncDeltaSPBMPortfDefinition(CThostFtdcSyncDeltaSPBMPortfDefinitionField* SyncDeltaSPBMPortfDefinition)
 {
 	if(SyncDeltaSPBMPortfDefinition)
@@ -4015,7 +3570,6 @@ void WriteSyncDeltaSPBMPortfDefinition(CThostFtdcSyncDeltaSPBMPortfDefinitionFie
 			SyncDeltaSPBMPortfDefinition->ExchangeID, SyncDeltaSPBMPortfDefinition->PortfolioDefID, SyncDeltaSPBMPortfDefinition->ProdFamilyCode, SyncDeltaSPBMPortfDefinition->IsSPBM, SyncDeltaSPBMPortfDefinition->ActionDirection, SyncDeltaSPBMPortfDefinition->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaSPBMInvstPortfDef(CThostFtdcSyncDeltaSPBMInvstPortfDefField* SyncDeltaSPBMInvstPortfDef)
 {
 	if(SyncDeltaSPBMInvstPortfDef)
@@ -4024,7 +3578,6 @@ void WriteSyncDeltaSPBMInvstPortfDef(CThostFtdcSyncDeltaSPBMInvstPortfDefField* 
 			SyncDeltaSPBMInvstPortfDef->ExchangeID, SyncDeltaSPBMInvstPortfDef->BrokerID, SyncDeltaSPBMInvstPortfDef->InvestorID, SyncDeltaSPBMInvstPortfDef->PortfolioDefID, SyncDeltaSPBMInvstPortfDef->ActionDirection, SyncDeltaSPBMInvstPortfDef->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaSPBMFutureParameter(CThostFtdcSyncDeltaSPBMFutureParameterField* SyncDeltaSPBMFutureParameter)
 {
 	if(SyncDeltaSPBMFutureParameter)
@@ -4033,7 +3586,6 @@ void WriteSyncDeltaSPBMFutureParameter(CThostFtdcSyncDeltaSPBMFutureParameterFie
 			SyncDeltaSPBMFutureParameter->TradingDay, SyncDeltaSPBMFutureParameter->ExchangeID, SyncDeltaSPBMFutureParameter->InstrumentID, SyncDeltaSPBMFutureParameter->ProdFamilyCode, SyncDeltaSPBMFutureParameter->Cvf, SyncDeltaSPBMFutureParameter->TimeRange, SyncDeltaSPBMFutureParameter->MarginRate, SyncDeltaSPBMFutureParameter->LockRateX, SyncDeltaSPBMFutureParameter->AddOnRate, SyncDeltaSPBMFutureParameter->PreSettlementPrice, SyncDeltaSPBMFutureParameter->AddOnLockRateX2, SyncDeltaSPBMFutureParameter->ActionDirection, SyncDeltaSPBMFutureParameter->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaSPBMOptionParameter(CThostFtdcSyncDeltaSPBMOptionParameterField* SyncDeltaSPBMOptionParameter)
 {
 	if(SyncDeltaSPBMOptionParameter)
@@ -4042,7 +3594,6 @@ void WriteSyncDeltaSPBMOptionParameter(CThostFtdcSyncDeltaSPBMOptionParameterFie
 			SyncDeltaSPBMOptionParameter->TradingDay, SyncDeltaSPBMOptionParameter->ExchangeID, SyncDeltaSPBMOptionParameter->InstrumentID, SyncDeltaSPBMOptionParameter->ProdFamilyCode, SyncDeltaSPBMOptionParameter->Cvf, SyncDeltaSPBMOptionParameter->DownPrice, SyncDeltaSPBMOptionParameter->Delta, SyncDeltaSPBMOptionParameter->SlimiDelta, SyncDeltaSPBMOptionParameter->PreSettlementPrice, SyncDeltaSPBMOptionParameter->ActionDirection, SyncDeltaSPBMOptionParameter->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaSPBMIntraParameter(CThostFtdcSyncDeltaSPBMIntraParameterField* SyncDeltaSPBMIntraParameter)
 {
 	if(SyncDeltaSPBMIntraParameter)
@@ -4051,7 +3602,6 @@ void WriteSyncDeltaSPBMIntraParameter(CThostFtdcSyncDeltaSPBMIntraParameterField
 			SyncDeltaSPBMIntraParameter->TradingDay, SyncDeltaSPBMIntraParameter->ExchangeID, SyncDeltaSPBMIntraParameter->ProdFamilyCode, SyncDeltaSPBMIntraParameter->IntraRateY, SyncDeltaSPBMIntraParameter->AddOnIntraRateY2, SyncDeltaSPBMIntraParameter->ActionDirection, SyncDeltaSPBMIntraParameter->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaSPBMInterParameter(CThostFtdcSyncDeltaSPBMInterParameterField* SyncDeltaSPBMInterParameter)
 {
 	if(SyncDeltaSPBMInterParameter)
@@ -4060,7 +3610,6 @@ void WriteSyncDeltaSPBMInterParameter(CThostFtdcSyncDeltaSPBMInterParameterField
 			SyncDeltaSPBMInterParameter->TradingDay, SyncDeltaSPBMInterParameter->ExchangeID, SyncDeltaSPBMInterParameter->SpreadId, SyncDeltaSPBMInterParameter->InterRateZ, SyncDeltaSPBMInterParameter->Leg1ProdFamilyCode, SyncDeltaSPBMInterParameter->Leg2ProdFamilyCode, SyncDeltaSPBMInterParameter->ActionDirection, SyncDeltaSPBMInterParameter->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaSPBMAddOnInterParam(CThostFtdcSyncDeltaSPBMAddOnInterParamField* SyncDeltaSPBMAddOnInterParam)
 {
 	if(SyncDeltaSPBMAddOnInterParam)
@@ -4069,7 +3618,6 @@ void WriteSyncDeltaSPBMAddOnInterParam(CThostFtdcSyncDeltaSPBMAddOnInterParamFie
 			SyncDeltaSPBMAddOnInterParam->TradingDay, SyncDeltaSPBMAddOnInterParam->ExchangeID, SyncDeltaSPBMAddOnInterParam->SpreadId, SyncDeltaSPBMAddOnInterParam->AddOnInterRateZ2, SyncDeltaSPBMAddOnInterParam->Leg1ProdFamilyCode, SyncDeltaSPBMAddOnInterParam->Leg2ProdFamilyCode, SyncDeltaSPBMAddOnInterParam->ActionDirection, SyncDeltaSPBMAddOnInterParam->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaSPMMInstParam(CThostFtdcSyncDeltaSPMMInstParamField* SyncDeltaSPMMInstParam)
 {
 	if(SyncDeltaSPMMInstParam)
@@ -4078,7 +3626,6 @@ void WriteSyncDeltaSPMMInstParam(CThostFtdcSyncDeltaSPMMInstParamField* SyncDelt
 			SyncDeltaSPMMInstParam->ExchangeID, SyncDeltaSPMMInstParam->InstrumentID, SyncDeltaSPMMInstParam->InstMarginCalID, SyncDeltaSPMMInstParam->CommodityID, SyncDeltaSPMMInstParam->CommodityGroupID, SyncDeltaSPMMInstParam->ActionDirection, SyncDeltaSPMMInstParam->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaSPMMProductParam(CThostFtdcSyncDeltaSPMMProductParamField* SyncDeltaSPMMProductParam)
 {
 	if(SyncDeltaSPMMProductParam)
@@ -4087,7 +3634,6 @@ void WriteSyncDeltaSPMMProductParam(CThostFtdcSyncDeltaSPMMProductParamField* Sy
 			SyncDeltaSPMMProductParam->ExchangeID, SyncDeltaSPMMProductParam->ProductID, SyncDeltaSPMMProductParam->CommodityID, SyncDeltaSPMMProductParam->CommodityGroupID, SyncDeltaSPMMProductParam->ActionDirection, SyncDeltaSPMMProductParam->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaInvestorSPMMModel(CThostFtdcSyncDeltaInvestorSPMMModelField* SyncDeltaInvestorSPMMModel)
 {
 	if(SyncDeltaInvestorSPMMModel)
@@ -4096,7 +3642,6 @@ void WriteSyncDeltaInvestorSPMMModel(CThostFtdcSyncDeltaInvestorSPMMModelField* 
 			SyncDeltaInvestorSPMMModel->ExchangeID, SyncDeltaInvestorSPMMModel->BrokerID, SyncDeltaInvestorSPMMModel->InvestorID, SyncDeltaInvestorSPMMModel->SPMMModelID, SyncDeltaInvestorSPMMModel->ActionDirection, SyncDeltaInvestorSPMMModel->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaSPMMModelParam(CThostFtdcSyncDeltaSPMMModelParamField* SyncDeltaSPMMModelParam)
 {
 	if(SyncDeltaSPMMModelParam)
@@ -4105,7 +3650,6 @@ void WriteSyncDeltaSPMMModelParam(CThostFtdcSyncDeltaSPMMModelParamField* SyncDe
 			SyncDeltaSPMMModelParam->ExchangeID, SyncDeltaSPMMModelParam->SPMMModelID, SyncDeltaSPMMModelParam->CommodityGroupID, SyncDeltaSPMMModelParam->IntraCommodityRate, SyncDeltaSPMMModelParam->InterCommodityRate, SyncDeltaSPMMModelParam->OptionDiscountRate, SyncDeltaSPMMModelParam->MiniMarginRatio, SyncDeltaSPMMModelParam->ActionDirection, SyncDeltaSPMMModelParam->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaRCAMSCombProdInfo(CThostFtdcSyncDeltaRCAMSCombProdInfoField* SyncDeltaRCAMSCombProdInfo)
 {
 	if(SyncDeltaRCAMSCombProdInfo)
@@ -4114,7 +3658,6 @@ void WriteSyncDeltaRCAMSCombProdInfo(CThostFtdcSyncDeltaRCAMSCombProdInfoField* 
 			SyncDeltaRCAMSCombProdInfo->TradingDay, SyncDeltaRCAMSCombProdInfo->ExchangeID, SyncDeltaRCAMSCombProdInfo->ProductID, SyncDeltaRCAMSCombProdInfo->CombProductID, SyncDeltaRCAMSCombProdInfo->ProductGroupID, SyncDeltaRCAMSCombProdInfo->ActionDirection, SyncDeltaRCAMSCombProdInfo->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaRCAMSInstrParameter(CThostFtdcSyncDeltaRCAMSInstrParameterField* SyncDeltaRCAMSInstrParameter)
 {
 	if(SyncDeltaRCAMSInstrParameter)
@@ -4123,7 +3666,6 @@ void WriteSyncDeltaRCAMSInstrParameter(CThostFtdcSyncDeltaRCAMSInstrParameterFie
 			SyncDeltaRCAMSInstrParameter->TradingDay, SyncDeltaRCAMSInstrParameter->ExchangeID, SyncDeltaRCAMSInstrParameter->ProductID, SyncDeltaRCAMSInstrParameter->HedgeRate, SyncDeltaRCAMSInstrParameter->ActionDirection, SyncDeltaRCAMSInstrParameter->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaRCAMSIntraParameter(CThostFtdcSyncDeltaRCAMSIntraParameterField* SyncDeltaRCAMSIntraParameter)
 {
 	if(SyncDeltaRCAMSIntraParameter)
@@ -4132,7 +3674,6 @@ void WriteSyncDeltaRCAMSIntraParameter(CThostFtdcSyncDeltaRCAMSIntraParameterFie
 			SyncDeltaRCAMSIntraParameter->TradingDay, SyncDeltaRCAMSIntraParameter->ExchangeID, SyncDeltaRCAMSIntraParameter->CombProductID, SyncDeltaRCAMSIntraParameter->HedgeRate, SyncDeltaRCAMSIntraParameter->ActionDirection, SyncDeltaRCAMSIntraParameter->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaRCAMSInterParameter(CThostFtdcSyncDeltaRCAMSInterParameterField* SyncDeltaRCAMSInterParameter)
 {
 	if(SyncDeltaRCAMSInterParameter)
@@ -4141,7 +3682,6 @@ void WriteSyncDeltaRCAMSInterParameter(CThostFtdcSyncDeltaRCAMSInterParameterFie
 			SyncDeltaRCAMSInterParameter->TradingDay, SyncDeltaRCAMSInterParameter->ExchangeID, SyncDeltaRCAMSInterParameter->ProductGroupID, SyncDeltaRCAMSInterParameter->Priority, SyncDeltaRCAMSInterParameter->CreditRate, SyncDeltaRCAMSInterParameter->CombProduct1, SyncDeltaRCAMSInterParameter->CombProduct2, SyncDeltaRCAMSInterParameter->ActionDirection, SyncDeltaRCAMSInterParameter->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaRCAMSSOptAdjParam(CThostFtdcSyncDeltaRCAMSSOptAdjParamField* SyncDeltaRCAMSSOptAdjParam)
 {
 	if(SyncDeltaRCAMSSOptAdjParam)
@@ -4150,7 +3690,6 @@ void WriteSyncDeltaRCAMSSOptAdjParam(CThostFtdcSyncDeltaRCAMSSOptAdjParamField* 
 			SyncDeltaRCAMSSOptAdjParam->TradingDay, SyncDeltaRCAMSSOptAdjParam->ExchangeID, SyncDeltaRCAMSSOptAdjParam->CombProductID, SyncDeltaRCAMSSOptAdjParam->HedgeFlag, SyncDeltaRCAMSSOptAdjParam->AdjustValue, SyncDeltaRCAMSSOptAdjParam->ActionDirection, SyncDeltaRCAMSSOptAdjParam->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaRCAMSCombRuleDtl(CThostFtdcSyncDeltaRCAMSCombRuleDtlField* SyncDeltaRCAMSCombRuleDtl)
 {
 	if(SyncDeltaRCAMSCombRuleDtl)
@@ -4159,7 +3698,6 @@ void WriteSyncDeltaRCAMSCombRuleDtl(CThostFtdcSyncDeltaRCAMSCombRuleDtlField* Sy
 			SyncDeltaRCAMSCombRuleDtl->TradingDay, SyncDeltaRCAMSCombRuleDtl->ExchangeID, SyncDeltaRCAMSCombRuleDtl->ProdGroup, SyncDeltaRCAMSCombRuleDtl->RuleId, SyncDeltaRCAMSCombRuleDtl->Priority, SyncDeltaRCAMSCombRuleDtl->HedgeFlag, SyncDeltaRCAMSCombRuleDtl->CombMargin, SyncDeltaRCAMSCombRuleDtl->ExchangeInstID, SyncDeltaRCAMSCombRuleDtl->LegID, SyncDeltaRCAMSCombRuleDtl->LegInstrumentID, SyncDeltaRCAMSCombRuleDtl->Direction, SyncDeltaRCAMSCombRuleDtl->LegMultiple, SyncDeltaRCAMSCombRuleDtl->ActionDirection, SyncDeltaRCAMSCombRuleDtl->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaRCAMSInvstCombPos(CThostFtdcSyncDeltaRCAMSInvstCombPosField* SyncDeltaRCAMSInvstCombPos)
 {
 	if(SyncDeltaRCAMSInvstCombPos)
@@ -4168,7 +3706,6 @@ void WriteSyncDeltaRCAMSInvstCombPos(CThostFtdcSyncDeltaRCAMSInvstCombPosField* 
 			SyncDeltaRCAMSInvstCombPos->ExchangeID, SyncDeltaRCAMSInvstCombPos->BrokerID, SyncDeltaRCAMSInvstCombPos->InvestorID, SyncDeltaRCAMSInvstCombPos->InstrumentID, SyncDeltaRCAMSInvstCombPos->HedgeFlag, SyncDeltaRCAMSInvstCombPos->PosiDirection, SyncDeltaRCAMSInvstCombPos->CombInstrumentID, SyncDeltaRCAMSInvstCombPos->LegID, SyncDeltaRCAMSInvstCombPos->ExchangeInstID, SyncDeltaRCAMSInvstCombPos->TotalAmt, SyncDeltaRCAMSInvstCombPos->ExchMargin, SyncDeltaRCAMSInvstCombPos->Margin, SyncDeltaRCAMSInvstCombPos->ActionDirection, SyncDeltaRCAMSInvstCombPos->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaRULEInstrParameter(CThostFtdcSyncDeltaRULEInstrParameterField* SyncDeltaRULEInstrParameter)
 {
 	if(SyncDeltaRULEInstrParameter)
@@ -4177,7 +3714,6 @@ void WriteSyncDeltaRULEInstrParameter(CThostFtdcSyncDeltaRULEInstrParameterField
 			SyncDeltaRULEInstrParameter->TradingDay, SyncDeltaRULEInstrParameter->ExchangeID, SyncDeltaRULEInstrParameter->InstrumentID, SyncDeltaRULEInstrParameter->InstrumentClass, SyncDeltaRULEInstrParameter->StdInstrumentID, SyncDeltaRULEInstrParameter->BSpecRatio, SyncDeltaRULEInstrParameter->SSpecRatio, SyncDeltaRULEInstrParameter->BHedgeRatio, SyncDeltaRULEInstrParameter->SHedgeRatio, SyncDeltaRULEInstrParameter->BAddOnMargin, SyncDeltaRULEInstrParameter->SAddOnMargin, SyncDeltaRULEInstrParameter->CommodityGroupID, SyncDeltaRULEInstrParameter->ActionDirection, SyncDeltaRULEInstrParameter->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaRULEIntraParameter(CThostFtdcSyncDeltaRULEIntraParameterField* SyncDeltaRULEIntraParameter)
 {
 	if(SyncDeltaRULEIntraParameter)
@@ -4186,7 +3722,6 @@ void WriteSyncDeltaRULEIntraParameter(CThostFtdcSyncDeltaRULEIntraParameterField
 			SyncDeltaRULEIntraParameter->TradingDay, SyncDeltaRULEIntraParameter->ExchangeID, SyncDeltaRULEIntraParameter->ProdFamilyCode, SyncDeltaRULEIntraParameter->StdInstrumentID, SyncDeltaRULEIntraParameter->StdInstrMargin, SyncDeltaRULEIntraParameter->UsualIntraRate, SyncDeltaRULEIntraParameter->DeliveryIntraRate, SyncDeltaRULEIntraParameter->ActionDirection, SyncDeltaRULEIntraParameter->SyncDeltaSequenceNo);
 	}
 }
-
 void WriteSyncDeltaRULEInterParameter(CThostFtdcSyncDeltaRULEInterParameterField* SyncDeltaRULEInterParameter)
 {
 	if(SyncDeltaRULEInterParameter)
@@ -4195,4 +3730,3 @@ void WriteSyncDeltaRULEInterParameter(CThostFtdcSyncDeltaRULEInterParameterField
 			SyncDeltaRULEInterParameter->TradingDay, SyncDeltaRULEInterParameter->ExchangeID, SyncDeltaRULEInterParameter->SpreadId, SyncDeltaRULEInterParameter->InterRate, SyncDeltaRULEInterParameter->Leg1ProdFamilyCode, SyncDeltaRULEInterParameter->Leg2ProdFamilyCode, SyncDeltaRULEInterParameter->Leg1PropFactor, SyncDeltaRULEInterParameter->Leg2PropFactor, SyncDeltaRULEInterParameter->CommodityGroupID, SyncDeltaRULEInterParameter->CommodityGroupName, SyncDeltaRULEInterParameter->ActionDirection, SyncDeltaRULEInterParameter->SyncDeltaSequenceNo);
 	}
 }
-
