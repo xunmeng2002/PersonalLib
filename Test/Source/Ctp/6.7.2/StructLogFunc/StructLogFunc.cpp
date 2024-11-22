@@ -1,4 +1,4 @@
-﻿#include "StructWriteLogFunc.h"
+﻿#include "StructLogFunc.h"
 #include "Logger.h"
 
 
