@@ -1,4 +1,4 @@
-SET(PROJECT_NAME "TestCtpApi")
+SET(PROJECT_NAME "TestCtpTraderApi")
 SET(APIVersion "6.7.2")
 project(${PROJECT_NAME})
 message("PROJECT_NAME:" ${PROJECT_NAME})

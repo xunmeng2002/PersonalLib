@@ -68,12 +68,12 @@ void sigusr1_handler(int signo)
 #endif // LINUX
 
 
-int main()
+int main(int argc, char* argv[])
 {
 	map<string, AccountInfo*> accountInfos;
 	ReadAccountInfo(accountInfos);
 
-	Logger::GetInstance().Init("CTPTraderApiTest");
+	Logger::GetInstance().Init(argv[0]);
 	Logger::GetInstance().SetLogLevel(LogLevel::Info, LogLevel::Info);
 	Logger::GetInstance().Start();
 
