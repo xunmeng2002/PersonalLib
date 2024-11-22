@@ -1,23 +1,10 @@
 #pragma once
-
 #include "ThostFtdcMdSpiMiddle.h"
+#include "CtpAccountInfo.h"
 #include <set>
 #include <string>
 
 
-typedef char TThostFtdcAccountTypeType[10];
-
-struct AccountInfo
-{
-	TThostFtdcAccountTypeType AccountType;
-	TThostFtdcBrokerIDType	BrokerID;
-	TThostFtdcUserIDType	UserID;
-	TThostFtdcPasswordType	Password;
-	TThostFtdcProductInfoType	UserProductInfo;
-	TThostFtdcAuthCodeType	AuthCode;
-	TThostFtdcAppIDType	AppID;
-	std::set<std::string> FrontAddrs;
-};
 
 class CThostFtdcMdSpiImpl : public CThostFtdcMdSpiMiddle
 {

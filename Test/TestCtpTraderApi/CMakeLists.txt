@@ -15,6 +15,7 @@ add_package(Logger ${CMAKE_SOURCE_DIR}/Source/Logger)
 add_package(Jsoncpp ${CMAKE_SOURCE_DIR}/Source/Jsoncpp)
 add_package(CtpGenCode ${CMAKE_SOURCE_DIR}/Test/Source/Ctp/${APIVersion}/StructLogFunc)
 add_package(CtpGenCode ${CMAKE_SOURCE_DIR}/Test/Source/Ctp/${APIVersion}/TraderApiMiddle)
+add_package(CtpAccountInfo ${CMAKE_SOURCE_DIR}/Test/Source/Ctp/CtpAccountInfo)
 include_package(Ctp ${CMAKE_SOURCE_DIR}/../Libs/CTP/${APIVersion}/include)
 
 link_directories(${CMAKE_SOURCE_DIR}/../Libs/CTP/${APIVersion}/win64)
