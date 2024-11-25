@@ -18,7 +18,7 @@ public:
 	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
 
 public:
-	void SetAccountInfo(AccountInfo* accountInfo);
+	void SetCtpAccountInfo(CtpAccountInfo* accountInfo);
 
 private:
 	void ReqUserLogin();
@@ -28,5 +28,5 @@ private:
 	CThostFtdcMdApi* m_MdApi;
 	int m_RequestID;
 
-	AccountInfo* m_AccountInfo;
+	CtpAccountInfo* m_CtpAccountInfo;
 };

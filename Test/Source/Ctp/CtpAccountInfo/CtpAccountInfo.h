@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 
-struct AccountInfo
+struct CtpAccountInfo
 {
 	TThostFtdcBrokerIDType	BrokerID;
 	TThostFtdcUserIDType	UserID;
@@ -16,7 +16,7 @@ struct AccountInfo
 	std::set<std::string> MdFrontAddrs;
 };
 
-void PrintAccountInfo(AccountInfo* accountInfo);
-void ReadAccountInfo(std::map<std::string, AccountInfo*>& accountInfos);
+void PrintCtpAccountInfo(CtpAccountInfo* ctpAccountInfo);
+void ReadCtpAccountInfo(std::map<std::string, CtpAccountInfo*>& ctpAccountInfos);
 
 

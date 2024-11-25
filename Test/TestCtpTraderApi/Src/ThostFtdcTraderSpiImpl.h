@@ -28,7 +28,7 @@ public:
 	virtual void OnRspQryTrade(CThostFtdcTradeField* pTrade, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
 
 public:
-	void SetAccountInfo(AccountInfo* accountInfo);
+	void SetCtpAccountInfo(CtpAccountInfo* accountInfo);
 
 private:
 	void ReqAuthenticate();
@@ -43,5 +43,5 @@ private:
 	CThostFtdcTraderApi* m_TraderApi;
 	int m_RequestID;
 
-	AccountInfo* m_AccountInfo;
+	CtpAccountInfo* m_CtpAccountInfo;
 };

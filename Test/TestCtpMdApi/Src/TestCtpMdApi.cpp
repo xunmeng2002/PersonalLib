@@ -24,8 +24,8 @@ void sigusr1_handler(int signo)
 
 int main(int argc, char* argv[])
 {
-	map<string, AccountInfo*> accountInfos;
-	ReadAccountInfo(accountInfos);
+	map<string, CtpAccountInfo*> ctpAccountInfos;
+	ReadCtpAccountInfo(ctpAccountInfos);
 
 	Logger::GetInstance().Init(argv[0]);
 	Logger::GetInstance().SetLogLevel(LogLevel::Info, LogLevel::Info);
@@ -35,9 +35,9 @@ int main(int argc, char* argv[])
 	CThostFtdcMdApi* mdApi = CThostFtdcMdApiMiddle::CreateFtdcMdApi();
 	cout << "API Version:" << mdApi->GetApiVersion() << endl;
 	CThostFtdcMdSpiImpl* mdSpi = new CThostFtdcMdSpiImpl(mdApi);
-	mdSpi->SetAccountInfo(accountInfos[userID]);
+	mdSpi->SetCtpAccountInfo(ctpAccountInfos[userID]);
 	mdApi->RegisterSpi(mdSpi);
-	for (auto& mdFrontAddr : accountInfos[userID]->MdFrontAddrs)
+	for (auto& mdFrontAddr : ctpAccountInfos[userID]->MdFrontAddrs)
 	{
 		mdApi->RegisterFront((char*)mdFrontAddr.c_str());
 	}

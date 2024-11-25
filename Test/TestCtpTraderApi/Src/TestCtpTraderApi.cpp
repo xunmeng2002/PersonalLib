@@ -25,8 +25,8 @@ void sigusr1_handler(int signo)
 
 int main(int argc, char* argv[])
 {
-	map<string, AccountInfo*> accountInfos;
-	ReadAccountInfo(accountInfos);
+	map<string, CtpAccountInfo*> ctpAccountInfos;
+	ReadCtpAccountInfo(ctpAccountInfos);
 
 	Logger::GetInstance().Init(argv[0]);
 	Logger::GetInstance().SetLogLevel(LogLevel::Info, LogLevel::Info);
@@ -36,9 +36,9 @@ int main(int argc, char* argv[])
 	CThostFtdcTraderApi* traderApi = CThostFtdcTraderApiMiddle::CreateFtdcTraderApi();
 	cout << "API Version:" << traderApi->GetApiVersion() << endl;
 	CThostFtdcTraderSpiImpl* traderSpi = new CThostFtdcTraderSpiImpl(traderApi);
-	traderSpi->SetAccountInfo(accountInfos[userID]);
+	traderSpi->SetCtpAccountInfo(ctpAccountInfos[userID]);
 	traderApi->RegisterSpi(traderSpi);
-	for (auto& traderFrontAddr : accountInfos[userID]->TraderFrontAddrs)
+	for (auto& traderFrontAddr : ctpAccountInfos[userID]->TraderFrontAddrs)
 	{
 		traderApi->RegisterFront((char*)traderFrontAddr.c_str());
 	}

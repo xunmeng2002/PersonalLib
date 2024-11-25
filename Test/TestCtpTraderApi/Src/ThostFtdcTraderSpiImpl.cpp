@@ -4,7 +4,7 @@
 
 
 CThostFtdcTraderSpiImpl::CThostFtdcTraderSpiImpl(CThostFtdcTraderApi* traderApi)
-	:m_TraderApi(traderApi), m_RequestID(0), m_AccountInfo(nullptr)
+	:m_TraderApi(traderApi), m_RequestID(0), m_CtpAccountInfo(nullptr)
 {
 }
 void CThostFtdcTraderSpiImpl::OnFrontConnected()
@@ -64,20 +64,20 @@ void CThostFtdcTraderSpiImpl::OnRspQryTrade(CThostFtdcTradeField* pTrade, CThost
 	}
 }
 
-void CThostFtdcTraderSpiImpl::SetAccountInfo(AccountInfo* accountInfo)
+void CThostFtdcTraderSpiImpl::SetCtpAccountInfo(CtpAccountInfo* ctpAccountInfo)
 {
-	m_AccountInfo = accountInfo;
+	m_CtpAccountInfo = ctpAccountInfo;
 }
 
 void CThostFtdcTraderSpiImpl::ReqAuthenticate()
 {
 	CThostFtdcReqAuthenticateField authenticate;
 	::memset(&authenticate, 0, sizeof(authenticate));
-	strcpy(authenticate.BrokerID, m_AccountInfo->BrokerID);
-	strcpy(authenticate.UserID, m_AccountInfo->UserID);
-	strcpy(authenticate.UserProductInfo, m_AccountInfo->UserProductInfo);
-	strcpy(authenticate.AuthCode, m_AccountInfo->AuthCode);
-	strcpy(authenticate.AppID, m_AccountInfo->AppID);
+	strcpy(authenticate.BrokerID, m_CtpAccountInfo->BrokerID);
+	strcpy(authenticate.UserID, m_CtpAccountInfo->UserID);
+	strcpy(authenticate.UserProductInfo, m_CtpAccountInfo->UserProductInfo);
+	strcpy(authenticate.AuthCode, m_CtpAccountInfo->AuthCode);
+	strcpy(authenticate.AppID, m_CtpAccountInfo->AppID);
 
 	int ret = m_TraderApi->ReqAuthenticate(&authenticate, m_RequestID++);
 	WriteLog(LogLevel::Info, "ReqAuthenticate: ret[%d]", ret);
@@ -87,10 +87,10 @@ void CThostFtdcTraderSpiImpl::ReqUserLogin()
 	CThostFtdcReqUserLoginField userLogin;
 	::memset(&userLogin, 0, sizeof(userLogin));
 	strcpy(userLogin.TradingDay, "");
-	strcpy(userLogin.BrokerID, m_AccountInfo->BrokerID);
-	strcpy(userLogin.UserID, m_AccountInfo->UserID);
-	strcpy(userLogin.Password, m_AccountInfo->Password);
-	strcpy(userLogin.UserProductInfo, m_AccountInfo->UserProductInfo);
+	strcpy(userLogin.BrokerID, m_CtpAccountInfo->BrokerID);
+	strcpy(userLogin.UserID, m_CtpAccountInfo->UserID);
+	strcpy(userLogin.Password, m_CtpAccountInfo->Password);
+	strcpy(userLogin.UserProductInfo, m_CtpAccountInfo->UserProductInfo);
 
 	int ret = m_TraderApi->ReqUserLogin(&userLogin, m_RequestID++);
 	WriteLog(LogLevel::Info, "ReqUserLogin: ret[%d]", ret);
