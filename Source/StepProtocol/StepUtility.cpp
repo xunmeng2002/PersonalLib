@@ -1,5 +1,5 @@
 #include "StepUtility.h"
-#include "StepHeadIDs.h"
+#include "StepItems.h"
 #include "Logger.h"
 
 using namespace std;
@@ -166,10 +166,10 @@ namespace step
 	void HeadToStream(StepHead* head, char* buff, int size)
 	{
 		int len = 0;
-		len += ::sprintf(buff + len, "%c%u=%04X%c", SOH, StepHeadIDs::PackageID, head->PackageID, SOH);
-		len += ::sprintf(buff + len, "%u=%05u%c", StepHeadIDs::BodyLen, head->BodyLen, SOH);
-		len += ::sprintf(buff + len, "%u=%d%c", StepHeadIDs::MessageChain, head->MessageChain, SOH);
-		len += ::sprintf(buff + len, "%u=%13d", StepHeadIDs::MsgSeqNum, head->MsgSeqNum);
+		len += ::sprintf(buff + len, "%c%u=%04X%c", SOH, StepItems::PackageID, head->PackageID, SOH);
+		len += ::sprintf(buff + len, "%u=%05u%c", StepItems::BodyLen, head->BodyLen, SOH);
+		len += ::sprintf(buff + len, "%u=%d%c", StepItems::MessageChain, head->MessageChain, SOH);
+		len += ::sprintf(buff + len, "%u=%13d", StepItems::MsgSeqNum, head->MsgSeqNum);
 		//最后一个不能使用sprintf赋值，因为sprintf会在末尾自动补上0
 		buff[len] = SOH;
 	}
@@ -186,16 +186,16 @@ namespace step
 			{
 				switch (key)
 				{
-				case StepHeadIDs::PackageID:
+				case StepItems::PackageID:
 					head->PackageID = stoi(value.c_str(), nullptr, 16);
 					break;
-				case StepHeadIDs::BodyLen:
+				case StepItems::BodyLen:
 					head->BodyLen = atoi(value.c_str());
 					break;
-				case StepHeadIDs::MessageChain:
+				case StepItems::MessageChain:
 					head->MessageChain = atoi(value.c_str());
 					break;
-				case StepHeadIDs::MsgSeqNum:
+				case StepItems::MsgSeqNum:
 					head->MsgSeqNum = atoi(value.c_str());
 					break;
 				default:
@@ -213,7 +213,7 @@ namespace step
 	}
 	void TailToStream(StepTail* tail, char* buff, int size)
 	{
-		sprintf(buff, "%u=%03u%c", StepHeadIDs::CheckSum, tail->CheckSum, SOH);
+		sprintf(buff, "%u=%03u%c", StepItems::CheckSum, tail->CheckSum, SOH);
 	}
 	bool TailFromStream(char* buff, int startIndex, int endIndex, StepTail* tail)
 	{
@@ -226,7 +226,7 @@ namespace step
 			{
 				switch (key)
 				{
-				case StepHeadIDs::CheckSum:
+				case StepItems::CheckSum:
 					tail->CheckSum = atoi(value.c_str());
 					break;
 				default:

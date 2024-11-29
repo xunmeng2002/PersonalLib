@@ -1,4 +1,4 @@
 <pumplist>
 	<pump dest="./Source/Types/Types.h" tpl="../Templates/Cpp/Types/Types.h.tpl" model="../Model/Types.xml"/>
-	<pump dest="./Source/StepProtocol/StepHeadIDs.h" tpl="../Templates/Cpp/Step/StepHeadIDs.h.tpl" model="../Model/StepHeadID.xml"/>
+	<pump dest="./Source/StepProtocol/StepItems.h" tpl="../Templates/Cpp/Step/StepItems.h.tpl" model="../Model/Items.xml"/>
 </pumplist>
