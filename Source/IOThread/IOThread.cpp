@@ -22,6 +22,11 @@ void IOThread::UnSubscribe()
 {
 	m_IOSubscriber = nullptr;
 }
+
+void IOThread::RegisterFront(const char* address)
+{
+	ParseAddress(m_AddressName, m_Address, m_Port);
+}
 void IOThread::DisConnect(SessionIDType sessionID)
 {
 	lock_guard<mutex> guard(m_DisConnectSessionIDsMutex);

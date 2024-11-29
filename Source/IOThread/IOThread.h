@@ -25,6 +25,7 @@ public:
 	void Subscribe(IOSubscriber* subscriber);
 	void UnSubscribe();
 
+	virtual void RegisterFront(const char* address);
 	virtual bool Init() { return true; }
 	virtual void DisConnect(SessionIDType sessionID);
 	virtual int Send(SessionIDType sessionID, const char* data, unsigned len) = 0;

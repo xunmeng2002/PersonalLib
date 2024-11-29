@@ -13,6 +13,7 @@ namespace step
 		~StepProtocol();
 		void SubscribeStep(StepSubscriber* stepSubscriber);
 		void UnSubscribeStep();
+		void RegisterFront(const char* address);
 		virtual bool Init();
 		
 		bool Start();

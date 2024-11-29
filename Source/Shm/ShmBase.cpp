@@ -59,6 +59,14 @@ ShmBase::~ShmBase()
 	}
 #endif
 }
+void ShmBase::RegisterFront(const char* address)
+{
+	IOThread::RegisterFront(address);
+	m_ShmName = m_Address;
+	m_MaxConnectSize = atoi(m_Port.c_str());
+
+	m_Sem = new Sem((m_ShmName + "Sem").c_str());
+}
 bool ShmBase::Init()
 {
 	if (!m_Sem->Init())

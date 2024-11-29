@@ -30,6 +30,13 @@ namespace step
 	{
 		m_StepSubscriber = nullptr;
 	}
+	void StepProtocol::RegisterFront(const char* address)
+	{
+		if (m_IOThread != nullptr)
+		{
+			m_IOThread->RegisterFront(address);
+		}
+	}
 	bool StepProtocol::Init()
 	{
 		if (m_IOThread == nullptr)
