@@ -18,7 +18,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0001;
-		StepReqAccountLogin* ReqAccountLogin = nullptr;
+		StepReqAccountLoginField* ReqAccountLogin = nullptr;
 	};
 	class StepRspAccountLoginPackage : public StepPackageBase
 	{
@@ -32,8 +32,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0002;
-		StepRspAccountLogin* RspAccountLogin = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAccountLoginField* RspAccountLogin = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAccountLogoutPackage : public StepPackageBase
 	{
@@ -47,7 +47,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0003;
-		StepReqAccountLogout* ReqAccountLogout = nullptr;
+		StepReqAccountLogoutField* ReqAccountLogout = nullptr;
 	};
 	class StepRspAccountLogoutPackage : public StepPackageBase
 	{
@@ -61,8 +61,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0004;
-		StepRspAccountLogout* RspAccountLogout = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAccountLogoutField* RspAccountLogout = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepRtnAccountLogoutPackage : public StepPackageBase
 	{
@@ -76,7 +76,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0005;
-		StepAccountLogout* AccountLogout = nullptr;
+		StepAccountLogoutField* AccountLogout = nullptr;
 	};
 	class StepReqRiskUserLoginPackage : public StepPackageBase
 	{
@@ -90,7 +90,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0006;
-		StepReqRiskUserLogin* ReqRiskUserLogin = nullptr;
+		StepReqRiskUserLoginField* ReqRiskUserLogin = nullptr;
 	};
 	class StepRspRiskUserLoginPackage : public StepPackageBase
 	{
@@ -104,8 +104,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0007;
-		StepRspRiskUserLogin* RspRiskUserLogin = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspRiskUserLoginField* RspRiskUserLogin = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRiskUserLogoutPackage : public StepPackageBase
 	{
@@ -119,7 +119,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0008;
-		StepReqRiskUserLogout* ReqRiskUserLogout = nullptr;
+		StepReqRiskUserLogoutField* ReqRiskUserLogout = nullptr;
 	};
 	class StepRspRiskUserLogoutPackage : public StepPackageBase
 	{
@@ -133,8 +133,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0009;
-		StepRspRiskUserLogout* RspRiskUserLogout = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspRiskUserLogoutField* RspRiskUserLogout = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepRtnRiskUserLogoutPackage : public StepPackageBase
 	{
@@ -148,7 +148,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x000A;
-		StepRiskUserLogout* RiskUserLogout = nullptr;
+		StepRiskUserLogoutField* RiskUserLogout = nullptr;
 	};
 	class StepReqAdminUserLoginPackage : public StepPackageBase
 	{
@@ -162,7 +162,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x000B;
-		StepReqAdminUserLogin* ReqAdminUserLogin = nullptr;
+		StepReqAdminUserLoginField* ReqAdminUserLogin = nullptr;
 	};
 	class StepRspAdminUserLoginPackage : public StepPackageBase
 	{
@@ -176,8 +176,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x000C;
-		StepRspAdminUserLogin* RspAdminUserLogin = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAdminUserLoginField* RspAdminUserLogin = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAdminUserLogoutPackage : public StepPackageBase
 	{
@@ -191,7 +191,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x000D;
-		StepReqAdminUserLogout* ReqAdminUserLogout = nullptr;
+		StepReqAdminUserLogoutField* ReqAdminUserLogout = nullptr;
 	};
 	class StepRspAdminUserLogoutPackage : public StepPackageBase
 	{
@@ -205,8 +205,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x000E;
-		StepRspAdminUserLogout* RspAdminUserLogout = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAdminUserLogoutField* RspAdminUserLogout = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepRtnAdminUserLogoutPackage : public StepPackageBase
 	{
@@ -220,7 +220,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x000F;
-		StepAdminUserLogout* AdminUserLogout = nullptr;
+		StepAdminUserLogoutField* AdminUserLogout = nullptr;
 	};
 	class StepReqMdUserLoginPackage : public StepPackageBase
 	{
@@ -234,7 +234,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0010;
-		StepReqMdUserLogin* ReqMdUserLogin = nullptr;
+		StepReqMdUserLoginField* ReqMdUserLogin = nullptr;
 	};
 	class StepRspMdUserLoginPackage : public StepPackageBase
 	{
@@ -248,8 +248,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0011;
-		StepRspMdUserLogin* RspMdUserLogin = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspMdUserLoginField* RspMdUserLogin = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqMdUserLogoutPackage : public StepPackageBase
 	{
@@ -263,7 +263,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0012;
-		StepReqMdUserLogout* ReqMdUserLogout = nullptr;
+		StepReqMdUserLogoutField* ReqMdUserLogout = nullptr;
 	};
 	class StepRspMdUserLogoutPackage : public StepPackageBase
 	{
@@ -277,8 +277,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0013;
-		StepRspMdUserLogout* RspMdUserLogout = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspMdUserLogoutField* RspMdUserLogout = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqQryAccountPackage : public StepPackageBase
 	{
@@ -292,7 +292,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1001;
-		StepReqQryAccount* ReqQryAccount = nullptr;
+		StepReqQryAccountField* ReqQryAccount = nullptr;
 	};
 	class StepRspQryAccountPackage : public StepPackageBase
 	{
@@ -306,8 +306,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1002;
-		StepAccount* Account = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepAccountField* Account = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqQryHolderAccountPackage : public StepPackageBase
 	{
@@ -321,7 +321,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1003;
-		StepReqQryHolderAccount* ReqQryHolderAccount = nullptr;
+		StepReqQryHolderAccountField* ReqQryHolderAccount = nullptr;
 	};
 	class StepRspQryHolderAccountPackage : public StepPackageBase
 	{
@@ -335,8 +335,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1004;
-		StepHolderAccount* HolderAccount = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepHolderAccountField* HolderAccount = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqQryCapitalPackage : public StepPackageBase
 	{
@@ -350,7 +350,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1005;
-		StepReqQryCapital* ReqQryCapital = nullptr;
+		StepReqQryCapitalField* ReqQryCapital = nullptr;
 	};
 	class StepRspQryCapitalPackage : public StepPackageBase
 	{
@@ -364,8 +364,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1006;
-		StepCapital* Capital = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepCapitalField* Capital = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqQryPositionPackage : public StepPackageBase
 	{
@@ -379,7 +379,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1007;
-		StepReqQryPosition* ReqQryPosition = nullptr;
+		StepReqQryPositionField* ReqQryPosition = nullptr;
 	};
 	class StepRspQryPositionPackage : public StepPackageBase
 	{
@@ -393,8 +393,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1008;
-		StepPosition* Position = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepPositionField* Position = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepRtnPositionPackage : public StepPackageBase
 	{
@@ -408,7 +408,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1009;
-		StepPosition* Position = nullptr;
+		StepPositionField* Position = nullptr;
 	};
 	class StepReqQryOrderPackage : public StepPackageBase
 	{
@@ -422,7 +422,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x100A;
-		StepReqQryOrder* ReqQryOrder = nullptr;
+		StepReqQryOrderField* ReqQryOrder = nullptr;
 	};
 	class StepRspQryOrderPackage : public StepPackageBase
 	{
@@ -436,8 +436,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x100B;
-		StepOrder* Order = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepOrderField* Order = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepRtnOrderPackage : public StepPackageBase
 	{
@@ -451,7 +451,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x100C;
-		StepOrder* Order = nullptr;
+		StepOrderField* Order = nullptr;
 	};
 	class StepReqQryTradePackage : public StepPackageBase
 	{
@@ -465,7 +465,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x100D;
-		StepReqQryTrade* ReqQryTrade = nullptr;
+		StepReqQryTradeField* ReqQryTrade = nullptr;
 	};
 	class StepRspQryTradePackage : public StepPackageBase
 	{
@@ -479,8 +479,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x100E;
-		StepTrade* Trade = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepTradeField* Trade = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepRtnTradePackage : public StepPackageBase
 	{
@@ -494,7 +494,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x100F;
-		StepTrade* Trade = nullptr;
+		StepTradeField* Trade = nullptr;
 	};
 	class StepReqQryInstrumentPackage : public StepPackageBase
 	{
@@ -508,7 +508,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1010;
-		StepReqQryInstrument* ReqQryInstrument = nullptr;
+		StepReqQryInstrumentField* ReqQryInstrument = nullptr;
 	};
 	class StepRspQryInstrumentPackage : public StepPackageBase
 	{
@@ -522,8 +522,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1011;
-		StepInstrument* Instrument = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepInstrumentField* Instrument = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqQryOptionInstrumentPackage : public StepPackageBase
 	{
@@ -537,7 +537,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1012;
-		StepReqQryOptionInstrument* ReqQryOptionInstrument = nullptr;
+		StepReqQryOptionInstrumentField* ReqQryOptionInstrument = nullptr;
 	};
 	class StepRspQryOptionInstrumentPackage : public StepPackageBase
 	{
@@ -551,8 +551,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1013;
-		StepOptionInstrument* OptionInstrument = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepOptionInstrumentField* OptionInstrument = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqQryCommissionRatePackage : public StepPackageBase
 	{
@@ -566,7 +566,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1014;
-		StepReqQryCommissionRate* ReqQryCommissionRate = nullptr;
+		StepReqQryCommissionRateField* ReqQryCommissionRate = nullptr;
 	};
 	class StepRspQryCommissionRatePackage : public StepPackageBase
 	{
@@ -580,8 +580,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1015;
-		StepCommissionRate* CommissionRate = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepCommissionRateField* CommissionRate = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqInsertOrderPackage : public StepPackageBase
 	{
@@ -595,7 +595,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x2001;
-		StepReqInsertOrder* ReqInsertOrder = nullptr;
+		StepReqInsertOrderField* ReqInsertOrder = nullptr;
 	};
 	class StepRspInsertOrderPackage : public StepPackageBase
 	{
@@ -609,8 +609,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x2002;
-		StepOrder* Order = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepOrderField* Order = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqCancelOrderPackage : public StepPackageBase
 	{
@@ -624,7 +624,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x2003;
-		StepReqCancelOrder* ReqCancelOrder = nullptr;
+		StepReqCancelOrderField* ReqCancelOrder = nullptr;
 	};
 	class StepRspCancelOrderPackage : public StepPackageBase
 	{
@@ -638,8 +638,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x2004;
-		StepCancelOrder* CancelOrder = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepCancelOrderField* CancelOrder = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqMdInitPackage : public StepPackageBase
 	{
@@ -653,7 +653,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x2101;
-		StepReqMdInit* ReqMdInit = nullptr;
+		StepReqMdInitField* ReqMdInit = nullptr;
 	};
 	class StepRspMdInitPackage : public StepPackageBase
 	{
@@ -667,8 +667,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x2102;
-		StepRspMdInit* RspMdInit = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspMdInitField* RspMdInit = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqSubscribeMdPackage : public StepPackageBase
 	{
@@ -682,7 +682,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x2103;
-		StepReqSubscribeMd* ReqSubscribeMd = nullptr;
+		StepReqSubscribeMdField* ReqSubscribeMd = nullptr;
 	};
 	class StepRspSubscribeMdPackage : public StepPackageBase
 	{
@@ -696,8 +696,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x2105;
-		StepRspSubscribeMd* RspSubscribeMd = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspSubscribeMdField* RspSubscribeMd = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepRtnAccountPackage : public StepPackageBase
 	{
@@ -711,7 +711,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x3001;
-		StepAccount* Account = nullptr;
+		StepAccountField* Account = nullptr;
 	};
 	class StepRtnAccountDeletePackage : public StepPackageBase
 	{
@@ -725,7 +725,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x3002;
-		StepAccountDelete* AccountDelete = nullptr;
+		StepAccountDeleteField* AccountDelete = nullptr;
 	};
 	class StepRtnAccountRiskPackage : public StepPackageBase
 	{
@@ -739,7 +739,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x3003;
-		StepAccountRisk* AccountRisk = nullptr;
+		StepAccountRiskField* AccountRisk = nullptr;
 	};
 	class StepRtnAccountRiskDeletePackage : public StepPackageBase
 	{
@@ -753,7 +753,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x3004;
-		StepAccountRiskDelete* AccountRiskDelete = nullptr;
+		StepAccountRiskDeleteField* AccountRiskDelete = nullptr;
 	};
 	class StepRtnAccountRiskNotifyPackage : public StepPackageBase
 	{
@@ -767,7 +767,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x3005;
-		StepAccountRiskNotify* AccountRiskNotify = nullptr;
+		StepAccountRiskNotifyField* AccountRiskNotify = nullptr;
 	};
 	class StepRtnShortMdPackage : public StepPackageBase
 	{
@@ -781,7 +781,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x3101;
-		StepShortMd* ShortMd = nullptr;
+		StepShortMdField* ShortMd = nullptr;
 	};
 	class StepRtnExchangeStatusPackage : public StepPackageBase
 	{
@@ -795,7 +795,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x3102;
-		StepRtnExchangeStatus* RtnExchangeStatus = nullptr;
+		StepRtnExchangeStatusField* RtnExchangeStatus = nullptr;
 	};
 	class StepRtnMdInitCompletedPackage : public StepPackageBase
 	{
@@ -809,7 +809,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x3103;
-		StepMdInitCompleted* MdInitCompleted = nullptr;
+		StepMdInitCompletedField* MdInitCompleted = nullptr;
 	};
 	class StepReqQryRiskGroupAccountPackage : public StepPackageBase
 	{
@@ -823,7 +823,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4001;
-		StepReqQryRiskGroupAccount* ReqQryRiskGroupAccount = nullptr;
+		StepReqQryRiskGroupAccountField* ReqQryRiskGroupAccount = nullptr;
 	};
 	class StepRspQryRiskGroupAccountPackage : public StepPackageBase
 	{
@@ -837,8 +837,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4002;
-		StepAccount* Account = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepAccountField* Account = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqQryRiskGroupCapitalPackage : public StepPackageBase
 	{
@@ -852,7 +852,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4003;
-		StepReqQryRiskGroupCapital* ReqQryRiskGroupCapital = nullptr;
+		StepReqQryRiskGroupCapitalField* ReqQryRiskGroupCapital = nullptr;
 	};
 	class StepRspQryRiskGroupCapitalPackage : public StepPackageBase
 	{
@@ -866,8 +866,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4004;
-		StepCapital* Capital = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepCapitalField* Capital = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqQryRiskGroupPositionPackage : public StepPackageBase
 	{
@@ -881,7 +881,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4005;
-		StepReqQryRiskGroupPosition* ReqQryRiskGroupPosition = nullptr;
+		StepReqQryRiskGroupPositionField* ReqQryRiskGroupPosition = nullptr;
 	};
 	class StepRspQryRiskGroupPositionPackage : public StepPackageBase
 	{
@@ -895,8 +895,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4006;
-		StepPosition* Position = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepPositionField* Position = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqQryRiskGroupOrderPackage : public StepPackageBase
 	{
@@ -910,7 +910,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4007;
-		StepReqQryRiskGroupOrder* ReqQryRiskGroupOrder = nullptr;
+		StepReqQryRiskGroupOrderField* ReqQryRiskGroupOrder = nullptr;
 	};
 	class StepRspQryRiskGroupOrderPackage : public StepPackageBase
 	{
@@ -924,8 +924,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4008;
-		StepOrder* Order = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepOrderField* Order = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqQryRiskGroupTradePackage : public StepPackageBase
 	{
@@ -939,7 +939,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4009;
-		StepReqQryRiskGroupTrade* ReqQryRiskGroupTrade = nullptr;
+		StepReqQryRiskGroupTradeField* ReqQryRiskGroupTrade = nullptr;
 	};
 	class StepRspQryRiskGroupTradePackage : public StepPackageBase
 	{
@@ -953,8 +953,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x400A;
-		StepTrade* Trade = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepTradeField* Trade = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqQryRiskGroupAccountRiskPackage : public StepPackageBase
 	{
@@ -968,7 +968,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x400B;
-		StepReqQryRiskGroupAccountRisk* ReqQryRiskGroupAccountRisk = nullptr;
+		StepReqQryRiskGroupAccountRiskField* ReqQryRiskGroupAccountRisk = nullptr;
 	};
 	class StepRspQryRiskGroupAccountRiskPackage : public StepPackageBase
 	{
@@ -982,8 +982,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x400C;
-		StepAccountRisk* AccountRisk = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepAccountRiskField* AccountRisk = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqQryRiskGroupAccountRiskNotifyPackage : public StepPackageBase
 	{
@@ -997,7 +997,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x400D;
-		StepReqQryRiskGroupAccountRiskNotify* ReqQryRiskGroupAccountRiskNotify = nullptr;
+		StepReqQryRiskGroupAccountRiskNotifyField* ReqQryRiskGroupAccountRiskNotify = nullptr;
 	};
 	class StepRspQryRiskGroupAccountRiskNotifyPackage : public StepPackageBase
 	{
@@ -1011,8 +1011,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x400E;
-		StepAccountRiskNotify* AccountRiskNotify = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepAccountRiskNotifyField* AccountRiskNotify = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRiskInsertOrderPackage : public StepPackageBase
 	{
@@ -1026,7 +1026,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x400F;
-		StepReqRiskInsertOrder* ReqRiskInsertOrder = nullptr;
+		StepReqRiskInsertOrderField* ReqRiskInsertOrder = nullptr;
 	};
 	class StepRspRiskInsertOrderPackage : public StepPackageBase
 	{
@@ -1040,8 +1040,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4010;
-		StepOrder* Order = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepOrderField* Order = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRiskCancelOrderPackage : public StepPackageBase
 	{
@@ -1055,7 +1055,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4011;
-		StepReqRiskCancelOrder* ReqRiskCancelOrder = nullptr;
+		StepReqRiskCancelOrderField* ReqRiskCancelOrder = nullptr;
 	};
 	class StepRspRiskCancelOrderPackage : public StepPackageBase
 	{
@@ -1069,8 +1069,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4012;
-		StepCancelOrder* CancelOrder = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepCancelOrderField* CancelOrder = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddRiskUserPackage : public StepPackageBase
 	{
@@ -1084,7 +1084,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x5001;
-		StepReqAddRiskUser* ReqAddRiskUser = nullptr;
+		StepReqAddRiskUserField* ReqAddRiskUser = nullptr;
 	};
 	class StepRspAddRiskUserPackage : public StepPackageBase
 	{
@@ -1098,8 +1098,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x5002;
-		StepRspAddRiskUser* RspAddRiskUser = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddRiskUserField* RspAddRiskUser = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqUpdateRiskUserPackage : public StepPackageBase
 	{
@@ -1113,7 +1113,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x5003;
-		StepReqUpdateRiskUser* ReqUpdateRiskUser = nullptr;
+		StepReqUpdateRiskUserField* ReqUpdateRiskUser = nullptr;
 	};
 	class StepRspUpdateRiskUserPackage : public StepPackageBase
 	{
@@ -1127,8 +1127,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x5004;
-		StepRspUpdateRiskUser* RspUpdateRiskUser = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspUpdateRiskUserField* RspUpdateRiskUser = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRemoveRiskUserPackage : public StepPackageBase
 	{
@@ -1142,7 +1142,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x5005;
-		StepReqRemoveRiskUser* ReqRemoveRiskUser = nullptr;
+		StepReqRemoveRiskUserField* ReqRemoveRiskUser = nullptr;
 	};
 	class StepRspRemoveRiskUserPackage : public StepPackageBase
 	{
@@ -1156,8 +1156,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x5006;
-		StepRspRemoveRiskUser* RspRemoveRiskUser = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspRemoveRiskUserField* RspRemoveRiskUser = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddAdminUserPackage : public StepPackageBase
 	{
@@ -1171,7 +1171,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x5007;
-		StepReqAddAdminUser* ReqAddAdminUser = nullptr;
+		StepReqAddAdminUserField* ReqAddAdminUser = nullptr;
 	};
 	class StepRspAddAdminUserPackage : public StepPackageBase
 	{
@@ -1185,8 +1185,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x5008;
-		StepRspAddAdminUser* RspAddAdminUser = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddAdminUserField* RspAddAdminUser = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqUpdateAdminUserPackage : public StepPackageBase
 	{
@@ -1200,7 +1200,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x5009;
-		StepReqUpdateAdminUser* ReqUpdateAdminUser = nullptr;
+		StepReqUpdateAdminUserField* ReqUpdateAdminUser = nullptr;
 	};
 	class StepRspUpdateAdminUserPackage : public StepPackageBase
 	{
@@ -1214,8 +1214,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x500A;
-		StepRspUpdateAdminUser* RspUpdateAdminUser = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspUpdateAdminUserField* RspUpdateAdminUser = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRemoveAdminUserPackage : public StepPackageBase
 	{
@@ -1229,7 +1229,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x500B;
-		StepReqRemoveAdminUser* ReqRemoveAdminUser = nullptr;
+		StepReqRemoveAdminUserField* ReqRemoveAdminUser = nullptr;
 	};
 	class StepRspRemoveAdminUserPackage : public StepPackageBase
 	{
@@ -1243,8 +1243,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x500C;
-		StepRspRemoveAdminUser* RspRemoveAdminUser = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspRemoveAdminUserField* RspRemoveAdminUser = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddPrimaryAccountPackage : public StepPackageBase
 	{
@@ -1258,7 +1258,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x6001;
-		StepReqAddPrimaryAccount* ReqAddPrimaryAccount = nullptr;
+		StepReqAddPrimaryAccountField* ReqAddPrimaryAccount = nullptr;
 	};
 	class StepRspAddPrimaryAccountPackage : public StepPackageBase
 	{
@@ -1272,8 +1272,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x6002;
-		StepRspAddPrimaryAccount* RspAddPrimaryAccount = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddPrimaryAccountField* RspAddPrimaryAccount = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqUpdatePrimaryAccountPackage : public StepPackageBase
 	{
@@ -1287,7 +1287,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x6003;
-		StepReqUpdatePrimaryAccount* ReqUpdatePrimaryAccount = nullptr;
+		StepReqUpdatePrimaryAccountField* ReqUpdatePrimaryAccount = nullptr;
 	};
 	class StepRspUpdatePrimaryAccountPackage : public StepPackageBase
 	{
@@ -1301,8 +1301,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x6004;
-		StepRspUpdatePrimaryAccount* RspUpdatePrimaryAccount = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspUpdatePrimaryAccountField* RspUpdatePrimaryAccount = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRemovePrimaryAccountPackage : public StepPackageBase
 	{
@@ -1316,7 +1316,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x6005;
-		StepReqRemovePrimaryAccount* ReqRemovePrimaryAccount = nullptr;
+		StepReqRemovePrimaryAccountField* ReqRemovePrimaryAccount = nullptr;
 	};
 	class StepRspRemovePrimaryAccountPackage : public StepPackageBase
 	{
@@ -1330,8 +1330,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x6006;
-		StepRspRemovePrimaryAccount* RspRemovePrimaryAccount = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspRemovePrimaryAccountField* RspRemovePrimaryAccount = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddAccountPackage : public StepPackageBase
 	{
@@ -1345,7 +1345,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x6007;
-		StepReqAddAccount* ReqAddAccount = nullptr;
+		StepReqAddAccountField* ReqAddAccount = nullptr;
 	};
 	class StepRspAddAccountPackage : public StepPackageBase
 	{
@@ -1359,8 +1359,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x6008;
-		StepRspAddAccount* RspAddAccount = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddAccountField* RspAddAccount = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqUpdateAccountPackage : public StepPackageBase
 	{
@@ -1374,7 +1374,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x6009;
-		StepReqUpdateAccount* ReqUpdateAccount = nullptr;
+		StepReqUpdateAccountField* ReqUpdateAccount = nullptr;
 	};
 	class StepRspUpdateAccountPackage : public StepPackageBase
 	{
@@ -1388,8 +1388,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x600A;
-		StepRspUpdateAccount* RspUpdateAccount = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspUpdateAccountField* RspUpdateAccount = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRemoveAccountPackage : public StepPackageBase
 	{
@@ -1403,7 +1403,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x600B;
-		StepReqRemoveAccount* ReqRemoveAccount = nullptr;
+		StepReqRemoveAccountField* ReqRemoveAccount = nullptr;
 	};
 	class StepRspRemoveAccountPackage : public StepPackageBase
 	{
@@ -1417,8 +1417,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x600C;
-		StepRspRemoveAccount* RspRemoveAccount = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspRemoveAccountField* RspRemoveAccount = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddBaseCommissionPackage : public StepPackageBase
 	{
@@ -1432,7 +1432,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x7001;
-		StepReqAddBaseCommission* ReqAddBaseCommission = nullptr;
+		StepReqAddBaseCommissionField* ReqAddBaseCommission = nullptr;
 	};
 	class StepRspAddBaseCommissionPackage : public StepPackageBase
 	{
@@ -1446,8 +1446,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x7002;
-		StepRspAddBaseCommission* RspAddBaseCommission = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddBaseCommissionField* RspAddBaseCommission = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqUpdateBaseCommissionPackage : public StepPackageBase
 	{
@@ -1461,7 +1461,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x7003;
-		StepReqUpdateBaseCommission* ReqUpdateBaseCommission = nullptr;
+		StepReqUpdateBaseCommissionField* ReqUpdateBaseCommission = nullptr;
 	};
 	class StepRspUpdateBaseCommissionPackage : public StepPackageBase
 	{
@@ -1475,8 +1475,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x7004;
-		StepRspUpdateBaseCommission* RspUpdateBaseCommission = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspUpdateBaseCommissionField* RspUpdateBaseCommission = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRemoveBaseCommissionPackage : public StepPackageBase
 	{
@@ -1490,7 +1490,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x7005;
-		StepReqRemoveBaseCommission* ReqRemoveBaseCommission = nullptr;
+		StepReqRemoveBaseCommissionField* ReqRemoveBaseCommission = nullptr;
 	};
 	class StepRspRemoveBaseCommissionPackage : public StepPackageBase
 	{
@@ -1504,8 +1504,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x7006;
-		StepRspInfo* RspInfo = nullptr;
-		StepRspRemoveBaseCommission* RspRemoveBaseCommission = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
+		StepRspRemoveBaseCommissionField* RspRemoveBaseCommission = nullptr;
 	};
 	class StepReqAddCommissionGroupPackage : public StepPackageBase
 	{
@@ -1519,7 +1519,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x7007;
-		StepReqAddCommissionGroup* ReqAddCommissionGroup = nullptr;
+		StepReqAddCommissionGroupField* ReqAddCommissionGroup = nullptr;
 	};
 	class StepRspAddCommissionGroupPackage : public StepPackageBase
 	{
@@ -1533,8 +1533,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x7008;
-		StepRspAddCommissionGroup* RspAddCommissionGroup = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddCommissionGroupField* RspAddCommissionGroup = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqUpdateCommissionGroupPackage : public StepPackageBase
 	{
@@ -1548,7 +1548,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x7009;
-		StepReqUpdateCommissionGroup* ReqUpdateCommissionGroup = nullptr;
+		StepReqUpdateCommissionGroupField* ReqUpdateCommissionGroup = nullptr;
 	};
 	class StepRspUpdateCommissionGroupPackage : public StepPackageBase
 	{
@@ -1562,8 +1562,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x700A;
-		StepRspUpdateCommissionGroup* RspUpdateCommissionGroup = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspUpdateCommissionGroupField* RspUpdateCommissionGroup = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRemoveCommissionGroupPackage : public StepPackageBase
 	{
@@ -1577,7 +1577,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x700B;
-		StepReqRemoveCommissionGroup* ReqRemoveCommissionGroup = nullptr;
+		StepReqRemoveCommissionGroupField* ReqRemoveCommissionGroup = nullptr;
 	};
 	class StepRspRemoveCommissionGroupPackage : public StepPackageBase
 	{
@@ -1591,8 +1591,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x700C;
-		StepRspRemoveCommissionGroup* RspRemoveCommissionGroup = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspRemoveCommissionGroupField* RspRemoveCommissionGroup = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddOptionMarginParamPackage : public StepPackageBase
 	{
@@ -1606,7 +1606,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x700D;
-		StepReqAddOptionMarginParam* ReqAddOptionMarginParam = nullptr;
+		StepReqAddOptionMarginParamField* ReqAddOptionMarginParam = nullptr;
 	};
 	class StepRspAddOptionMarginParamPackage : public StepPackageBase
 	{
@@ -1620,8 +1620,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x700E;
-		StepRspAddOptionMarginParam* RspAddOptionMarginParam = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddOptionMarginParamField* RspAddOptionMarginParam = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqUpdateOptionMarginParamPackage : public StepPackageBase
 	{
@@ -1635,7 +1635,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x700F;
-		StepReqUpdateOptionMarginParam* ReqUpdateOptionMarginParam = nullptr;
+		StepReqUpdateOptionMarginParamField* ReqUpdateOptionMarginParam = nullptr;
 	};
 	class StepRspUpdateOptionMarginParamPackage : public StepPackageBase
 	{
@@ -1649,8 +1649,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x7010;
-		StepRspUpdateOptionMarginParam* RspUpdateOptionMarginParam = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspUpdateOptionMarginParamField* RspUpdateOptionMarginParam = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRemoveOptionMarginParamPackage : public StepPackageBase
 	{
@@ -1664,7 +1664,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x7011;
-		StepReqRemoveOptionMarginParam* ReqRemoveOptionMarginParam = nullptr;
+		StepReqRemoveOptionMarginParamField* ReqRemoveOptionMarginParam = nullptr;
 	};
 	class StepRspRemoveOptionMarginParamPackage : public StepPackageBase
 	{
@@ -1678,8 +1678,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x7012;
-		StepRspRemoveOptionMarginParam* RspRemoveOptionMarginParam = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspRemoveOptionMarginParamField* RspRemoveOptionMarginParam = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddTradeOfferPackage : public StepPackageBase
 	{
@@ -1693,7 +1693,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x8001;
-		StepReqAddTradeOffer* ReqAddTradeOffer = nullptr;
+		StepReqAddTradeOfferField* ReqAddTradeOffer = nullptr;
 	};
 	class StepRspAddTradeOfferPackage : public StepPackageBase
 	{
@@ -1707,8 +1707,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x8002;
-		StepRspAddTradeOffer* RspAddTradeOffer = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddTradeOfferField* RspAddTradeOffer = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqUpdateTradeOfferPackage : public StepPackageBase
 	{
@@ -1722,7 +1722,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x8003;
-		StepReqUpdateTradeOffer* ReqUpdateTradeOffer = nullptr;
+		StepReqUpdateTradeOfferField* ReqUpdateTradeOffer = nullptr;
 	};
 	class StepRspUpdateTradeOfferPackage : public StepPackageBase
 	{
@@ -1736,8 +1736,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x8004;
-		StepRspUpdateTradeOffer* RspUpdateTradeOffer = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspUpdateTradeOfferField* RspUpdateTradeOffer = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRemoveTradeOfferPackage : public StepPackageBase
 	{
@@ -1751,7 +1751,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x8005;
-		StepReqRemoveTradeOffer* ReqRemoveTradeOffer = nullptr;
+		StepReqRemoveTradeOfferField* ReqRemoveTradeOffer = nullptr;
 	};
 	class StepRspRemoveTradeOfferPackage : public StepPackageBase
 	{
@@ -1765,8 +1765,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x8006;
-		StepRspRemoveTradeOffer* RspRemoveTradeOffer = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspRemoveTradeOfferField* RspRemoveTradeOffer = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddTradeGroupPackage : public StepPackageBase
 	{
@@ -1780,7 +1780,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x8007;
-		StepReqAddTradeGroup* ReqAddTradeGroup = nullptr;
+		StepReqAddTradeGroupField* ReqAddTradeGroup = nullptr;
 	};
 	class StepRspAddTradeGroupPackage : public StepPackageBase
 	{
@@ -1794,8 +1794,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x8008;
-		StepRspAddTradeGroup* RspAddTradeGroup = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddTradeGroupField* RspAddTradeGroup = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqUpdateTradeGroupPackage : public StepPackageBase
 	{
@@ -1809,7 +1809,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x8009;
-		StepReqUpdateTradeGroup* ReqUpdateTradeGroup = nullptr;
+		StepReqUpdateTradeGroupField* ReqUpdateTradeGroup = nullptr;
 	};
 	class StepRspUpdateTradeGroupPackage : public StepPackageBase
 	{
@@ -1823,8 +1823,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x800A;
-		StepRspUpdateTradeGroup* RspUpdateTradeGroup = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspUpdateTradeGroupField* RspUpdateTradeGroup = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRemoveTradeGroupPackage : public StepPackageBase
 	{
@@ -1838,7 +1838,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x800B;
-		StepReqRemoveTradeGroup* ReqRemoveTradeGroup = nullptr;
+		StepReqRemoveTradeGroupField* ReqRemoveTradeGroup = nullptr;
 	};
 	class StepRspRemoveTradeGroupPackage : public StepPackageBase
 	{
@@ -1852,8 +1852,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x800C;
-		StepRspRemoveTradeGroup* RspRemoveTradeGroup = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspRemoveTradeGroupField* RspRemoveTradeGroup = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddTradeGroupItemPackage : public StepPackageBase
 	{
@@ -1867,7 +1867,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x800D;
-		StepReqAddTradeGroupItem* ReqAddTradeGroupItem = nullptr;
+		StepReqAddTradeGroupItemField* ReqAddTradeGroupItem = nullptr;
 	};
 	class StepRspAddTradeGroupItemPackage : public StepPackageBase
 	{
@@ -1881,8 +1881,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x800E;
-		StepRspAddTradeGroupItem* RspAddTradeGroupItem = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddTradeGroupItemField* RspAddTradeGroupItem = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqUpdateTradeGroupItemPackage : public StepPackageBase
 	{
@@ -1896,7 +1896,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x800F;
-		StepReqUpdateTradeGroupItem* ReqUpdateTradeGroupItem = nullptr;
+		StepReqUpdateTradeGroupItemField* ReqUpdateTradeGroupItem = nullptr;
 	};
 	class StepRspUpdateTradeGroupItemPackage : public StepPackageBase
 	{
@@ -1910,8 +1910,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x8010;
-		StepRspUpdateTradeGroupItem* RspUpdateTradeGroupItem = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspUpdateTradeGroupItemField* RspUpdateTradeGroupItem = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRemoveTradeGroupItemPackage : public StepPackageBase
 	{
@@ -1925,7 +1925,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x8011;
-		StepReqRemoveTradeGroupItem* ReqRemoveTradeGroupItem = nullptr;
+		StepReqRemoveTradeGroupItemField* ReqRemoveTradeGroupItem = nullptr;
 	};
 	class StepRspRemoveTradeGroupItemPackage : public StepPackageBase
 	{
@@ -1939,8 +1939,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x8012;
-		StepRspRemoveTradeGroupItem* RspRemoveTradeGroupItem = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspRemoveTradeGroupItemField* RspRemoveTradeGroupItem = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddRiskGroupPackage : public StepPackageBase
 	{
@@ -1954,7 +1954,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x9001;
-		StepReqAddRiskGroup* ReqAddRiskGroup = nullptr;
+		StepReqAddRiskGroupField* ReqAddRiskGroup = nullptr;
 	};
 	class StepRspAddRiskGroupPackage : public StepPackageBase
 	{
@@ -1968,8 +1968,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x9002;
-		StepRspAddRiskGroup* RspAddRiskGroup = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddRiskGroupField* RspAddRiskGroup = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqUpdateRiskGroupPackage : public StepPackageBase
 	{
@@ -1983,7 +1983,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x9003;
-		StepReqUpdateRiskGroup* ReqUpdateRiskGroup = nullptr;
+		StepReqUpdateRiskGroupField* ReqUpdateRiskGroup = nullptr;
 	};
 	class StepRspUpdateRiskGroupPackage : public StepPackageBase
 	{
@@ -1997,8 +1997,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x9004;
-		StepRspUpdateRiskGroup* RspUpdateRiskGroup = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspUpdateRiskGroupField* RspUpdateRiskGroup = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRemoveRiskGroupPackage : public StepPackageBase
 	{
@@ -2012,7 +2012,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x9005;
-		StepReqRemoveRiskGroup* ReqRemoveRiskGroup = nullptr;
+		StepReqRemoveRiskGroupField* ReqRemoveRiskGroup = nullptr;
 	};
 	class StepRspRemoveRiskGroupPackage : public StepPackageBase
 	{
@@ -2026,8 +2026,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x9006;
-		StepRspRemoveRiskGroup* RspRemoveRiskGroup = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspRemoveRiskGroupField* RspRemoveRiskGroup = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddRiskGroupItemPackage : public StepPackageBase
 	{
@@ -2041,7 +2041,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x9007;
-		StepReqAddRiskGroupItem* ReqAddRiskGroupItem = nullptr;
+		StepReqAddRiskGroupItemField* ReqAddRiskGroupItem = nullptr;
 	};
 	class StepRspAddRiskGroupItemPackage : public StepPackageBase
 	{
@@ -2055,8 +2055,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x9008;
-		StepRspAddRiskGroupItem* RspAddRiskGroupItem = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddRiskGroupItemField* RspAddRiskGroupItem = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqUpdateRiskGroupItemPackage : public StepPackageBase
 	{
@@ -2070,7 +2070,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x9009;
-		StepReqUpdateRiskGroupItem* ReqUpdateRiskGroupItem = nullptr;
+		StepReqUpdateRiskGroupItemField* ReqUpdateRiskGroupItem = nullptr;
 	};
 	class StepRspUpdateRiskGroupItemPackage : public StepPackageBase
 	{
@@ -2084,8 +2084,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x900A;
-		StepRspUpdateRiskGroupItem* RspUpdateRiskGroupItem = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspUpdateRiskGroupItemField* RspUpdateRiskGroupItem = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRemoveRiskGroupItemPackage : public StepPackageBase
 	{
@@ -2099,7 +2099,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x900B;
-		StepReqRemoveRiskGroupItem* ReqRemoveRiskGroupItem = nullptr;
+		StepReqRemoveRiskGroupItemField* ReqRemoveRiskGroupItem = nullptr;
 	};
 	class StepRspRemoveRiskGroupItemPackage : public StepPackageBase
 	{
@@ -2113,8 +2113,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x900C;
-		StepRspRemoveRiskGroupItem* RspRemoveRiskGroupItem = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspRemoveRiskGroupItemField* RspRemoveRiskGroupItem = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddOrUpdateRiskPackage : public StepPackageBase
 	{
@@ -2128,7 +2128,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xA001;
-		StepReqAddOrUpdateRisk* ReqAddOrUpdateRisk = nullptr;
+		StepReqAddOrUpdateRiskField* ReqAddOrUpdateRisk = nullptr;
 	};
 	class StepRspAddOrUpdateRiskPackage : public StepPackageBase
 	{
@@ -2142,8 +2142,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xA002;
-		StepRspAddOrUpdateRisk* RspAddOrUpdateRisk = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddOrUpdateRiskField* RspAddOrUpdateRisk = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRemoveRiskPackage : public StepPackageBase
 	{
@@ -2157,7 +2157,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xA003;
-		StepReqRemoveRisk* ReqRemoveRisk = nullptr;
+		StepReqRemoveRiskField* ReqRemoveRisk = nullptr;
 	};
 	class StepRspRemoveRiskPackage : public StepPackageBase
 	{
@@ -2171,8 +2171,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xA004;
-		StepRspRemoveRisk* RspRemoveRisk = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspRemoveRiskField* RspRemoveRisk = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddRiskRulePackage : public StepPackageBase
 	{
@@ -2186,7 +2186,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xA005;
-		StepReqAddRiskRule* ReqAddRiskRule = nullptr;
+		StepReqAddRiskRuleField* ReqAddRiskRule = nullptr;
 	};
 	class StepRspAddRiskRulePackage : public StepPackageBase
 	{
@@ -2200,8 +2200,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xA006;
-		StepRspAddRiskRule* RspAddRiskRule = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddRiskRuleField* RspAddRiskRule = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddRiskRuleItemPackage : public StepPackageBase
 	{
@@ -2215,7 +2215,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xA007;
-		StepReqAddRiskRuleItem* ReqAddRiskRuleItem = nullptr;
+		StepReqAddRiskRuleItemField* ReqAddRiskRuleItem = nullptr;
 	};
 	class StepRspAddRiskRuleItemPackage : public StepPackageBase
 	{
@@ -2229,8 +2229,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xA008;
-		StepRspAddRiskRuleItem* RspAddRiskRuleItem = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddRiskRuleItemField* RspAddRiskRuleItem = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddRiskTradeScopePackage : public StepPackageBase
 	{
@@ -2244,7 +2244,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xA009;
-		StepReqAddRiskTradeScope* ReqAddRiskTradeScope = nullptr;
+		StepReqAddRiskTradeScopeField* ReqAddRiskTradeScope = nullptr;
 	};
 	class StepRspAddRiskTradeScopePackage : public StepPackageBase
 	{
@@ -2258,8 +2258,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xA00A;
-		StepRspAddRiskTradeScope* RspAddRiskTradeScope = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddRiskTradeScopeField* RspAddRiskTradeScope = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqAddAccountRiskPackage : public StepPackageBase
 	{
@@ -2273,7 +2273,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xA00B;
-		StepReqAddAccountRisk* ReqAddAccountRisk = nullptr;
+		StepReqAddAccountRiskField* ReqAddAccountRisk = nullptr;
 	};
 	class StepRspAddAccountRiskPackage : public StepPackageBase
 	{
@@ -2287,8 +2287,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xA00C;
-		StepRspAddAccountRisk* RspAddAccountRisk = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAddAccountRiskField* RspAddAccountRisk = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqRemoveAccountRiskPackage : public StepPackageBase
 	{
@@ -2302,7 +2302,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xA00D;
-		StepReqRemoveAccountRisk* ReqRemoveAccountRisk = nullptr;
+		StepReqRemoveAccountRiskField* ReqRemoveAccountRisk = nullptr;
 	};
 	class StepRspRemoveAccountRiskPackage : public StepPackageBase
 	{
@@ -2316,8 +2316,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xA00E;
-		StepRspRemoveAccountRisk* RspRemoveAccountRisk = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspRemoveAccountRiskField* RspRemoveAccountRisk = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqMoneyTransferPackage : public StepPackageBase
 	{
@@ -2331,7 +2331,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xB001;
-		StepReqMoneyTransfer* ReqMoneyTransfer = nullptr;
+		StepReqMoneyTransferField* ReqMoneyTransfer = nullptr;
 	};
 	class StepRspMoneyTransferPackage : public StepPackageBase
 	{
@@ -2345,8 +2345,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xB002;
-		StepRspMoneyTransfer* RspMoneyTransfer = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspMoneyTransferField* RspMoneyTransfer = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepReqQryMoneyTransferPackage : public StepPackageBase
 	{
@@ -2360,7 +2360,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xB003;
-		StepReqQryMoneyTransfer* ReqQryMoneyTransfer = nullptr;
+		StepReqQryMoneyTransferField* ReqQryMoneyTransfer = nullptr;
 	};
 	class StepRspQryMoneyTransferPackage : public StepPackageBase
 	{
@@ -2374,8 +2374,8 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xB004;
-		StepMoneyTransfer* MoneyTransfer = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepMoneyTransferField* MoneyTransfer = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 	class StepRtnMoneyTransferPackage : public StepPackageBase
 	{
@@ -2389,7 +2389,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xB005;
-		StepMoneyTransfer* MoneyTransfer = nullptr;
+		StepMoneyTransferField* MoneyTransfer = nullptr;
 	};
 	class StepReqAuditOrderPackage : public StepPackageBase
 	{
@@ -2403,7 +2403,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xB006;
-		StepReqAuditOrder* ReqAuditOrder = nullptr;
+		StepReqAuditOrderField* ReqAuditOrder = nullptr;
 	};
 	class StepRspAuditOrderPackage : public StepPackageBase
 	{
@@ -2417,7 +2417,7 @@ namespace step
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0xB007;
-		StepRspAuditOrder* RspAuditOrder = nullptr;
-		StepRspInfo* RspInfo = nullptr;
+		StepRspAuditOrderField* RspAuditOrder = nullptr;
+		StepRspInfoField* RspInfo = nullptr;
 	};
 }

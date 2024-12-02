@@ -3,7 +3,7 @@
 
 namespace xtp
 {
-	class XtpSessionClose
+	class XtpSessionCloseField
 	{
 	public:
 		ErrorIDType ErrorID;		//错误代码
@@ -12,7 +12,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpReqOfferLogin
+	class XtpReqOfferLoginField
 	{
 	public:
 		OfferIDType OfferID;		//报盘代码
@@ -21,7 +21,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRspOfferLogin
+	class XtpRspOfferLoginField
 	{
 	public:
 		ErrorIDType ErrorID;		//错误代码
@@ -32,7 +32,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpReqPrimaryAccountLogin
+	class XtpReqPrimaryAccountLoginField
 	{
 	public:
 		AccountIDType PrimaryAccountID;		//主账户代码
@@ -41,7 +41,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRspPrimaryAccountLogin
+	class XtpRspPrimaryAccountLoginField
 	{
 	public:
 		ErrorIDType ErrorID;		//错误代码
@@ -52,7 +52,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpReqPrimaryAccountLogout
+	class XtpReqPrimaryAccountLogoutField
 	{
 	public:
 		DateType TradingDay;		//交易日
@@ -61,7 +61,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRtnPrimaryAccountLogout
+	class XtpRtnPrimaryAccountLogoutField
 	{
 	public:
 		DateType TradingDay;		//交易日
@@ -70,7 +70,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpReqPrimaryAccountInit
+	class XtpReqPrimaryAccountInitField
 	{
 	public:
 		AccountIDType PrimaryAccountID;		//主账户代码
@@ -78,25 +78,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRspPrimaryAccountInit
-	{
-	public:
-		ErrorIDType ErrorID;		//错误代码
-		MessageType ErrorMsg;		//错误信息
-		AccountIDType PrimaryAccountID;		//主账户代码
-
-		const char* GetString() const;
-		const char* GetDebugString() const;
-	};
-	class XtpReqPrimaryAccountQuery
-	{
-	public:
-		AccountIDType PrimaryAccountID;		//主账户代码
-
-		const char* GetString() const;
-		const char* GetDebugString() const;
-	};
-	class XtpRspPrimaryAccountQuery
+	class XtpRspPrimaryAccountInitField
 	{
 	public:
 		ErrorIDType ErrorID;		//错误代码
@@ -106,7 +88,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpReqQryOptionInstrument
+	class XtpReqPrimaryAccountQueryField
 	{
 	public:
 		AccountIDType PrimaryAccountID;		//主账户代码
@@ -114,7 +96,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRspQryOptionInstrument
+	class XtpRspPrimaryAccountQueryField
 	{
 	public:
 		ErrorIDType ErrorID;		//错误代码
@@ -124,7 +106,25 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRtnOptionInstrument
+	class XtpReqQryOptionInstrumentField
+	{
+	public:
+		AccountIDType PrimaryAccountID;		//主账户代码
+
+		const char* GetString() const;
+		const char* GetDebugString() const;
+	};
+	class XtpRspQryOptionInstrumentField
+	{
+	public:
+		ErrorIDType ErrorID;		//错误代码
+		MessageType ErrorMsg;		//错误信息
+		AccountIDType PrimaryAccountID;		//主账户代码
+
+		const char* GetString() const;
+		const char* GetDebugString() const;
+	};
+	class XtpRtnOptionInstrumentField
 	{
 	public:
 		DateType TradingDay;		//交易日
@@ -145,7 +145,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpReqInsertOrder
+	class XtpReqInsertOrderField
 	{
 	public:
 		DateType TradingDay;		//交易日
@@ -163,7 +163,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpReqCancelOrder
+	class XtpReqCancelOrderField
 	{
 	public:
 		DateType TradingDay;		//交易日
@@ -179,7 +179,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRtnOrder
+	class XtpRtnOrderField
 	{
 	public:
 		DateType TradingDay;		//交易日
@@ -206,7 +206,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRtnTrade
+	class XtpRtnTradeField
 	{
 	public:
 		DateType TradingDay;		//交易日
@@ -226,7 +226,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRtnErrorCancelOrder
+	class XtpRtnErrorCancelOrderField
 	{
 	public:
 		ErrorIDType ErrorID;		//错误代码
@@ -243,7 +243,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRtnCapital
+	class XtpRtnCapitalField
 	{
 	public:
 		DateType TradingDay;		//交易日
@@ -253,7 +253,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRtnPosition
+	class XtpRtnPositionField
 	{
 	public:
 		DateType TradingDay;		//交易日
@@ -270,7 +270,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpReqMDOfferLogin
+	class XtpReqMDOfferLoginField
 	{
 	public:
 		UserIDType UserID;		//用户代码
@@ -279,7 +279,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRspMDOfferLogin
+	class XtpRspMDOfferLoginField
 	{
 	public:
 		ErrorIDType ErrorID;		//错误代码
@@ -288,7 +288,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpReqMDInit
+	class XtpReqMDInitField
 	{
 	public:
 		ExchangeIDType ExchangeID;		//交易所代码
@@ -297,7 +297,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRspMDInit
+	class XtpRspMDInitField
 	{
 	public:
 		ExchangeIDType ExchangeID;		//交易所代码
@@ -308,7 +308,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpReqSubscribeMD
+	class XtpReqSubscribeMDField
 	{
 	public:
 		ExchangeIDType ExchangeID;		//交易所代码
@@ -317,7 +317,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRspSubscribeMD
+	class XtpRspSubscribeMDField
 	{
 	public:
 		ExchangeIDType ExchangeID;		//交易所代码
@@ -328,7 +328,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRtnShortMD
+	class XtpRtnShortMDField
 	{
 	public:
 		DateType TradingDay;		//交易日
@@ -345,7 +345,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRtnExchangeStatus
+	class XtpRtnExchangeStatusField
 	{
 	public:
 		ExchangeIDType ExchangeID;		//交易所代码
@@ -355,7 +355,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRtnInstrument
+	class XtpRtnInstrumentField
 	{
 	public:
 		ExchangeIDType ExchangeID;		//交易所代码
@@ -368,7 +368,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRtnMDInitCompleted
+	class XtpRtnMDInitCompletedField
 	{
 	public:
 		ExchangeIDType ExchangeID;		//交易所代码
@@ -377,7 +377,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpNotifyMdClientConnected
+	class XtpNotifyMdClientConnectedField
 	{
 	public:
 		SessionIDType SessionID;		//会话编号
@@ -385,7 +385,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpNotifyMdClientDisConnected
+	class XtpNotifyMdClientDisConnectedField
 	{
 	public:
 		SessionIDType SessionID;		//会话编号
@@ -393,7 +393,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpNotifyRiskCheckClientConnected
+	class XtpNotifyRiskCheckClientConnectedField
 	{
 	public:
 		SessionIDType SessionID;		//会话编号
@@ -401,7 +401,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpNotifyRiskCheckClientDisConnected
+	class XtpNotifyRiskCheckClientDisConnectedField
 	{
 	public:
 		SessionIDType SessionID;		//会话编号
@@ -409,7 +409,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpNotifyTradeFrontConnected
+	class XtpNotifyTradeFrontConnectedField
 	{
 	public:
 		SessionIDType SessionID;		//会话编号
@@ -417,7 +417,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpNotifyTradeFrontDisConnected
+	class XtpNotifyTradeFrontDisConnectedField
 	{
 	public:
 		SessionIDType SessionID;		//会话编号
@@ -425,7 +425,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpNotifyRiskFrontConnected
+	class XtpNotifyRiskFrontConnectedField
 	{
 	public:
 		SessionIDType SessionID;		//会话编号
@@ -433,7 +433,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpNotifyRiskFrontDisConnected
+	class XtpNotifyRiskFrontDisConnectedField
 	{
 	public:
 		SessionIDType SessionID;		//会话编号
@@ -441,7 +441,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpNotifyAdminFrontConnected
+	class XtpNotifyAdminFrontConnectedField
 	{
 	public:
 		SessionIDType SessionID;		//会话编号
@@ -449,7 +449,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpNotifyAdminFrontDisConnected
+	class XtpNotifyAdminFrontDisConnectedField
 	{
 	public:
 		SessionIDType SessionID;		//会话编号
@@ -457,7 +457,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpNotifyOfferFrontConnected
+	class XtpNotifyOfferFrontConnectedField
 	{
 	public:
 		SessionIDType SessionID;		//会话编号
@@ -465,7 +465,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpNotifyOfferFrontDisConnected
+	class XtpNotifyOfferFrontDisConnectedField
 	{
 	public:
 		SessionIDType SessionID;		//会话编号
@@ -473,7 +473,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpNotifyInitComplete
+	class XtpNotifyInitCompleteField
 	{
 	public:
 		DateType TradingDay;		//交易日
@@ -481,7 +481,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRspNotifyInitComplete
+	class XtpRspNotifyInitCompleteField
 	{
 	public:
 		DateType TradingDay;		//交易日
@@ -489,7 +489,7 @@ namespace xtp
 		const char* GetString() const;
 		const char* GetDebugString() const;
 	};
-	class XtpRtnRiskCheckOrder
+	class XtpRtnRiskCheckOrderField
 	{
 	public:
 		DateType TradingDay;		//交易日

@@ -5,600 +5,600 @@ thread_local char t_XtpDataStringBuffer[10240];
 
 namespace xtp
 {
-	const char* XtpSessionClose::GetString() const
+	const char* XtpSessionCloseField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%d,%s",
 			ErrorID, ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpSessionClose::GetDebugString() const
+	const char* XtpSessionCloseField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpSessionClose:ErrorID:[%d], ErrorMsg:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpSessionCloseField:ErrorID:[%d], ErrorMsg:[%s]",
 			ErrorID, ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpReqOfferLogin::GetString() const
+	const char* XtpReqOfferLoginField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%d,%s",
 			OfferID, OfferPassword);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpReqOfferLogin::GetDebugString() const
+	const char* XtpReqOfferLoginField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpReqOfferLogin:OfferID:[%d], OfferPassword:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpReqOfferLoginField:OfferID:[%d], OfferPassword:[%s]",
 			OfferID, OfferPassword);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRspOfferLogin::GetString() const
+	const char* XtpRspOfferLoginField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%d,%s,%d,%s",
 			ErrorID, ErrorMsg, OfferID, TradingDay);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRspOfferLogin::GetDebugString() const
+	const char* XtpRspOfferLoginField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRspOfferLogin:ErrorID:[%d], ErrorMsg:[%s], OfferID:[%d], TradingDay:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpRspOfferLoginField:ErrorID:[%d], ErrorMsg:[%s], OfferID:[%d], TradingDay:[%s]",
 			ErrorID, ErrorMsg, OfferID, TradingDay);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpReqPrimaryAccountLogin::GetString() const
+	const char* XtpReqPrimaryAccountLoginField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s",
 			PrimaryAccountID, Password);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpReqPrimaryAccountLogin::GetDebugString() const
+	const char* XtpReqPrimaryAccountLoginField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpReqPrimaryAccountLogin:PrimaryAccountID:[%s], Password:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpReqPrimaryAccountLoginField:PrimaryAccountID:[%s], Password:[%s]",
 			PrimaryAccountID, Password);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRspPrimaryAccountLogin::GetString() const
+	const char* XtpRspPrimaryAccountLoginField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%d,%s,%s,%s",
 			ErrorID, ErrorMsg, TradingDay, PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRspPrimaryAccountLogin::GetDebugString() const
+	const char* XtpRspPrimaryAccountLoginField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRspPrimaryAccountLogin:ErrorID:[%d], ErrorMsg:[%s], TradingDay:[%s], PrimaryAccountID:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpRspPrimaryAccountLoginField:ErrorID:[%d], ErrorMsg:[%s], TradingDay:[%s], PrimaryAccountID:[%s]",
 			ErrorID, ErrorMsg, TradingDay, PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpReqPrimaryAccountLogout::GetString() const
+	const char* XtpReqPrimaryAccountLogoutField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s",
 			TradingDay, PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpReqPrimaryAccountLogout::GetDebugString() const
+	const char* XtpReqPrimaryAccountLogoutField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpReqPrimaryAccountLogout:TradingDay:[%s], PrimaryAccountID:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpReqPrimaryAccountLogoutField:TradingDay:[%s], PrimaryAccountID:[%s]",
 			TradingDay, PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRtnPrimaryAccountLogout::GetString() const
+	const char* XtpRtnPrimaryAccountLogoutField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s",
 			TradingDay, PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRtnPrimaryAccountLogout::GetDebugString() const
+	const char* XtpRtnPrimaryAccountLogoutField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRtnPrimaryAccountLogout:TradingDay:[%s], PrimaryAccountID:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpRtnPrimaryAccountLogoutField:TradingDay:[%s], PrimaryAccountID:[%s]",
 			TradingDay, PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpReqPrimaryAccountInit::GetString() const
+	const char* XtpReqPrimaryAccountInitField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s",
 			PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpReqPrimaryAccountInit::GetDebugString() const
+	const char* XtpReqPrimaryAccountInitField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpReqPrimaryAccountInit:PrimaryAccountID:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpReqPrimaryAccountInitField:PrimaryAccountID:[%s]",
 			PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRspPrimaryAccountInit::GetString() const
+	const char* XtpRspPrimaryAccountInitField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%d,%s,%s",
 			ErrorID, ErrorMsg, PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRspPrimaryAccountInit::GetDebugString() const
+	const char* XtpRspPrimaryAccountInitField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRspPrimaryAccountInit:ErrorID:[%d], ErrorMsg:[%s], PrimaryAccountID:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpRspPrimaryAccountInitField:ErrorID:[%d], ErrorMsg:[%s], PrimaryAccountID:[%s]",
 			ErrorID, ErrorMsg, PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpReqPrimaryAccountQuery::GetString() const
+	const char* XtpReqPrimaryAccountQueryField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s",
 			PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpReqPrimaryAccountQuery::GetDebugString() const
+	const char* XtpReqPrimaryAccountQueryField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpReqPrimaryAccountQuery:PrimaryAccountID:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpReqPrimaryAccountQueryField:PrimaryAccountID:[%s]",
 			PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRspPrimaryAccountQuery::GetString() const
+	const char* XtpRspPrimaryAccountQueryField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%d,%s,%s",
 			ErrorID, ErrorMsg, PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRspPrimaryAccountQuery::GetDebugString() const
+	const char* XtpRspPrimaryAccountQueryField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRspPrimaryAccountQuery:ErrorID:[%d], ErrorMsg:[%s], PrimaryAccountID:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpRspPrimaryAccountQueryField:ErrorID:[%d], ErrorMsg:[%s], PrimaryAccountID:[%s]",
 			ErrorID, ErrorMsg, PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpReqQryOptionInstrument::GetString() const
+	const char* XtpReqQryOptionInstrumentField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s",
 			PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpReqQryOptionInstrument::GetDebugString() const
+	const char* XtpReqQryOptionInstrumentField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpReqQryOptionInstrument:PrimaryAccountID:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpReqQryOptionInstrumentField:PrimaryAccountID:[%s]",
 			PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRspQryOptionInstrument::GetString() const
+	const char* XtpRspQryOptionInstrumentField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%d,%s,%s",
 			ErrorID, ErrorMsg, PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRspQryOptionInstrument::GetDebugString() const
+	const char* XtpRspQryOptionInstrumentField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRspQryOptionInstrument:ErrorID:[%d], ErrorMsg:[%s], PrimaryAccountID:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpRspQryOptionInstrumentField:ErrorID:[%d], ErrorMsg:[%s], PrimaryAccountID:[%s]",
 			ErrorID, ErrorMsg, PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRtnOptionInstrument::GetString() const
+	const char* XtpRtnOptionInstrumentField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s,%s,%s,%s,%d,%d,%s,%f,%f,%f,%d,%d,%s",
 			TradingDay, ExchangeID, InstrumentID, ExchangeInstID, InstrumentName, VolumeMultiple, (int)OptionType, UnderlyingInstrumentID, ExecutePrice, UnitMargin, PriceTick, MaxLimitOrderVolume, MaxMarketOrderVolume, ExpiringDate);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRtnOptionInstrument::GetDebugString() const
+	const char* XtpRtnOptionInstrumentField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRtnOptionInstrument:TradingDay:[%s], ExchangeID:[%s], InstrumentID:[%s], ExchangeInstID:[%s], InstrumentName:[%s], VolumeMultiple:[%d], OptionType:[%d], UnderlyingInstrumentID:[%s], ExecutePrice:[%f], UnitMargin:[%f], PriceTick:[%f], MaxLimitOrderVolume:[%d], MaxMarketOrderVolume:[%d], ExpiringDate:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpRtnOptionInstrumentField:TradingDay:[%s], ExchangeID:[%s], InstrumentID:[%s], ExchangeInstID:[%s], InstrumentName:[%s], VolumeMultiple:[%d], OptionType:[%d], UnderlyingInstrumentID:[%s], ExecutePrice:[%f], UnitMargin:[%f], PriceTick:[%f], MaxLimitOrderVolume:[%d], MaxMarketOrderVolume:[%d], ExpiringDate:[%s]",
 			TradingDay, ExchangeID, InstrumentID, ExchangeInstID, InstrumentName, VolumeMultiple, (int)OptionType, UnderlyingInstrumentID, ExecutePrice, UnitMargin, PriceTick, MaxLimitOrderVolume, MaxMarketOrderVolume, ExpiringDate);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpReqInsertOrder::GetString() const
+	const char* XtpReqInsertOrderField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s,%s,%s,%d,%d,%d,%d,%d,%f,%d",
 			TradingDay, PrimaryAccountID, ExchangeID, InstrumentID, (int)SecurityType, OrderID, (int)Direction, (int)OffsetFlag, (int)OrderPriceType, Price, Volume);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpReqInsertOrder::GetDebugString() const
+	const char* XtpReqInsertOrderField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpReqInsertOrder:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d]",
+		sprintf(t_XtpDataStringBuffer, "XtpReqInsertOrderField:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d]",
 			TradingDay, PrimaryAccountID, ExchangeID, InstrumentID, (int)SecurityType, OrderID, (int)Direction, (int)OffsetFlag, (int)OrderPriceType, Price, Volume);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpReqCancelOrder::GetString() const
+	const char* XtpReqCancelOrderField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s,%s,%s,%d,%d,%d,%d,%s",
 			TradingDay, PrimaryAccountID, ExchangeID, InstrumentID, (int)SecurityType, (int)Direction, CancelOrderID, OrderID, OrderSysID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpReqCancelOrder::GetDebugString() const
+	const char* XtpReqCancelOrderField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpReqCancelOrder:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], Direction:[%d], CancelOrderID:[%d], OrderID:[%d], OrderSysID:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpReqCancelOrderField:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], Direction:[%d], CancelOrderID:[%d], OrderID:[%d], OrderSysID:[%s]",
 			TradingDay, PrimaryAccountID, ExchangeID, InstrumentID, (int)SecurityType, (int)Direction, CancelOrderID, OrderID, OrderSysID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRtnOrder::GetString() const
+	const char* XtpRtnOrderField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s,%s,%s,%d,%s,%d,%d,%d,%f,%d,%d,%d,%d,%s,%s,%s,%s,%s,%d",
 			TradingDay, PrimaryAccountID, ExchangeID, InstrumentID, OrderID, OrderSysID, (int)Direction, (int)OffsetFlag, (int)OrderPriceType, Price, Volume, VolumeTotal, VolumeTraded, (int)OrderStatus, StatusMsg, OrderDate, OrderTime, CancelDate, CancelTime, IsNewOrder);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRtnOrder::GetDebugString() const
+	const char* XtpRtnOrderField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRtnOrder:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], IsNewOrder:[%d]",
+		sprintf(t_XtpDataStringBuffer, "XtpRtnOrderField:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], IsNewOrder:[%d]",
 			TradingDay, PrimaryAccountID, ExchangeID, InstrumentID, OrderID, OrderSysID, (int)Direction, (int)OffsetFlag, (int)OrderPriceType, Price, Volume, VolumeTotal, VolumeTraded, (int)OrderStatus, StatusMsg, OrderDate, OrderTime, CancelDate, CancelTime, IsNewOrder);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRtnTrade::GetString() const
+	const char* XtpRtnTradeField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s,%s,%s,%d,%s,%s,%d,%d,%f,%d,%s,%s",
 			TradingDay, PrimaryAccountID, ExchangeID, InstrumentID, OrderID, OrderSysID, TradeID, (int)Direction, (int)OffsetFlag, Price, Volume, TradeDate, TradeTime);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRtnTrade::GetDebugString() const
+	const char* XtpRtnTradeField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRtnTrade:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%d], TradeDate:[%s], TradeTime:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpRtnTradeField:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%d], TradeDate:[%s], TradeTime:[%s]",
 			TradingDay, PrimaryAccountID, ExchangeID, InstrumentID, OrderID, OrderSysID, TradeID, (int)Direction, (int)OffsetFlag, Price, Volume, TradeDate, TradeTime);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRtnErrorCancelOrder::GetString() const
+	const char* XtpRtnErrorCancelOrderField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%d,%s,%s,%s,%s,%s,%d,%d,%d,%s",
 			ErrorID, ErrorMsg, TradingDay, PrimaryAccountID, ExchangeID, InstrumentID, (int)Direction, CancelOrderID, OrderID, OrderSysID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRtnErrorCancelOrder::GetDebugString() const
+	const char* XtpRtnErrorCancelOrderField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRtnErrorCancelOrder:ErrorID:[%d], ErrorMsg:[%s], TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], Direction:[%d], CancelOrderID:[%d], OrderID:[%d], OrderSysID:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpRtnErrorCancelOrderField:ErrorID:[%d], ErrorMsg:[%s], TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], Direction:[%d], CancelOrderID:[%d], OrderID:[%d], OrderSysID:[%s]",
 			ErrorID, ErrorMsg, TradingDay, PrimaryAccountID, ExchangeID, InstrumentID, (int)Direction, CancelOrderID, OrderID, OrderSysID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRtnCapital::GetString() const
+	const char* XtpRtnCapitalField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s,%f",
 			TradingDay, PrimaryAccountID, PreCashAsset);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRtnCapital::GetDebugString() const
+	const char* XtpRtnCapitalField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRtnCapital:TradingDay:[%s], PrimaryAccountID:[%s], PreCashAsset:[%f]",
+		sprintf(t_XtpDataStringBuffer, "XtpRtnCapitalField:TradingDay:[%s], PrimaryAccountID:[%s], PreCashAsset:[%f]",
 			TradingDay, PrimaryAccountID, PreCashAsset);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRtnPosition::GetString() const
+	const char* XtpRtnPositionField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s,%s,%s,%d,%d,%d,%f,%f,%f",
 			TradingDay, PrimaryAccountID, ExchangeID, InstrumentID, (int)PosiDirection, TotalPosition, PositionFrozen, TotalCostPrice, Margin, MarketValue);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRtnPosition::GetDebugString() const
+	const char* XtpRtnPositionField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRtnPosition:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], PosiDirection:[%d], TotalPosition:[%d], PositionFrozen:[%d], TotalCostPrice:[%f], Margin:[%f], MarketValue:[%f]",
+		sprintf(t_XtpDataStringBuffer, "XtpRtnPositionField:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], PosiDirection:[%d], TotalPosition:[%d], PositionFrozen:[%d], TotalCostPrice:[%f], Margin:[%f], MarketValue:[%f]",
 			TradingDay, PrimaryAccountID, ExchangeID, InstrumentID, (int)PosiDirection, TotalPosition, PositionFrozen, TotalCostPrice, Margin, MarketValue);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpReqMDOfferLogin::GetString() const
+	const char* XtpReqMDOfferLoginField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s",
 			UserID, Password);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpReqMDOfferLogin::GetDebugString() const
+	const char* XtpReqMDOfferLoginField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpReqMDOfferLogin:UserID:[%s], Password:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpReqMDOfferLoginField:UserID:[%s], Password:[%s]",
 			UserID, Password);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRspMDOfferLogin::GetString() const
+	const char* XtpRspMDOfferLoginField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%d,%s",
 			ErrorID, ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRspMDOfferLogin::GetDebugString() const
+	const char* XtpRspMDOfferLoginField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRspMDOfferLogin:ErrorID:[%d], ErrorMsg:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpRspMDOfferLoginField:ErrorID:[%d], ErrorMsg:[%s]",
 			ErrorID, ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpReqMDInit::GetString() const
+	const char* XtpReqMDInitField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s",
 			ExchangeID, TradingDay);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpReqMDInit::GetDebugString() const
+	const char* XtpReqMDInitField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpReqMDInit:ExchangeID:[%s], TradingDay:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpReqMDInitField:ExchangeID:[%s], TradingDay:[%s]",
 			ExchangeID, TradingDay);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRspMDInit::GetString() const
+	const char* XtpRspMDInitField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s,%d,%s",
 			ExchangeID, TradingDay, ErrorID, ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRspMDInit::GetDebugString() const
+	const char* XtpRspMDInitField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRspMDInit:ExchangeID:[%s], TradingDay:[%s], ErrorID:[%d], ErrorMsg:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpRspMDInitField:ExchangeID:[%s], TradingDay:[%s], ErrorID:[%d], ErrorMsg:[%s]",
 			ExchangeID, TradingDay, ErrorID, ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpReqSubscribeMD::GetString() const
+	const char* XtpReqSubscribeMDField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s",
 			ExchangeID, InstrumentID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpReqSubscribeMD::GetDebugString() const
+	const char* XtpReqSubscribeMDField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpReqSubscribeMD:ExchangeID:[%s], InstrumentID:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpReqSubscribeMDField:ExchangeID:[%s], InstrumentID:[%s]",
 			ExchangeID, InstrumentID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRspSubscribeMD::GetString() const
+	const char* XtpRspSubscribeMDField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s,%d,%s",
 			ExchangeID, InstrumentID, ErrorID, ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRspSubscribeMD::GetDebugString() const
+	const char* XtpRspSubscribeMDField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRspSubscribeMD:ExchangeID:[%s], InstrumentID:[%s], ErrorID:[%d], ErrorMsg:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpRspSubscribeMDField:ExchangeID:[%s], InstrumentID:[%s], ErrorID:[%d], ErrorMsg:[%s]",
 			ExchangeID, InstrumentID, ErrorID, ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRtnShortMD::GetString() const
+	const char* XtpRtnShortMDField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s,%s,%f,%f,%f,%f,%f,%f,%f",
 			TradingDay, ExchangeID, InstrumentID, LastPrice, ClosePrice, PreClosePrice, SettlementPrice, PreSettlementPrice, UpperLimitPrice, LowerLimitPrice);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRtnShortMD::GetDebugString() const
+	const char* XtpRtnShortMDField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRtnShortMD:TradingDay:[%s], ExchangeID:[%s], InstrumentID:[%s], LastPrice:[%f], ClosePrice:[%f], PreClosePrice:[%f], SettlementPrice:[%f], PreSettlementPrice:[%f], UpperLimitPrice:[%f], LowerLimitPrice:[%f]",
+		sprintf(t_XtpDataStringBuffer, "XtpRtnShortMDField:TradingDay:[%s], ExchangeID:[%s], InstrumentID:[%s], LastPrice:[%f], ClosePrice:[%f], PreClosePrice:[%f], SettlementPrice:[%f], PreSettlementPrice:[%f], UpperLimitPrice:[%f], LowerLimitPrice:[%f]",
 			TradingDay, ExchangeID, InstrumentID, LastPrice, ClosePrice, PreClosePrice, SettlementPrice, PreSettlementPrice, UpperLimitPrice, LowerLimitPrice);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRtnExchangeStatus::GetString() const
+	const char* XtpRtnExchangeStatusField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s,%d",
 			ExchangeID, ExchangeDate, (int)ExchangeStatus);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRtnExchangeStatus::GetDebugString() const
+	const char* XtpRtnExchangeStatusField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRtnExchangeStatus:ExchangeID:[%s], ExchangeDate:[%s], ExchangeStatus:[%d]",
+		sprintf(t_XtpDataStringBuffer, "XtpRtnExchangeStatusField:ExchangeID:[%s], ExchangeDate:[%s], ExchangeStatus:[%d]",
 			ExchangeID, ExchangeDate, (int)ExchangeStatus);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRtnInstrument::GetString() const
+	const char* XtpRtnInstrumentField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s,%s,%s,%d,%d",
 			ExchangeID, InstrumentID, ExchangeInstID, InstrumentName, VolumeMultiple, (int)SecurityType);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRtnInstrument::GetDebugString() const
+	const char* XtpRtnInstrumentField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRtnInstrument:ExchangeID:[%s], InstrumentID:[%s], ExchangeInstID:[%s], InstrumentName:[%s], VolumeMultiple:[%d], SecurityType:[%d]",
+		sprintf(t_XtpDataStringBuffer, "XtpRtnInstrumentField:ExchangeID:[%s], InstrumentID:[%s], ExchangeInstID:[%s], InstrumentName:[%s], VolumeMultiple:[%d], SecurityType:[%d]",
 			ExchangeID, InstrumentID, ExchangeInstID, InstrumentName, VolumeMultiple, (int)SecurityType);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRtnMDInitCompleted::GetString() const
+	const char* XtpRtnMDInitCompletedField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s",
 			ExchangeID, TradingDay);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRtnMDInitCompleted::GetDebugString() const
+	const char* XtpRtnMDInitCompletedField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRtnMDInitCompleted:ExchangeID:[%s], TradingDay:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpRtnMDInitCompletedField:ExchangeID:[%s], TradingDay:[%s]",
 			ExchangeID, TradingDay);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpNotifyMdClientConnected::GetString() const
+	const char* XtpNotifyMdClientConnectedField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%lld",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpNotifyMdClientConnected::GetDebugString() const
+	const char* XtpNotifyMdClientConnectedField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpNotifyMdClientConnected:SessionID:[%lld]",
+		sprintf(t_XtpDataStringBuffer, "XtpNotifyMdClientConnectedField:SessionID:[%lld]",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpNotifyMdClientDisConnected::GetString() const
+	const char* XtpNotifyMdClientDisConnectedField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%lld",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpNotifyMdClientDisConnected::GetDebugString() const
+	const char* XtpNotifyMdClientDisConnectedField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpNotifyMdClientDisConnected:SessionID:[%lld]",
+		sprintf(t_XtpDataStringBuffer, "XtpNotifyMdClientDisConnectedField:SessionID:[%lld]",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpNotifyRiskCheckClientConnected::GetString() const
+	const char* XtpNotifyRiskCheckClientConnectedField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%lld",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpNotifyRiskCheckClientConnected::GetDebugString() const
+	const char* XtpNotifyRiskCheckClientConnectedField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpNotifyRiskCheckClientConnected:SessionID:[%lld]",
+		sprintf(t_XtpDataStringBuffer, "XtpNotifyRiskCheckClientConnectedField:SessionID:[%lld]",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpNotifyRiskCheckClientDisConnected::GetString() const
+	const char* XtpNotifyRiskCheckClientDisConnectedField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%lld",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpNotifyRiskCheckClientDisConnected::GetDebugString() const
+	const char* XtpNotifyRiskCheckClientDisConnectedField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpNotifyRiskCheckClientDisConnected:SessionID:[%lld]",
+		sprintf(t_XtpDataStringBuffer, "XtpNotifyRiskCheckClientDisConnectedField:SessionID:[%lld]",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpNotifyTradeFrontConnected::GetString() const
+	const char* XtpNotifyTradeFrontConnectedField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%lld",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpNotifyTradeFrontConnected::GetDebugString() const
+	const char* XtpNotifyTradeFrontConnectedField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpNotifyTradeFrontConnected:SessionID:[%lld]",
+		sprintf(t_XtpDataStringBuffer, "XtpNotifyTradeFrontConnectedField:SessionID:[%lld]",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpNotifyTradeFrontDisConnected::GetString() const
+	const char* XtpNotifyTradeFrontDisConnectedField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%lld",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpNotifyTradeFrontDisConnected::GetDebugString() const
+	const char* XtpNotifyTradeFrontDisConnectedField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpNotifyTradeFrontDisConnected:SessionID:[%lld]",
+		sprintf(t_XtpDataStringBuffer, "XtpNotifyTradeFrontDisConnectedField:SessionID:[%lld]",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpNotifyRiskFrontConnected::GetString() const
+	const char* XtpNotifyRiskFrontConnectedField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%lld",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpNotifyRiskFrontConnected::GetDebugString() const
+	const char* XtpNotifyRiskFrontConnectedField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpNotifyRiskFrontConnected:SessionID:[%lld]",
+		sprintf(t_XtpDataStringBuffer, "XtpNotifyRiskFrontConnectedField:SessionID:[%lld]",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpNotifyRiskFrontDisConnected::GetString() const
+	const char* XtpNotifyRiskFrontDisConnectedField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%lld",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpNotifyRiskFrontDisConnected::GetDebugString() const
+	const char* XtpNotifyRiskFrontDisConnectedField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpNotifyRiskFrontDisConnected:SessionID:[%lld]",
+		sprintf(t_XtpDataStringBuffer, "XtpNotifyRiskFrontDisConnectedField:SessionID:[%lld]",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpNotifyAdminFrontConnected::GetString() const
+	const char* XtpNotifyAdminFrontConnectedField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%lld",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpNotifyAdminFrontConnected::GetDebugString() const
+	const char* XtpNotifyAdminFrontConnectedField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpNotifyAdminFrontConnected:SessionID:[%lld]",
+		sprintf(t_XtpDataStringBuffer, "XtpNotifyAdminFrontConnectedField:SessionID:[%lld]",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpNotifyAdminFrontDisConnected::GetString() const
+	const char* XtpNotifyAdminFrontDisConnectedField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%lld",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpNotifyAdminFrontDisConnected::GetDebugString() const
+	const char* XtpNotifyAdminFrontDisConnectedField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpNotifyAdminFrontDisConnected:SessionID:[%lld]",
+		sprintf(t_XtpDataStringBuffer, "XtpNotifyAdminFrontDisConnectedField:SessionID:[%lld]",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpNotifyOfferFrontConnected::GetString() const
+	const char* XtpNotifyOfferFrontConnectedField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%lld",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpNotifyOfferFrontConnected::GetDebugString() const
+	const char* XtpNotifyOfferFrontConnectedField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpNotifyOfferFrontConnected:SessionID:[%lld]",
+		sprintf(t_XtpDataStringBuffer, "XtpNotifyOfferFrontConnectedField:SessionID:[%lld]",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpNotifyOfferFrontDisConnected::GetString() const
+	const char* XtpNotifyOfferFrontDisConnectedField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%lld",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpNotifyOfferFrontDisConnected::GetDebugString() const
+	const char* XtpNotifyOfferFrontDisConnectedField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpNotifyOfferFrontDisConnected:SessionID:[%lld]",
+		sprintf(t_XtpDataStringBuffer, "XtpNotifyOfferFrontDisConnectedField:SessionID:[%lld]",
 			SessionID);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpNotifyInitComplete::GetString() const
+	const char* XtpNotifyInitCompleteField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s",
 			TradingDay);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpNotifyInitComplete::GetDebugString() const
+	const char* XtpNotifyInitCompleteField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpNotifyInitComplete:TradingDay:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpNotifyInitCompleteField:TradingDay:[%s]",
 			TradingDay);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRspNotifyInitComplete::GetString() const
+	const char* XtpRspNotifyInitCompleteField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s",
 			TradingDay);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRspNotifyInitComplete::GetDebugString() const
+	const char* XtpRspNotifyInitCompleteField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRspNotifyInitComplete:TradingDay:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpRspNotifyInitCompleteField:TradingDay:[%s]",
 			TradingDay);
 		return t_XtpDataStringBuffer;
 	}
 
-	const char* XtpRtnRiskCheckOrder::GetString() const
+	const char* XtpRtnRiskCheckOrderField::GetString() const
 	{
 		sprintf(t_XtpDataStringBuffer, "%s,%s,%s,%s,%s,%d,%d,%d,%s",
 			TradingDay, AccountID, PrimaryAccountID, ExchangeID, InstrumentID, OrderID, RiskID, (int)RiskStatus, RiskMessage);
 		return t_XtpDataStringBuffer;
 	}
-	const char* XtpRtnRiskCheckOrder::GetDebugString() const
+	const char* XtpRtnRiskCheckOrderField::GetDebugString() const
 	{
-		sprintf(t_XtpDataStringBuffer, "XtpRtnRiskCheckOrder:TradingDay:[%s], AccountID:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], RiskID:[%d], RiskStatus:[%d], RiskMessage:[%s]",
+		sprintf(t_XtpDataStringBuffer, "XtpRtnRiskCheckOrderField:TradingDay:[%s], AccountID:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], RiskID:[%d], RiskStatus:[%d], RiskMessage:[%s]",
 			TradingDay, AccountID, PrimaryAccountID, ExchangeID, InstrumentID, OrderID, RiskID, (int)RiskStatus, RiskMessage);
 		return t_XtpDataStringBuffer;
 	}

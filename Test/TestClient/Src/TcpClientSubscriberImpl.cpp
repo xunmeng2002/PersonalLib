@@ -57,7 +57,7 @@ void TcpClientSubscriberImpl::Send(SessionIDType sessionID)
     ++m_MessageCounts[sessionID];
 
     StepReqInsertOrderPackage reqInsertOrder;
-    reqInsertOrder.ReqInsertOrder = new StepReqInsertOrder();
+    reqInsertOrder.ReqInsertOrder = new StepReqInsertOrderField();
     Strcpy(reqInsertOrder.ReqInsertOrder->AccountID, "Xunmeng001");
     Strcpy(reqInsertOrder.ReqInsertOrder->ExchangeID, "SHSE");
     Strcpy(reqInsertOrder.ReqInsertOrder->InstrumentID, "600036");
