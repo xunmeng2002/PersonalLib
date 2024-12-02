@@ -16,8 +16,8 @@ namespace step
 		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) = 0;
 		virtual const char* GetDebugString() const = 0;
 
-		StepHead Head;
-		StepTail Tail;
+		StepHeadField Head;
+		StepTailField Tail;
 	};
 }
 

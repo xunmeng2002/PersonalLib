@@ -4,7 +4,7 @@
 namespace xtp
 {
 	//报文头
-	class XtpHead
+	class XtpHeadField
 	{
 	public:
 		static constexpr UShortType FieldID = 0x0001;
@@ -12,7 +12,7 @@ namespace xtp
 		UShortType BodyLen;		//报文长度
 	};
 	//报文尾
-	class XtpTail
+	class XtpTailField
 	{
 	public:
 		static constexpr UShortType FieldID = 0x0002;

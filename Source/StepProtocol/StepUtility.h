@@ -37,9 +37,9 @@ namespace step
 	void WriteHexString(char*& ppos, int key, unsigned short value);
 
 
-	void HeadToStream(StepHead* head, char* buff, int size);
-	bool HeadFromStream(char* buff, int startIndex, int endIndex, StepHead* head);
-	void TailToStream(StepTail* tail, char* buff, int size);
-	bool TailFromStream(char* buff, int startIndex, int endIndex, StepTail* tail);
+	void HeadToStream(StepHeadField* head, char* buff, int size);
+	bool HeadFromStream(char* buff, int startIndex, int endIndex, StepHeadField* head);
+	void TailToStream(StepTailField* tail, char* buff, int size);
+	bool TailFromStream(char* buff, int startIndex, int endIndex, StepTailField* tail);
 	short CalculateSum(unsigned char* buff, int startIndex, int endIndex);
 }

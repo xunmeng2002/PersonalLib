@@ -4,7 +4,7 @@
 namespace step
 {
 	//报文头
-	class StepHead
+	class StepHeadField
 	{
 	public:
 		static constexpr UShortType FieldID = 0x0001;
@@ -14,7 +14,7 @@ namespace step
 		IntType MsgSeqNum;		//请求编号tag = 5固定长度10位
 	};
 	//报文尾
-	class StepTail
+	class StepTailField
 	{
 	public:
 		static constexpr UShortType FieldID = 0x0002;

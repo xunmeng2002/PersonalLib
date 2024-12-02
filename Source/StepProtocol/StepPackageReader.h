@@ -20,7 +20,7 @@ namespace step
 		StepPackageFactoryBase* m_StepPackageFactory;
 		SessionIDType m_SessionID;
 		IPAddressType m_IPAddress;
-		StepHead m_Head;
-		StepTail m_Tail;
+		StepHeadField m_Head;
+		StepTailField m_Tail;
 	};
 }

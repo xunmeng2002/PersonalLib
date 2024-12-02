@@ -11,15 +11,15 @@ namespace step
 		:m_StepPackageFactory(nullptr), m_SessionID(0LL)
 	{
 		memset(m_IPAddress, 0, sizeof(IPAddressType));
-		memset(&m_Head, 0, sizeof(StepHead));
-		memset(&m_Tail, 0, sizeof(StepTail));
+		memset(&m_Head, 0, sizeof(StepHeadField));
+		memset(&m_Tail, 0, sizeof(StepTailField));
 	}
 	StepPackageReader::StepPackageReader(StepPackageFactoryBase* stepPackageFactory, SessionIDType sessionID, const char* ipAddress)
 		:m_StepPackageFactory(stepPackageFactory), m_SessionID(sessionID)
 	{
 		strcpy(m_IPAddress, ipAddress);
-		memset(&m_Head, 0, sizeof(StepHead));
-		memset(&m_Tail, 0, sizeof(StepTail));
+		memset(&m_Head, 0, sizeof(StepHeadField));
+		memset(&m_Tail, 0, sizeof(StepTailField));
 	}
 	StepPackageReader* StepPackageReader::Allocate(StepPackageFactoryBase* stepPackageFactory, SessionIDType sessionID, const char* ipAddress)
 	{
@@ -27,8 +27,8 @@ namespace step
 		record->m_StepPackageFactory = stepPackageFactory;
 		record->m_SessionID = sessionID;
 		strcpy(record->m_IPAddress, ipAddress);
-		memset(&(record->m_Head), 0, sizeof(StepHead));
-		memset(&(record->m_Tail), 0, sizeof(StepTail));
+		memset(&(record->m_Head), 0, sizeof(StepHeadField));
+		memset(&(record->m_Tail), 0, sizeof(StepTailField));
 		return record;
 	}
 	void StepPackageReader::Free()
@@ -80,8 +80,8 @@ namespace step
 
 		stepPackage->SessionID = m_SessionID;
 		strcpy(stepPackage->IPAddress, m_IPAddress);
-		memcpy(&stepPackage->Head, &m_Head, sizeof(StepHead));
-		memcpy(&stepPackage->Tail, &m_Tail, sizeof(StepTail));
+		memcpy(&stepPackage->Head, &m_Head, sizeof(StepHeadField));
+		memcpy(&stepPackage->Tail, &m_Tail, sizeof(StepTailField));
 		auto ret = stepPackage->FromProtocolStream(m_Data, packageStartIndex + StepHeaderLen, packageStartIndex + StepHeaderLen + m_Head.BodyLen);
 		PopFront(packageStartIndex + StepHeaderLen + m_Head.BodyLen + StepTailLen);
 		return ret;

@@ -163,7 +163,7 @@ namespace step
 		*ppos++ = SOH;
 	}
 
-	void HeadToStream(StepHead* head, char* buff, int size)
+	void HeadToStream(StepHeadField* head, char* buff, int size)
 	{
 		int len = 0;
 		len += ::sprintf(buff + len, "%c%u=%04X%c", SOH, StepItems::PackageID, head->PackageID, SOH);
@@ -173,7 +173,7 @@ namespace step
 		//最后一个不能使用sprintf赋值，因为sprintf会在末尾自动补上0
 		buff[len] = SOH;
 	}
-	bool HeadFromStream(char* buff, int startIndex, int endIndex, StepHead* head)
+	bool HeadFromStream(char* buff, int startIndex, int endIndex, StepHeadField* head)
 	{
 		//跳过报文首个SOH符号
 		startIndex += 1;
@@ -199,7 +199,7 @@ namespace step
 					head->MsgSeqNum = atoi(value.c_str());
 					break;
 				default:
-					WriteLog(LogLevel::Warning, "UnExpected Key:0x%X For StepHead, buff:[%s]", key, buff);
+					WriteLog(LogLevel::Warning, "UnExpected Key:0x%X For StepHeadField, buff:[%s]", key, buff);
 					return false;
 				}
 				startIndex = sohIndex + 1;
@@ -211,11 +211,11 @@ namespace step
 		}
 		return true;
 	}
-	void TailToStream(StepTail* tail, char* buff, int size)
+	void TailToStream(StepTailField* tail, char* buff, int size)
 	{
 		sprintf(buff, "%u=%03u%c", StepItems::CheckSum, tail->CheckSum, SOH);
 	}
-	bool TailFromStream(char* buff, int startIndex, int endIndex, StepTail* tail)
+	bool TailFromStream(char* buff, int startIndex, int endIndex, StepTailField* tail)
 	{
 		while (startIndex < endIndex)
 		{
@@ -230,7 +230,7 @@ namespace step
 					tail->CheckSum = atoi(value.c_str());
 					break;
 				default:
-					WriteLog(LogLevel::Warning, "UnExpected Key:0x%X", key);
+					WriteLog(LogLevel::Warning, "UnExpected Key:0x%X for StepTailField.", key);
 					return false;
 				}
 				startIndex = sohIndex + 1;

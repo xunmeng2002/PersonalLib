@@ -17,8 +17,8 @@ namespace xtp
 		virtual const char* GetString() const = 0;
 		virtual const char* GetDebugString() const = 0;
 
-		XtpHead Head;
-		XtpTail Tail;
+		XtpHeadField Head;
+		XtpTailField Tail;
 	};
 }
 
