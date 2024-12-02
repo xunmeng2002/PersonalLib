@@ -81,7 +81,8 @@
 	
 	<file name="TimeUtility.h" dest="../Libs/PersonalLib/include/" src="./Source/Utility/"/>
 	<file name="Utility.h" dest="../Libs/PersonalLib/include/" src="./Source/Utility/"/>
-	
+
+	<file name="XtpHead.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
 	<file name="XtpInterface.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
 	<file name="XtpPackageBase.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
 	<file name="XtpPackageFactoryBase.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>

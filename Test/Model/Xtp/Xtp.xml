@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xtp>
-	<head>
-		<field name="PackageID" type="UShort" desc="报文代码"/>
-		<field name="BodyLen" type="UShort" desc="报文长度"/>
-	</head>
-	<tail>
-		<field name="CheckSum" type="UShort" desc="校验和"/>
-	</tail>
 	<packages>
-		<package name="SessionClose" 					id="0x0001" desc="会话关闭">
+		<package name="SessionClose" 					id="0x1001" desc="会话关闭">
 			<fields>
 				<field name="ErrorID" type="ErrorID" desc="错误代码"/>
 				<field name="ErrorMsg" type="Message" desc="错误信息"/>
 			</fields>
 		</package>
-		<package name="ReqOfferLogin" 					id="0x0002" desc="交易报盘登录请求">
+		<package name="ReqOfferLogin" 					id="0x1002" desc="交易报盘登录请求">
 			<fields>
 				<field name="OfferID" type="OfferID" desc="报盘代码"/>
 				<field name="OfferPassword" type="Password" desc="报盘密码"/>
 			</fields>
 		</package>
-		<package name="RspOfferLogin" 					id="0x0003" desc="交易报盘登录应答">
+		<package name="RspOfferLogin" 					id="0x1003" desc="交易报盘登录应答">
 			<fields>
 				<field name="ErrorID" type="ErrorID" desc="错误代码"/>
 				<field name="ErrorMsg" type="Message" desc="错误信息"/>
@@ -28,13 +21,13 @@
 				<field name="TradingDay" type="Date" desc="交易日"/>
 			</fields>
 		</package>
-		<package name="ReqPrimaryAccountLogin" 			id="0x0004" desc="主账户登录请求">
+		<package name="ReqPrimaryAccountLogin" 			id="0x1004" desc="主账户登录请求">
 			<fields>
 				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
 				<field name="Password" type="Password" desc="密码"/>
 			</fields>
 		</package>
-		<package name="RspPrimaryAccountLogin" 			id="0x0005" desc="主账户登录回报">
+		<package name="RspPrimaryAccountLogin" 			id="0x1005" desc="主账户登录回报">
 			<fields>
 				<field name="ErrorID" type="ErrorID" desc="错误代码"/>
 				<field name="ErrorMsg" type="Message" desc="错误信息"/>
@@ -42,55 +35,55 @@
 				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
 			</fields>
 		</package>
-		<package name="ReqPrimaryAccountLogout" 		id="0x0006" desc="主账户登出请求">
+		<package name="ReqPrimaryAccountLogout" 		id="0x1006" desc="主账户登出请求">
 			<fields>
 				<field name="TradingDay" type="Date" desc="交易日"/>
 				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
 			</fields>
 		</package>
-		<package name="RtnPrimaryAccountLogout" 		id="0x0007" desc="主账户登出推送">
+		<package name="RtnPrimaryAccountLogout" 		id="0x1007" desc="主账户登出推送">
 			<fields>
 				<field name="TradingDay" type="Date" desc="交易日"/>
 				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
 			</fields>
 		</package>
-		<package name="ReqPrimaryAccountInit" 			id="0x0008" desc="主账户初始化请求">
+		<package name="ReqPrimaryAccountInit" 			id="0x1008" desc="主账户初始化请求">
 			<fields>
 				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
 			</fields>
 		</package>
-		<package name="RspPrimaryAccountInit" 			id="0x0009" desc="主账户初始化回报">
-			<fields>
-				<field name="ErrorID" type="ErrorID" desc="错误代码"/>
-				<field name="ErrorMsg" type="Message" desc="错误信息"/>
-				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
-			</fields>
-		</package>
-		<package name="ReqPrimaryAccountQuery" 			id="0x000A" desc="主账户查询请求">
-			<fields>
-				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
-			</fields>
-		</package>
-		<package name="RspPrimaryAccountQuery" 			id="0x000B" desc="主账户查询回报">
+		<package name="RspPrimaryAccountInit" 			id="0x1009" desc="主账户初始化回报">
 			<fields>
 				<field name="ErrorID" type="ErrorID" desc="错误代码"/>
 				<field name="ErrorMsg" type="Message" desc="错误信息"/>
 				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
 			</fields>
 		</package>
-		<package name="ReqQryOptionInstrument" 			id="0x000C" desc="期权合约查询请求">
+		<package name="ReqPrimaryAccountQuery" 			id="0x100A" desc="主账户查询请求">
 			<fields>
 				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
 			</fields>
 		</package>
-		<package name="RspQryOptionInstrument" 			id="0x000D" desc="期权合约查询回报">
+		<package name="RspPrimaryAccountQuery" 			id="0x100B" desc="主账户查询回报">
 			<fields>
 				<field name="ErrorID" type="ErrorID" desc="错误代码"/>
 				<field name="ErrorMsg" type="Message" desc="错误信息"/>
 				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
 			</fields>
 		</package>
-		<package name="RtnOptionInstrument" 			id="0x000E" desc="期权合约推送">
+		<package name="ReqQryOptionInstrument" 			id="0x100C" desc="期权合约查询请求">
+			<fields>
+				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
+			</fields>
+		</package>
+		<package name="RspQryOptionInstrument" 			id="0x100D" desc="期权合约查询回报">
+			<fields>
+				<field name="ErrorID" type="ErrorID" desc="错误代码"/>
+				<field name="ErrorMsg" type="Message" desc="错误信息"/>
+				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
+			</fields>
+		</package>
+		<package name="RtnOptionInstrument" 			id="0x100E" desc="期权合约推送">
 			<fields>
 				<field name="TradingDay" type="Date" desc="交易日"/>
 				<field name="ExchangeID" type="ExchangeID" desc="交易所代码"/>
@@ -110,7 +103,7 @@
 		</package>
 		
 		
-		<package name="ReqInsertOrder" 					id="0x1001" desc="委托请求">
+		<package name="ReqInsertOrder" 					id="0x2001" desc="委托请求">
 			<fields>
 				<field name="TradingDay" type="Date" desc="交易日"/>
 				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
@@ -125,7 +118,7 @@
 				<field name="Volume" type="Volume" desc="委托数量"/>
 			</fields>
 		</package>
-		<package name="ReqCancelOrder" 					id="0x1002" desc="撤单请求">
+		<package name="ReqCancelOrder" 					id="0x2002" desc="撤单请求">
 			<fields>
 				<field name="TradingDay" type="Date" desc="交易日"/>
 				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
@@ -138,7 +131,7 @@
 				<field name="OrderSysID" type="OrderSysID" desc="系统委托编号"/>
 			</fields>
 		</package>
-		<package name="RtnOrder" 						id="0x1003" desc="委托推送">
+		<package name="RtnOrder" 						id="0x2003" desc="委托推送">
 			<fields>
 				<field name="TradingDay" type="Date" desc="交易日"/>
 				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
@@ -162,7 +155,7 @@
 				<field name="IsNewOrder" type="Bool" desc="是否新委托"/>
 			</fields>
 		</package>
-		<package name="RtnTrade" 						id="0x1004" desc="成交推送">
+		<package name="RtnTrade" 						id="0x2004" desc="成交推送">
 			<fields>
 				<field name="TradingDay" type="Date" desc="交易日"/>
 				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
@@ -179,7 +172,7 @@
 				<field name="TradeTime" type="Time" desc="成交时间"/>
 			</fields>
 		</package>
-		<package name="RtnErrorCancelOrder" 			id="0x1005" desc="撤单错误推送">
+		<package name="RtnErrorCancelOrder" 			id="0x2005" desc="撤单错误推送">
 			<fields>
 				<field name="ErrorID" type="ErrorID" desc="错误代码"/>
 				<field name="ErrorMsg" type="Message" desc="错误信息"/>
@@ -193,14 +186,14 @@
 				<field name="OrderSysID" type="OrderSysID" desc="系统委托编号"/>
 			</fields>
 		</package>
-		<package name="RtnCapital" 						id="0x1006" desc="资金推送">
+		<package name="RtnCapital" 						id="0x2006" desc="资金推送">
 			<fields>
 				<field name="TradingDay" type="Date" desc="交易日"/>
 				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
 				<field name="PreCashAsset" type="Money" desc="上日现金资产"/>
 			</fields>
 		</package>
-		<package name="RtnPosition" 					id="0x1007" desc="持仓推送">
+		<package name="RtnPosition" 					id="0x2007" desc="持仓推送">
 			<fields>
 				<field name="TradingDay" type="Date" desc="交易日"/>
 				<field name="PrimaryAccountID" type="AccountID" desc="主账户代码"/>
@@ -215,25 +208,25 @@
 			</fields>
 		</package>
 		
-		<package name="ReqMDOfferLogin" 				id="0x2001" desc="行情报盘登录请求">
+		<package name="ReqMDOfferLogin" 				id="0x3001" desc="行情报盘登录请求">
 			<fields>
 				<field name="UserID" type="UserID" desc="用户代码"/>
 				<field name="Password" type="Password" desc="密码"/>
 			</fields>
 		</package>
-		<package name="RspMDOfferLogin" 				id="0x2002" desc="行情报盘登录应答">
+		<package name="RspMDOfferLogin" 				id="0x3002" desc="行情报盘登录应答">
 			<fields>
 				<field name="ErrorID" type="ErrorID" desc="错误代码"/>
 				<field name="ErrorMsg" type="Message" desc="错误信息"/>
 			</fields>
 		</package>
-		<package name="ReqMDInit" 						id="0x2003" desc="行情初始化请求">
+		<package name="ReqMDInit" 						id="0x3003" desc="行情初始化请求">
 			<fields>
 				<field name="ExchangeID" type="ExchangeID" desc="交易所代码"/>
 				<field name="TradingDay" type="Date" desc="交易日"/>
 			</fields>
 		</package>
-		<package name="RspMDInit" 						id="0x2004" desc="行情初始化应答">
+		<package name="RspMDInit" 						id="0x3004" desc="行情初始化应答">
 			<fields>
 				<field name="ExchangeID" type="ExchangeID" desc="交易所代码"/>
 				<field name="TradingDay" type="Date" desc="交易日"/>
@@ -241,13 +234,13 @@
 				<field name="ErrorMsg" type="Message" desc="错误信息"/>
 			</fields>
 		</package>
-		<package name="ReqSubscribeMD" 					id="0x2005" desc="订阅行情请求">
+		<package name="ReqSubscribeMD" 					id="0x3005" desc="订阅行情请求">
 			<fields>
 				<field name="ExchangeID" type="ExchangeID" desc="交易所代码"/>
 				<field name="InstrumentID" type="InstrumentID" desc="合约代码"/>
 			</fields>
 		</package>
-		<package name="RspSubscribeMD" 					id="0x2006" desc="订阅行情应答">
+		<package name="RspSubscribeMD" 					id="0x3006" desc="订阅行情应答">
 			<fields>
 				<field name="ExchangeID" type="ExchangeID" desc="交易所代码"/>
 				<field name="InstrumentID" type="InstrumentID" desc="合约代码"/>
@@ -256,7 +249,7 @@
 			</fields>
 		</package>
 
-		<package name="RtnShortMD" 						id="0x3001" desc="简短行情推送">
+		<package name="RtnShortMD" 						id="0x3101" desc="简短行情推送">
 			<fields>
 				<field name="TradingDay" type="Date" desc="交易日"/>
 				<field name="ExchangeID" type="ExchangeID" desc="交易所代码"/>
@@ -270,14 +263,14 @@
 				<field name="LowerLimitPrice" type="Price" desc="跌停板价"/>
 			</fields>
 		</package>
-		<package name="RtnExchangeStatus" 				id="0x3002" desc="交易所状态推送">
+		<package name="RtnExchangeStatus" 				id="0x3102" desc="交易所状态推送">
 			<fields>
 				<field name="ExchangeID" type="ExchangeID" desc="交易所代码"/>
 				<field name="ExchangeDate" type="Date" desc="交易所日期"/>
 				<field name="ExchangeStatus" type="ExchangeStatus" desc="交易所状态"/>
 			</fields>
 		</package>
-		<package name="RtnInstrument" 					id="0x3003" desc="合约推送">
+		<package name="RtnInstrument" 					id="0x3103" desc="合约推送">
 			<fields>
 				<field name="ExchangeID" type="ExchangeID" desc="交易所代码"/>
 				<field name="InstrumentID" type="InstrumentID" desc="合约代码"/>
@@ -287,7 +280,7 @@
 				<field name="SecurityType" type="SecurityType" desc="证券类别"/>
 			</fields>
 		</package>
-		<package name="RtnMDInitCompleted" 				id="0x3004" desc="行情初始化完成推送">
+		<package name="RtnMDInitCompleted" 				id="0x3104" desc="行情初始化完成推送">
 			<fields>
 				<field name="ExchangeID" type="ExchangeID" desc="交易所代码"/>
 				<field name="TradingDay" type="Date" desc="交易日"/>
