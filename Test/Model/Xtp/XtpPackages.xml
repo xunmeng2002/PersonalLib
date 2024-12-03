@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<packages>
+	<package name="ReqOfferLogin" id="0x0002" desc="交易报盘登录请求">
+		<field name="ReqOfferLogin" id="0x0002" desc="交易报盘登录请求">
+			<item name="OfferID" id="0x100F" type="OfferID" desc="报盘代码"/>
+			<item name="OfferPassword" id="0x2803" type="Password" desc="报盘密码"/>
+		</field>
+	</package>
+	<package name="RspOfferLogin" id="0x0003" desc="交易报盘登录应答">
+		<field name="RspOfferLogin" id="0x0003" desc="交易报盘登录应答">
+			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
+			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
+			<item name="OfferID" id="0x100F" type="OfferID" desc="报盘代码"/>
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+		</field>
+	</package>
+	<package name="ReqPrimaryAccountLogin" id="0x0004" desc="主账户登录请求">
+		<field name="ReqPrimaryAccountLogin" id="0x0004" desc="主账户登录请求">
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+			<item name="Password" id="0x2801" type="Password" desc="密码"/>
+		</field>
+	</package>
+	<package name="RspPrimaryAccountLogin" id="0x0005" desc="主账户登录回报">
+		<field name="RspPrimaryAccountLogin" id="0x0005" desc="主账户登录回报">
+			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
+			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+		</field>
+	</package>
+	<package name="ReqPrimaryAccountLogout" id="0x0006" desc="主账户登出请求">
+		<field name="ReqPrimaryAccountLogout" id="0x0006" desc="主账户登出请求">
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+		</field>
+	</package>
+	<package name="RtnPrimaryAccountLogout" id="0x0007" desc="主账户登出推送">
+		<field name="RtnPrimaryAccountLogout" id="0x0007" desc="主账户登出推送">
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+		</field>
+	</package>
+	<package name="ReqPrimaryAccountInit" id="0x0008" desc="主账户初始化请求">
+		<field name="ReqPrimaryAccountInit" id="0x0008" desc="主账户初始化请求">
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+		</field>
+	</package>
+	<package name="RspPrimaryAccountInit" id="0x0009" desc="主账户初始化回报">
+		<field name="RspPrimaryAccountInit" id="0x0009" desc="主账户初始化回报">
+			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
+			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+		</field>
+	</package>
+	<package name="ReqPrimaryAccountQuery" id="0x000A" desc="主账户查询请求">
+		<field name="ReqPrimaryAccountQuery" id="0x000A" desc="主账户查询请求">
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+		</field>
+	</package>
+	<package name="RspPrimaryAccountQuery" id="0x000B" desc="主账户查询回报">
+		<field name="RspPrimaryAccountQuery" id="0x000B" desc="主账户查询回报">
+			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
+			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+		</field>
+	</package>
+	<package name="ReqQryOptionInstrument" id="0x000C" desc="期权合约查询请求">
+		<field name="ReqQryOptionInstrument" id="0x000C" desc="期权合约查询请求">
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+		</field>
+	</package>
+	<package name="RspQryOptionInstrument" id="0x000D" desc="期权合约查询回报">
+		<field name="RspQryOptionInstrument" id="0x000D" desc="期权合约查询回报">
+			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
+			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+		</field>
+	</package>
+	<package name="RtnOptionInstrument" id="0x000E" desc="期权合约推送">
+		<field name="RtnOptionInstrument" id="0x000E" desc="期权合约推送">
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
+			<item name="ExchangeInstID" id="0x101D" type="InstrumentID" desc="交易所合约代码"/>
+			<item name="InstrumentName" id="0x2004" type="InstrumentName" desc="合约名称"/>
+			<item name="VolumeMultiple" id="0x8403" type="VolumeMultiple" desc="合约乘数"/>
+			<item name="OptionType" id="0x9015" type="OptionType" desc="期权类型"/>
+			<item name="UnderlyingInstrumentID" id="0x101F" type="InstrumentID" desc="标的合约代码"/>
+			<item name="ExecutePrice" id="0x600F" type="Price" desc="行权价"/>
+			<item name="UnitMargin" id="0x7021" type="Money" desc="单位保证金"/>
+			<item name="PriceTick" id="0x6010" type="Price" desc="最小变动价位"/>
+			<item name="MaxLimitOrderVolume" id="0x4009" type="Volume" desc="限价最大下单数量"/>
+			<item name="MaxMarketOrderVolume" id="0x400A" type="Volume" desc="市价最大下单数量"/>
+			<item name="ExpiringDate" id="0x300D" type="Date" desc="到期日"/>
+		</field>
+	</package>
+	<package name="ReqInsertOrder" id="0x1001" desc="委托请求">
+		<field name="ReqInsertOrder" id="0x1001" desc="委托请求">
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
+			<item name="SecurityType" id="0x9001" type="SecurityType" desc="证券类别"/>
+			<item name="OrderID" id="0x1009" type="OrderID" desc="委托编号"/>
+			<item name="Direction" id="0x9005" type="Direction" desc="买卖方向"/>
+			<item name="OffsetFlag" id="0x9006" type="OffsetFlag" desc="开平标志"/>
+			<item name="OrderPriceType" id="0x9008" type="OrderPriceType" desc="委托价格类型"/>
+			<item name="Price" id="0x6001" type="Price" desc="委托价格"/>
+			<item name="Volume" id="0x4001" type="Volume" desc="委托数量"/>
+		</field>
+	</package>
+	<package name="ReqCancelOrder" id="0x1002" desc="撤单请求">
+		<field name="ReqCancelOrder" id="0x1002" desc="撤单请求">
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
+			<item name="SecurityType" id="0x9001" type="SecurityType" desc="证券类别"/>
+			<item name="Direction" id="0x9005" type="Direction" desc="买卖方向"/>
+			<item name="CancelOrderID" id="0x1023" type="OrderID" desc="本地撤单编号"/>
+			<item name="OrderID" id="0x1009" type="OrderID" desc="委托编号"/>
+			<item name="OrderSysID" id="0x100A" type="OrderSysID" desc="系统委托编号"/>
+		</field>
+	</package>
+	<package name="RtnOrder" id="0x1003" desc="委托推送">
+		<field name="RtnOrder" id="0x1003" desc="委托推送">
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
+			<item name="OrderID" id="0x1009" type="OrderID" desc="委托编号"/>
+			<item name="OrderSysID" id="0x100A" type="OrderSysID" desc="系统委托编号"/>
+			<item name="Direction" id="0x9005" type="Direction" desc="买卖方向"/>
+			<item name="OffsetFlag" id="0x9006" type="OffsetFlag" desc="开平标志"/>
+			<item name="OrderPriceType" id="0x9008" type="OrderPriceType" desc="委托价格类型"/>
+			<item name="Price" id="0x6001" type="Price" desc="委托价格"/>
+			<item name="Volume" id="0x4001" type="Volume" desc="委托数量"/>
+			<item name="VolumeTotal" id="0x4003" type="Volume" desc="剩余数量"/>
+			<item name="VolumeTraded" id="0x4002" type="Volume" desc="成交数量"/>
+			<item name="OrderStatus" id="0x900C" type="OrderStatus" desc="委托状态"/>
+			<item name="StatusMsg" id="0x2402" type="Message" desc="状态信息"/>
+			<item name="OrderDate" id="0x3003" type="Date" desc="委托日期"/>
+			<item name="OrderTime" id="0x3802" type="Time" desc="委托时间"/>
+			<item name="CancelDate" id="0x3004" type="Date" desc="撤单日期"/>
+			<item name="CancelTime" id="0x3803" type="Time" desc="撤单时间"/>
+			<item name="IsNewOrder" id="0x8005" type="Bool" desc="是否新委托"/>
+		</field>
+	</package>
+	<package name="RtnTrade" id="0x1004" desc="成交推送">
+		<field name="RtnTrade" id="0x1004" desc="成交推送">
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
+			<item name="OrderID" id="0x1009" type="OrderID" desc="委托编号"/>
+			<item name="OrderSysID" id="0x100A" type="OrderSysID" desc="系统委托编号"/>
+			<item name="TradeID" id="0x100E" type="TradeID" desc="成交编号"/>
+			<item name="Direction" id="0x9005" type="Direction" desc="买卖方向"/>
+			<item name="OffsetFlag" id="0x9006" type="OffsetFlag" desc="开平标志"/>
+			<item name="Price" id="0x6001" type="Price" desc="委托价格"/>
+			<item name="Volume" id="0x4001" type="Volume" desc="委托数量"/>
+			<item name="TradeDate" id="0x3005" type="Date" desc="成交日期"/>
+			<item name="TradeTime" id="0x3804" type="Time" desc="成交时间"/>
+		</field>
+	</package>
+	<package name="RtnErrorCancelOrder" id="0x1005" desc="撤单错误推送">
+		<field name="RtnErrorCancelOrder" id="0x1005" desc="撤单错误推送">
+			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
+			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
+			<item name="Direction" id="0x9005" type="Direction" desc="买卖方向"/>
+			<item name="CancelOrderID" id="0x1023" type="OrderID" desc="本地撤单编号"/>
+			<item name="OrderID" id="0x1009" type="OrderID" desc="委托编号"/>
+			<item name="OrderSysID" id="0x100A" type="OrderSysID" desc="系统委托编号"/>
+		</field>
+	</package>
+	<package name="RtnCapital" id="0x1006" desc="资金推送">
+		<field name="RtnCapital" id="0x1006" desc="资金推送">
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+			<item name="PreCashAsset" id="0x7006" type="Money" desc="上日现金资产"/>
+		</field>
+	</package>
+	<package name="RtnPosition" id="0x1007" desc="持仓推送">
+		<field name="RtnPosition" id="0x1007" desc="持仓推送">
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
+			<item name="PosiDirection" id="0x9004" type="PosiDirection" desc="持仓方向"/>
+			<item name="TotalPosition" id="0x4005" type="Volume" desc="持仓数量"/>
+			<item name="PositionFrozen" id="0x4006" type="Volume" desc="冻结持仓"/>
+			<item name="TotalCostPrice" id="0x6007" type="Price" desc="总成本价"/>
+			<item name="Margin" id="0x7008" type="Money" desc="保证金"/>
+			<item name="MarketValue" id="0x701C" type="Money" desc="市值"/>
+		</field>
+	</package>
+	<package name="ReqMDOfferLogin" id="0x2001" desc="行情报盘登录请求">
+		<field name="ReqMDOfferLogin" id="0x2001" desc="行情报盘登录请求">
+			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
+			<item name="Password" id="0x2801" type="Password" desc="密码"/>
+		</field>
+	</package>
+	<package name="RspMDOfferLogin" id="0x2002" desc="行情报盘登录应答">
+		<field name="RspMDOfferLogin" id="0x2002" desc="行情报盘登录应答">
+			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
+			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
+		</field>
+	</package>
+	<package name="ReqMDInit" id="0x2003" desc="行情初始化请求">
+		<field name="ReqMDInit" id="0x2003" desc="行情初始化请求">
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+		</field>
+	</package>
+	<package name="RspMDInit" id="0x2004" desc="行情初始化应答">
+		<field name="RspMDInit" id="0x2004" desc="行情初始化应答">
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
+			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
+		</field>
+	</package>
+	<package name="ReqSubscribeMD" id="0x2005" desc="订阅行情请求">
+		<field name="ReqSubscribeMD" id="0x2005" desc="订阅行情请求">
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
+		</field>
+	</package>
+	<package name="RspSubscribeMD" id="0x2006" desc="订阅行情应答">
+		<field name="RspSubscribeMD" id="0x2006" desc="订阅行情应答">
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
+			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
+			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
+		</field>
+	</package>
+	<package name="RtnShortMD" id="0x3001" desc="简短行情推送">
+		<field name="RtnShortMD" id="0x3001" desc="简短行情推送">
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
+			<item name="LastPrice" id="0x6009" type="Price" desc="最新价"/>
+			<item name="ClosePrice" id="0x600A" type="Price" desc="收盘价"/>
+			<item name="PreClosePrice" id="0x600D" type="Price" desc="昨收盘价"/>
+			<item name="SettlementPrice" id="0x600B" type="Price" desc="结算价"/>
+			<item name="PreSettlementPrice" id="0x600E" type="Price" desc="昨结算价"/>
+			<item name="UpperLimitPrice" id="0x6011" type="Price" desc="涨停板价"/>
+			<item name="LowerLimitPrice" id="0x6012" type="Price" desc="跌停板价"/>
+		</field>
+	</package>
+	<package name="RtnExchangeStatus" id="0x3002" desc="交易所状态推送">
+		<field name="RtnExchangeStatus" id="0x3002" desc="交易所状态推送">
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="ExchangeDate" id="0x300E" type="Date" desc="交易所日期"/>
+			<item name="ExchangeStatus" id="0x9017" type="ExchangeStatus" desc="交易所状态"/>
+		</field>
+	</package>
+	<package name="RtnInstrument" id="0x3003" desc="合约推送">
+		<field name="RtnInstrument" id="0x3003" desc="合约推送">
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
+			<item name="ExchangeInstID" id="0x101D" type="InstrumentID" desc="交易所合约代码"/>
+			<item name="InstrumentName" id="0x2004" type="InstrumentName" desc="合约名称"/>
+			<item name="VolumeMultiple" id="0x8403" type="VolumeMultiple" desc="合约乘数"/>
+			<item name="SecurityType" id="0x9001" type="SecurityType" desc="证券类别"/>
+		</field>
+	</package>
+	<package name="RtnMDInitCompleted" id="0x3004" desc="行情初始化完成推送">
+		<field name="RtnMDInitCompleted" id="0x3004" desc="行情初始化完成推送">
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+		</field>
+	</package>
+	<package name="NotifyMdClientConnected" id="0x4001" desc="行情客户端连接成功通知">
+		<field name="NotifyMdClientConnected" id="0x4001" desc="行情客户端连接成功通知">
+			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
+		</field>
+	</package>
+	<package name="NotifyMdClientDisConnected" id="0x4002" desc="行情客户端断开连接通知">
+		<field name="NotifyMdClientDisConnected" id="0x4002" desc="行情客户端断开连接通知">
+			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
+		</field>
+	</package>
+	<package name="NotifyRiskCheckClientConnected" id="0x4003" desc="风控检查客户端连接成功通知">
+		<field name="NotifyRiskCheckClientConnected" id="0x4003" desc="风控检查客户端连接成功通知">
+			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
+		</field>
+	</package>
+	<package name="NotifyRiskCheckClientDisConnected" id="0x4004" desc="风控检查客户端断开连接通知">
+		<field name="NotifyRiskCheckClientDisConnected" id="0x4004" desc="风控检查客户端断开连接通知">
+			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
+		</field>
+	</package>
+	<package name="NotifyTradeFrontConnected" id="0x4005" desc="交易前置连接成功通知">
+		<field name="NotifyTradeFrontConnected" id="0x4005" desc="交易前置连接成功通知">
+			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
+		</field>
+	</package>
+	<package name="NotifyTradeFrontDisConnected" id="0x4006" desc="交易前置断开连接通知">
+		<field name="NotifyTradeFrontDisConnected" id="0x4006" desc="交易前置断开连接通知">
+			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
+		</field>
+	</package>
+	<package name="NotifyRiskFrontConnected" id="0x4007" desc="风控前置连接成功通知">
+		<field name="NotifyRiskFrontConnected" id="0x4007" desc="风控前置连接成功通知">
+			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
+		</field>
+	</package>
+	<package name="NotifyRiskFrontDisConnected" id="0x4008" desc="风控前置断开连接通知">
+		<field name="NotifyRiskFrontDisConnected" id="0x4008" desc="风控前置断开连接通知">
+			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
+		</field>
+	</package>
+	<package name="NotifyAdminFrontConnected" id="0x4009" desc="管理前置连接成功通知">
+		<field name="NotifyAdminFrontConnected" id="0x4009" desc="管理前置连接成功通知">
+			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
+		</field>
+	</package>
+	<package name="NotifyAdminFrontDisConnected" id="0x400A" desc="管理前置断开连接通知">
+		<field name="NotifyAdminFrontDisConnected" id="0x400A" desc="管理前置断开连接通知">
+			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
+		</field>
+	</package>
+	<package name="NotifyOfferFrontConnected" id="0x400B" desc="报盘前置连接成功通知">
+		<field name="NotifyOfferFrontConnected" id="0x400B" desc="报盘前置连接成功通知">
+			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
+		</field>
+	</package>
+	<package name="NotifyOfferFrontDisConnected" id="0x400C" desc="报盘前置断开连接通知">
+		<field name="NotifyOfferFrontDisConnected" id="0x400C" desc="报盘前置断开连接通知">
+			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
+		</field>
+	</package>
+	<package name="NotifyInitComplete" id="0x400D" desc="初始化完成通知">
+		<field name="NotifyInitComplete" id="0x400D" desc="初始化完成通知">
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+		</field>
+	</package>
+	<package name="RspNotifyInitComplete" id="0x400E" desc="初始化完成通知回报">
+		<field name="RspNotifyInitComplete" id="0x400E" desc="初始化完成通知回报">
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+		</field>
+	</package>
+	<package name="RtnRiskCheckOrder" id="0x5001" desc="风控检查委托推送">
+		<field name="RtnRiskCheckOrder" id="0x5001" desc="风控检查委托推送">
+			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
+			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
+			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
+			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
+			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
+			<item name="OrderID" id="0x1009" type="OrderID" desc="委托编号"/>
+			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
+			<item name="RiskStatus" id="0x900D" type="RiskStatus" desc="风控状态"/>
+			<item name="RiskMessage" id="0x2403" type="Message" desc="风控信息"/>
+		</field>
+	</package>
+</packages>

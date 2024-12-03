@@ -1,162 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <packages>
 	<package name="ReqAccountLogin" id="0x0001" desc="账户登录请求">
-		<field name="ReqAccountLogin" id="0x0004" array="false" desc="账户登录请求">
+		<field name="ReqAccountLogin" id="0x1004" desc="账户登录请求">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="Password" id="0x2801" type="Password" desc="密码"/>
 		</field>
 	</package>
 	<package name="RspAccountLogin" id="0x0002" desc="账户登录请求应答">
-		<field name="RspAccountLogin" id="0x0005" array="false" desc="账户登录应答">
+		<field name="RspAccountLogin" id="0x1005" desc="账户登录应答">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="LoginDate" id="0x3002" type="Date" desc="登录日期"/>
 			<item name="LoginTime" id="0x3801" type="Time" desc="登录时间"/>
 			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAccountLogout" id="0x0003" desc="账户登出请求">
-		<field name="ReqAccountLogout" id="0x0006" array="false" desc="账户登出请求">
+		<field name="ReqAccountLogout" id="0x1006" desc="账户登出请求">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RspAccountLogout" id="0x0004" desc="账户登出请求应答">
-		<field name="RspAccountLogout" id="0x0007" array="false" desc="账户登出应答">
+		<field name="RspAccountLogout" id="0x1007" desc="账户登出应答">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="RtnAccountLogout" id="0x0005" desc="账户登出推送">
-		<field name="AccountLogout" id="0x0008" array="false" desc="账户登出">
+		<field name="AccountLogout" id="0x1008" desc="账户登出">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRiskUserLogin" id="0x0006" desc="风控用户登录请求">
-		<field name="ReqRiskUserLogin" id="0x0009" array="false" desc="风控用户登录请求">
+		<field name="ReqRiskUserLogin" id="0x1009" desc="风控用户登录请求">
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="Password" id="0x2801" type="Password" desc="密码"/>
 		</field>
 	</package>
 	<package name="RspRiskUserLogin" id="0x0007" desc="风控用户登录请求应答">
-		<field name="RspRiskUserLogin" id="0x000A" array="false" desc="风控用户登录请求应答">
+		<field name="RspRiskUserLogin" id="0x100A" desc="风控用户登录请求应答">
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="RiskGroupID" id="0x1014" type="GroupID" desc="交易组代码"/>
 			<item name="LoginDate" id="0x3002" type="Date" desc="登录日期"/>
 			<item name="LoginTime" id="0x3801" type="Time" desc="登录时间"/>
 			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRiskUserLogout" id="0x0008" desc="风控用户登出请求">
-		<field name="ReqRiskUserLogout" id="0x000B" array="false" desc="风控用户登出请求">
+		<field name="ReqRiskUserLogout" id="0x100B" desc="风控用户登出请求">
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 		</field>
 	</package>
 	<package name="RspRiskUserLogout" id="0x0009" desc="风控用户登出请求应答">
-		<field name="RspRiskUserLogout" id="0x000C" array="false" desc="风控用户登出请求应答">
+		<field name="RspRiskUserLogout" id="0x100C" desc="风控用户登出请求应答">
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="RtnRiskUserLogout" id="0x000A" desc="风控用户登出推送">
-		<field name="RiskUserLogout" id="0x000D" array="false" desc="风控用户登出">
+		<field name="RiskUserLogout" id="0x100D" desc="风控用户登出">
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAdminUserLogin" id="0x000B" desc="管理用户登录请求">
-		<field name="ReqAdminUserLogin" id="0x000E" array="false" desc="管理用户登录请求">
+		<field name="ReqAdminUserLogin" id="0x100E" desc="管理用户登录请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="Password" id="0x2801" type="Password" desc="密码"/>
 		</field>
 	</package>
 	<package name="RspAdminUserLogin" id="0x000C" desc="管理用户登录请求应答">
-		<field name="RspAdminUserLogin" id="0x000F" array="false" desc="管理用户登录请求应答">
+		<field name="RspAdminUserLogin" id="0x100F" desc="管理用户登录请求应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="LoginDate" id="0x3002" type="Date" desc="登录日期"/>
 			<item name="LoginTime" id="0x3801" type="Time" desc="登录时间"/>
 			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAdminUserLogout" id="0x000D" desc="管理用户登出请求">
-		<field name="ReqAdminUserLogout" id="0x0010" array="false" desc="管理用户登出请求">
+		<field name="ReqAdminUserLogout" id="0x1010" desc="管理用户登出请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 		</field>
 	</package>
 	<package name="RspAdminUserLogout" id="0x000E" desc="管理用户登出请求应答">
-		<field name="RspAdminUserLogout" id="0x0011" array="false" desc="管理用户登出请求应答">
+		<field name="RspAdminUserLogout" id="0x1011" desc="管理用户登出请求应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="RtnAdminUserLogout" id="0x000F" desc="风控用户登出推送">
-		<field name="AdminUserLogout" id="0x0012" array="false" desc="管理用户登出">
+		<field name="AdminUserLogout" id="0x1012" desc="管理用户登出">
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqMdUserLogin" id="0x0010" desc="行情用户登录请求">
-		<field name="ReqMdUserLogin" id="0x0013" array="false" desc="行情用户登录请求">
-			<item name="MdUserID" id="0x1021" type="UserID" desc="行情用户代码"/>
+		<field name="ReqMdUserLogin" id="0x1013" desc="行情用户登录请求">
+			<item name="MdUserID" id="0x1022" type="UserID" desc="行情用户代码"/>
 			<item name="Password" id="0x2801" type="Password" desc="密码"/>
 		</field>
 	</package>
 	<package name="RspMdUserLogin" id="0x0011" desc="行情用户登录请求应答">
-		<field name="RspMdUserLogin" id="0x0014" array="false" desc="行情用户登录请求应答">
-			<item name="MdUserID" id="0x1021" type="UserID" desc="行情用户代码"/>
+		<field name="RspMdUserLogin" id="0x1014" desc="行情用户登录请求应答">
+			<item name="MdUserID" id="0x1022" type="UserID" desc="行情用户代码"/>
 			<item name="LoginDate" id="0x3002" type="Date" desc="登录日期"/>
 			<item name="LoginTime" id="0x3801" type="Time" desc="登录时间"/>
 			<item name="SessionID" id="0x1010" type="SessionID" desc="会话编号"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqMdUserLogout" id="0x0012" desc="行情用户登出请求">
-		<field name="ReqMdUserLogout" id="0x0015" array="false" desc="行情用户登出请求">
-			<item name="MdUserID" id="0x1021" type="UserID" desc="行情用户代码"/>
+		<field name="ReqMdUserLogout" id="0x1015" desc="行情用户登出请求">
+			<item name="MdUserID" id="0x1022" type="UserID" desc="行情用户代码"/>
 		</field>
 	</package>
 	<package name="RspMdUserLogout" id="0x0013" desc="行情用户登出请求应答">
-		<field name="RspMdUserLogout" id="0x0016" array="false" desc="行情用户登出请求应答">
-			<item name="MdUserID" id="0x1021" type="UserID" desc="行情用户代码"/>
+		<field name="RspMdUserLogout" id="0x1016" desc="行情用户登出请求应答">
+			<item name="MdUserID" id="0x1022" type="UserID" desc="行情用户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqQryAccount" id="0x1001" desc="查询账户请求">
-		<field name="ReqQryAccount" id="0x1001" array="false" desc="查询账户请求">
+		<field name="ReqQryAccount" id="0x2001" desc="查询账户请求">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RspQryAccount" id="0x1002" desc="查询账户应答">
-		<field name="Account" id="0x1002" array="false" desc="账户">
+		<field name="Account" id="0x2002" desc="账户">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="AccountType" id="0x9002" type="AccountType" desc="账户类型"/>
 			<item name="AccountStatus" id="0x9003" type="AccountStatus" desc="账户状态"/>
@@ -164,34 +164,34 @@
 			<item name="RiskGroupID" id="0x1014" type="GroupID" desc="交易组代码"/>
 			<item name="CommissionGroupID" id="0x1015" type="GroupID" desc="交易组代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqQryHolderAccount" id="0x1003" desc="查询股东账户请求">
-		<field name="ReqQryHolderAccount" id="0x1003" array="false" desc="查询股东账户请求">
+		<field name="ReqQryHolderAccount" id="0x2003" desc="查询股东账户请求">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RspQryHolderAccount" id="0x1004" desc="查询股东账户应答">
-		<field name="HolderAccount" id="0x1004" array="false" desc="股东账户">
+		<field name="HolderAccount" id="0x2004" desc="股东账户">
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="HolderAccountID" id="0x101E" type="AccountID" desc="股东账户代码"/>
 			<item name="PrimaryFlag" id="0x9014" type="Bool" desc="主账号标志"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqQryCapital" id="0x1005" desc="查询资金请求">
-		<field name="ReqQryCapital" id="0x1006" array="false" desc="查询资金请求">
+		<field name="ReqQryCapital" id="0x2006" desc="查询资金请求">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RspQryCapital" id="0x1006" desc="查询资金应答">
-		<field name="Capital" id="0x1007" array="false" desc="资金">
+		<field name="Capital" id="0x2007" desc="资金">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="AccountType" id="0x9002" type="AccountType" desc="账户类型"/>
@@ -217,18 +217,18 @@
 			<item name="Deposit" id="0x7012" type="Money" desc="入金"/>
 			<item name="Withdraw" id="0x7013" type="Money" desc="出金"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqQryPosition" id="0x1007" desc="查询持仓请求">
-		<field name="ReqQryPosition" id="0x1008" array="false" desc="查询持仓请求">
+		<field name="ReqQryPosition" id="0x2008" desc="查询持仓请求">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RspQryPosition" id="0x1008" desc="查询持仓应答">
-		<field name="Position" id="0x1009" array="false" desc="持仓">
+		<field name="Position" id="0x2009" desc="持仓">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="AccountType" id="0x9002" type="AccountType" desc="账户类型"/>
@@ -256,13 +256,13 @@
 			<item name="LastPrice" id="0x6009" type="Price" desc="最新价"/>
 			<item name="PrePrice" id="0x600C" type="Price" desc="昨收盘价或昨结算价"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="RtnPosition" id="0x1009" desc="持仓推送">
-		<field name="Position" id="0x1009" array="false" desc="持仓">
+		<field name="Position" id="0x2009" desc="持仓">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="AccountType" id="0x9002" type="AccountType" desc="账户类型"/>
@@ -292,12 +292,12 @@
 		</field>
 	</package>
 	<package name="ReqQryOrder" id="0x100A" desc="查询委托请求">
-		<field name="ReqQryOrder" id="0x100A" array="false" desc="查询委托请求">
+		<field name="ReqQryOrder" id="0x200A" desc="查询委托请求">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RspQryOrder" id="0x100B" desc="查询委托应答">
-		<field name="Order" id="0x100B" array="false" desc="委托">
+		<field name="Order" id="0x200B" desc="委托">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -328,13 +328,13 @@
 			<item name="FrozenStampTax" id="0x7019" type="Money" desc="冻结印花税"/>
 			<item name="FrozenTransferFee" id="0x701B" type="Money" desc="冻结过户费"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="RtnOrder" id="0x100C" desc="委托推送">
-		<field name="Order" id="0x100B" array="false" desc="委托">
+		<field name="Order" id="0x200B" desc="委托">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -367,12 +367,12 @@
 		</field>
 	</package>
 	<package name="ReqQryTrade" id="0x100D" desc="查询成交请求">
-		<field name="ReqQryTrade" id="0x100C" array="false" desc="查询成交请求">
+		<field name="ReqQryTrade" id="0x200C" desc="查询成交请求">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RspQryTrade" id="0x100E" desc="查询成交应答">
-		<field name="Trade" id="0x100D" array="false" desc="成交">
+		<field name="Trade" id="0x200D" desc="成交">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -393,13 +393,13 @@
 			<item name="TradeDate" id="0x3005" type="Date" desc="成交日期"/>
 			<item name="TradeTime" id="0x3804" type="Time" desc="成交时间"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="RtnTrade" id="0x100F" desc="成交推送">
-		<field name="Trade" id="0x100D" array="false" desc="成交">
+		<field name="Trade" id="0x200D" desc="成交">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -422,13 +422,13 @@
 		</field>
 	</package>
 	<package name="ReqQryInstrument" id="0x1010" desc="查询合约请求">
-		<field name="ReqQryInstrument" id="0x100E" array="false" desc="查询合约请求">
+		<field name="ReqQryInstrument" id="0x200E" desc="查询合约请求">
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
 		</field>
 	</package>
 	<package name="RspQryInstrument" id="0x1011" desc="查询合约应答">
-		<field name="Instrument" id="0x100F" array="false" desc="合约">
+		<field name="Instrument" id="0x200F" desc="合约">
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
 			<item name="ExchangeInstID" id="0x101D" type="InstrumentID" desc="交易所合约代码"/>
@@ -436,19 +436,19 @@
 			<item name="VolumeMultiple" id="0x8403" type="VolumeMultiple" desc="合约乘数"/>
 			<item name="SecurityType" id="0x9001" type="SecurityType" desc="证券类别"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqQryOptionInstrument" id="0x1012" desc="查询期权合约请求">
-		<field name="ReqQryOptionInstrument" id="0x1010" array="false" desc="查询期权合约请求">
+		<field name="ReqQryOptionInstrument" id="0x2010" desc="查询期权合约请求">
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
 		</field>
 	</package>
 	<package name="RspQryOptionInstrument" id="0x1013" desc="查询期权合约应答">
-		<field name="OptionInstrument" id="0x1011" array="false" desc="期权合约">
+		<field name="OptionInstrument" id="0x2011" desc="期权合约">
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
 			<item name="ExchangeInstID" id="0x101D" type="InstrumentID" desc="交易所合约代码"/>
@@ -463,20 +463,20 @@
 			<item name="MaxMarketOrderVolume" id="0x400A" type="Volume" desc="市价最大下单数量"/>
 			<item name="ExpiringDate" id="0x300D" type="Date" desc="到期日"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqQryCommissionRate" id="0x1014" desc="查询手续费率请求">
-		<field name="ReqQryCommissionRate" id="0x1012" array="false" desc="查询手续费率请求">
+		<field name="ReqQryCommissionRate" id="0x2012" desc="查询手续费率请求">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="SecurityType" id="0x9001" type="SecurityType" desc="证券类别"/>
 		</field>
 	</package>
 	<package name="RspQryCommissionRate" id="0x1015" desc="查询手续费率应答">
-		<field name="CommissionRate" id="0x1013" array="false" desc="手续费率">
+		<field name="CommissionRate" id="0x2013" desc="手续费率">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="SecurityType" id="0x9001" type="SecurityType" desc="证券类别"/>
@@ -491,13 +491,13 @@
 			<item name="MinCommission" id="0x700C" type="Money" desc="最低手续费"/>
 			<item name="MaxCommission" id="0x700D" type="Money" desc="最高手续费"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqInsertOrder" id="0x2001" desc="委托请求">
-		<field name="ReqInsertOrder" id="0x2001" array="false" desc="委托请求">
+		<field name="ReqInsertOrder" id="0x3001" desc="委托请求">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
@@ -510,7 +510,7 @@
 		</field>
 	</package>
 	<package name="RspInsertOrder" id="0x2002" desc="委托应答">
-		<field name="Order" id="0x100B" array="false" desc="委托">
+		<field name="Order" id="0x200B" desc="委托">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -541,13 +541,13 @@
 			<item name="FrozenStampTax" id="0x7019" type="Money" desc="冻结印花税"/>
 			<item name="FrozenTransferFee" id="0x701B" type="Money" desc="冻结过户费"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqCancelOrder" id="0x2003" desc="撤单请求">
-		<field name="ReqCancelOrder" id="0x2002" array="false" desc="撤单请求">
+		<field name="ReqCancelOrder" id="0x3002" desc="撤单请求">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
@@ -558,7 +558,7 @@
 		</field>
 	</package>
 	<package name="RspCancelOrder" id="0x2004" desc="撤单应答">
-		<field name="CancelOrder" id="0x2003" array="false" desc="撤单">
+		<field name="CancelOrder" id="0x3003" desc="撤单">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
@@ -567,45 +567,45 @@
 			<item name="OrderSysID" id="0x100A" type="OrderSysID" desc="系统委托编号"/>
 			<item name="ClientOrderID" id="0x100B" type="ClientOrderID" desc="客户端委托编号"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqMdInit" id="0x2101" desc="行情初始化请求">
-		<field name="ReqMdInit" id="0x2101" array="false" desc="行情初始化请求">
+		<field name="ReqMdInit" id="0x3101" desc="行情初始化请求">
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 		</field>
 	</package>
 	<package name="RspMdInit" id="0x2102" desc="行情初始化应答">
-		<field name="RspMdInit" id="0x2102" array="false" desc="行情初始化应答">
+		<field name="RspMdInit" id="0x3102" desc="行情初始化应答">
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqSubscribeMd" id="0x2103" desc="行情订阅请求">
-		<field name="ReqSubscribeMd" id="0x2103" array="false" desc="行情订阅请求">
+		<field name="ReqSubscribeMd" id="0x3103" desc="行情订阅请求">
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
 		</field>
 	</package>
 	<package name="RspSubscribeMd" id="0x2105" desc="行情订阅应答">
-		<field name="RspSubscribeMd" id="0x2104" array="false" desc="行情订阅应答">
+		<field name="RspSubscribeMd" id="0x3104" desc="行情订阅应答">
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="RtnAccount" id="0x3001" desc="账户推送">
-		<field name="Account" id="0x1002" array="false" desc="账户">
+		<field name="Account" id="0x2002" desc="账户">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="AccountType" id="0x9002" type="AccountType" desc="账户类型"/>
 			<item name="AccountStatus" id="0x9003" type="AccountStatus" desc="账户状态"/>
@@ -615,25 +615,25 @@
 		</field>
 	</package>
 	<package name="RtnAccountDelete" id="0x3002" desc="账户删除推送">
-		<field name="AccountDelete" id="0x1005" array="false" desc="账户删除">
+		<field name="AccountDelete" id="0x2005" desc="账户删除">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RtnAccountRisk" id="0x3003" desc="账户风控推送">
-		<field name="AccountRisk" id="0x3001" array="false" desc="账户风控">
+		<field name="AccountRisk" id="0x3201" desc="账户风控">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 			<item name="RiskStatus" id="0x900D" type="RiskStatus" desc="风控状态"/>
 		</field>
 	</package>
 	<package name="RtnAccountRiskDelete" id="0x3004" desc="账户风控删除推送">
-		<field name="AccountRiskDelete" id="0x3002" array="false" desc="账户风控删除">
+		<field name="AccountRiskDelete" id="0x3202" desc="账户风控删除">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 		</field>
 	</package>
 	<package name="RtnAccountRiskNotify" id="0x3005" desc="账户风控通知推送">
-		<field name="AccountRiskNotify" id="0x3003" array="false" desc="账户风控通知">
+		<field name="AccountRiskNotify" id="0x3203" desc="账户风控通知">
 			<item name="NotifyDate" id="0x300A" type="Date" desc="通知日期"/>
 			<item name="NotifyTime" id="0x3805" type="Time" desc="通知时间"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
@@ -644,7 +644,7 @@
 		</field>
 	</package>
 	<package name="RtnShortMd" id="0x3101" desc="简短行情推送">
-		<field name="ShortMd" id="0x3101" array="false" desc="简短行情推送">
+		<field name="ShortMd" id="0x3301" desc="简短行情推送">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
@@ -658,25 +658,25 @@
 		</field>
 	</package>
 	<package name="RtnExchangeStatus" id="0x3102" desc="交易所状态推送">
-		<field name="RtnExchangeStatus" id="0x3102" array="false" desc="交易所状态推送">
+		<field name="RtnExchangeStatus" id="0x3302" desc="交易所状态推送">
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="ExchangeDate" id="0x300E" type="Date" desc="交易所日期"/>
 			<item name="ExchangeStatus" id="0x9017" type="ExchangeStatus" desc="交易所状态"/>
 		</field>
 	</package>
 	<package name="RtnMdInitCompleted" id="0x3103" desc="行情初始化完成推送">
-		<field name="MdInitCompleted" id="0x3103" array="false" desc="行情初始化完成推送">
+		<field name="MdInitCompleted" id="0x3303" desc="行情初始化完成推送">
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 		</field>
 	</package>
 	<package name="ReqQryRiskGroupAccount" id="0x4001" desc="查询风控组账户请求">
-		<field name="ReqQryRiskGroupAccount" id="0x4001" array="false" desc="查询风控组账户请求">
+		<field name="ReqQryRiskGroupAccount" id="0x4001" desc="查询风控组账户请求">
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 		</field>
 	</package>
 	<package name="RspQryRiskGroupAccount" id="0x4002" desc="查询风控组账户应答">
-		<field name="Account" id="0x1002" array="false" desc="账户">
+		<field name="Account" id="0x2002" desc="账户">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="AccountType" id="0x9002" type="AccountType" desc="账户类型"/>
 			<item name="AccountStatus" id="0x9003" type="AccountStatus" desc="账户状态"/>
@@ -684,19 +684,19 @@
 			<item name="RiskGroupID" id="0x1014" type="GroupID" desc="交易组代码"/>
 			<item name="CommissionGroupID" id="0x1015" type="GroupID" desc="交易组代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqQryRiskGroupCapital" id="0x4003" desc="查询风控组资金请求">
-		<field name="ReqQryRiskGroupCapital" id="0x4002" array="false" desc="查询风控组资金请求">
+		<field name="ReqQryRiskGroupCapital" id="0x4002" desc="查询风控组资金请求">
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RspQryRiskGroupCapital" id="0x4004" desc="查询风控组资金应答">
-		<field name="Capital" id="0x1007" array="false" desc="资金">
+		<field name="Capital" id="0x2007" desc="资金">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="AccountType" id="0x9002" type="AccountType" desc="账户类型"/>
@@ -722,19 +722,19 @@
 			<item name="Deposit" id="0x7012" type="Money" desc="入金"/>
 			<item name="Withdraw" id="0x7013" type="Money" desc="出金"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqQryRiskGroupPosition" id="0x4005" desc="查询持仓请求">
-		<field name="ReqQryRiskGroupPosition" id="0x4003" array="false" desc="查询持仓请求">
+		<field name="ReqQryRiskGroupPosition" id="0x4003" desc="查询持仓请求">
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RspQryRiskGroupPosition" id="0x4006" desc="查询持仓应答">
-		<field name="Position" id="0x1009" array="false" desc="持仓">
+		<field name="Position" id="0x2009" desc="持仓">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="AccountType" id="0x9002" type="AccountType" desc="账户类型"/>
@@ -762,19 +762,19 @@
 			<item name="LastPrice" id="0x6009" type="Price" desc="最新价"/>
 			<item name="PrePrice" id="0x600C" type="Price" desc="昨收盘价或昨结算价"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqQryRiskGroupOrder" id="0x4007" desc="查询委托请求">
-		<field name="ReqQryRiskGroupOrder" id="0x4004" array="false" desc="查询委托请求">
+		<field name="ReqQryRiskGroupOrder" id="0x4004" desc="查询委托请求">
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RspQryRiskGroupOrder" id="0x4008" desc="查询委托应答">
-		<field name="Order" id="0x100B" array="false" desc="委托">
+		<field name="Order" id="0x200B" desc="委托">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -805,19 +805,19 @@
 			<item name="FrozenStampTax" id="0x7019" type="Money" desc="冻结印花税"/>
 			<item name="FrozenTransferFee" id="0x701B" type="Money" desc="冻结过户费"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqQryRiskGroupTrade" id="0x4009" desc="查询成交请求">
-		<field name="ReqQryRiskGroupTrade" id="0x4005" array="false" desc="查询成交请求">
+		<field name="ReqQryRiskGroupTrade" id="0x4005" desc="查询成交请求">
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RspQryRiskGroupTrade" id="0x400A" desc="查询成交应答">
-		<field name="Trade" id="0x100D" array="false" desc="成交">
+		<field name="Trade" id="0x200D" desc="成交">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -838,36 +838,36 @@
 			<item name="TradeDate" id="0x3005" type="Date" desc="成交日期"/>
 			<item name="TradeTime" id="0x3804" type="Time" desc="成交时间"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqQryRiskGroupAccountRisk" id="0x400B" desc="查询风控组账户风控请求">
-		<field name="ReqQryRiskGroupAccountRisk" id="0x4006" array="false" desc="查询风控组账户风控请求">
+		<field name="ReqQryRiskGroupAccountRisk" id="0x4006" desc="查询风控组账户风控请求">
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RspQryRiskGroupAccountRisk" id="0x400C" desc="查询风控组账户风控应答">
-		<field name="AccountRisk" id="0x3001" array="false" desc="账户风控">
+		<field name="AccountRisk" id="0x3201" desc="账户风控">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 			<item name="RiskStatus" id="0x900D" type="RiskStatus" desc="风控状态"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqQryRiskGroupAccountRiskNotify" id="0x400D" desc="查询风控组账户风控通知请求">
-		<field name="ReqQryRiskGroupAccountRiskNotify" id="0x4007" array="false" desc="查询风控组账户风控通知请求">
+		<field name="ReqQryRiskGroupAccountRiskNotify" id="0x4007" desc="查询风控组账户风控通知请求">
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RspQryRiskGroupAccountRiskNotify" id="0x400E" desc="查询风控组账户风控通知应答">
-		<field name="AccountRiskNotify" id="0x3003" array="false" desc="账户风控通知">
+		<field name="AccountRiskNotify" id="0x3203" desc="账户风控通知">
 			<item name="NotifyDate" id="0x300A" type="Date" desc="通知日期"/>
 			<item name="NotifyTime" id="0x3805" type="Time" desc="通知时间"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
@@ -876,13 +876,13 @@
 			<item name="RiskStatus" id="0x900D" type="RiskStatus" desc="风控状态"/>
 			<item name="RiskMessage" id="0x2403" type="Message" desc="风控信息"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRiskInsertOrder" id="0x400F" desc="风控委托请求">
-		<field name="ReqRiskInsertOrder" id="0x4008" array="false" desc="风控委托请求">
+		<field name="ReqRiskInsertOrder" id="0x4008" desc="风控委托请求">
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -897,7 +897,7 @@
 		</field>
 	</package>
 	<package name="RspRiskInsertOrder" id="0x4010" desc="风控委托应答">
-		<field name="Order" id="0x100B" array="false" desc="委托">
+		<field name="Order" id="0x200B" desc="委托">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -928,13 +928,13 @@
 			<item name="FrozenStampTax" id="0x7019" type="Money" desc="冻结印花税"/>
 			<item name="FrozenTransferFee" id="0x701B" type="Money" desc="冻结过户费"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRiskCancelOrder" id="0x4011" desc="风控撤单请求">
-		<field name="ReqRiskCancelOrder" id="0x4009" array="false" desc="风控撤单请求">
+		<field name="ReqRiskCancelOrder" id="0x4009" desc="风控撤单请求">
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -946,7 +946,7 @@
 		</field>
 	</package>
 	<package name="RspRiskCancelOrder" id="0x4012" desc="风控撤单应答">
-		<field name="CancelOrder" id="0x2003" array="false" desc="撤单">
+		<field name="CancelOrder" id="0x3003" desc="撤单">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="InstrumentID" id="0x1007" type="InstrumentID" desc="合约代码"/>
@@ -955,13 +955,13 @@
 			<item name="OrderSysID" id="0x100A" type="OrderSysID" desc="系统委托编号"/>
 			<item name="ClientOrderID" id="0x100B" type="ClientOrderID" desc="客户端委托编号"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddRiskUser" id="0x5001" desc="添加风控用户请求">
-		<field name="ReqAddRiskUser" id="0x5001" array="false" desc="添加风控用户请求">
+		<field name="ReqAddRiskUser" id="0x5001" desc="添加风控用户请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="UserName" id="0x2003" type="UserName" desc="用户名称"/>
@@ -970,17 +970,17 @@
 		</field>
 	</package>
 	<package name="RspAddRiskUser" id="0x5002" desc="添加风控用户应答">
-		<field name="RspAddRiskUser" id="0x5002" array="false" desc="添加风控用户应答">
+		<field name="RspAddRiskUser" id="0x5002" desc="添加风控用户应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqUpdateRiskUser" id="0x5003" desc="更新风控用户请求">
-		<field name="ReqUpdateRiskUser" id="0x5003" array="false" desc="更新风控用户请求">
+		<field name="ReqUpdateRiskUser" id="0x5003" desc="更新风控用户请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="UserName" id="0x2003" type="UserName" desc="用户名称"/>
@@ -989,33 +989,33 @@
 		</field>
 	</package>
 	<package name="RspUpdateRiskUser" id="0x5004" desc="更新风控用户应答">
-		<field name="RspUpdateRiskUser" id="0x5004" array="false" desc="更新风控用户应答">
+		<field name="RspUpdateRiskUser" id="0x5004" desc="更新风控用户应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRemoveRiskUser" id="0x5005" desc="删除风控用户请求">
-		<field name="ReqRemoveRiskUser" id="0x5005" array="false" desc="删除风控用户请求">
+		<field name="ReqRemoveRiskUser" id="0x5005" desc="删除风控用户请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 		</field>
 	</package>
 	<package name="RspRemoveRiskUser" id="0x5006" desc="删除风控用户应答">
-		<field name="RspRemoveRiskUser" id="0x5006" array="false" desc="删除风控用户应答">
+		<field name="RspRemoveRiskUser" id="0x5006" desc="删除风控用户应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddAdminUser" id="0x5007" desc="添加管理用户请求">
-		<field name="ReqAddAdminUser" id="0x5007" array="false" desc="添加管理用户请求">
+		<field name="ReqAddAdminUser" id="0x5007" desc="添加管理用户请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="UserName" id="0x2003" type="UserName" desc="用户名称"/>
@@ -1023,17 +1023,17 @@
 		</field>
 	</package>
 	<package name="RspAddAdminUser" id="0x5008" desc="添加管理用户应答">
-		<field name="RspAddAdminUser" id="0x5008" array="false" desc="添加管理用户应答">
+		<field name="RspAddAdminUser" id="0x5008" desc="添加管理用户应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqUpdateAdminUser" id="0x5009" desc="更新管理用户请求">
-		<field name="ReqUpdateAdminUser" id="0x5009" array="false" desc="更新管理用户请求">
+		<field name="ReqUpdateAdminUser" id="0x5009" desc="更新管理用户请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 			<item name="UserName" id="0x2003" type="UserName" desc="用户名称"/>
@@ -1041,33 +1041,33 @@
 		</field>
 	</package>
 	<package name="RspUpdateAdminUser" id="0x500A" desc="更新管理用户应答">
-		<field name="RspUpdateAdminUser" id="0x500A" array="false" desc="更新管理用户应答">
+		<field name="RspUpdateAdminUser" id="0x500A" desc="更新管理用户应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRemoveAdminUser" id="0x500B" desc="删除管理用户请求">
-		<field name="ReqRemoveAdminUser" id="0x500B" array="false" desc="删除管理用户请求">
+		<field name="ReqRemoveAdminUser" id="0x500B" desc="删除管理用户请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 		</field>
 	</package>
 	<package name="RspRemoveAdminUser" id="0x500C" desc="删除管理用户应答">
-		<field name="RspRemoveAdminUser" id="0x500C" array="false" desc="删除管理用户应答">
+		<field name="RspRemoveAdminUser" id="0x500C" desc="删除管理用户应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="UserID" id="0x1004" type="UserID" desc="用户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddPrimaryAccount" id="0x6001" desc="添加主账号请求">
-		<field name="ReqAddPrimaryAccount" id="0x6001" array="false" desc="添加主账号请求">
+		<field name="ReqAddPrimaryAccount" id="0x6001" desc="添加主账号请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
@@ -1085,17 +1085,17 @@
 		</field>
 	</package>
 	<package name="RspAddPrimaryAccount" id="0x6002" desc="添加主账号应答">
-		<field name="RspAddPrimaryAccount" id="0x6002" array="false" desc="添加主账号应答">
+		<field name="RspAddPrimaryAccount" id="0x6002" desc="添加主账号应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqUpdatePrimaryAccount" id="0x6003" desc="修改主账号请求">
-		<field name="ReqUpdatePrimaryAccount" id="0x6003" array="false" desc="修改主账号请求">
+		<field name="ReqUpdatePrimaryAccount" id="0x6003" desc="修改主账号请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
@@ -1113,33 +1113,33 @@
 		</field>
 	</package>
 	<package name="RspUpdatePrimaryAccount" id="0x6004" desc="修改主账号应答">
-		<field name="RspUpdatePrimaryAccount" id="0x6004" array="false" desc="修改主账号应答">
+		<field name="RspUpdatePrimaryAccount" id="0x6004" desc="修改主账号应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRemovePrimaryAccount" id="0x6005" desc="删除主账号应答">
-		<field name="ReqRemovePrimaryAccount" id="0x6005" array="false" desc="删除主账号应答">
+		<field name="ReqRemovePrimaryAccount" id="0x6005" desc="删除主账号应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
 		</field>
 	</package>
 	<package name="RspRemovePrimaryAccount" id="0x6006" desc="删除主账号应答">
-		<field name="RspRemovePrimaryAccount" id="0x6006" array="false" desc="删除主账号应答">
+		<field name="RspRemovePrimaryAccount" id="0x6006" desc="删除主账号应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="PrimaryAccountID" id="0x1003" type="AccountID" desc="主账户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddAccount" id="0x6007" desc="添加账号请求">
-		<field name="ReqAddAccount" id="0x6007" array="false" desc="添加账号请求">
+		<field name="ReqAddAccount" id="0x6007" desc="添加账号请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
@@ -1153,17 +1153,17 @@
 		</field>
 	</package>
 	<package name="RspAddAccount" id="0x6008" desc="添加账号应答">
-		<field name="RspAddAccount" id="0x6008" array="false" desc="添加账号应答">
+		<field name="RspAddAccount" id="0x6008" desc="添加账号应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqUpdateAccount" id="0x6009" desc="修改账号请求">
-		<field name="ReqUpdateAccount" id="0x6009" array="false" desc="修改账号请求">
+		<field name="ReqUpdateAccount" id="0x6009" desc="修改账号请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
@@ -1177,33 +1177,33 @@
 		</field>
 	</package>
 	<package name="RspUpdateAccount" id="0x600A" desc="修改账号应答">
-		<field name="RspUpdateAccount" id="0x600A" array="false" desc="修改账号应答">
+		<field name="RspUpdateAccount" id="0x600A" desc="修改账号应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRemoveAccount" id="0x600B" desc="删除账号请求">
-		<field name="ReqRemoveAccount" id="0x600B" array="false" desc="删除账号请求">
+		<field name="ReqRemoveAccount" id="0x600B" desc="删除账号请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RspRemoveAccount" id="0x600C" desc="删除账号应答">
-		<field name="RspRemoveAccount" id="0x600C" array="false" desc="删除账号应答">
+		<field name="RspRemoveAccount" id="0x600C" desc="删除账号应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddBaseCommission" id="0x7001" desc="添加基础费率请求">
-		<field name="ReqAddBaseCommission" id="0x7001" array="false" desc="添加基础费率请求">
+		<field name="ReqAddBaseCommission" id="0x7001" desc="添加基础费率请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -1215,19 +1215,19 @@
 		</field>
 	</package>
 	<package name="RspAddBaseCommission" id="0x7002" desc="添加基础费率应答">
-		<field name="RspAddBaseCommission" id="0x7002" array="false" desc="添加基础费率应答">
+		<field name="RspAddBaseCommission" id="0x7002" desc="添加基础费率应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="SecurityType" id="0x9001" type="SecurityType" desc="证券类别"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqUpdateBaseCommission" id="0x7003" desc="更新基础费率请求">
-		<field name="ReqUpdateBaseCommission" id="0x7003" array="false" desc="更新基础费率请求">
+		<field name="ReqUpdateBaseCommission" id="0x7003" desc="更新基础费率请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -1239,19 +1239,19 @@
 		</field>
 	</package>
 	<package name="RspUpdateBaseCommission" id="0x7004" desc="更新基础费率应答">
-		<field name="RspUpdateBaseCommission" id="0x7004" array="false" desc="更新基础费率应答">
+		<field name="RspUpdateBaseCommission" id="0x7004" desc="更新基础费率应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="SecurityType" id="0x9001" type="SecurityType" desc="证券类别"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRemoveBaseCommission" id="0x7005" desc="删除基础费率请求">
-		<field name="ReqRemoveBaseCommission" id="0x7005" array="false" desc="删除基础费率请求">
+		<field name="ReqRemoveBaseCommission" id="0x7005" desc="删除基础费率请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -1259,11 +1259,11 @@
 		</field>
 	</package>
 	<package name="RspRemoveBaseCommission" id="0x7006" desc="删除基础费率应答">
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
-		<field name="RspRemoveBaseCommission" id="0x7006" array="false" desc="删除基础费率应答">
+		<field name="RspRemoveBaseCommission" id="0x7006" desc="删除基础费率应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -1271,7 +1271,7 @@
 		</field>
 	</package>
 	<package name="ReqAddCommissionGroup" id="0x7007" desc="添加手续费组请求">
-		<field name="ReqAddCommissionGroup" id="0x7007" array="false" desc="添加手续费组请求">
+		<field name="ReqAddCommissionGroup" id="0x7007" desc="添加手续费组请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="CommissionGroupID" id="0x1015" type="GroupID" desc="交易组代码"/>
@@ -1291,20 +1291,20 @@
 		</field>
 	</package>
 	<package name="RspAddCommissionGroup" id="0x7008" desc="添加手续费组应答">
-		<field name="RspAddCommissionGroup" id="0x7008" array="false" desc="添加手续费组应答">
+		<field name="RspAddCommissionGroup" id="0x7008" desc="添加手续费组应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="CommissionGroupID" id="0x1015" type="GroupID" desc="交易组代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="SecurityType" id="0x9001" type="SecurityType" desc="证券类别"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqUpdateCommissionGroup" id="0x7009" desc="更新手续费组请求">
-		<field name="ReqUpdateCommissionGroup" id="0x7009" array="false" desc="更新手续费组请求">
+		<field name="ReqUpdateCommissionGroup" id="0x7009" desc="更新手续费组请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="CommissionGroupID" id="0x1015" type="GroupID" desc="交易组代码"/>
@@ -1324,20 +1324,20 @@
 		</field>
 	</package>
 	<package name="RspUpdateCommissionGroup" id="0x700A" desc="更新手续费组应答">
-		<field name="RspUpdateCommissionGroup" id="0x700A" array="false" desc="更新手续费组应答">
+		<field name="RspUpdateCommissionGroup" id="0x700A" desc="更新手续费组应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="CommissionGroupID" id="0x1015" type="GroupID" desc="交易组代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="SecurityType" id="0x9001" type="SecurityType" desc="证券类别"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRemoveCommissionGroup" id="0x700B" desc="删除手续费组请求">
-		<field name="ReqRemoveCommissionGroup" id="0x700B" array="false" desc="删除手续费组请求">
+		<field name="ReqRemoveCommissionGroup" id="0x700B" desc="删除手续费组请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="CommissionGroupID" id="0x1015" type="GroupID" desc="交易组代码"/>
@@ -1346,20 +1346,20 @@
 		</field>
 	</package>
 	<package name="RspRemoveCommissionGroup" id="0x700C" desc="删除手续费组应答">
-		<field name="RspRemoveCommissionGroup" id="0x700C" array="false" desc="删除手续费组应答">
+		<field name="RspRemoveCommissionGroup" id="0x700C" desc="删除手续费组应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="CommissionGroupID" id="0x1015" type="GroupID" desc="交易组代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 			<item name="SecurityType" id="0x9001" type="SecurityType" desc="证券类别"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddOptionMarginParam" id="0x700D" desc="添加保证金参数请求">
-		<field name="ReqAddOptionMarginParam" id="0x700D" array="false" desc="添加手续费组请求">
+		<field name="ReqAddOptionMarginParam" id="0x700D" desc="添加手续费组请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -1368,17 +1368,17 @@
 		</field>
 	</package>
 	<package name="RspAddOptionMarginParam" id="0x700E" desc="添加保证金参数应答">
-		<field name="RspAddOptionMarginParam" id="0x700E" array="false" desc="添加保证金参数应答">
+		<field name="RspAddOptionMarginParam" id="0x700E" desc="添加保证金参数应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqUpdateOptionMarginParam" id="0x700F" desc="更新保证金参数请求">
-		<field name="ReqUpdateOptionMarginParam" id="0x700F" array="false" desc="更新保证金参数请求">
+		<field name="ReqUpdateOptionMarginParam" id="0x700F" desc="更新保证金参数请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
@@ -1387,33 +1387,33 @@
 		</field>
 	</package>
 	<package name="RspUpdateOptionMarginParam" id="0x7010" desc="更新保证金参数应答">
-		<field name="RspUpdateOptionMarginParam" id="0x7010" array="false" desc="更新保证金参数应答">
+		<field name="RspUpdateOptionMarginParam" id="0x7010" desc="更新保证金参数应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRemoveOptionMarginParam" id="0x7011" desc="删除保证金参数请求">
-		<field name="ReqRemoveOptionMarginParam" id="0x7011" array="false" desc="删除保证金参数请求">
+		<field name="ReqRemoveOptionMarginParam" id="0x7011" desc="删除保证金参数请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 		</field>
 	</package>
 	<package name="RspRemoveOptionMarginParam" id="0x7012" desc="删除保证金参数应答">
-		<field name="RspRemoveOptionMarginParam" id="0x7012" array="false" desc="删除保证金参数应答">
+		<field name="RspRemoveOptionMarginParam" id="0x7012" desc="删除保证金参数应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="ExchangeID" id="0x1005" type="ExchangeID" desc="交易所代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddTradeOffer" id="0x8001" desc="添加交易报盘请求">
-		<field name="ReqAddTradeOffer" id="0x8001" array="false" desc="添加交易报盘请求">
+		<field name="ReqAddTradeOffer" id="0x8001" desc="添加交易报盘请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="OfferID" id="0x100F" type="OfferID" desc="报盘代码"/>
 			<item name="OfferName" id="0x2006" type="OfferName" desc="报盘名称"/>
@@ -1422,17 +1422,17 @@
 		</field>
 	</package>
 	<package name="RspAddTradeOffer" id="0x8002" desc="添加交易报盘应答">
-		<field name="RspAddTradeOffer" id="0x8002" array="false" desc="添加交易报盘应答">
+		<field name="RspAddTradeOffer" id="0x8002" desc="添加交易报盘应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="OfferID" id="0x100F" type="OfferID" desc="报盘代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqUpdateTradeOffer" id="0x8003" desc="更新交易报盘请求">
-		<field name="ReqUpdateTradeOffer" id="0x8003" array="false" desc="更新交易报盘请求">
+		<field name="ReqUpdateTradeOffer" id="0x8003" desc="更新交易报盘请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="OfferID" id="0x100F" type="OfferID" desc="报盘代码"/>
 			<item name="OfferName" id="0x2006" type="OfferName" desc="报盘名称"/>
@@ -1441,83 +1441,83 @@
 		</field>
 	</package>
 	<package name="RspUpdateTradeOffer" id="0x8004" desc="更新交易报盘应答">
-		<field name="RspUpdateTradeOffer" id="0x8004" array="false" desc="更新交易报盘应答">
+		<field name="RspUpdateTradeOffer" id="0x8004" desc="更新交易报盘应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="OfferID" id="0x100F" type="OfferID" desc="报盘代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRemoveTradeOffer" id="0x8005" desc="删除交易报盘请求">
-		<field name="ReqRemoveTradeOffer" id="0x8005" array="false" desc="删除交易报盘请求">
+		<field name="ReqRemoveTradeOffer" id="0x8005" desc="删除交易报盘请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="OfferID" id="0x100F" type="OfferID" desc="报盘代码"/>
 		</field>
 	</package>
 	<package name="RspRemoveTradeOffer" id="0x8006" desc="删除交易报盘应答">
-		<field name="RspRemoveTradeOffer" id="0x8006" array="false" desc="删除交易报盘应答">
+		<field name="RspRemoveTradeOffer" id="0x8006" desc="删除交易报盘应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="OfferID" id="0x100F" type="OfferID" desc="报盘代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddTradeGroup" id="0x8007" desc="添加交易组请求">
-		<field name="ReqAddTradeGroup" id="0x8007" array="false" desc="添加交易组请求">
+		<field name="ReqAddTradeGroup" id="0x8007" desc="添加交易组请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradeGroupID" id="0x1013" type="GroupID" desc="交易组代码"/>
 			<item name="TradeGroupName" id="0x2008" type="GroupName" desc="交易组名称"/>
 		</field>
 	</package>
 	<package name="RspAddTradeGroup" id="0x8008" desc="添加交易组应答">
-		<field name="RspAddTradeGroup" id="0x8008" array="false" desc="添加交易组应答">
+		<field name="RspAddTradeGroup" id="0x8008" desc="添加交易组应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradeGroupID" id="0x1013" type="GroupID" desc="交易组代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqUpdateTradeGroup" id="0x8009" desc="更新交易组请求">
-		<field name="ReqUpdateTradeGroup" id="0x8009" array="false" desc="更新交易组请求">
+		<field name="ReqUpdateTradeGroup" id="0x8009" desc="更新交易组请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradeGroupID" id="0x1013" type="GroupID" desc="交易组代码"/>
 			<item name="TradeGroupName" id="0x2008" type="GroupName" desc="交易组名称"/>
 		</field>
 	</package>
 	<package name="RspUpdateTradeGroup" id="0x800A" desc="更新交易组应答">
-		<field name="RspUpdateTradeGroup" id="0x800A" array="false" desc="更新交易组应答">
+		<field name="RspUpdateTradeGroup" id="0x800A" desc="更新交易组应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradeGroupID" id="0x1013" type="GroupID" desc="交易组代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRemoveTradeGroup" id="0x800B" desc="删除交易组请求">
-		<field name="ReqRemoveTradeGroup" id="0x800B" array="false" desc="删除交易组请求">
+		<field name="ReqRemoveTradeGroup" id="0x800B" desc="删除交易组请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradeGroupID" id="0x1013" type="GroupID" desc="交易组代码"/>
 		</field>
 	</package>
 	<package name="RspRemoveTradeGroup" id="0x800C" desc="删除交易组应答">
-		<field name="RspRemoveTradeGroup" id="0x800C" array="false" desc="删除交易组应答">
+		<field name="RspRemoveTradeGroup" id="0x800C" desc="删除交易组应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradeGroupID" id="0x1013" type="GroupID" desc="交易组代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddTradeGroupItem" id="0x800D" desc="添加交易组子项请求">
-		<field name="ReqAddTradeGroupItem" id="0x800D" array="false" desc="添加交易组子项请求">
+		<field name="ReqAddTradeGroupItem" id="0x800D" desc="添加交易组子项请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradeGroupID" id="0x1013" type="GroupID" desc="交易组代码"/>
 			<item name="AccountClass" id="0x9013" type="AccountClass" desc="账户类别"/>
@@ -1525,18 +1525,18 @@
 		</field>
 	</package>
 	<package name="RspAddTradeGroupItem" id="0x800E" desc="添加交易组子项应答">
-		<field name="RspAddTradeGroupItem" id="0x800E" array="false" desc="添加交易组子项应答">
+		<field name="RspAddTradeGroupItem" id="0x800E" desc="添加交易组子项应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradeGroupID" id="0x1013" type="GroupID" desc="交易组代码"/>
 			<item name="AccountClass" id="0x9013" type="AccountClass" desc="账户类别"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqUpdateTradeGroupItem" id="0x800F" desc="更新交易组子项请求">
-		<field name="ReqUpdateTradeGroupItem" id="0x800F" array="false" desc="更新交易组子项请求">
+		<field name="ReqUpdateTradeGroupItem" id="0x800F" desc="更新交易组子项请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradeGroupID" id="0x1013" type="GroupID" desc="交易组代码"/>
 			<item name="AccountClass" id="0x9013" type="AccountClass" desc="账户类别"/>
@@ -1544,140 +1544,140 @@
 		</field>
 	</package>
 	<package name="RspUpdateTradeGroupItem" id="0x8010" desc="更新交易组子项应答">
-		<field name="RspUpdateTradeGroupItem" id="0x8010" array="false" desc="更新交易组子项应答">
+		<field name="RspUpdateTradeGroupItem" id="0x8010" desc="更新交易组子项应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradeGroupID" id="0x1013" type="GroupID" desc="交易组代码"/>
 			<item name="AccountClass" id="0x9013" type="AccountClass" desc="账户类别"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRemoveTradeGroupItem" id="0x8011" desc="删除交易组子项请求">
-		<field name="ReqRemoveTradeGroupItem" id="0x8011" array="false" desc="删除交易组子项请求">
+		<field name="ReqRemoveTradeGroupItem" id="0x8011" desc="删除交易组子项请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradeGroupID" id="0x1013" type="GroupID" desc="交易组代码"/>
 			<item name="AccountClass" id="0x9013" type="AccountClass" desc="账户类别"/>
 		</field>
 	</package>
 	<package name="RspRemoveTradeGroupItem" id="0x8012" desc="删除交易组子项应答">
-		<field name="RspRemoveTradeGroupItem" id="0x8012" array="false" desc="删除交易组子项应答">
+		<field name="RspRemoveTradeGroupItem" id="0x8012" desc="删除交易组子项应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradeGroupID" id="0x1013" type="GroupID" desc="交易组代码"/>
 			<item name="AccountClass" id="0x9013" type="AccountClass" desc="账户类别"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddRiskGroup" id="0x9001" desc="添加风控组请求">
-		<field name="ReqAddRiskGroup" id="0x9001" array="false" desc="添加风控组请求">
+		<field name="ReqAddRiskGroup" id="0x9001" desc="添加风控组请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskGroupID" id="0x1014" type="GroupID" desc="交易组代码"/>
 			<item name="RiskGroupName" id="0x2009" type="GroupName" desc="风控组名称"/>
 		</field>
 	</package>
 	<package name="RspAddRiskGroup" id="0x9002" desc="添加风控组应答">
-		<field name="RspAddRiskGroup" id="0x9002" array="false" desc="添加风控组应答">
+		<field name="RspAddRiskGroup" id="0x9002" desc="添加风控组应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskGroupID" id="0x1014" type="GroupID" desc="交易组代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqUpdateRiskGroup" id="0x9003" desc="更新风控组请求">
-		<field name="ReqUpdateRiskGroup" id="0x9003" array="false" desc="更新风控组请求">
+		<field name="ReqUpdateRiskGroup" id="0x9003" desc="更新风控组请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskGroupID" id="0x1014" type="GroupID" desc="交易组代码"/>
 			<item name="RiskGroupName" id="0x2009" type="GroupName" desc="风控组名称"/>
 		</field>
 	</package>
 	<package name="RspUpdateRiskGroup" id="0x9004" desc="更新风控组应答">
-		<field name="RspUpdateRiskGroup" id="0x9004" array="false" desc="更新风控组应答">
+		<field name="RspUpdateRiskGroup" id="0x9004" desc="更新风控组应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskGroupID" id="0x1014" type="GroupID" desc="交易组代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRemoveRiskGroup" id="0x9005" desc="删除风控组请求">
-		<field name="ReqRemoveRiskGroup" id="0x9005" array="false" desc="删除风控组请求">
+		<field name="ReqRemoveRiskGroup" id="0x9005" desc="删除风控组请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskGroupID" id="0x1014" type="GroupID" desc="交易组代码"/>
 		</field>
 	</package>
 	<package name="RspRemoveRiskGroup" id="0x9006" desc="删除风控组应答">
-		<field name="RspRemoveRiskGroup" id="0x9006" array="false" desc="删除风控组应答">
+		<field name="RspRemoveRiskGroup" id="0x9006" desc="删除风控组应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskGroupID" id="0x1014" type="GroupID" desc="交易组代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddRiskGroupItem" id="0x9007" desc="添加风控组子项请求">
-		<field name="ReqAddRiskGroupItem" id="0x9007" array="false" desc="添加风控组子项请求">
+		<field name="ReqAddRiskGroupItem" id="0x9007" desc="添加风控组子项请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskGroupID" id="0x1014" type="GroupID" desc="交易组代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 		</field>
 	</package>
 	<package name="RspAddRiskGroupItem" id="0x9008" desc="添加风控组子项应答">
-		<field name="RspAddRiskGroupItem" id="0x9008" array="false" desc="添加风控组子项应答">
+		<field name="RspAddRiskGroupItem" id="0x9008" desc="添加风控组子项应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskGroupID" id="0x1014" type="GroupID" desc="交易组代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqUpdateRiskGroupItem" id="0x9009" desc="更新风控组子项请求">
-		<field name="ReqUpdateRiskGroupItem" id="0x9009" array="false" desc="更新风控组子项请求">
+		<field name="ReqUpdateRiskGroupItem" id="0x9009" desc="更新风控组子项请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskGroupID" id="0x1014" type="GroupID" desc="交易组代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 		</field>
 	</package>
 	<package name="RspUpdateRiskGroupItem" id="0x900A" desc="更新风控组子项应答">
-		<field name="RspUpdateRiskGroupItem" id="0x900A" array="false" desc="更新风控组子项应答">
+		<field name="RspUpdateRiskGroupItem" id="0x900A" desc="更新风控组子项应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskGroupID" id="0x1014" type="GroupID" desc="交易组代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRemoveRiskGroupItem" id="0x900B" desc="删除风控组子项请求">
-		<field name="ReqRemoveRiskGroupItem" id="0x900B" array="false" desc="删除风控组子项请求">
+		<field name="ReqRemoveRiskGroupItem" id="0x900B" desc="删除风控组子项请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskGroupID" id="0x1014" type="GroupID" desc="交易组代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 		</field>
 	</package>
 	<package name="RspRemoveRiskGroupItem" id="0x900C" desc="删除风控组子项应答">
-		<field name="RspRemoveRiskGroupItem" id="0x900C" array="false" desc="删除风控组子项应答">
+		<field name="RspRemoveRiskGroupItem" id="0x900C" desc="删除风控组子项应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskGroupID" id="0x1014" type="GroupID" desc="交易组代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddOrUpdateRisk" id="0xA001" desc="添加风控请求">
-		<field name="ReqAddOrUpdateRisk" id="0xA001" array="false" desc="添加风控请求">
+		<field name="ReqAddOrUpdateRisk" id="0xA001" desc="添加风控请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 			<item name="RiskName" id="0x2007" type="RiskName" desc="风控名称"/>
@@ -1685,33 +1685,33 @@
 		</field>
 	</package>
 	<package name="RspAddOrUpdateRisk" id="0xA002" desc="添加风控应答">
-		<field name="RspAddOrUpdateRisk" id="0xA002" array="false" desc="添加风控应答">
+		<field name="RspAddOrUpdateRisk" id="0xA002" desc="添加风控应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRemoveRisk" id="0xA003" desc="删除风控请求">
-		<field name="ReqRemoveRisk" id="0xA003" array="false" desc="删除风控请求">
+		<field name="ReqRemoveRisk" id="0xA003" desc="删除风控请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 		</field>
 	</package>
 	<package name="RspRemoveRisk" id="0xA004" desc="删除风控应答">
-		<field name="RspRemoveRisk" id="0xA004" array="false" desc="删除风控应答">
+		<field name="RspRemoveRisk" id="0xA004" desc="删除风控应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddRiskRule" id="0xA005" desc="添加风控规则请求">
-		<field name="ReqAddRiskRule" id="0xA005" array="false" desc="添加风控规则请求">
+		<field name="ReqAddRiskRule" id="0xA005" desc="添加风控规则请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 			<item name="RiskRuleID" id="0x1012" type="RiskRuleID" desc="风控规则代码"/>
@@ -1720,18 +1720,18 @@
 		</field>
 	</package>
 	<package name="RspAddRiskRule" id="0xA006" desc="添加风控规则应答">
-		<field name="RspAddRiskRule" id="0xA006" array="false" desc="添加风控规则应答">
+		<field name="RspAddRiskRule" id="0xA006" desc="添加风控规则应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 			<item name="RiskRuleID" id="0x1012" type="RiskRuleID" desc="风控规则代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddRiskRuleItem" id="0xA007" desc="添加风控规则子项请求">
-		<field name="ReqAddRiskRuleItem" id="0xA007" array="false" desc="添加风控规则子项请求">
+		<field name="ReqAddRiskRuleItem" id="0xA007" desc="添加风控规则子项请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 			<item name="RiskRuleID" id="0x1012" type="RiskRuleID" desc="风控规则代码"/>
@@ -1755,19 +1755,19 @@
 		</field>
 	</package>
 	<package name="RspAddRiskRuleItem" id="0xA008" desc="添加风控规则子项应答">
-		<field name="RspAddRiskRuleItem" id="0xA008" array="false" desc="添加风控规则子项应答">
+		<field name="RspAddRiskRuleItem" id="0xA008" desc="添加风控规则子项应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 			<item name="RiskRuleID" id="0x1012" type="RiskRuleID" desc="风控规则代码"/>
 			<item name="RiskRuleItemID" id="0x101A" type="RiskRuleItemID" desc="风控规则分项编号"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddRiskTradeScope" id="0xA009" desc="添加风控交易范围请求">
-		<field name="ReqAddRiskTradeScope" id="0xA009" array="false" desc="添加风控交易范围请求">
+		<field name="ReqAddRiskTradeScope" id="0xA009" desc="添加风控交易范围请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 			<item name="TradeScopeType" id="0x9012" type="TradeScopeType" desc="交易范围类别"/>
@@ -1776,53 +1776,53 @@
 		</field>
 	</package>
 	<package name="RspAddRiskTradeScope" id="0xA00A" desc="添加风控交易范围应答">
-		<field name="RspAddRiskTradeScope" id="0xA00A" array="false" desc="添加风控交易范围应答">
+		<field name="RspAddRiskTradeScope" id="0xA00A" desc="添加风控交易范围应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqAddAccountRisk" id="0xA00B" desc="添加账户风控请求">
-		<field name="ReqAddAccountRisk" id="0xA00B" array="false" desc="添加账户风控请求">
+		<field name="ReqAddAccountRisk" id="0xA00B" desc="添加账户风控请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 		</field>
 	</package>
 	<package name="RspAddAccountRisk" id="0xA00C" desc="添加账户风控应答">
-		<field name="RspAddAccountRisk" id="0xA00C" array="false" desc="添加账户风控应答">
+		<field name="RspAddAccountRisk" id="0xA00C" desc="添加账户风控应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqRemoveAccountRisk" id="0xA00D" desc="删除账户风控请求">
-		<field name="ReqRemoveAccountRisk" id="0xA00D" array="false" desc="删除账户风控请求">
+		<field name="ReqRemoveAccountRisk" id="0xA00D" desc="删除账户风控请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 		</field>
 	</package>
 	<package name="RspRemoveAccountRisk" id="0xA00E" desc="删除账户风控应答">
-		<field name="RspRemoveAccountRisk" id="0xA00E" array="false" desc="删除账户风控应答">
+		<field name="RspRemoveAccountRisk" id="0xA00E" desc="删除账户风控应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="RiskID" id="0x1011" type="RiskID" desc="风控代码"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqMoneyTransfer" id="0xB001" desc="出入金请求">
-		<field name="ReqMoneyTransfer" id="0xB001" array="false" desc="出入金请求">
+		<field name="ReqMoneyTransfer" id="0xB001" desc="出入金请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
@@ -1837,24 +1837,24 @@
 		</field>
 	</package>
 	<package name="RspMoneyTransfer" id="0xB002" desc="出入金应答">
-		<field name="RspMoneyTransfer" id="0xB002" array="false" desc="出入金应答">
+		<field name="RspMoneyTransfer" id="0xB002" desc="出入金应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="MoneyTransferID" id="0x1017" type="SequenceNo" desc="出入金编号"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="ReqQryMoneyTransfer" id="0xB003" desc="出入金查询请求">
-		<field name="ReqQryMoneyTransfer" id="0xB003" array="false" desc="出入金查询请求">
+		<field name="ReqQryMoneyTransfer" id="0xB003" desc="出入金查询请求">
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 		</field>
 	</package>
 	<package name="RspQryMoneyTransfer" id="0xB004" desc="出入金查询应答">
-		<field name="MoneyTransfer" id="0xB004" array="false" desc="出入金">
+		<field name="MoneyTransfer" id="0xB004" desc="出入金">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="MoneyTransferID" id="0x1017" type="SequenceNo" desc="出入金编号"/>
@@ -1866,13 +1866,13 @@
 			<item name="TransferDate" id="0x300C" type="Date" desc="操作日期"/>
 			<item name="TransferTime" id="0x3807" type="Time" desc="操作时间"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>
 	</package>
 	<package name="RtnMoneyTransfer" id="0xB005" desc="出入金推送">
-		<field name="MoneyTransfer" id="0xB004" array="false" desc="出入金">
+		<field name="MoneyTransfer" id="0xB004" desc="出入金">
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
 			<item name="MoneyTransferID" id="0x1017" type="SequenceNo" desc="出入金编号"/>
@@ -1886,7 +1886,7 @@
 		</field>
 	</package>
 	<package name="ReqAuditOrder" id="0xB006" desc="审核委托请求">
-		<field name="ReqAuditOrder" id="0xB005" array="false" desc="审核委托请求">
+		<field name="ReqAuditOrder" id="0xB005" desc="审核委托请求">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
@@ -1897,7 +1897,7 @@
 		</field>
 	</package>
 	<package name="RspAuditOrder" id="0xB007" desc="审核委托应答">
-		<field name="RspAuditOrder" id="0xB006" array="false" desc="审核委托应答">
+		<field name="RspAuditOrder" id="0xB006" desc="审核委托应答">
 			<item name="AdminUserID" id="0x1020" type="UserID" desc="管理用户代码"/>
 			<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 			<item name="AccountID" id="0x1002" type="AccountID" desc="账户代码"/>
@@ -1906,7 +1906,7 @@
 			<item name="OrderID" id="0x1009" type="OrderID" desc="委托编号"/>
 			<item name="AuditStatus" id="0x9016" type="AuditStatus" desc="审核状态"/>
 		</field>
-		<field name="RspInfo" id="0x0003" array="false" desc="应答信息">
+		<field name="RspInfo" id="0x1003" desc="应答信息">
 			<item name="ErrorID" id="0x1001" type="ErrorID" desc="错误代码"/>
 			<item name="ErrorMsg" id="0x2401" type="Message" desc="错误信息"/>
 		</field>

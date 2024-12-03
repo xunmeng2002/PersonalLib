@@ -45,7 +45,8 @@ namespace step
 		static constexpr unsigned int UnderlyingInstrumentID = 0x101F;
 		static constexpr unsigned int AdminUserID = 0x1020;
 		static constexpr unsigned int RiskUserID = 0x1021;
-		static constexpr unsigned int MdUserID = 0x1021;
+		static constexpr unsigned int MdUserID = 0x1022;
+		static constexpr unsigned int CancelOrderID = 0x1023;
 		static constexpr unsigned int AccountName = 0x2001;
 		static constexpr unsigned int PrimaryAccountName = 0x2002;
 		static constexpr unsigned int UserName = 0x2003;
@@ -164,6 +165,7 @@ namespace step
 		static constexpr unsigned int IsAutoAudit = 0x8002;
 		static constexpr unsigned int IsForceClose = 0x8003;
 		static constexpr unsigned int IsSimulateAccount = 0x8004;
+		static constexpr unsigned int IsNewOrder = 0x8005;
 		static constexpr unsigned int NotifySequenceNo = 0x8401;
 		static constexpr unsigned int LastNotifySequenceNo = 0x8402;
 		static constexpr unsigned int VolumeMultiple = 0x8403;

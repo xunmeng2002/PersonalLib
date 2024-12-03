@@ -1,15 +1,6 @@
 ﻿#pragma once
 #include "Types.h"
 
-class XtpSessionCloseField
-{
-public:
-	ErrorIDType ErrorID;		//错误代码
-	MessageType ErrorMsg;		//错误信息
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
-};
 class XtpReqOfferLoginField
 {
 public:
@@ -130,7 +121,7 @@ public:
 	InstrumentIDType InstrumentID;		//合约代码
 	InstrumentIDType ExchangeInstID;		//交易所合约代码
 	InstrumentNameType InstrumentName;		//合约名称
-	VolumeMultipleType VolumeMultiple;		//合约数量乘数
+	VolumeMultipleType VolumeMultiple;		//合约乘数
 	OptionTypeType OptionType;		//期权类型
 	InstrumentIDType UnderlyingInstrumentID;		//标的合约代码
 	PriceType ExecutePrice;		//行权价
@@ -217,7 +208,7 @@ public:
 	DirectionType Direction;		//买卖方向
 	OffsetFlagType OffsetFlag;		//开平标志
 	PriceType Price;		//委托价格
-	VolumeType Volume;		//成交数量
+	VolumeType Volume;		//委托数量
 	DateType TradeDate;		//成交日期
 	TimeType TradeTime;		//成交时间
 
@@ -260,7 +251,7 @@ public:
 	InstrumentIDType InstrumentID;		//合约代码
 	PosiDirectionType PosiDirection;		//持仓方向
 	VolumeType TotalPosition;		//持仓数量
-	VolumeType PositionFrozen;		//冻结数量
+	VolumeType PositionFrozen;		//冻结持仓
 	PriceType TotalCostPrice;		//总成本价
 	MoneyType Margin;		//保证金
 	MoneyType MarketValue;		//市值
@@ -360,7 +351,7 @@ public:
 	InstrumentIDType InstrumentID;		//合约代码
 	InstrumentIDType ExchangeInstID;		//交易所合约代码
 	InstrumentNameType InstrumentName;		//合约名称
-	VolumeMultipleType VolumeMultiple;		//合约数量乘数
+	VolumeMultipleType VolumeMultiple;		//合约乘数
 	SecurityTypeType SecurityType;		//证券类别
 
 	const char* GetString() const;

@@ -7,54 +7,6 @@
 namespace xtp
 {
  
-	XtpSessionClosePackage::XtpSessionClosePackage()
-	{
-		Head.PackageID = PackageID;
-		Head.BodyLen = 0;
-		Tail.CheckSum = 0;
-		memset(&Field, 0, sizeof(Field));
-	}
-	XtpSessionClosePackage* XtpSessionClosePackage::Allocate()
-	{
-		return ::Allocate<XtpSessionClosePackage>();
-	}
-	void XtpSessionClosePackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		Head.BodyLen = 0;
-		Tail.CheckSum = 0;
-		memset(&Field, 0, sizeof(Field));
-		MemCacheTemplateSingleton<XtpSessionClosePackage>::GetInstance().Free(this);
-	}
-	void XtpSessionClosePackage::Prepare(SessionIDType sessionID)
-	{
-		SessionID = sessionID;
-	}
-	int XtpSessionClosePackage::ToProtocolStream(char* buff, int size) const
-	{
-		memcpy(buff, &Field, sizeof(Field));
-		return sizeof(Field);
-	}
-	bool XtpSessionClosePackage::FromProtocolStream(char* buff, int size)
-	{
-		if (size != sizeof(Field))
-		{
-			return false;
-		}
-		memcpy(&Field, buff, sizeof(Field));
-		return true;
-	}
-	const char* XtpSessionClosePackage::GetString() const
-	{
-		return Field.GetString();
-	}
-	const char* XtpSessionClosePackage::GetDebugString() const
-	{
-		return Field.GetDebugString();
-	}
-	
- 
 	XtpReqOfferLoginPackage::XtpReqOfferLoginPackage()
 	{
 		Head.PackageID = PackageID;

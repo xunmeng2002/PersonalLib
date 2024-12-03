@@ -3,19 +3,6 @@
 
 thread_local char t_XtpDataStringBuffer[10240];
 
-const char* XtpSessionCloseField::GetString() const
-{
-	sprintf(t_XtpDataStringBuffer, "%d,%s",
-		ErrorID, ErrorMsg);
-	return t_XtpDataStringBuffer;
-}
-const char* XtpSessionCloseField::GetDebugString() const
-{
-	sprintf(t_XtpDataStringBuffer, "XtpSessionCloseField:ErrorID:[%d], ErrorMsg:[%s]",
-		ErrorID, ErrorMsg);
-	return t_XtpDataStringBuffer;
-}
-
 const char* XtpReqOfferLoginField::GetString() const
 {
 	sprintf(t_XtpDataStringBuffer, "%d,%s",

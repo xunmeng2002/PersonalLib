@@ -9,10 +9,6 @@ namespace xtp
 	{
 		switch (packageID)
 		{
-		case XtpSessionClosePackage::PackageID:
-		{
-			return XtpSessionClosePackage::Allocate();
-		}
 		case XtpReqOfferLoginPackage::PackageID:
 		{
 			return XtpReqOfferLoginPackage::Allocate();

@@ -4,22 +4,6 @@
 
 namespace xtp
 {
-	class XtpSessionClosePackage : public XtpPackageBase
-	{
-	public:
-		XtpSessionClosePackage();
-		static XtpSessionClosePackage* Allocate();
-		virtual void Free() override;
-		virtual void Prepare(SessionIDType sessionID) override;
-		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
-		virtual const char* GetDebugString() const override;
-	public:
-		static constexpr UShortType PackageID = 0x1001;
-		XtpSessionCloseField Field;
-	};
-
 	class XtpReqOfferLoginPackage : public XtpPackageBase
 	{
 	public:
@@ -32,7 +16,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x1002;
+		static constexpr UShortType PackageID = 0x0002;
 		XtpReqOfferLoginField Field;
 	};
 
@@ -48,7 +32,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x1003;
+		static constexpr UShortType PackageID = 0x0003;
 		XtpRspOfferLoginField Field;
 	};
 
@@ -64,7 +48,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x1004;
+		static constexpr UShortType PackageID = 0x0004;
 		XtpReqPrimaryAccountLoginField Field;
 	};
 
@@ -80,7 +64,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x1005;
+		static constexpr UShortType PackageID = 0x0005;
 		XtpRspPrimaryAccountLoginField Field;
 	};
 
@@ -96,7 +80,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x1006;
+		static constexpr UShortType PackageID = 0x0006;
 		XtpReqPrimaryAccountLogoutField Field;
 	};
 
@@ -112,7 +96,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x1007;
+		static constexpr UShortType PackageID = 0x0007;
 		XtpRtnPrimaryAccountLogoutField Field;
 	};
 
@@ -128,7 +112,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x1008;
+		static constexpr UShortType PackageID = 0x0008;
 		XtpReqPrimaryAccountInitField Field;
 	};
 
@@ -144,7 +128,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x1009;
+		static constexpr UShortType PackageID = 0x0009;
 		XtpRspPrimaryAccountInitField Field;
 	};
 
@@ -160,7 +144,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x100A;
+		static constexpr UShortType PackageID = 0x000A;
 		XtpReqPrimaryAccountQueryField Field;
 	};
 
@@ -176,7 +160,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x100B;
+		static constexpr UShortType PackageID = 0x000B;
 		XtpRspPrimaryAccountQueryField Field;
 	};
 
@@ -192,7 +176,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x100C;
+		static constexpr UShortType PackageID = 0x000C;
 		XtpReqQryOptionInstrumentField Field;
 	};
 
@@ -208,7 +192,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x100D;
+		static constexpr UShortType PackageID = 0x000D;
 		XtpRspQryOptionInstrumentField Field;
 	};
 
@@ -224,7 +208,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x100E;
+		static constexpr UShortType PackageID = 0x000E;
 		XtpRtnOptionInstrumentField Field;
 	};
 
@@ -240,7 +224,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x2001;
+		static constexpr UShortType PackageID = 0x1001;
 		XtpReqInsertOrderField Field;
 	};
 
@@ -256,7 +240,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x2002;
+		static constexpr UShortType PackageID = 0x1002;
 		XtpReqCancelOrderField Field;
 	};
 
@@ -272,7 +256,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x2003;
+		static constexpr UShortType PackageID = 0x1003;
 		XtpRtnOrderField Field;
 	};
 
@@ -288,7 +272,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x2004;
+		static constexpr UShortType PackageID = 0x1004;
 		XtpRtnTradeField Field;
 	};
 
@@ -304,7 +288,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x2005;
+		static constexpr UShortType PackageID = 0x1005;
 		XtpRtnErrorCancelOrderField Field;
 	};
 
@@ -320,7 +304,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x2006;
+		static constexpr UShortType PackageID = 0x1006;
 		XtpRtnCapitalField Field;
 	};
 
@@ -336,7 +320,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x2007;
+		static constexpr UShortType PackageID = 0x1007;
 		XtpRtnPositionField Field;
 	};
 
@@ -352,7 +336,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x3001;
+		static constexpr UShortType PackageID = 0x2001;
 		XtpReqMDOfferLoginField Field;
 	};
 
@@ -368,7 +352,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x3002;
+		static constexpr UShortType PackageID = 0x2002;
 		XtpRspMDOfferLoginField Field;
 	};
 
@@ -384,7 +368,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x3003;
+		static constexpr UShortType PackageID = 0x2003;
 		XtpReqMDInitField Field;
 	};
 
@@ -400,7 +384,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x3004;
+		static constexpr UShortType PackageID = 0x2004;
 		XtpRspMDInitField Field;
 	};
 
@@ -416,7 +400,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x3005;
+		static constexpr UShortType PackageID = 0x2005;
 		XtpReqSubscribeMDField Field;
 	};
 
@@ -432,7 +416,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x3006;
+		static constexpr UShortType PackageID = 0x2006;
 		XtpRspSubscribeMDField Field;
 	};
 
@@ -448,7 +432,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x3101;
+		static constexpr UShortType PackageID = 0x3001;
 		XtpRtnShortMDField Field;
 	};
 
@@ -464,7 +448,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x3102;
+		static constexpr UShortType PackageID = 0x3002;
 		XtpRtnExchangeStatusField Field;
 	};
 
@@ -480,7 +464,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x3103;
+		static constexpr UShortType PackageID = 0x3003;
 		XtpRtnInstrumentField Field;
 	};
 
@@ -496,7 +480,7 @@ namespace xtp
 		virtual const char* GetString() const override;
 		virtual const char* GetDebugString() const override;
 	public:
-		static constexpr UShortType PackageID = 0x3104;
+		static constexpr UShortType PackageID = 0x3004;
 		XtpRtnMDInitCompletedField Field;
 	};
 

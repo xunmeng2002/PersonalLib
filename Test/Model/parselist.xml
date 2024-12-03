@@ -1,3 +1,4 @@
 <parselist>
-	<pump script="../Templates/Cpp/Step/ParseStepModel.py" dest="./Test/Model/Step/StepPackages.xml ./Test/Model/Step/StepFields.xml" sources="./Test/Model/Step/Step.xml ../Model/Items.xml"/>
+	<pump script="./ParseModel.py" dest="./Test/Model/Step/StepPackages.xml ./Test/Model/Step/StepFields.xml" sources="./Test/Model/Step/Step.xml ./Test/Model/Step/Fields.xml ../Model/Items.xml"/>
+	<pump script="./ParseModel.py" dest="./Test/Model/Xtp/XtpPackages.xml ./Test/Model/Xtp/XtpFields.xml" sources="./Test/Model/Xtp/Xtp.xml ./Test/Model/Xtp/Fields.xml ../Model/Items.xml"/>
 </parselist>

@@ -1,7 +1,7 @@
 <pumplist>
 	<pump dest="./Source/Types/Types.h" tpl="../Templates/Cpp/Types/Types.h.tpl" model="../Model/Types.xml"/>
 	<pump dest="./Source/StepProtocol/StepItems.h" tpl="../Templates/Cpp/Step/StepItems.h.tpl" model="../Model/Items.xml"/>
-	<pump dest="./Source/StepProtocol/StepHead.h" tpl="../Templates/Cpp/Step/StepHead.h.tpl" model="./Model/StepHead.xml"/>
+	<pump dest="./Source/StepProtocol/StepHead.h" tpl="../Templates/Cpp/Step/StepHead.h.tpl" model="./Model/Head.xml"/>
 
-	<pump dest="./Source/XtpProtocol/XtpHead.h" tpl="../Templates/Cpp/Xtp/XtpHead.h.tpl" model="./Model/XtpHead.xml"/>
+	<pump dest="./Source/XtpProtocol/XtpHead.h" tpl="../Templates/Cpp/Xtp/XtpHead.h.tpl" model="./Model/Head.xml"/>
 </pumplist>
