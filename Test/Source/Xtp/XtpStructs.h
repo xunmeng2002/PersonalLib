@@ -6,9 +6,6 @@ class XtpReqOfferLoginField
 public:
 	OfferIDType OfferID;		//报盘代码
 	PasswordType OfferPassword;		//报盘密码
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRspOfferLoginField
 {
@@ -17,18 +14,12 @@ public:
 	MessageType ErrorMsg;		//错误信息
 	OfferIDType OfferID;		//报盘代码
 	DateType TradingDay;		//交易日
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpReqPrimaryAccountLoginField
 {
 public:
 	AccountIDType PrimaryAccountID;		//主账户代码
 	PasswordType Password;		//密码
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRspPrimaryAccountLoginField
 {
@@ -37,35 +28,23 @@ public:
 	MessageType ErrorMsg;		//错误信息
 	DateType TradingDay;		//交易日
 	AccountIDType PrimaryAccountID;		//主账户代码
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpReqPrimaryAccountLogoutField
 {
 public:
 	DateType TradingDay;		//交易日
 	AccountIDType PrimaryAccountID;		//主账户代码
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRtnPrimaryAccountLogoutField
 {
 public:
 	DateType TradingDay;		//交易日
 	AccountIDType PrimaryAccountID;		//主账户代码
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpReqPrimaryAccountInitField
 {
 public:
 	AccountIDType PrimaryAccountID;		//主账户代码
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRspPrimaryAccountInitField
 {
@@ -73,17 +52,11 @@ public:
 	ErrorIDType ErrorID;		//错误代码
 	MessageType ErrorMsg;		//错误信息
 	AccountIDType PrimaryAccountID;		//主账户代码
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpReqPrimaryAccountQueryField
 {
 public:
 	AccountIDType PrimaryAccountID;		//主账户代码
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRspPrimaryAccountQueryField
 {
@@ -91,17 +64,11 @@ public:
 	ErrorIDType ErrorID;		//错误代码
 	MessageType ErrorMsg;		//错误信息
 	AccountIDType PrimaryAccountID;		//主账户代码
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpReqQryOptionInstrumentField
 {
 public:
 	AccountIDType PrimaryAccountID;		//主账户代码
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRspQryOptionInstrumentField
 {
@@ -109,9 +76,6 @@ public:
 	ErrorIDType ErrorID;		//错误代码
 	MessageType ErrorMsg;		//错误信息
 	AccountIDType PrimaryAccountID;		//主账户代码
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRtnOptionInstrumentField
 {
@@ -130,9 +94,6 @@ public:
 	VolumeType MaxLimitOrderVolume;		//限价最大下单数量
 	VolumeType MaxMarketOrderVolume;		//市价最大下单数量
 	DateType ExpiringDate;		//到期日
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpReqInsertOrderField
 {
@@ -148,9 +109,6 @@ public:
 	OrderPriceTypeType OrderPriceType;		//委托价格类型
 	PriceType Price;		//委托价格
 	VolumeType Volume;		//委托数量
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpReqCancelOrderField
 {
@@ -164,9 +122,6 @@ public:
 	OrderIDType CancelOrderID;		//本地撤单编号
 	OrderIDType OrderID;		//委托编号
 	OrderSysIDType OrderSysID;		//系统委托编号
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRtnOrderField
 {
@@ -191,9 +146,6 @@ public:
 	DateType CancelDate;		//撤单日期
 	TimeType CancelTime;		//撤单时间
 	BoolType IsNewOrder;		//是否新委托
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRtnTradeField
 {
@@ -211,9 +163,6 @@ public:
 	VolumeType Volume;		//委托数量
 	DateType TradeDate;		//成交日期
 	TimeType TradeTime;		//成交时间
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRtnErrorCancelOrderField
 {
@@ -228,9 +177,6 @@ public:
 	OrderIDType CancelOrderID;		//本地撤单编号
 	OrderIDType OrderID;		//委托编号
 	OrderSysIDType OrderSysID;		//系统委托编号
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRtnCapitalField
 {
@@ -238,9 +184,6 @@ public:
 	DateType TradingDay;		//交易日
 	AccountIDType PrimaryAccountID;		//主账户代码
 	MoneyType PreCashAsset;		//上日现金资产
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRtnPositionField
 {
@@ -255,36 +198,24 @@ public:
 	PriceType TotalCostPrice;		//总成本价
 	MoneyType Margin;		//保证金
 	MoneyType MarketValue;		//市值
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpReqMDOfferLoginField
 {
 public:
 	UserIDType UserID;		//用户代码
 	PasswordType Password;		//密码
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRspMDOfferLoginField
 {
 public:
 	ErrorIDType ErrorID;		//错误代码
 	MessageType ErrorMsg;		//错误信息
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpReqMDInitField
 {
 public:
 	ExchangeIDType ExchangeID;		//交易所代码
 	DateType TradingDay;		//交易日
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRspMDInitField
 {
@@ -293,18 +224,12 @@ public:
 	DateType TradingDay;		//交易日
 	ErrorIDType ErrorID;		//错误代码
 	MessageType ErrorMsg;		//错误信息
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpReqSubscribeMDField
 {
 public:
 	ExchangeIDType ExchangeID;		//交易所代码
 	InstrumentIDType InstrumentID;		//合约代码
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRspSubscribeMDField
 {
@@ -313,9 +238,6 @@ public:
 	InstrumentIDType InstrumentID;		//合约代码
 	ErrorIDType ErrorID;		//错误代码
 	MessageType ErrorMsg;		//错误信息
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRtnShortMDField
 {
@@ -330,9 +252,6 @@ public:
 	PriceType PreSettlementPrice;		//昨结算价
 	PriceType UpperLimitPrice;		//涨停板价
 	PriceType LowerLimitPrice;		//跌停板价
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRtnExchangeStatusField
 {
@@ -340,9 +259,6 @@ public:
 	ExchangeIDType ExchangeID;		//交易所代码
 	DateType ExchangeDate;		//交易所日期
 	ExchangeStatusType ExchangeStatus;		//交易所状态
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRtnInstrumentField
 {
@@ -353,130 +269,82 @@ public:
 	InstrumentNameType InstrumentName;		//合约名称
 	VolumeMultipleType VolumeMultiple;		//合约乘数
 	SecurityTypeType SecurityType;		//证券类别
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRtnMDInitCompletedField
 {
 public:
 	ExchangeIDType ExchangeID;		//交易所代码
 	DateType TradingDay;		//交易日
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpNotifyMdClientConnectedField
 {
 public:
 	SessionIDType SessionID;		//会话编号
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpNotifyMdClientDisConnectedField
 {
 public:
 	SessionIDType SessionID;		//会话编号
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpNotifyRiskCheckClientConnectedField
 {
 public:
 	SessionIDType SessionID;		//会话编号
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpNotifyRiskCheckClientDisConnectedField
 {
 public:
 	SessionIDType SessionID;		//会话编号
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpNotifyTradeFrontConnectedField
 {
 public:
 	SessionIDType SessionID;		//会话编号
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpNotifyTradeFrontDisConnectedField
 {
 public:
 	SessionIDType SessionID;		//会话编号
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpNotifyRiskFrontConnectedField
 {
 public:
 	SessionIDType SessionID;		//会话编号
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpNotifyRiskFrontDisConnectedField
 {
 public:
 	SessionIDType SessionID;		//会话编号
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpNotifyAdminFrontConnectedField
 {
 public:
 	SessionIDType SessionID;		//会话编号
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpNotifyAdminFrontDisConnectedField
 {
 public:
 	SessionIDType SessionID;		//会话编号
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpNotifyOfferFrontConnectedField
 {
 public:
 	SessionIDType SessionID;		//会话编号
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpNotifyOfferFrontDisConnectedField
 {
 public:
 	SessionIDType SessionID;		//会话编号
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpNotifyInitCompleteField
 {
 public:
 	DateType TradingDay;		//交易日
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRspNotifyInitCompleteField
 {
 public:
 	DateType TradingDay;		//交易日
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };
 class XtpRtnRiskCheckOrderField
 {
@@ -490,7 +358,4 @@ public:
 	RiskIDType RiskID;		//风控代码
 	RiskStatusType RiskStatus;		//风控状态
 	MessageType RiskMessage;		//风控信息
-
-	const char* GetString() const;
-	const char* GetDebugString() const;
 };

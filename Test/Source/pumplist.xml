@@ -1,13 +1,13 @@
 <pumplist>
 	<pump dest="./Test/Source/Step/StepGetStructString.h" tpl="../Templates/Cpp/Step/StepGetStructString.h.tpl" model="./Test/Model/Step/StepFields.xml"/>
 	<pump dest="./Test/Source/Step/StepGetStructString.cpp" tpl="../Templates/Cpp/Step/StepGetStructString.cpp.tpl" model="./Test/Model/Step/StepFields.xml ../Model/Types.xml"/>
+	
 	<pump dest="./Test/Source/Step/StepStructs.h" tpl="../Templates/Cpp/Step/StepStructs.h.tpl" model="./Test/Model/Step/StepFields.xml"/>
 	<pump dest="./Test/Source/Step/StepPackages.h" tpl="../Templates/Cpp/Step/StepPackages.h.tpl" model="./Test/Model/Step/StepPackages.xml"/>
 	<pump dest="./Test/Source/Step/StepPackages.cpp" tpl="../Templates/Cpp/Step/StepPackages.cpp.tpl" model="./Test/Model/Step/StepPackages.xml ../Model/Types.xml"/>
 	<pump dest="./Test/Source/Step/StepPackageFactory.cpp" tpl="../Templates/Cpp/Step/StepPackageFactory.cpp.tpl" model="./Test/Model/Step/StepPackages.xml"/>
 	
 	<pump dest="./Test/Source/Xtp/XtpStructs.h" tpl="../Templates/Cpp/Xtp/XtpStructs.h.tpl" model="./Test/Model/Xtp/XtpFields.xml"/>
-	<pump dest="./Test/Source/Xtp/XtpStructs.cpp" tpl="../Templates/Cpp/Xtp/XtpStructs.cpp.tpl" model="./Test/Model/Xtp/XtpFields.xml ../Model/Types.xml"/>
 	<pump dest="./Test/Source/Xtp/XtpPackages.h" tpl="../Templates/Cpp/Xtp/XtpPackages.h.tpl" model="./Test/Model/Xtp/XtpPackages.xml"/>
 	<pump dest="./Test/Source/Xtp/XtpPackages.cpp" tpl="../Templates/Cpp/Xtp/XtpPackages.cpp.tpl" model="./Test/Model/Xtp/XtpPackages.xml ../Model/Types.xml"/>
 	<pump dest="./Test/Source/Xtp/XtpPackageFactory.cpp" tpl="../Templates/Cpp/Xtp/XtpPackageFactory.cpp.tpl" model="./Test/Model/Xtp/XtpPackages.xml"/>

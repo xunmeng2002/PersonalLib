@@ -135,7 +135,8 @@ namespace step
 		int index = 0;
 		if (ReqAccountLogin != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAccountLoginPackage:AccountID:[%s], Password:[%s]", ReqAccountLogin->AccountID, ReqAccountLogin->Password);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAccountLoginPackage:AccountID:[%s], Password:[%s]", 
+				ReqAccountLogin->AccountID, ReqAccountLogin->Password);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -338,11 +339,13 @@ namespace step
 		int index = 0;
 		if (RspAccountLogin != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAccountLoginPackage:AccountID:[%s], LoginDate:[%s], LoginTime:[%s], SessionID:[%lld]", RspAccountLogin->AccountID, RspAccountLogin->LoginDate, RspAccountLogin->LoginTime, RspAccountLogin->SessionID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAccountLoginPackage:AccountID:[%s], LoginDate:[%s], LoginTime:[%s], SessionID:[%lld]", 
+				RspAccountLogin->AccountID, RspAccountLogin->LoginDate, RspAccountLogin->LoginTime, RspAccountLogin->SessionID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAccountLoginPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAccountLoginPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -460,7 +463,8 @@ namespace step
 		int index = 0;
 		if (ReqAccountLogout != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAccountLogoutPackage:AccountID:[%s]", ReqAccountLogout->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAccountLogoutPackage:AccountID:[%s]", 
+				ReqAccountLogout->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -635,11 +639,13 @@ namespace step
 		int index = 0;
 		if (RspAccountLogout != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAccountLogoutPackage:AccountID:[%s]", RspAccountLogout->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAccountLogoutPackage:AccountID:[%s]", 
+				RspAccountLogout->AccountID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAccountLogoutPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAccountLogoutPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -774,7 +780,8 @@ namespace step
 		int index = 0;
 		if (AccountLogout != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountLogoutPackage:AccountID:[%s], ErrorID:[%d], ErrorMsg:[%s]", AccountLogout->AccountID, AccountLogout->ErrorID, AccountLogout->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountLogoutPackage:AccountID:[%s], ErrorID:[%d], ErrorMsg:[%s]", 
+				AccountLogout->AccountID, AccountLogout->ErrorID, AccountLogout->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -903,7 +910,8 @@ namespace step
 		int index = 0;
 		if (ReqRiskUserLogin != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRiskUserLoginPackage:UserID:[%s], Password:[%s]", ReqRiskUserLogin->UserID, ReqRiskUserLogin->Password);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRiskUserLoginPackage:UserID:[%s], Password:[%s]", 
+				ReqRiskUserLogin->UserID, ReqRiskUserLogin->Password);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -1112,11 +1120,13 @@ namespace step
 		int index = 0;
 		if (RspRiskUserLogin != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLoginPackage:UserID:[%s], RiskGroupID:[%d], LoginDate:[%s], LoginTime:[%s], SessionID:[%lld]", RspRiskUserLogin->UserID, RspRiskUserLogin->RiskGroupID, RspRiskUserLogin->LoginDate, RspRiskUserLogin->LoginTime, RspRiskUserLogin->SessionID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLoginPackage:UserID:[%s], RiskGroupID:[%d], LoginDate:[%s], LoginTime:[%s], SessionID:[%lld]", 
+				RspRiskUserLogin->UserID, RspRiskUserLogin->RiskGroupID, RspRiskUserLogin->LoginDate, RspRiskUserLogin->LoginTime, RspRiskUserLogin->SessionID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLoginPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLoginPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -1234,7 +1244,8 @@ namespace step
 		int index = 0;
 		if (ReqRiskUserLogout != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRiskUserLogoutPackage:UserID:[%s]", ReqRiskUserLogout->UserID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRiskUserLogoutPackage:UserID:[%s]", 
+				ReqRiskUserLogout->UserID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -1409,11 +1420,13 @@ namespace step
 		int index = 0;
 		if (RspRiskUserLogout != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLogoutPackage:UserID:[%s]", RspRiskUserLogout->UserID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLogoutPackage:UserID:[%s]", 
+				RspRiskUserLogout->UserID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLogoutPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLogoutPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -1548,7 +1561,8 @@ namespace step
 		int index = 0;
 		if (RiskUserLogout != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnRiskUserLogoutPackage:UserID:[%s], ErrorID:[%d], ErrorMsg:[%s]", RiskUserLogout->UserID, RiskUserLogout->ErrorID, RiskUserLogout->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnRiskUserLogoutPackage:UserID:[%s], ErrorID:[%d], ErrorMsg:[%s]", 
+				RiskUserLogout->UserID, RiskUserLogout->ErrorID, RiskUserLogout->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -1677,7 +1691,8 @@ namespace step
 		int index = 0;
 		if (ReqAdminUserLogin != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAdminUserLoginPackage:AdminUserID:[%s], Password:[%s]", ReqAdminUserLogin->AdminUserID, ReqAdminUserLogin->Password);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAdminUserLoginPackage:AdminUserID:[%s], Password:[%s]", 
+				ReqAdminUserLogin->AdminUserID, ReqAdminUserLogin->Password);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -1880,11 +1895,13 @@ namespace step
 		int index = 0;
 		if (RspAdminUserLogin != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLoginPackage:AdminUserID:[%s], LoginDate:[%s], LoginTime:[%s], SessionID:[%lld]", RspAdminUserLogin->AdminUserID, RspAdminUserLogin->LoginDate, RspAdminUserLogin->LoginTime, RspAdminUserLogin->SessionID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLoginPackage:AdminUserID:[%s], LoginDate:[%s], LoginTime:[%s], SessionID:[%lld]", 
+				RspAdminUserLogin->AdminUserID, RspAdminUserLogin->LoginDate, RspAdminUserLogin->LoginTime, RspAdminUserLogin->SessionID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLoginPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLoginPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -2002,7 +2019,8 @@ namespace step
 		int index = 0;
 		if (ReqAdminUserLogout != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAdminUserLogoutPackage:AdminUserID:[%s]", ReqAdminUserLogout->AdminUserID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAdminUserLogoutPackage:AdminUserID:[%s]", 
+				ReqAdminUserLogout->AdminUserID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -2177,11 +2195,13 @@ namespace step
 		int index = 0;
 		if (RspAdminUserLogout != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLogoutPackage:AdminUserID:[%s]", RspAdminUserLogout->AdminUserID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLogoutPackage:AdminUserID:[%s]", 
+				RspAdminUserLogout->AdminUserID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLogoutPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLogoutPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -2316,7 +2336,8 @@ namespace step
 		int index = 0;
 		if (AdminUserLogout != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAdminUserLogoutPackage:UserID:[%s], ErrorID:[%d], ErrorMsg:[%s]", AdminUserLogout->UserID, AdminUserLogout->ErrorID, AdminUserLogout->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAdminUserLogoutPackage:UserID:[%s], ErrorID:[%d], ErrorMsg:[%s]", 
+				AdminUserLogout->UserID, AdminUserLogout->ErrorID, AdminUserLogout->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -2445,7 +2466,8 @@ namespace step
 		int index = 0;
 		if (ReqMdUserLogin != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqMdUserLoginPackage:MdUserID:[%s], Password:[%s]", ReqMdUserLogin->MdUserID, ReqMdUserLogin->Password);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqMdUserLoginPackage:MdUserID:[%s], Password:[%s]", 
+				ReqMdUserLogin->MdUserID, ReqMdUserLogin->Password);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -2648,11 +2670,13 @@ namespace step
 		int index = 0;
 		if (RspMdUserLogin != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLoginPackage:MdUserID:[%s], LoginDate:[%s], LoginTime:[%s], SessionID:[%lld]", RspMdUserLogin->MdUserID, RspMdUserLogin->LoginDate, RspMdUserLogin->LoginTime, RspMdUserLogin->SessionID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLoginPackage:MdUserID:[%s], LoginDate:[%s], LoginTime:[%s], SessionID:[%lld]", 
+				RspMdUserLogin->MdUserID, RspMdUserLogin->LoginDate, RspMdUserLogin->LoginTime, RspMdUserLogin->SessionID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLoginPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLoginPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -2770,7 +2794,8 @@ namespace step
 		int index = 0;
 		if (ReqMdUserLogout != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqMdUserLogoutPackage:MdUserID:[%s]", ReqMdUserLogout->MdUserID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqMdUserLogoutPackage:MdUserID:[%s]", 
+				ReqMdUserLogout->MdUserID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -2945,11 +2970,13 @@ namespace step
 		int index = 0;
 		if (RspMdUserLogout != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLogoutPackage:MdUserID:[%s]", RspMdUserLogout->MdUserID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLogoutPackage:MdUserID:[%s]", 
+				RspMdUserLogout->MdUserID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLogoutPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLogoutPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -3067,7 +3094,8 @@ namespace step
 		int index = 0;
 		if (ReqQryAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryAccountPackage:AccountID:[%s]", ReqQryAccount->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryAccountPackage:AccountID:[%s]", 
+				ReqQryAccount->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -3272,11 +3300,13 @@ namespace step
 		int index = 0;
 		if (Account != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryAccountPackage:AccountID:[%s], AccountType:[%d], AccountStatus:[%d], TradeGroupID:[%d], RiskGroupID:[%d], CommissionGroupID:[%d]", Account->AccountID, (int)Account->AccountType, (int)Account->AccountStatus, Account->TradeGroupID, Account->RiskGroupID, Account->CommissionGroupID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryAccountPackage:AccountID:[%s], AccountType:[%d], AccountStatus:[%d], TradeGroupID:[%d], RiskGroupID:[%d], CommissionGroupID:[%d]", 
+				Account->AccountID, (int)Account->AccountType, (int)Account->AccountStatus, Account->TradeGroupID, Account->RiskGroupID, Account->CommissionGroupID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -3394,7 +3424,8 @@ namespace step
 		int index = 0;
 		if (ReqQryHolderAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryHolderAccountPackage:AccountID:[%s]", ReqQryHolderAccount->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryHolderAccountPackage:AccountID:[%s]", 
+				ReqQryHolderAccount->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -3586,11 +3617,13 @@ namespace step
 		int index = 0;
 		if (HolderAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryHolderAccountPackage:ExchangeID:[%s], HolderAccountID:[%s], PrimaryFlag:[%d]", HolderAccount->ExchangeID, HolderAccount->HolderAccountID, HolderAccount->PrimaryFlag);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryHolderAccountPackage:ExchangeID:[%s], HolderAccountID:[%s], PrimaryFlag:[%d]", 
+				HolderAccount->ExchangeID, HolderAccount->HolderAccountID, HolderAccount->PrimaryFlag);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryHolderAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryHolderAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -3708,7 +3741,8 @@ namespace step
 		int index = 0;
 		if (ReqQryCapital != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryCapitalPackage:AccountID:[%s]", ReqQryCapital->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryCapitalPackage:AccountID:[%s]", 
+				ReqQryCapital->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -4026,11 +4060,13 @@ namespace step
 		int index = 0;
 		if (Capital != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryCapitalPackage:TradingDay:[%s], AccountID:[%s], AccountType:[%d], Asset:[%f], PreAsset:[%f], CashAsset:[%f], PreCashAsset:[%f], Available:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f], MarketValue:[%f], TotalProfit:[%f], TodayProfit:[%f], Deposit:[%f], Withdraw:[%f]", Capital->TradingDay, Capital->AccountID, (int)Capital->AccountType, Capital->Asset, Capital->PreAsset, Capital->CashAsset, Capital->PreCashAsset, Capital->Available, Capital->CashIn, Capital->CashOut, Capital->Margin, Capital->Commission, Capital->StampTax, Capital->TransferFee, Capital->FrozenCash, Capital->FrozenMargin, Capital->FrozenCommission, Capital->FrozenStampTax, Capital->FrozenTransferFee, Capital->MarketValue, Capital->TotalProfit, Capital->TodayProfit, Capital->Deposit, Capital->Withdraw);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryCapitalPackage:TradingDay:[%s], AccountID:[%s], AccountType:[%d], Asset:[%f], PreAsset:[%f], CashAsset:[%f], PreCashAsset:[%f], Available:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f], MarketValue:[%f], TotalProfit:[%f], TodayProfit:[%f], Deposit:[%f], Withdraw:[%f]", 
+				Capital->TradingDay, Capital->AccountID, (int)Capital->AccountType, Capital->Asset, Capital->PreAsset, Capital->CashAsset, Capital->PreCashAsset, Capital->Available, Capital->CashIn, Capital->CashOut, Capital->Margin, Capital->Commission, Capital->StampTax, Capital->TransferFee, Capital->FrozenCash, Capital->FrozenMargin, Capital->FrozenCommission, Capital->FrozenStampTax, Capital->FrozenTransferFee, Capital->MarketValue, Capital->TotalProfit, Capital->TodayProfit, Capital->Deposit, Capital->Withdraw);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryCapitalPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryCapitalPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -4148,7 +4184,8 @@ namespace step
 		int index = 0;
 		if (ReqQryPosition != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryPositionPackage:AccountID:[%s]", ReqQryPosition->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryPositionPackage:AccountID:[%s]", 
+				ReqQryPosition->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -4488,11 +4525,13 @@ namespace step
 		int index = 0;
 		if (Position != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryPositionPackage:TradingDay:[%s], AccountID:[%s], AccountType:[%d], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], PosiDirection:[%d], TotalPosition:[%d], PositionFrozen:[%d], TodayPosition:[%d], TotalCostPrice:[%f], TodayCostPrice:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], MarketValue:[%f], VolumeMultiple:[%d], TotalCost:[%f], TodayCost:[%f], TotalProfit:[%f], TodayProfit:[%f], LastPrice:[%f], PrePrice:[%f]", Position->TradingDay, Position->AccountID, (int)Position->AccountType, Position->ExchangeID, Position->InstrumentID, (int)Position->SecurityType, (int)Position->PosiDirection, Position->TotalPosition, Position->PositionFrozen, Position->TodayPosition, Position->TotalCostPrice, Position->TodayCostPrice, Position->CashIn, Position->CashOut, Position->Margin, Position->Commission, Position->StampTax, Position->TransferFee, Position->MarketValue, Position->VolumeMultiple, Position->TotalCost, Position->TodayCost, Position->TotalProfit, Position->TodayProfit, Position->LastPrice, Position->PrePrice);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryPositionPackage:TradingDay:[%s], AccountID:[%s], AccountType:[%d], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], PosiDirection:[%d], TotalPosition:[%d], PositionFrozen:[%d], TodayPosition:[%d], TotalCostPrice:[%f], TodayCostPrice:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], MarketValue:[%f], VolumeMultiple:[%d], TotalCost:[%f], TodayCost:[%f], TotalProfit:[%f], TodayProfit:[%f], LastPrice:[%f], PrePrice:[%f]", 
+				Position->TradingDay, Position->AccountID, (int)Position->AccountType, Position->ExchangeID, Position->InstrumentID, (int)Position->SecurityType, (int)Position->PosiDirection, Position->TotalPosition, Position->PositionFrozen, Position->TodayPosition, Position->TotalCostPrice, Position->TodayCostPrice, Position->CashIn, Position->CashOut, Position->Margin, Position->Commission, Position->StampTax, Position->TransferFee, Position->MarketValue, Position->VolumeMultiple, Position->TotalCost, Position->TodayCost, Position->TotalProfit, Position->TodayProfit, Position->LastPrice, Position->PrePrice);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryPositionPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryPositionPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -4775,7 +4814,8 @@ namespace step
 		int index = 0;
 		if (Position != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnPositionPackage:TradingDay:[%s], AccountID:[%s], AccountType:[%d], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], PosiDirection:[%d], TotalPosition:[%d], PositionFrozen:[%d], TodayPosition:[%d], TotalCostPrice:[%f], TodayCostPrice:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], MarketValue:[%f], VolumeMultiple:[%d], TotalCost:[%f], TodayCost:[%f], TotalProfit:[%f], TodayProfit:[%f], LastPrice:[%f], PrePrice:[%f]", Position->TradingDay, Position->AccountID, (int)Position->AccountType, Position->ExchangeID, Position->InstrumentID, (int)Position->SecurityType, (int)Position->PosiDirection, Position->TotalPosition, Position->PositionFrozen, Position->TodayPosition, Position->TotalCostPrice, Position->TodayCostPrice, Position->CashIn, Position->CashOut, Position->Margin, Position->Commission, Position->StampTax, Position->TransferFee, Position->MarketValue, Position->VolumeMultiple, Position->TotalCost, Position->TodayCost, Position->TotalProfit, Position->TodayProfit, Position->LastPrice, Position->PrePrice);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnPositionPackage:TradingDay:[%s], AccountID:[%s], AccountType:[%d], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], PosiDirection:[%d], TotalPosition:[%d], PositionFrozen:[%d], TodayPosition:[%d], TotalCostPrice:[%f], TodayCostPrice:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], MarketValue:[%f], VolumeMultiple:[%d], TotalCost:[%f], TodayCost:[%f], TotalProfit:[%f], TodayProfit:[%f], LastPrice:[%f], PrePrice:[%f]", 
+				Position->TradingDay, Position->AccountID, (int)Position->AccountType, Position->ExchangeID, Position->InstrumentID, (int)Position->SecurityType, (int)Position->PosiDirection, Position->TotalPosition, Position->PositionFrozen, Position->TodayPosition, Position->TotalCostPrice, Position->TodayCostPrice, Position->CashIn, Position->CashOut, Position->Margin, Position->Commission, Position->StampTax, Position->TransferFee, Position->MarketValue, Position->VolumeMultiple, Position->TotalCost, Position->TodayCost, Position->TotalProfit, Position->TodayProfit, Position->LastPrice, Position->PrePrice);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -4893,7 +4933,8 @@ namespace step
 		int index = 0;
 		if (ReqQryOrder != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryOrderPackage:AccountID:[%s]", ReqQryOrder->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryOrderPackage:AccountID:[%s]", 
+				ReqQryOrder->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -5281,11 +5322,13 @@ namespace step
 		int index = 0;
 		if (Order != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryOrderPackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]", Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryOrderPackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]", 
+				Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryOrderPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryOrderPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -5616,7 +5659,8 @@ namespace step
 		int index = 0;
 		if (Order != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnOrderPackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]", Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnOrderPackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]", 
+				Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -5734,7 +5778,8 @@ namespace step
 		int index = 0;
 		if (ReqQryTrade != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryTradePackage:AccountID:[%s]", ReqQryTrade->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryTradePackage:AccountID:[%s]", 
+				ReqQryTrade->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -6052,11 +6097,13 @@ namespace step
 		int index = 0;
 		if (Trade != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryTradePackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%d], VolumeMultiple:[%d], TradeAmount:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], TradeDate:[%s], TradeTime:[%s]", Trade->TradingDay, Trade->AccountID, Trade->ExchangeID, Trade->InstrumentID, (int)Trade->SecurityType, Trade->OrderID, Trade->OrderSysID, Trade->TradeID, (int)Trade->Direction, (int)Trade->OffsetFlag, Trade->Price, Trade->Volume, Trade->VolumeMultiple, Trade->TradeAmount, Trade->Commission, Trade->StampTax, Trade->TransferFee, Trade->TradeDate, Trade->TradeTime);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryTradePackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%d], VolumeMultiple:[%d], TradeAmount:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], TradeDate:[%s], TradeTime:[%s]", 
+				Trade->TradingDay, Trade->AccountID, Trade->ExchangeID, Trade->InstrumentID, (int)Trade->SecurityType, Trade->OrderID, Trade->OrderSysID, Trade->TradeID, (int)Trade->Direction, (int)Trade->OffsetFlag, Trade->Price, Trade->Volume, Trade->VolumeMultiple, Trade->TradeAmount, Trade->Commission, Trade->StampTax, Trade->TransferFee, Trade->TradeDate, Trade->TradeTime);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryTradePackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryTradePackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -6317,7 +6364,8 @@ namespace step
 		int index = 0;
 		if (Trade != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnTradePackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%d], VolumeMultiple:[%d], TradeAmount:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], TradeDate:[%s], TradeTime:[%s]", Trade->TradingDay, Trade->AccountID, Trade->ExchangeID, Trade->InstrumentID, (int)Trade->SecurityType, Trade->OrderID, Trade->OrderSysID, Trade->TradeID, (int)Trade->Direction, (int)Trade->OffsetFlag, Trade->Price, Trade->Volume, Trade->VolumeMultiple, Trade->TradeAmount, Trade->Commission, Trade->StampTax, Trade->TransferFee, Trade->TradeDate, Trade->TradeTime);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnTradePackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%d], VolumeMultiple:[%d], TradeAmount:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], TradeDate:[%s], TradeTime:[%s]", 
+				Trade->TradingDay, Trade->AccountID, Trade->ExchangeID, Trade->InstrumentID, (int)Trade->SecurityType, Trade->OrderID, Trade->OrderSysID, Trade->TradeID, (int)Trade->Direction, (int)Trade->OffsetFlag, Trade->Price, Trade->Volume, Trade->VolumeMultiple, Trade->TradeAmount, Trade->Commission, Trade->StampTax, Trade->TransferFee, Trade->TradeDate, Trade->TradeTime);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -6446,7 +6494,8 @@ namespace step
 		int index = 0;
 		if (ReqQryInstrument != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryInstrumentPackage:ExchangeID:[%s], InstrumentID:[%s]", ReqQryInstrument->ExchangeID, ReqQryInstrument->InstrumentID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryInstrumentPackage:ExchangeID:[%s], InstrumentID:[%s]", 
+				ReqQryInstrument->ExchangeID, ReqQryInstrument->InstrumentID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -6666,11 +6715,13 @@ namespace step
 		int index = 0;
 		if (Instrument != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryInstrumentPackage:ExchangeID:[%s], InstrumentID:[%s], ExchangeInstID:[%s], InstrumentName:[%s], VolumeMultiple:[%d], SecurityType:[%d]", Instrument->ExchangeID, Instrument->InstrumentID, Instrument->ExchangeInstID, Instrument->InstrumentName, Instrument->VolumeMultiple, (int)Instrument->SecurityType);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryInstrumentPackage:ExchangeID:[%s], InstrumentID:[%s], ExchangeInstID:[%s], InstrumentName:[%s], VolumeMultiple:[%d], SecurityType:[%d]", 
+				Instrument->ExchangeID, Instrument->InstrumentID, Instrument->ExchangeInstID, Instrument->InstrumentName, Instrument->VolumeMultiple, (int)Instrument->SecurityType);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryInstrumentPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryInstrumentPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -6799,7 +6850,8 @@ namespace step
 		int index = 0;
 		if (ReqQryOptionInstrument != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryOptionInstrumentPackage:ExchangeID:[%s], InstrumentID:[%s]", ReqQryOptionInstrument->ExchangeID, ReqQryOptionInstrument->InstrumentID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryOptionInstrumentPackage:ExchangeID:[%s], InstrumentID:[%s]", 
+				ReqQryOptionInstrument->ExchangeID, ReqQryOptionInstrument->InstrumentID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -7071,11 +7123,13 @@ namespace step
 		int index = 0;
 		if (OptionInstrument != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryOptionInstrumentPackage:ExchangeID:[%s], InstrumentID:[%s], ExchangeInstID:[%s], InstrumentName:[%s], VolumeMultiple:[%d], OptionType:[%d], UnderlyingInstrumentID:[%s], ExecutePrice:[%f], UnitMargin:[%f], PriceTick:[%f], MaxLimitOrderVolume:[%d], MaxMarketOrderVolume:[%d], ExpiringDate:[%s]", OptionInstrument->ExchangeID, OptionInstrument->InstrumentID, OptionInstrument->ExchangeInstID, OptionInstrument->InstrumentName, OptionInstrument->VolumeMultiple, (int)OptionInstrument->OptionType, OptionInstrument->UnderlyingInstrumentID, OptionInstrument->ExecutePrice, OptionInstrument->UnitMargin, OptionInstrument->PriceTick, OptionInstrument->MaxLimitOrderVolume, OptionInstrument->MaxMarketOrderVolume, OptionInstrument->ExpiringDate);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryOptionInstrumentPackage:ExchangeID:[%s], InstrumentID:[%s], ExchangeInstID:[%s], InstrumentName:[%s], VolumeMultiple:[%d], OptionType:[%d], UnderlyingInstrumentID:[%s], ExecutePrice:[%f], UnitMargin:[%f], PriceTick:[%f], MaxLimitOrderVolume:[%d], MaxMarketOrderVolume:[%d], ExpiringDate:[%s]", 
+				OptionInstrument->ExchangeID, OptionInstrument->InstrumentID, OptionInstrument->ExchangeInstID, OptionInstrument->InstrumentName, OptionInstrument->VolumeMultiple, (int)OptionInstrument->OptionType, OptionInstrument->UnderlyingInstrumentID, OptionInstrument->ExecutePrice, OptionInstrument->UnitMargin, OptionInstrument->PriceTick, OptionInstrument->MaxLimitOrderVolume, OptionInstrument->MaxMarketOrderVolume, OptionInstrument->ExpiringDate);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryOptionInstrumentPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryOptionInstrumentPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -7210,7 +7264,8 @@ namespace step
 		int index = 0;
 		if (ReqQryCommissionRate != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryCommissionRatePackage:AccountID:[%s], ExchangeID:[%s], SecurityType:[%d]", ReqQryCommissionRate->AccountID, ReqQryCommissionRate->ExchangeID, (int)ReqQryCommissionRate->SecurityType);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryCommissionRatePackage:AccountID:[%s], ExchangeID:[%s], SecurityType:[%d]", 
+				ReqQryCommissionRate->AccountID, ReqQryCommissionRate->ExchangeID, (int)ReqQryCommissionRate->SecurityType);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -7462,11 +7517,13 @@ namespace step
 		int index = 0;
 		if (CommissionRate != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryCommissionRatePackage:AccountID:[%s], ExchangeID:[%s], SecurityType:[%d], OpenBuyByMoney:[%f], OpenSellByMoney:[%f], CloseBuyByMoney:[%f], CloseSellByMoney:[%f], OpenBuyByVolume:[%f], OpenSellByVolume:[%f], CloseBuyByVolume:[%f], CloseSellByVolume:[%f], MinCommission:[%f], MaxCommission:[%f]", CommissionRate->AccountID, CommissionRate->ExchangeID, (int)CommissionRate->SecurityType, CommissionRate->OpenBuyByMoney, CommissionRate->OpenSellByMoney, CommissionRate->CloseBuyByMoney, CommissionRate->CloseSellByMoney, CommissionRate->OpenBuyByVolume, CommissionRate->OpenSellByVolume, CommissionRate->CloseBuyByVolume, CommissionRate->CloseSellByVolume, CommissionRate->MinCommission, CommissionRate->MaxCommission);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryCommissionRatePackage:AccountID:[%s], ExchangeID:[%s], SecurityType:[%d], OpenBuyByMoney:[%f], OpenSellByMoney:[%f], CloseBuyByMoney:[%f], CloseSellByMoney:[%f], OpenBuyByVolume:[%f], OpenSellByVolume:[%f], CloseBuyByVolume:[%f], CloseSellByVolume:[%f], MinCommission:[%f], MaxCommission:[%f]", 
+				CommissionRate->AccountID, CommissionRate->ExchangeID, (int)CommissionRate->SecurityType, CommissionRate->OpenBuyByMoney, CommissionRate->OpenSellByMoney, CommissionRate->CloseBuyByMoney, CommissionRate->CloseSellByMoney, CommissionRate->OpenBuyByVolume, CommissionRate->OpenSellByVolume, CommissionRate->CloseBuyByVolume, CommissionRate->CloseSellByVolume, CommissionRate->MinCommission, CommissionRate->MaxCommission);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryCommissionRatePackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryCommissionRatePackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -7642,7 +7699,8 @@ namespace step
 		int index = 0;
 		if (ReqInsertOrder != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqInsertOrderPackage:AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], ClientOrderID:[%d]", ReqInsertOrder->AccountID, ReqInsertOrder->ExchangeID, ReqInsertOrder->InstrumentID, (int)ReqInsertOrder->Direction, (int)ReqInsertOrder->OffsetFlag, (int)ReqInsertOrder->OrderPriceType, ReqInsertOrder->Price, ReqInsertOrder->Volume, ReqInsertOrder->ClientOrderID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqInsertOrderPackage:AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], ClientOrderID:[%d]", 
+				ReqInsertOrder->AccountID, ReqInsertOrder->ExchangeID, ReqInsertOrder->InstrumentID, (int)ReqInsertOrder->Direction, (int)ReqInsertOrder->OffsetFlag, (int)ReqInsertOrder->OrderPriceType, ReqInsertOrder->Price, ReqInsertOrder->Volume, ReqInsertOrder->ClientOrderID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -8030,11 +8088,13 @@ namespace step
 		int index = 0;
 		if (Order != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspInsertOrderPackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]", Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspInsertOrderPackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]", 
+				Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspInsertOrderPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspInsertOrderPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -8203,7 +8263,8 @@ namespace step
 		int index = 0;
 		if (ReqCancelOrder != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqCancelOrderPackage:AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], ClientCancelOrderID:[%d], OrderID:[%d], OrderSysID:[%s], ClientOrderID:[%d]", ReqCancelOrder->AccountID, ReqCancelOrder->ExchangeID, ReqCancelOrder->InstrumentID, ReqCancelOrder->ClientCancelOrderID, ReqCancelOrder->OrderID, ReqCancelOrder->OrderSysID, ReqCancelOrder->ClientOrderID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqCancelOrderPackage:AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], ClientCancelOrderID:[%d], OrderID:[%d], OrderSysID:[%s], ClientOrderID:[%d]", 
+				ReqCancelOrder->AccountID, ReqCancelOrder->ExchangeID, ReqCancelOrder->InstrumentID, ReqCancelOrder->ClientCancelOrderID, ReqCancelOrder->OrderID, ReqCancelOrder->OrderSysID, ReqCancelOrder->ClientOrderID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -8429,11 +8490,13 @@ namespace step
 		int index = 0;
 		if (CancelOrder != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspCancelOrderPackage:AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], ClientCancelOrderID:[%d], OrderID:[%d], OrderSysID:[%s], ClientOrderID:[%d]", CancelOrder->AccountID, CancelOrder->ExchangeID, CancelOrder->InstrumentID, CancelOrder->ClientCancelOrderID, CancelOrder->OrderID, CancelOrder->OrderSysID, CancelOrder->ClientOrderID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspCancelOrderPackage:AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], ClientCancelOrderID:[%d], OrderID:[%d], OrderSysID:[%s], ClientOrderID:[%d]", 
+				CancelOrder->AccountID, CancelOrder->ExchangeID, CancelOrder->InstrumentID, CancelOrder->ClientCancelOrderID, CancelOrder->OrderID, CancelOrder->OrderSysID, CancelOrder->ClientOrderID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspCancelOrderPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspCancelOrderPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -8562,7 +8625,8 @@ namespace step
 		int index = 0;
 		if (ReqMdInit != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqMdInitPackage:ExchangeID:[%s], TradingDay:[%s]", ReqMdInit->ExchangeID, ReqMdInit->TradingDay);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqMdInitPackage:ExchangeID:[%s], TradingDay:[%s]", 
+				ReqMdInit->ExchangeID, ReqMdInit->TradingDay);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -8748,11 +8812,13 @@ namespace step
 		int index = 0;
 		if (RspMdInit != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdInitPackage:ExchangeID:[%s], TradingDay:[%s]", RspMdInit->ExchangeID, RspMdInit->TradingDay);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdInitPackage:ExchangeID:[%s], TradingDay:[%s]", 
+				RspMdInit->ExchangeID, RspMdInit->TradingDay);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdInitPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdInitPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -8881,7 +8947,8 @@ namespace step
 		int index = 0;
 		if (ReqSubscribeMd != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqSubscribeMdPackage:ExchangeID:[%s], InstrumentID:[%s]", ReqSubscribeMd->ExchangeID, ReqSubscribeMd->InstrumentID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqSubscribeMdPackage:ExchangeID:[%s], InstrumentID:[%s]", 
+				ReqSubscribeMd->ExchangeID, ReqSubscribeMd->InstrumentID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -9067,11 +9134,13 @@ namespace step
 		int index = 0;
 		if (RspSubscribeMd != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspSubscribeMdPackage:ExchangeID:[%s], InstrumentID:[%s]", RspSubscribeMd->ExchangeID, RspSubscribeMd->InstrumentID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspSubscribeMdPackage:ExchangeID:[%s], InstrumentID:[%s]", 
+				RspSubscribeMd->ExchangeID, RspSubscribeMd->InstrumentID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspSubscribeMdPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspSubscribeMdPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -9219,7 +9288,8 @@ namespace step
 		int index = 0;
 		if (Account != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountPackage:AccountID:[%s], AccountType:[%d], AccountStatus:[%d], TradeGroupID:[%d], RiskGroupID:[%d], CommissionGroupID:[%d]", Account->AccountID, (int)Account->AccountType, (int)Account->AccountStatus, Account->TradeGroupID, Account->RiskGroupID, Account->CommissionGroupID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountPackage:AccountID:[%s], AccountType:[%d], AccountStatus:[%d], TradeGroupID:[%d], RiskGroupID:[%d], CommissionGroupID:[%d]", 
+				Account->AccountID, (int)Account->AccountType, (int)Account->AccountStatus, Account->TradeGroupID, Account->RiskGroupID, Account->CommissionGroupID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -9337,7 +9407,8 @@ namespace step
 		int index = 0;
 		if (AccountDelete != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountDeletePackage:AccountID:[%s]", AccountDelete->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountDeletePackage:AccountID:[%s]", 
+				AccountDelete->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -9467,7 +9538,8 @@ namespace step
 		int index = 0;
 		if (AccountRisk != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountRiskPackage:AccountID:[%s], RiskID:[%d], RiskStatus:[%d]", AccountRisk->AccountID, AccountRisk->RiskID, (int)AccountRisk->RiskStatus);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountRiskPackage:AccountID:[%s], RiskID:[%d], RiskStatus:[%d]", 
+				AccountRisk->AccountID, AccountRisk->RiskID, (int)AccountRisk->RiskStatus);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -9591,7 +9663,8 @@ namespace step
 		int index = 0;
 		if (AccountRiskDelete != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountRiskDeletePackage:AccountID:[%s], RiskID:[%d]", AccountRiskDelete->AccountID, AccountRiskDelete->RiskID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountRiskDeletePackage:AccountID:[%s], RiskID:[%d]", 
+				AccountRiskDelete->AccountID, AccountRiskDelete->RiskID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -9760,7 +9833,8 @@ namespace step
 		int index = 0;
 		if (AccountRiskNotify != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountRiskNotifyPackage:NotifyDate:[%s], NotifyTime:[%s], AccountID:[%s], RiskID:[%d], RiskRuleID:[%d], RiskStatus:[%d], RiskMessage:[%s]", AccountRiskNotify->NotifyDate, AccountRiskNotify->NotifyTime, AccountRiskNotify->AccountID, AccountRiskNotify->RiskID, AccountRiskNotify->RiskRuleID, (int)AccountRiskNotify->RiskStatus, AccountRiskNotify->RiskMessage);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountRiskNotifyPackage:NotifyDate:[%s], NotifyTime:[%s], AccountID:[%s], RiskID:[%d], RiskRuleID:[%d], RiskStatus:[%d], RiskMessage:[%s]", 
+				AccountRiskNotify->NotifyDate, AccountRiskNotify->NotifyTime, AccountRiskNotify->AccountID, AccountRiskNotify->RiskID, AccountRiskNotify->RiskRuleID, (int)AccountRiskNotify->RiskStatus, AccountRiskNotify->RiskMessage);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -9942,7 +10016,8 @@ namespace step
 		int index = 0;
 		if (ShortMd != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnShortMdPackage:TradingDay:[%s], ExchangeID:[%s], InstrumentID:[%s], LastPrice:[%f], ClosePrice:[%f], PreClosePrice:[%f], SettlementPrice:[%f], PreSettlementPrice:[%f], UpperLimitPrice:[%f], LowerLimitPrice:[%f]", ShortMd->TradingDay, ShortMd->ExchangeID, ShortMd->InstrumentID, ShortMd->LastPrice, ShortMd->ClosePrice, ShortMd->PreClosePrice, ShortMd->SettlementPrice, ShortMd->PreSettlementPrice, ShortMd->UpperLimitPrice, ShortMd->LowerLimitPrice);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnShortMdPackage:TradingDay:[%s], ExchangeID:[%s], InstrumentID:[%s], LastPrice:[%f], ClosePrice:[%f], PreClosePrice:[%f], SettlementPrice:[%f], PreSettlementPrice:[%f], UpperLimitPrice:[%f], LowerLimitPrice:[%f]", 
+				ShortMd->TradingDay, ShortMd->ExchangeID, ShortMd->InstrumentID, ShortMd->LastPrice, ShortMd->ClosePrice, ShortMd->PreClosePrice, ShortMd->SettlementPrice, ShortMd->PreSettlementPrice, ShortMd->UpperLimitPrice, ShortMd->LowerLimitPrice);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -10077,7 +10152,8 @@ namespace step
 		int index = 0;
 		if (RtnExchangeStatus != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnExchangeStatusPackage:ExchangeID:[%s], ExchangeDate:[%s], ExchangeStatus:[%d]", RtnExchangeStatus->ExchangeID, RtnExchangeStatus->ExchangeDate, (int)RtnExchangeStatus->ExchangeStatus);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnExchangeStatusPackage:ExchangeID:[%s], ExchangeDate:[%s], ExchangeStatus:[%d]", 
+				RtnExchangeStatus->ExchangeID, RtnExchangeStatus->ExchangeDate, (int)RtnExchangeStatus->ExchangeStatus);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -10206,7 +10282,8 @@ namespace step
 		int index = 0;
 		if (MdInitCompleted != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnMdInitCompletedPackage:ExchangeID:[%s], TradingDay:[%s]", MdInitCompleted->ExchangeID, MdInitCompleted->TradingDay);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnMdInitCompletedPackage:ExchangeID:[%s], TradingDay:[%s]", 
+				MdInitCompleted->ExchangeID, MdInitCompleted->TradingDay);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -10324,7 +10401,8 @@ namespace step
 		int index = 0;
 		if (ReqQryRiskGroupAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupAccountPackage:UserID:[%s]", ReqQryRiskGroupAccount->UserID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupAccountPackage:UserID:[%s]", 
+				ReqQryRiskGroupAccount->UserID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -10529,11 +10607,13 @@ namespace step
 		int index = 0;
 		if (Account != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountPackage:AccountID:[%s], AccountType:[%d], AccountStatus:[%d], TradeGroupID:[%d], RiskGroupID:[%d], CommissionGroupID:[%d]", Account->AccountID, (int)Account->AccountType, (int)Account->AccountStatus, Account->TradeGroupID, Account->RiskGroupID, Account->CommissionGroupID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountPackage:AccountID:[%s], AccountType:[%d], AccountStatus:[%d], TradeGroupID:[%d], RiskGroupID:[%d], CommissionGroupID:[%d]", 
+				Account->AccountID, (int)Account->AccountType, (int)Account->AccountStatus, Account->TradeGroupID, Account->RiskGroupID, Account->CommissionGroupID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -10662,7 +10742,8 @@ namespace step
 		int index = 0;
 		if (ReqQryRiskGroupCapital != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupCapitalPackage:UserID:[%s], AccountID:[%s]", ReqQryRiskGroupCapital->UserID, ReqQryRiskGroupCapital->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupCapitalPackage:UserID:[%s], AccountID:[%s]", 
+				ReqQryRiskGroupCapital->UserID, ReqQryRiskGroupCapital->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -10980,11 +11061,13 @@ namespace step
 		int index = 0;
 		if (Capital != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupCapitalPackage:TradingDay:[%s], AccountID:[%s], AccountType:[%d], Asset:[%f], PreAsset:[%f], CashAsset:[%f], PreCashAsset:[%f], Available:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f], MarketValue:[%f], TotalProfit:[%f], TodayProfit:[%f], Deposit:[%f], Withdraw:[%f]", Capital->TradingDay, Capital->AccountID, (int)Capital->AccountType, Capital->Asset, Capital->PreAsset, Capital->CashAsset, Capital->PreCashAsset, Capital->Available, Capital->CashIn, Capital->CashOut, Capital->Margin, Capital->Commission, Capital->StampTax, Capital->TransferFee, Capital->FrozenCash, Capital->FrozenMargin, Capital->FrozenCommission, Capital->FrozenStampTax, Capital->FrozenTransferFee, Capital->MarketValue, Capital->TotalProfit, Capital->TodayProfit, Capital->Deposit, Capital->Withdraw);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupCapitalPackage:TradingDay:[%s], AccountID:[%s], AccountType:[%d], Asset:[%f], PreAsset:[%f], CashAsset:[%f], PreCashAsset:[%f], Available:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f], MarketValue:[%f], TotalProfit:[%f], TodayProfit:[%f], Deposit:[%f], Withdraw:[%f]", 
+				Capital->TradingDay, Capital->AccountID, (int)Capital->AccountType, Capital->Asset, Capital->PreAsset, Capital->CashAsset, Capital->PreCashAsset, Capital->Available, Capital->CashIn, Capital->CashOut, Capital->Margin, Capital->Commission, Capital->StampTax, Capital->TransferFee, Capital->FrozenCash, Capital->FrozenMargin, Capital->FrozenCommission, Capital->FrozenStampTax, Capital->FrozenTransferFee, Capital->MarketValue, Capital->TotalProfit, Capital->TodayProfit, Capital->Deposit, Capital->Withdraw);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupCapitalPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupCapitalPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -11113,7 +11196,8 @@ namespace step
 		int index = 0;
 		if (ReqQryRiskGroupPosition != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupPositionPackage:UserID:[%s], AccountID:[%s]", ReqQryRiskGroupPosition->UserID, ReqQryRiskGroupPosition->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupPositionPackage:UserID:[%s], AccountID:[%s]", 
+				ReqQryRiskGroupPosition->UserID, ReqQryRiskGroupPosition->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -11453,11 +11537,13 @@ namespace step
 		int index = 0;
 		if (Position != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupPositionPackage:TradingDay:[%s], AccountID:[%s], AccountType:[%d], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], PosiDirection:[%d], TotalPosition:[%d], PositionFrozen:[%d], TodayPosition:[%d], TotalCostPrice:[%f], TodayCostPrice:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], MarketValue:[%f], VolumeMultiple:[%d], TotalCost:[%f], TodayCost:[%f], TotalProfit:[%f], TodayProfit:[%f], LastPrice:[%f], PrePrice:[%f]", Position->TradingDay, Position->AccountID, (int)Position->AccountType, Position->ExchangeID, Position->InstrumentID, (int)Position->SecurityType, (int)Position->PosiDirection, Position->TotalPosition, Position->PositionFrozen, Position->TodayPosition, Position->TotalCostPrice, Position->TodayCostPrice, Position->CashIn, Position->CashOut, Position->Margin, Position->Commission, Position->StampTax, Position->TransferFee, Position->MarketValue, Position->VolumeMultiple, Position->TotalCost, Position->TodayCost, Position->TotalProfit, Position->TodayProfit, Position->LastPrice, Position->PrePrice);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupPositionPackage:TradingDay:[%s], AccountID:[%s], AccountType:[%d], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], PosiDirection:[%d], TotalPosition:[%d], PositionFrozen:[%d], TodayPosition:[%d], TotalCostPrice:[%f], TodayCostPrice:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], MarketValue:[%f], VolumeMultiple:[%d], TotalCost:[%f], TodayCost:[%f], TotalProfit:[%f], TodayProfit:[%f], LastPrice:[%f], PrePrice:[%f]", 
+				Position->TradingDay, Position->AccountID, (int)Position->AccountType, Position->ExchangeID, Position->InstrumentID, (int)Position->SecurityType, (int)Position->PosiDirection, Position->TotalPosition, Position->PositionFrozen, Position->TodayPosition, Position->TotalCostPrice, Position->TodayCostPrice, Position->CashIn, Position->CashOut, Position->Margin, Position->Commission, Position->StampTax, Position->TransferFee, Position->MarketValue, Position->VolumeMultiple, Position->TotalCost, Position->TodayCost, Position->TotalProfit, Position->TodayProfit, Position->LastPrice, Position->PrePrice);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupPositionPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupPositionPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -11586,7 +11672,8 @@ namespace step
 		int index = 0;
 		if (ReqQryRiskGroupOrder != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupOrderPackage:UserID:[%s], AccountID:[%s]", ReqQryRiskGroupOrder->UserID, ReqQryRiskGroupOrder->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupOrderPackage:UserID:[%s], AccountID:[%s]", 
+				ReqQryRiskGroupOrder->UserID, ReqQryRiskGroupOrder->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -11974,11 +12061,13 @@ namespace step
 		int index = 0;
 		if (Order != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupOrderPackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]", Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupOrderPackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]", 
+				Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupOrderPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupOrderPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -12107,7 +12196,8 @@ namespace step
 		int index = 0;
 		if (ReqQryRiskGroupTrade != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupTradePackage:UserID:[%s], AccountID:[%s]", ReqQryRiskGroupTrade->UserID, ReqQryRiskGroupTrade->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupTradePackage:UserID:[%s], AccountID:[%s]", 
+				ReqQryRiskGroupTrade->UserID, ReqQryRiskGroupTrade->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -12425,11 +12515,13 @@ namespace step
 		int index = 0;
 		if (Trade != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupTradePackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%d], VolumeMultiple:[%d], TradeAmount:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], TradeDate:[%s], TradeTime:[%s]", Trade->TradingDay, Trade->AccountID, Trade->ExchangeID, Trade->InstrumentID, (int)Trade->SecurityType, Trade->OrderID, Trade->OrderSysID, Trade->TradeID, (int)Trade->Direction, (int)Trade->OffsetFlag, Trade->Price, Trade->Volume, Trade->VolumeMultiple, Trade->TradeAmount, Trade->Commission, Trade->StampTax, Trade->TransferFee, Trade->TradeDate, Trade->TradeTime);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupTradePackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%d], VolumeMultiple:[%d], TradeAmount:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], TradeDate:[%s], TradeTime:[%s]", 
+				Trade->TradingDay, Trade->AccountID, Trade->ExchangeID, Trade->InstrumentID, (int)Trade->SecurityType, Trade->OrderID, Trade->OrderSysID, Trade->TradeID, (int)Trade->Direction, (int)Trade->OffsetFlag, Trade->Price, Trade->Volume, Trade->VolumeMultiple, Trade->TradeAmount, Trade->Commission, Trade->StampTax, Trade->TransferFee, Trade->TradeDate, Trade->TradeTime);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupTradePackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupTradePackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -12558,7 +12650,8 @@ namespace step
 		int index = 0;
 		if (ReqQryRiskGroupAccountRisk != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupAccountRiskPackage:UserID:[%s], AccountID:[%s]", ReqQryRiskGroupAccountRisk->UserID, ReqQryRiskGroupAccountRisk->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupAccountRiskPackage:UserID:[%s], AccountID:[%s]", 
+				ReqQryRiskGroupAccountRisk->UserID, ReqQryRiskGroupAccountRisk->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -12745,11 +12838,13 @@ namespace step
 		int index = 0;
 		if (AccountRisk != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountRiskPackage:AccountID:[%s], RiskID:[%d], RiskStatus:[%d]", AccountRisk->AccountID, AccountRisk->RiskID, (int)AccountRisk->RiskStatus);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountRiskPackage:AccountID:[%s], RiskID:[%d], RiskStatus:[%d]", 
+				AccountRisk->AccountID, AccountRisk->RiskID, (int)AccountRisk->RiskStatus);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountRiskPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountRiskPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -12878,7 +12973,8 @@ namespace step
 		int index = 0;
 		if (ReqQryRiskGroupAccountRiskNotify != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupAccountRiskNotifyPackage:UserID:[%s], AccountID:[%s]", ReqQryRiskGroupAccountRiskNotify->UserID, ReqQryRiskGroupAccountRiskNotify->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupAccountRiskNotifyPackage:UserID:[%s], AccountID:[%s]", 
+				ReqQryRiskGroupAccountRiskNotify->UserID, ReqQryRiskGroupAccountRiskNotify->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -13104,11 +13200,13 @@ namespace step
 		int index = 0;
 		if (AccountRiskNotify != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountRiskNotifyPackage:NotifyDate:[%s], NotifyTime:[%s], AccountID:[%s], RiskID:[%d], RiskRuleID:[%d], RiskStatus:[%d], RiskMessage:[%s]", AccountRiskNotify->NotifyDate, AccountRiskNotify->NotifyTime, AccountRiskNotify->AccountID, AccountRiskNotify->RiskID, AccountRiskNotify->RiskRuleID, (int)AccountRiskNotify->RiskStatus, AccountRiskNotify->RiskMessage);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountRiskNotifyPackage:NotifyDate:[%s], NotifyTime:[%s], AccountID:[%s], RiskID:[%d], RiskRuleID:[%d], RiskStatus:[%d], RiskMessage:[%s]", 
+				AccountRiskNotify->NotifyDate, AccountRiskNotify->NotifyTime, AccountRiskNotify->AccountID, AccountRiskNotify->RiskID, AccountRiskNotify->RiskRuleID, (int)AccountRiskNotify->RiskStatus, AccountRiskNotify->RiskMessage);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountRiskNotifyPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountRiskNotifyPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -13301,7 +13399,8 @@ namespace step
 		int index = 0;
 		if (ReqRiskInsertOrder != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRiskInsertOrderPackage:UserID:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], ClientOrderID:[%d], IsForceClose:[%d]", ReqRiskInsertOrder->UserID, ReqRiskInsertOrder->AccountID, ReqRiskInsertOrder->ExchangeID, ReqRiskInsertOrder->InstrumentID, (int)ReqRiskInsertOrder->Direction, (int)ReqRiskInsertOrder->OffsetFlag, (int)ReqRiskInsertOrder->OrderPriceType, ReqRiskInsertOrder->Price, ReqRiskInsertOrder->Volume, ReqRiskInsertOrder->ClientOrderID, ReqRiskInsertOrder->IsForceClose);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRiskInsertOrderPackage:UserID:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], ClientOrderID:[%d], IsForceClose:[%d]", 
+				ReqRiskInsertOrder->UserID, ReqRiskInsertOrder->AccountID, ReqRiskInsertOrder->ExchangeID, ReqRiskInsertOrder->InstrumentID, (int)ReqRiskInsertOrder->Direction, (int)ReqRiskInsertOrder->OffsetFlag, (int)ReqRiskInsertOrder->OrderPriceType, ReqRiskInsertOrder->Price, ReqRiskInsertOrder->Volume, ReqRiskInsertOrder->ClientOrderID, ReqRiskInsertOrder->IsForceClose);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -13689,11 +13788,13 @@ namespace step
 		int index = 0;
 		if (Order != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskInsertOrderPackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]", Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskInsertOrderPackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]", 
+				Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskInsertOrderPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskInsertOrderPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -13873,7 +13974,8 @@ namespace step
 		int index = 0;
 		if (ReqRiskCancelOrder != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRiskCancelOrderPackage:UserID:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], ClientCancelOrderID:[%d], OrderID:[%d], OrderSysID:[%s], ClientOrderID:[%d]", ReqRiskCancelOrder->UserID, ReqRiskCancelOrder->AccountID, ReqRiskCancelOrder->ExchangeID, ReqRiskCancelOrder->InstrumentID, ReqRiskCancelOrder->ClientCancelOrderID, ReqRiskCancelOrder->OrderID, ReqRiskCancelOrder->OrderSysID, ReqRiskCancelOrder->ClientOrderID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRiskCancelOrderPackage:UserID:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], ClientCancelOrderID:[%d], OrderID:[%d], OrderSysID:[%s], ClientOrderID:[%d]", 
+				ReqRiskCancelOrder->UserID, ReqRiskCancelOrder->AccountID, ReqRiskCancelOrder->ExchangeID, ReqRiskCancelOrder->InstrumentID, ReqRiskCancelOrder->ClientCancelOrderID, ReqRiskCancelOrder->OrderID, ReqRiskCancelOrder->OrderSysID, ReqRiskCancelOrder->ClientOrderID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -14099,11 +14201,13 @@ namespace step
 		int index = 0;
 		if (CancelOrder != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskCancelOrderPackage:AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], ClientCancelOrderID:[%d], OrderID:[%d], OrderSysID:[%s], ClientOrderID:[%d]", CancelOrder->AccountID, CancelOrder->ExchangeID, CancelOrder->InstrumentID, CancelOrder->ClientCancelOrderID, CancelOrder->OrderID, CancelOrder->OrderSysID, CancelOrder->ClientOrderID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskCancelOrderPackage:AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], ClientCancelOrderID:[%d], OrderID:[%d], OrderSysID:[%s], ClientOrderID:[%d]", 
+				CancelOrder->AccountID, CancelOrder->ExchangeID, CancelOrder->InstrumentID, CancelOrder->ClientCancelOrderID, CancelOrder->OrderID, CancelOrder->OrderSysID, CancelOrder->ClientOrderID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskCancelOrderPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskCancelOrderPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -14260,7 +14364,8 @@ namespace step
 		int index = 0;
 		if (ReqAddRiskUser != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddRiskUserPackage:AdminUserID:[%s], UserID:[%s], UserName:[%s], Password:[%s], RiskGroupID:[%d]", ReqAddRiskUser->AdminUserID, ReqAddRiskUser->UserID, ReqAddRiskUser->UserName, ReqAddRiskUser->Password, ReqAddRiskUser->RiskGroupID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddRiskUserPackage:AdminUserID:[%s], UserID:[%s], UserName:[%s], Password:[%s], RiskGroupID:[%d]", 
+				ReqAddRiskUser->AdminUserID, ReqAddRiskUser->UserID, ReqAddRiskUser->UserName, ReqAddRiskUser->Password, ReqAddRiskUser->RiskGroupID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -14446,11 +14551,13 @@ namespace step
 		int index = 0;
 		if (RspAddRiskUser != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskUserPackage:AdminUserID:[%s], UserID:[%s]", RspAddRiskUser->AdminUserID, RspAddRiskUser->UserID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskUserPackage:AdminUserID:[%s], UserID:[%s]", 
+				RspAddRiskUser->AdminUserID, RspAddRiskUser->UserID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskUserPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskUserPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -14607,7 +14714,8 @@ namespace step
 		int index = 0;
 		if (ReqUpdateRiskUser != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateRiskUserPackage:AdminUserID:[%s], UserID:[%s], UserName:[%s], Password:[%s], RiskGroupID:[%d]", ReqUpdateRiskUser->AdminUserID, ReqUpdateRiskUser->UserID, ReqUpdateRiskUser->UserName, ReqUpdateRiskUser->Password, ReqUpdateRiskUser->RiskGroupID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateRiskUserPackage:AdminUserID:[%s], UserID:[%s], UserName:[%s], Password:[%s], RiskGroupID:[%d]", 
+				ReqUpdateRiskUser->AdminUserID, ReqUpdateRiskUser->UserID, ReqUpdateRiskUser->UserName, ReqUpdateRiskUser->Password, ReqUpdateRiskUser->RiskGroupID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -14793,11 +14901,13 @@ namespace step
 		int index = 0;
 		if (RspUpdateRiskUser != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateRiskUserPackage:AdminUserID:[%s], UserID:[%s]", RspUpdateRiskUser->AdminUserID, RspUpdateRiskUser->UserID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateRiskUserPackage:AdminUserID:[%s], UserID:[%s]", 
+				RspUpdateRiskUser->AdminUserID, RspUpdateRiskUser->UserID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateRiskUserPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateRiskUserPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -14926,7 +15036,8 @@ namespace step
 		int index = 0;
 		if (ReqRemoveRiskUser != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveRiskUserPackage:AdminUserID:[%s], UserID:[%s]", ReqRemoveRiskUser->AdminUserID, ReqRemoveRiskUser->UserID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveRiskUserPackage:AdminUserID:[%s], UserID:[%s]", 
+				ReqRemoveRiskUser->AdminUserID, ReqRemoveRiskUser->UserID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -15112,11 +15223,13 @@ namespace step
 		int index = 0;
 		if (RspRemoveRiskUser != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskUserPackage:AdminUserID:[%s], UserID:[%s]", RspRemoveRiskUser->AdminUserID, RspRemoveRiskUser->UserID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskUserPackage:AdminUserID:[%s], UserID:[%s]", 
+				RspRemoveRiskUser->AdminUserID, RspRemoveRiskUser->UserID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskUserPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskUserPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -15267,7 +15380,8 @@ namespace step
 		int index = 0;
 		if (ReqAddAdminUser != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddAdminUserPackage:AdminUserID:[%s], UserID:[%s], UserName:[%s], Password:[%s]", ReqAddAdminUser->AdminUserID, ReqAddAdminUser->UserID, ReqAddAdminUser->UserName, ReqAddAdminUser->Password);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddAdminUserPackage:AdminUserID:[%s], UserID:[%s], UserName:[%s], Password:[%s]", 
+				ReqAddAdminUser->AdminUserID, ReqAddAdminUser->UserID, ReqAddAdminUser->UserName, ReqAddAdminUser->Password);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -15453,11 +15567,13 @@ namespace step
 		int index = 0;
 		if (RspAddAdminUser != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddAdminUserPackage:AdminUserID:[%s], UserID:[%s]", RspAddAdminUser->AdminUserID, RspAddAdminUser->UserID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddAdminUserPackage:AdminUserID:[%s], UserID:[%s]", 
+				RspAddAdminUser->AdminUserID, RspAddAdminUser->UserID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddAdminUserPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddAdminUserPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -15608,7 +15724,8 @@ namespace step
 		int index = 0;
 		if (ReqUpdateAdminUser != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateAdminUserPackage:AdminUserID:[%s], UserID:[%s], UserName:[%s], Password:[%s]", ReqUpdateAdminUser->AdminUserID, ReqUpdateAdminUser->UserID, ReqUpdateAdminUser->UserName, ReqUpdateAdminUser->Password);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateAdminUserPackage:AdminUserID:[%s], UserID:[%s], UserName:[%s], Password:[%s]", 
+				ReqUpdateAdminUser->AdminUserID, ReqUpdateAdminUser->UserID, ReqUpdateAdminUser->UserName, ReqUpdateAdminUser->Password);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -15794,11 +15911,13 @@ namespace step
 		int index = 0;
 		if (RspUpdateAdminUser != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateAdminUserPackage:AdminUserID:[%s], UserID:[%s]", RspUpdateAdminUser->AdminUserID, RspUpdateAdminUser->UserID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateAdminUserPackage:AdminUserID:[%s], UserID:[%s]", 
+				RspUpdateAdminUser->AdminUserID, RspUpdateAdminUser->UserID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateAdminUserPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateAdminUserPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -15927,7 +16046,8 @@ namespace step
 		int index = 0;
 		if (ReqRemoveAdminUser != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveAdminUserPackage:AdminUserID:[%s], UserID:[%s]", ReqRemoveAdminUser->AdminUserID, ReqRemoveAdminUser->UserID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveAdminUserPackage:AdminUserID:[%s], UserID:[%s]", 
+				ReqRemoveAdminUser->AdminUserID, ReqRemoveAdminUser->UserID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -16113,11 +16233,13 @@ namespace step
 		int index = 0;
 		if (RspRemoveAdminUser != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveAdminUserPackage:AdminUserID:[%s], UserID:[%s]", RspRemoveAdminUser->AdminUserID, RspRemoveAdminUser->UserID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveAdminUserPackage:AdminUserID:[%s], UserID:[%s]", 
+				RspRemoveAdminUser->AdminUserID, RspRemoveAdminUser->UserID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveAdminUserPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveAdminUserPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -16338,7 +16460,8 @@ namespace step
 		int index = 0;
 		if (ReqAddPrimaryAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddPrimaryAccountPackage:AdminUserID:[%s], TradingDay:[%s], PrimaryAccountID:[%s], PrimaryAccountName:[%s], AccountClass:[%d], BrokerPassword:[%s], OfferID:[%d], IsAllowLogin:[%d], IsSimulateAccount:[%d], AccountStatus:[%d], Password:[%s], RiskGroupID:[%d], CommissionGroupID:[%d], IsAutoAudit:[%d]", ReqAddPrimaryAccount->AdminUserID, ReqAddPrimaryAccount->TradingDay, ReqAddPrimaryAccount->PrimaryAccountID, ReqAddPrimaryAccount->PrimaryAccountName, (int)ReqAddPrimaryAccount->AccountClass, ReqAddPrimaryAccount->BrokerPassword, ReqAddPrimaryAccount->OfferID, ReqAddPrimaryAccount->IsAllowLogin, ReqAddPrimaryAccount->IsSimulateAccount, (int)ReqAddPrimaryAccount->AccountStatus, ReqAddPrimaryAccount->Password, ReqAddPrimaryAccount->RiskGroupID, ReqAddPrimaryAccount->CommissionGroupID, ReqAddPrimaryAccount->IsAutoAudit);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddPrimaryAccountPackage:AdminUserID:[%s], TradingDay:[%s], PrimaryAccountID:[%s], PrimaryAccountName:[%s], AccountClass:[%d], BrokerPassword:[%s], OfferID:[%d], IsAllowLogin:[%d], IsSimulateAccount:[%d], AccountStatus:[%d], Password:[%s], RiskGroupID:[%d], CommissionGroupID:[%d], IsAutoAudit:[%d]", 
+				ReqAddPrimaryAccount->AdminUserID, ReqAddPrimaryAccount->TradingDay, ReqAddPrimaryAccount->PrimaryAccountID, ReqAddPrimaryAccount->PrimaryAccountName, (int)ReqAddPrimaryAccount->AccountClass, ReqAddPrimaryAccount->BrokerPassword, ReqAddPrimaryAccount->OfferID, ReqAddPrimaryAccount->IsAllowLogin, ReqAddPrimaryAccount->IsSimulateAccount, (int)ReqAddPrimaryAccount->AccountStatus, ReqAddPrimaryAccount->Password, ReqAddPrimaryAccount->RiskGroupID, ReqAddPrimaryAccount->CommissionGroupID, ReqAddPrimaryAccount->IsAutoAudit);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -16524,11 +16647,13 @@ namespace step
 		int index = 0;
 		if (RspAddPrimaryAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddPrimaryAccountPackage:AdminUserID:[%s], PrimaryAccountID:[%s]", RspAddPrimaryAccount->AdminUserID, RspAddPrimaryAccount->PrimaryAccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddPrimaryAccountPackage:AdminUserID:[%s], PrimaryAccountID:[%s]", 
+				RspAddPrimaryAccount->AdminUserID, RspAddPrimaryAccount->PrimaryAccountID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddPrimaryAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddPrimaryAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -16749,7 +16874,8 @@ namespace step
 		int index = 0;
 		if (ReqUpdatePrimaryAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdatePrimaryAccountPackage:AdminUserID:[%s], TradingDay:[%s], PrimaryAccountID:[%s], PrimaryAccountName:[%s], AccountClass:[%d], BrokerPassword:[%s], OfferID:[%d], IsAllowLogin:[%d], IsSimulateAccount:[%d], AccountStatus:[%d], Password:[%s], RiskGroupID:[%d], CommissionGroupID:[%d], IsAutoAudit:[%d]", ReqUpdatePrimaryAccount->AdminUserID, ReqUpdatePrimaryAccount->TradingDay, ReqUpdatePrimaryAccount->PrimaryAccountID, ReqUpdatePrimaryAccount->PrimaryAccountName, (int)ReqUpdatePrimaryAccount->AccountClass, ReqUpdatePrimaryAccount->BrokerPassword, ReqUpdatePrimaryAccount->OfferID, ReqUpdatePrimaryAccount->IsAllowLogin, ReqUpdatePrimaryAccount->IsSimulateAccount, (int)ReqUpdatePrimaryAccount->AccountStatus, ReqUpdatePrimaryAccount->Password, ReqUpdatePrimaryAccount->RiskGroupID, ReqUpdatePrimaryAccount->CommissionGroupID, ReqUpdatePrimaryAccount->IsAutoAudit);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdatePrimaryAccountPackage:AdminUserID:[%s], TradingDay:[%s], PrimaryAccountID:[%s], PrimaryAccountName:[%s], AccountClass:[%d], BrokerPassword:[%s], OfferID:[%d], IsAllowLogin:[%d], IsSimulateAccount:[%d], AccountStatus:[%d], Password:[%s], RiskGroupID:[%d], CommissionGroupID:[%d], IsAutoAudit:[%d]", 
+				ReqUpdatePrimaryAccount->AdminUserID, ReqUpdatePrimaryAccount->TradingDay, ReqUpdatePrimaryAccount->PrimaryAccountID, ReqUpdatePrimaryAccount->PrimaryAccountName, (int)ReqUpdatePrimaryAccount->AccountClass, ReqUpdatePrimaryAccount->BrokerPassword, ReqUpdatePrimaryAccount->OfferID, ReqUpdatePrimaryAccount->IsAllowLogin, ReqUpdatePrimaryAccount->IsSimulateAccount, (int)ReqUpdatePrimaryAccount->AccountStatus, ReqUpdatePrimaryAccount->Password, ReqUpdatePrimaryAccount->RiskGroupID, ReqUpdatePrimaryAccount->CommissionGroupID, ReqUpdatePrimaryAccount->IsAutoAudit);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -16935,11 +17061,13 @@ namespace step
 		int index = 0;
 		if (RspUpdatePrimaryAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdatePrimaryAccountPackage:AdminUserID:[%s], PrimaryAccountID:[%s]", RspUpdatePrimaryAccount->AdminUserID, RspUpdatePrimaryAccount->PrimaryAccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdatePrimaryAccountPackage:AdminUserID:[%s], PrimaryAccountID:[%s]", 
+				RspUpdatePrimaryAccount->AdminUserID, RspUpdatePrimaryAccount->PrimaryAccountID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdatePrimaryAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdatePrimaryAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -17068,7 +17196,8 @@ namespace step
 		int index = 0;
 		if (ReqRemovePrimaryAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemovePrimaryAccountPackage:AdminUserID:[%s], PrimaryAccountID:[%s]", ReqRemovePrimaryAccount->AdminUserID, ReqRemovePrimaryAccount->PrimaryAccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemovePrimaryAccountPackage:AdminUserID:[%s], PrimaryAccountID:[%s]", 
+				ReqRemovePrimaryAccount->AdminUserID, ReqRemovePrimaryAccount->PrimaryAccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -17254,11 +17383,13 @@ namespace step
 		int index = 0;
 		if (RspRemovePrimaryAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemovePrimaryAccountPackage:AdminUserID:[%s], PrimaryAccountID:[%s]", RspRemovePrimaryAccount->AdminUserID, RspRemovePrimaryAccount->PrimaryAccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemovePrimaryAccountPackage:AdminUserID:[%s], PrimaryAccountID:[%s]", 
+				RspRemovePrimaryAccount->AdminUserID, RspRemovePrimaryAccount->PrimaryAccountID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemovePrimaryAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemovePrimaryAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -17450,7 +17581,8 @@ namespace step
 		int index = 0;
 		if (ReqAddAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddAccountPackage:AdminUserID:[%s], TradingDay:[%s], AccountID:[%s], AccountName:[%s], AccountStatus:[%d], Password:[%s], TradeGroupID:[%d], RiskGroupID:[%d], CommissionGroupID:[%d], IsAutoAudit:[%d]", ReqAddAccount->AdminUserID, ReqAddAccount->TradingDay, ReqAddAccount->AccountID, ReqAddAccount->AccountName, (int)ReqAddAccount->AccountStatus, ReqAddAccount->Password, ReqAddAccount->TradeGroupID, ReqAddAccount->RiskGroupID, ReqAddAccount->CommissionGroupID, ReqAddAccount->IsAutoAudit);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddAccountPackage:AdminUserID:[%s], TradingDay:[%s], AccountID:[%s], AccountName:[%s], AccountStatus:[%d], Password:[%s], TradeGroupID:[%d], RiskGroupID:[%d], CommissionGroupID:[%d], IsAutoAudit:[%d]", 
+				ReqAddAccount->AdminUserID, ReqAddAccount->TradingDay, ReqAddAccount->AccountID, ReqAddAccount->AccountName, (int)ReqAddAccount->AccountStatus, ReqAddAccount->Password, ReqAddAccount->TradeGroupID, ReqAddAccount->RiskGroupID, ReqAddAccount->CommissionGroupID, ReqAddAccount->IsAutoAudit);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -17636,11 +17768,13 @@ namespace step
 		int index = 0;
 		if (RspAddAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddAccountPackage:AdminUserID:[%s], AccountID:[%s]", RspAddAccount->AdminUserID, RspAddAccount->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddAccountPackage:AdminUserID:[%s], AccountID:[%s]", 
+				RspAddAccount->AdminUserID, RspAddAccount->AccountID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -17832,7 +17966,8 @@ namespace step
 		int index = 0;
 		if (ReqUpdateAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateAccountPackage:AdminUserID:[%s], TradingDay:[%s], AccountID:[%s], AccountName:[%s], AccountStatus:[%d], Password:[%s], TradeGroupID:[%d], RiskGroupID:[%d], CommissionGroupID:[%d], IsAutoAudit:[%d]", ReqUpdateAccount->AdminUserID, ReqUpdateAccount->TradingDay, ReqUpdateAccount->AccountID, ReqUpdateAccount->AccountName, (int)ReqUpdateAccount->AccountStatus, ReqUpdateAccount->Password, ReqUpdateAccount->TradeGroupID, ReqUpdateAccount->RiskGroupID, ReqUpdateAccount->CommissionGroupID, ReqUpdateAccount->IsAutoAudit);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateAccountPackage:AdminUserID:[%s], TradingDay:[%s], AccountID:[%s], AccountName:[%s], AccountStatus:[%d], Password:[%s], TradeGroupID:[%d], RiskGroupID:[%d], CommissionGroupID:[%d], IsAutoAudit:[%d]", 
+				ReqUpdateAccount->AdminUserID, ReqUpdateAccount->TradingDay, ReqUpdateAccount->AccountID, ReqUpdateAccount->AccountName, (int)ReqUpdateAccount->AccountStatus, ReqUpdateAccount->Password, ReqUpdateAccount->TradeGroupID, ReqUpdateAccount->RiskGroupID, ReqUpdateAccount->CommissionGroupID, ReqUpdateAccount->IsAutoAudit);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -18018,11 +18153,13 @@ namespace step
 		int index = 0;
 		if (RspUpdateAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateAccountPackage:AdminUserID:[%s], AccountID:[%s]", RspUpdateAccount->AdminUserID, RspUpdateAccount->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateAccountPackage:AdminUserID:[%s], AccountID:[%s]", 
+				RspUpdateAccount->AdminUserID, RspUpdateAccount->AccountID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -18151,7 +18288,8 @@ namespace step
 		int index = 0;
 		if (ReqRemoveAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveAccountPackage:AdminUserID:[%s], AccountID:[%s]", ReqRemoveAccount->AdminUserID, ReqRemoveAccount->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveAccountPackage:AdminUserID:[%s], AccountID:[%s]", 
+				ReqRemoveAccount->AdminUserID, ReqRemoveAccount->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -18337,11 +18475,13 @@ namespace step
 		int index = 0;
 		if (RspRemoveAccount != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveAccountPackage:AdminUserID:[%s], AccountID:[%s]", RspRemoveAccount->AdminUserID, RspRemoveAccount->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveAccountPackage:AdminUserID:[%s], AccountID:[%s]", 
+				RspRemoveAccount->AdminUserID, RspRemoveAccount->AccountID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -18511,7 +18651,8 @@ namespace step
 		int index = 0;
 		if (ReqAddBaseCommission != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddBaseCommissionPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], SecurityType:[%d], OpenStampTaxByMoney:[%f], CloseStampTaxByMoney:[%f], OpenTransferFeeByMoney:[%f], CloseTransferFeeByMoney:[%f]", ReqAddBaseCommission->AdminUserID, ReqAddBaseCommission->TradingDay, ReqAddBaseCommission->ExchangeID, (int)ReqAddBaseCommission->SecurityType, ReqAddBaseCommission->OpenStampTaxByMoney, ReqAddBaseCommission->CloseStampTaxByMoney, ReqAddBaseCommission->OpenTransferFeeByMoney, ReqAddBaseCommission->CloseTransferFeeByMoney);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddBaseCommissionPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], SecurityType:[%d], OpenStampTaxByMoney:[%f], CloseStampTaxByMoney:[%f], OpenTransferFeeByMoney:[%f], CloseTransferFeeByMoney:[%f]", 
+				ReqAddBaseCommission->AdminUserID, ReqAddBaseCommission->TradingDay, ReqAddBaseCommission->ExchangeID, (int)ReqAddBaseCommission->SecurityType, ReqAddBaseCommission->OpenStampTaxByMoney, ReqAddBaseCommission->CloseStampTaxByMoney, ReqAddBaseCommission->OpenTransferFeeByMoney, ReqAddBaseCommission->CloseTransferFeeByMoney);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -18714,11 +18855,13 @@ namespace step
 		int index = 0;
 		if (RspAddBaseCommission != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddBaseCommissionPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], SecurityType:[%d]", RspAddBaseCommission->AdminUserID, RspAddBaseCommission->TradingDay, RspAddBaseCommission->ExchangeID, (int)RspAddBaseCommission->SecurityType);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddBaseCommissionPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], SecurityType:[%d]", 
+				RspAddBaseCommission->AdminUserID, RspAddBaseCommission->TradingDay, RspAddBaseCommission->ExchangeID, (int)RspAddBaseCommission->SecurityType);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddBaseCommissionPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddBaseCommissionPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -18888,7 +19031,8 @@ namespace step
 		int index = 0;
 		if (ReqUpdateBaseCommission != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateBaseCommissionPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], SecurityType:[%d], OpenStampTaxByMoney:[%f], CloseStampTaxByMoney:[%f], OpenTransferFeeByMoney:[%f], CloseTransferFeeByMoney:[%f]", ReqUpdateBaseCommission->AdminUserID, ReqUpdateBaseCommission->TradingDay, ReqUpdateBaseCommission->ExchangeID, (int)ReqUpdateBaseCommission->SecurityType, ReqUpdateBaseCommission->OpenStampTaxByMoney, ReqUpdateBaseCommission->CloseStampTaxByMoney, ReqUpdateBaseCommission->OpenTransferFeeByMoney, ReqUpdateBaseCommission->CloseTransferFeeByMoney);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateBaseCommissionPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], SecurityType:[%d], OpenStampTaxByMoney:[%f], CloseStampTaxByMoney:[%f], OpenTransferFeeByMoney:[%f], CloseTransferFeeByMoney:[%f]", 
+				ReqUpdateBaseCommission->AdminUserID, ReqUpdateBaseCommission->TradingDay, ReqUpdateBaseCommission->ExchangeID, (int)ReqUpdateBaseCommission->SecurityType, ReqUpdateBaseCommission->OpenStampTaxByMoney, ReqUpdateBaseCommission->CloseStampTaxByMoney, ReqUpdateBaseCommission->OpenTransferFeeByMoney, ReqUpdateBaseCommission->CloseTransferFeeByMoney);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -19091,11 +19235,13 @@ namespace step
 		int index = 0;
 		if (RspUpdateBaseCommission != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateBaseCommissionPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], SecurityType:[%d]", RspUpdateBaseCommission->AdminUserID, RspUpdateBaseCommission->TradingDay, RspUpdateBaseCommission->ExchangeID, (int)RspUpdateBaseCommission->SecurityType);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateBaseCommissionPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], SecurityType:[%d]", 
+				RspUpdateBaseCommission->AdminUserID, RspUpdateBaseCommission->TradingDay, RspUpdateBaseCommission->ExchangeID, (int)RspUpdateBaseCommission->SecurityType);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateBaseCommissionPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateBaseCommissionPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -19241,7 +19387,8 @@ namespace step
 		int index = 0;
 		if (ReqRemoveBaseCommission != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveBaseCommissionPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], SecurityType:[%d]", ReqRemoveBaseCommission->AdminUserID, ReqRemoveBaseCommission->TradingDay, ReqRemoveBaseCommission->ExchangeID, (int)ReqRemoveBaseCommission->SecurityType);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveBaseCommissionPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], SecurityType:[%d]", 
+				ReqRemoveBaseCommission->AdminUserID, ReqRemoveBaseCommission->TradingDay, ReqRemoveBaseCommission->ExchangeID, (int)ReqRemoveBaseCommission->SecurityType);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -19444,11 +19591,13 @@ namespace step
 		int index = 0;
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveBaseCommissionPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveBaseCommissionPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		if (RspRemoveBaseCommission != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveBaseCommissionPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], SecurityType:[%d]", RspRemoveBaseCommission->AdminUserID, RspRemoveBaseCommission->TradingDay, RspRemoveBaseCommission->ExchangeID, (int)RspRemoveBaseCommission->SecurityType);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveBaseCommissionPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], SecurityType:[%d]", 
+				RspRemoveBaseCommission->AdminUserID, RspRemoveBaseCommission->TradingDay, RspRemoveBaseCommission->ExchangeID, (int)RspRemoveBaseCommission->SecurityType);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -19671,7 +19820,8 @@ namespace step
 		int index = 0;
 		if (ReqAddCommissionGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddCommissionGroupPackage:AdminUserID:[%s], TradingDay:[%s], CommissionGroupID:[%d], CommissionGroupName:[%s], ExchangeID:[%s], SecurityType:[%d], OpenBuyByMoney:[%f], OpenSellByMoney:[%f], CloseBuyByMoney:[%f], CloseSellByMoney:[%f], OpenBuyByVolume:[%f], OpenSellByVolume:[%f], CloseBuyByVolume:[%f], CloseSellByVolume:[%f], MinCommission:[%f], MaxCommission:[%f]", ReqAddCommissionGroup->AdminUserID, ReqAddCommissionGroup->TradingDay, ReqAddCommissionGroup->CommissionGroupID, ReqAddCommissionGroup->CommissionGroupName, ReqAddCommissionGroup->ExchangeID, (int)ReqAddCommissionGroup->SecurityType, ReqAddCommissionGroup->OpenBuyByMoney, ReqAddCommissionGroup->OpenSellByMoney, ReqAddCommissionGroup->CloseBuyByMoney, ReqAddCommissionGroup->CloseSellByMoney, ReqAddCommissionGroup->OpenBuyByVolume, ReqAddCommissionGroup->OpenSellByVolume, ReqAddCommissionGroup->CloseBuyByVolume, ReqAddCommissionGroup->CloseSellByVolume, ReqAddCommissionGroup->MinCommission, ReqAddCommissionGroup->MaxCommission);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddCommissionGroupPackage:AdminUserID:[%s], TradingDay:[%s], CommissionGroupID:[%d], CommissionGroupName:[%s], ExchangeID:[%s], SecurityType:[%d], OpenBuyByMoney:[%f], OpenSellByMoney:[%f], CloseBuyByMoney:[%f], CloseSellByMoney:[%f], OpenBuyByVolume:[%f], OpenSellByVolume:[%f], CloseBuyByVolume:[%f], CloseSellByVolume:[%f], MinCommission:[%f], MaxCommission:[%f]", 
+				ReqAddCommissionGroup->AdminUserID, ReqAddCommissionGroup->TradingDay, ReqAddCommissionGroup->CommissionGroupID, ReqAddCommissionGroup->CommissionGroupName, ReqAddCommissionGroup->ExchangeID, (int)ReqAddCommissionGroup->SecurityType, ReqAddCommissionGroup->OpenBuyByMoney, ReqAddCommissionGroup->OpenSellByMoney, ReqAddCommissionGroup->CloseBuyByMoney, ReqAddCommissionGroup->CloseSellByMoney, ReqAddCommissionGroup->OpenBuyByVolume, ReqAddCommissionGroup->OpenSellByVolume, ReqAddCommissionGroup->CloseBuyByVolume, ReqAddCommissionGroup->CloseSellByVolume, ReqAddCommissionGroup->MinCommission, ReqAddCommissionGroup->MaxCommission);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -19880,11 +20030,13 @@ namespace step
 		int index = 0;
 		if (RspAddCommissionGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddCommissionGroupPackage:AdminUserID:[%s], TradingDay:[%s], CommissionGroupID:[%d], ExchangeID:[%s], SecurityType:[%d]", RspAddCommissionGroup->AdminUserID, RspAddCommissionGroup->TradingDay, RspAddCommissionGroup->CommissionGroupID, RspAddCommissionGroup->ExchangeID, (int)RspAddCommissionGroup->SecurityType);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddCommissionGroupPackage:AdminUserID:[%s], TradingDay:[%s], CommissionGroupID:[%d], ExchangeID:[%s], SecurityType:[%d]", 
+				RspAddCommissionGroup->AdminUserID, RspAddCommissionGroup->TradingDay, RspAddCommissionGroup->CommissionGroupID, RspAddCommissionGroup->ExchangeID, (int)RspAddCommissionGroup->SecurityType);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddCommissionGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddCommissionGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -20107,7 +20259,8 @@ namespace step
 		int index = 0;
 		if (ReqUpdateCommissionGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateCommissionGroupPackage:AdminUserID:[%s], TradingDay:[%s], CommissionGroupID:[%d], CommissionGroupName:[%s], ExchangeID:[%s], SecurityType:[%d], OpenBuyByMoney:[%f], OpenSellByMoney:[%f], CloseBuyByMoney:[%f], CloseSellByMoney:[%f], OpenBuyByVolume:[%f], OpenSellByVolume:[%f], CloseBuyByVolume:[%f], CloseSellByVolume:[%f], MinCommission:[%f], MaxCommission:[%f]", ReqUpdateCommissionGroup->AdminUserID, ReqUpdateCommissionGroup->TradingDay, ReqUpdateCommissionGroup->CommissionGroupID, ReqUpdateCommissionGroup->CommissionGroupName, ReqUpdateCommissionGroup->ExchangeID, (int)ReqUpdateCommissionGroup->SecurityType, ReqUpdateCommissionGroup->OpenBuyByMoney, ReqUpdateCommissionGroup->OpenSellByMoney, ReqUpdateCommissionGroup->CloseBuyByMoney, ReqUpdateCommissionGroup->CloseSellByMoney, ReqUpdateCommissionGroup->OpenBuyByVolume, ReqUpdateCommissionGroup->OpenSellByVolume, ReqUpdateCommissionGroup->CloseBuyByVolume, ReqUpdateCommissionGroup->CloseSellByVolume, ReqUpdateCommissionGroup->MinCommission, ReqUpdateCommissionGroup->MaxCommission);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateCommissionGroupPackage:AdminUserID:[%s], TradingDay:[%s], CommissionGroupID:[%d], CommissionGroupName:[%s], ExchangeID:[%s], SecurityType:[%d], OpenBuyByMoney:[%f], OpenSellByMoney:[%f], CloseBuyByMoney:[%f], CloseSellByMoney:[%f], OpenBuyByVolume:[%f], OpenSellByVolume:[%f], CloseBuyByVolume:[%f], CloseSellByVolume:[%f], MinCommission:[%f], MaxCommission:[%f]", 
+				ReqUpdateCommissionGroup->AdminUserID, ReqUpdateCommissionGroup->TradingDay, ReqUpdateCommissionGroup->CommissionGroupID, ReqUpdateCommissionGroup->CommissionGroupName, ReqUpdateCommissionGroup->ExchangeID, (int)ReqUpdateCommissionGroup->SecurityType, ReqUpdateCommissionGroup->OpenBuyByMoney, ReqUpdateCommissionGroup->OpenSellByMoney, ReqUpdateCommissionGroup->CloseBuyByMoney, ReqUpdateCommissionGroup->CloseSellByMoney, ReqUpdateCommissionGroup->OpenBuyByVolume, ReqUpdateCommissionGroup->OpenSellByVolume, ReqUpdateCommissionGroup->CloseBuyByVolume, ReqUpdateCommissionGroup->CloseSellByVolume, ReqUpdateCommissionGroup->MinCommission, ReqUpdateCommissionGroup->MaxCommission);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -20316,11 +20469,13 @@ namespace step
 		int index = 0;
 		if (RspUpdateCommissionGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateCommissionGroupPackage:AdminUserID:[%s], TradingDay:[%s], CommissionGroupID:[%d], ExchangeID:[%s], SecurityType:[%d]", RspUpdateCommissionGroup->AdminUserID, RspUpdateCommissionGroup->TradingDay, RspUpdateCommissionGroup->CommissionGroupID, RspUpdateCommissionGroup->ExchangeID, (int)RspUpdateCommissionGroup->SecurityType);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateCommissionGroupPackage:AdminUserID:[%s], TradingDay:[%s], CommissionGroupID:[%d], ExchangeID:[%s], SecurityType:[%d]", 
+				RspUpdateCommissionGroup->AdminUserID, RspUpdateCommissionGroup->TradingDay, RspUpdateCommissionGroup->CommissionGroupID, RspUpdateCommissionGroup->ExchangeID, (int)RspUpdateCommissionGroup->SecurityType);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateCommissionGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateCommissionGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -20472,7 +20627,8 @@ namespace step
 		int index = 0;
 		if (ReqRemoveCommissionGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveCommissionGroupPackage:AdminUserID:[%s], TradingDay:[%s], CommissionGroupID:[%d], ExchangeID:[%s], SecurityType:[%d]", ReqRemoveCommissionGroup->AdminUserID, ReqRemoveCommissionGroup->TradingDay, ReqRemoveCommissionGroup->CommissionGroupID, ReqRemoveCommissionGroup->ExchangeID, (int)ReqRemoveCommissionGroup->SecurityType);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveCommissionGroupPackage:AdminUserID:[%s], TradingDay:[%s], CommissionGroupID:[%d], ExchangeID:[%s], SecurityType:[%d]", 
+				ReqRemoveCommissionGroup->AdminUserID, ReqRemoveCommissionGroup->TradingDay, ReqRemoveCommissionGroup->CommissionGroupID, ReqRemoveCommissionGroup->ExchangeID, (int)ReqRemoveCommissionGroup->SecurityType);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -20681,11 +20837,13 @@ namespace step
 		int index = 0;
 		if (RspRemoveCommissionGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveCommissionGroupPackage:AdminUserID:[%s], TradingDay:[%s], CommissionGroupID:[%d], ExchangeID:[%s], SecurityType:[%d]", RspRemoveCommissionGroup->AdminUserID, RspRemoveCommissionGroup->TradingDay, RspRemoveCommissionGroup->CommissionGroupID, RspRemoveCommissionGroup->ExchangeID, (int)RspRemoveCommissionGroup->SecurityType);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveCommissionGroupPackage:AdminUserID:[%s], TradingDay:[%s], CommissionGroupID:[%d], ExchangeID:[%s], SecurityType:[%d]", 
+				RspRemoveCommissionGroup->AdminUserID, RspRemoveCommissionGroup->TradingDay, RspRemoveCommissionGroup->CommissionGroupID, RspRemoveCommissionGroup->ExchangeID, (int)RspRemoveCommissionGroup->SecurityType);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveCommissionGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveCommissionGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -20837,7 +20995,8 @@ namespace step
 		int index = 0;
 		if (ReqAddOptionMarginParam != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddOptionMarginParamPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], Param1:[%f], Param2:[%f]", ReqAddOptionMarginParam->AdminUserID, ReqAddOptionMarginParam->TradingDay, ReqAddOptionMarginParam->ExchangeID, ReqAddOptionMarginParam->Param1, ReqAddOptionMarginParam->Param2);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddOptionMarginParamPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], Param1:[%f], Param2:[%f]", 
+				ReqAddOptionMarginParam->AdminUserID, ReqAddOptionMarginParam->TradingDay, ReqAddOptionMarginParam->ExchangeID, ReqAddOptionMarginParam->Param1, ReqAddOptionMarginParam->Param2);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -21023,11 +21182,13 @@ namespace step
 		int index = 0;
 		if (RspAddOptionMarginParam != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddOptionMarginParamPackage:AdminUserID:[%s], ExchangeID:[%s]", RspAddOptionMarginParam->AdminUserID, RspAddOptionMarginParam->ExchangeID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddOptionMarginParamPackage:AdminUserID:[%s], ExchangeID:[%s]", 
+				RspAddOptionMarginParam->AdminUserID, RspAddOptionMarginParam->ExchangeID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddOptionMarginParamPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddOptionMarginParamPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -21179,7 +21340,8 @@ namespace step
 		int index = 0;
 		if (ReqUpdateOptionMarginParam != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateOptionMarginParamPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], Param1:[%f], Param2:[%f]", ReqUpdateOptionMarginParam->AdminUserID, ReqUpdateOptionMarginParam->TradingDay, ReqUpdateOptionMarginParam->ExchangeID, ReqUpdateOptionMarginParam->Param1, ReqUpdateOptionMarginParam->Param2);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateOptionMarginParamPackage:AdminUserID:[%s], TradingDay:[%s], ExchangeID:[%s], Param1:[%f], Param2:[%f]", 
+				ReqUpdateOptionMarginParam->AdminUserID, ReqUpdateOptionMarginParam->TradingDay, ReqUpdateOptionMarginParam->ExchangeID, ReqUpdateOptionMarginParam->Param1, ReqUpdateOptionMarginParam->Param2);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -21365,11 +21527,13 @@ namespace step
 		int index = 0;
 		if (RspUpdateOptionMarginParam != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateOptionMarginParamPackage:AdminUserID:[%s], ExchangeID:[%s]", RspUpdateOptionMarginParam->AdminUserID, RspUpdateOptionMarginParam->ExchangeID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateOptionMarginParamPackage:AdminUserID:[%s], ExchangeID:[%s]", 
+				RspUpdateOptionMarginParam->AdminUserID, RspUpdateOptionMarginParam->ExchangeID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateOptionMarginParamPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateOptionMarginParamPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -21498,7 +21662,8 @@ namespace step
 		int index = 0;
 		if (ReqRemoveOptionMarginParam != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveOptionMarginParamPackage:AdminUserID:[%s], ExchangeID:[%s]", ReqRemoveOptionMarginParam->AdminUserID, ReqRemoveOptionMarginParam->ExchangeID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveOptionMarginParamPackage:AdminUserID:[%s], ExchangeID:[%s]", 
+				ReqRemoveOptionMarginParam->AdminUserID, ReqRemoveOptionMarginParam->ExchangeID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -21684,11 +21849,13 @@ namespace step
 		int index = 0;
 		if (RspRemoveOptionMarginParam != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveOptionMarginParamPackage:AdminUserID:[%s], ExchangeID:[%s]", RspRemoveOptionMarginParam->AdminUserID, RspRemoveOptionMarginParam->ExchangeID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveOptionMarginParamPackage:AdminUserID:[%s], ExchangeID:[%s]", 
+				RspRemoveOptionMarginParam->AdminUserID, RspRemoveOptionMarginParam->ExchangeID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveOptionMarginParamPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveOptionMarginParamPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -21840,7 +22007,8 @@ namespace step
 		int index = 0;
 		if (ReqAddTradeOffer != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddTradeOfferPackage:AdminUserID:[%s], OfferID:[%d], OfferName:[%s], OfferType:[%d], OfferPassword:[%s]", ReqAddTradeOffer->AdminUserID, ReqAddTradeOffer->OfferID, ReqAddTradeOffer->OfferName, (int)ReqAddTradeOffer->OfferType, ReqAddTradeOffer->OfferPassword);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddTradeOfferPackage:AdminUserID:[%s], OfferID:[%d], OfferName:[%s], OfferType:[%d], OfferPassword:[%s]", 
+				ReqAddTradeOffer->AdminUserID, ReqAddTradeOffer->OfferID, ReqAddTradeOffer->OfferName, (int)ReqAddTradeOffer->OfferType, ReqAddTradeOffer->OfferPassword);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -22021,11 +22189,13 @@ namespace step
 		int index = 0;
 		if (RspAddTradeOffer != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddTradeOfferPackage:AdminUserID:[%s], OfferID:[%d]", RspAddTradeOffer->AdminUserID, RspAddTradeOffer->OfferID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddTradeOfferPackage:AdminUserID:[%s], OfferID:[%d]", 
+				RspAddTradeOffer->AdminUserID, RspAddTradeOffer->OfferID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddTradeOfferPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddTradeOfferPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -22177,7 +22347,8 @@ namespace step
 		int index = 0;
 		if (ReqUpdateTradeOffer != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateTradeOfferPackage:AdminUserID:[%s], OfferID:[%d], OfferName:[%s], OfferType:[%d], OfferPassword:[%s]", ReqUpdateTradeOffer->AdminUserID, ReqUpdateTradeOffer->OfferID, ReqUpdateTradeOffer->OfferName, (int)ReqUpdateTradeOffer->OfferType, ReqUpdateTradeOffer->OfferPassword);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateTradeOfferPackage:AdminUserID:[%s], OfferID:[%d], OfferName:[%s], OfferType:[%d], OfferPassword:[%s]", 
+				ReqUpdateTradeOffer->AdminUserID, ReqUpdateTradeOffer->OfferID, ReqUpdateTradeOffer->OfferName, (int)ReqUpdateTradeOffer->OfferType, ReqUpdateTradeOffer->OfferPassword);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -22358,11 +22529,13 @@ namespace step
 		int index = 0;
 		if (RspUpdateTradeOffer != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateTradeOfferPackage:AdminUserID:[%s], OfferID:[%d]", RspUpdateTradeOffer->AdminUserID, RspUpdateTradeOffer->OfferID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateTradeOfferPackage:AdminUserID:[%s], OfferID:[%d]", 
+				RspUpdateTradeOffer->AdminUserID, RspUpdateTradeOffer->OfferID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateTradeOfferPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateTradeOfferPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -22486,7 +22659,8 @@ namespace step
 		int index = 0;
 		if (ReqRemoveTradeOffer != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveTradeOfferPackage:AdminUserID:[%s], OfferID:[%d]", ReqRemoveTradeOffer->AdminUserID, ReqRemoveTradeOffer->OfferID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveTradeOfferPackage:AdminUserID:[%s], OfferID:[%d]", 
+				ReqRemoveTradeOffer->AdminUserID, ReqRemoveTradeOffer->OfferID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -22667,11 +22841,13 @@ namespace step
 		int index = 0;
 		if (RspRemoveTradeOffer != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveTradeOfferPackage:AdminUserID:[%s], OfferID:[%d]", RspRemoveTradeOffer->AdminUserID, RspRemoveTradeOffer->OfferID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveTradeOfferPackage:AdminUserID:[%s], OfferID:[%d]", 
+				RspRemoveTradeOffer->AdminUserID, RspRemoveTradeOffer->OfferID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveTradeOfferPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveTradeOfferPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -22806,7 +22982,8 @@ namespace step
 		int index = 0;
 		if (ReqAddTradeGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddTradeGroupPackage:AdminUserID:[%s], TradeGroupID:[%d], TradeGroupName:[%s]", ReqAddTradeGroup->AdminUserID, ReqAddTradeGroup->TradeGroupID, ReqAddTradeGroup->TradeGroupName);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddTradeGroupPackage:AdminUserID:[%s], TradeGroupID:[%d], TradeGroupName:[%s]", 
+				ReqAddTradeGroup->AdminUserID, ReqAddTradeGroup->TradeGroupID, ReqAddTradeGroup->TradeGroupName);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -22987,11 +23164,13 @@ namespace step
 		int index = 0;
 		if (RspAddTradeGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddTradeGroupPackage:AdminUserID:[%s], TradeGroupID:[%d]", RspAddTradeGroup->AdminUserID, RspAddTradeGroup->TradeGroupID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddTradeGroupPackage:AdminUserID:[%s], TradeGroupID:[%d]", 
+				RspAddTradeGroup->AdminUserID, RspAddTradeGroup->TradeGroupID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddTradeGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddTradeGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -23126,7 +23305,8 @@ namespace step
 		int index = 0;
 		if (ReqUpdateTradeGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateTradeGroupPackage:AdminUserID:[%s], TradeGroupID:[%d], TradeGroupName:[%s]", ReqUpdateTradeGroup->AdminUserID, ReqUpdateTradeGroup->TradeGroupID, ReqUpdateTradeGroup->TradeGroupName);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateTradeGroupPackage:AdminUserID:[%s], TradeGroupID:[%d], TradeGroupName:[%s]", 
+				ReqUpdateTradeGroup->AdminUserID, ReqUpdateTradeGroup->TradeGroupID, ReqUpdateTradeGroup->TradeGroupName);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -23307,11 +23487,13 @@ namespace step
 		int index = 0;
 		if (RspUpdateTradeGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateTradeGroupPackage:AdminUserID:[%s], TradeGroupID:[%d]", RspUpdateTradeGroup->AdminUserID, RspUpdateTradeGroup->TradeGroupID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateTradeGroupPackage:AdminUserID:[%s], TradeGroupID:[%d]", 
+				RspUpdateTradeGroup->AdminUserID, RspUpdateTradeGroup->TradeGroupID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateTradeGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateTradeGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -23435,7 +23617,8 @@ namespace step
 		int index = 0;
 		if (ReqRemoveTradeGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveTradeGroupPackage:AdminUserID:[%s], TradeGroupID:[%d]", ReqRemoveTradeGroup->AdminUserID, ReqRemoveTradeGroup->TradeGroupID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveTradeGroupPackage:AdminUserID:[%s], TradeGroupID:[%d]", 
+				ReqRemoveTradeGroup->AdminUserID, ReqRemoveTradeGroup->TradeGroupID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -23616,11 +23799,13 @@ namespace step
 		int index = 0;
 		if (RspRemoveTradeGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveTradeGroupPackage:AdminUserID:[%s], TradeGroupID:[%d]", RspRemoveTradeGroup->AdminUserID, RspRemoveTradeGroup->TradeGroupID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveTradeGroupPackage:AdminUserID:[%s], TradeGroupID:[%d]", 
+				RspRemoveTradeGroup->AdminUserID, RspRemoveTradeGroup->TradeGroupID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveTradeGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveTradeGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -23761,7 +23946,8 @@ namespace step
 		int index = 0;
 		if (ReqAddTradeGroupItem != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddTradeGroupItemPackage:AdminUserID:[%s], TradeGroupID:[%d], AccountClass:[%d], PrimaryAccountID:[%s]", ReqAddTradeGroupItem->AdminUserID, ReqAddTradeGroupItem->TradeGroupID, (int)ReqAddTradeGroupItem->AccountClass, ReqAddTradeGroupItem->PrimaryAccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddTradeGroupItemPackage:AdminUserID:[%s], TradeGroupID:[%d], AccountClass:[%d], PrimaryAccountID:[%s]", 
+				ReqAddTradeGroupItem->AdminUserID, ReqAddTradeGroupItem->TradeGroupID, (int)ReqAddTradeGroupItem->AccountClass, ReqAddTradeGroupItem->PrimaryAccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -23948,11 +24134,13 @@ namespace step
 		int index = 0;
 		if (RspAddTradeGroupItem != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddTradeGroupItemPackage:AdminUserID:[%s], TradeGroupID:[%d], AccountClass:[%d]", RspAddTradeGroupItem->AdminUserID, RspAddTradeGroupItem->TradeGroupID, (int)RspAddTradeGroupItem->AccountClass);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddTradeGroupItemPackage:AdminUserID:[%s], TradeGroupID:[%d], AccountClass:[%d]", 
+				RspAddTradeGroupItem->AdminUserID, RspAddTradeGroupItem->TradeGroupID, (int)RspAddTradeGroupItem->AccountClass);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddTradeGroupItemPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddTradeGroupItemPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -24093,7 +24281,8 @@ namespace step
 		int index = 0;
 		if (ReqUpdateTradeGroupItem != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateTradeGroupItemPackage:AdminUserID:[%s], TradeGroupID:[%d], AccountClass:[%d], PrimaryAccountID:[%s]", ReqUpdateTradeGroupItem->AdminUserID, ReqUpdateTradeGroupItem->TradeGroupID, (int)ReqUpdateTradeGroupItem->AccountClass, ReqUpdateTradeGroupItem->PrimaryAccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateTradeGroupItemPackage:AdminUserID:[%s], TradeGroupID:[%d], AccountClass:[%d], PrimaryAccountID:[%s]", 
+				ReqUpdateTradeGroupItem->AdminUserID, ReqUpdateTradeGroupItem->TradeGroupID, (int)ReqUpdateTradeGroupItem->AccountClass, ReqUpdateTradeGroupItem->PrimaryAccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -24280,11 +24469,13 @@ namespace step
 		int index = 0;
 		if (RspUpdateTradeGroupItem != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateTradeGroupItemPackage:AdminUserID:[%s], TradeGroupID:[%d], AccountClass:[%d]", RspUpdateTradeGroupItem->AdminUserID, RspUpdateTradeGroupItem->TradeGroupID, (int)RspUpdateTradeGroupItem->AccountClass);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateTradeGroupItemPackage:AdminUserID:[%s], TradeGroupID:[%d], AccountClass:[%d]", 
+				RspUpdateTradeGroupItem->AdminUserID, RspUpdateTradeGroupItem->TradeGroupID, (int)RspUpdateTradeGroupItem->AccountClass);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateTradeGroupItemPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateTradeGroupItemPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -24414,7 +24605,8 @@ namespace step
 		int index = 0;
 		if (ReqRemoveTradeGroupItem != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveTradeGroupItemPackage:AdminUserID:[%s], TradeGroupID:[%d], AccountClass:[%d]", ReqRemoveTradeGroupItem->AdminUserID, ReqRemoveTradeGroupItem->TradeGroupID, (int)ReqRemoveTradeGroupItem->AccountClass);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveTradeGroupItemPackage:AdminUserID:[%s], TradeGroupID:[%d], AccountClass:[%d]", 
+				ReqRemoveTradeGroupItem->AdminUserID, ReqRemoveTradeGroupItem->TradeGroupID, (int)ReqRemoveTradeGroupItem->AccountClass);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -24601,11 +24793,13 @@ namespace step
 		int index = 0;
 		if (RspRemoveTradeGroupItem != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveTradeGroupItemPackage:AdminUserID:[%s], TradeGroupID:[%d], AccountClass:[%d]", RspRemoveTradeGroupItem->AdminUserID, RspRemoveTradeGroupItem->TradeGroupID, (int)RspRemoveTradeGroupItem->AccountClass);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveTradeGroupItemPackage:AdminUserID:[%s], TradeGroupID:[%d], AccountClass:[%d]", 
+				RspRemoveTradeGroupItem->AdminUserID, RspRemoveTradeGroupItem->TradeGroupID, (int)RspRemoveTradeGroupItem->AccountClass);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveTradeGroupItemPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveTradeGroupItemPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -24740,7 +24934,8 @@ namespace step
 		int index = 0;
 		if (ReqAddRiskGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddRiskGroupPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskGroupName:[%s]", ReqAddRiskGroup->AdminUserID, ReqAddRiskGroup->RiskGroupID, ReqAddRiskGroup->RiskGroupName);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddRiskGroupPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskGroupName:[%s]", 
+				ReqAddRiskGroup->AdminUserID, ReqAddRiskGroup->RiskGroupID, ReqAddRiskGroup->RiskGroupName);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -24921,11 +25116,13 @@ namespace step
 		int index = 0;
 		if (RspAddRiskGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskGroupPackage:AdminUserID:[%s], RiskGroupID:[%d]", RspAddRiskGroup->AdminUserID, RspAddRiskGroup->RiskGroupID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskGroupPackage:AdminUserID:[%s], RiskGroupID:[%d]", 
+				RspAddRiskGroup->AdminUserID, RspAddRiskGroup->RiskGroupID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -25060,7 +25257,8 @@ namespace step
 		int index = 0;
 		if (ReqUpdateRiskGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateRiskGroupPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskGroupName:[%s]", ReqUpdateRiskGroup->AdminUserID, ReqUpdateRiskGroup->RiskGroupID, ReqUpdateRiskGroup->RiskGroupName);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateRiskGroupPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskGroupName:[%s]", 
+				ReqUpdateRiskGroup->AdminUserID, ReqUpdateRiskGroup->RiskGroupID, ReqUpdateRiskGroup->RiskGroupName);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -25241,11 +25439,13 @@ namespace step
 		int index = 0;
 		if (RspUpdateRiskGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateRiskGroupPackage:AdminUserID:[%s], RiskGroupID:[%d]", RspUpdateRiskGroup->AdminUserID, RspUpdateRiskGroup->RiskGroupID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateRiskGroupPackage:AdminUserID:[%s], RiskGroupID:[%d]", 
+				RspUpdateRiskGroup->AdminUserID, RspUpdateRiskGroup->RiskGroupID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateRiskGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateRiskGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -25369,7 +25569,8 @@ namespace step
 		int index = 0;
 		if (ReqRemoveRiskGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveRiskGroupPackage:AdminUserID:[%s], RiskGroupID:[%d]", ReqRemoveRiskGroup->AdminUserID, ReqRemoveRiskGroup->RiskGroupID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveRiskGroupPackage:AdminUserID:[%s], RiskGroupID:[%d]", 
+				ReqRemoveRiskGroup->AdminUserID, ReqRemoveRiskGroup->RiskGroupID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -25550,11 +25751,13 @@ namespace step
 		int index = 0;
 		if (RspRemoveRiskGroup != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskGroupPackage:AdminUserID:[%s], RiskGroupID:[%d]", RspRemoveRiskGroup->AdminUserID, RspRemoveRiskGroup->RiskGroupID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskGroupPackage:AdminUserID:[%s], RiskGroupID:[%d]", 
+				RspRemoveRiskGroup->AdminUserID, RspRemoveRiskGroup->RiskGroupID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskGroupPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -25684,7 +25887,8 @@ namespace step
 		int index = 0;
 		if (ReqAddRiskGroupItem != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddRiskGroupItemPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskID:[%d]", ReqAddRiskGroupItem->AdminUserID, ReqAddRiskGroupItem->RiskGroupID, ReqAddRiskGroupItem->RiskID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddRiskGroupItemPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskID:[%d]", 
+				ReqAddRiskGroupItem->AdminUserID, ReqAddRiskGroupItem->RiskGroupID, ReqAddRiskGroupItem->RiskID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -25871,11 +26075,13 @@ namespace step
 		int index = 0;
 		if (RspAddRiskGroupItem != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskGroupItemPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskID:[%d]", RspAddRiskGroupItem->AdminUserID, RspAddRiskGroupItem->RiskGroupID, RspAddRiskGroupItem->RiskID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskGroupItemPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskID:[%d]", 
+				RspAddRiskGroupItem->AdminUserID, RspAddRiskGroupItem->RiskGroupID, RspAddRiskGroupItem->RiskID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskGroupItemPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskGroupItemPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -26005,7 +26211,8 @@ namespace step
 		int index = 0;
 		if (ReqUpdateRiskGroupItem != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateRiskGroupItemPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskID:[%d]", ReqUpdateRiskGroupItem->AdminUserID, ReqUpdateRiskGroupItem->RiskGroupID, ReqUpdateRiskGroupItem->RiskID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqUpdateRiskGroupItemPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskID:[%d]", 
+				ReqUpdateRiskGroupItem->AdminUserID, ReqUpdateRiskGroupItem->RiskGroupID, ReqUpdateRiskGroupItem->RiskID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -26192,11 +26399,13 @@ namespace step
 		int index = 0;
 		if (RspUpdateRiskGroupItem != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateRiskGroupItemPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskID:[%d]", RspUpdateRiskGroupItem->AdminUserID, RspUpdateRiskGroupItem->RiskGroupID, RspUpdateRiskGroupItem->RiskID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateRiskGroupItemPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskID:[%d]", 
+				RspUpdateRiskGroupItem->AdminUserID, RspUpdateRiskGroupItem->RiskGroupID, RspUpdateRiskGroupItem->RiskID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateRiskGroupItemPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspUpdateRiskGroupItemPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -26326,7 +26535,8 @@ namespace step
 		int index = 0;
 		if (ReqRemoveRiskGroupItem != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveRiskGroupItemPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskID:[%d]", ReqRemoveRiskGroupItem->AdminUserID, ReqRemoveRiskGroupItem->RiskGroupID, ReqRemoveRiskGroupItem->RiskID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveRiskGroupItemPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskID:[%d]", 
+				ReqRemoveRiskGroupItem->AdminUserID, ReqRemoveRiskGroupItem->RiskGroupID, ReqRemoveRiskGroupItem->RiskID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -26513,11 +26723,13 @@ namespace step
 		int index = 0;
 		if (RspRemoveRiskGroupItem != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskGroupItemPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskID:[%d]", RspRemoveRiskGroupItem->AdminUserID, RspRemoveRiskGroupItem->RiskGroupID, RspRemoveRiskGroupItem->RiskID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskGroupItemPackage:AdminUserID:[%s], RiskGroupID:[%d], RiskID:[%d]", 
+				RspRemoveRiskGroupItem->AdminUserID, RspRemoveRiskGroupItem->RiskGroupID, RspRemoveRiskGroupItem->RiskID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskGroupItemPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskGroupItemPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -26658,7 +26870,8 @@ namespace step
 		int index = 0;
 		if (ReqAddOrUpdateRisk != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddOrUpdateRiskPackage:AdminUserID:[%s], RiskID:[%d], RiskName:[%s], RiskClassID:[%d]", ReqAddOrUpdateRisk->AdminUserID, ReqAddOrUpdateRisk->RiskID, ReqAddOrUpdateRisk->RiskName, (int)ReqAddOrUpdateRisk->RiskClassID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddOrUpdateRiskPackage:AdminUserID:[%s], RiskID:[%d], RiskName:[%s], RiskClassID:[%d]", 
+				ReqAddOrUpdateRisk->AdminUserID, ReqAddOrUpdateRisk->RiskID, ReqAddOrUpdateRisk->RiskName, (int)ReqAddOrUpdateRisk->RiskClassID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -26839,11 +27052,13 @@ namespace step
 		int index = 0;
 		if (RspAddOrUpdateRisk != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddOrUpdateRiskPackage:AdminUserID:[%s], RiskID:[%d]", RspAddOrUpdateRisk->AdminUserID, RspAddOrUpdateRisk->RiskID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddOrUpdateRiskPackage:AdminUserID:[%s], RiskID:[%d]", 
+				RspAddOrUpdateRisk->AdminUserID, RspAddOrUpdateRisk->RiskID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddOrUpdateRiskPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddOrUpdateRiskPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -26967,7 +27182,8 @@ namespace step
 		int index = 0;
 		if (ReqRemoveRisk != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveRiskPackage:AdminUserID:[%s], RiskID:[%d]", ReqRemoveRisk->AdminUserID, ReqRemoveRisk->RiskID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveRiskPackage:AdminUserID:[%s], RiskID:[%d]", 
+				ReqRemoveRisk->AdminUserID, ReqRemoveRisk->RiskID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -27148,11 +27364,13 @@ namespace step
 		int index = 0;
 		if (RspRemoveRisk != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskPackage:AdminUserID:[%s], RiskID:[%d]", RspRemoveRisk->AdminUserID, RspRemoveRisk->RiskID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskPackage:AdminUserID:[%s], RiskID:[%d]", 
+				RspRemoveRisk->AdminUserID, RspRemoveRisk->RiskID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveRiskPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -27299,7 +27517,8 @@ namespace step
 		int index = 0;
 		if (ReqAddRiskRule != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddRiskRulePackage:AdminUserID:[%s], RiskID:[%d], RiskRuleID:[%d], RiskRuleStyle:[%d], FormatRiskMessage:[%s]", ReqAddRiskRule->AdminUserID, ReqAddRiskRule->RiskID, ReqAddRiskRule->RiskRuleID, (int)ReqAddRiskRule->RiskRuleStyle, ReqAddRiskRule->FormatRiskMessage);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddRiskRulePackage:AdminUserID:[%s], RiskID:[%d], RiskRuleID:[%d], RiskRuleStyle:[%d], FormatRiskMessage:[%s]", 
+				ReqAddRiskRule->AdminUserID, ReqAddRiskRule->RiskID, ReqAddRiskRule->RiskRuleID, (int)ReqAddRiskRule->RiskRuleStyle, ReqAddRiskRule->FormatRiskMessage);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -27486,11 +27705,13 @@ namespace step
 		int index = 0;
 		if (RspAddRiskRule != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskRulePackage:AdminUserID:[%s], RiskID:[%d], RiskRuleID:[%d]", RspAddRiskRule->AdminUserID, RspAddRiskRule->RiskID, RspAddRiskRule->RiskRuleID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskRulePackage:AdminUserID:[%s], RiskID:[%d], RiskRuleID:[%d]", 
+				RspAddRiskRule->AdminUserID, RspAddRiskRule->RiskID, RspAddRiskRule->RiskRuleID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskRulePackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskRulePackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -27762,7 +27983,8 @@ namespace step
 		int index = 0;
 		if (ReqAddRiskRuleItem != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddRiskRuleItemPackage:AdminUserID:[%s], RiskID:[%d], RiskRuleID:[%d], RiskRuleItemID:[%d], RiskIndexType:[%d], RiskIndexID:[%d], RiskIndexTextRef:[%d], IndexParam1:[%s], IndexParam2:[%s], IndexParam3:[%s], IndexParam4:[%s], IndexParam5:[%s], IndexParam6:[%s], LogicFunc:[%d], LogicParamType1:[%d], LogicParam1:[%s], LogicParam1TextRef:[%d], LogicParamType2:[%d], LogicParam2:[%s], LogicParam2TextRef:[%d]", ReqAddRiskRuleItem->AdminUserID, ReqAddRiskRuleItem->RiskID, ReqAddRiskRuleItem->RiskRuleID, ReqAddRiskRuleItem->RiskRuleItemID, (int)ReqAddRiskRuleItem->RiskIndexType, ReqAddRiskRuleItem->RiskIndexID, ReqAddRiskRuleItem->RiskIndexTextRef, ReqAddRiskRuleItem->IndexParam1, ReqAddRiskRuleItem->IndexParam2, ReqAddRiskRuleItem->IndexParam3, ReqAddRiskRuleItem->IndexParam4, ReqAddRiskRuleItem->IndexParam5, ReqAddRiskRuleItem->IndexParam6, (int)ReqAddRiskRuleItem->LogicFunc, (int)ReqAddRiskRuleItem->LogicParamType1, ReqAddRiskRuleItem->LogicParam1, ReqAddRiskRuleItem->LogicParam1TextRef, (int)ReqAddRiskRuleItem->LogicParamType2, ReqAddRiskRuleItem->LogicParam2, ReqAddRiskRuleItem->LogicParam2TextRef);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddRiskRuleItemPackage:AdminUserID:[%s], RiskID:[%d], RiskRuleID:[%d], RiskRuleItemID:[%d], RiskIndexType:[%d], RiskIndexID:[%d], RiskIndexTextRef:[%d], IndexParam1:[%s], IndexParam2:[%s], IndexParam3:[%s], IndexParam4:[%s], IndexParam5:[%s], IndexParam6:[%s], LogicFunc:[%d], LogicParamType1:[%d], LogicParam1:[%s], LogicParam1TextRef:[%d], LogicParamType2:[%d], LogicParam2:[%s], LogicParam2TextRef:[%d]", 
+				ReqAddRiskRuleItem->AdminUserID, ReqAddRiskRuleItem->RiskID, ReqAddRiskRuleItem->RiskRuleID, ReqAddRiskRuleItem->RiskRuleItemID, (int)ReqAddRiskRuleItem->RiskIndexType, ReqAddRiskRuleItem->RiskIndexID, ReqAddRiskRuleItem->RiskIndexTextRef, ReqAddRiskRuleItem->IndexParam1, ReqAddRiskRuleItem->IndexParam2, ReqAddRiskRuleItem->IndexParam3, ReqAddRiskRuleItem->IndexParam4, ReqAddRiskRuleItem->IndexParam5, ReqAddRiskRuleItem->IndexParam6, (int)ReqAddRiskRuleItem->LogicFunc, (int)ReqAddRiskRuleItem->LogicParamType1, ReqAddRiskRuleItem->LogicParam1, ReqAddRiskRuleItem->LogicParam1TextRef, (int)ReqAddRiskRuleItem->LogicParamType2, ReqAddRiskRuleItem->LogicParam2, ReqAddRiskRuleItem->LogicParam2TextRef);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -27955,11 +28177,13 @@ namespace step
 		int index = 0;
 		if (RspAddRiskRuleItem != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskRuleItemPackage:AdminUserID:[%s], RiskID:[%d], RiskRuleID:[%d], RiskRuleItemID:[%d]", RspAddRiskRuleItem->AdminUserID, RspAddRiskRuleItem->RiskID, RspAddRiskRuleItem->RiskRuleID, RspAddRiskRuleItem->RiskRuleItemID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskRuleItemPackage:AdminUserID:[%s], RiskID:[%d], RiskRuleID:[%d], RiskRuleItemID:[%d]", 
+				RspAddRiskRuleItem->AdminUserID, RspAddRiskRuleItem->RiskID, RspAddRiskRuleItem->RiskRuleID, RspAddRiskRuleItem->RiskRuleItemID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskRuleItemPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskRuleItemPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -28106,7 +28330,8 @@ namespace step
 		int index = 0;
 		if (ReqAddRiskTradeScope != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddRiskTradeScopePackage:AdminUserID:[%s], RiskID:[%d], TradeScopeType:[%d], InstrumentGroupID:[%d], FormatRiskMessage:[%s]", ReqAddRiskTradeScope->AdminUserID, ReqAddRiskTradeScope->RiskID, (int)ReqAddRiskTradeScope->TradeScopeType, ReqAddRiskTradeScope->InstrumentGroupID, ReqAddRiskTradeScope->FormatRiskMessage);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddRiskTradeScopePackage:AdminUserID:[%s], RiskID:[%d], TradeScopeType:[%d], InstrumentGroupID:[%d], FormatRiskMessage:[%s]", 
+				ReqAddRiskTradeScope->AdminUserID, ReqAddRiskTradeScope->RiskID, (int)ReqAddRiskTradeScope->TradeScopeType, ReqAddRiskTradeScope->InstrumentGroupID, ReqAddRiskTradeScope->FormatRiskMessage);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -28287,11 +28512,13 @@ namespace step
 		int index = 0;
 		if (RspAddRiskTradeScope != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskTradeScopePackage:AdminUserID:[%s], RiskID:[%d]", RspAddRiskTradeScope->AdminUserID, RspAddRiskTradeScope->RiskID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskTradeScopePackage:AdminUserID:[%s], RiskID:[%d]", 
+				RspAddRiskTradeScope->AdminUserID, RspAddRiskTradeScope->RiskID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskTradeScopePackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddRiskTradeScopePackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -28426,7 +28653,8 @@ namespace step
 		int index = 0;
 		if (ReqAddAccountRisk != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddAccountRiskPackage:AdminUserID:[%s], AccountID:[%s], RiskID:[%d]", ReqAddAccountRisk->AdminUserID, ReqAddAccountRisk->AccountID, ReqAddAccountRisk->RiskID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAddAccountRiskPackage:AdminUserID:[%s], AccountID:[%s], RiskID:[%d]", 
+				ReqAddAccountRisk->AdminUserID, ReqAddAccountRisk->AccountID, ReqAddAccountRisk->RiskID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -28618,11 +28846,13 @@ namespace step
 		int index = 0;
 		if (RspAddAccountRisk != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddAccountRiskPackage:AdminUserID:[%s], AccountID:[%s], RiskID:[%d]", RspAddAccountRisk->AdminUserID, RspAddAccountRisk->AccountID, RspAddAccountRisk->RiskID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddAccountRiskPackage:AdminUserID:[%s], AccountID:[%s], RiskID:[%d]", 
+				RspAddAccountRisk->AdminUserID, RspAddAccountRisk->AccountID, RspAddAccountRisk->RiskID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddAccountRiskPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAddAccountRiskPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -28757,7 +28987,8 @@ namespace step
 		int index = 0;
 		if (ReqRemoveAccountRisk != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveAccountRiskPackage:AdminUserID:[%s], AccountID:[%s], RiskID:[%d]", ReqRemoveAccountRisk->AdminUserID, ReqRemoveAccountRisk->AccountID, ReqRemoveAccountRisk->RiskID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRemoveAccountRiskPackage:AdminUserID:[%s], AccountID:[%s], RiskID:[%d]", 
+				ReqRemoveAccountRisk->AdminUserID, ReqRemoveAccountRisk->AccountID, ReqRemoveAccountRisk->RiskID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -28949,11 +29180,13 @@ namespace step
 		int index = 0;
 		if (RspRemoveAccountRisk != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveAccountRiskPackage:AdminUserID:[%s], AccountID:[%s], RiskID:[%d]", RspRemoveAccountRisk->AdminUserID, RspRemoveAccountRisk->AccountID, RspRemoveAccountRisk->RiskID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveAccountRiskPackage:AdminUserID:[%s], AccountID:[%s], RiskID:[%d]", 
+				RspRemoveAccountRisk->AdminUserID, RspRemoveAccountRisk->AccountID, RspRemoveAccountRisk->RiskID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveAccountRiskPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRemoveAccountRiskPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -29161,7 +29394,8 @@ namespace step
 		int index = 0;
 		if (ReqMoneyTransfer != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqMoneyTransferPackage:AdminUserID:[%s], TradingDay:[%s], AccountID:[%s], MoneyTransferID:[%d], AccountType:[%d], TransferDirection:[%d], TransferAmount:[%f], InfoMessage:[%s], UserID:[%s], TransferDate:[%s], TransferTime:[%s]", ReqMoneyTransfer->AdminUserID, ReqMoneyTransfer->TradingDay, ReqMoneyTransfer->AccountID, ReqMoneyTransfer->MoneyTransferID, (int)ReqMoneyTransfer->AccountType, (int)ReqMoneyTransfer->TransferDirection, ReqMoneyTransfer->TransferAmount, ReqMoneyTransfer->InfoMessage, ReqMoneyTransfer->UserID, ReqMoneyTransfer->TransferDate, ReqMoneyTransfer->TransferTime);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqMoneyTransferPackage:AdminUserID:[%s], TradingDay:[%s], AccountID:[%s], MoneyTransferID:[%d], AccountType:[%d], TransferDirection:[%d], TransferAmount:[%f], InfoMessage:[%s], UserID:[%s], TransferDate:[%s], TransferTime:[%s]", 
+				ReqMoneyTransfer->AdminUserID, ReqMoneyTransfer->TradingDay, ReqMoneyTransfer->AccountID, ReqMoneyTransfer->MoneyTransferID, (int)ReqMoneyTransfer->AccountType, (int)ReqMoneyTransfer->TransferDirection, ReqMoneyTransfer->TransferAmount, ReqMoneyTransfer->InfoMessage, ReqMoneyTransfer->UserID, ReqMoneyTransfer->TransferDate, ReqMoneyTransfer->TransferTime);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -29364,11 +29598,13 @@ namespace step
 		int index = 0;
 		if (RspMoneyTransfer != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMoneyTransferPackage:AdminUserID:[%s], TradingDay:[%s], AccountID:[%s], MoneyTransferID:[%d]", RspMoneyTransfer->AdminUserID, RspMoneyTransfer->TradingDay, RspMoneyTransfer->AccountID, RspMoneyTransfer->MoneyTransferID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMoneyTransferPackage:AdminUserID:[%s], TradingDay:[%s], AccountID:[%s], MoneyTransferID:[%d]", 
+				RspMoneyTransfer->AdminUserID, RspMoneyTransfer->TradingDay, RspMoneyTransfer->AccountID, RspMoneyTransfer->MoneyTransferID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMoneyTransferPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMoneyTransferPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -29486,7 +29722,8 @@ namespace step
 		int index = 0;
 		if (ReqQryMoneyTransfer != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryMoneyTransferPackage:AccountID:[%s]", ReqQryMoneyTransfer->AccountID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryMoneyTransferPackage:AccountID:[%s]", 
+				ReqQryMoneyTransfer->AccountID);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -29740,11 +29977,13 @@ namespace step
 		int index = 0;
 		if (MoneyTransfer != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryMoneyTransferPackage:TradingDay:[%s], AccountID:[%s], MoneyTransferID:[%d], AccountType:[%d], TransferDirection:[%d], TransferAmount:[%f], InfoMessage:[%s], UserID:[%s], TransferDate:[%s], TransferTime:[%s]", MoneyTransfer->TradingDay, MoneyTransfer->AccountID, MoneyTransfer->MoneyTransferID, (int)MoneyTransfer->AccountType, (int)MoneyTransfer->TransferDirection, MoneyTransfer->TransferAmount, MoneyTransfer->InfoMessage, MoneyTransfer->UserID, MoneyTransfer->TransferDate, MoneyTransfer->TransferTime);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryMoneyTransferPackage:TradingDay:[%s], AccountID:[%s], MoneyTransferID:[%d], AccountType:[%d], TransferDirection:[%d], TransferAmount:[%f], InfoMessage:[%s], UserID:[%s], TransferDate:[%s], TransferTime:[%s]", 
+				MoneyTransfer->TradingDay, MoneyTransfer->AccountID, MoneyTransfer->MoneyTransferID, (int)MoneyTransfer->AccountType, (int)MoneyTransfer->TransferDirection, MoneyTransfer->TransferAmount, MoneyTransfer->InfoMessage, MoneyTransfer->UserID, MoneyTransfer->TransferDate, MoneyTransfer->TransferTime);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryMoneyTransferPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryMoneyTransferPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -29941,7 +30180,8 @@ namespace step
 		int index = 0;
 		if (MoneyTransfer != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnMoneyTransferPackage:TradingDay:[%s], AccountID:[%s], MoneyTransferID:[%d], AccountType:[%d], TransferDirection:[%d], TransferAmount:[%f], InfoMessage:[%s], UserID:[%s], TransferDate:[%s], TransferTime:[%s]", MoneyTransfer->TradingDay, MoneyTransfer->AccountID, MoneyTransfer->MoneyTransferID, (int)MoneyTransfer->AccountType, (int)MoneyTransfer->TransferDirection, MoneyTransfer->TransferAmount, MoneyTransfer->InfoMessage, MoneyTransfer->UserID, MoneyTransfer->TransferDate, MoneyTransfer->TransferTime);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnMoneyTransferPackage:TradingDay:[%s], AccountID:[%s], MoneyTransferID:[%d], AccountType:[%d], TransferDirection:[%d], TransferAmount:[%f], InfoMessage:[%s], UserID:[%s], TransferDate:[%s], TransferTime:[%s]", 
+				MoneyTransfer->TradingDay, MoneyTransfer->AccountID, MoneyTransfer->MoneyTransferID, (int)MoneyTransfer->AccountType, (int)MoneyTransfer->TransferDirection, MoneyTransfer->TransferAmount, MoneyTransfer->InfoMessage, MoneyTransfer->UserID, MoneyTransfer->TransferDate, MoneyTransfer->TransferTime);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -30115,7 +30355,8 @@ namespace step
 		int index = 0;
 		if (ReqAuditOrder != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAuditOrderPackage:AdminUserID:[%s], TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], AuditStatus:[%d]", ReqAuditOrder->AdminUserID, ReqAuditOrder->TradingDay, ReqAuditOrder->AccountID, ReqAuditOrder->ExchangeID, ReqAuditOrder->InstrumentID, ReqAuditOrder->OrderID, (int)ReqAuditOrder->AuditStatus);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAuditOrderPackage:AdminUserID:[%s], TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], AuditStatus:[%d]", 
+				ReqAuditOrder->AdminUserID, ReqAuditOrder->TradingDay, ReqAuditOrder->AccountID, ReqAuditOrder->ExchangeID, ReqAuditOrder->InstrumentID, ReqAuditOrder->OrderID, (int)ReqAuditOrder->AuditStatus);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -30346,12 +30587,15 @@ namespace step
 		int index = 0;
 		if (RspAuditOrder != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAuditOrderPackage:AdminUserID:[%s], TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], AuditStatus:[%d]", RspAuditOrder->AdminUserID, RspAuditOrder->TradingDay, RspAuditOrder->AccountID, RspAuditOrder->ExchangeID, RspAuditOrder->InstrumentID, RspAuditOrder->OrderID, (int)RspAuditOrder->AuditStatus);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAuditOrderPackage:AdminUserID:[%s], TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], AuditStatus:[%d]", 
+				RspAuditOrder->AdminUserID, RspAuditOrder->TradingDay, RspAuditOrder->AccountID, RspAuditOrder->ExchangeID, RspAuditOrder->InstrumentID, RspAuditOrder->OrderID, (int)RspAuditOrder->AuditStatus);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAuditOrderPackage:ErrorID:[%d], ErrorMsg:[%s]", RspInfo->ErrorID, RspInfo->ErrorMsg);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAuditOrderPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
 }
+

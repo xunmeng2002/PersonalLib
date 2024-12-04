@@ -51,17 +51,17 @@ void TestXtpClient()
 	for (auto i = 0; i < 5; ++i)
 	{
 		XtpReqInsertOrderPackage reqInsertOrder;
-		reqInsertOrder.Prepare(xtpClient.m_SessionID);
-		Strcpy(reqInsertOrder.Field.TradingDay, GetLocalDate().c_str());
-		Strcpy(reqInsertOrder.Field.PrimaryAccountID, "Xunmeng001");
-		Strcpy(reqInsertOrder.Field.ExchangeID, "SHSE");
-		Strcpy(reqInsertOrder.Field.InstrumentID, "600036");
-		reqInsertOrder.Field.Direction = DirectionType::Buy;
-		reqInsertOrder.Field.OffsetFlag = OffsetFlagType::Open;
-		reqInsertOrder.Field.OrderPriceType = OrderPriceTypeType::LimitPrice;
-		reqInsertOrder.Field.Price = 100 + i;
-		reqInsertOrder.Field.Volume = i;
-		reqInsertOrder.Field.OrderID = i;
+		reqInsertOrder.Prepare(xtpClient.m_SessionID, false, 0);
+		Strcpy(reqInsertOrder.ReqInsertOrder->TradingDay, GetLocalDate().c_str());
+		Strcpy(reqInsertOrder.ReqInsertOrder->PrimaryAccountID, "Xunmeng001");
+		Strcpy(reqInsertOrder.ReqInsertOrder->ExchangeID, "SHSE");
+		Strcpy(reqInsertOrder.ReqInsertOrder->InstrumentID, "600036");
+		reqInsertOrder.ReqInsertOrder->Direction = DirectionType::Buy;
+		reqInsertOrder.ReqInsertOrder->OffsetFlag = OffsetFlagType::Open;
+		reqInsertOrder.ReqInsertOrder->OrderPriceType = OrderPriceTypeType::LimitPrice;
+		reqInsertOrder.ReqInsertOrder->Price = 100 + i;
+		reqInsertOrder.ReqInsertOrder->Volume = i;
+		reqInsertOrder.ReqInsertOrder->OrderID = i;
 
 		xtpClient.Send(&reqInsertOrder);
 	}

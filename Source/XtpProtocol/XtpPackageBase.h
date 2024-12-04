@@ -9,7 +9,7 @@ namespace xtp
 	{
 	public:
 		XtpPackageBase();
-		virtual void Prepare(SessionIDType sessionID) = 0;
+		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) = 0;
 		int MakePackage(char* buff, int size);
 
 		virtual int ToProtocolStream(char* buff, int size) const = 0;
