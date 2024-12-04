@@ -1,5 +1,5 @@
 ﻿#include "XtpPackageReader.h"
-#include "XtpUtility.h"
+#include "ProtocolUtility.h"
 #include "MemCacheTemplateSingleton.h"
 #include "Logger.h"
 #include <stdio.h>
@@ -64,7 +64,7 @@ namespace xtp
 		strcpy(xtpPackage->IPAddress, m_IPAddress);
 		xtpPackage->Head = m_Head;
 		xtpPackage->Tail = m_Tail;
-		auto ret = xtpPackage->FromProtocolStream(m_Data + sizeof(HeadField), m_Head.BodyLen);
+		auto ret = xtpPackage->FromProtocolStream(m_Data, sizeof(HeadField), sizeof(HeadField) + m_Head.BodyLen);
 		PopFront(sizeof(HeadField) + m_Head.BodyLen + sizeof(TailField));
 		return ret;
 	}

@@ -1,5 +1,4 @@
 ﻿#include "XtpPackages.h"
-#include "XtpUtility.h"
 #include "MemCacheTemplateSingleton.h"
 #include <cstring>
 
@@ -44,24 +43,17 @@ namespace xtp
 		offset += sizeof(XtpReqOfferLoginField);
 		return offset;
 	}
-	bool XtpReqOfferLoginPackage::FromProtocolStream(char* buff, int size)
+	bool XtpReqOfferLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		ReqOfferLogin = ::Allocate<XtpReqOfferLoginField>();
 		memcpy(ReqOfferLogin, buff + offset, sizeof(XtpReqOfferLoginField));
 		offset += sizeof(XtpReqOfferLoginField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpReqOfferLoginPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%d,%s",
-			ReqOfferLogin->OfferID, ReqOfferLogin->OfferPassword);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpReqOfferLoginPackage::GetDebugString() const
 	{
@@ -107,24 +99,17 @@ namespace xtp
 		offset += sizeof(XtpRspOfferLoginField);
 		return offset;
 	}
-	bool XtpRspOfferLoginPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRspOfferLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RspOfferLogin = ::Allocate<XtpRspOfferLoginField>();
 		memcpy(RspOfferLogin, buff + offset, sizeof(XtpRspOfferLoginField));
 		offset += sizeof(XtpRspOfferLoginField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRspOfferLoginPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%d,%s,%d,%s",
-			RspOfferLogin->ErrorID, RspOfferLogin->ErrorMsg, RspOfferLogin->OfferID, RspOfferLogin->TradingDay);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRspOfferLoginPackage::GetDebugString() const
 	{
@@ -170,24 +155,17 @@ namespace xtp
 		offset += sizeof(XtpReqPrimaryAccountLoginField);
 		return offset;
 	}
-	bool XtpReqPrimaryAccountLoginPackage::FromProtocolStream(char* buff, int size)
+	bool XtpReqPrimaryAccountLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		ReqPrimaryAccountLogin = ::Allocate<XtpReqPrimaryAccountLoginField>();
 		memcpy(ReqPrimaryAccountLogin, buff + offset, sizeof(XtpReqPrimaryAccountLoginField));
 		offset += sizeof(XtpReqPrimaryAccountLoginField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpReqPrimaryAccountLoginPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s",
-			ReqPrimaryAccountLogin->PrimaryAccountID, ReqPrimaryAccountLogin->Password);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpReqPrimaryAccountLoginPackage::GetDebugString() const
 	{
@@ -233,24 +211,17 @@ namespace xtp
 		offset += sizeof(XtpRspPrimaryAccountLoginField);
 		return offset;
 	}
-	bool XtpRspPrimaryAccountLoginPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRspPrimaryAccountLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RspPrimaryAccountLogin = ::Allocate<XtpRspPrimaryAccountLoginField>();
 		memcpy(RspPrimaryAccountLogin, buff + offset, sizeof(XtpRspPrimaryAccountLoginField));
 		offset += sizeof(XtpRspPrimaryAccountLoginField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRspPrimaryAccountLoginPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%d,%s,%s,%s",
-			RspPrimaryAccountLogin->ErrorID, RspPrimaryAccountLogin->ErrorMsg, RspPrimaryAccountLogin->TradingDay, RspPrimaryAccountLogin->PrimaryAccountID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRspPrimaryAccountLoginPackage::GetDebugString() const
 	{
@@ -296,24 +267,17 @@ namespace xtp
 		offset += sizeof(XtpReqPrimaryAccountLogoutField);
 		return offset;
 	}
-	bool XtpReqPrimaryAccountLogoutPackage::FromProtocolStream(char* buff, int size)
+	bool XtpReqPrimaryAccountLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		ReqPrimaryAccountLogout = ::Allocate<XtpReqPrimaryAccountLogoutField>();
 		memcpy(ReqPrimaryAccountLogout, buff + offset, sizeof(XtpReqPrimaryAccountLogoutField));
 		offset += sizeof(XtpReqPrimaryAccountLogoutField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpReqPrimaryAccountLogoutPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s",
-			ReqPrimaryAccountLogout->TradingDay, ReqPrimaryAccountLogout->PrimaryAccountID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpReqPrimaryAccountLogoutPackage::GetDebugString() const
 	{
@@ -359,24 +323,17 @@ namespace xtp
 		offset += sizeof(XtpRtnPrimaryAccountLogoutField);
 		return offset;
 	}
-	bool XtpRtnPrimaryAccountLogoutPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRtnPrimaryAccountLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RtnPrimaryAccountLogout = ::Allocate<XtpRtnPrimaryAccountLogoutField>();
 		memcpy(RtnPrimaryAccountLogout, buff + offset, sizeof(XtpRtnPrimaryAccountLogoutField));
 		offset += sizeof(XtpRtnPrimaryAccountLogoutField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRtnPrimaryAccountLogoutPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s",
-			RtnPrimaryAccountLogout->TradingDay, RtnPrimaryAccountLogout->PrimaryAccountID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRtnPrimaryAccountLogoutPackage::GetDebugString() const
 	{
@@ -422,24 +379,17 @@ namespace xtp
 		offset += sizeof(XtpReqPrimaryAccountInitField);
 		return offset;
 	}
-	bool XtpReqPrimaryAccountInitPackage::FromProtocolStream(char* buff, int size)
+	bool XtpReqPrimaryAccountInitPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		ReqPrimaryAccountInit = ::Allocate<XtpReqPrimaryAccountInitField>();
 		memcpy(ReqPrimaryAccountInit, buff + offset, sizeof(XtpReqPrimaryAccountInitField));
 		offset += sizeof(XtpReqPrimaryAccountInitField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpReqPrimaryAccountInitPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s",
-			ReqPrimaryAccountInit->PrimaryAccountID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpReqPrimaryAccountInitPackage::GetDebugString() const
 	{
@@ -485,24 +435,17 @@ namespace xtp
 		offset += sizeof(XtpRspPrimaryAccountInitField);
 		return offset;
 	}
-	bool XtpRspPrimaryAccountInitPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRspPrimaryAccountInitPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RspPrimaryAccountInit = ::Allocate<XtpRspPrimaryAccountInitField>();
 		memcpy(RspPrimaryAccountInit, buff + offset, sizeof(XtpRspPrimaryAccountInitField));
 		offset += sizeof(XtpRspPrimaryAccountInitField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRspPrimaryAccountInitPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%d,%s,%s",
-			RspPrimaryAccountInit->ErrorID, RspPrimaryAccountInit->ErrorMsg, RspPrimaryAccountInit->PrimaryAccountID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRspPrimaryAccountInitPackage::GetDebugString() const
 	{
@@ -548,24 +491,17 @@ namespace xtp
 		offset += sizeof(XtpReqPrimaryAccountQueryField);
 		return offset;
 	}
-	bool XtpReqPrimaryAccountQueryPackage::FromProtocolStream(char* buff, int size)
+	bool XtpReqPrimaryAccountQueryPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		ReqPrimaryAccountQuery = ::Allocate<XtpReqPrimaryAccountQueryField>();
 		memcpy(ReqPrimaryAccountQuery, buff + offset, sizeof(XtpReqPrimaryAccountQueryField));
 		offset += sizeof(XtpReqPrimaryAccountQueryField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpReqPrimaryAccountQueryPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s",
-			ReqPrimaryAccountQuery->PrimaryAccountID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpReqPrimaryAccountQueryPackage::GetDebugString() const
 	{
@@ -611,24 +547,17 @@ namespace xtp
 		offset += sizeof(XtpRspPrimaryAccountQueryField);
 		return offset;
 	}
-	bool XtpRspPrimaryAccountQueryPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRspPrimaryAccountQueryPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RspPrimaryAccountQuery = ::Allocate<XtpRspPrimaryAccountQueryField>();
 		memcpy(RspPrimaryAccountQuery, buff + offset, sizeof(XtpRspPrimaryAccountQueryField));
 		offset += sizeof(XtpRspPrimaryAccountQueryField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRspPrimaryAccountQueryPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%d,%s,%s",
-			RspPrimaryAccountQuery->ErrorID, RspPrimaryAccountQuery->ErrorMsg, RspPrimaryAccountQuery->PrimaryAccountID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRspPrimaryAccountQueryPackage::GetDebugString() const
 	{
@@ -674,24 +603,17 @@ namespace xtp
 		offset += sizeof(XtpReqQryOptionInstrumentField);
 		return offset;
 	}
-	bool XtpReqQryOptionInstrumentPackage::FromProtocolStream(char* buff, int size)
+	bool XtpReqQryOptionInstrumentPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		ReqQryOptionInstrument = ::Allocate<XtpReqQryOptionInstrumentField>();
 		memcpy(ReqQryOptionInstrument, buff + offset, sizeof(XtpReqQryOptionInstrumentField));
 		offset += sizeof(XtpReqQryOptionInstrumentField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpReqQryOptionInstrumentPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s",
-			ReqQryOptionInstrument->PrimaryAccountID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpReqQryOptionInstrumentPackage::GetDebugString() const
 	{
@@ -737,24 +659,17 @@ namespace xtp
 		offset += sizeof(XtpRspQryOptionInstrumentField);
 		return offset;
 	}
-	bool XtpRspQryOptionInstrumentPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRspQryOptionInstrumentPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RspQryOptionInstrument = ::Allocate<XtpRspQryOptionInstrumentField>();
 		memcpy(RspQryOptionInstrument, buff + offset, sizeof(XtpRspQryOptionInstrumentField));
 		offset += sizeof(XtpRspQryOptionInstrumentField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRspQryOptionInstrumentPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%d,%s,%s",
-			RspQryOptionInstrument->ErrorID, RspQryOptionInstrument->ErrorMsg, RspQryOptionInstrument->PrimaryAccountID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRspQryOptionInstrumentPackage::GetDebugString() const
 	{
@@ -800,24 +715,17 @@ namespace xtp
 		offset += sizeof(XtpRtnOptionInstrumentField);
 		return offset;
 	}
-	bool XtpRtnOptionInstrumentPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRtnOptionInstrumentPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RtnOptionInstrument = ::Allocate<XtpRtnOptionInstrumentField>();
 		memcpy(RtnOptionInstrument, buff + offset, sizeof(XtpRtnOptionInstrumentField));
 		offset += sizeof(XtpRtnOptionInstrumentField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRtnOptionInstrumentPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s,%s,%s,%s,%d,%d,%s,%f,%f,%f,%d,%d,%s",
-			RtnOptionInstrument->TradingDay, RtnOptionInstrument->ExchangeID, RtnOptionInstrument->InstrumentID, RtnOptionInstrument->ExchangeInstID, RtnOptionInstrument->InstrumentName, RtnOptionInstrument->VolumeMultiple, (int)RtnOptionInstrument->OptionType, RtnOptionInstrument->UnderlyingInstrumentID, RtnOptionInstrument->ExecutePrice, RtnOptionInstrument->UnitMargin, RtnOptionInstrument->PriceTick, RtnOptionInstrument->MaxLimitOrderVolume, RtnOptionInstrument->MaxMarketOrderVolume, RtnOptionInstrument->ExpiringDate);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRtnOptionInstrumentPackage::GetDebugString() const
 	{
@@ -863,24 +771,17 @@ namespace xtp
 		offset += sizeof(XtpReqInsertOrderField);
 		return offset;
 	}
-	bool XtpReqInsertOrderPackage::FromProtocolStream(char* buff, int size)
+	bool XtpReqInsertOrderPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		ReqInsertOrder = ::Allocate<XtpReqInsertOrderField>();
 		memcpy(ReqInsertOrder, buff + offset, sizeof(XtpReqInsertOrderField));
 		offset += sizeof(XtpReqInsertOrderField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpReqInsertOrderPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s,%s,%s,%d,%d,%d,%d,%d,%f,%d",
-			ReqInsertOrder->TradingDay, ReqInsertOrder->PrimaryAccountID, ReqInsertOrder->ExchangeID, ReqInsertOrder->InstrumentID, (int)ReqInsertOrder->SecurityType, ReqInsertOrder->OrderID, (int)ReqInsertOrder->Direction, (int)ReqInsertOrder->OffsetFlag, (int)ReqInsertOrder->OrderPriceType, ReqInsertOrder->Price, ReqInsertOrder->Volume);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpReqInsertOrderPackage::GetDebugString() const
 	{
@@ -926,24 +827,17 @@ namespace xtp
 		offset += sizeof(XtpReqCancelOrderField);
 		return offset;
 	}
-	bool XtpReqCancelOrderPackage::FromProtocolStream(char* buff, int size)
+	bool XtpReqCancelOrderPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		ReqCancelOrder = ::Allocate<XtpReqCancelOrderField>();
 		memcpy(ReqCancelOrder, buff + offset, sizeof(XtpReqCancelOrderField));
 		offset += sizeof(XtpReqCancelOrderField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpReqCancelOrderPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s,%s,%s,%d,%d,%d,%d,%s",
-			ReqCancelOrder->TradingDay, ReqCancelOrder->PrimaryAccountID, ReqCancelOrder->ExchangeID, ReqCancelOrder->InstrumentID, (int)ReqCancelOrder->SecurityType, (int)ReqCancelOrder->Direction, ReqCancelOrder->CancelOrderID, ReqCancelOrder->OrderID, ReqCancelOrder->OrderSysID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpReqCancelOrderPackage::GetDebugString() const
 	{
@@ -989,24 +883,17 @@ namespace xtp
 		offset += sizeof(XtpRtnOrderField);
 		return offset;
 	}
-	bool XtpRtnOrderPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRtnOrderPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RtnOrder = ::Allocate<XtpRtnOrderField>();
 		memcpy(RtnOrder, buff + offset, sizeof(XtpRtnOrderField));
 		offset += sizeof(XtpRtnOrderField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRtnOrderPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s,%s,%s,%d,%s,%d,%d,%d,%f,%d,%d,%d,%d,%s,%s,%s,%s,%s,%d",
-			RtnOrder->TradingDay, RtnOrder->PrimaryAccountID, RtnOrder->ExchangeID, RtnOrder->InstrumentID, RtnOrder->OrderID, RtnOrder->OrderSysID, (int)RtnOrder->Direction, (int)RtnOrder->OffsetFlag, (int)RtnOrder->OrderPriceType, RtnOrder->Price, RtnOrder->Volume, RtnOrder->VolumeTotal, RtnOrder->VolumeTraded, (int)RtnOrder->OrderStatus, RtnOrder->StatusMsg, RtnOrder->OrderDate, RtnOrder->OrderTime, RtnOrder->CancelDate, RtnOrder->CancelTime, RtnOrder->IsNewOrder);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRtnOrderPackage::GetDebugString() const
 	{
@@ -1052,24 +939,17 @@ namespace xtp
 		offset += sizeof(XtpRtnTradeField);
 		return offset;
 	}
-	bool XtpRtnTradePackage::FromProtocolStream(char* buff, int size)
+	bool XtpRtnTradePackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RtnTrade = ::Allocate<XtpRtnTradeField>();
 		memcpy(RtnTrade, buff + offset, sizeof(XtpRtnTradeField));
 		offset += sizeof(XtpRtnTradeField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRtnTradePackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s,%s,%s,%d,%s,%s,%d,%d,%f,%d,%s,%s",
-			RtnTrade->TradingDay, RtnTrade->PrimaryAccountID, RtnTrade->ExchangeID, RtnTrade->InstrumentID, RtnTrade->OrderID, RtnTrade->OrderSysID, RtnTrade->TradeID, (int)RtnTrade->Direction, (int)RtnTrade->OffsetFlag, RtnTrade->Price, RtnTrade->Volume, RtnTrade->TradeDate, RtnTrade->TradeTime);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRtnTradePackage::GetDebugString() const
 	{
@@ -1115,24 +995,17 @@ namespace xtp
 		offset += sizeof(XtpRtnErrorCancelOrderField);
 		return offset;
 	}
-	bool XtpRtnErrorCancelOrderPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRtnErrorCancelOrderPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RtnErrorCancelOrder = ::Allocate<XtpRtnErrorCancelOrderField>();
 		memcpy(RtnErrorCancelOrder, buff + offset, sizeof(XtpRtnErrorCancelOrderField));
 		offset += sizeof(XtpRtnErrorCancelOrderField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRtnErrorCancelOrderPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%d,%s,%s,%s,%s,%s,%d,%d,%d,%s",
-			RtnErrorCancelOrder->ErrorID, RtnErrorCancelOrder->ErrorMsg, RtnErrorCancelOrder->TradingDay, RtnErrorCancelOrder->PrimaryAccountID, RtnErrorCancelOrder->ExchangeID, RtnErrorCancelOrder->InstrumentID, (int)RtnErrorCancelOrder->Direction, RtnErrorCancelOrder->CancelOrderID, RtnErrorCancelOrder->OrderID, RtnErrorCancelOrder->OrderSysID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRtnErrorCancelOrderPackage::GetDebugString() const
 	{
@@ -1178,24 +1051,17 @@ namespace xtp
 		offset += sizeof(XtpRtnCapitalField);
 		return offset;
 	}
-	bool XtpRtnCapitalPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRtnCapitalPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RtnCapital = ::Allocate<XtpRtnCapitalField>();
 		memcpy(RtnCapital, buff + offset, sizeof(XtpRtnCapitalField));
 		offset += sizeof(XtpRtnCapitalField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRtnCapitalPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s,%f",
-			RtnCapital->TradingDay, RtnCapital->PrimaryAccountID, RtnCapital->PreCashAsset);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRtnCapitalPackage::GetDebugString() const
 	{
@@ -1241,24 +1107,17 @@ namespace xtp
 		offset += sizeof(XtpRtnPositionField);
 		return offset;
 	}
-	bool XtpRtnPositionPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRtnPositionPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RtnPosition = ::Allocate<XtpRtnPositionField>();
 		memcpy(RtnPosition, buff + offset, sizeof(XtpRtnPositionField));
 		offset += sizeof(XtpRtnPositionField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRtnPositionPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s,%s,%s,%d,%d,%d,%f,%f,%f",
-			RtnPosition->TradingDay, RtnPosition->PrimaryAccountID, RtnPosition->ExchangeID, RtnPosition->InstrumentID, (int)RtnPosition->PosiDirection, RtnPosition->TotalPosition, RtnPosition->PositionFrozen, RtnPosition->TotalCostPrice, RtnPosition->Margin, RtnPosition->MarketValue);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRtnPositionPackage::GetDebugString() const
 	{
@@ -1304,24 +1163,17 @@ namespace xtp
 		offset += sizeof(XtpReqMDOfferLoginField);
 		return offset;
 	}
-	bool XtpReqMDOfferLoginPackage::FromProtocolStream(char* buff, int size)
+	bool XtpReqMDOfferLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		ReqMDOfferLogin = ::Allocate<XtpReqMDOfferLoginField>();
 		memcpy(ReqMDOfferLogin, buff + offset, sizeof(XtpReqMDOfferLoginField));
 		offset += sizeof(XtpReqMDOfferLoginField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpReqMDOfferLoginPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s",
-			ReqMDOfferLogin->UserID, ReqMDOfferLogin->Password);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpReqMDOfferLoginPackage::GetDebugString() const
 	{
@@ -1367,24 +1219,17 @@ namespace xtp
 		offset += sizeof(XtpRspMDOfferLoginField);
 		return offset;
 	}
-	bool XtpRspMDOfferLoginPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRspMDOfferLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RspMDOfferLogin = ::Allocate<XtpRspMDOfferLoginField>();
 		memcpy(RspMDOfferLogin, buff + offset, sizeof(XtpRspMDOfferLoginField));
 		offset += sizeof(XtpRspMDOfferLoginField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRspMDOfferLoginPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%d,%s",
-			RspMDOfferLogin->ErrorID, RspMDOfferLogin->ErrorMsg);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRspMDOfferLoginPackage::GetDebugString() const
 	{
@@ -1430,24 +1275,17 @@ namespace xtp
 		offset += sizeof(XtpReqMDInitField);
 		return offset;
 	}
-	bool XtpReqMDInitPackage::FromProtocolStream(char* buff, int size)
+	bool XtpReqMDInitPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		ReqMDInit = ::Allocate<XtpReqMDInitField>();
 		memcpy(ReqMDInit, buff + offset, sizeof(XtpReqMDInitField));
 		offset += sizeof(XtpReqMDInitField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpReqMDInitPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s",
-			ReqMDInit->ExchangeID, ReqMDInit->TradingDay);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpReqMDInitPackage::GetDebugString() const
 	{
@@ -1493,24 +1331,17 @@ namespace xtp
 		offset += sizeof(XtpRspMDInitField);
 		return offset;
 	}
-	bool XtpRspMDInitPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRspMDInitPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RspMDInit = ::Allocate<XtpRspMDInitField>();
 		memcpy(RspMDInit, buff + offset, sizeof(XtpRspMDInitField));
 		offset += sizeof(XtpRspMDInitField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRspMDInitPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s,%d,%s",
-			RspMDInit->ExchangeID, RspMDInit->TradingDay, RspMDInit->ErrorID, RspMDInit->ErrorMsg);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRspMDInitPackage::GetDebugString() const
 	{
@@ -1556,24 +1387,17 @@ namespace xtp
 		offset += sizeof(XtpReqSubscribeMDField);
 		return offset;
 	}
-	bool XtpReqSubscribeMDPackage::FromProtocolStream(char* buff, int size)
+	bool XtpReqSubscribeMDPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		ReqSubscribeMD = ::Allocate<XtpReqSubscribeMDField>();
 		memcpy(ReqSubscribeMD, buff + offset, sizeof(XtpReqSubscribeMDField));
 		offset += sizeof(XtpReqSubscribeMDField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpReqSubscribeMDPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s",
-			ReqSubscribeMD->ExchangeID, ReqSubscribeMD->InstrumentID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpReqSubscribeMDPackage::GetDebugString() const
 	{
@@ -1619,24 +1443,17 @@ namespace xtp
 		offset += sizeof(XtpRspSubscribeMDField);
 		return offset;
 	}
-	bool XtpRspSubscribeMDPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRspSubscribeMDPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RspSubscribeMD = ::Allocate<XtpRspSubscribeMDField>();
 		memcpy(RspSubscribeMD, buff + offset, sizeof(XtpRspSubscribeMDField));
 		offset += sizeof(XtpRspSubscribeMDField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRspSubscribeMDPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s,%d,%s",
-			RspSubscribeMD->ExchangeID, RspSubscribeMD->InstrumentID, RspSubscribeMD->ErrorID, RspSubscribeMD->ErrorMsg);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRspSubscribeMDPackage::GetDebugString() const
 	{
@@ -1682,24 +1499,17 @@ namespace xtp
 		offset += sizeof(XtpRtnShortMDField);
 		return offset;
 	}
-	bool XtpRtnShortMDPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRtnShortMDPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RtnShortMD = ::Allocate<XtpRtnShortMDField>();
 		memcpy(RtnShortMD, buff + offset, sizeof(XtpRtnShortMDField));
 		offset += sizeof(XtpRtnShortMDField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRtnShortMDPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s,%s,%f,%f,%f,%f,%f,%f,%f",
-			RtnShortMD->TradingDay, RtnShortMD->ExchangeID, RtnShortMD->InstrumentID, RtnShortMD->LastPrice, RtnShortMD->ClosePrice, RtnShortMD->PreClosePrice, RtnShortMD->SettlementPrice, RtnShortMD->PreSettlementPrice, RtnShortMD->UpperLimitPrice, RtnShortMD->LowerLimitPrice);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRtnShortMDPackage::GetDebugString() const
 	{
@@ -1745,24 +1555,17 @@ namespace xtp
 		offset += sizeof(XtpRtnExchangeStatusField);
 		return offset;
 	}
-	bool XtpRtnExchangeStatusPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRtnExchangeStatusPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RtnExchangeStatus = ::Allocate<XtpRtnExchangeStatusField>();
 		memcpy(RtnExchangeStatus, buff + offset, sizeof(XtpRtnExchangeStatusField));
 		offset += sizeof(XtpRtnExchangeStatusField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRtnExchangeStatusPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s,%d",
-			RtnExchangeStatus->ExchangeID, RtnExchangeStatus->ExchangeDate, (int)RtnExchangeStatus->ExchangeStatus);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRtnExchangeStatusPackage::GetDebugString() const
 	{
@@ -1808,24 +1611,17 @@ namespace xtp
 		offset += sizeof(XtpRtnInstrumentField);
 		return offset;
 	}
-	bool XtpRtnInstrumentPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRtnInstrumentPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RtnInstrument = ::Allocate<XtpRtnInstrumentField>();
 		memcpy(RtnInstrument, buff + offset, sizeof(XtpRtnInstrumentField));
 		offset += sizeof(XtpRtnInstrumentField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRtnInstrumentPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s,%s,%s,%d,%d",
-			RtnInstrument->ExchangeID, RtnInstrument->InstrumentID, RtnInstrument->ExchangeInstID, RtnInstrument->InstrumentName, RtnInstrument->VolumeMultiple, (int)RtnInstrument->SecurityType);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRtnInstrumentPackage::GetDebugString() const
 	{
@@ -1871,24 +1667,17 @@ namespace xtp
 		offset += sizeof(XtpRtnMDInitCompletedField);
 		return offset;
 	}
-	bool XtpRtnMDInitCompletedPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRtnMDInitCompletedPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RtnMDInitCompleted = ::Allocate<XtpRtnMDInitCompletedField>();
 		memcpy(RtnMDInitCompleted, buff + offset, sizeof(XtpRtnMDInitCompletedField));
 		offset += sizeof(XtpRtnMDInitCompletedField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRtnMDInitCompletedPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s",
-			RtnMDInitCompleted->ExchangeID, RtnMDInitCompleted->TradingDay);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRtnMDInitCompletedPackage::GetDebugString() const
 	{
@@ -1934,24 +1723,17 @@ namespace xtp
 		offset += sizeof(XtpNotifyMdClientConnectedField);
 		return offset;
 	}
-	bool XtpNotifyMdClientConnectedPackage::FromProtocolStream(char* buff, int size)
+	bool XtpNotifyMdClientConnectedPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		NotifyMdClientConnected = ::Allocate<XtpNotifyMdClientConnectedField>();
 		memcpy(NotifyMdClientConnected, buff + offset, sizeof(XtpNotifyMdClientConnectedField));
 		offset += sizeof(XtpNotifyMdClientConnectedField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpNotifyMdClientConnectedPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%lld",
-			NotifyMdClientConnected->SessionID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpNotifyMdClientConnectedPackage::GetDebugString() const
 	{
@@ -1997,24 +1779,17 @@ namespace xtp
 		offset += sizeof(XtpNotifyMdClientDisConnectedField);
 		return offset;
 	}
-	bool XtpNotifyMdClientDisConnectedPackage::FromProtocolStream(char* buff, int size)
+	bool XtpNotifyMdClientDisConnectedPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		NotifyMdClientDisConnected = ::Allocate<XtpNotifyMdClientDisConnectedField>();
 		memcpy(NotifyMdClientDisConnected, buff + offset, sizeof(XtpNotifyMdClientDisConnectedField));
 		offset += sizeof(XtpNotifyMdClientDisConnectedField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpNotifyMdClientDisConnectedPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%lld",
-			NotifyMdClientDisConnected->SessionID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpNotifyMdClientDisConnectedPackage::GetDebugString() const
 	{
@@ -2060,24 +1835,17 @@ namespace xtp
 		offset += sizeof(XtpNotifyRiskCheckClientConnectedField);
 		return offset;
 	}
-	bool XtpNotifyRiskCheckClientConnectedPackage::FromProtocolStream(char* buff, int size)
+	bool XtpNotifyRiskCheckClientConnectedPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		NotifyRiskCheckClientConnected = ::Allocate<XtpNotifyRiskCheckClientConnectedField>();
 		memcpy(NotifyRiskCheckClientConnected, buff + offset, sizeof(XtpNotifyRiskCheckClientConnectedField));
 		offset += sizeof(XtpNotifyRiskCheckClientConnectedField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpNotifyRiskCheckClientConnectedPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%lld",
-			NotifyRiskCheckClientConnected->SessionID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpNotifyRiskCheckClientConnectedPackage::GetDebugString() const
 	{
@@ -2123,24 +1891,17 @@ namespace xtp
 		offset += sizeof(XtpNotifyRiskCheckClientDisConnectedField);
 		return offset;
 	}
-	bool XtpNotifyRiskCheckClientDisConnectedPackage::FromProtocolStream(char* buff, int size)
+	bool XtpNotifyRiskCheckClientDisConnectedPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		NotifyRiskCheckClientDisConnected = ::Allocate<XtpNotifyRiskCheckClientDisConnectedField>();
 		memcpy(NotifyRiskCheckClientDisConnected, buff + offset, sizeof(XtpNotifyRiskCheckClientDisConnectedField));
 		offset += sizeof(XtpNotifyRiskCheckClientDisConnectedField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpNotifyRiskCheckClientDisConnectedPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%lld",
-			NotifyRiskCheckClientDisConnected->SessionID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpNotifyRiskCheckClientDisConnectedPackage::GetDebugString() const
 	{
@@ -2186,24 +1947,17 @@ namespace xtp
 		offset += sizeof(XtpNotifyTradeFrontConnectedField);
 		return offset;
 	}
-	bool XtpNotifyTradeFrontConnectedPackage::FromProtocolStream(char* buff, int size)
+	bool XtpNotifyTradeFrontConnectedPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		NotifyTradeFrontConnected = ::Allocate<XtpNotifyTradeFrontConnectedField>();
 		memcpy(NotifyTradeFrontConnected, buff + offset, sizeof(XtpNotifyTradeFrontConnectedField));
 		offset += sizeof(XtpNotifyTradeFrontConnectedField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpNotifyTradeFrontConnectedPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%lld",
-			NotifyTradeFrontConnected->SessionID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpNotifyTradeFrontConnectedPackage::GetDebugString() const
 	{
@@ -2249,24 +2003,17 @@ namespace xtp
 		offset += sizeof(XtpNotifyTradeFrontDisConnectedField);
 		return offset;
 	}
-	bool XtpNotifyTradeFrontDisConnectedPackage::FromProtocolStream(char* buff, int size)
+	bool XtpNotifyTradeFrontDisConnectedPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		NotifyTradeFrontDisConnected = ::Allocate<XtpNotifyTradeFrontDisConnectedField>();
 		memcpy(NotifyTradeFrontDisConnected, buff + offset, sizeof(XtpNotifyTradeFrontDisConnectedField));
 		offset += sizeof(XtpNotifyTradeFrontDisConnectedField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpNotifyTradeFrontDisConnectedPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%lld",
-			NotifyTradeFrontDisConnected->SessionID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpNotifyTradeFrontDisConnectedPackage::GetDebugString() const
 	{
@@ -2312,24 +2059,17 @@ namespace xtp
 		offset += sizeof(XtpNotifyRiskFrontConnectedField);
 		return offset;
 	}
-	bool XtpNotifyRiskFrontConnectedPackage::FromProtocolStream(char* buff, int size)
+	bool XtpNotifyRiskFrontConnectedPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		NotifyRiskFrontConnected = ::Allocate<XtpNotifyRiskFrontConnectedField>();
 		memcpy(NotifyRiskFrontConnected, buff + offset, sizeof(XtpNotifyRiskFrontConnectedField));
 		offset += sizeof(XtpNotifyRiskFrontConnectedField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpNotifyRiskFrontConnectedPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%lld",
-			NotifyRiskFrontConnected->SessionID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpNotifyRiskFrontConnectedPackage::GetDebugString() const
 	{
@@ -2375,24 +2115,17 @@ namespace xtp
 		offset += sizeof(XtpNotifyRiskFrontDisConnectedField);
 		return offset;
 	}
-	bool XtpNotifyRiskFrontDisConnectedPackage::FromProtocolStream(char* buff, int size)
+	bool XtpNotifyRiskFrontDisConnectedPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		NotifyRiskFrontDisConnected = ::Allocate<XtpNotifyRiskFrontDisConnectedField>();
 		memcpy(NotifyRiskFrontDisConnected, buff + offset, sizeof(XtpNotifyRiskFrontDisConnectedField));
 		offset += sizeof(XtpNotifyRiskFrontDisConnectedField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpNotifyRiskFrontDisConnectedPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%lld",
-			NotifyRiskFrontDisConnected->SessionID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpNotifyRiskFrontDisConnectedPackage::GetDebugString() const
 	{
@@ -2438,24 +2171,17 @@ namespace xtp
 		offset += sizeof(XtpNotifyAdminFrontConnectedField);
 		return offset;
 	}
-	bool XtpNotifyAdminFrontConnectedPackage::FromProtocolStream(char* buff, int size)
+	bool XtpNotifyAdminFrontConnectedPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		NotifyAdminFrontConnected = ::Allocate<XtpNotifyAdminFrontConnectedField>();
 		memcpy(NotifyAdminFrontConnected, buff + offset, sizeof(XtpNotifyAdminFrontConnectedField));
 		offset += sizeof(XtpNotifyAdminFrontConnectedField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpNotifyAdminFrontConnectedPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%lld",
-			NotifyAdminFrontConnected->SessionID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpNotifyAdminFrontConnectedPackage::GetDebugString() const
 	{
@@ -2501,24 +2227,17 @@ namespace xtp
 		offset += sizeof(XtpNotifyAdminFrontDisConnectedField);
 		return offset;
 	}
-	bool XtpNotifyAdminFrontDisConnectedPackage::FromProtocolStream(char* buff, int size)
+	bool XtpNotifyAdminFrontDisConnectedPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		NotifyAdminFrontDisConnected = ::Allocate<XtpNotifyAdminFrontDisConnectedField>();
 		memcpy(NotifyAdminFrontDisConnected, buff + offset, sizeof(XtpNotifyAdminFrontDisConnectedField));
 		offset += sizeof(XtpNotifyAdminFrontDisConnectedField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpNotifyAdminFrontDisConnectedPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%lld",
-			NotifyAdminFrontDisConnected->SessionID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpNotifyAdminFrontDisConnectedPackage::GetDebugString() const
 	{
@@ -2564,24 +2283,17 @@ namespace xtp
 		offset += sizeof(XtpNotifyOfferFrontConnectedField);
 		return offset;
 	}
-	bool XtpNotifyOfferFrontConnectedPackage::FromProtocolStream(char* buff, int size)
+	bool XtpNotifyOfferFrontConnectedPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		NotifyOfferFrontConnected = ::Allocate<XtpNotifyOfferFrontConnectedField>();
 		memcpy(NotifyOfferFrontConnected, buff + offset, sizeof(XtpNotifyOfferFrontConnectedField));
 		offset += sizeof(XtpNotifyOfferFrontConnectedField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpNotifyOfferFrontConnectedPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%lld",
-			NotifyOfferFrontConnected->SessionID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpNotifyOfferFrontConnectedPackage::GetDebugString() const
 	{
@@ -2627,24 +2339,17 @@ namespace xtp
 		offset += sizeof(XtpNotifyOfferFrontDisConnectedField);
 		return offset;
 	}
-	bool XtpNotifyOfferFrontDisConnectedPackage::FromProtocolStream(char* buff, int size)
+	bool XtpNotifyOfferFrontDisConnectedPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		NotifyOfferFrontDisConnected = ::Allocate<XtpNotifyOfferFrontDisConnectedField>();
 		memcpy(NotifyOfferFrontDisConnected, buff + offset, sizeof(XtpNotifyOfferFrontDisConnectedField));
 		offset += sizeof(XtpNotifyOfferFrontDisConnectedField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpNotifyOfferFrontDisConnectedPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%lld",
-			NotifyOfferFrontDisConnected->SessionID);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpNotifyOfferFrontDisConnectedPackage::GetDebugString() const
 	{
@@ -2690,24 +2395,17 @@ namespace xtp
 		offset += sizeof(XtpNotifyInitCompleteField);
 		return offset;
 	}
-	bool XtpNotifyInitCompletePackage::FromProtocolStream(char* buff, int size)
+	bool XtpNotifyInitCompletePackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		NotifyInitComplete = ::Allocate<XtpNotifyInitCompleteField>();
 		memcpy(NotifyInitComplete, buff + offset, sizeof(XtpNotifyInitCompleteField));
 		offset += sizeof(XtpNotifyInitCompleteField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpNotifyInitCompletePackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s",
-			NotifyInitComplete->TradingDay);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpNotifyInitCompletePackage::GetDebugString() const
 	{
@@ -2753,24 +2451,17 @@ namespace xtp
 		offset += sizeof(XtpRspNotifyInitCompleteField);
 		return offset;
 	}
-	bool XtpRspNotifyInitCompletePackage::FromProtocolStream(char* buff, int size)
+	bool XtpRspNotifyInitCompletePackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RspNotifyInitComplete = ::Allocate<XtpRspNotifyInitCompleteField>();
 		memcpy(RspNotifyInitComplete, buff + offset, sizeof(XtpRspNotifyInitCompleteField));
 		offset += sizeof(XtpRspNotifyInitCompleteField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRspNotifyInitCompletePackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s",
-			RspNotifyInitComplete->TradingDay);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRspNotifyInitCompletePackage::GetDebugString() const
 	{
@@ -2816,24 +2507,17 @@ namespace xtp
 		offset += sizeof(XtpRtnRiskCheckOrderField);
 		return offset;
 	}
-	bool XtpRtnRiskCheckOrderPackage::FromProtocolStream(char* buff, int size)
+	bool XtpRtnRiskCheckOrderPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
-		int offset = 0;
+		int offset = startIndex;
 		RtnRiskCheckOrder = ::Allocate<XtpRtnRiskCheckOrderField>();
 		memcpy(RtnRiskCheckOrder, buff + offset, sizeof(XtpRtnRiskCheckOrderField));
 		offset += sizeof(XtpRtnRiskCheckOrderField);
-		if (offset != size)
+		if (offset != endIndex)
 		{
 			return false;
 		}
 		return true;
-	}
-	const char* XtpRtnRiskCheckOrderPackage::GetString() const
-	{
-		int offset = 0;
-		offset += sprintf(t_XtpDataStringBuffer + offset, "%s,%s,%s,%s,%s,%d,%d,%d,%s",
-			RtnRiskCheckOrder->TradingDay, RtnRiskCheckOrder->AccountID, RtnRiskCheckOrder->PrimaryAccountID, RtnRiskCheckOrder->ExchangeID, RtnRiskCheckOrder->InstrumentID, RtnRiskCheckOrder->OrderID, RtnRiskCheckOrder->RiskID, (int)RtnRiskCheckOrder->RiskStatus, RtnRiskCheckOrder->RiskMessage);
-		return t_XtpDataStringBuffer;
 	}
 	const char* XtpRtnRiskCheckOrderPackage::GetDebugString() const
 	{

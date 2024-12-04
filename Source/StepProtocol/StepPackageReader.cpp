@@ -1,6 +1,7 @@
 ﻿#include "StepPackageReader.h"
 #include "MemCacheTemplateSingleton.h"
 #include "Logger.h"
+#include "ProtocolUtility.h"
 #include <stdio.h>
 #include <cstring>
 
@@ -67,7 +68,7 @@ namespace step
 			WriteLog(LogLevel::Warning, "Parse Tail Failed.");
 			return false;
 		}
-		auto checkSum = CalculateSum((unsigned char*)m_Data, packageStartIndex, packageStartIndex + StepHeaderLen + m_Head.BodyLen);
+		auto checkSum = CalculateSum((unsigned char*)m_Data + packageStartIndex, StepHeaderLen + m_Head.BodyLen);
 		if (checkSum != m_Tail.CheckSum)
 		{
 			WriteLog(LogLevel::Warning, "CheckSum not Match. Tail.CheckSum:%d, CalculateSum:%d", m_Tail.CheckSum, checkSum);

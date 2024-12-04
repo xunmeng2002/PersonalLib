@@ -1,6 +1,5 @@
 #pragma once
 #include "PackageReader.h"
-#include "XtpUtility.h"
 #include "XtpPackageFactoryBase.h"
 #include <map>
 #include <unordered_map>

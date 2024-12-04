@@ -12,12 +12,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0002;
-		XtpReqOfferLoginField* ReqOfferLogin;
+		XtpReqOfferLoginField* ReqOfferLogin = nullptr;
 	};
 
 	class XtpRspOfferLoginPackage : public XtpPackageBase
@@ -28,12 +27,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0003;
-		XtpRspOfferLoginField* RspOfferLogin;
+		XtpRspOfferLoginField* RspOfferLogin = nullptr;
 	};
 
 	class XtpReqPrimaryAccountLoginPackage : public XtpPackageBase
@@ -44,12 +42,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0004;
-		XtpReqPrimaryAccountLoginField* ReqPrimaryAccountLogin;
+		XtpReqPrimaryAccountLoginField* ReqPrimaryAccountLogin = nullptr;
 	};
 
 	class XtpRspPrimaryAccountLoginPackage : public XtpPackageBase
@@ -60,12 +57,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0005;
-		XtpRspPrimaryAccountLoginField* RspPrimaryAccountLogin;
+		XtpRspPrimaryAccountLoginField* RspPrimaryAccountLogin = nullptr;
 	};
 
 	class XtpReqPrimaryAccountLogoutPackage : public XtpPackageBase
@@ -76,12 +72,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0006;
-		XtpReqPrimaryAccountLogoutField* ReqPrimaryAccountLogout;
+		XtpReqPrimaryAccountLogoutField* ReqPrimaryAccountLogout = nullptr;
 	};
 
 	class XtpRtnPrimaryAccountLogoutPackage : public XtpPackageBase
@@ -92,12 +87,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0007;
-		XtpRtnPrimaryAccountLogoutField* RtnPrimaryAccountLogout;
+		XtpRtnPrimaryAccountLogoutField* RtnPrimaryAccountLogout = nullptr;
 	};
 
 	class XtpReqPrimaryAccountInitPackage : public XtpPackageBase
@@ -108,12 +102,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0008;
-		XtpReqPrimaryAccountInitField* ReqPrimaryAccountInit;
+		XtpReqPrimaryAccountInitField* ReqPrimaryAccountInit = nullptr;
 	};
 
 	class XtpRspPrimaryAccountInitPackage : public XtpPackageBase
@@ -124,12 +117,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x0009;
-		XtpRspPrimaryAccountInitField* RspPrimaryAccountInit;
+		XtpRspPrimaryAccountInitField* RspPrimaryAccountInit = nullptr;
 	};
 
 	class XtpReqPrimaryAccountQueryPackage : public XtpPackageBase
@@ -140,12 +132,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x000A;
-		XtpReqPrimaryAccountQueryField* ReqPrimaryAccountQuery;
+		XtpReqPrimaryAccountQueryField* ReqPrimaryAccountQuery = nullptr;
 	};
 
 	class XtpRspPrimaryAccountQueryPackage : public XtpPackageBase
@@ -156,12 +147,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x000B;
-		XtpRspPrimaryAccountQueryField* RspPrimaryAccountQuery;
+		XtpRspPrimaryAccountQueryField* RspPrimaryAccountQuery = nullptr;
 	};
 
 	class XtpReqQryOptionInstrumentPackage : public XtpPackageBase
@@ -172,12 +162,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x000C;
-		XtpReqQryOptionInstrumentField* ReqQryOptionInstrument;
+		XtpReqQryOptionInstrumentField* ReqQryOptionInstrument = nullptr;
 	};
 
 	class XtpRspQryOptionInstrumentPackage : public XtpPackageBase
@@ -188,12 +177,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x000D;
-		XtpRspQryOptionInstrumentField* RspQryOptionInstrument;
+		XtpRspQryOptionInstrumentField* RspQryOptionInstrument = nullptr;
 	};
 
 	class XtpRtnOptionInstrumentPackage : public XtpPackageBase
@@ -204,12 +192,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x000E;
-		XtpRtnOptionInstrumentField* RtnOptionInstrument;
+		XtpRtnOptionInstrumentField* RtnOptionInstrument = nullptr;
 	};
 
 	class XtpReqInsertOrderPackage : public XtpPackageBase
@@ -220,12 +207,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1001;
-		XtpReqInsertOrderField* ReqInsertOrder;
+		XtpReqInsertOrderField* ReqInsertOrder = nullptr;
 	};
 
 	class XtpReqCancelOrderPackage : public XtpPackageBase
@@ -236,12 +222,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1002;
-		XtpReqCancelOrderField* ReqCancelOrder;
+		XtpReqCancelOrderField* ReqCancelOrder = nullptr;
 	};
 
 	class XtpRtnOrderPackage : public XtpPackageBase
@@ -252,12 +237,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1003;
-		XtpRtnOrderField* RtnOrder;
+		XtpRtnOrderField* RtnOrder = nullptr;
 	};
 
 	class XtpRtnTradePackage : public XtpPackageBase
@@ -268,12 +252,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1004;
-		XtpRtnTradeField* RtnTrade;
+		XtpRtnTradeField* RtnTrade = nullptr;
 	};
 
 	class XtpRtnErrorCancelOrderPackage : public XtpPackageBase
@@ -284,12 +267,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1005;
-		XtpRtnErrorCancelOrderField* RtnErrorCancelOrder;
+		XtpRtnErrorCancelOrderField* RtnErrorCancelOrder = nullptr;
 	};
 
 	class XtpRtnCapitalPackage : public XtpPackageBase
@@ -300,12 +282,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1006;
-		XtpRtnCapitalField* RtnCapital;
+		XtpRtnCapitalField* RtnCapital = nullptr;
 	};
 
 	class XtpRtnPositionPackage : public XtpPackageBase
@@ -316,12 +297,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x1007;
-		XtpRtnPositionField* RtnPosition;
+		XtpRtnPositionField* RtnPosition = nullptr;
 	};
 
 	class XtpReqMDOfferLoginPackage : public XtpPackageBase
@@ -332,12 +312,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x2001;
-		XtpReqMDOfferLoginField* ReqMDOfferLogin;
+		XtpReqMDOfferLoginField* ReqMDOfferLogin = nullptr;
 	};
 
 	class XtpRspMDOfferLoginPackage : public XtpPackageBase
@@ -348,12 +327,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x2002;
-		XtpRspMDOfferLoginField* RspMDOfferLogin;
+		XtpRspMDOfferLoginField* RspMDOfferLogin = nullptr;
 	};
 
 	class XtpReqMDInitPackage : public XtpPackageBase
@@ -364,12 +342,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x2003;
-		XtpReqMDInitField* ReqMDInit;
+		XtpReqMDInitField* ReqMDInit = nullptr;
 	};
 
 	class XtpRspMDInitPackage : public XtpPackageBase
@@ -380,12 +357,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x2004;
-		XtpRspMDInitField* RspMDInit;
+		XtpRspMDInitField* RspMDInit = nullptr;
 	};
 
 	class XtpReqSubscribeMDPackage : public XtpPackageBase
@@ -396,12 +372,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x2005;
-		XtpReqSubscribeMDField* ReqSubscribeMD;
+		XtpReqSubscribeMDField* ReqSubscribeMD = nullptr;
 	};
 
 	class XtpRspSubscribeMDPackage : public XtpPackageBase
@@ -412,12 +387,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x2006;
-		XtpRspSubscribeMDField* RspSubscribeMD;
+		XtpRspSubscribeMDField* RspSubscribeMD = nullptr;
 	};
 
 	class XtpRtnShortMDPackage : public XtpPackageBase
@@ -428,12 +402,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x3001;
-		XtpRtnShortMDField* RtnShortMD;
+		XtpRtnShortMDField* RtnShortMD = nullptr;
 	};
 
 	class XtpRtnExchangeStatusPackage : public XtpPackageBase
@@ -444,12 +417,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x3002;
-		XtpRtnExchangeStatusField* RtnExchangeStatus;
+		XtpRtnExchangeStatusField* RtnExchangeStatus = nullptr;
 	};
 
 	class XtpRtnInstrumentPackage : public XtpPackageBase
@@ -460,12 +432,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x3003;
-		XtpRtnInstrumentField* RtnInstrument;
+		XtpRtnInstrumentField* RtnInstrument = nullptr;
 	};
 
 	class XtpRtnMDInitCompletedPackage : public XtpPackageBase
@@ -476,12 +447,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x3004;
-		XtpRtnMDInitCompletedField* RtnMDInitCompleted;
+		XtpRtnMDInitCompletedField* RtnMDInitCompleted = nullptr;
 	};
 
 	class XtpNotifyMdClientConnectedPackage : public XtpPackageBase
@@ -492,12 +462,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4001;
-		XtpNotifyMdClientConnectedField* NotifyMdClientConnected;
+		XtpNotifyMdClientConnectedField* NotifyMdClientConnected = nullptr;
 	};
 
 	class XtpNotifyMdClientDisConnectedPackage : public XtpPackageBase
@@ -508,12 +477,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4002;
-		XtpNotifyMdClientDisConnectedField* NotifyMdClientDisConnected;
+		XtpNotifyMdClientDisConnectedField* NotifyMdClientDisConnected = nullptr;
 	};
 
 	class XtpNotifyRiskCheckClientConnectedPackage : public XtpPackageBase
@@ -524,12 +492,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4003;
-		XtpNotifyRiskCheckClientConnectedField* NotifyRiskCheckClientConnected;
+		XtpNotifyRiskCheckClientConnectedField* NotifyRiskCheckClientConnected = nullptr;
 	};
 
 	class XtpNotifyRiskCheckClientDisConnectedPackage : public XtpPackageBase
@@ -540,12 +507,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4004;
-		XtpNotifyRiskCheckClientDisConnectedField* NotifyRiskCheckClientDisConnected;
+		XtpNotifyRiskCheckClientDisConnectedField* NotifyRiskCheckClientDisConnected = nullptr;
 	};
 
 	class XtpNotifyTradeFrontConnectedPackage : public XtpPackageBase
@@ -556,12 +522,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4005;
-		XtpNotifyTradeFrontConnectedField* NotifyTradeFrontConnected;
+		XtpNotifyTradeFrontConnectedField* NotifyTradeFrontConnected = nullptr;
 	};
 
 	class XtpNotifyTradeFrontDisConnectedPackage : public XtpPackageBase
@@ -572,12 +537,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4006;
-		XtpNotifyTradeFrontDisConnectedField* NotifyTradeFrontDisConnected;
+		XtpNotifyTradeFrontDisConnectedField* NotifyTradeFrontDisConnected = nullptr;
 	};
 
 	class XtpNotifyRiskFrontConnectedPackage : public XtpPackageBase
@@ -588,12 +552,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4007;
-		XtpNotifyRiskFrontConnectedField* NotifyRiskFrontConnected;
+		XtpNotifyRiskFrontConnectedField* NotifyRiskFrontConnected = nullptr;
 	};
 
 	class XtpNotifyRiskFrontDisConnectedPackage : public XtpPackageBase
@@ -604,12 +567,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4008;
-		XtpNotifyRiskFrontDisConnectedField* NotifyRiskFrontDisConnected;
+		XtpNotifyRiskFrontDisConnectedField* NotifyRiskFrontDisConnected = nullptr;
 	};
 
 	class XtpNotifyAdminFrontConnectedPackage : public XtpPackageBase
@@ -620,12 +582,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x4009;
-		XtpNotifyAdminFrontConnectedField* NotifyAdminFrontConnected;
+		XtpNotifyAdminFrontConnectedField* NotifyAdminFrontConnected = nullptr;
 	};
 
 	class XtpNotifyAdminFrontDisConnectedPackage : public XtpPackageBase
@@ -636,12 +597,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x400A;
-		XtpNotifyAdminFrontDisConnectedField* NotifyAdminFrontDisConnected;
+		XtpNotifyAdminFrontDisConnectedField* NotifyAdminFrontDisConnected = nullptr;
 	};
 
 	class XtpNotifyOfferFrontConnectedPackage : public XtpPackageBase
@@ -652,12 +612,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x400B;
-		XtpNotifyOfferFrontConnectedField* NotifyOfferFrontConnected;
+		XtpNotifyOfferFrontConnectedField* NotifyOfferFrontConnected = nullptr;
 	};
 
 	class XtpNotifyOfferFrontDisConnectedPackage : public XtpPackageBase
@@ -668,12 +627,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x400C;
-		XtpNotifyOfferFrontDisConnectedField* NotifyOfferFrontDisConnected;
+		XtpNotifyOfferFrontDisConnectedField* NotifyOfferFrontDisConnected = nullptr;
 	};
 
 	class XtpNotifyInitCompletePackage : public XtpPackageBase
@@ -684,12 +642,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x400D;
-		XtpNotifyInitCompleteField* NotifyInitComplete;
+		XtpNotifyInitCompleteField* NotifyInitComplete = nullptr;
 	};
 
 	class XtpRspNotifyInitCompletePackage : public XtpPackageBase
@@ -700,12 +657,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x400E;
-		XtpRspNotifyInitCompleteField* RspNotifyInitComplete;
+		XtpRspNotifyInitCompleteField* RspNotifyInitComplete = nullptr;
 	};
 
 	class XtpRtnRiskCheckOrderPackage : public XtpPackageBase
@@ -716,12 +672,11 @@ namespace xtp
 		virtual void Free() override;
 		virtual void Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum) override;
 		virtual int ToProtocolStream(char* buff, int size) const override;
-		virtual bool FromProtocolStream(char* buff, int size) override;
-		virtual const char* GetString() const override;
+		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) override;
 		virtual const char* GetDebugString() const override;
 	public:
 		static constexpr UShortType PackageID = 0x5001;
-		XtpRtnRiskCheckOrderField* RtnRiskCheckOrder;
+		XtpRtnRiskCheckOrderField* RtnRiskCheckOrder = nullptr;
 	};
 
 }

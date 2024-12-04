@@ -41,5 +41,4 @@ namespace step
 	bool HeadFromStream(char* buff, int startIndex, int endIndex, HeadField* head);
 	void TailToStream(TailField* tail, char* buff, int size);
 	bool TailFromStream(char* buff, int startIndex, int endIndex, TailField* tail);
-	short CalculateSum(unsigned char* buff, int startIndex, int endIndex);
 }

@@ -50,6 +50,7 @@
 	<file name="Platform.h" dest="../Libs/PersonalLib/include/" src="./Source/Platform/"/>
 	<file name="Head.h" dest="../Libs/PersonalLib/include/" src="./Source/ProtocolBase/"/>
 	<file name="Items.h" dest="../Libs/PersonalLib/include/" src="./Source/ProtocolBase/"/>
+	<file name="ProtocolUtility.h" dest="../Libs/PersonalLib/include/" src="./Source/ProtocolBase/"/>
 
 	<file name="Sem.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
 	<file name="ShmBase.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
@@ -87,5 +88,4 @@
 	<file name="XtpPackageFactoryBase.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
 	<file name="XtpPackageReader.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
 	<file name="XtpProtocol.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
-	<file name="XtpUtility.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
 </copylist>

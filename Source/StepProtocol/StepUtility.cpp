@@ -242,13 +242,4 @@ namespace step
 		}
 		return true;
 	}
-	short CalculateSum(unsigned char* buff, int startIndex, int endIndex)
-	{
-		int sum = 0;
-		for (auto i = startIndex; i < endIndex; ++i)
-		{
-			sum += buff[i];
-		}
-		return sum % 256;
-	}
 }
