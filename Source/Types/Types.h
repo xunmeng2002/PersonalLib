@@ -290,10 +290,18 @@ enum class AuditStatusType : int
 //组件类型
 enum class ComponentType : int
 {
+	//交易前置
+	TradeFront = '0',
+	//风控前置
+	RiskFront = '1',
+	//管理前置
+	AdminFront = '2',
+	//报盘前置
+	OfferFront = '3',
 	//行情
-	MarketData = '0',
+	MarketData = '4',
 	//风控检查
-	RiskCheck = '1',
+	RiskCheck = '5',
 };
 
 //触发条件类型

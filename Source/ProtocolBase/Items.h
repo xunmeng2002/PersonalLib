@@ -164,6 +164,7 @@ public:
 	static constexpr unsigned int IsForceClose = 0x8003;
 	static constexpr unsigned int IsSimulateAccount = 0x8004;
 	static constexpr unsigned int IsNewOrder = 0x8005;
+	static constexpr unsigned int IsConnected = 0x8006;
 	static constexpr unsigned int NotifySequenceNo = 0x8401;
 	static constexpr unsigned int LastNotifySequenceNo = 0x8402;
 	static constexpr unsigned int VolumeMultiple = 0x8403;
@@ -193,6 +194,7 @@ public:
 	static constexpr unsigned int AuditStatus = 0x9016;
 	static constexpr unsigned int ExchangeStatus = 0x9017;
 	static constexpr unsigned int OfferType = 0x9018;
+	static constexpr unsigned int Component = 0x9019;
 	static constexpr unsigned int LogicFunc = 0xA001;
 	static constexpr unsigned int IndexParam1 = 0xA002;
 	static constexpr unsigned int IndexParam2 = 0xA003;
