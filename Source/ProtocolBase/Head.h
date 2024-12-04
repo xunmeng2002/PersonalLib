@@ -2,7 +2,7 @@
 #include "Types.h"
 
 //报文头
-class StepHeadField
+class HeadField
 {
 public:
 	static constexpr UShortType FieldID = 0x0001;
@@ -12,7 +12,7 @@ public:
 	IntType MsgSeqNum;		//请求编号
 };
 //报文尾
-class StepTailField
+class TailField
 {
 public:
 	static constexpr UShortType FieldID = 0x0002;

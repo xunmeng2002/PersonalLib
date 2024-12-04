@@ -1,5 +1,5 @@
 ﻿#include "StepPackages.h"
-#include "StepItems.h"
+#include "Items.h"
 #include "StepUtility.h"
 #include "MemCacheTemplateSingleton.h"
 #include "Logger.h"
@@ -43,18 +43,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqAccountLogin != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAccountLoginField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAccountLoginField::FieldID);
 			if (strlen(ReqAccountLogin->AccountID) >= sizeof(ReqAccountLogin->AccountID))
 			{
 				ReqAccountLogin->AccountID[sizeof(ReqAccountLogin->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqAccountLogin->AccountID);
+			WriteString(ppos, Items::AccountID, ReqAccountLogin->AccountID);
 			if (strlen(ReqAccountLogin->Password) >= sizeof(ReqAccountLogin->Password))
 			{
 				ReqAccountLogin->Password[sizeof(ReqAccountLogin->Password) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::Password, ReqAccountLogin->Password);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAccountLoginField::FieldID);
+			WriteString(ppos, Items::Password, ReqAccountLogin->Password);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAccountLoginField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -83,16 +83,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqAccountLogin->AccountID) ? sizeof(ReqAccountLogin->AccountID) - 1 : value.length();
 								memcpy(ReqAccountLogin->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Password:
+							case Items::Password:
 							{
 								size_t len = value.length() >= sizeof(ReqAccountLogin->Password) ? sizeof(ReqAccountLogin->Password) - 1 : value.length();
 								memcpy(ReqAccountLogin->Password, value.c_str(), len);
@@ -178,35 +178,35 @@ namespace step
 		char* ppos = buff;
 		if (RspAccountLogin != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAccountLoginField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAccountLoginField::FieldID);
 			if (strlen(RspAccountLogin->AccountID) >= sizeof(RspAccountLogin->AccountID))
 			{
 				RspAccountLogin->AccountID[sizeof(RspAccountLogin->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, RspAccountLogin->AccountID);
+			WriteString(ppos, Items::AccountID, RspAccountLogin->AccountID);
 			if (strlen(RspAccountLogin->LoginDate) >= sizeof(RspAccountLogin->LoginDate))
 			{
 				RspAccountLogin->LoginDate[sizeof(RspAccountLogin->LoginDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::LoginDate, RspAccountLogin->LoginDate);
+			WriteString(ppos, Items::LoginDate, RspAccountLogin->LoginDate);
 			if (strlen(RspAccountLogin->LoginTime) >= sizeof(RspAccountLogin->LoginTime))
 			{
 				RspAccountLogin->LoginTime[sizeof(RspAccountLogin->LoginTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::LoginTime, RspAccountLogin->LoginTime);
-			WriteString(ppos, StepItems::SessionID, RspAccountLogin->SessionID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAccountLoginField::FieldID);
+			WriteString(ppos, Items::LoginTime, RspAccountLogin->LoginTime);
+			WriteString(ppos, Items::SessionID, RspAccountLogin->SessionID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAccountLoginField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -235,28 +235,28 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(RspAccountLogin->AccountID) ? sizeof(RspAccountLogin->AccountID) - 1 : value.length();
 								memcpy(RspAccountLogin->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::LoginDate:
+							case Items::LoginDate:
 							{
 								size_t len = value.length() >= sizeof(RspAccountLogin->LoginDate) ? sizeof(RspAccountLogin->LoginDate) - 1 : value.length();
 								memcpy(RspAccountLogin->LoginDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::LoginTime:
+							case Items::LoginTime:
 							{
 								size_t len = value.length() >= sizeof(RspAccountLogin->LoginTime) ? sizeof(RspAccountLogin->LoginTime) - 1 : value.length();
 								memcpy(RspAccountLogin->LoginTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::SessionID:
+							case Items::SessionID:
 							{
 								RspAccountLogin->SessionID = atoll(value.c_str());
 								break;
@@ -288,15 +288,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -382,13 +382,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqAccountLogout != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAccountLogoutField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAccountLogoutField::FieldID);
 			if (strlen(ReqAccountLogout->AccountID) >= sizeof(ReqAccountLogout->AccountID))
 			{
 				ReqAccountLogout->AccountID[sizeof(ReqAccountLogout->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqAccountLogout->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAccountLogoutField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqAccountLogout->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAccountLogoutField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -417,10 +417,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqAccountLogout->AccountID) ? sizeof(ReqAccountLogout->AccountID) - 1 : value.length();
 								memcpy(ReqAccountLogout->AccountID, value.c_str(), len);
@@ -506,24 +506,24 @@ namespace step
 		char* ppos = buff;
 		if (RspAccountLogout != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAccountLogoutField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAccountLogoutField::FieldID);
 			if (strlen(RspAccountLogout->AccountID) >= sizeof(RspAccountLogout->AccountID))
 			{
 				RspAccountLogout->AccountID[sizeof(RspAccountLogout->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, RspAccountLogout->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAccountLogoutField::FieldID);
+			WriteString(ppos, Items::AccountID, RspAccountLogout->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAccountLogoutField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -552,10 +552,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(RspAccountLogout->AccountID) ? sizeof(RspAccountLogout->AccountID) - 1 : value.length();
 								memcpy(RspAccountLogout->AccountID, value.c_str(), len);
@@ -588,15 +588,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -682,19 +682,19 @@ namespace step
 		char* ppos = buff;
 		if (AccountLogout != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepAccountLogoutField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepAccountLogoutField::FieldID);
 			if (strlen(AccountLogout->AccountID) >= sizeof(AccountLogout->AccountID))
 			{
 				AccountLogout->AccountID[sizeof(AccountLogout->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, AccountLogout->AccountID);
-			WriteString(ppos, StepItems::ErrorID, AccountLogout->ErrorID);
+			WriteString(ppos, Items::AccountID, AccountLogout->AccountID);
+			WriteString(ppos, Items::ErrorID, AccountLogout->ErrorID);
 			if (strlen(AccountLogout->ErrorMsg) >= sizeof(AccountLogout->ErrorMsg))
 			{
 				AccountLogout->ErrorMsg[sizeof(AccountLogout->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, AccountLogout->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepAccountLogoutField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, AccountLogout->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepAccountLogoutField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -723,21 +723,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(AccountLogout->AccountID) ? sizeof(AccountLogout->AccountID) - 1 : value.length();
 								memcpy(AccountLogout->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								AccountLogout->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(AccountLogout->ErrorMsg) ? sizeof(AccountLogout->ErrorMsg) - 1 : value.length();
 								memcpy(AccountLogout->ErrorMsg, value.c_str(), len);
@@ -818,18 +818,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqRiskUserLogin != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRiskUserLoginField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRiskUserLoginField::FieldID);
 			if (strlen(ReqRiskUserLogin->UserID) >= sizeof(ReqRiskUserLogin->UserID))
 			{
 				ReqRiskUserLogin->UserID[sizeof(ReqRiskUserLogin->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqRiskUserLogin->UserID);
+			WriteString(ppos, Items::UserID, ReqRiskUserLogin->UserID);
 			if (strlen(ReqRiskUserLogin->Password) >= sizeof(ReqRiskUserLogin->Password))
 			{
 				ReqRiskUserLogin->Password[sizeof(ReqRiskUserLogin->Password) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::Password, ReqRiskUserLogin->Password);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRiskUserLoginField::FieldID);
+			WriteString(ppos, Items::Password, ReqRiskUserLogin->Password);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRiskUserLoginField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -858,16 +858,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRiskUserLogin->UserID) ? sizeof(ReqRiskUserLogin->UserID) - 1 : value.length();
 								memcpy(ReqRiskUserLogin->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Password:
+							case Items::Password:
 							{
 								size_t len = value.length() >= sizeof(ReqRiskUserLogin->Password) ? sizeof(ReqRiskUserLogin->Password) - 1 : value.length();
 								memcpy(ReqRiskUserLogin->Password, value.c_str(), len);
@@ -953,36 +953,36 @@ namespace step
 		char* ppos = buff;
 		if (RspRiskUserLogin != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRiskUserLoginField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRiskUserLoginField::FieldID);
 			if (strlen(RspRiskUserLogin->UserID) >= sizeof(RspRiskUserLogin->UserID))
 			{
 				RspRiskUserLogin->UserID[sizeof(RspRiskUserLogin->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, RspRiskUserLogin->UserID);
-			WriteString(ppos, StepItems::RiskGroupID, RspRiskUserLogin->RiskGroupID);
+			WriteString(ppos, Items::UserID, RspRiskUserLogin->UserID);
+			WriteString(ppos, Items::RiskGroupID, RspRiskUserLogin->RiskGroupID);
 			if (strlen(RspRiskUserLogin->LoginDate) >= sizeof(RspRiskUserLogin->LoginDate))
 			{
 				RspRiskUserLogin->LoginDate[sizeof(RspRiskUserLogin->LoginDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::LoginDate, RspRiskUserLogin->LoginDate);
+			WriteString(ppos, Items::LoginDate, RspRiskUserLogin->LoginDate);
 			if (strlen(RspRiskUserLogin->LoginTime) >= sizeof(RspRiskUserLogin->LoginTime))
 			{
 				RspRiskUserLogin->LoginTime[sizeof(RspRiskUserLogin->LoginTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::LoginTime, RspRiskUserLogin->LoginTime);
-			WriteString(ppos, StepItems::SessionID, RspRiskUserLogin->SessionID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRiskUserLoginField::FieldID);
+			WriteString(ppos, Items::LoginTime, RspRiskUserLogin->LoginTime);
+			WriteString(ppos, Items::SessionID, RspRiskUserLogin->SessionID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRiskUserLoginField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -1011,33 +1011,33 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(RspRiskUserLogin->UserID) ? sizeof(RspRiskUserLogin->UserID) - 1 : value.length();
 								memcpy(RspRiskUserLogin->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								RspRiskUserLogin->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::LoginDate:
+							case Items::LoginDate:
 							{
 								size_t len = value.length() >= sizeof(RspRiskUserLogin->LoginDate) ? sizeof(RspRiskUserLogin->LoginDate) - 1 : value.length();
 								memcpy(RspRiskUserLogin->LoginDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::LoginTime:
+							case Items::LoginTime:
 							{
 								size_t len = value.length() >= sizeof(RspRiskUserLogin->LoginTime) ? sizeof(RspRiskUserLogin->LoginTime) - 1 : value.length();
 								memcpy(RspRiskUserLogin->LoginTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::SessionID:
+							case Items::SessionID:
 							{
 								RspRiskUserLogin->SessionID = atoll(value.c_str());
 								break;
@@ -1069,15 +1069,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -1163,13 +1163,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqRiskUserLogout != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRiskUserLogoutField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRiskUserLogoutField::FieldID);
 			if (strlen(ReqRiskUserLogout->UserID) >= sizeof(ReqRiskUserLogout->UserID))
 			{
 				ReqRiskUserLogout->UserID[sizeof(ReqRiskUserLogout->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqRiskUserLogout->UserID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRiskUserLogoutField::FieldID);
+			WriteString(ppos, Items::UserID, ReqRiskUserLogout->UserID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRiskUserLogoutField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -1198,10 +1198,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRiskUserLogout->UserID) ? sizeof(ReqRiskUserLogout->UserID) - 1 : value.length();
 								memcpy(ReqRiskUserLogout->UserID, value.c_str(), len);
@@ -1287,24 +1287,24 @@ namespace step
 		char* ppos = buff;
 		if (RspRiskUserLogout != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRiskUserLogoutField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRiskUserLogoutField::FieldID);
 			if (strlen(RspRiskUserLogout->UserID) >= sizeof(RspRiskUserLogout->UserID))
 			{
 				RspRiskUserLogout->UserID[sizeof(RspRiskUserLogout->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, RspRiskUserLogout->UserID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRiskUserLogoutField::FieldID);
+			WriteString(ppos, Items::UserID, RspRiskUserLogout->UserID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRiskUserLogoutField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -1333,10 +1333,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(RspRiskUserLogout->UserID) ? sizeof(RspRiskUserLogout->UserID) - 1 : value.length();
 								memcpy(RspRiskUserLogout->UserID, value.c_str(), len);
@@ -1369,15 +1369,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -1463,19 +1463,19 @@ namespace step
 		char* ppos = buff;
 		if (RiskUserLogout != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRiskUserLogoutField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRiskUserLogoutField::FieldID);
 			if (strlen(RiskUserLogout->UserID) >= sizeof(RiskUserLogout->UserID))
 			{
 				RiskUserLogout->UserID[sizeof(RiskUserLogout->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, RiskUserLogout->UserID);
-			WriteString(ppos, StepItems::ErrorID, RiskUserLogout->ErrorID);
+			WriteString(ppos, Items::UserID, RiskUserLogout->UserID);
+			WriteString(ppos, Items::ErrorID, RiskUserLogout->ErrorID);
 			if (strlen(RiskUserLogout->ErrorMsg) >= sizeof(RiskUserLogout->ErrorMsg))
 			{
 				RiskUserLogout->ErrorMsg[sizeof(RiskUserLogout->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RiskUserLogout->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRiskUserLogoutField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RiskUserLogout->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRiskUserLogoutField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -1504,21 +1504,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(RiskUserLogout->UserID) ? sizeof(RiskUserLogout->UserID) - 1 : value.length();
 								memcpy(RiskUserLogout->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RiskUserLogout->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RiskUserLogout->ErrorMsg) ? sizeof(RiskUserLogout->ErrorMsg) - 1 : value.length();
 								memcpy(RiskUserLogout->ErrorMsg, value.c_str(), len);
@@ -1599,18 +1599,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqAdminUserLogin != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAdminUserLoginField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAdminUserLoginField::FieldID);
 			if (strlen(ReqAdminUserLogin->AdminUserID) >= sizeof(ReqAdminUserLogin->AdminUserID))
 			{
 				ReqAdminUserLogin->AdminUserID[sizeof(ReqAdminUserLogin->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAdminUserLogin->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqAdminUserLogin->AdminUserID);
 			if (strlen(ReqAdminUserLogin->Password) >= sizeof(ReqAdminUserLogin->Password))
 			{
 				ReqAdminUserLogin->Password[sizeof(ReqAdminUserLogin->Password) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::Password, ReqAdminUserLogin->Password);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAdminUserLoginField::FieldID);
+			WriteString(ppos, Items::Password, ReqAdminUserLogin->Password);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAdminUserLoginField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -1639,16 +1639,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAdminUserLogin->AdminUserID) ? sizeof(ReqAdminUserLogin->AdminUserID) - 1 : value.length();
 								memcpy(ReqAdminUserLogin->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Password:
+							case Items::Password:
 							{
 								size_t len = value.length() >= sizeof(ReqAdminUserLogin->Password) ? sizeof(ReqAdminUserLogin->Password) - 1 : value.length();
 								memcpy(ReqAdminUserLogin->Password, value.c_str(), len);
@@ -1734,35 +1734,35 @@ namespace step
 		char* ppos = buff;
 		if (RspAdminUserLogin != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAdminUserLoginField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAdminUserLoginField::FieldID);
 			if (strlen(RspAdminUserLogin->AdminUserID) >= sizeof(RspAdminUserLogin->AdminUserID))
 			{
 				RspAdminUserLogin->AdminUserID[sizeof(RspAdminUserLogin->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAdminUserLogin->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspAdminUserLogin->AdminUserID);
 			if (strlen(RspAdminUserLogin->LoginDate) >= sizeof(RspAdminUserLogin->LoginDate))
 			{
 				RspAdminUserLogin->LoginDate[sizeof(RspAdminUserLogin->LoginDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::LoginDate, RspAdminUserLogin->LoginDate);
+			WriteString(ppos, Items::LoginDate, RspAdminUserLogin->LoginDate);
 			if (strlen(RspAdminUserLogin->LoginTime) >= sizeof(RspAdminUserLogin->LoginTime))
 			{
 				RspAdminUserLogin->LoginTime[sizeof(RspAdminUserLogin->LoginTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::LoginTime, RspAdminUserLogin->LoginTime);
-			WriteString(ppos, StepItems::SessionID, RspAdminUserLogin->SessionID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAdminUserLoginField::FieldID);
+			WriteString(ppos, Items::LoginTime, RspAdminUserLogin->LoginTime);
+			WriteString(ppos, Items::SessionID, RspAdminUserLogin->SessionID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAdminUserLoginField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -1791,28 +1791,28 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAdminUserLogin->AdminUserID) ? sizeof(RspAdminUserLogin->AdminUserID) - 1 : value.length();
 								memcpy(RspAdminUserLogin->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::LoginDate:
+							case Items::LoginDate:
 							{
 								size_t len = value.length() >= sizeof(RspAdminUserLogin->LoginDate) ? sizeof(RspAdminUserLogin->LoginDate) - 1 : value.length();
 								memcpy(RspAdminUserLogin->LoginDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::LoginTime:
+							case Items::LoginTime:
 							{
 								size_t len = value.length() >= sizeof(RspAdminUserLogin->LoginTime) ? sizeof(RspAdminUserLogin->LoginTime) - 1 : value.length();
 								memcpy(RspAdminUserLogin->LoginTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::SessionID:
+							case Items::SessionID:
 							{
 								RspAdminUserLogin->SessionID = atoll(value.c_str());
 								break;
@@ -1844,15 +1844,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -1938,13 +1938,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqAdminUserLogout != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAdminUserLogoutField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAdminUserLogoutField::FieldID);
 			if (strlen(ReqAdminUserLogout->AdminUserID) >= sizeof(ReqAdminUserLogout->AdminUserID))
 			{
 				ReqAdminUserLogout->AdminUserID[sizeof(ReqAdminUserLogout->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAdminUserLogout->AdminUserID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAdminUserLogoutField::FieldID);
+			WriteString(ppos, Items::AdminUserID, ReqAdminUserLogout->AdminUserID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAdminUserLogoutField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -1973,10 +1973,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAdminUserLogout->AdminUserID) ? sizeof(ReqAdminUserLogout->AdminUserID) - 1 : value.length();
 								memcpy(ReqAdminUserLogout->AdminUserID, value.c_str(), len);
@@ -2062,24 +2062,24 @@ namespace step
 		char* ppos = buff;
 		if (RspAdminUserLogout != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAdminUserLogoutField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAdminUserLogoutField::FieldID);
 			if (strlen(RspAdminUserLogout->AdminUserID) >= sizeof(RspAdminUserLogout->AdminUserID))
 			{
 				RspAdminUserLogout->AdminUserID[sizeof(RspAdminUserLogout->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAdminUserLogout->AdminUserID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAdminUserLogoutField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspAdminUserLogout->AdminUserID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAdminUserLogoutField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -2108,10 +2108,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAdminUserLogout->AdminUserID) ? sizeof(RspAdminUserLogout->AdminUserID) - 1 : value.length();
 								memcpy(RspAdminUserLogout->AdminUserID, value.c_str(), len);
@@ -2144,15 +2144,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -2238,19 +2238,19 @@ namespace step
 		char* ppos = buff;
 		if (AdminUserLogout != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepAdminUserLogoutField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepAdminUserLogoutField::FieldID);
 			if (strlen(AdminUserLogout->UserID) >= sizeof(AdminUserLogout->UserID))
 			{
 				AdminUserLogout->UserID[sizeof(AdminUserLogout->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, AdminUserLogout->UserID);
-			WriteString(ppos, StepItems::ErrorID, AdminUserLogout->ErrorID);
+			WriteString(ppos, Items::UserID, AdminUserLogout->UserID);
+			WriteString(ppos, Items::ErrorID, AdminUserLogout->ErrorID);
 			if (strlen(AdminUserLogout->ErrorMsg) >= sizeof(AdminUserLogout->ErrorMsg))
 			{
 				AdminUserLogout->ErrorMsg[sizeof(AdminUserLogout->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, AdminUserLogout->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepAdminUserLogoutField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, AdminUserLogout->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepAdminUserLogoutField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -2279,21 +2279,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(AdminUserLogout->UserID) ? sizeof(AdminUserLogout->UserID) - 1 : value.length();
 								memcpy(AdminUserLogout->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								AdminUserLogout->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(AdminUserLogout->ErrorMsg) ? sizeof(AdminUserLogout->ErrorMsg) - 1 : value.length();
 								memcpy(AdminUserLogout->ErrorMsg, value.c_str(), len);
@@ -2374,18 +2374,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqMdUserLogin != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqMdUserLoginField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqMdUserLoginField::FieldID);
 			if (strlen(ReqMdUserLogin->MdUserID) >= sizeof(ReqMdUserLogin->MdUserID))
 			{
 				ReqMdUserLogin->MdUserID[sizeof(ReqMdUserLogin->MdUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::MdUserID, ReqMdUserLogin->MdUserID);
+			WriteString(ppos, Items::MdUserID, ReqMdUserLogin->MdUserID);
 			if (strlen(ReqMdUserLogin->Password) >= sizeof(ReqMdUserLogin->Password))
 			{
 				ReqMdUserLogin->Password[sizeof(ReqMdUserLogin->Password) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::Password, ReqMdUserLogin->Password);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqMdUserLoginField::FieldID);
+			WriteString(ppos, Items::Password, ReqMdUserLogin->Password);
+			WriteHexString(ppos, Items::FieldEnd, StepReqMdUserLoginField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -2414,16 +2414,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::MdUserID:
+							case Items::MdUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqMdUserLogin->MdUserID) ? sizeof(ReqMdUserLogin->MdUserID) - 1 : value.length();
 								memcpy(ReqMdUserLogin->MdUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Password:
+							case Items::Password:
 							{
 								size_t len = value.length() >= sizeof(ReqMdUserLogin->Password) ? sizeof(ReqMdUserLogin->Password) - 1 : value.length();
 								memcpy(ReqMdUserLogin->Password, value.c_str(), len);
@@ -2509,35 +2509,35 @@ namespace step
 		char* ppos = buff;
 		if (RspMdUserLogin != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspMdUserLoginField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspMdUserLoginField::FieldID);
 			if (strlen(RspMdUserLogin->MdUserID) >= sizeof(RspMdUserLogin->MdUserID))
 			{
 				RspMdUserLogin->MdUserID[sizeof(RspMdUserLogin->MdUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::MdUserID, RspMdUserLogin->MdUserID);
+			WriteString(ppos, Items::MdUserID, RspMdUserLogin->MdUserID);
 			if (strlen(RspMdUserLogin->LoginDate) >= sizeof(RspMdUserLogin->LoginDate))
 			{
 				RspMdUserLogin->LoginDate[sizeof(RspMdUserLogin->LoginDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::LoginDate, RspMdUserLogin->LoginDate);
+			WriteString(ppos, Items::LoginDate, RspMdUserLogin->LoginDate);
 			if (strlen(RspMdUserLogin->LoginTime) >= sizeof(RspMdUserLogin->LoginTime))
 			{
 				RspMdUserLogin->LoginTime[sizeof(RspMdUserLogin->LoginTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::LoginTime, RspMdUserLogin->LoginTime);
-			WriteString(ppos, StepItems::SessionID, RspMdUserLogin->SessionID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspMdUserLoginField::FieldID);
+			WriteString(ppos, Items::LoginTime, RspMdUserLogin->LoginTime);
+			WriteString(ppos, Items::SessionID, RspMdUserLogin->SessionID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspMdUserLoginField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -2566,28 +2566,28 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::MdUserID:
+							case Items::MdUserID:
 							{
 								size_t len = value.length() >= sizeof(RspMdUserLogin->MdUserID) ? sizeof(RspMdUserLogin->MdUserID) - 1 : value.length();
 								memcpy(RspMdUserLogin->MdUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::LoginDate:
+							case Items::LoginDate:
 							{
 								size_t len = value.length() >= sizeof(RspMdUserLogin->LoginDate) ? sizeof(RspMdUserLogin->LoginDate) - 1 : value.length();
 								memcpy(RspMdUserLogin->LoginDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::LoginTime:
+							case Items::LoginTime:
 							{
 								size_t len = value.length() >= sizeof(RspMdUserLogin->LoginTime) ? sizeof(RspMdUserLogin->LoginTime) - 1 : value.length();
 								memcpy(RspMdUserLogin->LoginTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::SessionID:
+							case Items::SessionID:
 							{
 								RspMdUserLogin->SessionID = atoll(value.c_str());
 								break;
@@ -2619,15 +2619,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -2713,13 +2713,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqMdUserLogout != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqMdUserLogoutField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqMdUserLogoutField::FieldID);
 			if (strlen(ReqMdUserLogout->MdUserID) >= sizeof(ReqMdUserLogout->MdUserID))
 			{
 				ReqMdUserLogout->MdUserID[sizeof(ReqMdUserLogout->MdUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::MdUserID, ReqMdUserLogout->MdUserID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqMdUserLogoutField::FieldID);
+			WriteString(ppos, Items::MdUserID, ReqMdUserLogout->MdUserID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqMdUserLogoutField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -2748,10 +2748,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::MdUserID:
+							case Items::MdUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqMdUserLogout->MdUserID) ? sizeof(ReqMdUserLogout->MdUserID) - 1 : value.length();
 								memcpy(ReqMdUserLogout->MdUserID, value.c_str(), len);
@@ -2837,24 +2837,24 @@ namespace step
 		char* ppos = buff;
 		if (RspMdUserLogout != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspMdUserLogoutField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspMdUserLogoutField::FieldID);
 			if (strlen(RspMdUserLogout->MdUserID) >= sizeof(RspMdUserLogout->MdUserID))
 			{
 				RspMdUserLogout->MdUserID[sizeof(RspMdUserLogout->MdUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::MdUserID, RspMdUserLogout->MdUserID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspMdUserLogoutField::FieldID);
+			WriteString(ppos, Items::MdUserID, RspMdUserLogout->MdUserID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspMdUserLogoutField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -2883,10 +2883,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::MdUserID:
+							case Items::MdUserID:
 							{
 								size_t len = value.length() >= sizeof(RspMdUserLogout->MdUserID) ? sizeof(RspMdUserLogout->MdUserID) - 1 : value.length();
 								memcpy(RspMdUserLogout->MdUserID, value.c_str(), len);
@@ -2919,15 +2919,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -3013,13 +3013,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryAccountField::FieldID);
 			if (strlen(ReqQryAccount->AccountID) >= sizeof(ReqQryAccount->AccountID))
 			{
 				ReqQryAccount->AccountID[sizeof(ReqQryAccount->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqQryAccount->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryAccountField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqQryAccount->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -3048,10 +3048,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryAccount->AccountID) ? sizeof(ReqQryAccount->AccountID) - 1 : value.length();
 								memcpy(ReqQryAccount->AccountID, value.c_str(), len);
@@ -3137,29 +3137,29 @@ namespace step
 		char* ppos = buff;
 		if (Account != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepAccountField::FieldID);
 			if (strlen(Account->AccountID) >= sizeof(Account->AccountID))
 			{
 				Account->AccountID[sizeof(Account->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Account->AccountID);
-			WriteString(ppos, StepItems::AccountType, (int)Account->AccountType);
-			WriteString(ppos, StepItems::AccountStatus, (int)Account->AccountStatus);
-			WriteString(ppos, StepItems::TradeGroupID, Account->TradeGroupID);
-			WriteString(ppos, StepItems::RiskGroupID, Account->RiskGroupID);
-			WriteString(ppos, StepItems::CommissionGroupID, Account->CommissionGroupID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepAccountField::FieldID);
+			WriteString(ppos, Items::AccountID, Account->AccountID);
+			WriteString(ppos, Items::AccountType, (int)Account->AccountType);
+			WriteString(ppos, Items::AccountStatus, (int)Account->AccountStatus);
+			WriteString(ppos, Items::TradeGroupID, Account->TradeGroupID);
+			WriteString(ppos, Items::RiskGroupID, Account->RiskGroupID);
+			WriteString(ppos, Items::CommissionGroupID, Account->CommissionGroupID);
+			WriteHexString(ppos, Items::FieldEnd, StepAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -3188,36 +3188,36 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Account->AccountID) ? sizeof(Account->AccountID) - 1 : value.length();
 								memcpy(Account->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountType:
+							case Items::AccountType:
 							{
 								Account->AccountType = (AccountTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::AccountStatus:
+							case Items::AccountStatus:
 							{
 								Account->AccountStatus = (AccountStatusType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								Account->TradeGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								Account->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::CommissionGroupID:
+							case Items::CommissionGroupID:
 							{
 								Account->CommissionGroupID = atoi(value.c_str());
 								break;
@@ -3249,15 +3249,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -3343,13 +3343,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryHolderAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryHolderAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryHolderAccountField::FieldID);
 			if (strlen(ReqQryHolderAccount->AccountID) >= sizeof(ReqQryHolderAccount->AccountID))
 			{
 				ReqQryHolderAccount->AccountID[sizeof(ReqQryHolderAccount->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqQryHolderAccount->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryHolderAccountField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqQryHolderAccount->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryHolderAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -3378,10 +3378,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryHolderAccount->AccountID) ? sizeof(ReqQryHolderAccount->AccountID) - 1 : value.length();
 								memcpy(ReqQryHolderAccount->AccountID, value.c_str(), len);
@@ -3467,30 +3467,30 @@ namespace step
 		char* ppos = buff;
 		if (HolderAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepHolderAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepHolderAccountField::FieldID);
 			if (strlen(HolderAccount->ExchangeID) >= sizeof(HolderAccount->ExchangeID))
 			{
 				HolderAccount->ExchangeID[sizeof(HolderAccount->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, HolderAccount->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, HolderAccount->ExchangeID);
 			if (strlen(HolderAccount->HolderAccountID) >= sizeof(HolderAccount->HolderAccountID))
 			{
 				HolderAccount->HolderAccountID[sizeof(HolderAccount->HolderAccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::HolderAccountID, HolderAccount->HolderAccountID);
-			WriteString(ppos, StepItems::PrimaryFlag, HolderAccount->PrimaryFlag);
-			WriteHexString(ppos, StepItems::FieldEnd, StepHolderAccountField::FieldID);
+			WriteString(ppos, Items::HolderAccountID, HolderAccount->HolderAccountID);
+			WriteString(ppos, Items::PrimaryFlag, HolderAccount->PrimaryFlag);
+			WriteHexString(ppos, Items::FieldEnd, StepHolderAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -3519,22 +3519,22 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(HolderAccount->ExchangeID) ? sizeof(HolderAccount->ExchangeID) - 1 : value.length();
 								memcpy(HolderAccount->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::HolderAccountID:
+							case Items::HolderAccountID:
 							{
 								size_t len = value.length() >= sizeof(HolderAccount->HolderAccountID) ? sizeof(HolderAccount->HolderAccountID) - 1 : value.length();
 								memcpy(HolderAccount->HolderAccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::PrimaryFlag:
+							case Items::PrimaryFlag:
 							{
 								HolderAccount->PrimaryFlag = atoi(value.c_str());
 								break;
@@ -3566,15 +3566,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -3660,13 +3660,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryCapital != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryCapitalField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryCapitalField::FieldID);
 			if (strlen(ReqQryCapital->AccountID) >= sizeof(ReqQryCapital->AccountID))
 			{
 				ReqQryCapital->AccountID[sizeof(ReqQryCapital->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqQryCapital->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryCapitalField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqQryCapital->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryCapitalField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -3695,10 +3695,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryCapital->AccountID) ? sizeof(ReqQryCapital->AccountID) - 1 : value.length();
 								memcpy(ReqQryCapital->AccountID, value.c_str(), len);
@@ -3784,51 +3784,51 @@ namespace step
 		char* ppos = buff;
 		if (Capital != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepCapitalField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepCapitalField::FieldID);
 			if (strlen(Capital->TradingDay) >= sizeof(Capital->TradingDay))
 			{
 				Capital->TradingDay[sizeof(Capital->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, Capital->TradingDay);
+			WriteString(ppos, Items::TradingDay, Capital->TradingDay);
 			if (strlen(Capital->AccountID) >= sizeof(Capital->AccountID))
 			{
 				Capital->AccountID[sizeof(Capital->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Capital->AccountID);
-			WriteString(ppos, StepItems::AccountType, (int)Capital->AccountType);
-			WriteString(ppos, StepItems::Asset, Capital->Asset);
-			WriteString(ppos, StepItems::PreAsset, Capital->PreAsset);
-			WriteString(ppos, StepItems::CashAsset, Capital->CashAsset);
-			WriteString(ppos, StepItems::PreCashAsset, Capital->PreCashAsset);
-			WriteString(ppos, StepItems::Available, Capital->Available);
-			WriteString(ppos, StepItems::CashIn, Capital->CashIn);
-			WriteString(ppos, StepItems::CashOut, Capital->CashOut);
-			WriteString(ppos, StepItems::Margin, Capital->Margin);
-			WriteString(ppos, StepItems::Commission, Capital->Commission);
-			WriteString(ppos, StepItems::StampTax, Capital->StampTax);
-			WriteString(ppos, StepItems::TransferFee, Capital->TransferFee);
-			WriteString(ppos, StepItems::FrozenCash, Capital->FrozenCash);
-			WriteString(ppos, StepItems::FrozenMargin, Capital->FrozenMargin);
-			WriteString(ppos, StepItems::FrozenCommission, Capital->FrozenCommission);
-			WriteString(ppos, StepItems::FrozenStampTax, Capital->FrozenStampTax);
-			WriteString(ppos, StepItems::FrozenTransferFee, Capital->FrozenTransferFee);
-			WriteString(ppos, StepItems::MarketValue, Capital->MarketValue);
-			WriteString(ppos, StepItems::TotalProfit, Capital->TotalProfit);
-			WriteString(ppos, StepItems::TodayProfit, Capital->TodayProfit);
-			WriteString(ppos, StepItems::Deposit, Capital->Deposit);
-			WriteString(ppos, StepItems::Withdraw, Capital->Withdraw);
-			WriteHexString(ppos, StepItems::FieldEnd, StepCapitalField::FieldID);
+			WriteString(ppos, Items::AccountID, Capital->AccountID);
+			WriteString(ppos, Items::AccountType, (int)Capital->AccountType);
+			WriteString(ppos, Items::Asset, Capital->Asset);
+			WriteString(ppos, Items::PreAsset, Capital->PreAsset);
+			WriteString(ppos, Items::CashAsset, Capital->CashAsset);
+			WriteString(ppos, Items::PreCashAsset, Capital->PreCashAsset);
+			WriteString(ppos, Items::Available, Capital->Available);
+			WriteString(ppos, Items::CashIn, Capital->CashIn);
+			WriteString(ppos, Items::CashOut, Capital->CashOut);
+			WriteString(ppos, Items::Margin, Capital->Margin);
+			WriteString(ppos, Items::Commission, Capital->Commission);
+			WriteString(ppos, Items::StampTax, Capital->StampTax);
+			WriteString(ppos, Items::TransferFee, Capital->TransferFee);
+			WriteString(ppos, Items::FrozenCash, Capital->FrozenCash);
+			WriteString(ppos, Items::FrozenMargin, Capital->FrozenMargin);
+			WriteString(ppos, Items::FrozenCommission, Capital->FrozenCommission);
+			WriteString(ppos, Items::FrozenStampTax, Capital->FrozenStampTax);
+			WriteString(ppos, Items::FrozenTransferFee, Capital->FrozenTransferFee);
+			WriteString(ppos, Items::MarketValue, Capital->MarketValue);
+			WriteString(ppos, Items::TotalProfit, Capital->TotalProfit);
+			WriteString(ppos, Items::TodayProfit, Capital->TodayProfit);
+			WriteString(ppos, Items::Deposit, Capital->Deposit);
+			WriteString(ppos, Items::Withdraw, Capital->Withdraw);
+			WriteHexString(ppos, Items::FieldEnd, StepCapitalField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -3857,127 +3857,127 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(Capital->TradingDay) ? sizeof(Capital->TradingDay) - 1 : value.length();
 								memcpy(Capital->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Capital->AccountID) ? sizeof(Capital->AccountID) - 1 : value.length();
 								memcpy(Capital->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountType:
+							case Items::AccountType:
 							{
 								Capital->AccountType = (AccountTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Asset:
+							case Items::Asset:
 							{
 								Capital->Asset = atof(value.c_str());
 								break;
 							}
-							case StepItems::PreAsset:
+							case Items::PreAsset:
 							{
 								Capital->PreAsset = atof(value.c_str());
 								break;
 							}
-							case StepItems::CashAsset:
+							case Items::CashAsset:
 							{
 								Capital->CashAsset = atof(value.c_str());
 								break;
 							}
-							case StepItems::PreCashAsset:
+							case Items::PreCashAsset:
 							{
 								Capital->PreCashAsset = atof(value.c_str());
 								break;
 							}
-							case StepItems::Available:
+							case Items::Available:
 							{
 								Capital->Available = atof(value.c_str());
 								break;
 							}
-							case StepItems::CashIn:
+							case Items::CashIn:
 							{
 								Capital->CashIn = atof(value.c_str());
 								break;
 							}
-							case StepItems::CashOut:
+							case Items::CashOut:
 							{
 								Capital->CashOut = atof(value.c_str());
 								break;
 							}
-							case StepItems::Margin:
+							case Items::Margin:
 							{
 								Capital->Margin = atof(value.c_str());
 								break;
 							}
-							case StepItems::Commission:
+							case Items::Commission:
 							{
 								Capital->Commission = atof(value.c_str());
 								break;
 							}
-							case StepItems::StampTax:
+							case Items::StampTax:
 							{
 								Capital->StampTax = atof(value.c_str());
 								break;
 							}
-							case StepItems::TransferFee:
+							case Items::TransferFee:
 							{
 								Capital->TransferFee = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenCash:
+							case Items::FrozenCash:
 							{
 								Capital->FrozenCash = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenMargin:
+							case Items::FrozenMargin:
 							{
 								Capital->FrozenMargin = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenCommission:
+							case Items::FrozenCommission:
 							{
 								Capital->FrozenCommission = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenStampTax:
+							case Items::FrozenStampTax:
 							{
 								Capital->FrozenStampTax = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenTransferFee:
+							case Items::FrozenTransferFee:
 							{
 								Capital->FrozenTransferFee = atof(value.c_str());
 								break;
 							}
-							case StepItems::MarketValue:
+							case Items::MarketValue:
 							{
 								Capital->MarketValue = atof(value.c_str());
 								break;
 							}
-							case StepItems::TotalProfit:
+							case Items::TotalProfit:
 							{
 								Capital->TotalProfit = atof(value.c_str());
 								break;
 							}
-							case StepItems::TodayProfit:
+							case Items::TodayProfit:
 							{
 								Capital->TodayProfit = atof(value.c_str());
 								break;
 							}
-							case StepItems::Deposit:
+							case Items::Deposit:
 							{
 								Capital->Deposit = atof(value.c_str());
 								break;
 							}
-							case StepItems::Withdraw:
+							case Items::Withdraw:
 							{
 								Capital->Withdraw = atof(value.c_str());
 								break;
@@ -4009,15 +4009,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -4103,13 +4103,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryPosition != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryPositionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryPositionField::FieldID);
 			if (strlen(ReqQryPosition->AccountID) >= sizeof(ReqQryPosition->AccountID))
 			{
 				ReqQryPosition->AccountID[sizeof(ReqQryPosition->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqQryPosition->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryPositionField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqQryPosition->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryPositionField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -4138,10 +4138,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryPosition->AccountID) ? sizeof(ReqQryPosition->AccountID) - 1 : value.length();
 								memcpy(ReqQryPosition->AccountID, value.c_str(), len);
@@ -4227,61 +4227,61 @@ namespace step
 		char* ppos = buff;
 		if (Position != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepPositionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepPositionField::FieldID);
 			if (strlen(Position->TradingDay) >= sizeof(Position->TradingDay))
 			{
 				Position->TradingDay[sizeof(Position->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, Position->TradingDay);
+			WriteString(ppos, Items::TradingDay, Position->TradingDay);
 			if (strlen(Position->AccountID) >= sizeof(Position->AccountID))
 			{
 				Position->AccountID[sizeof(Position->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Position->AccountID);
-			WriteString(ppos, StepItems::AccountType, (int)Position->AccountType);
+			WriteString(ppos, Items::AccountID, Position->AccountID);
+			WriteString(ppos, Items::AccountType, (int)Position->AccountType);
 			if (strlen(Position->ExchangeID) >= sizeof(Position->ExchangeID))
 			{
 				Position->ExchangeID[sizeof(Position->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, Position->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, Position->ExchangeID);
 			if (strlen(Position->InstrumentID) >= sizeof(Position->InstrumentID))
 			{
 				Position->InstrumentID[sizeof(Position->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, Position->InstrumentID);
-			WriteString(ppos, StepItems::SecurityType, (int)Position->SecurityType);
-			WriteString(ppos, StepItems::PosiDirection, (int)Position->PosiDirection);
-			WriteString(ppos, StepItems::TotalPosition, Position->TotalPosition);
-			WriteString(ppos, StepItems::PositionFrozen, Position->PositionFrozen);
-			WriteString(ppos, StepItems::TodayPosition, Position->TodayPosition);
-			WriteString(ppos, StepItems::TotalCostPrice, Position->TotalCostPrice);
-			WriteString(ppos, StepItems::TodayCostPrice, Position->TodayCostPrice);
-			WriteString(ppos, StepItems::CashIn, Position->CashIn);
-			WriteString(ppos, StepItems::CashOut, Position->CashOut);
-			WriteString(ppos, StepItems::Margin, Position->Margin);
-			WriteString(ppos, StepItems::Commission, Position->Commission);
-			WriteString(ppos, StepItems::StampTax, Position->StampTax);
-			WriteString(ppos, StepItems::TransferFee, Position->TransferFee);
-			WriteString(ppos, StepItems::MarketValue, Position->MarketValue);
-			WriteString(ppos, StepItems::VolumeMultiple, Position->VolumeMultiple);
-			WriteString(ppos, StepItems::TotalCost, Position->TotalCost);
-			WriteString(ppos, StepItems::TodayCost, Position->TodayCost);
-			WriteString(ppos, StepItems::TotalProfit, Position->TotalProfit);
-			WriteString(ppos, StepItems::TodayProfit, Position->TodayProfit);
-			WriteString(ppos, StepItems::LastPrice, Position->LastPrice);
-			WriteString(ppos, StepItems::PrePrice, Position->PrePrice);
-			WriteHexString(ppos, StepItems::FieldEnd, StepPositionField::FieldID);
+			WriteString(ppos, Items::InstrumentID, Position->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)Position->SecurityType);
+			WriteString(ppos, Items::PosiDirection, (int)Position->PosiDirection);
+			WriteString(ppos, Items::TotalPosition, Position->TotalPosition);
+			WriteString(ppos, Items::PositionFrozen, Position->PositionFrozen);
+			WriteString(ppos, Items::TodayPosition, Position->TodayPosition);
+			WriteString(ppos, Items::TotalCostPrice, Position->TotalCostPrice);
+			WriteString(ppos, Items::TodayCostPrice, Position->TodayCostPrice);
+			WriteString(ppos, Items::CashIn, Position->CashIn);
+			WriteString(ppos, Items::CashOut, Position->CashOut);
+			WriteString(ppos, Items::Margin, Position->Margin);
+			WriteString(ppos, Items::Commission, Position->Commission);
+			WriteString(ppos, Items::StampTax, Position->StampTax);
+			WriteString(ppos, Items::TransferFee, Position->TransferFee);
+			WriteString(ppos, Items::MarketValue, Position->MarketValue);
+			WriteString(ppos, Items::VolumeMultiple, Position->VolumeMultiple);
+			WriteString(ppos, Items::TotalCost, Position->TotalCost);
+			WriteString(ppos, Items::TodayCost, Position->TodayCost);
+			WriteString(ppos, Items::TotalProfit, Position->TotalProfit);
+			WriteString(ppos, Items::TodayProfit, Position->TodayProfit);
+			WriteString(ppos, Items::LastPrice, Position->LastPrice);
+			WriteString(ppos, Items::PrePrice, Position->PrePrice);
+			WriteHexString(ppos, Items::FieldEnd, StepPositionField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -4310,139 +4310,139 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(Position->TradingDay) ? sizeof(Position->TradingDay) - 1 : value.length();
 								memcpy(Position->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Position->AccountID) ? sizeof(Position->AccountID) - 1 : value.length();
 								memcpy(Position->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountType:
+							case Items::AccountType:
 							{
 								Position->AccountType = (AccountTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(Position->ExchangeID) ? sizeof(Position->ExchangeID) - 1 : value.length();
 								memcpy(Position->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(Position->InstrumentID) ? sizeof(Position->InstrumentID) - 1 : value.length();
 								memcpy(Position->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								Position->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::PosiDirection:
+							case Items::PosiDirection:
 							{
 								Position->PosiDirection = (PosiDirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::TotalPosition:
+							case Items::TotalPosition:
 							{
 								Position->TotalPosition = atoi(value.c_str());
 								break;
 							}
-							case StepItems::PositionFrozen:
+							case Items::PositionFrozen:
 							{
 								Position->PositionFrozen = atoi(value.c_str());
 								break;
 							}
-							case StepItems::TodayPosition:
+							case Items::TodayPosition:
 							{
 								Position->TodayPosition = atoi(value.c_str());
 								break;
 							}
-							case StepItems::TotalCostPrice:
+							case Items::TotalCostPrice:
 							{
 								Position->TotalCostPrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::TodayCostPrice:
+							case Items::TodayCostPrice:
 							{
 								Position->TodayCostPrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::CashIn:
+							case Items::CashIn:
 							{
 								Position->CashIn = atof(value.c_str());
 								break;
 							}
-							case StepItems::CashOut:
+							case Items::CashOut:
 							{
 								Position->CashOut = atof(value.c_str());
 								break;
 							}
-							case StepItems::Margin:
+							case Items::Margin:
 							{
 								Position->Margin = atof(value.c_str());
 								break;
 							}
-							case StepItems::Commission:
+							case Items::Commission:
 							{
 								Position->Commission = atof(value.c_str());
 								break;
 							}
-							case StepItems::StampTax:
+							case Items::StampTax:
 							{
 								Position->StampTax = atof(value.c_str());
 								break;
 							}
-							case StepItems::TransferFee:
+							case Items::TransferFee:
 							{
 								Position->TransferFee = atof(value.c_str());
 								break;
 							}
-							case StepItems::MarketValue:
+							case Items::MarketValue:
 							{
 								Position->MarketValue = atof(value.c_str());
 								break;
 							}
-							case StepItems::VolumeMultiple:
+							case Items::VolumeMultiple:
 							{
 								Position->VolumeMultiple = atoi(value.c_str());
 								break;
 							}
-							case StepItems::TotalCost:
+							case Items::TotalCost:
 							{
 								Position->TotalCost = atof(value.c_str());
 								break;
 							}
-							case StepItems::TodayCost:
+							case Items::TodayCost:
 							{
 								Position->TodayCost = atof(value.c_str());
 								break;
 							}
-							case StepItems::TotalProfit:
+							case Items::TotalProfit:
 							{
 								Position->TotalProfit = atof(value.c_str());
 								break;
 							}
-							case StepItems::TodayProfit:
+							case Items::TodayProfit:
 							{
 								Position->TodayProfit = atof(value.c_str());
 								break;
 							}
-							case StepItems::LastPrice:
+							case Items::LastPrice:
 							{
 								Position->LastPrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::PrePrice:
+							case Items::PrePrice:
 							{
 								Position->PrePrice = atof(value.c_str());
 								break;
@@ -4474,15 +4474,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -4568,50 +4568,50 @@ namespace step
 		char* ppos = buff;
 		if (Position != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepPositionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepPositionField::FieldID);
 			if (strlen(Position->TradingDay) >= sizeof(Position->TradingDay))
 			{
 				Position->TradingDay[sizeof(Position->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, Position->TradingDay);
+			WriteString(ppos, Items::TradingDay, Position->TradingDay);
 			if (strlen(Position->AccountID) >= sizeof(Position->AccountID))
 			{
 				Position->AccountID[sizeof(Position->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Position->AccountID);
-			WriteString(ppos, StepItems::AccountType, (int)Position->AccountType);
+			WriteString(ppos, Items::AccountID, Position->AccountID);
+			WriteString(ppos, Items::AccountType, (int)Position->AccountType);
 			if (strlen(Position->ExchangeID) >= sizeof(Position->ExchangeID))
 			{
 				Position->ExchangeID[sizeof(Position->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, Position->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, Position->ExchangeID);
 			if (strlen(Position->InstrumentID) >= sizeof(Position->InstrumentID))
 			{
 				Position->InstrumentID[sizeof(Position->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, Position->InstrumentID);
-			WriteString(ppos, StepItems::SecurityType, (int)Position->SecurityType);
-			WriteString(ppos, StepItems::PosiDirection, (int)Position->PosiDirection);
-			WriteString(ppos, StepItems::TotalPosition, Position->TotalPosition);
-			WriteString(ppos, StepItems::PositionFrozen, Position->PositionFrozen);
-			WriteString(ppos, StepItems::TodayPosition, Position->TodayPosition);
-			WriteString(ppos, StepItems::TotalCostPrice, Position->TotalCostPrice);
-			WriteString(ppos, StepItems::TodayCostPrice, Position->TodayCostPrice);
-			WriteString(ppos, StepItems::CashIn, Position->CashIn);
-			WriteString(ppos, StepItems::CashOut, Position->CashOut);
-			WriteString(ppos, StepItems::Margin, Position->Margin);
-			WriteString(ppos, StepItems::Commission, Position->Commission);
-			WriteString(ppos, StepItems::StampTax, Position->StampTax);
-			WriteString(ppos, StepItems::TransferFee, Position->TransferFee);
-			WriteString(ppos, StepItems::MarketValue, Position->MarketValue);
-			WriteString(ppos, StepItems::VolumeMultiple, Position->VolumeMultiple);
-			WriteString(ppos, StepItems::TotalCost, Position->TotalCost);
-			WriteString(ppos, StepItems::TodayCost, Position->TodayCost);
-			WriteString(ppos, StepItems::TotalProfit, Position->TotalProfit);
-			WriteString(ppos, StepItems::TodayProfit, Position->TodayProfit);
-			WriteString(ppos, StepItems::LastPrice, Position->LastPrice);
-			WriteString(ppos, StepItems::PrePrice, Position->PrePrice);
-			WriteHexString(ppos, StepItems::FieldEnd, StepPositionField::FieldID);
+			WriteString(ppos, Items::InstrumentID, Position->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)Position->SecurityType);
+			WriteString(ppos, Items::PosiDirection, (int)Position->PosiDirection);
+			WriteString(ppos, Items::TotalPosition, Position->TotalPosition);
+			WriteString(ppos, Items::PositionFrozen, Position->PositionFrozen);
+			WriteString(ppos, Items::TodayPosition, Position->TodayPosition);
+			WriteString(ppos, Items::TotalCostPrice, Position->TotalCostPrice);
+			WriteString(ppos, Items::TodayCostPrice, Position->TodayCostPrice);
+			WriteString(ppos, Items::CashIn, Position->CashIn);
+			WriteString(ppos, Items::CashOut, Position->CashOut);
+			WriteString(ppos, Items::Margin, Position->Margin);
+			WriteString(ppos, Items::Commission, Position->Commission);
+			WriteString(ppos, Items::StampTax, Position->StampTax);
+			WriteString(ppos, Items::TransferFee, Position->TransferFee);
+			WriteString(ppos, Items::MarketValue, Position->MarketValue);
+			WriteString(ppos, Items::VolumeMultiple, Position->VolumeMultiple);
+			WriteString(ppos, Items::TotalCost, Position->TotalCost);
+			WriteString(ppos, Items::TodayCost, Position->TodayCost);
+			WriteString(ppos, Items::TotalProfit, Position->TotalProfit);
+			WriteString(ppos, Items::TodayProfit, Position->TodayProfit);
+			WriteString(ppos, Items::LastPrice, Position->LastPrice);
+			WriteString(ppos, Items::PrePrice, Position->PrePrice);
+			WriteHexString(ppos, Items::FieldEnd, StepPositionField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -4640,139 +4640,139 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(Position->TradingDay) ? sizeof(Position->TradingDay) - 1 : value.length();
 								memcpy(Position->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Position->AccountID) ? sizeof(Position->AccountID) - 1 : value.length();
 								memcpy(Position->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountType:
+							case Items::AccountType:
 							{
 								Position->AccountType = (AccountTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(Position->ExchangeID) ? sizeof(Position->ExchangeID) - 1 : value.length();
 								memcpy(Position->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(Position->InstrumentID) ? sizeof(Position->InstrumentID) - 1 : value.length();
 								memcpy(Position->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								Position->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::PosiDirection:
+							case Items::PosiDirection:
 							{
 								Position->PosiDirection = (PosiDirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::TotalPosition:
+							case Items::TotalPosition:
 							{
 								Position->TotalPosition = atoi(value.c_str());
 								break;
 							}
-							case StepItems::PositionFrozen:
+							case Items::PositionFrozen:
 							{
 								Position->PositionFrozen = atoi(value.c_str());
 								break;
 							}
-							case StepItems::TodayPosition:
+							case Items::TodayPosition:
 							{
 								Position->TodayPosition = atoi(value.c_str());
 								break;
 							}
-							case StepItems::TotalCostPrice:
+							case Items::TotalCostPrice:
 							{
 								Position->TotalCostPrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::TodayCostPrice:
+							case Items::TodayCostPrice:
 							{
 								Position->TodayCostPrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::CashIn:
+							case Items::CashIn:
 							{
 								Position->CashIn = atof(value.c_str());
 								break;
 							}
-							case StepItems::CashOut:
+							case Items::CashOut:
 							{
 								Position->CashOut = atof(value.c_str());
 								break;
 							}
-							case StepItems::Margin:
+							case Items::Margin:
 							{
 								Position->Margin = atof(value.c_str());
 								break;
 							}
-							case StepItems::Commission:
+							case Items::Commission:
 							{
 								Position->Commission = atof(value.c_str());
 								break;
 							}
-							case StepItems::StampTax:
+							case Items::StampTax:
 							{
 								Position->StampTax = atof(value.c_str());
 								break;
 							}
-							case StepItems::TransferFee:
+							case Items::TransferFee:
 							{
 								Position->TransferFee = atof(value.c_str());
 								break;
 							}
-							case StepItems::MarketValue:
+							case Items::MarketValue:
 							{
 								Position->MarketValue = atof(value.c_str());
 								break;
 							}
-							case StepItems::VolumeMultiple:
+							case Items::VolumeMultiple:
 							{
 								Position->VolumeMultiple = atoi(value.c_str());
 								break;
 							}
-							case StepItems::TotalCost:
+							case Items::TotalCost:
 							{
 								Position->TotalCost = atof(value.c_str());
 								break;
 							}
-							case StepItems::TodayCost:
+							case Items::TodayCost:
 							{
 								Position->TodayCost = atof(value.c_str());
 								break;
 							}
-							case StepItems::TotalProfit:
+							case Items::TotalProfit:
 							{
 								Position->TotalProfit = atof(value.c_str());
 								break;
 							}
-							case StepItems::TodayProfit:
+							case Items::TodayProfit:
 							{
 								Position->TodayProfit = atof(value.c_str());
 								break;
 							}
-							case StepItems::LastPrice:
+							case Items::LastPrice:
 							{
 								Position->LastPrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::PrePrice:
+							case Items::PrePrice:
 							{
 								Position->PrePrice = atof(value.c_str());
 								break;
@@ -4852,13 +4852,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryOrder != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryOrderField::FieldID);
 			if (strlen(ReqQryOrder->AccountID) >= sizeof(ReqQryOrder->AccountID))
 			{
 				ReqQryOrder->AccountID[sizeof(ReqQryOrder->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqQryOrder->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryOrderField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqQryOrder->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryOrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -4887,10 +4887,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryOrder->AccountID) ? sizeof(ReqQryOrder->AccountID) - 1 : value.length();
 								memcpy(ReqQryOrder->AccountID, value.c_str(), len);
@@ -4976,88 +4976,88 @@ namespace step
 		char* ppos = buff;
 		if (Order != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepOrderField::FieldID);
 			if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
 			{
 				Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, Order->TradingDay);
+			WriteString(ppos, Items::TradingDay, Order->TradingDay);
 			if (strlen(Order->AccountID) >= sizeof(Order->AccountID))
 			{
 				Order->AccountID[sizeof(Order->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Order->AccountID);
+			WriteString(ppos, Items::AccountID, Order->AccountID);
 			if (strlen(Order->ExchangeID) >= sizeof(Order->ExchangeID))
 			{
 				Order->ExchangeID[sizeof(Order->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, Order->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
 			if (strlen(Order->InstrumentID) >= sizeof(Order->InstrumentID))
 			{
 				Order->InstrumentID[sizeof(Order->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, Order->InstrumentID);
-			WriteString(ppos, StepItems::SecurityType, (int)Order->SecurityType);
-			WriteString(ppos, StepItems::OrderID, Order->OrderID);
+			WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)Order->SecurityType);
+			WriteString(ppos, Items::OrderID, Order->OrderID);
 			if (strlen(Order->OrderSysID) >= sizeof(Order->OrderSysID))
 			{
 				Order->OrderSysID[sizeof(Order->OrderSysID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderSysID, Order->OrderSysID);
-			WriteString(ppos, StepItems::Direction, (int)Order->Direction);
-			WriteString(ppos, StepItems::OffsetFlag, (int)Order->OffsetFlag);
-			WriteString(ppos, StepItems::OrderPriceType, (int)Order->OrderPriceType);
-			WriteString(ppos, StepItems::Price, Order->Price);
-			WriteString(ppos, StepItems::Volume, Order->Volume);
-			WriteString(ppos, StepItems::VolumeTotal, Order->VolumeTotal);
-			WriteString(ppos, StepItems::VolumeTraded, Order->VolumeTraded);
-			WriteString(ppos, StepItems::VolumeMultiple, Order->VolumeMultiple);
-			WriteString(ppos, StepItems::OrderStatus, (int)Order->OrderStatus);
+			WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
+			WriteString(ppos, Items::Direction, (int)Order->Direction);
+			WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
+			WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
+			WriteString(ppos, Items::Price, Order->Price);
+			WriteString(ppos, Items::Volume, Order->Volume);
+			WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
+			WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
+			WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
+			WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
 			if (strlen(Order->StatusMsg) >= sizeof(Order->StatusMsg))
 			{
 				Order->StatusMsg[sizeof(Order->StatusMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::StatusMsg, Order->StatusMsg);
+			WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
 			if (strlen(Order->OrderDate) >= sizeof(Order->OrderDate))
 			{
 				Order->OrderDate[sizeof(Order->OrderDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderDate, Order->OrderDate);
+			WriteString(ppos, Items::OrderDate, Order->OrderDate);
 			if (strlen(Order->OrderTime) >= sizeof(Order->OrderTime))
 			{
 				Order->OrderTime[sizeof(Order->OrderTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderTime, Order->OrderTime);
+			WriteString(ppos, Items::OrderTime, Order->OrderTime);
 			if (strlen(Order->CancelDate) >= sizeof(Order->CancelDate))
 			{
 				Order->CancelDate[sizeof(Order->CancelDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::CancelDate, Order->CancelDate);
+			WriteString(ppos, Items::CancelDate, Order->CancelDate);
 			if (strlen(Order->CancelTime) >= sizeof(Order->CancelTime))
 			{
 				Order->CancelTime[sizeof(Order->CancelTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::CancelTime, Order->CancelTime);
-			WriteString(ppos, StepItems::SessionID, Order->SessionID);
-			WriteString(ppos, StepItems::ClientOrderID, Order->ClientOrderID);
-			WriteString(ppos, StepItems::RequestID, Order->RequestID);
-			WriteString(ppos, StepItems::FrozenCash, Order->FrozenCash);
-			WriteString(ppos, StepItems::FrozenMargin, Order->FrozenMargin);
-			WriteString(ppos, StepItems::FrozenCommission, Order->FrozenCommission);
-			WriteString(ppos, StepItems::FrozenStampTax, Order->FrozenStampTax);
-			WriteString(ppos, StepItems::FrozenTransferFee, Order->FrozenTransferFee);
-			WriteHexString(ppos, StepItems::FieldEnd, StepOrderField::FieldID);
+			WriteString(ppos, Items::CancelTime, Order->CancelTime);
+			WriteString(ppos, Items::SessionID, Order->SessionID);
+			WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
+			WriteString(ppos, Items::RequestID, Order->RequestID);
+			WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
+			WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
+			WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
+			WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
+			WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
+			WriteHexString(ppos, Items::FieldEnd, StepOrderField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -5086,160 +5086,160 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(Order->TradingDay) ? sizeof(Order->TradingDay) - 1 : value.length();
 								memcpy(Order->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Order->AccountID) ? sizeof(Order->AccountID) - 1 : value.length();
 								memcpy(Order->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(Order->ExchangeID) ? sizeof(Order->ExchangeID) - 1 : value.length();
 								memcpy(Order->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(Order->InstrumentID) ? sizeof(Order->InstrumentID) - 1 : value.length();
 								memcpy(Order->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								Order->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OrderID:
+							case Items::OrderID:
 							{
 								Order->OrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderSysID:
+							case Items::OrderSysID:
 							{
 								size_t len = value.length() >= sizeof(Order->OrderSysID) ? sizeof(Order->OrderSysID) - 1 : value.length();
 								memcpy(Order->OrderSysID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Direction:
+							case Items::Direction:
 							{
 								Order->Direction = (DirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OffsetFlag:
+							case Items::OffsetFlag:
 							{
 								Order->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OrderPriceType:
+							case Items::OrderPriceType:
 							{
 								Order->OrderPriceType = (OrderPriceTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Price:
+							case Items::Price:
 							{
 								Order->Price = atof(value.c_str());
 								break;
 							}
-							case StepItems::Volume:
+							case Items::Volume:
 							{
 								Order->Volume = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeTotal:
+							case Items::VolumeTotal:
 							{
 								Order->VolumeTotal = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeTraded:
+							case Items::VolumeTraded:
 							{
 								Order->VolumeTraded = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeMultiple:
+							case Items::VolumeMultiple:
 							{
 								Order->VolumeMultiple = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderStatus:
+							case Items::OrderStatus:
 							{
 								Order->OrderStatus = (OrderStatusType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::StatusMsg:
+							case Items::StatusMsg:
 							{
 								size_t len = value.length() >= sizeof(Order->StatusMsg) ? sizeof(Order->StatusMsg) - 1 : value.length();
 								memcpy(Order->StatusMsg, value.c_str(), len);
 								break;
 							}
-							case StepItems::OrderDate:
+							case Items::OrderDate:
 							{
 								size_t len = value.length() >= sizeof(Order->OrderDate) ? sizeof(Order->OrderDate) - 1 : value.length();
 								memcpy(Order->OrderDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::OrderTime:
+							case Items::OrderTime:
 							{
 								size_t len = value.length() >= sizeof(Order->OrderTime) ? sizeof(Order->OrderTime) - 1 : value.length();
 								memcpy(Order->OrderTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::CancelDate:
+							case Items::CancelDate:
 							{
 								size_t len = value.length() >= sizeof(Order->CancelDate) ? sizeof(Order->CancelDate) - 1 : value.length();
 								memcpy(Order->CancelDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::CancelTime:
+							case Items::CancelTime:
 							{
 								size_t len = value.length() >= sizeof(Order->CancelTime) ? sizeof(Order->CancelTime) - 1 : value.length();
 								memcpy(Order->CancelTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::SessionID:
+							case Items::SessionID:
 							{
 								Order->SessionID = atoll(value.c_str());
 								break;
 							}
-							case StepItems::ClientOrderID:
+							case Items::ClientOrderID:
 							{
 								Order->ClientOrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RequestID:
+							case Items::RequestID:
 							{
 								Order->RequestID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::FrozenCash:
+							case Items::FrozenCash:
 							{
 								Order->FrozenCash = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenMargin:
+							case Items::FrozenMargin:
 							{
 								Order->FrozenMargin = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenCommission:
+							case Items::FrozenCommission:
 							{
 								Order->FrozenCommission = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenStampTax:
+							case Items::FrozenStampTax:
 							{
 								Order->FrozenStampTax = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenTransferFee:
+							case Items::FrozenTransferFee:
 							{
 								Order->FrozenTransferFee = atof(value.c_str());
 								break;
@@ -5271,15 +5271,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -5365,77 +5365,77 @@ namespace step
 		char* ppos = buff;
 		if (Order != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepOrderField::FieldID);
 			if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
 			{
 				Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, Order->TradingDay);
+			WriteString(ppos, Items::TradingDay, Order->TradingDay);
 			if (strlen(Order->AccountID) >= sizeof(Order->AccountID))
 			{
 				Order->AccountID[sizeof(Order->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Order->AccountID);
+			WriteString(ppos, Items::AccountID, Order->AccountID);
 			if (strlen(Order->ExchangeID) >= sizeof(Order->ExchangeID))
 			{
 				Order->ExchangeID[sizeof(Order->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, Order->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
 			if (strlen(Order->InstrumentID) >= sizeof(Order->InstrumentID))
 			{
 				Order->InstrumentID[sizeof(Order->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, Order->InstrumentID);
-			WriteString(ppos, StepItems::SecurityType, (int)Order->SecurityType);
-			WriteString(ppos, StepItems::OrderID, Order->OrderID);
+			WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)Order->SecurityType);
+			WriteString(ppos, Items::OrderID, Order->OrderID);
 			if (strlen(Order->OrderSysID) >= sizeof(Order->OrderSysID))
 			{
 				Order->OrderSysID[sizeof(Order->OrderSysID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderSysID, Order->OrderSysID);
-			WriteString(ppos, StepItems::Direction, (int)Order->Direction);
-			WriteString(ppos, StepItems::OffsetFlag, (int)Order->OffsetFlag);
-			WriteString(ppos, StepItems::OrderPriceType, (int)Order->OrderPriceType);
-			WriteString(ppos, StepItems::Price, Order->Price);
-			WriteString(ppos, StepItems::Volume, Order->Volume);
-			WriteString(ppos, StepItems::VolumeTotal, Order->VolumeTotal);
-			WriteString(ppos, StepItems::VolumeTraded, Order->VolumeTraded);
-			WriteString(ppos, StepItems::VolumeMultiple, Order->VolumeMultiple);
-			WriteString(ppos, StepItems::OrderStatus, (int)Order->OrderStatus);
+			WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
+			WriteString(ppos, Items::Direction, (int)Order->Direction);
+			WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
+			WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
+			WriteString(ppos, Items::Price, Order->Price);
+			WriteString(ppos, Items::Volume, Order->Volume);
+			WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
+			WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
+			WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
+			WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
 			if (strlen(Order->StatusMsg) >= sizeof(Order->StatusMsg))
 			{
 				Order->StatusMsg[sizeof(Order->StatusMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::StatusMsg, Order->StatusMsg);
+			WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
 			if (strlen(Order->OrderDate) >= sizeof(Order->OrderDate))
 			{
 				Order->OrderDate[sizeof(Order->OrderDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderDate, Order->OrderDate);
+			WriteString(ppos, Items::OrderDate, Order->OrderDate);
 			if (strlen(Order->OrderTime) >= sizeof(Order->OrderTime))
 			{
 				Order->OrderTime[sizeof(Order->OrderTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderTime, Order->OrderTime);
+			WriteString(ppos, Items::OrderTime, Order->OrderTime);
 			if (strlen(Order->CancelDate) >= sizeof(Order->CancelDate))
 			{
 				Order->CancelDate[sizeof(Order->CancelDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::CancelDate, Order->CancelDate);
+			WriteString(ppos, Items::CancelDate, Order->CancelDate);
 			if (strlen(Order->CancelTime) >= sizeof(Order->CancelTime))
 			{
 				Order->CancelTime[sizeof(Order->CancelTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::CancelTime, Order->CancelTime);
-			WriteString(ppos, StepItems::SessionID, Order->SessionID);
-			WriteString(ppos, StepItems::ClientOrderID, Order->ClientOrderID);
-			WriteString(ppos, StepItems::RequestID, Order->RequestID);
-			WriteString(ppos, StepItems::FrozenCash, Order->FrozenCash);
-			WriteString(ppos, StepItems::FrozenMargin, Order->FrozenMargin);
-			WriteString(ppos, StepItems::FrozenCommission, Order->FrozenCommission);
-			WriteString(ppos, StepItems::FrozenStampTax, Order->FrozenStampTax);
-			WriteString(ppos, StepItems::FrozenTransferFee, Order->FrozenTransferFee);
-			WriteHexString(ppos, StepItems::FieldEnd, StepOrderField::FieldID);
+			WriteString(ppos, Items::CancelTime, Order->CancelTime);
+			WriteString(ppos, Items::SessionID, Order->SessionID);
+			WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
+			WriteString(ppos, Items::RequestID, Order->RequestID);
+			WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
+			WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
+			WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
+			WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
+			WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
+			WriteHexString(ppos, Items::FieldEnd, StepOrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -5464,160 +5464,160 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(Order->TradingDay) ? sizeof(Order->TradingDay) - 1 : value.length();
 								memcpy(Order->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Order->AccountID) ? sizeof(Order->AccountID) - 1 : value.length();
 								memcpy(Order->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(Order->ExchangeID) ? sizeof(Order->ExchangeID) - 1 : value.length();
 								memcpy(Order->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(Order->InstrumentID) ? sizeof(Order->InstrumentID) - 1 : value.length();
 								memcpy(Order->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								Order->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OrderID:
+							case Items::OrderID:
 							{
 								Order->OrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderSysID:
+							case Items::OrderSysID:
 							{
 								size_t len = value.length() >= sizeof(Order->OrderSysID) ? sizeof(Order->OrderSysID) - 1 : value.length();
 								memcpy(Order->OrderSysID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Direction:
+							case Items::Direction:
 							{
 								Order->Direction = (DirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OffsetFlag:
+							case Items::OffsetFlag:
 							{
 								Order->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OrderPriceType:
+							case Items::OrderPriceType:
 							{
 								Order->OrderPriceType = (OrderPriceTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Price:
+							case Items::Price:
 							{
 								Order->Price = atof(value.c_str());
 								break;
 							}
-							case StepItems::Volume:
+							case Items::Volume:
 							{
 								Order->Volume = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeTotal:
+							case Items::VolumeTotal:
 							{
 								Order->VolumeTotal = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeTraded:
+							case Items::VolumeTraded:
 							{
 								Order->VolumeTraded = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeMultiple:
+							case Items::VolumeMultiple:
 							{
 								Order->VolumeMultiple = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderStatus:
+							case Items::OrderStatus:
 							{
 								Order->OrderStatus = (OrderStatusType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::StatusMsg:
+							case Items::StatusMsg:
 							{
 								size_t len = value.length() >= sizeof(Order->StatusMsg) ? sizeof(Order->StatusMsg) - 1 : value.length();
 								memcpy(Order->StatusMsg, value.c_str(), len);
 								break;
 							}
-							case StepItems::OrderDate:
+							case Items::OrderDate:
 							{
 								size_t len = value.length() >= sizeof(Order->OrderDate) ? sizeof(Order->OrderDate) - 1 : value.length();
 								memcpy(Order->OrderDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::OrderTime:
+							case Items::OrderTime:
 							{
 								size_t len = value.length() >= sizeof(Order->OrderTime) ? sizeof(Order->OrderTime) - 1 : value.length();
 								memcpy(Order->OrderTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::CancelDate:
+							case Items::CancelDate:
 							{
 								size_t len = value.length() >= sizeof(Order->CancelDate) ? sizeof(Order->CancelDate) - 1 : value.length();
 								memcpy(Order->CancelDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::CancelTime:
+							case Items::CancelTime:
 							{
 								size_t len = value.length() >= sizeof(Order->CancelTime) ? sizeof(Order->CancelTime) - 1 : value.length();
 								memcpy(Order->CancelTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::SessionID:
+							case Items::SessionID:
 							{
 								Order->SessionID = atoll(value.c_str());
 								break;
 							}
-							case StepItems::ClientOrderID:
+							case Items::ClientOrderID:
 							{
 								Order->ClientOrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RequestID:
+							case Items::RequestID:
 							{
 								Order->RequestID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::FrozenCash:
+							case Items::FrozenCash:
 							{
 								Order->FrozenCash = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenMargin:
+							case Items::FrozenMargin:
 							{
 								Order->FrozenMargin = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenCommission:
+							case Items::FrozenCommission:
 							{
 								Order->FrozenCommission = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenStampTax:
+							case Items::FrozenStampTax:
 							{
 								Order->FrozenStampTax = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenTransferFee:
+							case Items::FrozenTransferFee:
 							{
 								Order->FrozenTransferFee = atof(value.c_str());
 								break;
@@ -5697,13 +5697,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryTrade != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryTradeField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryTradeField::FieldID);
 			if (strlen(ReqQryTrade->AccountID) >= sizeof(ReqQryTrade->AccountID))
 			{
 				ReqQryTrade->AccountID[sizeof(ReqQryTrade->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqQryTrade->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryTradeField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqQryTrade->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryTradeField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -5732,10 +5732,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryTrade->AccountID) ? sizeof(ReqQryTrade->AccountID) - 1 : value.length();
 								memcpy(ReqQryTrade->AccountID, value.c_str(), len);
@@ -5821,70 +5821,70 @@ namespace step
 		char* ppos = buff;
 		if (Trade != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepTradeField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepTradeField::FieldID);
 			if (strlen(Trade->TradingDay) >= sizeof(Trade->TradingDay))
 			{
 				Trade->TradingDay[sizeof(Trade->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, Trade->TradingDay);
+			WriteString(ppos, Items::TradingDay, Trade->TradingDay);
 			if (strlen(Trade->AccountID) >= sizeof(Trade->AccountID))
 			{
 				Trade->AccountID[sizeof(Trade->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Trade->AccountID);
+			WriteString(ppos, Items::AccountID, Trade->AccountID);
 			if (strlen(Trade->ExchangeID) >= sizeof(Trade->ExchangeID))
 			{
 				Trade->ExchangeID[sizeof(Trade->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, Trade->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, Trade->ExchangeID);
 			if (strlen(Trade->InstrumentID) >= sizeof(Trade->InstrumentID))
 			{
 				Trade->InstrumentID[sizeof(Trade->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, Trade->InstrumentID);
-			WriteString(ppos, StepItems::SecurityType, (int)Trade->SecurityType);
-			WriteString(ppos, StepItems::OrderID, Trade->OrderID);
+			WriteString(ppos, Items::InstrumentID, Trade->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)Trade->SecurityType);
+			WriteString(ppos, Items::OrderID, Trade->OrderID);
 			if (strlen(Trade->OrderSysID) >= sizeof(Trade->OrderSysID))
 			{
 				Trade->OrderSysID[sizeof(Trade->OrderSysID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderSysID, Trade->OrderSysID);
+			WriteString(ppos, Items::OrderSysID, Trade->OrderSysID);
 			if (strlen(Trade->TradeID) >= sizeof(Trade->TradeID))
 			{
 				Trade->TradeID[sizeof(Trade->TradeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradeID, Trade->TradeID);
-			WriteString(ppos, StepItems::Direction, (int)Trade->Direction);
-			WriteString(ppos, StepItems::OffsetFlag, (int)Trade->OffsetFlag);
-			WriteString(ppos, StepItems::Price, Trade->Price);
-			WriteString(ppos, StepItems::Volume, Trade->Volume);
-			WriteString(ppos, StepItems::VolumeMultiple, Trade->VolumeMultiple);
-			WriteString(ppos, StepItems::TradeAmount, Trade->TradeAmount);
-			WriteString(ppos, StepItems::Commission, Trade->Commission);
-			WriteString(ppos, StepItems::StampTax, Trade->StampTax);
-			WriteString(ppos, StepItems::TransferFee, Trade->TransferFee);
+			WriteString(ppos, Items::TradeID, Trade->TradeID);
+			WriteString(ppos, Items::Direction, (int)Trade->Direction);
+			WriteString(ppos, Items::OffsetFlag, (int)Trade->OffsetFlag);
+			WriteString(ppos, Items::Price, Trade->Price);
+			WriteString(ppos, Items::Volume, Trade->Volume);
+			WriteString(ppos, Items::VolumeMultiple, Trade->VolumeMultiple);
+			WriteString(ppos, Items::TradeAmount, Trade->TradeAmount);
+			WriteString(ppos, Items::Commission, Trade->Commission);
+			WriteString(ppos, Items::StampTax, Trade->StampTax);
+			WriteString(ppos, Items::TransferFee, Trade->TransferFee);
 			if (strlen(Trade->TradeDate) >= sizeof(Trade->TradeDate))
 			{
 				Trade->TradeDate[sizeof(Trade->TradeDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradeDate, Trade->TradeDate);
+			WriteString(ppos, Items::TradeDate, Trade->TradeDate);
 			if (strlen(Trade->TradeTime) >= sizeof(Trade->TradeTime))
 			{
 				Trade->TradeTime[sizeof(Trade->TradeTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradeTime, Trade->TradeTime);
-			WriteHexString(ppos, StepItems::FieldEnd, StepTradeField::FieldID);
+			WriteString(ppos, Items::TradeTime, Trade->TradeTime);
+			WriteHexString(ppos, Items::FieldEnd, StepTradeField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -5913,107 +5913,107 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(Trade->TradingDay) ? sizeof(Trade->TradingDay) - 1 : value.length();
 								memcpy(Trade->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Trade->AccountID) ? sizeof(Trade->AccountID) - 1 : value.length();
 								memcpy(Trade->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(Trade->ExchangeID) ? sizeof(Trade->ExchangeID) - 1 : value.length();
 								memcpy(Trade->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(Trade->InstrumentID) ? sizeof(Trade->InstrumentID) - 1 : value.length();
 								memcpy(Trade->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								Trade->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OrderID:
+							case Items::OrderID:
 							{
 								Trade->OrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderSysID:
+							case Items::OrderSysID:
 							{
 								size_t len = value.length() >= sizeof(Trade->OrderSysID) ? sizeof(Trade->OrderSysID) - 1 : value.length();
 								memcpy(Trade->OrderSysID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeID:
+							case Items::TradeID:
 							{
 								size_t len = value.length() >= sizeof(Trade->TradeID) ? sizeof(Trade->TradeID) - 1 : value.length();
 								memcpy(Trade->TradeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Direction:
+							case Items::Direction:
 							{
 								Trade->Direction = (DirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OffsetFlag:
+							case Items::OffsetFlag:
 							{
 								Trade->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Price:
+							case Items::Price:
 							{
 								Trade->Price = atof(value.c_str());
 								break;
 							}
-							case StepItems::Volume:
+							case Items::Volume:
 							{
 								Trade->Volume = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeMultiple:
+							case Items::VolumeMultiple:
 							{
 								Trade->VolumeMultiple = atoi(value.c_str());
 								break;
 							}
-							case StepItems::TradeAmount:
+							case Items::TradeAmount:
 							{
 								Trade->TradeAmount = atof(value.c_str());
 								break;
 							}
-							case StepItems::Commission:
+							case Items::Commission:
 							{
 								Trade->Commission = atof(value.c_str());
 								break;
 							}
-							case StepItems::StampTax:
+							case Items::StampTax:
 							{
 								Trade->StampTax = atof(value.c_str());
 								break;
 							}
-							case StepItems::TransferFee:
+							case Items::TransferFee:
 							{
 								Trade->TransferFee = atof(value.c_str());
 								break;
 							}
-							case StepItems::TradeDate:
+							case Items::TradeDate:
 							{
 								size_t len = value.length() >= sizeof(Trade->TradeDate) ? sizeof(Trade->TradeDate) - 1 : value.length();
 								memcpy(Trade->TradeDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeTime:
+							case Items::TradeTime:
 							{
 								size_t len = value.length() >= sizeof(Trade->TradeTime) ? sizeof(Trade->TradeTime) - 1 : value.length();
 								memcpy(Trade->TradeTime, value.c_str(), len);
@@ -6046,15 +6046,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -6140,59 +6140,59 @@ namespace step
 		char* ppos = buff;
 		if (Trade != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepTradeField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepTradeField::FieldID);
 			if (strlen(Trade->TradingDay) >= sizeof(Trade->TradingDay))
 			{
 				Trade->TradingDay[sizeof(Trade->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, Trade->TradingDay);
+			WriteString(ppos, Items::TradingDay, Trade->TradingDay);
 			if (strlen(Trade->AccountID) >= sizeof(Trade->AccountID))
 			{
 				Trade->AccountID[sizeof(Trade->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Trade->AccountID);
+			WriteString(ppos, Items::AccountID, Trade->AccountID);
 			if (strlen(Trade->ExchangeID) >= sizeof(Trade->ExchangeID))
 			{
 				Trade->ExchangeID[sizeof(Trade->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, Trade->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, Trade->ExchangeID);
 			if (strlen(Trade->InstrumentID) >= sizeof(Trade->InstrumentID))
 			{
 				Trade->InstrumentID[sizeof(Trade->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, Trade->InstrumentID);
-			WriteString(ppos, StepItems::SecurityType, (int)Trade->SecurityType);
-			WriteString(ppos, StepItems::OrderID, Trade->OrderID);
+			WriteString(ppos, Items::InstrumentID, Trade->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)Trade->SecurityType);
+			WriteString(ppos, Items::OrderID, Trade->OrderID);
 			if (strlen(Trade->OrderSysID) >= sizeof(Trade->OrderSysID))
 			{
 				Trade->OrderSysID[sizeof(Trade->OrderSysID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderSysID, Trade->OrderSysID);
+			WriteString(ppos, Items::OrderSysID, Trade->OrderSysID);
 			if (strlen(Trade->TradeID) >= sizeof(Trade->TradeID))
 			{
 				Trade->TradeID[sizeof(Trade->TradeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradeID, Trade->TradeID);
-			WriteString(ppos, StepItems::Direction, (int)Trade->Direction);
-			WriteString(ppos, StepItems::OffsetFlag, (int)Trade->OffsetFlag);
-			WriteString(ppos, StepItems::Price, Trade->Price);
-			WriteString(ppos, StepItems::Volume, Trade->Volume);
-			WriteString(ppos, StepItems::VolumeMultiple, Trade->VolumeMultiple);
-			WriteString(ppos, StepItems::TradeAmount, Trade->TradeAmount);
-			WriteString(ppos, StepItems::Commission, Trade->Commission);
-			WriteString(ppos, StepItems::StampTax, Trade->StampTax);
-			WriteString(ppos, StepItems::TransferFee, Trade->TransferFee);
+			WriteString(ppos, Items::TradeID, Trade->TradeID);
+			WriteString(ppos, Items::Direction, (int)Trade->Direction);
+			WriteString(ppos, Items::OffsetFlag, (int)Trade->OffsetFlag);
+			WriteString(ppos, Items::Price, Trade->Price);
+			WriteString(ppos, Items::Volume, Trade->Volume);
+			WriteString(ppos, Items::VolumeMultiple, Trade->VolumeMultiple);
+			WriteString(ppos, Items::TradeAmount, Trade->TradeAmount);
+			WriteString(ppos, Items::Commission, Trade->Commission);
+			WriteString(ppos, Items::StampTax, Trade->StampTax);
+			WriteString(ppos, Items::TransferFee, Trade->TransferFee);
 			if (strlen(Trade->TradeDate) >= sizeof(Trade->TradeDate))
 			{
 				Trade->TradeDate[sizeof(Trade->TradeDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradeDate, Trade->TradeDate);
+			WriteString(ppos, Items::TradeDate, Trade->TradeDate);
 			if (strlen(Trade->TradeTime) >= sizeof(Trade->TradeTime))
 			{
 				Trade->TradeTime[sizeof(Trade->TradeTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradeTime, Trade->TradeTime);
-			WriteHexString(ppos, StepItems::FieldEnd, StepTradeField::FieldID);
+			WriteString(ppos, Items::TradeTime, Trade->TradeTime);
+			WriteHexString(ppos, Items::FieldEnd, StepTradeField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -6221,107 +6221,107 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(Trade->TradingDay) ? sizeof(Trade->TradingDay) - 1 : value.length();
 								memcpy(Trade->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Trade->AccountID) ? sizeof(Trade->AccountID) - 1 : value.length();
 								memcpy(Trade->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(Trade->ExchangeID) ? sizeof(Trade->ExchangeID) - 1 : value.length();
 								memcpy(Trade->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(Trade->InstrumentID) ? sizeof(Trade->InstrumentID) - 1 : value.length();
 								memcpy(Trade->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								Trade->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OrderID:
+							case Items::OrderID:
 							{
 								Trade->OrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderSysID:
+							case Items::OrderSysID:
 							{
 								size_t len = value.length() >= sizeof(Trade->OrderSysID) ? sizeof(Trade->OrderSysID) - 1 : value.length();
 								memcpy(Trade->OrderSysID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeID:
+							case Items::TradeID:
 							{
 								size_t len = value.length() >= sizeof(Trade->TradeID) ? sizeof(Trade->TradeID) - 1 : value.length();
 								memcpy(Trade->TradeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Direction:
+							case Items::Direction:
 							{
 								Trade->Direction = (DirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OffsetFlag:
+							case Items::OffsetFlag:
 							{
 								Trade->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Price:
+							case Items::Price:
 							{
 								Trade->Price = atof(value.c_str());
 								break;
 							}
-							case StepItems::Volume:
+							case Items::Volume:
 							{
 								Trade->Volume = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeMultiple:
+							case Items::VolumeMultiple:
 							{
 								Trade->VolumeMultiple = atoi(value.c_str());
 								break;
 							}
-							case StepItems::TradeAmount:
+							case Items::TradeAmount:
 							{
 								Trade->TradeAmount = atof(value.c_str());
 								break;
 							}
-							case StepItems::Commission:
+							case Items::Commission:
 							{
 								Trade->Commission = atof(value.c_str());
 								break;
 							}
-							case StepItems::StampTax:
+							case Items::StampTax:
 							{
 								Trade->StampTax = atof(value.c_str());
 								break;
 							}
-							case StepItems::TransferFee:
+							case Items::TransferFee:
 							{
 								Trade->TransferFee = atof(value.c_str());
 								break;
 							}
-							case StepItems::TradeDate:
+							case Items::TradeDate:
 							{
 								size_t len = value.length() >= sizeof(Trade->TradeDate) ? sizeof(Trade->TradeDate) - 1 : value.length();
 								memcpy(Trade->TradeDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeTime:
+							case Items::TradeTime:
 							{
 								size_t len = value.length() >= sizeof(Trade->TradeTime) ? sizeof(Trade->TradeTime) - 1 : value.length();
 								memcpy(Trade->TradeTime, value.c_str(), len);
@@ -6402,18 +6402,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryInstrument != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryInstrumentField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryInstrumentField::FieldID);
 			if (strlen(ReqQryInstrument->ExchangeID) >= sizeof(ReqQryInstrument->ExchangeID))
 			{
 				ReqQryInstrument->ExchangeID[sizeof(ReqQryInstrument->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqQryInstrument->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, ReqQryInstrument->ExchangeID);
 			if (strlen(ReqQryInstrument->InstrumentID) >= sizeof(ReqQryInstrument->InstrumentID))
 			{
 				ReqQryInstrument->InstrumentID[sizeof(ReqQryInstrument->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, ReqQryInstrument->InstrumentID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryInstrumentField::FieldID);
+			WriteString(ppos, Items::InstrumentID, ReqQryInstrument->InstrumentID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryInstrumentField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -6442,16 +6442,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryInstrument->ExchangeID) ? sizeof(ReqQryInstrument->ExchangeID) - 1 : value.length();
 								memcpy(ReqQryInstrument->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryInstrument->InstrumentID) ? sizeof(ReqQryInstrument->InstrumentID) - 1 : value.length();
 								memcpy(ReqQryInstrument->InstrumentID, value.c_str(), len);
@@ -6537,41 +6537,41 @@ namespace step
 		char* ppos = buff;
 		if (Instrument != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepInstrumentField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepInstrumentField::FieldID);
 			if (strlen(Instrument->ExchangeID) >= sizeof(Instrument->ExchangeID))
 			{
 				Instrument->ExchangeID[sizeof(Instrument->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, Instrument->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, Instrument->ExchangeID);
 			if (strlen(Instrument->InstrumentID) >= sizeof(Instrument->InstrumentID))
 			{
 				Instrument->InstrumentID[sizeof(Instrument->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, Instrument->InstrumentID);
+			WriteString(ppos, Items::InstrumentID, Instrument->InstrumentID);
 			if (strlen(Instrument->ExchangeInstID) >= sizeof(Instrument->ExchangeInstID))
 			{
 				Instrument->ExchangeInstID[sizeof(Instrument->ExchangeInstID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeInstID, Instrument->ExchangeInstID);
+			WriteString(ppos, Items::ExchangeInstID, Instrument->ExchangeInstID);
 			if (strlen(Instrument->InstrumentName) >= sizeof(Instrument->InstrumentName))
 			{
 				Instrument->InstrumentName[sizeof(Instrument->InstrumentName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentName, Instrument->InstrumentName);
-			WriteString(ppos, StepItems::VolumeMultiple, Instrument->VolumeMultiple);
-			WriteString(ppos, StepItems::SecurityType, (int)Instrument->SecurityType);
-			WriteHexString(ppos, StepItems::FieldEnd, StepInstrumentField::FieldID);
+			WriteString(ppos, Items::InstrumentName, Instrument->InstrumentName);
+			WriteString(ppos, Items::VolumeMultiple, Instrument->VolumeMultiple);
+			WriteString(ppos, Items::SecurityType, (int)Instrument->SecurityType);
+			WriteHexString(ppos, Items::FieldEnd, StepInstrumentField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -6600,39 +6600,39 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(Instrument->ExchangeID) ? sizeof(Instrument->ExchangeID) - 1 : value.length();
 								memcpy(Instrument->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(Instrument->InstrumentID) ? sizeof(Instrument->InstrumentID) - 1 : value.length();
 								memcpy(Instrument->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeInstID:
+							case Items::ExchangeInstID:
 							{
 								size_t len = value.length() >= sizeof(Instrument->ExchangeInstID) ? sizeof(Instrument->ExchangeInstID) - 1 : value.length();
 								memcpy(Instrument->ExchangeInstID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentName:
+							case Items::InstrumentName:
 							{
 								size_t len = value.length() >= sizeof(Instrument->InstrumentName) ? sizeof(Instrument->InstrumentName) - 1 : value.length();
 								memcpy(Instrument->InstrumentName, value.c_str(), len);
 								break;
 							}
-							case StepItems::VolumeMultiple:
+							case Items::VolumeMultiple:
 							{
 								Instrument->VolumeMultiple = atoi(value.c_str());
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								Instrument->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
@@ -6664,15 +6664,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -6758,18 +6758,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryOptionInstrument != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryOptionInstrumentField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryOptionInstrumentField::FieldID);
 			if (strlen(ReqQryOptionInstrument->ExchangeID) >= sizeof(ReqQryOptionInstrument->ExchangeID))
 			{
 				ReqQryOptionInstrument->ExchangeID[sizeof(ReqQryOptionInstrument->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqQryOptionInstrument->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, ReqQryOptionInstrument->ExchangeID);
 			if (strlen(ReqQryOptionInstrument->InstrumentID) >= sizeof(ReqQryOptionInstrument->InstrumentID))
 			{
 				ReqQryOptionInstrument->InstrumentID[sizeof(ReqQryOptionInstrument->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, ReqQryOptionInstrument->InstrumentID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryOptionInstrumentField::FieldID);
+			WriteString(ppos, Items::InstrumentID, ReqQryOptionInstrument->InstrumentID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryOptionInstrumentField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -6798,16 +6798,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryOptionInstrument->ExchangeID) ? sizeof(ReqQryOptionInstrument->ExchangeID) - 1 : value.length();
 								memcpy(ReqQryOptionInstrument->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryOptionInstrument->InstrumentID) ? sizeof(ReqQryOptionInstrument->InstrumentID) - 1 : value.length();
 								memcpy(ReqQryOptionInstrument->InstrumentID, value.c_str(), len);
@@ -6893,56 +6893,56 @@ namespace step
 		char* ppos = buff;
 		if (OptionInstrument != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepOptionInstrumentField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepOptionInstrumentField::FieldID);
 			if (strlen(OptionInstrument->ExchangeID) >= sizeof(OptionInstrument->ExchangeID))
 			{
 				OptionInstrument->ExchangeID[sizeof(OptionInstrument->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, OptionInstrument->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, OptionInstrument->ExchangeID);
 			if (strlen(OptionInstrument->InstrumentID) >= sizeof(OptionInstrument->InstrumentID))
 			{
 				OptionInstrument->InstrumentID[sizeof(OptionInstrument->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, OptionInstrument->InstrumentID);
+			WriteString(ppos, Items::InstrumentID, OptionInstrument->InstrumentID);
 			if (strlen(OptionInstrument->ExchangeInstID) >= sizeof(OptionInstrument->ExchangeInstID))
 			{
 				OptionInstrument->ExchangeInstID[sizeof(OptionInstrument->ExchangeInstID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeInstID, OptionInstrument->ExchangeInstID);
+			WriteString(ppos, Items::ExchangeInstID, OptionInstrument->ExchangeInstID);
 			if (strlen(OptionInstrument->InstrumentName) >= sizeof(OptionInstrument->InstrumentName))
 			{
 				OptionInstrument->InstrumentName[sizeof(OptionInstrument->InstrumentName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentName, OptionInstrument->InstrumentName);
-			WriteString(ppos, StepItems::VolumeMultiple, OptionInstrument->VolumeMultiple);
-			WriteString(ppos, StepItems::OptionType, (int)OptionInstrument->OptionType);
+			WriteString(ppos, Items::InstrumentName, OptionInstrument->InstrumentName);
+			WriteString(ppos, Items::VolumeMultiple, OptionInstrument->VolumeMultiple);
+			WriteString(ppos, Items::OptionType, (int)OptionInstrument->OptionType);
 			if (strlen(OptionInstrument->UnderlyingInstrumentID) >= sizeof(OptionInstrument->UnderlyingInstrumentID))
 			{
 				OptionInstrument->UnderlyingInstrumentID[sizeof(OptionInstrument->UnderlyingInstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UnderlyingInstrumentID, OptionInstrument->UnderlyingInstrumentID);
-			WriteString(ppos, StepItems::ExecutePrice, OptionInstrument->ExecutePrice);
-			WriteString(ppos, StepItems::UnitMargin, OptionInstrument->UnitMargin);
-			WriteString(ppos, StepItems::PriceTick, OptionInstrument->PriceTick);
-			WriteString(ppos, StepItems::MaxLimitOrderVolume, OptionInstrument->MaxLimitOrderVolume);
-			WriteString(ppos, StepItems::MaxMarketOrderVolume, OptionInstrument->MaxMarketOrderVolume);
+			WriteString(ppos, Items::UnderlyingInstrumentID, OptionInstrument->UnderlyingInstrumentID);
+			WriteString(ppos, Items::ExecutePrice, OptionInstrument->ExecutePrice);
+			WriteString(ppos, Items::UnitMargin, OptionInstrument->UnitMargin);
+			WriteString(ppos, Items::PriceTick, OptionInstrument->PriceTick);
+			WriteString(ppos, Items::MaxLimitOrderVolume, OptionInstrument->MaxLimitOrderVolume);
+			WriteString(ppos, Items::MaxMarketOrderVolume, OptionInstrument->MaxMarketOrderVolume);
 			if (strlen(OptionInstrument->ExpiringDate) >= sizeof(OptionInstrument->ExpiringDate))
 			{
 				OptionInstrument->ExpiringDate[sizeof(OptionInstrument->ExpiringDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExpiringDate, OptionInstrument->ExpiringDate);
-			WriteHexString(ppos, StepItems::FieldEnd, StepOptionInstrumentField::FieldID);
+			WriteString(ppos, Items::ExpiringDate, OptionInstrument->ExpiringDate);
+			WriteHexString(ppos, Items::FieldEnd, StepOptionInstrumentField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -6971,75 +6971,75 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(OptionInstrument->ExchangeID) ? sizeof(OptionInstrument->ExchangeID) - 1 : value.length();
 								memcpy(OptionInstrument->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(OptionInstrument->InstrumentID) ? sizeof(OptionInstrument->InstrumentID) - 1 : value.length();
 								memcpy(OptionInstrument->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeInstID:
+							case Items::ExchangeInstID:
 							{
 								size_t len = value.length() >= sizeof(OptionInstrument->ExchangeInstID) ? sizeof(OptionInstrument->ExchangeInstID) - 1 : value.length();
 								memcpy(OptionInstrument->ExchangeInstID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentName:
+							case Items::InstrumentName:
 							{
 								size_t len = value.length() >= sizeof(OptionInstrument->InstrumentName) ? sizeof(OptionInstrument->InstrumentName) - 1 : value.length();
 								memcpy(OptionInstrument->InstrumentName, value.c_str(), len);
 								break;
 							}
-							case StepItems::VolumeMultiple:
+							case Items::VolumeMultiple:
 							{
 								OptionInstrument->VolumeMultiple = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OptionType:
+							case Items::OptionType:
 							{
 								OptionInstrument->OptionType = (OptionTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::UnderlyingInstrumentID:
+							case Items::UnderlyingInstrumentID:
 							{
 								size_t len = value.length() >= sizeof(OptionInstrument->UnderlyingInstrumentID) ? sizeof(OptionInstrument->UnderlyingInstrumentID) - 1 : value.length();
 								memcpy(OptionInstrument->UnderlyingInstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExecutePrice:
+							case Items::ExecutePrice:
 							{
 								OptionInstrument->ExecutePrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::UnitMargin:
+							case Items::UnitMargin:
 							{
 								OptionInstrument->UnitMargin = atof(value.c_str());
 								break;
 							}
-							case StepItems::PriceTick:
+							case Items::PriceTick:
 							{
 								OptionInstrument->PriceTick = atof(value.c_str());
 								break;
 							}
-							case StepItems::MaxLimitOrderVolume:
+							case Items::MaxLimitOrderVolume:
 							{
 								OptionInstrument->MaxLimitOrderVolume = atoi(value.c_str());
 								break;
 							}
-							case StepItems::MaxMarketOrderVolume:
+							case Items::MaxMarketOrderVolume:
 							{
 								OptionInstrument->MaxMarketOrderVolume = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ExpiringDate:
+							case Items::ExpiringDate:
 							{
 								size_t len = value.length() >= sizeof(OptionInstrument->ExpiringDate) ? sizeof(OptionInstrument->ExpiringDate) - 1 : value.length();
 								memcpy(OptionInstrument->ExpiringDate, value.c_str(), len);
@@ -7072,15 +7072,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -7166,19 +7166,19 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryCommissionRate != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryCommissionRateField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryCommissionRateField::FieldID);
 			if (strlen(ReqQryCommissionRate->AccountID) >= sizeof(ReqQryCommissionRate->AccountID))
 			{
 				ReqQryCommissionRate->AccountID[sizeof(ReqQryCommissionRate->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqQryCommissionRate->AccountID);
+			WriteString(ppos, Items::AccountID, ReqQryCommissionRate->AccountID);
 			if (strlen(ReqQryCommissionRate->ExchangeID) >= sizeof(ReqQryCommissionRate->ExchangeID))
 			{
 				ReqQryCommissionRate->ExchangeID[sizeof(ReqQryCommissionRate->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqQryCommissionRate->ExchangeID);
-			WriteString(ppos, StepItems::SecurityType, (int)ReqQryCommissionRate->SecurityType);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryCommissionRateField::FieldID);
+			WriteString(ppos, Items::ExchangeID, ReqQryCommissionRate->ExchangeID);
+			WriteString(ppos, Items::SecurityType, (int)ReqQryCommissionRate->SecurityType);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryCommissionRateField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -7207,22 +7207,22 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryCommissionRate->AccountID) ? sizeof(ReqQryCommissionRate->AccountID) - 1 : value.length();
 								memcpy(ReqQryCommissionRate->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryCommissionRate->ExchangeID) ? sizeof(ReqQryCommissionRate->ExchangeID) - 1 : value.length();
 								memcpy(ReqQryCommissionRate->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								ReqQryCommissionRate->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
@@ -7307,40 +7307,40 @@ namespace step
 		char* ppos = buff;
 		if (CommissionRate != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepCommissionRateField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepCommissionRateField::FieldID);
 			if (strlen(CommissionRate->AccountID) >= sizeof(CommissionRate->AccountID))
 			{
 				CommissionRate->AccountID[sizeof(CommissionRate->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, CommissionRate->AccountID);
+			WriteString(ppos, Items::AccountID, CommissionRate->AccountID);
 			if (strlen(CommissionRate->ExchangeID) >= sizeof(CommissionRate->ExchangeID))
 			{
 				CommissionRate->ExchangeID[sizeof(CommissionRate->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, CommissionRate->ExchangeID);
-			WriteString(ppos, StepItems::SecurityType, (int)CommissionRate->SecurityType);
-			WriteString(ppos, StepItems::OpenBuyByMoney, CommissionRate->OpenBuyByMoney);
-			WriteString(ppos, StepItems::OpenSellByMoney, CommissionRate->OpenSellByMoney);
-			WriteString(ppos, StepItems::CloseBuyByMoney, CommissionRate->CloseBuyByMoney);
-			WriteString(ppos, StepItems::CloseSellByMoney, CommissionRate->CloseSellByMoney);
-			WriteString(ppos, StepItems::OpenBuyByVolume, CommissionRate->OpenBuyByVolume);
-			WriteString(ppos, StepItems::OpenSellByVolume, CommissionRate->OpenSellByVolume);
-			WriteString(ppos, StepItems::CloseBuyByVolume, CommissionRate->CloseBuyByVolume);
-			WriteString(ppos, StepItems::CloseSellByVolume, CommissionRate->CloseSellByVolume);
-			WriteString(ppos, StepItems::MinCommission, CommissionRate->MinCommission);
-			WriteString(ppos, StepItems::MaxCommission, CommissionRate->MaxCommission);
-			WriteHexString(ppos, StepItems::FieldEnd, StepCommissionRateField::FieldID);
+			WriteString(ppos, Items::ExchangeID, CommissionRate->ExchangeID);
+			WriteString(ppos, Items::SecurityType, (int)CommissionRate->SecurityType);
+			WriteString(ppos, Items::OpenBuyByMoney, CommissionRate->OpenBuyByMoney);
+			WriteString(ppos, Items::OpenSellByMoney, CommissionRate->OpenSellByMoney);
+			WriteString(ppos, Items::CloseBuyByMoney, CommissionRate->CloseBuyByMoney);
+			WriteString(ppos, Items::CloseSellByMoney, CommissionRate->CloseSellByMoney);
+			WriteString(ppos, Items::OpenBuyByVolume, CommissionRate->OpenBuyByVolume);
+			WriteString(ppos, Items::OpenSellByVolume, CommissionRate->OpenSellByVolume);
+			WriteString(ppos, Items::CloseBuyByVolume, CommissionRate->CloseBuyByVolume);
+			WriteString(ppos, Items::CloseSellByVolume, CommissionRate->CloseSellByVolume);
+			WriteString(ppos, Items::MinCommission, CommissionRate->MinCommission);
+			WriteString(ppos, Items::MaxCommission, CommissionRate->MaxCommission);
+			WriteHexString(ppos, Items::FieldEnd, StepCommissionRateField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -7369,72 +7369,72 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(CommissionRate->AccountID) ? sizeof(CommissionRate->AccountID) - 1 : value.length();
 								memcpy(CommissionRate->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(CommissionRate->ExchangeID) ? sizeof(CommissionRate->ExchangeID) - 1 : value.length();
 								memcpy(CommissionRate->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								CommissionRate->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OpenBuyByMoney:
+							case Items::OpenBuyByMoney:
 							{
 								CommissionRate->OpenBuyByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::OpenSellByMoney:
+							case Items::OpenSellByMoney:
 							{
 								CommissionRate->OpenSellByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseBuyByMoney:
+							case Items::CloseBuyByMoney:
 							{
 								CommissionRate->CloseBuyByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseSellByMoney:
+							case Items::CloseSellByMoney:
 							{
 								CommissionRate->CloseSellByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::OpenBuyByVolume:
+							case Items::OpenBuyByVolume:
 							{
 								CommissionRate->OpenBuyByVolume = atof(value.c_str());
 								break;
 							}
-							case StepItems::OpenSellByVolume:
+							case Items::OpenSellByVolume:
 							{
 								CommissionRate->OpenSellByVolume = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseBuyByVolume:
+							case Items::CloseBuyByVolume:
 							{
 								CommissionRate->CloseBuyByVolume = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseSellByVolume:
+							case Items::CloseSellByVolume:
 							{
 								CommissionRate->CloseSellByVolume = atof(value.c_str());
 								break;
 							}
-							case StepItems::MinCommission:
+							case Items::MinCommission:
 							{
 								CommissionRate->MinCommission = atof(value.c_str());
 								break;
 							}
-							case StepItems::MaxCommission:
+							case Items::MaxCommission:
 							{
 								CommissionRate->MaxCommission = atof(value.c_str());
 								break;
@@ -7466,15 +7466,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -7560,29 +7560,29 @@ namespace step
 		char* ppos = buff;
 		if (ReqInsertOrder != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqInsertOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqInsertOrderField::FieldID);
 			if (strlen(ReqInsertOrder->AccountID) >= sizeof(ReqInsertOrder->AccountID))
 			{
 				ReqInsertOrder->AccountID[sizeof(ReqInsertOrder->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqInsertOrder->AccountID);
+			WriteString(ppos, Items::AccountID, ReqInsertOrder->AccountID);
 			if (strlen(ReqInsertOrder->ExchangeID) >= sizeof(ReqInsertOrder->ExchangeID))
 			{
 				ReqInsertOrder->ExchangeID[sizeof(ReqInsertOrder->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqInsertOrder->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, ReqInsertOrder->ExchangeID);
 			if (strlen(ReqInsertOrder->InstrumentID) >= sizeof(ReqInsertOrder->InstrumentID))
 			{
 				ReqInsertOrder->InstrumentID[sizeof(ReqInsertOrder->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, ReqInsertOrder->InstrumentID);
-			WriteString(ppos, StepItems::Direction, (int)ReqInsertOrder->Direction);
-			WriteString(ppos, StepItems::OffsetFlag, (int)ReqInsertOrder->OffsetFlag);
-			WriteString(ppos, StepItems::OrderPriceType, (int)ReqInsertOrder->OrderPriceType);
-			WriteString(ppos, StepItems::Price, ReqInsertOrder->Price);
-			WriteString(ppos, StepItems::Volume, ReqInsertOrder->Volume);
-			WriteString(ppos, StepItems::ClientOrderID, ReqInsertOrder->ClientOrderID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqInsertOrderField::FieldID);
+			WriteString(ppos, Items::InstrumentID, ReqInsertOrder->InstrumentID);
+			WriteString(ppos, Items::Direction, (int)ReqInsertOrder->Direction);
+			WriteString(ppos, Items::OffsetFlag, (int)ReqInsertOrder->OffsetFlag);
+			WriteString(ppos, Items::OrderPriceType, (int)ReqInsertOrder->OrderPriceType);
+			WriteString(ppos, Items::Price, ReqInsertOrder->Price);
+			WriteString(ppos, Items::Volume, ReqInsertOrder->Volume);
+			WriteString(ppos, Items::ClientOrderID, ReqInsertOrder->ClientOrderID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqInsertOrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -7611,53 +7611,53 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqInsertOrder->AccountID) ? sizeof(ReqInsertOrder->AccountID) - 1 : value.length();
 								memcpy(ReqInsertOrder->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqInsertOrder->ExchangeID) ? sizeof(ReqInsertOrder->ExchangeID) - 1 : value.length();
 								memcpy(ReqInsertOrder->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(ReqInsertOrder->InstrumentID) ? sizeof(ReqInsertOrder->InstrumentID) - 1 : value.length();
 								memcpy(ReqInsertOrder->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Direction:
+							case Items::Direction:
 							{
 								ReqInsertOrder->Direction = (DirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OffsetFlag:
+							case Items::OffsetFlag:
 							{
 								ReqInsertOrder->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OrderPriceType:
+							case Items::OrderPriceType:
 							{
 								ReqInsertOrder->OrderPriceType = (OrderPriceTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Price:
+							case Items::Price:
 							{
 								ReqInsertOrder->Price = atof(value.c_str());
 								break;
 							}
-							case StepItems::Volume:
+							case Items::Volume:
 							{
 								ReqInsertOrder->Volume = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ClientOrderID:
+							case Items::ClientOrderID:
 							{
 								ReqInsertOrder->ClientOrderID = atoi(value.c_str());
 								break;
@@ -7742,88 +7742,88 @@ namespace step
 		char* ppos = buff;
 		if (Order != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepOrderField::FieldID);
 			if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
 			{
 				Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, Order->TradingDay);
+			WriteString(ppos, Items::TradingDay, Order->TradingDay);
 			if (strlen(Order->AccountID) >= sizeof(Order->AccountID))
 			{
 				Order->AccountID[sizeof(Order->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Order->AccountID);
+			WriteString(ppos, Items::AccountID, Order->AccountID);
 			if (strlen(Order->ExchangeID) >= sizeof(Order->ExchangeID))
 			{
 				Order->ExchangeID[sizeof(Order->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, Order->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
 			if (strlen(Order->InstrumentID) >= sizeof(Order->InstrumentID))
 			{
 				Order->InstrumentID[sizeof(Order->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, Order->InstrumentID);
-			WriteString(ppos, StepItems::SecurityType, (int)Order->SecurityType);
-			WriteString(ppos, StepItems::OrderID, Order->OrderID);
+			WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)Order->SecurityType);
+			WriteString(ppos, Items::OrderID, Order->OrderID);
 			if (strlen(Order->OrderSysID) >= sizeof(Order->OrderSysID))
 			{
 				Order->OrderSysID[sizeof(Order->OrderSysID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderSysID, Order->OrderSysID);
-			WriteString(ppos, StepItems::Direction, (int)Order->Direction);
-			WriteString(ppos, StepItems::OffsetFlag, (int)Order->OffsetFlag);
-			WriteString(ppos, StepItems::OrderPriceType, (int)Order->OrderPriceType);
-			WriteString(ppos, StepItems::Price, Order->Price);
-			WriteString(ppos, StepItems::Volume, Order->Volume);
-			WriteString(ppos, StepItems::VolumeTotal, Order->VolumeTotal);
-			WriteString(ppos, StepItems::VolumeTraded, Order->VolumeTraded);
-			WriteString(ppos, StepItems::VolumeMultiple, Order->VolumeMultiple);
-			WriteString(ppos, StepItems::OrderStatus, (int)Order->OrderStatus);
+			WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
+			WriteString(ppos, Items::Direction, (int)Order->Direction);
+			WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
+			WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
+			WriteString(ppos, Items::Price, Order->Price);
+			WriteString(ppos, Items::Volume, Order->Volume);
+			WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
+			WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
+			WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
+			WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
 			if (strlen(Order->StatusMsg) >= sizeof(Order->StatusMsg))
 			{
 				Order->StatusMsg[sizeof(Order->StatusMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::StatusMsg, Order->StatusMsg);
+			WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
 			if (strlen(Order->OrderDate) >= sizeof(Order->OrderDate))
 			{
 				Order->OrderDate[sizeof(Order->OrderDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderDate, Order->OrderDate);
+			WriteString(ppos, Items::OrderDate, Order->OrderDate);
 			if (strlen(Order->OrderTime) >= sizeof(Order->OrderTime))
 			{
 				Order->OrderTime[sizeof(Order->OrderTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderTime, Order->OrderTime);
+			WriteString(ppos, Items::OrderTime, Order->OrderTime);
 			if (strlen(Order->CancelDate) >= sizeof(Order->CancelDate))
 			{
 				Order->CancelDate[sizeof(Order->CancelDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::CancelDate, Order->CancelDate);
+			WriteString(ppos, Items::CancelDate, Order->CancelDate);
 			if (strlen(Order->CancelTime) >= sizeof(Order->CancelTime))
 			{
 				Order->CancelTime[sizeof(Order->CancelTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::CancelTime, Order->CancelTime);
-			WriteString(ppos, StepItems::SessionID, Order->SessionID);
-			WriteString(ppos, StepItems::ClientOrderID, Order->ClientOrderID);
-			WriteString(ppos, StepItems::RequestID, Order->RequestID);
-			WriteString(ppos, StepItems::FrozenCash, Order->FrozenCash);
-			WriteString(ppos, StepItems::FrozenMargin, Order->FrozenMargin);
-			WriteString(ppos, StepItems::FrozenCommission, Order->FrozenCommission);
-			WriteString(ppos, StepItems::FrozenStampTax, Order->FrozenStampTax);
-			WriteString(ppos, StepItems::FrozenTransferFee, Order->FrozenTransferFee);
-			WriteHexString(ppos, StepItems::FieldEnd, StepOrderField::FieldID);
+			WriteString(ppos, Items::CancelTime, Order->CancelTime);
+			WriteString(ppos, Items::SessionID, Order->SessionID);
+			WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
+			WriteString(ppos, Items::RequestID, Order->RequestID);
+			WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
+			WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
+			WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
+			WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
+			WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
+			WriteHexString(ppos, Items::FieldEnd, StepOrderField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -7852,160 +7852,160 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(Order->TradingDay) ? sizeof(Order->TradingDay) - 1 : value.length();
 								memcpy(Order->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Order->AccountID) ? sizeof(Order->AccountID) - 1 : value.length();
 								memcpy(Order->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(Order->ExchangeID) ? sizeof(Order->ExchangeID) - 1 : value.length();
 								memcpy(Order->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(Order->InstrumentID) ? sizeof(Order->InstrumentID) - 1 : value.length();
 								memcpy(Order->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								Order->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OrderID:
+							case Items::OrderID:
 							{
 								Order->OrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderSysID:
+							case Items::OrderSysID:
 							{
 								size_t len = value.length() >= sizeof(Order->OrderSysID) ? sizeof(Order->OrderSysID) - 1 : value.length();
 								memcpy(Order->OrderSysID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Direction:
+							case Items::Direction:
 							{
 								Order->Direction = (DirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OffsetFlag:
+							case Items::OffsetFlag:
 							{
 								Order->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OrderPriceType:
+							case Items::OrderPriceType:
 							{
 								Order->OrderPriceType = (OrderPriceTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Price:
+							case Items::Price:
 							{
 								Order->Price = atof(value.c_str());
 								break;
 							}
-							case StepItems::Volume:
+							case Items::Volume:
 							{
 								Order->Volume = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeTotal:
+							case Items::VolumeTotal:
 							{
 								Order->VolumeTotal = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeTraded:
+							case Items::VolumeTraded:
 							{
 								Order->VolumeTraded = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeMultiple:
+							case Items::VolumeMultiple:
 							{
 								Order->VolumeMultiple = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderStatus:
+							case Items::OrderStatus:
 							{
 								Order->OrderStatus = (OrderStatusType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::StatusMsg:
+							case Items::StatusMsg:
 							{
 								size_t len = value.length() >= sizeof(Order->StatusMsg) ? sizeof(Order->StatusMsg) - 1 : value.length();
 								memcpy(Order->StatusMsg, value.c_str(), len);
 								break;
 							}
-							case StepItems::OrderDate:
+							case Items::OrderDate:
 							{
 								size_t len = value.length() >= sizeof(Order->OrderDate) ? sizeof(Order->OrderDate) - 1 : value.length();
 								memcpy(Order->OrderDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::OrderTime:
+							case Items::OrderTime:
 							{
 								size_t len = value.length() >= sizeof(Order->OrderTime) ? sizeof(Order->OrderTime) - 1 : value.length();
 								memcpy(Order->OrderTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::CancelDate:
+							case Items::CancelDate:
 							{
 								size_t len = value.length() >= sizeof(Order->CancelDate) ? sizeof(Order->CancelDate) - 1 : value.length();
 								memcpy(Order->CancelDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::CancelTime:
+							case Items::CancelTime:
 							{
 								size_t len = value.length() >= sizeof(Order->CancelTime) ? sizeof(Order->CancelTime) - 1 : value.length();
 								memcpy(Order->CancelTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::SessionID:
+							case Items::SessionID:
 							{
 								Order->SessionID = atoll(value.c_str());
 								break;
 							}
-							case StepItems::ClientOrderID:
+							case Items::ClientOrderID:
 							{
 								Order->ClientOrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RequestID:
+							case Items::RequestID:
 							{
 								Order->RequestID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::FrozenCash:
+							case Items::FrozenCash:
 							{
 								Order->FrozenCash = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenMargin:
+							case Items::FrozenMargin:
 							{
 								Order->FrozenMargin = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenCommission:
+							case Items::FrozenCommission:
 							{
 								Order->FrozenCommission = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenStampTax:
+							case Items::FrozenStampTax:
 							{
 								Order->FrozenStampTax = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenTransferFee:
+							case Items::FrozenTransferFee:
 							{
 								Order->FrozenTransferFee = atof(value.c_str());
 								break;
@@ -8037,15 +8037,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -8131,31 +8131,31 @@ namespace step
 		char* ppos = buff;
 		if (ReqCancelOrder != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqCancelOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqCancelOrderField::FieldID);
 			if (strlen(ReqCancelOrder->AccountID) >= sizeof(ReqCancelOrder->AccountID))
 			{
 				ReqCancelOrder->AccountID[sizeof(ReqCancelOrder->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqCancelOrder->AccountID);
+			WriteString(ppos, Items::AccountID, ReqCancelOrder->AccountID);
 			if (strlen(ReqCancelOrder->ExchangeID) >= sizeof(ReqCancelOrder->ExchangeID))
 			{
 				ReqCancelOrder->ExchangeID[sizeof(ReqCancelOrder->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqCancelOrder->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, ReqCancelOrder->ExchangeID);
 			if (strlen(ReqCancelOrder->InstrumentID) >= sizeof(ReqCancelOrder->InstrumentID))
 			{
 				ReqCancelOrder->InstrumentID[sizeof(ReqCancelOrder->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, ReqCancelOrder->InstrumentID);
-			WriteString(ppos, StepItems::ClientCancelOrderID, ReqCancelOrder->ClientCancelOrderID);
-			WriteString(ppos, StepItems::OrderID, ReqCancelOrder->OrderID);
+			WriteString(ppos, Items::InstrumentID, ReqCancelOrder->InstrumentID);
+			WriteString(ppos, Items::ClientCancelOrderID, ReqCancelOrder->ClientCancelOrderID);
+			WriteString(ppos, Items::OrderID, ReqCancelOrder->OrderID);
 			if (strlen(ReqCancelOrder->OrderSysID) >= sizeof(ReqCancelOrder->OrderSysID))
 			{
 				ReqCancelOrder->OrderSysID[sizeof(ReqCancelOrder->OrderSysID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderSysID, ReqCancelOrder->OrderSysID);
-			WriteString(ppos, StepItems::ClientOrderID, ReqCancelOrder->ClientOrderID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqCancelOrderField::FieldID);
+			WriteString(ppos, Items::OrderSysID, ReqCancelOrder->OrderSysID);
+			WriteString(ppos, Items::ClientOrderID, ReqCancelOrder->ClientOrderID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqCancelOrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -8184,44 +8184,44 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqCancelOrder->AccountID) ? sizeof(ReqCancelOrder->AccountID) - 1 : value.length();
 								memcpy(ReqCancelOrder->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqCancelOrder->ExchangeID) ? sizeof(ReqCancelOrder->ExchangeID) - 1 : value.length();
 								memcpy(ReqCancelOrder->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(ReqCancelOrder->InstrumentID) ? sizeof(ReqCancelOrder->InstrumentID) - 1 : value.length();
 								memcpy(ReqCancelOrder->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ClientCancelOrderID:
+							case Items::ClientCancelOrderID:
 							{
 								ReqCancelOrder->ClientCancelOrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderID:
+							case Items::OrderID:
 							{
 								ReqCancelOrder->OrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderSysID:
+							case Items::OrderSysID:
 							{
 								size_t len = value.length() >= sizeof(ReqCancelOrder->OrderSysID) ? sizeof(ReqCancelOrder->OrderSysID) - 1 : value.length();
 								memcpy(ReqCancelOrder->OrderSysID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ClientOrderID:
+							case Items::ClientOrderID:
 							{
 								ReqCancelOrder->ClientOrderID = atoi(value.c_str());
 								break;
@@ -8306,42 +8306,42 @@ namespace step
 		char* ppos = buff;
 		if (CancelOrder != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepCancelOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepCancelOrderField::FieldID);
 			if (strlen(CancelOrder->AccountID) >= sizeof(CancelOrder->AccountID))
 			{
 				CancelOrder->AccountID[sizeof(CancelOrder->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, CancelOrder->AccountID);
+			WriteString(ppos, Items::AccountID, CancelOrder->AccountID);
 			if (strlen(CancelOrder->ExchangeID) >= sizeof(CancelOrder->ExchangeID))
 			{
 				CancelOrder->ExchangeID[sizeof(CancelOrder->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, CancelOrder->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, CancelOrder->ExchangeID);
 			if (strlen(CancelOrder->InstrumentID) >= sizeof(CancelOrder->InstrumentID))
 			{
 				CancelOrder->InstrumentID[sizeof(CancelOrder->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, CancelOrder->InstrumentID);
-			WriteString(ppos, StepItems::ClientCancelOrderID, CancelOrder->ClientCancelOrderID);
-			WriteString(ppos, StepItems::OrderID, CancelOrder->OrderID);
+			WriteString(ppos, Items::InstrumentID, CancelOrder->InstrumentID);
+			WriteString(ppos, Items::ClientCancelOrderID, CancelOrder->ClientCancelOrderID);
+			WriteString(ppos, Items::OrderID, CancelOrder->OrderID);
 			if (strlen(CancelOrder->OrderSysID) >= sizeof(CancelOrder->OrderSysID))
 			{
 				CancelOrder->OrderSysID[sizeof(CancelOrder->OrderSysID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderSysID, CancelOrder->OrderSysID);
-			WriteString(ppos, StepItems::ClientOrderID, CancelOrder->ClientOrderID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepCancelOrderField::FieldID);
+			WriteString(ppos, Items::OrderSysID, CancelOrder->OrderSysID);
+			WriteString(ppos, Items::ClientOrderID, CancelOrder->ClientOrderID);
+			WriteHexString(ppos, Items::FieldEnd, StepCancelOrderField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -8370,44 +8370,44 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(CancelOrder->AccountID) ? sizeof(CancelOrder->AccountID) - 1 : value.length();
 								memcpy(CancelOrder->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(CancelOrder->ExchangeID) ? sizeof(CancelOrder->ExchangeID) - 1 : value.length();
 								memcpy(CancelOrder->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(CancelOrder->InstrumentID) ? sizeof(CancelOrder->InstrumentID) - 1 : value.length();
 								memcpy(CancelOrder->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ClientCancelOrderID:
+							case Items::ClientCancelOrderID:
 							{
 								CancelOrder->ClientCancelOrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderID:
+							case Items::OrderID:
 							{
 								CancelOrder->OrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderSysID:
+							case Items::OrderSysID:
 							{
 								size_t len = value.length() >= sizeof(CancelOrder->OrderSysID) ? sizeof(CancelOrder->OrderSysID) - 1 : value.length();
 								memcpy(CancelOrder->OrderSysID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ClientOrderID:
+							case Items::ClientOrderID:
 							{
 								CancelOrder->ClientOrderID = atoi(value.c_str());
 								break;
@@ -8439,15 +8439,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -8533,18 +8533,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqMdInit != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqMdInitField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqMdInitField::FieldID);
 			if (strlen(ReqMdInit->ExchangeID) >= sizeof(ReqMdInit->ExchangeID))
 			{
 				ReqMdInit->ExchangeID[sizeof(ReqMdInit->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqMdInit->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, ReqMdInit->ExchangeID);
 			if (strlen(ReqMdInit->TradingDay) >= sizeof(ReqMdInit->TradingDay))
 			{
 				ReqMdInit->TradingDay[sizeof(ReqMdInit->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ReqMdInit->TradingDay);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqMdInitField::FieldID);
+			WriteString(ppos, Items::TradingDay, ReqMdInit->TradingDay);
+			WriteHexString(ppos, Items::FieldEnd, StepReqMdInitField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -8573,16 +8573,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqMdInit->ExchangeID) ? sizeof(ReqMdInit->ExchangeID) - 1 : value.length();
 								memcpy(ReqMdInit->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ReqMdInit->TradingDay) ? sizeof(ReqMdInit->TradingDay) - 1 : value.length();
 								memcpy(ReqMdInit->TradingDay, value.c_str(), len);
@@ -8668,29 +8668,29 @@ namespace step
 		char* ppos = buff;
 		if (RspMdInit != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspMdInitField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspMdInitField::FieldID);
 			if (strlen(RspMdInit->ExchangeID) >= sizeof(RspMdInit->ExchangeID))
 			{
 				RspMdInit->ExchangeID[sizeof(RspMdInit->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, RspMdInit->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, RspMdInit->ExchangeID);
 			if (strlen(RspMdInit->TradingDay) >= sizeof(RspMdInit->TradingDay))
 			{
 				RspMdInit->TradingDay[sizeof(RspMdInit->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, RspMdInit->TradingDay);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspMdInitField::FieldID);
+			WriteString(ppos, Items::TradingDay, RspMdInit->TradingDay);
+			WriteHexString(ppos, Items::FieldEnd, StepRspMdInitField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -8719,16 +8719,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(RspMdInit->ExchangeID) ? sizeof(RspMdInit->ExchangeID) - 1 : value.length();
 								memcpy(RspMdInit->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(RspMdInit->TradingDay) ? sizeof(RspMdInit->TradingDay) - 1 : value.length();
 								memcpy(RspMdInit->TradingDay, value.c_str(), len);
@@ -8761,15 +8761,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -8855,18 +8855,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqSubscribeMd != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqSubscribeMdField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqSubscribeMdField::FieldID);
 			if (strlen(ReqSubscribeMd->ExchangeID) >= sizeof(ReqSubscribeMd->ExchangeID))
 			{
 				ReqSubscribeMd->ExchangeID[sizeof(ReqSubscribeMd->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqSubscribeMd->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, ReqSubscribeMd->ExchangeID);
 			if (strlen(ReqSubscribeMd->InstrumentID) >= sizeof(ReqSubscribeMd->InstrumentID))
 			{
 				ReqSubscribeMd->InstrumentID[sizeof(ReqSubscribeMd->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, ReqSubscribeMd->InstrumentID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqSubscribeMdField::FieldID);
+			WriteString(ppos, Items::InstrumentID, ReqSubscribeMd->InstrumentID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqSubscribeMdField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -8895,16 +8895,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqSubscribeMd->ExchangeID) ? sizeof(ReqSubscribeMd->ExchangeID) - 1 : value.length();
 								memcpy(ReqSubscribeMd->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(ReqSubscribeMd->InstrumentID) ? sizeof(ReqSubscribeMd->InstrumentID) - 1 : value.length();
 								memcpy(ReqSubscribeMd->InstrumentID, value.c_str(), len);
@@ -8990,29 +8990,29 @@ namespace step
 		char* ppos = buff;
 		if (RspSubscribeMd != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspSubscribeMdField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspSubscribeMdField::FieldID);
 			if (strlen(RspSubscribeMd->ExchangeID) >= sizeof(RspSubscribeMd->ExchangeID))
 			{
 				RspSubscribeMd->ExchangeID[sizeof(RspSubscribeMd->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, RspSubscribeMd->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, RspSubscribeMd->ExchangeID);
 			if (strlen(RspSubscribeMd->InstrumentID) >= sizeof(RspSubscribeMd->InstrumentID))
 			{
 				RspSubscribeMd->InstrumentID[sizeof(RspSubscribeMd->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, RspSubscribeMd->InstrumentID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspSubscribeMdField::FieldID);
+			WriteString(ppos, Items::InstrumentID, RspSubscribeMd->InstrumentID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspSubscribeMdField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -9041,16 +9041,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(RspSubscribeMd->ExchangeID) ? sizeof(RspSubscribeMd->ExchangeID) - 1 : value.length();
 								memcpy(RspSubscribeMd->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(RspSubscribeMd->InstrumentID) ? sizeof(RspSubscribeMd->InstrumentID) - 1 : value.length();
 								memcpy(RspSubscribeMd->InstrumentID, value.c_str(), len);
@@ -9083,15 +9083,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -9177,18 +9177,18 @@ namespace step
 		char* ppos = buff;
 		if (Account != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepAccountField::FieldID);
 			if (strlen(Account->AccountID) >= sizeof(Account->AccountID))
 			{
 				Account->AccountID[sizeof(Account->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Account->AccountID);
-			WriteString(ppos, StepItems::AccountType, (int)Account->AccountType);
-			WriteString(ppos, StepItems::AccountStatus, (int)Account->AccountStatus);
-			WriteString(ppos, StepItems::TradeGroupID, Account->TradeGroupID);
-			WriteString(ppos, StepItems::RiskGroupID, Account->RiskGroupID);
-			WriteString(ppos, StepItems::CommissionGroupID, Account->CommissionGroupID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepAccountField::FieldID);
+			WriteString(ppos, Items::AccountID, Account->AccountID);
+			WriteString(ppos, Items::AccountType, (int)Account->AccountType);
+			WriteString(ppos, Items::AccountStatus, (int)Account->AccountStatus);
+			WriteString(ppos, Items::TradeGroupID, Account->TradeGroupID);
+			WriteString(ppos, Items::RiskGroupID, Account->RiskGroupID);
+			WriteString(ppos, Items::CommissionGroupID, Account->CommissionGroupID);
+			WriteHexString(ppos, Items::FieldEnd, StepAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -9217,36 +9217,36 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Account->AccountID) ? sizeof(Account->AccountID) - 1 : value.length();
 								memcpy(Account->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountType:
+							case Items::AccountType:
 							{
 								Account->AccountType = (AccountTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::AccountStatus:
+							case Items::AccountStatus:
 							{
 								Account->AccountStatus = (AccountStatusType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								Account->TradeGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								Account->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::CommissionGroupID:
+							case Items::CommissionGroupID:
 							{
 								Account->CommissionGroupID = atoi(value.c_str());
 								break;
@@ -9326,13 +9326,13 @@ namespace step
 		char* ppos = buff;
 		if (AccountDelete != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepAccountDeleteField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepAccountDeleteField::FieldID);
 			if (strlen(AccountDelete->AccountID) >= sizeof(AccountDelete->AccountID))
 			{
 				AccountDelete->AccountID[sizeof(AccountDelete->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, AccountDelete->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepAccountDeleteField::FieldID);
+			WriteString(ppos, Items::AccountID, AccountDelete->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepAccountDeleteField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -9361,10 +9361,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(AccountDelete->AccountID) ? sizeof(AccountDelete->AccountID) - 1 : value.length();
 								memcpy(AccountDelete->AccountID, value.c_str(), len);
@@ -9445,15 +9445,15 @@ namespace step
 		char* ppos = buff;
 		if (AccountRisk != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepAccountRiskField::FieldID);
 			if (strlen(AccountRisk->AccountID) >= sizeof(AccountRisk->AccountID))
 			{
 				AccountRisk->AccountID[sizeof(AccountRisk->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, AccountRisk->AccountID);
-			WriteString(ppos, StepItems::RiskID, AccountRisk->RiskID);
-			WriteString(ppos, StepItems::RiskStatus, (int)AccountRisk->RiskStatus);
-			WriteHexString(ppos, StepItems::FieldEnd, StepAccountRiskField::FieldID);
+			WriteString(ppos, Items::AccountID, AccountRisk->AccountID);
+			WriteString(ppos, Items::RiskID, AccountRisk->RiskID);
+			WriteString(ppos, Items::RiskStatus, (int)AccountRisk->RiskStatus);
+			WriteHexString(ppos, Items::FieldEnd, StepAccountRiskField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -9482,21 +9482,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(AccountRisk->AccountID) ? sizeof(AccountRisk->AccountID) - 1 : value.length();
 								memcpy(AccountRisk->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								AccountRisk->RiskID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskStatus:
+							case Items::RiskStatus:
 							{
 								AccountRisk->RiskStatus = (RiskStatusType)(atoi(value.c_str()));
 								break;
@@ -9576,14 +9576,14 @@ namespace step
 		char* ppos = buff;
 		if (AccountRiskDelete != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepAccountRiskDeleteField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepAccountRiskDeleteField::FieldID);
 			if (strlen(AccountRiskDelete->AccountID) >= sizeof(AccountRiskDelete->AccountID))
 			{
 				AccountRiskDelete->AccountID[sizeof(AccountRiskDelete->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, AccountRiskDelete->AccountID);
-			WriteString(ppos, StepItems::RiskID, AccountRiskDelete->RiskID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepAccountRiskDeleteField::FieldID);
+			WriteString(ppos, Items::AccountID, AccountRiskDelete->AccountID);
+			WriteString(ppos, Items::RiskID, AccountRiskDelete->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, StepAccountRiskDeleteField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -9612,16 +9612,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(AccountRiskDelete->AccountID) ? sizeof(AccountRiskDelete->AccountID) - 1 : value.length();
 								memcpy(AccountRiskDelete->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								AccountRiskDelete->RiskID = atoi(value.c_str());
 								break;
@@ -9701,31 +9701,31 @@ namespace step
 		char* ppos = buff;
 		if (AccountRiskNotify != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepAccountRiskNotifyField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepAccountRiskNotifyField::FieldID);
 			if (strlen(AccountRiskNotify->NotifyDate) >= sizeof(AccountRiskNotify->NotifyDate))
 			{
 				AccountRiskNotify->NotifyDate[sizeof(AccountRiskNotify->NotifyDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::NotifyDate, AccountRiskNotify->NotifyDate);
+			WriteString(ppos, Items::NotifyDate, AccountRiskNotify->NotifyDate);
 			if (strlen(AccountRiskNotify->NotifyTime) >= sizeof(AccountRiskNotify->NotifyTime))
 			{
 				AccountRiskNotify->NotifyTime[sizeof(AccountRiskNotify->NotifyTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::NotifyTime, AccountRiskNotify->NotifyTime);
+			WriteString(ppos, Items::NotifyTime, AccountRiskNotify->NotifyTime);
 			if (strlen(AccountRiskNotify->AccountID) >= sizeof(AccountRiskNotify->AccountID))
 			{
 				AccountRiskNotify->AccountID[sizeof(AccountRiskNotify->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, AccountRiskNotify->AccountID);
-			WriteString(ppos, StepItems::RiskID, AccountRiskNotify->RiskID);
-			WriteString(ppos, StepItems::RiskRuleID, AccountRiskNotify->RiskRuleID);
-			WriteString(ppos, StepItems::RiskStatus, (int)AccountRiskNotify->RiskStatus);
+			WriteString(ppos, Items::AccountID, AccountRiskNotify->AccountID);
+			WriteString(ppos, Items::RiskID, AccountRiskNotify->RiskID);
+			WriteString(ppos, Items::RiskRuleID, AccountRiskNotify->RiskRuleID);
+			WriteString(ppos, Items::RiskStatus, (int)AccountRiskNotify->RiskStatus);
 			if (strlen(AccountRiskNotify->RiskMessage) >= sizeof(AccountRiskNotify->RiskMessage))
 			{
 				AccountRiskNotify->RiskMessage[sizeof(AccountRiskNotify->RiskMessage) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::RiskMessage, AccountRiskNotify->RiskMessage);
-			WriteHexString(ppos, StepItems::FieldEnd, StepAccountRiskNotifyField::FieldID);
+			WriteString(ppos, Items::RiskMessage, AccountRiskNotify->RiskMessage);
+			WriteHexString(ppos, Items::FieldEnd, StepAccountRiskNotifyField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -9754,43 +9754,43 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::NotifyDate:
+							case Items::NotifyDate:
 							{
 								size_t len = value.length() >= sizeof(AccountRiskNotify->NotifyDate) ? sizeof(AccountRiskNotify->NotifyDate) - 1 : value.length();
 								memcpy(AccountRiskNotify->NotifyDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::NotifyTime:
+							case Items::NotifyTime:
 							{
 								size_t len = value.length() >= sizeof(AccountRiskNotify->NotifyTime) ? sizeof(AccountRiskNotify->NotifyTime) - 1 : value.length();
 								memcpy(AccountRiskNotify->NotifyTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(AccountRiskNotify->AccountID) ? sizeof(AccountRiskNotify->AccountID) - 1 : value.length();
 								memcpy(AccountRiskNotify->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								AccountRiskNotify->RiskID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskRuleID:
+							case Items::RiskRuleID:
 							{
 								AccountRiskNotify->RiskRuleID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskStatus:
+							case Items::RiskStatus:
 							{
 								AccountRiskNotify->RiskStatus = (RiskStatusType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::RiskMessage:
+							case Items::RiskMessage:
 							{
 								size_t len = value.length() >= sizeof(AccountRiskNotify->RiskMessage) ? sizeof(AccountRiskNotify->RiskMessage) - 1 : value.length();
 								memcpy(AccountRiskNotify->RiskMessage, value.c_str(), len);
@@ -9871,30 +9871,30 @@ namespace step
 		char* ppos = buff;
 		if (ShortMd != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepShortMdField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepShortMdField::FieldID);
 			if (strlen(ShortMd->TradingDay) >= sizeof(ShortMd->TradingDay))
 			{
 				ShortMd->TradingDay[sizeof(ShortMd->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ShortMd->TradingDay);
+			WriteString(ppos, Items::TradingDay, ShortMd->TradingDay);
 			if (strlen(ShortMd->ExchangeID) >= sizeof(ShortMd->ExchangeID))
 			{
 				ShortMd->ExchangeID[sizeof(ShortMd->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ShortMd->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, ShortMd->ExchangeID);
 			if (strlen(ShortMd->InstrumentID) >= sizeof(ShortMd->InstrumentID))
 			{
 				ShortMd->InstrumentID[sizeof(ShortMd->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, ShortMd->InstrumentID);
-			WriteString(ppos, StepItems::LastPrice, ShortMd->LastPrice);
-			WriteString(ppos, StepItems::ClosePrice, ShortMd->ClosePrice);
-			WriteString(ppos, StepItems::PreClosePrice, ShortMd->PreClosePrice);
-			WriteString(ppos, StepItems::SettlementPrice, ShortMd->SettlementPrice);
-			WriteString(ppos, StepItems::PreSettlementPrice, ShortMd->PreSettlementPrice);
-			WriteString(ppos, StepItems::UpperLimitPrice, ShortMd->UpperLimitPrice);
-			WriteString(ppos, StepItems::LowerLimitPrice, ShortMd->LowerLimitPrice);
-			WriteHexString(ppos, StepItems::FieldEnd, StepShortMdField::FieldID);
+			WriteString(ppos, Items::InstrumentID, ShortMd->InstrumentID);
+			WriteString(ppos, Items::LastPrice, ShortMd->LastPrice);
+			WriteString(ppos, Items::ClosePrice, ShortMd->ClosePrice);
+			WriteString(ppos, Items::PreClosePrice, ShortMd->PreClosePrice);
+			WriteString(ppos, Items::SettlementPrice, ShortMd->SettlementPrice);
+			WriteString(ppos, Items::PreSettlementPrice, ShortMd->PreSettlementPrice);
+			WriteString(ppos, Items::UpperLimitPrice, ShortMd->UpperLimitPrice);
+			WriteString(ppos, Items::LowerLimitPrice, ShortMd->LowerLimitPrice);
+			WriteHexString(ppos, Items::FieldEnd, StepShortMdField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -9923,58 +9923,58 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ShortMd->TradingDay) ? sizeof(ShortMd->TradingDay) - 1 : value.length();
 								memcpy(ShortMd->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ShortMd->ExchangeID) ? sizeof(ShortMd->ExchangeID) - 1 : value.length();
 								memcpy(ShortMd->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(ShortMd->InstrumentID) ? sizeof(ShortMd->InstrumentID) - 1 : value.length();
 								memcpy(ShortMd->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::LastPrice:
+							case Items::LastPrice:
 							{
 								ShortMd->LastPrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::ClosePrice:
+							case Items::ClosePrice:
 							{
 								ShortMd->ClosePrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::PreClosePrice:
+							case Items::PreClosePrice:
 							{
 								ShortMd->PreClosePrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::SettlementPrice:
+							case Items::SettlementPrice:
 							{
 								ShortMd->SettlementPrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::PreSettlementPrice:
+							case Items::PreSettlementPrice:
 							{
 								ShortMd->PreSettlementPrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::UpperLimitPrice:
+							case Items::UpperLimitPrice:
 							{
 								ShortMd->UpperLimitPrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::LowerLimitPrice:
+							case Items::LowerLimitPrice:
 							{
 								ShortMd->LowerLimitPrice = atof(value.c_str());
 								break;
@@ -10054,19 +10054,19 @@ namespace step
 		char* ppos = buff;
 		if (RtnExchangeStatus != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRtnExchangeStatusField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRtnExchangeStatusField::FieldID);
 			if (strlen(RtnExchangeStatus->ExchangeID) >= sizeof(RtnExchangeStatus->ExchangeID))
 			{
 				RtnExchangeStatus->ExchangeID[sizeof(RtnExchangeStatus->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, RtnExchangeStatus->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, RtnExchangeStatus->ExchangeID);
 			if (strlen(RtnExchangeStatus->ExchangeDate) >= sizeof(RtnExchangeStatus->ExchangeDate))
 			{
 				RtnExchangeStatus->ExchangeDate[sizeof(RtnExchangeStatus->ExchangeDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeDate, RtnExchangeStatus->ExchangeDate);
-			WriteString(ppos, StepItems::ExchangeStatus, (int)RtnExchangeStatus->ExchangeStatus);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRtnExchangeStatusField::FieldID);
+			WriteString(ppos, Items::ExchangeDate, RtnExchangeStatus->ExchangeDate);
+			WriteString(ppos, Items::ExchangeStatus, (int)RtnExchangeStatus->ExchangeStatus);
+			WriteHexString(ppos, Items::FieldEnd, StepRtnExchangeStatusField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -10095,22 +10095,22 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(RtnExchangeStatus->ExchangeID) ? sizeof(RtnExchangeStatus->ExchangeID) - 1 : value.length();
 								memcpy(RtnExchangeStatus->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeDate:
+							case Items::ExchangeDate:
 							{
 								size_t len = value.length() >= sizeof(RtnExchangeStatus->ExchangeDate) ? sizeof(RtnExchangeStatus->ExchangeDate) - 1 : value.length();
 								memcpy(RtnExchangeStatus->ExchangeDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeStatus:
+							case Items::ExchangeStatus:
 							{
 								RtnExchangeStatus->ExchangeStatus = (ExchangeStatusType)(atoi(value.c_str()));
 								break;
@@ -10190,18 +10190,18 @@ namespace step
 		char* ppos = buff;
 		if (MdInitCompleted != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepMdInitCompletedField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepMdInitCompletedField::FieldID);
 			if (strlen(MdInitCompleted->ExchangeID) >= sizeof(MdInitCompleted->ExchangeID))
 			{
 				MdInitCompleted->ExchangeID[sizeof(MdInitCompleted->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, MdInitCompleted->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, MdInitCompleted->ExchangeID);
 			if (strlen(MdInitCompleted->TradingDay) >= sizeof(MdInitCompleted->TradingDay))
 			{
 				MdInitCompleted->TradingDay[sizeof(MdInitCompleted->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, MdInitCompleted->TradingDay);
-			WriteHexString(ppos, StepItems::FieldEnd, StepMdInitCompletedField::FieldID);
+			WriteString(ppos, Items::TradingDay, MdInitCompleted->TradingDay);
+			WriteHexString(ppos, Items::FieldEnd, StepMdInitCompletedField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -10230,16 +10230,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(MdInitCompleted->ExchangeID) ? sizeof(MdInitCompleted->ExchangeID) - 1 : value.length();
 								memcpy(MdInitCompleted->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(MdInitCompleted->TradingDay) ? sizeof(MdInitCompleted->TradingDay) - 1 : value.length();
 								memcpy(MdInitCompleted->TradingDay, value.c_str(), len);
@@ -10320,13 +10320,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryRiskGroupAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryRiskGroupAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryRiskGroupAccountField::FieldID);
 			if (strlen(ReqQryRiskGroupAccount->UserID) >= sizeof(ReqQryRiskGroupAccount->UserID))
 			{
 				ReqQryRiskGroupAccount->UserID[sizeof(ReqQryRiskGroupAccount->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqQryRiskGroupAccount->UserID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryRiskGroupAccountField::FieldID);
+			WriteString(ppos, Items::UserID, ReqQryRiskGroupAccount->UserID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryRiskGroupAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -10355,10 +10355,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryRiskGroupAccount->UserID) ? sizeof(ReqQryRiskGroupAccount->UserID) - 1 : value.length();
 								memcpy(ReqQryRiskGroupAccount->UserID, value.c_str(), len);
@@ -10444,29 +10444,29 @@ namespace step
 		char* ppos = buff;
 		if (Account != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepAccountField::FieldID);
 			if (strlen(Account->AccountID) >= sizeof(Account->AccountID))
 			{
 				Account->AccountID[sizeof(Account->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Account->AccountID);
-			WriteString(ppos, StepItems::AccountType, (int)Account->AccountType);
-			WriteString(ppos, StepItems::AccountStatus, (int)Account->AccountStatus);
-			WriteString(ppos, StepItems::TradeGroupID, Account->TradeGroupID);
-			WriteString(ppos, StepItems::RiskGroupID, Account->RiskGroupID);
-			WriteString(ppos, StepItems::CommissionGroupID, Account->CommissionGroupID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepAccountField::FieldID);
+			WriteString(ppos, Items::AccountID, Account->AccountID);
+			WriteString(ppos, Items::AccountType, (int)Account->AccountType);
+			WriteString(ppos, Items::AccountStatus, (int)Account->AccountStatus);
+			WriteString(ppos, Items::TradeGroupID, Account->TradeGroupID);
+			WriteString(ppos, Items::RiskGroupID, Account->RiskGroupID);
+			WriteString(ppos, Items::CommissionGroupID, Account->CommissionGroupID);
+			WriteHexString(ppos, Items::FieldEnd, StepAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -10495,36 +10495,36 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Account->AccountID) ? sizeof(Account->AccountID) - 1 : value.length();
 								memcpy(Account->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountType:
+							case Items::AccountType:
 							{
 								Account->AccountType = (AccountTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::AccountStatus:
+							case Items::AccountStatus:
 							{
 								Account->AccountStatus = (AccountStatusType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								Account->TradeGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								Account->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::CommissionGroupID:
+							case Items::CommissionGroupID:
 							{
 								Account->CommissionGroupID = atoi(value.c_str());
 								break;
@@ -10556,15 +10556,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -10650,18 +10650,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryRiskGroupCapital != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryRiskGroupCapitalField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryRiskGroupCapitalField::FieldID);
 			if (strlen(ReqQryRiskGroupCapital->UserID) >= sizeof(ReqQryRiskGroupCapital->UserID))
 			{
 				ReqQryRiskGroupCapital->UserID[sizeof(ReqQryRiskGroupCapital->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqQryRiskGroupCapital->UserID);
+			WriteString(ppos, Items::UserID, ReqQryRiskGroupCapital->UserID);
 			if (strlen(ReqQryRiskGroupCapital->AccountID) >= sizeof(ReqQryRiskGroupCapital->AccountID))
 			{
 				ReqQryRiskGroupCapital->AccountID[sizeof(ReqQryRiskGroupCapital->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqQryRiskGroupCapital->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryRiskGroupCapitalField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqQryRiskGroupCapital->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryRiskGroupCapitalField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -10690,16 +10690,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryRiskGroupCapital->UserID) ? sizeof(ReqQryRiskGroupCapital->UserID) - 1 : value.length();
 								memcpy(ReqQryRiskGroupCapital->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryRiskGroupCapital->AccountID) ? sizeof(ReqQryRiskGroupCapital->AccountID) - 1 : value.length();
 								memcpy(ReqQryRiskGroupCapital->AccountID, value.c_str(), len);
@@ -10785,51 +10785,51 @@ namespace step
 		char* ppos = buff;
 		if (Capital != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepCapitalField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepCapitalField::FieldID);
 			if (strlen(Capital->TradingDay) >= sizeof(Capital->TradingDay))
 			{
 				Capital->TradingDay[sizeof(Capital->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, Capital->TradingDay);
+			WriteString(ppos, Items::TradingDay, Capital->TradingDay);
 			if (strlen(Capital->AccountID) >= sizeof(Capital->AccountID))
 			{
 				Capital->AccountID[sizeof(Capital->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Capital->AccountID);
-			WriteString(ppos, StepItems::AccountType, (int)Capital->AccountType);
-			WriteString(ppos, StepItems::Asset, Capital->Asset);
-			WriteString(ppos, StepItems::PreAsset, Capital->PreAsset);
-			WriteString(ppos, StepItems::CashAsset, Capital->CashAsset);
-			WriteString(ppos, StepItems::PreCashAsset, Capital->PreCashAsset);
-			WriteString(ppos, StepItems::Available, Capital->Available);
-			WriteString(ppos, StepItems::CashIn, Capital->CashIn);
-			WriteString(ppos, StepItems::CashOut, Capital->CashOut);
-			WriteString(ppos, StepItems::Margin, Capital->Margin);
-			WriteString(ppos, StepItems::Commission, Capital->Commission);
-			WriteString(ppos, StepItems::StampTax, Capital->StampTax);
-			WriteString(ppos, StepItems::TransferFee, Capital->TransferFee);
-			WriteString(ppos, StepItems::FrozenCash, Capital->FrozenCash);
-			WriteString(ppos, StepItems::FrozenMargin, Capital->FrozenMargin);
-			WriteString(ppos, StepItems::FrozenCommission, Capital->FrozenCommission);
-			WriteString(ppos, StepItems::FrozenStampTax, Capital->FrozenStampTax);
-			WriteString(ppos, StepItems::FrozenTransferFee, Capital->FrozenTransferFee);
-			WriteString(ppos, StepItems::MarketValue, Capital->MarketValue);
-			WriteString(ppos, StepItems::TotalProfit, Capital->TotalProfit);
-			WriteString(ppos, StepItems::TodayProfit, Capital->TodayProfit);
-			WriteString(ppos, StepItems::Deposit, Capital->Deposit);
-			WriteString(ppos, StepItems::Withdraw, Capital->Withdraw);
-			WriteHexString(ppos, StepItems::FieldEnd, StepCapitalField::FieldID);
+			WriteString(ppos, Items::AccountID, Capital->AccountID);
+			WriteString(ppos, Items::AccountType, (int)Capital->AccountType);
+			WriteString(ppos, Items::Asset, Capital->Asset);
+			WriteString(ppos, Items::PreAsset, Capital->PreAsset);
+			WriteString(ppos, Items::CashAsset, Capital->CashAsset);
+			WriteString(ppos, Items::PreCashAsset, Capital->PreCashAsset);
+			WriteString(ppos, Items::Available, Capital->Available);
+			WriteString(ppos, Items::CashIn, Capital->CashIn);
+			WriteString(ppos, Items::CashOut, Capital->CashOut);
+			WriteString(ppos, Items::Margin, Capital->Margin);
+			WriteString(ppos, Items::Commission, Capital->Commission);
+			WriteString(ppos, Items::StampTax, Capital->StampTax);
+			WriteString(ppos, Items::TransferFee, Capital->TransferFee);
+			WriteString(ppos, Items::FrozenCash, Capital->FrozenCash);
+			WriteString(ppos, Items::FrozenMargin, Capital->FrozenMargin);
+			WriteString(ppos, Items::FrozenCommission, Capital->FrozenCommission);
+			WriteString(ppos, Items::FrozenStampTax, Capital->FrozenStampTax);
+			WriteString(ppos, Items::FrozenTransferFee, Capital->FrozenTransferFee);
+			WriteString(ppos, Items::MarketValue, Capital->MarketValue);
+			WriteString(ppos, Items::TotalProfit, Capital->TotalProfit);
+			WriteString(ppos, Items::TodayProfit, Capital->TodayProfit);
+			WriteString(ppos, Items::Deposit, Capital->Deposit);
+			WriteString(ppos, Items::Withdraw, Capital->Withdraw);
+			WriteHexString(ppos, Items::FieldEnd, StepCapitalField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -10858,127 +10858,127 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(Capital->TradingDay) ? sizeof(Capital->TradingDay) - 1 : value.length();
 								memcpy(Capital->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Capital->AccountID) ? sizeof(Capital->AccountID) - 1 : value.length();
 								memcpy(Capital->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountType:
+							case Items::AccountType:
 							{
 								Capital->AccountType = (AccountTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Asset:
+							case Items::Asset:
 							{
 								Capital->Asset = atof(value.c_str());
 								break;
 							}
-							case StepItems::PreAsset:
+							case Items::PreAsset:
 							{
 								Capital->PreAsset = atof(value.c_str());
 								break;
 							}
-							case StepItems::CashAsset:
+							case Items::CashAsset:
 							{
 								Capital->CashAsset = atof(value.c_str());
 								break;
 							}
-							case StepItems::PreCashAsset:
+							case Items::PreCashAsset:
 							{
 								Capital->PreCashAsset = atof(value.c_str());
 								break;
 							}
-							case StepItems::Available:
+							case Items::Available:
 							{
 								Capital->Available = atof(value.c_str());
 								break;
 							}
-							case StepItems::CashIn:
+							case Items::CashIn:
 							{
 								Capital->CashIn = atof(value.c_str());
 								break;
 							}
-							case StepItems::CashOut:
+							case Items::CashOut:
 							{
 								Capital->CashOut = atof(value.c_str());
 								break;
 							}
-							case StepItems::Margin:
+							case Items::Margin:
 							{
 								Capital->Margin = atof(value.c_str());
 								break;
 							}
-							case StepItems::Commission:
+							case Items::Commission:
 							{
 								Capital->Commission = atof(value.c_str());
 								break;
 							}
-							case StepItems::StampTax:
+							case Items::StampTax:
 							{
 								Capital->StampTax = atof(value.c_str());
 								break;
 							}
-							case StepItems::TransferFee:
+							case Items::TransferFee:
 							{
 								Capital->TransferFee = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenCash:
+							case Items::FrozenCash:
 							{
 								Capital->FrozenCash = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenMargin:
+							case Items::FrozenMargin:
 							{
 								Capital->FrozenMargin = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenCommission:
+							case Items::FrozenCommission:
 							{
 								Capital->FrozenCommission = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenStampTax:
+							case Items::FrozenStampTax:
 							{
 								Capital->FrozenStampTax = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenTransferFee:
+							case Items::FrozenTransferFee:
 							{
 								Capital->FrozenTransferFee = atof(value.c_str());
 								break;
 							}
-							case StepItems::MarketValue:
+							case Items::MarketValue:
 							{
 								Capital->MarketValue = atof(value.c_str());
 								break;
 							}
-							case StepItems::TotalProfit:
+							case Items::TotalProfit:
 							{
 								Capital->TotalProfit = atof(value.c_str());
 								break;
 							}
-							case StepItems::TodayProfit:
+							case Items::TodayProfit:
 							{
 								Capital->TodayProfit = atof(value.c_str());
 								break;
 							}
-							case StepItems::Deposit:
+							case Items::Deposit:
 							{
 								Capital->Deposit = atof(value.c_str());
 								break;
 							}
-							case StepItems::Withdraw:
+							case Items::Withdraw:
 							{
 								Capital->Withdraw = atof(value.c_str());
 								break;
@@ -11010,15 +11010,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -11104,18 +11104,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryRiskGroupPosition != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryRiskGroupPositionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryRiskGroupPositionField::FieldID);
 			if (strlen(ReqQryRiskGroupPosition->UserID) >= sizeof(ReqQryRiskGroupPosition->UserID))
 			{
 				ReqQryRiskGroupPosition->UserID[sizeof(ReqQryRiskGroupPosition->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqQryRiskGroupPosition->UserID);
+			WriteString(ppos, Items::UserID, ReqQryRiskGroupPosition->UserID);
 			if (strlen(ReqQryRiskGroupPosition->AccountID) >= sizeof(ReqQryRiskGroupPosition->AccountID))
 			{
 				ReqQryRiskGroupPosition->AccountID[sizeof(ReqQryRiskGroupPosition->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqQryRiskGroupPosition->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryRiskGroupPositionField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqQryRiskGroupPosition->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryRiskGroupPositionField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -11144,16 +11144,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryRiskGroupPosition->UserID) ? sizeof(ReqQryRiskGroupPosition->UserID) - 1 : value.length();
 								memcpy(ReqQryRiskGroupPosition->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryRiskGroupPosition->AccountID) ? sizeof(ReqQryRiskGroupPosition->AccountID) - 1 : value.length();
 								memcpy(ReqQryRiskGroupPosition->AccountID, value.c_str(), len);
@@ -11239,61 +11239,61 @@ namespace step
 		char* ppos = buff;
 		if (Position != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepPositionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepPositionField::FieldID);
 			if (strlen(Position->TradingDay) >= sizeof(Position->TradingDay))
 			{
 				Position->TradingDay[sizeof(Position->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, Position->TradingDay);
+			WriteString(ppos, Items::TradingDay, Position->TradingDay);
 			if (strlen(Position->AccountID) >= sizeof(Position->AccountID))
 			{
 				Position->AccountID[sizeof(Position->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Position->AccountID);
-			WriteString(ppos, StepItems::AccountType, (int)Position->AccountType);
+			WriteString(ppos, Items::AccountID, Position->AccountID);
+			WriteString(ppos, Items::AccountType, (int)Position->AccountType);
 			if (strlen(Position->ExchangeID) >= sizeof(Position->ExchangeID))
 			{
 				Position->ExchangeID[sizeof(Position->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, Position->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, Position->ExchangeID);
 			if (strlen(Position->InstrumentID) >= sizeof(Position->InstrumentID))
 			{
 				Position->InstrumentID[sizeof(Position->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, Position->InstrumentID);
-			WriteString(ppos, StepItems::SecurityType, (int)Position->SecurityType);
-			WriteString(ppos, StepItems::PosiDirection, (int)Position->PosiDirection);
-			WriteString(ppos, StepItems::TotalPosition, Position->TotalPosition);
-			WriteString(ppos, StepItems::PositionFrozen, Position->PositionFrozen);
-			WriteString(ppos, StepItems::TodayPosition, Position->TodayPosition);
-			WriteString(ppos, StepItems::TotalCostPrice, Position->TotalCostPrice);
-			WriteString(ppos, StepItems::TodayCostPrice, Position->TodayCostPrice);
-			WriteString(ppos, StepItems::CashIn, Position->CashIn);
-			WriteString(ppos, StepItems::CashOut, Position->CashOut);
-			WriteString(ppos, StepItems::Margin, Position->Margin);
-			WriteString(ppos, StepItems::Commission, Position->Commission);
-			WriteString(ppos, StepItems::StampTax, Position->StampTax);
-			WriteString(ppos, StepItems::TransferFee, Position->TransferFee);
-			WriteString(ppos, StepItems::MarketValue, Position->MarketValue);
-			WriteString(ppos, StepItems::VolumeMultiple, Position->VolumeMultiple);
-			WriteString(ppos, StepItems::TotalCost, Position->TotalCost);
-			WriteString(ppos, StepItems::TodayCost, Position->TodayCost);
-			WriteString(ppos, StepItems::TotalProfit, Position->TotalProfit);
-			WriteString(ppos, StepItems::TodayProfit, Position->TodayProfit);
-			WriteString(ppos, StepItems::LastPrice, Position->LastPrice);
-			WriteString(ppos, StepItems::PrePrice, Position->PrePrice);
-			WriteHexString(ppos, StepItems::FieldEnd, StepPositionField::FieldID);
+			WriteString(ppos, Items::InstrumentID, Position->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)Position->SecurityType);
+			WriteString(ppos, Items::PosiDirection, (int)Position->PosiDirection);
+			WriteString(ppos, Items::TotalPosition, Position->TotalPosition);
+			WriteString(ppos, Items::PositionFrozen, Position->PositionFrozen);
+			WriteString(ppos, Items::TodayPosition, Position->TodayPosition);
+			WriteString(ppos, Items::TotalCostPrice, Position->TotalCostPrice);
+			WriteString(ppos, Items::TodayCostPrice, Position->TodayCostPrice);
+			WriteString(ppos, Items::CashIn, Position->CashIn);
+			WriteString(ppos, Items::CashOut, Position->CashOut);
+			WriteString(ppos, Items::Margin, Position->Margin);
+			WriteString(ppos, Items::Commission, Position->Commission);
+			WriteString(ppos, Items::StampTax, Position->StampTax);
+			WriteString(ppos, Items::TransferFee, Position->TransferFee);
+			WriteString(ppos, Items::MarketValue, Position->MarketValue);
+			WriteString(ppos, Items::VolumeMultiple, Position->VolumeMultiple);
+			WriteString(ppos, Items::TotalCost, Position->TotalCost);
+			WriteString(ppos, Items::TodayCost, Position->TodayCost);
+			WriteString(ppos, Items::TotalProfit, Position->TotalProfit);
+			WriteString(ppos, Items::TodayProfit, Position->TodayProfit);
+			WriteString(ppos, Items::LastPrice, Position->LastPrice);
+			WriteString(ppos, Items::PrePrice, Position->PrePrice);
+			WriteHexString(ppos, Items::FieldEnd, StepPositionField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -11322,139 +11322,139 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(Position->TradingDay) ? sizeof(Position->TradingDay) - 1 : value.length();
 								memcpy(Position->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Position->AccountID) ? sizeof(Position->AccountID) - 1 : value.length();
 								memcpy(Position->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountType:
+							case Items::AccountType:
 							{
 								Position->AccountType = (AccountTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(Position->ExchangeID) ? sizeof(Position->ExchangeID) - 1 : value.length();
 								memcpy(Position->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(Position->InstrumentID) ? sizeof(Position->InstrumentID) - 1 : value.length();
 								memcpy(Position->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								Position->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::PosiDirection:
+							case Items::PosiDirection:
 							{
 								Position->PosiDirection = (PosiDirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::TotalPosition:
+							case Items::TotalPosition:
 							{
 								Position->TotalPosition = atoi(value.c_str());
 								break;
 							}
-							case StepItems::PositionFrozen:
+							case Items::PositionFrozen:
 							{
 								Position->PositionFrozen = atoi(value.c_str());
 								break;
 							}
-							case StepItems::TodayPosition:
+							case Items::TodayPosition:
 							{
 								Position->TodayPosition = atoi(value.c_str());
 								break;
 							}
-							case StepItems::TotalCostPrice:
+							case Items::TotalCostPrice:
 							{
 								Position->TotalCostPrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::TodayCostPrice:
+							case Items::TodayCostPrice:
 							{
 								Position->TodayCostPrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::CashIn:
+							case Items::CashIn:
 							{
 								Position->CashIn = atof(value.c_str());
 								break;
 							}
-							case StepItems::CashOut:
+							case Items::CashOut:
 							{
 								Position->CashOut = atof(value.c_str());
 								break;
 							}
-							case StepItems::Margin:
+							case Items::Margin:
 							{
 								Position->Margin = atof(value.c_str());
 								break;
 							}
-							case StepItems::Commission:
+							case Items::Commission:
 							{
 								Position->Commission = atof(value.c_str());
 								break;
 							}
-							case StepItems::StampTax:
+							case Items::StampTax:
 							{
 								Position->StampTax = atof(value.c_str());
 								break;
 							}
-							case StepItems::TransferFee:
+							case Items::TransferFee:
 							{
 								Position->TransferFee = atof(value.c_str());
 								break;
 							}
-							case StepItems::MarketValue:
+							case Items::MarketValue:
 							{
 								Position->MarketValue = atof(value.c_str());
 								break;
 							}
-							case StepItems::VolumeMultiple:
+							case Items::VolumeMultiple:
 							{
 								Position->VolumeMultiple = atoi(value.c_str());
 								break;
 							}
-							case StepItems::TotalCost:
+							case Items::TotalCost:
 							{
 								Position->TotalCost = atof(value.c_str());
 								break;
 							}
-							case StepItems::TodayCost:
+							case Items::TodayCost:
 							{
 								Position->TodayCost = atof(value.c_str());
 								break;
 							}
-							case StepItems::TotalProfit:
+							case Items::TotalProfit:
 							{
 								Position->TotalProfit = atof(value.c_str());
 								break;
 							}
-							case StepItems::TodayProfit:
+							case Items::TodayProfit:
 							{
 								Position->TodayProfit = atof(value.c_str());
 								break;
 							}
-							case StepItems::LastPrice:
+							case Items::LastPrice:
 							{
 								Position->LastPrice = atof(value.c_str());
 								break;
 							}
-							case StepItems::PrePrice:
+							case Items::PrePrice:
 							{
 								Position->PrePrice = atof(value.c_str());
 								break;
@@ -11486,15 +11486,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -11580,18 +11580,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryRiskGroupOrder != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryRiskGroupOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryRiskGroupOrderField::FieldID);
 			if (strlen(ReqQryRiskGroupOrder->UserID) >= sizeof(ReqQryRiskGroupOrder->UserID))
 			{
 				ReqQryRiskGroupOrder->UserID[sizeof(ReqQryRiskGroupOrder->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqQryRiskGroupOrder->UserID);
+			WriteString(ppos, Items::UserID, ReqQryRiskGroupOrder->UserID);
 			if (strlen(ReqQryRiskGroupOrder->AccountID) >= sizeof(ReqQryRiskGroupOrder->AccountID))
 			{
 				ReqQryRiskGroupOrder->AccountID[sizeof(ReqQryRiskGroupOrder->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqQryRiskGroupOrder->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryRiskGroupOrderField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqQryRiskGroupOrder->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryRiskGroupOrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -11620,16 +11620,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryRiskGroupOrder->UserID) ? sizeof(ReqQryRiskGroupOrder->UserID) - 1 : value.length();
 								memcpy(ReqQryRiskGroupOrder->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryRiskGroupOrder->AccountID) ? sizeof(ReqQryRiskGroupOrder->AccountID) - 1 : value.length();
 								memcpy(ReqQryRiskGroupOrder->AccountID, value.c_str(), len);
@@ -11715,88 +11715,88 @@ namespace step
 		char* ppos = buff;
 		if (Order != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepOrderField::FieldID);
 			if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
 			{
 				Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, Order->TradingDay);
+			WriteString(ppos, Items::TradingDay, Order->TradingDay);
 			if (strlen(Order->AccountID) >= sizeof(Order->AccountID))
 			{
 				Order->AccountID[sizeof(Order->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Order->AccountID);
+			WriteString(ppos, Items::AccountID, Order->AccountID);
 			if (strlen(Order->ExchangeID) >= sizeof(Order->ExchangeID))
 			{
 				Order->ExchangeID[sizeof(Order->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, Order->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
 			if (strlen(Order->InstrumentID) >= sizeof(Order->InstrumentID))
 			{
 				Order->InstrumentID[sizeof(Order->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, Order->InstrumentID);
-			WriteString(ppos, StepItems::SecurityType, (int)Order->SecurityType);
-			WriteString(ppos, StepItems::OrderID, Order->OrderID);
+			WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)Order->SecurityType);
+			WriteString(ppos, Items::OrderID, Order->OrderID);
 			if (strlen(Order->OrderSysID) >= sizeof(Order->OrderSysID))
 			{
 				Order->OrderSysID[sizeof(Order->OrderSysID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderSysID, Order->OrderSysID);
-			WriteString(ppos, StepItems::Direction, (int)Order->Direction);
-			WriteString(ppos, StepItems::OffsetFlag, (int)Order->OffsetFlag);
-			WriteString(ppos, StepItems::OrderPriceType, (int)Order->OrderPriceType);
-			WriteString(ppos, StepItems::Price, Order->Price);
-			WriteString(ppos, StepItems::Volume, Order->Volume);
-			WriteString(ppos, StepItems::VolumeTotal, Order->VolumeTotal);
-			WriteString(ppos, StepItems::VolumeTraded, Order->VolumeTraded);
-			WriteString(ppos, StepItems::VolumeMultiple, Order->VolumeMultiple);
-			WriteString(ppos, StepItems::OrderStatus, (int)Order->OrderStatus);
+			WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
+			WriteString(ppos, Items::Direction, (int)Order->Direction);
+			WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
+			WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
+			WriteString(ppos, Items::Price, Order->Price);
+			WriteString(ppos, Items::Volume, Order->Volume);
+			WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
+			WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
+			WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
+			WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
 			if (strlen(Order->StatusMsg) >= sizeof(Order->StatusMsg))
 			{
 				Order->StatusMsg[sizeof(Order->StatusMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::StatusMsg, Order->StatusMsg);
+			WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
 			if (strlen(Order->OrderDate) >= sizeof(Order->OrderDate))
 			{
 				Order->OrderDate[sizeof(Order->OrderDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderDate, Order->OrderDate);
+			WriteString(ppos, Items::OrderDate, Order->OrderDate);
 			if (strlen(Order->OrderTime) >= sizeof(Order->OrderTime))
 			{
 				Order->OrderTime[sizeof(Order->OrderTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderTime, Order->OrderTime);
+			WriteString(ppos, Items::OrderTime, Order->OrderTime);
 			if (strlen(Order->CancelDate) >= sizeof(Order->CancelDate))
 			{
 				Order->CancelDate[sizeof(Order->CancelDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::CancelDate, Order->CancelDate);
+			WriteString(ppos, Items::CancelDate, Order->CancelDate);
 			if (strlen(Order->CancelTime) >= sizeof(Order->CancelTime))
 			{
 				Order->CancelTime[sizeof(Order->CancelTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::CancelTime, Order->CancelTime);
-			WriteString(ppos, StepItems::SessionID, Order->SessionID);
-			WriteString(ppos, StepItems::ClientOrderID, Order->ClientOrderID);
-			WriteString(ppos, StepItems::RequestID, Order->RequestID);
-			WriteString(ppos, StepItems::FrozenCash, Order->FrozenCash);
-			WriteString(ppos, StepItems::FrozenMargin, Order->FrozenMargin);
-			WriteString(ppos, StepItems::FrozenCommission, Order->FrozenCommission);
-			WriteString(ppos, StepItems::FrozenStampTax, Order->FrozenStampTax);
-			WriteString(ppos, StepItems::FrozenTransferFee, Order->FrozenTransferFee);
-			WriteHexString(ppos, StepItems::FieldEnd, StepOrderField::FieldID);
+			WriteString(ppos, Items::CancelTime, Order->CancelTime);
+			WriteString(ppos, Items::SessionID, Order->SessionID);
+			WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
+			WriteString(ppos, Items::RequestID, Order->RequestID);
+			WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
+			WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
+			WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
+			WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
+			WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
+			WriteHexString(ppos, Items::FieldEnd, StepOrderField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -11825,160 +11825,160 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(Order->TradingDay) ? sizeof(Order->TradingDay) - 1 : value.length();
 								memcpy(Order->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Order->AccountID) ? sizeof(Order->AccountID) - 1 : value.length();
 								memcpy(Order->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(Order->ExchangeID) ? sizeof(Order->ExchangeID) - 1 : value.length();
 								memcpy(Order->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(Order->InstrumentID) ? sizeof(Order->InstrumentID) - 1 : value.length();
 								memcpy(Order->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								Order->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OrderID:
+							case Items::OrderID:
 							{
 								Order->OrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderSysID:
+							case Items::OrderSysID:
 							{
 								size_t len = value.length() >= sizeof(Order->OrderSysID) ? sizeof(Order->OrderSysID) - 1 : value.length();
 								memcpy(Order->OrderSysID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Direction:
+							case Items::Direction:
 							{
 								Order->Direction = (DirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OffsetFlag:
+							case Items::OffsetFlag:
 							{
 								Order->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OrderPriceType:
+							case Items::OrderPriceType:
 							{
 								Order->OrderPriceType = (OrderPriceTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Price:
+							case Items::Price:
 							{
 								Order->Price = atof(value.c_str());
 								break;
 							}
-							case StepItems::Volume:
+							case Items::Volume:
 							{
 								Order->Volume = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeTotal:
+							case Items::VolumeTotal:
 							{
 								Order->VolumeTotal = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeTraded:
+							case Items::VolumeTraded:
 							{
 								Order->VolumeTraded = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeMultiple:
+							case Items::VolumeMultiple:
 							{
 								Order->VolumeMultiple = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderStatus:
+							case Items::OrderStatus:
 							{
 								Order->OrderStatus = (OrderStatusType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::StatusMsg:
+							case Items::StatusMsg:
 							{
 								size_t len = value.length() >= sizeof(Order->StatusMsg) ? sizeof(Order->StatusMsg) - 1 : value.length();
 								memcpy(Order->StatusMsg, value.c_str(), len);
 								break;
 							}
-							case StepItems::OrderDate:
+							case Items::OrderDate:
 							{
 								size_t len = value.length() >= sizeof(Order->OrderDate) ? sizeof(Order->OrderDate) - 1 : value.length();
 								memcpy(Order->OrderDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::OrderTime:
+							case Items::OrderTime:
 							{
 								size_t len = value.length() >= sizeof(Order->OrderTime) ? sizeof(Order->OrderTime) - 1 : value.length();
 								memcpy(Order->OrderTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::CancelDate:
+							case Items::CancelDate:
 							{
 								size_t len = value.length() >= sizeof(Order->CancelDate) ? sizeof(Order->CancelDate) - 1 : value.length();
 								memcpy(Order->CancelDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::CancelTime:
+							case Items::CancelTime:
 							{
 								size_t len = value.length() >= sizeof(Order->CancelTime) ? sizeof(Order->CancelTime) - 1 : value.length();
 								memcpy(Order->CancelTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::SessionID:
+							case Items::SessionID:
 							{
 								Order->SessionID = atoll(value.c_str());
 								break;
 							}
-							case StepItems::ClientOrderID:
+							case Items::ClientOrderID:
 							{
 								Order->ClientOrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RequestID:
+							case Items::RequestID:
 							{
 								Order->RequestID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::FrozenCash:
+							case Items::FrozenCash:
 							{
 								Order->FrozenCash = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenMargin:
+							case Items::FrozenMargin:
 							{
 								Order->FrozenMargin = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenCommission:
+							case Items::FrozenCommission:
 							{
 								Order->FrozenCommission = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenStampTax:
+							case Items::FrozenStampTax:
 							{
 								Order->FrozenStampTax = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenTransferFee:
+							case Items::FrozenTransferFee:
 							{
 								Order->FrozenTransferFee = atof(value.c_str());
 								break;
@@ -12010,15 +12010,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -12104,18 +12104,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryRiskGroupTrade != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryRiskGroupTradeField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryRiskGroupTradeField::FieldID);
 			if (strlen(ReqQryRiskGroupTrade->UserID) >= sizeof(ReqQryRiskGroupTrade->UserID))
 			{
 				ReqQryRiskGroupTrade->UserID[sizeof(ReqQryRiskGroupTrade->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqQryRiskGroupTrade->UserID);
+			WriteString(ppos, Items::UserID, ReqQryRiskGroupTrade->UserID);
 			if (strlen(ReqQryRiskGroupTrade->AccountID) >= sizeof(ReqQryRiskGroupTrade->AccountID))
 			{
 				ReqQryRiskGroupTrade->AccountID[sizeof(ReqQryRiskGroupTrade->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqQryRiskGroupTrade->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryRiskGroupTradeField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqQryRiskGroupTrade->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryRiskGroupTradeField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -12144,16 +12144,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryRiskGroupTrade->UserID) ? sizeof(ReqQryRiskGroupTrade->UserID) - 1 : value.length();
 								memcpy(ReqQryRiskGroupTrade->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryRiskGroupTrade->AccountID) ? sizeof(ReqQryRiskGroupTrade->AccountID) - 1 : value.length();
 								memcpy(ReqQryRiskGroupTrade->AccountID, value.c_str(), len);
@@ -12239,70 +12239,70 @@ namespace step
 		char* ppos = buff;
 		if (Trade != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepTradeField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepTradeField::FieldID);
 			if (strlen(Trade->TradingDay) >= sizeof(Trade->TradingDay))
 			{
 				Trade->TradingDay[sizeof(Trade->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, Trade->TradingDay);
+			WriteString(ppos, Items::TradingDay, Trade->TradingDay);
 			if (strlen(Trade->AccountID) >= sizeof(Trade->AccountID))
 			{
 				Trade->AccountID[sizeof(Trade->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Trade->AccountID);
+			WriteString(ppos, Items::AccountID, Trade->AccountID);
 			if (strlen(Trade->ExchangeID) >= sizeof(Trade->ExchangeID))
 			{
 				Trade->ExchangeID[sizeof(Trade->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, Trade->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, Trade->ExchangeID);
 			if (strlen(Trade->InstrumentID) >= sizeof(Trade->InstrumentID))
 			{
 				Trade->InstrumentID[sizeof(Trade->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, Trade->InstrumentID);
-			WriteString(ppos, StepItems::SecurityType, (int)Trade->SecurityType);
-			WriteString(ppos, StepItems::OrderID, Trade->OrderID);
+			WriteString(ppos, Items::InstrumentID, Trade->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)Trade->SecurityType);
+			WriteString(ppos, Items::OrderID, Trade->OrderID);
 			if (strlen(Trade->OrderSysID) >= sizeof(Trade->OrderSysID))
 			{
 				Trade->OrderSysID[sizeof(Trade->OrderSysID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderSysID, Trade->OrderSysID);
+			WriteString(ppos, Items::OrderSysID, Trade->OrderSysID);
 			if (strlen(Trade->TradeID) >= sizeof(Trade->TradeID))
 			{
 				Trade->TradeID[sizeof(Trade->TradeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradeID, Trade->TradeID);
-			WriteString(ppos, StepItems::Direction, (int)Trade->Direction);
-			WriteString(ppos, StepItems::OffsetFlag, (int)Trade->OffsetFlag);
-			WriteString(ppos, StepItems::Price, Trade->Price);
-			WriteString(ppos, StepItems::Volume, Trade->Volume);
-			WriteString(ppos, StepItems::VolumeMultiple, Trade->VolumeMultiple);
-			WriteString(ppos, StepItems::TradeAmount, Trade->TradeAmount);
-			WriteString(ppos, StepItems::Commission, Trade->Commission);
-			WriteString(ppos, StepItems::StampTax, Trade->StampTax);
-			WriteString(ppos, StepItems::TransferFee, Trade->TransferFee);
+			WriteString(ppos, Items::TradeID, Trade->TradeID);
+			WriteString(ppos, Items::Direction, (int)Trade->Direction);
+			WriteString(ppos, Items::OffsetFlag, (int)Trade->OffsetFlag);
+			WriteString(ppos, Items::Price, Trade->Price);
+			WriteString(ppos, Items::Volume, Trade->Volume);
+			WriteString(ppos, Items::VolumeMultiple, Trade->VolumeMultiple);
+			WriteString(ppos, Items::TradeAmount, Trade->TradeAmount);
+			WriteString(ppos, Items::Commission, Trade->Commission);
+			WriteString(ppos, Items::StampTax, Trade->StampTax);
+			WriteString(ppos, Items::TransferFee, Trade->TransferFee);
 			if (strlen(Trade->TradeDate) >= sizeof(Trade->TradeDate))
 			{
 				Trade->TradeDate[sizeof(Trade->TradeDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradeDate, Trade->TradeDate);
+			WriteString(ppos, Items::TradeDate, Trade->TradeDate);
 			if (strlen(Trade->TradeTime) >= sizeof(Trade->TradeTime))
 			{
 				Trade->TradeTime[sizeof(Trade->TradeTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradeTime, Trade->TradeTime);
-			WriteHexString(ppos, StepItems::FieldEnd, StepTradeField::FieldID);
+			WriteString(ppos, Items::TradeTime, Trade->TradeTime);
+			WriteHexString(ppos, Items::FieldEnd, StepTradeField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -12331,107 +12331,107 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(Trade->TradingDay) ? sizeof(Trade->TradingDay) - 1 : value.length();
 								memcpy(Trade->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Trade->AccountID) ? sizeof(Trade->AccountID) - 1 : value.length();
 								memcpy(Trade->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(Trade->ExchangeID) ? sizeof(Trade->ExchangeID) - 1 : value.length();
 								memcpy(Trade->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(Trade->InstrumentID) ? sizeof(Trade->InstrumentID) - 1 : value.length();
 								memcpy(Trade->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								Trade->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OrderID:
+							case Items::OrderID:
 							{
 								Trade->OrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderSysID:
+							case Items::OrderSysID:
 							{
 								size_t len = value.length() >= sizeof(Trade->OrderSysID) ? sizeof(Trade->OrderSysID) - 1 : value.length();
 								memcpy(Trade->OrderSysID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeID:
+							case Items::TradeID:
 							{
 								size_t len = value.length() >= sizeof(Trade->TradeID) ? sizeof(Trade->TradeID) - 1 : value.length();
 								memcpy(Trade->TradeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Direction:
+							case Items::Direction:
 							{
 								Trade->Direction = (DirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OffsetFlag:
+							case Items::OffsetFlag:
 							{
 								Trade->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Price:
+							case Items::Price:
 							{
 								Trade->Price = atof(value.c_str());
 								break;
 							}
-							case StepItems::Volume:
+							case Items::Volume:
 							{
 								Trade->Volume = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeMultiple:
+							case Items::VolumeMultiple:
 							{
 								Trade->VolumeMultiple = atoi(value.c_str());
 								break;
 							}
-							case StepItems::TradeAmount:
+							case Items::TradeAmount:
 							{
 								Trade->TradeAmount = atof(value.c_str());
 								break;
 							}
-							case StepItems::Commission:
+							case Items::Commission:
 							{
 								Trade->Commission = atof(value.c_str());
 								break;
 							}
-							case StepItems::StampTax:
+							case Items::StampTax:
 							{
 								Trade->StampTax = atof(value.c_str());
 								break;
 							}
-							case StepItems::TransferFee:
+							case Items::TransferFee:
 							{
 								Trade->TransferFee = atof(value.c_str());
 								break;
 							}
-							case StepItems::TradeDate:
+							case Items::TradeDate:
 							{
 								size_t len = value.length() >= sizeof(Trade->TradeDate) ? sizeof(Trade->TradeDate) - 1 : value.length();
 								memcpy(Trade->TradeDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeTime:
+							case Items::TradeTime:
 							{
 								size_t len = value.length() >= sizeof(Trade->TradeTime) ? sizeof(Trade->TradeTime) - 1 : value.length();
 								memcpy(Trade->TradeTime, value.c_str(), len);
@@ -12464,15 +12464,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -12558,18 +12558,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryRiskGroupAccountRisk != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryRiskGroupAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryRiskGroupAccountRiskField::FieldID);
 			if (strlen(ReqQryRiskGroupAccountRisk->UserID) >= sizeof(ReqQryRiskGroupAccountRisk->UserID))
 			{
 				ReqQryRiskGroupAccountRisk->UserID[sizeof(ReqQryRiskGroupAccountRisk->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqQryRiskGroupAccountRisk->UserID);
+			WriteString(ppos, Items::UserID, ReqQryRiskGroupAccountRisk->UserID);
 			if (strlen(ReqQryRiskGroupAccountRisk->AccountID) >= sizeof(ReqQryRiskGroupAccountRisk->AccountID))
 			{
 				ReqQryRiskGroupAccountRisk->AccountID[sizeof(ReqQryRiskGroupAccountRisk->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqQryRiskGroupAccountRisk->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryRiskGroupAccountRiskField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqQryRiskGroupAccountRisk->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryRiskGroupAccountRiskField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -12598,16 +12598,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryRiskGroupAccountRisk->UserID) ? sizeof(ReqQryRiskGroupAccountRisk->UserID) - 1 : value.length();
 								memcpy(ReqQryRiskGroupAccountRisk->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryRiskGroupAccountRisk->AccountID) ? sizeof(ReqQryRiskGroupAccountRisk->AccountID) - 1 : value.length();
 								memcpy(ReqQryRiskGroupAccountRisk->AccountID, value.c_str(), len);
@@ -12693,26 +12693,26 @@ namespace step
 		char* ppos = buff;
 		if (AccountRisk != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepAccountRiskField::FieldID);
 			if (strlen(AccountRisk->AccountID) >= sizeof(AccountRisk->AccountID))
 			{
 				AccountRisk->AccountID[sizeof(AccountRisk->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, AccountRisk->AccountID);
-			WriteString(ppos, StepItems::RiskID, AccountRisk->RiskID);
-			WriteString(ppos, StepItems::RiskStatus, (int)AccountRisk->RiskStatus);
-			WriteHexString(ppos, StepItems::FieldEnd, StepAccountRiskField::FieldID);
+			WriteString(ppos, Items::AccountID, AccountRisk->AccountID);
+			WriteString(ppos, Items::RiskID, AccountRisk->RiskID);
+			WriteString(ppos, Items::RiskStatus, (int)AccountRisk->RiskStatus);
+			WriteHexString(ppos, Items::FieldEnd, StepAccountRiskField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -12741,21 +12741,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(AccountRisk->AccountID) ? sizeof(AccountRisk->AccountID) - 1 : value.length();
 								memcpy(AccountRisk->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								AccountRisk->RiskID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskStatus:
+							case Items::RiskStatus:
 							{
 								AccountRisk->RiskStatus = (RiskStatusType)(atoi(value.c_str()));
 								break;
@@ -12787,15 +12787,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -12881,18 +12881,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryRiskGroupAccountRiskNotify != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryRiskGroupAccountRiskNotifyField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryRiskGroupAccountRiskNotifyField::FieldID);
 			if (strlen(ReqQryRiskGroupAccountRiskNotify->UserID) >= sizeof(ReqQryRiskGroupAccountRiskNotify->UserID))
 			{
 				ReqQryRiskGroupAccountRiskNotify->UserID[sizeof(ReqQryRiskGroupAccountRiskNotify->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqQryRiskGroupAccountRiskNotify->UserID);
+			WriteString(ppos, Items::UserID, ReqQryRiskGroupAccountRiskNotify->UserID);
 			if (strlen(ReqQryRiskGroupAccountRiskNotify->AccountID) >= sizeof(ReqQryRiskGroupAccountRiskNotify->AccountID))
 			{
 				ReqQryRiskGroupAccountRiskNotify->AccountID[sizeof(ReqQryRiskGroupAccountRiskNotify->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqQryRiskGroupAccountRiskNotify->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryRiskGroupAccountRiskNotifyField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqQryRiskGroupAccountRiskNotify->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryRiskGroupAccountRiskNotifyField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -12921,16 +12921,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryRiskGroupAccountRiskNotify->UserID) ? sizeof(ReqQryRiskGroupAccountRiskNotify->UserID) - 1 : value.length();
 								memcpy(ReqQryRiskGroupAccountRiskNotify->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryRiskGroupAccountRiskNotify->AccountID) ? sizeof(ReqQryRiskGroupAccountRiskNotify->AccountID) - 1 : value.length();
 								memcpy(ReqQryRiskGroupAccountRiskNotify->AccountID, value.c_str(), len);
@@ -13016,42 +13016,42 @@ namespace step
 		char* ppos = buff;
 		if (AccountRiskNotify != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepAccountRiskNotifyField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepAccountRiskNotifyField::FieldID);
 			if (strlen(AccountRiskNotify->NotifyDate) >= sizeof(AccountRiskNotify->NotifyDate))
 			{
 				AccountRiskNotify->NotifyDate[sizeof(AccountRiskNotify->NotifyDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::NotifyDate, AccountRiskNotify->NotifyDate);
+			WriteString(ppos, Items::NotifyDate, AccountRiskNotify->NotifyDate);
 			if (strlen(AccountRiskNotify->NotifyTime) >= sizeof(AccountRiskNotify->NotifyTime))
 			{
 				AccountRiskNotify->NotifyTime[sizeof(AccountRiskNotify->NotifyTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::NotifyTime, AccountRiskNotify->NotifyTime);
+			WriteString(ppos, Items::NotifyTime, AccountRiskNotify->NotifyTime);
 			if (strlen(AccountRiskNotify->AccountID) >= sizeof(AccountRiskNotify->AccountID))
 			{
 				AccountRiskNotify->AccountID[sizeof(AccountRiskNotify->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, AccountRiskNotify->AccountID);
-			WriteString(ppos, StepItems::RiskID, AccountRiskNotify->RiskID);
-			WriteString(ppos, StepItems::RiskRuleID, AccountRiskNotify->RiskRuleID);
-			WriteString(ppos, StepItems::RiskStatus, (int)AccountRiskNotify->RiskStatus);
+			WriteString(ppos, Items::AccountID, AccountRiskNotify->AccountID);
+			WriteString(ppos, Items::RiskID, AccountRiskNotify->RiskID);
+			WriteString(ppos, Items::RiskRuleID, AccountRiskNotify->RiskRuleID);
+			WriteString(ppos, Items::RiskStatus, (int)AccountRiskNotify->RiskStatus);
 			if (strlen(AccountRiskNotify->RiskMessage) >= sizeof(AccountRiskNotify->RiskMessage))
 			{
 				AccountRiskNotify->RiskMessage[sizeof(AccountRiskNotify->RiskMessage) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::RiskMessage, AccountRiskNotify->RiskMessage);
-			WriteHexString(ppos, StepItems::FieldEnd, StepAccountRiskNotifyField::FieldID);
+			WriteString(ppos, Items::RiskMessage, AccountRiskNotify->RiskMessage);
+			WriteHexString(ppos, Items::FieldEnd, StepAccountRiskNotifyField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -13080,43 +13080,43 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::NotifyDate:
+							case Items::NotifyDate:
 							{
 								size_t len = value.length() >= sizeof(AccountRiskNotify->NotifyDate) ? sizeof(AccountRiskNotify->NotifyDate) - 1 : value.length();
 								memcpy(AccountRiskNotify->NotifyDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::NotifyTime:
+							case Items::NotifyTime:
 							{
 								size_t len = value.length() >= sizeof(AccountRiskNotify->NotifyTime) ? sizeof(AccountRiskNotify->NotifyTime) - 1 : value.length();
 								memcpy(AccountRiskNotify->NotifyTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(AccountRiskNotify->AccountID) ? sizeof(AccountRiskNotify->AccountID) - 1 : value.length();
 								memcpy(AccountRiskNotify->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								AccountRiskNotify->RiskID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskRuleID:
+							case Items::RiskRuleID:
 							{
 								AccountRiskNotify->RiskRuleID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskStatus:
+							case Items::RiskStatus:
 							{
 								AccountRiskNotify->RiskStatus = (RiskStatusType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::RiskMessage:
+							case Items::RiskMessage:
 							{
 								size_t len = value.length() >= sizeof(AccountRiskNotify->RiskMessage) ? sizeof(AccountRiskNotify->RiskMessage) - 1 : value.length();
 								memcpy(AccountRiskNotify->RiskMessage, value.c_str(), len);
@@ -13149,15 +13149,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -13243,35 +13243,35 @@ namespace step
 		char* ppos = buff;
 		if (ReqRiskInsertOrder != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRiskInsertOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRiskInsertOrderField::FieldID);
 			if (strlen(ReqRiskInsertOrder->UserID) >= sizeof(ReqRiskInsertOrder->UserID))
 			{
 				ReqRiskInsertOrder->UserID[sizeof(ReqRiskInsertOrder->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqRiskInsertOrder->UserID);
+			WriteString(ppos, Items::UserID, ReqRiskInsertOrder->UserID);
 			if (strlen(ReqRiskInsertOrder->AccountID) >= sizeof(ReqRiskInsertOrder->AccountID))
 			{
 				ReqRiskInsertOrder->AccountID[sizeof(ReqRiskInsertOrder->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqRiskInsertOrder->AccountID);
+			WriteString(ppos, Items::AccountID, ReqRiskInsertOrder->AccountID);
 			if (strlen(ReqRiskInsertOrder->ExchangeID) >= sizeof(ReqRiskInsertOrder->ExchangeID))
 			{
 				ReqRiskInsertOrder->ExchangeID[sizeof(ReqRiskInsertOrder->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqRiskInsertOrder->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, ReqRiskInsertOrder->ExchangeID);
 			if (strlen(ReqRiskInsertOrder->InstrumentID) >= sizeof(ReqRiskInsertOrder->InstrumentID))
 			{
 				ReqRiskInsertOrder->InstrumentID[sizeof(ReqRiskInsertOrder->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, ReqRiskInsertOrder->InstrumentID);
-			WriteString(ppos, StepItems::Direction, (int)ReqRiskInsertOrder->Direction);
-			WriteString(ppos, StepItems::OffsetFlag, (int)ReqRiskInsertOrder->OffsetFlag);
-			WriteString(ppos, StepItems::OrderPriceType, (int)ReqRiskInsertOrder->OrderPriceType);
-			WriteString(ppos, StepItems::Price, ReqRiskInsertOrder->Price);
-			WriteString(ppos, StepItems::Volume, ReqRiskInsertOrder->Volume);
-			WriteString(ppos, StepItems::ClientOrderID, ReqRiskInsertOrder->ClientOrderID);
-			WriteString(ppos, StepItems::IsForceClose, ReqRiskInsertOrder->IsForceClose);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRiskInsertOrderField::FieldID);
+			WriteString(ppos, Items::InstrumentID, ReqRiskInsertOrder->InstrumentID);
+			WriteString(ppos, Items::Direction, (int)ReqRiskInsertOrder->Direction);
+			WriteString(ppos, Items::OffsetFlag, (int)ReqRiskInsertOrder->OffsetFlag);
+			WriteString(ppos, Items::OrderPriceType, (int)ReqRiskInsertOrder->OrderPriceType);
+			WriteString(ppos, Items::Price, ReqRiskInsertOrder->Price);
+			WriteString(ppos, Items::Volume, ReqRiskInsertOrder->Volume);
+			WriteString(ppos, Items::ClientOrderID, ReqRiskInsertOrder->ClientOrderID);
+			WriteString(ppos, Items::IsForceClose, ReqRiskInsertOrder->IsForceClose);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRiskInsertOrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -13300,64 +13300,64 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRiskInsertOrder->UserID) ? sizeof(ReqRiskInsertOrder->UserID) - 1 : value.length();
 								memcpy(ReqRiskInsertOrder->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqRiskInsertOrder->AccountID) ? sizeof(ReqRiskInsertOrder->AccountID) - 1 : value.length();
 								memcpy(ReqRiskInsertOrder->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqRiskInsertOrder->ExchangeID) ? sizeof(ReqRiskInsertOrder->ExchangeID) - 1 : value.length();
 								memcpy(ReqRiskInsertOrder->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(ReqRiskInsertOrder->InstrumentID) ? sizeof(ReqRiskInsertOrder->InstrumentID) - 1 : value.length();
 								memcpy(ReqRiskInsertOrder->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Direction:
+							case Items::Direction:
 							{
 								ReqRiskInsertOrder->Direction = (DirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OffsetFlag:
+							case Items::OffsetFlag:
 							{
 								ReqRiskInsertOrder->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OrderPriceType:
+							case Items::OrderPriceType:
 							{
 								ReqRiskInsertOrder->OrderPriceType = (OrderPriceTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Price:
+							case Items::Price:
 							{
 								ReqRiskInsertOrder->Price = atof(value.c_str());
 								break;
 							}
-							case StepItems::Volume:
+							case Items::Volume:
 							{
 								ReqRiskInsertOrder->Volume = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ClientOrderID:
+							case Items::ClientOrderID:
 							{
 								ReqRiskInsertOrder->ClientOrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::IsForceClose:
+							case Items::IsForceClose:
 							{
 								ReqRiskInsertOrder->IsForceClose = atoi(value.c_str());
 								break;
@@ -13442,88 +13442,88 @@ namespace step
 		char* ppos = buff;
 		if (Order != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepOrderField::FieldID);
 			if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
 			{
 				Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, Order->TradingDay);
+			WriteString(ppos, Items::TradingDay, Order->TradingDay);
 			if (strlen(Order->AccountID) >= sizeof(Order->AccountID))
 			{
 				Order->AccountID[sizeof(Order->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, Order->AccountID);
+			WriteString(ppos, Items::AccountID, Order->AccountID);
 			if (strlen(Order->ExchangeID) >= sizeof(Order->ExchangeID))
 			{
 				Order->ExchangeID[sizeof(Order->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, Order->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
 			if (strlen(Order->InstrumentID) >= sizeof(Order->InstrumentID))
 			{
 				Order->InstrumentID[sizeof(Order->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, Order->InstrumentID);
-			WriteString(ppos, StepItems::SecurityType, (int)Order->SecurityType);
-			WriteString(ppos, StepItems::OrderID, Order->OrderID);
+			WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)Order->SecurityType);
+			WriteString(ppos, Items::OrderID, Order->OrderID);
 			if (strlen(Order->OrderSysID) >= sizeof(Order->OrderSysID))
 			{
 				Order->OrderSysID[sizeof(Order->OrderSysID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderSysID, Order->OrderSysID);
-			WriteString(ppos, StepItems::Direction, (int)Order->Direction);
-			WriteString(ppos, StepItems::OffsetFlag, (int)Order->OffsetFlag);
-			WriteString(ppos, StepItems::OrderPriceType, (int)Order->OrderPriceType);
-			WriteString(ppos, StepItems::Price, Order->Price);
-			WriteString(ppos, StepItems::Volume, Order->Volume);
-			WriteString(ppos, StepItems::VolumeTotal, Order->VolumeTotal);
-			WriteString(ppos, StepItems::VolumeTraded, Order->VolumeTraded);
-			WriteString(ppos, StepItems::VolumeMultiple, Order->VolumeMultiple);
-			WriteString(ppos, StepItems::OrderStatus, (int)Order->OrderStatus);
+			WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
+			WriteString(ppos, Items::Direction, (int)Order->Direction);
+			WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
+			WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
+			WriteString(ppos, Items::Price, Order->Price);
+			WriteString(ppos, Items::Volume, Order->Volume);
+			WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
+			WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
+			WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
+			WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
 			if (strlen(Order->StatusMsg) >= sizeof(Order->StatusMsg))
 			{
 				Order->StatusMsg[sizeof(Order->StatusMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::StatusMsg, Order->StatusMsg);
+			WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
 			if (strlen(Order->OrderDate) >= sizeof(Order->OrderDate))
 			{
 				Order->OrderDate[sizeof(Order->OrderDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderDate, Order->OrderDate);
+			WriteString(ppos, Items::OrderDate, Order->OrderDate);
 			if (strlen(Order->OrderTime) >= sizeof(Order->OrderTime))
 			{
 				Order->OrderTime[sizeof(Order->OrderTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderTime, Order->OrderTime);
+			WriteString(ppos, Items::OrderTime, Order->OrderTime);
 			if (strlen(Order->CancelDate) >= sizeof(Order->CancelDate))
 			{
 				Order->CancelDate[sizeof(Order->CancelDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::CancelDate, Order->CancelDate);
+			WriteString(ppos, Items::CancelDate, Order->CancelDate);
 			if (strlen(Order->CancelTime) >= sizeof(Order->CancelTime))
 			{
 				Order->CancelTime[sizeof(Order->CancelTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::CancelTime, Order->CancelTime);
-			WriteString(ppos, StepItems::SessionID, Order->SessionID);
-			WriteString(ppos, StepItems::ClientOrderID, Order->ClientOrderID);
-			WriteString(ppos, StepItems::RequestID, Order->RequestID);
-			WriteString(ppos, StepItems::FrozenCash, Order->FrozenCash);
-			WriteString(ppos, StepItems::FrozenMargin, Order->FrozenMargin);
-			WriteString(ppos, StepItems::FrozenCommission, Order->FrozenCommission);
-			WriteString(ppos, StepItems::FrozenStampTax, Order->FrozenStampTax);
-			WriteString(ppos, StepItems::FrozenTransferFee, Order->FrozenTransferFee);
-			WriteHexString(ppos, StepItems::FieldEnd, StepOrderField::FieldID);
+			WriteString(ppos, Items::CancelTime, Order->CancelTime);
+			WriteString(ppos, Items::SessionID, Order->SessionID);
+			WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
+			WriteString(ppos, Items::RequestID, Order->RequestID);
+			WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
+			WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
+			WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
+			WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
+			WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
+			WriteHexString(ppos, Items::FieldEnd, StepOrderField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -13552,160 +13552,160 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(Order->TradingDay) ? sizeof(Order->TradingDay) - 1 : value.length();
 								memcpy(Order->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(Order->AccountID) ? sizeof(Order->AccountID) - 1 : value.length();
 								memcpy(Order->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(Order->ExchangeID) ? sizeof(Order->ExchangeID) - 1 : value.length();
 								memcpy(Order->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(Order->InstrumentID) ? sizeof(Order->InstrumentID) - 1 : value.length();
 								memcpy(Order->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								Order->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OrderID:
+							case Items::OrderID:
 							{
 								Order->OrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderSysID:
+							case Items::OrderSysID:
 							{
 								size_t len = value.length() >= sizeof(Order->OrderSysID) ? sizeof(Order->OrderSysID) - 1 : value.length();
 								memcpy(Order->OrderSysID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Direction:
+							case Items::Direction:
 							{
 								Order->Direction = (DirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OffsetFlag:
+							case Items::OffsetFlag:
 							{
 								Order->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OrderPriceType:
+							case Items::OrderPriceType:
 							{
 								Order->OrderPriceType = (OrderPriceTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Price:
+							case Items::Price:
 							{
 								Order->Price = atof(value.c_str());
 								break;
 							}
-							case StepItems::Volume:
+							case Items::Volume:
 							{
 								Order->Volume = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeTotal:
+							case Items::VolumeTotal:
 							{
 								Order->VolumeTotal = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeTraded:
+							case Items::VolumeTraded:
 							{
 								Order->VolumeTraded = atoi(value.c_str());
 								break;
 							}
-							case StepItems::VolumeMultiple:
+							case Items::VolumeMultiple:
 							{
 								Order->VolumeMultiple = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderStatus:
+							case Items::OrderStatus:
 							{
 								Order->OrderStatus = (OrderStatusType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::StatusMsg:
+							case Items::StatusMsg:
 							{
 								size_t len = value.length() >= sizeof(Order->StatusMsg) ? sizeof(Order->StatusMsg) - 1 : value.length();
 								memcpy(Order->StatusMsg, value.c_str(), len);
 								break;
 							}
-							case StepItems::OrderDate:
+							case Items::OrderDate:
 							{
 								size_t len = value.length() >= sizeof(Order->OrderDate) ? sizeof(Order->OrderDate) - 1 : value.length();
 								memcpy(Order->OrderDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::OrderTime:
+							case Items::OrderTime:
 							{
 								size_t len = value.length() >= sizeof(Order->OrderTime) ? sizeof(Order->OrderTime) - 1 : value.length();
 								memcpy(Order->OrderTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::CancelDate:
+							case Items::CancelDate:
 							{
 								size_t len = value.length() >= sizeof(Order->CancelDate) ? sizeof(Order->CancelDate) - 1 : value.length();
 								memcpy(Order->CancelDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::CancelTime:
+							case Items::CancelTime:
 							{
 								size_t len = value.length() >= sizeof(Order->CancelTime) ? sizeof(Order->CancelTime) - 1 : value.length();
 								memcpy(Order->CancelTime, value.c_str(), len);
 								break;
 							}
-							case StepItems::SessionID:
+							case Items::SessionID:
 							{
 								Order->SessionID = atoll(value.c_str());
 								break;
 							}
-							case StepItems::ClientOrderID:
+							case Items::ClientOrderID:
 							{
 								Order->ClientOrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RequestID:
+							case Items::RequestID:
 							{
 								Order->RequestID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::FrozenCash:
+							case Items::FrozenCash:
 							{
 								Order->FrozenCash = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenMargin:
+							case Items::FrozenMargin:
 							{
 								Order->FrozenMargin = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenCommission:
+							case Items::FrozenCommission:
 							{
 								Order->FrozenCommission = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenStampTax:
+							case Items::FrozenStampTax:
 							{
 								Order->FrozenStampTax = atof(value.c_str());
 								break;
 							}
-							case StepItems::FrozenTransferFee:
+							case Items::FrozenTransferFee:
 							{
 								Order->FrozenTransferFee = atof(value.c_str());
 								break;
@@ -13737,15 +13737,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -13831,36 +13831,36 @@ namespace step
 		char* ppos = buff;
 		if (ReqRiskCancelOrder != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRiskCancelOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRiskCancelOrderField::FieldID);
 			if (strlen(ReqRiskCancelOrder->UserID) >= sizeof(ReqRiskCancelOrder->UserID))
 			{
 				ReqRiskCancelOrder->UserID[sizeof(ReqRiskCancelOrder->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqRiskCancelOrder->UserID);
+			WriteString(ppos, Items::UserID, ReqRiskCancelOrder->UserID);
 			if (strlen(ReqRiskCancelOrder->AccountID) >= sizeof(ReqRiskCancelOrder->AccountID))
 			{
 				ReqRiskCancelOrder->AccountID[sizeof(ReqRiskCancelOrder->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqRiskCancelOrder->AccountID);
+			WriteString(ppos, Items::AccountID, ReqRiskCancelOrder->AccountID);
 			if (strlen(ReqRiskCancelOrder->ExchangeID) >= sizeof(ReqRiskCancelOrder->ExchangeID))
 			{
 				ReqRiskCancelOrder->ExchangeID[sizeof(ReqRiskCancelOrder->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqRiskCancelOrder->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, ReqRiskCancelOrder->ExchangeID);
 			if (strlen(ReqRiskCancelOrder->InstrumentID) >= sizeof(ReqRiskCancelOrder->InstrumentID))
 			{
 				ReqRiskCancelOrder->InstrumentID[sizeof(ReqRiskCancelOrder->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, ReqRiskCancelOrder->InstrumentID);
-			WriteString(ppos, StepItems::ClientCancelOrderID, ReqRiskCancelOrder->ClientCancelOrderID);
-			WriteString(ppos, StepItems::OrderID, ReqRiskCancelOrder->OrderID);
+			WriteString(ppos, Items::InstrumentID, ReqRiskCancelOrder->InstrumentID);
+			WriteString(ppos, Items::ClientCancelOrderID, ReqRiskCancelOrder->ClientCancelOrderID);
+			WriteString(ppos, Items::OrderID, ReqRiskCancelOrder->OrderID);
 			if (strlen(ReqRiskCancelOrder->OrderSysID) >= sizeof(ReqRiskCancelOrder->OrderSysID))
 			{
 				ReqRiskCancelOrder->OrderSysID[sizeof(ReqRiskCancelOrder->OrderSysID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderSysID, ReqRiskCancelOrder->OrderSysID);
-			WriteString(ppos, StepItems::ClientOrderID, ReqRiskCancelOrder->ClientOrderID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRiskCancelOrderField::FieldID);
+			WriteString(ppos, Items::OrderSysID, ReqRiskCancelOrder->OrderSysID);
+			WriteString(ppos, Items::ClientOrderID, ReqRiskCancelOrder->ClientOrderID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRiskCancelOrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -13889,50 +13889,50 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRiskCancelOrder->UserID) ? sizeof(ReqRiskCancelOrder->UserID) - 1 : value.length();
 								memcpy(ReqRiskCancelOrder->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqRiskCancelOrder->AccountID) ? sizeof(ReqRiskCancelOrder->AccountID) - 1 : value.length();
 								memcpy(ReqRiskCancelOrder->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqRiskCancelOrder->ExchangeID) ? sizeof(ReqRiskCancelOrder->ExchangeID) - 1 : value.length();
 								memcpy(ReqRiskCancelOrder->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(ReqRiskCancelOrder->InstrumentID) ? sizeof(ReqRiskCancelOrder->InstrumentID) - 1 : value.length();
 								memcpy(ReqRiskCancelOrder->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ClientCancelOrderID:
+							case Items::ClientCancelOrderID:
 							{
 								ReqRiskCancelOrder->ClientCancelOrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderID:
+							case Items::OrderID:
 							{
 								ReqRiskCancelOrder->OrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderSysID:
+							case Items::OrderSysID:
 							{
 								size_t len = value.length() >= sizeof(ReqRiskCancelOrder->OrderSysID) ? sizeof(ReqRiskCancelOrder->OrderSysID) - 1 : value.length();
 								memcpy(ReqRiskCancelOrder->OrderSysID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ClientOrderID:
+							case Items::ClientOrderID:
 							{
 								ReqRiskCancelOrder->ClientOrderID = atoi(value.c_str());
 								break;
@@ -14017,42 +14017,42 @@ namespace step
 		char* ppos = buff;
 		if (CancelOrder != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepCancelOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepCancelOrderField::FieldID);
 			if (strlen(CancelOrder->AccountID) >= sizeof(CancelOrder->AccountID))
 			{
 				CancelOrder->AccountID[sizeof(CancelOrder->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, CancelOrder->AccountID);
+			WriteString(ppos, Items::AccountID, CancelOrder->AccountID);
 			if (strlen(CancelOrder->ExchangeID) >= sizeof(CancelOrder->ExchangeID))
 			{
 				CancelOrder->ExchangeID[sizeof(CancelOrder->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, CancelOrder->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, CancelOrder->ExchangeID);
 			if (strlen(CancelOrder->InstrumentID) >= sizeof(CancelOrder->InstrumentID))
 			{
 				CancelOrder->InstrumentID[sizeof(CancelOrder->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, CancelOrder->InstrumentID);
-			WriteString(ppos, StepItems::ClientCancelOrderID, CancelOrder->ClientCancelOrderID);
-			WriteString(ppos, StepItems::OrderID, CancelOrder->OrderID);
+			WriteString(ppos, Items::InstrumentID, CancelOrder->InstrumentID);
+			WriteString(ppos, Items::ClientCancelOrderID, CancelOrder->ClientCancelOrderID);
+			WriteString(ppos, Items::OrderID, CancelOrder->OrderID);
 			if (strlen(CancelOrder->OrderSysID) >= sizeof(CancelOrder->OrderSysID))
 			{
 				CancelOrder->OrderSysID[sizeof(CancelOrder->OrderSysID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OrderSysID, CancelOrder->OrderSysID);
-			WriteString(ppos, StepItems::ClientOrderID, CancelOrder->ClientOrderID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepCancelOrderField::FieldID);
+			WriteString(ppos, Items::OrderSysID, CancelOrder->OrderSysID);
+			WriteString(ppos, Items::ClientOrderID, CancelOrder->ClientOrderID);
+			WriteHexString(ppos, Items::FieldEnd, StepCancelOrderField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -14081,44 +14081,44 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(CancelOrder->AccountID) ? sizeof(CancelOrder->AccountID) - 1 : value.length();
 								memcpy(CancelOrder->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(CancelOrder->ExchangeID) ? sizeof(CancelOrder->ExchangeID) - 1 : value.length();
 								memcpy(CancelOrder->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(CancelOrder->InstrumentID) ? sizeof(CancelOrder->InstrumentID) - 1 : value.length();
 								memcpy(CancelOrder->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ClientCancelOrderID:
+							case Items::ClientCancelOrderID:
 							{
 								CancelOrder->ClientCancelOrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderID:
+							case Items::OrderID:
 							{
 								CancelOrder->OrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OrderSysID:
+							case Items::OrderSysID:
 							{
 								size_t len = value.length() >= sizeof(CancelOrder->OrderSysID) ? sizeof(CancelOrder->OrderSysID) - 1 : value.length();
 								memcpy(CancelOrder->OrderSysID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ClientOrderID:
+							case Items::ClientOrderID:
 							{
 								CancelOrder->ClientOrderID = atoi(value.c_str());
 								break;
@@ -14150,15 +14150,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -14244,29 +14244,29 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddRiskUser != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddRiskUserField::FieldID);
 			if (strlen(ReqAddRiskUser->AdminUserID) >= sizeof(ReqAddRiskUser->AdminUserID))
 			{
 				ReqAddRiskUser->AdminUserID[sizeof(ReqAddRiskUser->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddRiskUser->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqAddRiskUser->AdminUserID);
 			if (strlen(ReqAddRiskUser->UserID) >= sizeof(ReqAddRiskUser->UserID))
 			{
 				ReqAddRiskUser->UserID[sizeof(ReqAddRiskUser->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqAddRiskUser->UserID);
+			WriteString(ppos, Items::UserID, ReqAddRiskUser->UserID);
 			if (strlen(ReqAddRiskUser->UserName) >= sizeof(ReqAddRiskUser->UserName))
 			{
 				ReqAddRiskUser->UserName[sizeof(ReqAddRiskUser->UserName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserName, ReqAddRiskUser->UserName);
+			WriteString(ppos, Items::UserName, ReqAddRiskUser->UserName);
 			if (strlen(ReqAddRiskUser->Password) >= sizeof(ReqAddRiskUser->Password))
 			{
 				ReqAddRiskUser->Password[sizeof(ReqAddRiskUser->Password) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::Password, ReqAddRiskUser->Password);
-			WriteString(ppos, StepItems::RiskGroupID, ReqAddRiskUser->RiskGroupID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddRiskUserField::FieldID);
+			WriteString(ppos, Items::Password, ReqAddRiskUser->Password);
+			WriteString(ppos, Items::RiskGroupID, ReqAddRiskUser->RiskGroupID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddRiskUserField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -14295,34 +14295,34 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskUser->AdminUserID) ? sizeof(ReqAddRiskUser->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddRiskUser->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskUser->UserID) ? sizeof(ReqAddRiskUser->UserID) - 1 : value.length();
 								memcpy(ReqAddRiskUser->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserName:
+							case Items::UserName:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskUser->UserName) ? sizeof(ReqAddRiskUser->UserName) - 1 : value.length();
 								memcpy(ReqAddRiskUser->UserName, value.c_str(), len);
 								break;
 							}
-							case StepItems::Password:
+							case Items::Password:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskUser->Password) ? sizeof(ReqAddRiskUser->Password) - 1 : value.length();
 								memcpy(ReqAddRiskUser->Password, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								ReqAddRiskUser->RiskGroupID = atoi(value.c_str());
 								break;
@@ -14407,29 +14407,29 @@ namespace step
 		char* ppos = buff;
 		if (RspAddRiskUser != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddRiskUserField::FieldID);
 			if (strlen(RspAddRiskUser->AdminUserID) >= sizeof(RspAddRiskUser->AdminUserID))
 			{
 				RspAddRiskUser->AdminUserID[sizeof(RspAddRiskUser->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddRiskUser->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspAddRiskUser->AdminUserID);
 			if (strlen(RspAddRiskUser->UserID) >= sizeof(RspAddRiskUser->UserID))
 			{
 				RspAddRiskUser->UserID[sizeof(RspAddRiskUser->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, RspAddRiskUser->UserID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddRiskUserField::FieldID);
+			WriteString(ppos, Items::UserID, RspAddRiskUser->UserID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddRiskUserField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -14458,16 +14458,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddRiskUser->AdminUserID) ? sizeof(RspAddRiskUser->AdminUserID) - 1 : value.length();
 								memcpy(RspAddRiskUser->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddRiskUser->UserID) ? sizeof(RspAddRiskUser->UserID) - 1 : value.length();
 								memcpy(RspAddRiskUser->UserID, value.c_str(), len);
@@ -14500,15 +14500,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -14594,29 +14594,29 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateRiskUser != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqUpdateRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqUpdateRiskUserField::FieldID);
 			if (strlen(ReqUpdateRiskUser->AdminUserID) >= sizeof(ReqUpdateRiskUser->AdminUserID))
 			{
 				ReqUpdateRiskUser->AdminUserID[sizeof(ReqUpdateRiskUser->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqUpdateRiskUser->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqUpdateRiskUser->AdminUserID);
 			if (strlen(ReqUpdateRiskUser->UserID) >= sizeof(ReqUpdateRiskUser->UserID))
 			{
 				ReqUpdateRiskUser->UserID[sizeof(ReqUpdateRiskUser->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqUpdateRiskUser->UserID);
+			WriteString(ppos, Items::UserID, ReqUpdateRiskUser->UserID);
 			if (strlen(ReqUpdateRiskUser->UserName) >= sizeof(ReqUpdateRiskUser->UserName))
 			{
 				ReqUpdateRiskUser->UserName[sizeof(ReqUpdateRiskUser->UserName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserName, ReqUpdateRiskUser->UserName);
+			WriteString(ppos, Items::UserName, ReqUpdateRiskUser->UserName);
 			if (strlen(ReqUpdateRiskUser->Password) >= sizeof(ReqUpdateRiskUser->Password))
 			{
 				ReqUpdateRiskUser->Password[sizeof(ReqUpdateRiskUser->Password) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::Password, ReqUpdateRiskUser->Password);
-			WriteString(ppos, StepItems::RiskGroupID, ReqUpdateRiskUser->RiskGroupID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqUpdateRiskUserField::FieldID);
+			WriteString(ppos, Items::Password, ReqUpdateRiskUser->Password);
+			WriteString(ppos, Items::RiskGroupID, ReqUpdateRiskUser->RiskGroupID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateRiskUserField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -14645,34 +14645,34 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateRiskUser->AdminUserID) ? sizeof(ReqUpdateRiskUser->AdminUserID) - 1 : value.length();
 								memcpy(ReqUpdateRiskUser->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateRiskUser->UserID) ? sizeof(ReqUpdateRiskUser->UserID) - 1 : value.length();
 								memcpy(ReqUpdateRiskUser->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserName:
+							case Items::UserName:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateRiskUser->UserName) ? sizeof(ReqUpdateRiskUser->UserName) - 1 : value.length();
 								memcpy(ReqUpdateRiskUser->UserName, value.c_str(), len);
 								break;
 							}
-							case StepItems::Password:
+							case Items::Password:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateRiskUser->Password) ? sizeof(ReqUpdateRiskUser->Password) - 1 : value.length();
 								memcpy(ReqUpdateRiskUser->Password, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								ReqUpdateRiskUser->RiskGroupID = atoi(value.c_str());
 								break;
@@ -14757,29 +14757,29 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateRiskUser != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspUpdateRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspUpdateRiskUserField::FieldID);
 			if (strlen(RspUpdateRiskUser->AdminUserID) >= sizeof(RspUpdateRiskUser->AdminUserID))
 			{
 				RspUpdateRiskUser->AdminUserID[sizeof(RspUpdateRiskUser->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspUpdateRiskUser->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspUpdateRiskUser->AdminUserID);
 			if (strlen(RspUpdateRiskUser->UserID) >= sizeof(RspUpdateRiskUser->UserID))
 			{
 				RspUpdateRiskUser->UserID[sizeof(RspUpdateRiskUser->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, RspUpdateRiskUser->UserID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspUpdateRiskUserField::FieldID);
+			WriteString(ppos, Items::UserID, RspUpdateRiskUser->UserID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateRiskUserField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -14808,16 +14808,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateRiskUser->AdminUserID) ? sizeof(RspUpdateRiskUser->AdminUserID) - 1 : value.length();
 								memcpy(RspUpdateRiskUser->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateRiskUser->UserID) ? sizeof(RspUpdateRiskUser->UserID) - 1 : value.length();
 								memcpy(RspUpdateRiskUser->UserID, value.c_str(), len);
@@ -14850,15 +14850,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -14944,18 +14944,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveRiskUser != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRemoveRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRemoveRiskUserField::FieldID);
 			if (strlen(ReqRemoveRiskUser->AdminUserID) >= sizeof(ReqRemoveRiskUser->AdminUserID))
 			{
 				ReqRemoveRiskUser->AdminUserID[sizeof(ReqRemoveRiskUser->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqRemoveRiskUser->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqRemoveRiskUser->AdminUserID);
 			if (strlen(ReqRemoveRiskUser->UserID) >= sizeof(ReqRemoveRiskUser->UserID))
 			{
 				ReqRemoveRiskUser->UserID[sizeof(ReqRemoveRiskUser->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqRemoveRiskUser->UserID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRemoveRiskUserField::FieldID);
+			WriteString(ppos, Items::UserID, ReqRemoveRiskUser->UserID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveRiskUserField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -14984,16 +14984,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveRiskUser->AdminUserID) ? sizeof(ReqRemoveRiskUser->AdminUserID) - 1 : value.length();
 								memcpy(ReqRemoveRiskUser->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveRiskUser->UserID) ? sizeof(ReqRemoveRiskUser->UserID) - 1 : value.length();
 								memcpy(ReqRemoveRiskUser->UserID, value.c_str(), len);
@@ -15079,29 +15079,29 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveRiskUser != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRemoveRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRemoveRiskUserField::FieldID);
 			if (strlen(RspRemoveRiskUser->AdminUserID) >= sizeof(RspRemoveRiskUser->AdminUserID))
 			{
 				RspRemoveRiskUser->AdminUserID[sizeof(RspRemoveRiskUser->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspRemoveRiskUser->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspRemoveRiskUser->AdminUserID);
 			if (strlen(RspRemoveRiskUser->UserID) >= sizeof(RspRemoveRiskUser->UserID))
 			{
 				RspRemoveRiskUser->UserID[sizeof(RspRemoveRiskUser->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, RspRemoveRiskUser->UserID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRemoveRiskUserField::FieldID);
+			WriteString(ppos, Items::UserID, RspRemoveRiskUser->UserID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveRiskUserField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -15130,16 +15130,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveRiskUser->AdminUserID) ? sizeof(RspRemoveRiskUser->AdminUserID) - 1 : value.length();
 								memcpy(RspRemoveRiskUser->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveRiskUser->UserID) ? sizeof(RspRemoveRiskUser->UserID) - 1 : value.length();
 								memcpy(RspRemoveRiskUser->UserID, value.c_str(), len);
@@ -15172,15 +15172,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -15266,28 +15266,28 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddAdminUser != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddAdminUserField::FieldID);
 			if (strlen(ReqAddAdminUser->AdminUserID) >= sizeof(ReqAddAdminUser->AdminUserID))
 			{
 				ReqAddAdminUser->AdminUserID[sizeof(ReqAddAdminUser->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddAdminUser->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqAddAdminUser->AdminUserID);
 			if (strlen(ReqAddAdminUser->UserID) >= sizeof(ReqAddAdminUser->UserID))
 			{
 				ReqAddAdminUser->UserID[sizeof(ReqAddAdminUser->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqAddAdminUser->UserID);
+			WriteString(ppos, Items::UserID, ReqAddAdminUser->UserID);
 			if (strlen(ReqAddAdminUser->UserName) >= sizeof(ReqAddAdminUser->UserName))
 			{
 				ReqAddAdminUser->UserName[sizeof(ReqAddAdminUser->UserName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserName, ReqAddAdminUser->UserName);
+			WriteString(ppos, Items::UserName, ReqAddAdminUser->UserName);
 			if (strlen(ReqAddAdminUser->Password) >= sizeof(ReqAddAdminUser->Password))
 			{
 				ReqAddAdminUser->Password[sizeof(ReqAddAdminUser->Password) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::Password, ReqAddAdminUser->Password);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddAdminUserField::FieldID);
+			WriteString(ppos, Items::Password, ReqAddAdminUser->Password);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddAdminUserField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -15316,28 +15316,28 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddAdminUser->AdminUserID) ? sizeof(ReqAddAdminUser->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddAdminUser->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddAdminUser->UserID) ? sizeof(ReqAddAdminUser->UserID) - 1 : value.length();
 								memcpy(ReqAddAdminUser->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserName:
+							case Items::UserName:
 							{
 								size_t len = value.length() >= sizeof(ReqAddAdminUser->UserName) ? sizeof(ReqAddAdminUser->UserName) - 1 : value.length();
 								memcpy(ReqAddAdminUser->UserName, value.c_str(), len);
 								break;
 							}
-							case StepItems::Password:
+							case Items::Password:
 							{
 								size_t len = value.length() >= sizeof(ReqAddAdminUser->Password) ? sizeof(ReqAddAdminUser->Password) - 1 : value.length();
 								memcpy(ReqAddAdminUser->Password, value.c_str(), len);
@@ -15423,29 +15423,29 @@ namespace step
 		char* ppos = buff;
 		if (RspAddAdminUser != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddAdminUserField::FieldID);
 			if (strlen(RspAddAdminUser->AdminUserID) >= sizeof(RspAddAdminUser->AdminUserID))
 			{
 				RspAddAdminUser->AdminUserID[sizeof(RspAddAdminUser->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddAdminUser->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspAddAdminUser->AdminUserID);
 			if (strlen(RspAddAdminUser->UserID) >= sizeof(RspAddAdminUser->UserID))
 			{
 				RspAddAdminUser->UserID[sizeof(RspAddAdminUser->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, RspAddAdminUser->UserID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddAdminUserField::FieldID);
+			WriteString(ppos, Items::UserID, RspAddAdminUser->UserID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddAdminUserField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -15474,16 +15474,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddAdminUser->AdminUserID) ? sizeof(RspAddAdminUser->AdminUserID) - 1 : value.length();
 								memcpy(RspAddAdminUser->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddAdminUser->UserID) ? sizeof(RspAddAdminUser->UserID) - 1 : value.length();
 								memcpy(RspAddAdminUser->UserID, value.c_str(), len);
@@ -15516,15 +15516,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -15610,28 +15610,28 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateAdminUser != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqUpdateAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqUpdateAdminUserField::FieldID);
 			if (strlen(ReqUpdateAdminUser->AdminUserID) >= sizeof(ReqUpdateAdminUser->AdminUserID))
 			{
 				ReqUpdateAdminUser->AdminUserID[sizeof(ReqUpdateAdminUser->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqUpdateAdminUser->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqUpdateAdminUser->AdminUserID);
 			if (strlen(ReqUpdateAdminUser->UserID) >= sizeof(ReqUpdateAdminUser->UserID))
 			{
 				ReqUpdateAdminUser->UserID[sizeof(ReqUpdateAdminUser->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqUpdateAdminUser->UserID);
+			WriteString(ppos, Items::UserID, ReqUpdateAdminUser->UserID);
 			if (strlen(ReqUpdateAdminUser->UserName) >= sizeof(ReqUpdateAdminUser->UserName))
 			{
 				ReqUpdateAdminUser->UserName[sizeof(ReqUpdateAdminUser->UserName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserName, ReqUpdateAdminUser->UserName);
+			WriteString(ppos, Items::UserName, ReqUpdateAdminUser->UserName);
 			if (strlen(ReqUpdateAdminUser->Password) >= sizeof(ReqUpdateAdminUser->Password))
 			{
 				ReqUpdateAdminUser->Password[sizeof(ReqUpdateAdminUser->Password) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::Password, ReqUpdateAdminUser->Password);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqUpdateAdminUserField::FieldID);
+			WriteString(ppos, Items::Password, ReqUpdateAdminUser->Password);
+			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateAdminUserField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -15660,28 +15660,28 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateAdminUser->AdminUserID) ? sizeof(ReqUpdateAdminUser->AdminUserID) - 1 : value.length();
 								memcpy(ReqUpdateAdminUser->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateAdminUser->UserID) ? sizeof(ReqUpdateAdminUser->UserID) - 1 : value.length();
 								memcpy(ReqUpdateAdminUser->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserName:
+							case Items::UserName:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateAdminUser->UserName) ? sizeof(ReqUpdateAdminUser->UserName) - 1 : value.length();
 								memcpy(ReqUpdateAdminUser->UserName, value.c_str(), len);
 								break;
 							}
-							case StepItems::Password:
+							case Items::Password:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateAdminUser->Password) ? sizeof(ReqUpdateAdminUser->Password) - 1 : value.length();
 								memcpy(ReqUpdateAdminUser->Password, value.c_str(), len);
@@ -15767,29 +15767,29 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateAdminUser != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspUpdateAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspUpdateAdminUserField::FieldID);
 			if (strlen(RspUpdateAdminUser->AdminUserID) >= sizeof(RspUpdateAdminUser->AdminUserID))
 			{
 				RspUpdateAdminUser->AdminUserID[sizeof(RspUpdateAdminUser->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspUpdateAdminUser->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspUpdateAdminUser->AdminUserID);
 			if (strlen(RspUpdateAdminUser->UserID) >= sizeof(RspUpdateAdminUser->UserID))
 			{
 				RspUpdateAdminUser->UserID[sizeof(RspUpdateAdminUser->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, RspUpdateAdminUser->UserID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspUpdateAdminUserField::FieldID);
+			WriteString(ppos, Items::UserID, RspUpdateAdminUser->UserID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateAdminUserField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -15818,16 +15818,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateAdminUser->AdminUserID) ? sizeof(RspUpdateAdminUser->AdminUserID) - 1 : value.length();
 								memcpy(RspUpdateAdminUser->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateAdminUser->UserID) ? sizeof(RspUpdateAdminUser->UserID) - 1 : value.length();
 								memcpy(RspUpdateAdminUser->UserID, value.c_str(), len);
@@ -15860,15 +15860,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -15954,18 +15954,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveAdminUser != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRemoveAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRemoveAdminUserField::FieldID);
 			if (strlen(ReqRemoveAdminUser->AdminUserID) >= sizeof(ReqRemoveAdminUser->AdminUserID))
 			{
 				ReqRemoveAdminUser->AdminUserID[sizeof(ReqRemoveAdminUser->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqRemoveAdminUser->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqRemoveAdminUser->AdminUserID);
 			if (strlen(ReqRemoveAdminUser->UserID) >= sizeof(ReqRemoveAdminUser->UserID))
 			{
 				ReqRemoveAdminUser->UserID[sizeof(ReqRemoveAdminUser->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqRemoveAdminUser->UserID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRemoveAdminUserField::FieldID);
+			WriteString(ppos, Items::UserID, ReqRemoveAdminUser->UserID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveAdminUserField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -15994,16 +15994,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveAdminUser->AdminUserID) ? sizeof(ReqRemoveAdminUser->AdminUserID) - 1 : value.length();
 								memcpy(ReqRemoveAdminUser->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveAdminUser->UserID) ? sizeof(ReqRemoveAdminUser->UserID) - 1 : value.length();
 								memcpy(ReqRemoveAdminUser->UserID, value.c_str(), len);
@@ -16089,29 +16089,29 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveAdminUser != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRemoveAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRemoveAdminUserField::FieldID);
 			if (strlen(RspRemoveAdminUser->AdminUserID) >= sizeof(RspRemoveAdminUser->AdminUserID))
 			{
 				RspRemoveAdminUser->AdminUserID[sizeof(RspRemoveAdminUser->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspRemoveAdminUser->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspRemoveAdminUser->AdminUserID);
 			if (strlen(RspRemoveAdminUser->UserID) >= sizeof(RspRemoveAdminUser->UserID))
 			{
 				RspRemoveAdminUser->UserID[sizeof(RspRemoveAdminUser->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, RspRemoveAdminUser->UserID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRemoveAdminUserField::FieldID);
+			WriteString(ppos, Items::UserID, RspRemoveAdminUser->UserID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveAdminUserField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -16140,16 +16140,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveAdminUser->AdminUserID) ? sizeof(RspRemoveAdminUser->AdminUserID) - 1 : value.length();
 								memcpy(RspRemoveAdminUser->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveAdminUser->UserID) ? sizeof(RspRemoveAdminUser->UserID) - 1 : value.length();
 								memcpy(RspRemoveAdminUser->UserID, value.c_str(), len);
@@ -16182,15 +16182,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -16276,46 +16276,46 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddPrimaryAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddPrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddPrimaryAccountField::FieldID);
 			if (strlen(ReqAddPrimaryAccount->AdminUserID) >= sizeof(ReqAddPrimaryAccount->AdminUserID))
 			{
 				ReqAddPrimaryAccount->AdminUserID[sizeof(ReqAddPrimaryAccount->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddPrimaryAccount->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqAddPrimaryAccount->AdminUserID);
 			if (strlen(ReqAddPrimaryAccount->TradingDay) >= sizeof(ReqAddPrimaryAccount->TradingDay))
 			{
 				ReqAddPrimaryAccount->TradingDay[sizeof(ReqAddPrimaryAccount->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ReqAddPrimaryAccount->TradingDay);
+			WriteString(ppos, Items::TradingDay, ReqAddPrimaryAccount->TradingDay);
 			if (strlen(ReqAddPrimaryAccount->PrimaryAccountID) >= sizeof(ReqAddPrimaryAccount->PrimaryAccountID))
 			{
 				ReqAddPrimaryAccount->PrimaryAccountID[sizeof(ReqAddPrimaryAccount->PrimaryAccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::PrimaryAccountID, ReqAddPrimaryAccount->PrimaryAccountID);
+			WriteString(ppos, Items::PrimaryAccountID, ReqAddPrimaryAccount->PrimaryAccountID);
 			if (strlen(ReqAddPrimaryAccount->PrimaryAccountName) >= sizeof(ReqAddPrimaryAccount->PrimaryAccountName))
 			{
 				ReqAddPrimaryAccount->PrimaryAccountName[sizeof(ReqAddPrimaryAccount->PrimaryAccountName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::PrimaryAccountName, ReqAddPrimaryAccount->PrimaryAccountName);
-			WriteString(ppos, StepItems::AccountClass, (int)ReqAddPrimaryAccount->AccountClass);
+			WriteString(ppos, Items::PrimaryAccountName, ReqAddPrimaryAccount->PrimaryAccountName);
+			WriteString(ppos, Items::AccountClass, (int)ReqAddPrimaryAccount->AccountClass);
 			if (strlen(ReqAddPrimaryAccount->BrokerPassword) >= sizeof(ReqAddPrimaryAccount->BrokerPassword))
 			{
 				ReqAddPrimaryAccount->BrokerPassword[sizeof(ReqAddPrimaryAccount->BrokerPassword) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::BrokerPassword, ReqAddPrimaryAccount->BrokerPassword);
-			WriteString(ppos, StepItems::OfferID, ReqAddPrimaryAccount->OfferID);
-			WriteString(ppos, StepItems::IsAllowLogin, ReqAddPrimaryAccount->IsAllowLogin);
-			WriteString(ppos, StepItems::IsSimulateAccount, ReqAddPrimaryAccount->IsSimulateAccount);
-			WriteString(ppos, StepItems::AccountStatus, (int)ReqAddPrimaryAccount->AccountStatus);
+			WriteString(ppos, Items::BrokerPassword, ReqAddPrimaryAccount->BrokerPassword);
+			WriteString(ppos, Items::OfferID, ReqAddPrimaryAccount->OfferID);
+			WriteString(ppos, Items::IsAllowLogin, ReqAddPrimaryAccount->IsAllowLogin);
+			WriteString(ppos, Items::IsSimulateAccount, ReqAddPrimaryAccount->IsSimulateAccount);
+			WriteString(ppos, Items::AccountStatus, (int)ReqAddPrimaryAccount->AccountStatus);
 			if (strlen(ReqAddPrimaryAccount->Password) >= sizeof(ReqAddPrimaryAccount->Password))
 			{
 				ReqAddPrimaryAccount->Password[sizeof(ReqAddPrimaryAccount->Password) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::Password, ReqAddPrimaryAccount->Password);
-			WriteString(ppos, StepItems::RiskGroupID, ReqAddPrimaryAccount->RiskGroupID);
-			WriteString(ppos, StepItems::CommissionGroupID, ReqAddPrimaryAccount->CommissionGroupID);
-			WriteString(ppos, StepItems::IsAutoAudit, ReqAddPrimaryAccount->IsAutoAudit);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddPrimaryAccountField::FieldID);
+			WriteString(ppos, Items::Password, ReqAddPrimaryAccount->Password);
+			WriteString(ppos, Items::RiskGroupID, ReqAddPrimaryAccount->RiskGroupID);
+			WriteString(ppos, Items::CommissionGroupID, ReqAddPrimaryAccount->CommissionGroupID);
+			WriteString(ppos, Items::IsAutoAudit, ReqAddPrimaryAccount->IsAutoAudit);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddPrimaryAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -16344,81 +16344,81 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddPrimaryAccount->AdminUserID) ? sizeof(ReqAddPrimaryAccount->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddPrimaryAccount->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ReqAddPrimaryAccount->TradingDay) ? sizeof(ReqAddPrimaryAccount->TradingDay) - 1 : value.length();
 								memcpy(ReqAddPrimaryAccount->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::PrimaryAccountID:
+							case Items::PrimaryAccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddPrimaryAccount->PrimaryAccountID) ? sizeof(ReqAddPrimaryAccount->PrimaryAccountID) - 1 : value.length();
 								memcpy(ReqAddPrimaryAccount->PrimaryAccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::PrimaryAccountName:
+							case Items::PrimaryAccountName:
 							{
 								size_t len = value.length() >= sizeof(ReqAddPrimaryAccount->PrimaryAccountName) ? sizeof(ReqAddPrimaryAccount->PrimaryAccountName) - 1 : value.length();
 								memcpy(ReqAddPrimaryAccount->PrimaryAccountName, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountClass:
+							case Items::AccountClass:
 							{
 								ReqAddPrimaryAccount->AccountClass = (AccountClassType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::BrokerPassword:
+							case Items::BrokerPassword:
 							{
 								size_t len = value.length() >= sizeof(ReqAddPrimaryAccount->BrokerPassword) ? sizeof(ReqAddPrimaryAccount->BrokerPassword) - 1 : value.length();
 								memcpy(ReqAddPrimaryAccount->BrokerPassword, value.c_str(), len);
 								break;
 							}
-							case StepItems::OfferID:
+							case Items::OfferID:
 							{
 								ReqAddPrimaryAccount->OfferID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::IsAllowLogin:
+							case Items::IsAllowLogin:
 							{
 								ReqAddPrimaryAccount->IsAllowLogin = atoi(value.c_str());
 								break;
 							}
-							case StepItems::IsSimulateAccount:
+							case Items::IsSimulateAccount:
 							{
 								ReqAddPrimaryAccount->IsSimulateAccount = atoi(value.c_str());
 								break;
 							}
-							case StepItems::AccountStatus:
+							case Items::AccountStatus:
 							{
 								ReqAddPrimaryAccount->AccountStatus = (AccountStatusType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Password:
+							case Items::Password:
 							{
 								size_t len = value.length() >= sizeof(ReqAddPrimaryAccount->Password) ? sizeof(ReqAddPrimaryAccount->Password) - 1 : value.length();
 								memcpy(ReqAddPrimaryAccount->Password, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								ReqAddPrimaryAccount->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::CommissionGroupID:
+							case Items::CommissionGroupID:
 							{
 								ReqAddPrimaryAccount->CommissionGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::IsAutoAudit:
+							case Items::IsAutoAudit:
 							{
 								ReqAddPrimaryAccount->IsAutoAudit = atoi(value.c_str());
 								break;
@@ -16503,29 +16503,29 @@ namespace step
 		char* ppos = buff;
 		if (RspAddPrimaryAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddPrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddPrimaryAccountField::FieldID);
 			if (strlen(RspAddPrimaryAccount->AdminUserID) >= sizeof(RspAddPrimaryAccount->AdminUserID))
 			{
 				RspAddPrimaryAccount->AdminUserID[sizeof(RspAddPrimaryAccount->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddPrimaryAccount->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspAddPrimaryAccount->AdminUserID);
 			if (strlen(RspAddPrimaryAccount->PrimaryAccountID) >= sizeof(RspAddPrimaryAccount->PrimaryAccountID))
 			{
 				RspAddPrimaryAccount->PrimaryAccountID[sizeof(RspAddPrimaryAccount->PrimaryAccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::PrimaryAccountID, RspAddPrimaryAccount->PrimaryAccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddPrimaryAccountField::FieldID);
+			WriteString(ppos, Items::PrimaryAccountID, RspAddPrimaryAccount->PrimaryAccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddPrimaryAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -16554,16 +16554,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddPrimaryAccount->AdminUserID) ? sizeof(RspAddPrimaryAccount->AdminUserID) - 1 : value.length();
 								memcpy(RspAddPrimaryAccount->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::PrimaryAccountID:
+							case Items::PrimaryAccountID:
 							{
 								size_t len = value.length() >= sizeof(RspAddPrimaryAccount->PrimaryAccountID) ? sizeof(RspAddPrimaryAccount->PrimaryAccountID) - 1 : value.length();
 								memcpy(RspAddPrimaryAccount->PrimaryAccountID, value.c_str(), len);
@@ -16596,15 +16596,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -16690,46 +16690,46 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdatePrimaryAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqUpdatePrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqUpdatePrimaryAccountField::FieldID);
 			if (strlen(ReqUpdatePrimaryAccount->AdminUserID) >= sizeof(ReqUpdatePrimaryAccount->AdminUserID))
 			{
 				ReqUpdatePrimaryAccount->AdminUserID[sizeof(ReqUpdatePrimaryAccount->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqUpdatePrimaryAccount->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqUpdatePrimaryAccount->AdminUserID);
 			if (strlen(ReqUpdatePrimaryAccount->TradingDay) >= sizeof(ReqUpdatePrimaryAccount->TradingDay))
 			{
 				ReqUpdatePrimaryAccount->TradingDay[sizeof(ReqUpdatePrimaryAccount->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ReqUpdatePrimaryAccount->TradingDay);
+			WriteString(ppos, Items::TradingDay, ReqUpdatePrimaryAccount->TradingDay);
 			if (strlen(ReqUpdatePrimaryAccount->PrimaryAccountID) >= sizeof(ReqUpdatePrimaryAccount->PrimaryAccountID))
 			{
 				ReqUpdatePrimaryAccount->PrimaryAccountID[sizeof(ReqUpdatePrimaryAccount->PrimaryAccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::PrimaryAccountID, ReqUpdatePrimaryAccount->PrimaryAccountID);
+			WriteString(ppos, Items::PrimaryAccountID, ReqUpdatePrimaryAccount->PrimaryAccountID);
 			if (strlen(ReqUpdatePrimaryAccount->PrimaryAccountName) >= sizeof(ReqUpdatePrimaryAccount->PrimaryAccountName))
 			{
 				ReqUpdatePrimaryAccount->PrimaryAccountName[sizeof(ReqUpdatePrimaryAccount->PrimaryAccountName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::PrimaryAccountName, ReqUpdatePrimaryAccount->PrimaryAccountName);
-			WriteString(ppos, StepItems::AccountClass, (int)ReqUpdatePrimaryAccount->AccountClass);
+			WriteString(ppos, Items::PrimaryAccountName, ReqUpdatePrimaryAccount->PrimaryAccountName);
+			WriteString(ppos, Items::AccountClass, (int)ReqUpdatePrimaryAccount->AccountClass);
 			if (strlen(ReqUpdatePrimaryAccount->BrokerPassword) >= sizeof(ReqUpdatePrimaryAccount->BrokerPassword))
 			{
 				ReqUpdatePrimaryAccount->BrokerPassword[sizeof(ReqUpdatePrimaryAccount->BrokerPassword) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::BrokerPassword, ReqUpdatePrimaryAccount->BrokerPassword);
-			WriteString(ppos, StepItems::OfferID, ReqUpdatePrimaryAccount->OfferID);
-			WriteString(ppos, StepItems::IsAllowLogin, ReqUpdatePrimaryAccount->IsAllowLogin);
-			WriteString(ppos, StepItems::IsSimulateAccount, ReqUpdatePrimaryAccount->IsSimulateAccount);
-			WriteString(ppos, StepItems::AccountStatus, (int)ReqUpdatePrimaryAccount->AccountStatus);
+			WriteString(ppos, Items::BrokerPassword, ReqUpdatePrimaryAccount->BrokerPassword);
+			WriteString(ppos, Items::OfferID, ReqUpdatePrimaryAccount->OfferID);
+			WriteString(ppos, Items::IsAllowLogin, ReqUpdatePrimaryAccount->IsAllowLogin);
+			WriteString(ppos, Items::IsSimulateAccount, ReqUpdatePrimaryAccount->IsSimulateAccount);
+			WriteString(ppos, Items::AccountStatus, (int)ReqUpdatePrimaryAccount->AccountStatus);
 			if (strlen(ReqUpdatePrimaryAccount->Password) >= sizeof(ReqUpdatePrimaryAccount->Password))
 			{
 				ReqUpdatePrimaryAccount->Password[sizeof(ReqUpdatePrimaryAccount->Password) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::Password, ReqUpdatePrimaryAccount->Password);
-			WriteString(ppos, StepItems::RiskGroupID, ReqUpdatePrimaryAccount->RiskGroupID);
-			WriteString(ppos, StepItems::CommissionGroupID, ReqUpdatePrimaryAccount->CommissionGroupID);
-			WriteString(ppos, StepItems::IsAutoAudit, ReqUpdatePrimaryAccount->IsAutoAudit);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqUpdatePrimaryAccountField::FieldID);
+			WriteString(ppos, Items::Password, ReqUpdatePrimaryAccount->Password);
+			WriteString(ppos, Items::RiskGroupID, ReqUpdatePrimaryAccount->RiskGroupID);
+			WriteString(ppos, Items::CommissionGroupID, ReqUpdatePrimaryAccount->CommissionGroupID);
+			WriteString(ppos, Items::IsAutoAudit, ReqUpdatePrimaryAccount->IsAutoAudit);
+			WriteHexString(ppos, Items::FieldEnd, StepReqUpdatePrimaryAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -16758,81 +16758,81 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdatePrimaryAccount->AdminUserID) ? sizeof(ReqUpdatePrimaryAccount->AdminUserID) - 1 : value.length();
 								memcpy(ReqUpdatePrimaryAccount->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdatePrimaryAccount->TradingDay) ? sizeof(ReqUpdatePrimaryAccount->TradingDay) - 1 : value.length();
 								memcpy(ReqUpdatePrimaryAccount->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::PrimaryAccountID:
+							case Items::PrimaryAccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdatePrimaryAccount->PrimaryAccountID) ? sizeof(ReqUpdatePrimaryAccount->PrimaryAccountID) - 1 : value.length();
 								memcpy(ReqUpdatePrimaryAccount->PrimaryAccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::PrimaryAccountName:
+							case Items::PrimaryAccountName:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdatePrimaryAccount->PrimaryAccountName) ? sizeof(ReqUpdatePrimaryAccount->PrimaryAccountName) - 1 : value.length();
 								memcpy(ReqUpdatePrimaryAccount->PrimaryAccountName, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountClass:
+							case Items::AccountClass:
 							{
 								ReqUpdatePrimaryAccount->AccountClass = (AccountClassType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::BrokerPassword:
+							case Items::BrokerPassword:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdatePrimaryAccount->BrokerPassword) ? sizeof(ReqUpdatePrimaryAccount->BrokerPassword) - 1 : value.length();
 								memcpy(ReqUpdatePrimaryAccount->BrokerPassword, value.c_str(), len);
 								break;
 							}
-							case StepItems::OfferID:
+							case Items::OfferID:
 							{
 								ReqUpdatePrimaryAccount->OfferID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::IsAllowLogin:
+							case Items::IsAllowLogin:
 							{
 								ReqUpdatePrimaryAccount->IsAllowLogin = atoi(value.c_str());
 								break;
 							}
-							case StepItems::IsSimulateAccount:
+							case Items::IsSimulateAccount:
 							{
 								ReqUpdatePrimaryAccount->IsSimulateAccount = atoi(value.c_str());
 								break;
 							}
-							case StepItems::AccountStatus:
+							case Items::AccountStatus:
 							{
 								ReqUpdatePrimaryAccount->AccountStatus = (AccountStatusType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Password:
+							case Items::Password:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdatePrimaryAccount->Password) ? sizeof(ReqUpdatePrimaryAccount->Password) - 1 : value.length();
 								memcpy(ReqUpdatePrimaryAccount->Password, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								ReqUpdatePrimaryAccount->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::CommissionGroupID:
+							case Items::CommissionGroupID:
 							{
 								ReqUpdatePrimaryAccount->CommissionGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::IsAutoAudit:
+							case Items::IsAutoAudit:
 							{
 								ReqUpdatePrimaryAccount->IsAutoAudit = atoi(value.c_str());
 								break;
@@ -16917,29 +16917,29 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdatePrimaryAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspUpdatePrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspUpdatePrimaryAccountField::FieldID);
 			if (strlen(RspUpdatePrimaryAccount->AdminUserID) >= sizeof(RspUpdatePrimaryAccount->AdminUserID))
 			{
 				RspUpdatePrimaryAccount->AdminUserID[sizeof(RspUpdatePrimaryAccount->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspUpdatePrimaryAccount->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspUpdatePrimaryAccount->AdminUserID);
 			if (strlen(RspUpdatePrimaryAccount->PrimaryAccountID) >= sizeof(RspUpdatePrimaryAccount->PrimaryAccountID))
 			{
 				RspUpdatePrimaryAccount->PrimaryAccountID[sizeof(RspUpdatePrimaryAccount->PrimaryAccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::PrimaryAccountID, RspUpdatePrimaryAccount->PrimaryAccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspUpdatePrimaryAccountField::FieldID);
+			WriteString(ppos, Items::PrimaryAccountID, RspUpdatePrimaryAccount->PrimaryAccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspUpdatePrimaryAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -16968,16 +16968,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdatePrimaryAccount->AdminUserID) ? sizeof(RspUpdatePrimaryAccount->AdminUserID) - 1 : value.length();
 								memcpy(RspUpdatePrimaryAccount->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::PrimaryAccountID:
+							case Items::PrimaryAccountID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdatePrimaryAccount->PrimaryAccountID) ? sizeof(RspUpdatePrimaryAccount->PrimaryAccountID) - 1 : value.length();
 								memcpy(RspUpdatePrimaryAccount->PrimaryAccountID, value.c_str(), len);
@@ -17010,15 +17010,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -17104,18 +17104,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemovePrimaryAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRemovePrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRemovePrimaryAccountField::FieldID);
 			if (strlen(ReqRemovePrimaryAccount->AdminUserID) >= sizeof(ReqRemovePrimaryAccount->AdminUserID))
 			{
 				ReqRemovePrimaryAccount->AdminUserID[sizeof(ReqRemovePrimaryAccount->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqRemovePrimaryAccount->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqRemovePrimaryAccount->AdminUserID);
 			if (strlen(ReqRemovePrimaryAccount->PrimaryAccountID) >= sizeof(ReqRemovePrimaryAccount->PrimaryAccountID))
 			{
 				ReqRemovePrimaryAccount->PrimaryAccountID[sizeof(ReqRemovePrimaryAccount->PrimaryAccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::PrimaryAccountID, ReqRemovePrimaryAccount->PrimaryAccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRemovePrimaryAccountField::FieldID);
+			WriteString(ppos, Items::PrimaryAccountID, ReqRemovePrimaryAccount->PrimaryAccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRemovePrimaryAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -17144,16 +17144,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemovePrimaryAccount->AdminUserID) ? sizeof(ReqRemovePrimaryAccount->AdminUserID) - 1 : value.length();
 								memcpy(ReqRemovePrimaryAccount->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::PrimaryAccountID:
+							case Items::PrimaryAccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemovePrimaryAccount->PrimaryAccountID) ? sizeof(ReqRemovePrimaryAccount->PrimaryAccountID) - 1 : value.length();
 								memcpy(ReqRemovePrimaryAccount->PrimaryAccountID, value.c_str(), len);
@@ -17239,29 +17239,29 @@ namespace step
 		char* ppos = buff;
 		if (RspRemovePrimaryAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRemovePrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRemovePrimaryAccountField::FieldID);
 			if (strlen(RspRemovePrimaryAccount->AdminUserID) >= sizeof(RspRemovePrimaryAccount->AdminUserID))
 			{
 				RspRemovePrimaryAccount->AdminUserID[sizeof(RspRemovePrimaryAccount->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspRemovePrimaryAccount->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspRemovePrimaryAccount->AdminUserID);
 			if (strlen(RspRemovePrimaryAccount->PrimaryAccountID) >= sizeof(RspRemovePrimaryAccount->PrimaryAccountID))
 			{
 				RspRemovePrimaryAccount->PrimaryAccountID[sizeof(RspRemovePrimaryAccount->PrimaryAccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::PrimaryAccountID, RspRemovePrimaryAccount->PrimaryAccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRemovePrimaryAccountField::FieldID);
+			WriteString(ppos, Items::PrimaryAccountID, RspRemovePrimaryAccount->PrimaryAccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRemovePrimaryAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -17290,16 +17290,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemovePrimaryAccount->AdminUserID) ? sizeof(RspRemovePrimaryAccount->AdminUserID) - 1 : value.length();
 								memcpy(RspRemovePrimaryAccount->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::PrimaryAccountID:
+							case Items::PrimaryAccountID:
 							{
 								size_t len = value.length() >= sizeof(RspRemovePrimaryAccount->PrimaryAccountID) ? sizeof(RspRemovePrimaryAccount->PrimaryAccountID) - 1 : value.length();
 								memcpy(RspRemovePrimaryAccount->PrimaryAccountID, value.c_str(), len);
@@ -17332,15 +17332,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -17426,38 +17426,38 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddAccountField::FieldID);
 			if (strlen(ReqAddAccount->AdminUserID) >= sizeof(ReqAddAccount->AdminUserID))
 			{
 				ReqAddAccount->AdminUserID[sizeof(ReqAddAccount->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddAccount->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqAddAccount->AdminUserID);
 			if (strlen(ReqAddAccount->TradingDay) >= sizeof(ReqAddAccount->TradingDay))
 			{
 				ReqAddAccount->TradingDay[sizeof(ReqAddAccount->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ReqAddAccount->TradingDay);
+			WriteString(ppos, Items::TradingDay, ReqAddAccount->TradingDay);
 			if (strlen(ReqAddAccount->AccountID) >= sizeof(ReqAddAccount->AccountID))
 			{
 				ReqAddAccount->AccountID[sizeof(ReqAddAccount->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqAddAccount->AccountID);
+			WriteString(ppos, Items::AccountID, ReqAddAccount->AccountID);
 			if (strlen(ReqAddAccount->AccountName) >= sizeof(ReqAddAccount->AccountName))
 			{
 				ReqAddAccount->AccountName[sizeof(ReqAddAccount->AccountName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountName, ReqAddAccount->AccountName);
-			WriteString(ppos, StepItems::AccountStatus, (int)ReqAddAccount->AccountStatus);
+			WriteString(ppos, Items::AccountName, ReqAddAccount->AccountName);
+			WriteString(ppos, Items::AccountStatus, (int)ReqAddAccount->AccountStatus);
 			if (strlen(ReqAddAccount->Password) >= sizeof(ReqAddAccount->Password))
 			{
 				ReqAddAccount->Password[sizeof(ReqAddAccount->Password) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::Password, ReqAddAccount->Password);
-			WriteString(ppos, StepItems::TradeGroupID, ReqAddAccount->TradeGroupID);
-			WriteString(ppos, StepItems::RiskGroupID, ReqAddAccount->RiskGroupID);
-			WriteString(ppos, StepItems::CommissionGroupID, ReqAddAccount->CommissionGroupID);
-			WriteString(ppos, StepItems::IsAutoAudit, ReqAddAccount->IsAutoAudit);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddAccountField::FieldID);
+			WriteString(ppos, Items::Password, ReqAddAccount->Password);
+			WriteString(ppos, Items::TradeGroupID, ReqAddAccount->TradeGroupID);
+			WriteString(ppos, Items::RiskGroupID, ReqAddAccount->RiskGroupID);
+			WriteString(ppos, Items::CommissionGroupID, ReqAddAccount->CommissionGroupID);
+			WriteString(ppos, Items::IsAutoAudit, ReqAddAccount->IsAutoAudit);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -17486,60 +17486,60 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddAccount->AdminUserID) ? sizeof(ReqAddAccount->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddAccount->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ReqAddAccount->TradingDay) ? sizeof(ReqAddAccount->TradingDay) - 1 : value.length();
 								memcpy(ReqAddAccount->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddAccount->AccountID) ? sizeof(ReqAddAccount->AccountID) - 1 : value.length();
 								memcpy(ReqAddAccount->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountName:
+							case Items::AccountName:
 							{
 								size_t len = value.length() >= sizeof(ReqAddAccount->AccountName) ? sizeof(ReqAddAccount->AccountName) - 1 : value.length();
 								memcpy(ReqAddAccount->AccountName, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountStatus:
+							case Items::AccountStatus:
 							{
 								ReqAddAccount->AccountStatus = (AccountStatusType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Password:
+							case Items::Password:
 							{
 								size_t len = value.length() >= sizeof(ReqAddAccount->Password) ? sizeof(ReqAddAccount->Password) - 1 : value.length();
 								memcpy(ReqAddAccount->Password, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								ReqAddAccount->TradeGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								ReqAddAccount->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::CommissionGroupID:
+							case Items::CommissionGroupID:
 							{
 								ReqAddAccount->CommissionGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::IsAutoAudit:
+							case Items::IsAutoAudit:
 							{
 								ReqAddAccount->IsAutoAudit = atoi(value.c_str());
 								break;
@@ -17624,29 +17624,29 @@ namespace step
 		char* ppos = buff;
 		if (RspAddAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddAccountField::FieldID);
 			if (strlen(RspAddAccount->AdminUserID) >= sizeof(RspAddAccount->AdminUserID))
 			{
 				RspAddAccount->AdminUserID[sizeof(RspAddAccount->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddAccount->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspAddAccount->AdminUserID);
 			if (strlen(RspAddAccount->AccountID) >= sizeof(RspAddAccount->AccountID))
 			{
 				RspAddAccount->AccountID[sizeof(RspAddAccount->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, RspAddAccount->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddAccountField::FieldID);
+			WriteString(ppos, Items::AccountID, RspAddAccount->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -17675,16 +17675,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddAccount->AdminUserID) ? sizeof(RspAddAccount->AdminUserID) - 1 : value.length();
 								memcpy(RspAddAccount->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(RspAddAccount->AccountID) ? sizeof(RspAddAccount->AccountID) - 1 : value.length();
 								memcpy(RspAddAccount->AccountID, value.c_str(), len);
@@ -17717,15 +17717,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -17811,38 +17811,38 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqUpdateAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqUpdateAccountField::FieldID);
 			if (strlen(ReqUpdateAccount->AdminUserID) >= sizeof(ReqUpdateAccount->AdminUserID))
 			{
 				ReqUpdateAccount->AdminUserID[sizeof(ReqUpdateAccount->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqUpdateAccount->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqUpdateAccount->AdminUserID);
 			if (strlen(ReqUpdateAccount->TradingDay) >= sizeof(ReqUpdateAccount->TradingDay))
 			{
 				ReqUpdateAccount->TradingDay[sizeof(ReqUpdateAccount->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ReqUpdateAccount->TradingDay);
+			WriteString(ppos, Items::TradingDay, ReqUpdateAccount->TradingDay);
 			if (strlen(ReqUpdateAccount->AccountID) >= sizeof(ReqUpdateAccount->AccountID))
 			{
 				ReqUpdateAccount->AccountID[sizeof(ReqUpdateAccount->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqUpdateAccount->AccountID);
+			WriteString(ppos, Items::AccountID, ReqUpdateAccount->AccountID);
 			if (strlen(ReqUpdateAccount->AccountName) >= sizeof(ReqUpdateAccount->AccountName))
 			{
 				ReqUpdateAccount->AccountName[sizeof(ReqUpdateAccount->AccountName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountName, ReqUpdateAccount->AccountName);
-			WriteString(ppos, StepItems::AccountStatus, (int)ReqUpdateAccount->AccountStatus);
+			WriteString(ppos, Items::AccountName, ReqUpdateAccount->AccountName);
+			WriteString(ppos, Items::AccountStatus, (int)ReqUpdateAccount->AccountStatus);
 			if (strlen(ReqUpdateAccount->Password) >= sizeof(ReqUpdateAccount->Password))
 			{
 				ReqUpdateAccount->Password[sizeof(ReqUpdateAccount->Password) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::Password, ReqUpdateAccount->Password);
-			WriteString(ppos, StepItems::TradeGroupID, ReqUpdateAccount->TradeGroupID);
-			WriteString(ppos, StepItems::RiskGroupID, ReqUpdateAccount->RiskGroupID);
-			WriteString(ppos, StepItems::CommissionGroupID, ReqUpdateAccount->CommissionGroupID);
-			WriteString(ppos, StepItems::IsAutoAudit, ReqUpdateAccount->IsAutoAudit);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqUpdateAccountField::FieldID);
+			WriteString(ppos, Items::Password, ReqUpdateAccount->Password);
+			WriteString(ppos, Items::TradeGroupID, ReqUpdateAccount->TradeGroupID);
+			WriteString(ppos, Items::RiskGroupID, ReqUpdateAccount->RiskGroupID);
+			WriteString(ppos, Items::CommissionGroupID, ReqUpdateAccount->CommissionGroupID);
+			WriteString(ppos, Items::IsAutoAudit, ReqUpdateAccount->IsAutoAudit);
+			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -17871,60 +17871,60 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateAccount->AdminUserID) ? sizeof(ReqUpdateAccount->AdminUserID) - 1 : value.length();
 								memcpy(ReqUpdateAccount->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateAccount->TradingDay) ? sizeof(ReqUpdateAccount->TradingDay) - 1 : value.length();
 								memcpy(ReqUpdateAccount->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateAccount->AccountID) ? sizeof(ReqUpdateAccount->AccountID) - 1 : value.length();
 								memcpy(ReqUpdateAccount->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountName:
+							case Items::AccountName:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateAccount->AccountName) ? sizeof(ReqUpdateAccount->AccountName) - 1 : value.length();
 								memcpy(ReqUpdateAccount->AccountName, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountStatus:
+							case Items::AccountStatus:
 							{
 								ReqUpdateAccount->AccountStatus = (AccountStatusType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::Password:
+							case Items::Password:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateAccount->Password) ? sizeof(ReqUpdateAccount->Password) - 1 : value.length();
 								memcpy(ReqUpdateAccount->Password, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								ReqUpdateAccount->TradeGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								ReqUpdateAccount->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::CommissionGroupID:
+							case Items::CommissionGroupID:
 							{
 								ReqUpdateAccount->CommissionGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::IsAutoAudit:
+							case Items::IsAutoAudit:
 							{
 								ReqUpdateAccount->IsAutoAudit = atoi(value.c_str());
 								break;
@@ -18009,29 +18009,29 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspUpdateAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspUpdateAccountField::FieldID);
 			if (strlen(RspUpdateAccount->AdminUserID) >= sizeof(RspUpdateAccount->AdminUserID))
 			{
 				RspUpdateAccount->AdminUserID[sizeof(RspUpdateAccount->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspUpdateAccount->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspUpdateAccount->AdminUserID);
 			if (strlen(RspUpdateAccount->AccountID) >= sizeof(RspUpdateAccount->AccountID))
 			{
 				RspUpdateAccount->AccountID[sizeof(RspUpdateAccount->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, RspUpdateAccount->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspUpdateAccountField::FieldID);
+			WriteString(ppos, Items::AccountID, RspUpdateAccount->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -18060,16 +18060,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateAccount->AdminUserID) ? sizeof(RspUpdateAccount->AdminUserID) - 1 : value.length();
 								memcpy(RspUpdateAccount->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateAccount->AccountID) ? sizeof(RspUpdateAccount->AccountID) - 1 : value.length();
 								memcpy(RspUpdateAccount->AccountID, value.c_str(), len);
@@ -18102,15 +18102,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -18196,18 +18196,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRemoveAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRemoveAccountField::FieldID);
 			if (strlen(ReqRemoveAccount->AdminUserID) >= sizeof(ReqRemoveAccount->AdminUserID))
 			{
 				ReqRemoveAccount->AdminUserID[sizeof(ReqRemoveAccount->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqRemoveAccount->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqRemoveAccount->AdminUserID);
 			if (strlen(ReqRemoveAccount->AccountID) >= sizeof(ReqRemoveAccount->AccountID))
 			{
 				ReqRemoveAccount->AccountID[sizeof(ReqRemoveAccount->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqRemoveAccount->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRemoveAccountField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqRemoveAccount->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -18236,16 +18236,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveAccount->AdminUserID) ? sizeof(ReqRemoveAccount->AdminUserID) - 1 : value.length();
 								memcpy(ReqRemoveAccount->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveAccount->AccountID) ? sizeof(ReqRemoveAccount->AccountID) - 1 : value.length();
 								memcpy(ReqRemoveAccount->AccountID, value.c_str(), len);
@@ -18331,29 +18331,29 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveAccount != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRemoveAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRemoveAccountField::FieldID);
 			if (strlen(RspRemoveAccount->AdminUserID) >= sizeof(RspRemoveAccount->AdminUserID))
 			{
 				RspRemoveAccount->AdminUserID[sizeof(RspRemoveAccount->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspRemoveAccount->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspRemoveAccount->AdminUserID);
 			if (strlen(RspRemoveAccount->AccountID) >= sizeof(RspRemoveAccount->AccountID))
 			{
 				RspRemoveAccount->AccountID[sizeof(RspRemoveAccount->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, RspRemoveAccount->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRemoveAccountField::FieldID);
+			WriteString(ppos, Items::AccountID, RspRemoveAccount->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -18382,16 +18382,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveAccount->AdminUserID) ? sizeof(RspRemoveAccount->AdminUserID) - 1 : value.length();
 								memcpy(RspRemoveAccount->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveAccount->AccountID) ? sizeof(RspRemoveAccount->AccountID) - 1 : value.length();
 								memcpy(RspRemoveAccount->AccountID, value.c_str(), len);
@@ -18424,15 +18424,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -18518,28 +18518,28 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddBaseCommission != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddBaseCommissionField::FieldID);
 			if (strlen(ReqAddBaseCommission->AdminUserID) >= sizeof(ReqAddBaseCommission->AdminUserID))
 			{
 				ReqAddBaseCommission->AdminUserID[sizeof(ReqAddBaseCommission->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddBaseCommission->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqAddBaseCommission->AdminUserID);
 			if (strlen(ReqAddBaseCommission->TradingDay) >= sizeof(ReqAddBaseCommission->TradingDay))
 			{
 				ReqAddBaseCommission->TradingDay[sizeof(ReqAddBaseCommission->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ReqAddBaseCommission->TradingDay);
+			WriteString(ppos, Items::TradingDay, ReqAddBaseCommission->TradingDay);
 			if (strlen(ReqAddBaseCommission->ExchangeID) >= sizeof(ReqAddBaseCommission->ExchangeID))
 			{
 				ReqAddBaseCommission->ExchangeID[sizeof(ReqAddBaseCommission->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqAddBaseCommission->ExchangeID);
-			WriteString(ppos, StepItems::SecurityType, (int)ReqAddBaseCommission->SecurityType);
-			WriteString(ppos, StepItems::OpenStampTaxByMoney, ReqAddBaseCommission->OpenStampTaxByMoney);
-			WriteString(ppos, StepItems::CloseStampTaxByMoney, ReqAddBaseCommission->CloseStampTaxByMoney);
-			WriteString(ppos, StepItems::OpenTransferFeeByMoney, ReqAddBaseCommission->OpenTransferFeeByMoney);
-			WriteString(ppos, StepItems::CloseTransferFeeByMoney, ReqAddBaseCommission->CloseTransferFeeByMoney);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddBaseCommissionField::FieldID);
+			WriteString(ppos, Items::ExchangeID, ReqAddBaseCommission->ExchangeID);
+			WriteString(ppos, Items::SecurityType, (int)ReqAddBaseCommission->SecurityType);
+			WriteString(ppos, Items::OpenStampTaxByMoney, ReqAddBaseCommission->OpenStampTaxByMoney);
+			WriteString(ppos, Items::CloseStampTaxByMoney, ReqAddBaseCommission->CloseStampTaxByMoney);
+			WriteString(ppos, Items::OpenTransferFeeByMoney, ReqAddBaseCommission->OpenTransferFeeByMoney);
+			WriteString(ppos, Items::CloseTransferFeeByMoney, ReqAddBaseCommission->CloseTransferFeeByMoney);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddBaseCommissionField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -18568,48 +18568,48 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddBaseCommission->AdminUserID) ? sizeof(ReqAddBaseCommission->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddBaseCommission->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ReqAddBaseCommission->TradingDay) ? sizeof(ReqAddBaseCommission->TradingDay) - 1 : value.length();
 								memcpy(ReqAddBaseCommission->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddBaseCommission->ExchangeID) ? sizeof(ReqAddBaseCommission->ExchangeID) - 1 : value.length();
 								memcpy(ReqAddBaseCommission->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								ReqAddBaseCommission->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OpenStampTaxByMoney:
+							case Items::OpenStampTaxByMoney:
 							{
 								ReqAddBaseCommission->OpenStampTaxByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseStampTaxByMoney:
+							case Items::CloseStampTaxByMoney:
 							{
 								ReqAddBaseCommission->CloseStampTaxByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::OpenTransferFeeByMoney:
+							case Items::OpenTransferFeeByMoney:
 							{
 								ReqAddBaseCommission->OpenTransferFeeByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseTransferFeeByMoney:
+							case Items::CloseTransferFeeByMoney:
 							{
 								ReqAddBaseCommission->CloseTransferFeeByMoney = atof(value.c_str());
 								break;
@@ -18694,35 +18694,35 @@ namespace step
 		char* ppos = buff;
 		if (RspAddBaseCommission != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddBaseCommissionField::FieldID);
 			if (strlen(RspAddBaseCommission->AdminUserID) >= sizeof(RspAddBaseCommission->AdminUserID))
 			{
 				RspAddBaseCommission->AdminUserID[sizeof(RspAddBaseCommission->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddBaseCommission->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspAddBaseCommission->AdminUserID);
 			if (strlen(RspAddBaseCommission->TradingDay) >= sizeof(RspAddBaseCommission->TradingDay))
 			{
 				RspAddBaseCommission->TradingDay[sizeof(RspAddBaseCommission->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, RspAddBaseCommission->TradingDay);
+			WriteString(ppos, Items::TradingDay, RspAddBaseCommission->TradingDay);
 			if (strlen(RspAddBaseCommission->ExchangeID) >= sizeof(RspAddBaseCommission->ExchangeID))
 			{
 				RspAddBaseCommission->ExchangeID[sizeof(RspAddBaseCommission->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, RspAddBaseCommission->ExchangeID);
-			WriteString(ppos, StepItems::SecurityType, (int)RspAddBaseCommission->SecurityType);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddBaseCommissionField::FieldID);
+			WriteString(ppos, Items::ExchangeID, RspAddBaseCommission->ExchangeID);
+			WriteString(ppos, Items::SecurityType, (int)RspAddBaseCommission->SecurityType);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddBaseCommissionField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -18751,28 +18751,28 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddBaseCommission->AdminUserID) ? sizeof(RspAddBaseCommission->AdminUserID) - 1 : value.length();
 								memcpy(RspAddBaseCommission->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(RspAddBaseCommission->TradingDay) ? sizeof(RspAddBaseCommission->TradingDay) - 1 : value.length();
 								memcpy(RspAddBaseCommission->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(RspAddBaseCommission->ExchangeID) ? sizeof(RspAddBaseCommission->ExchangeID) - 1 : value.length();
 								memcpy(RspAddBaseCommission->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								RspAddBaseCommission->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
@@ -18804,15 +18804,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -18898,28 +18898,28 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateBaseCommission != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqUpdateBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqUpdateBaseCommissionField::FieldID);
 			if (strlen(ReqUpdateBaseCommission->AdminUserID) >= sizeof(ReqUpdateBaseCommission->AdminUserID))
 			{
 				ReqUpdateBaseCommission->AdminUserID[sizeof(ReqUpdateBaseCommission->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqUpdateBaseCommission->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqUpdateBaseCommission->AdminUserID);
 			if (strlen(ReqUpdateBaseCommission->TradingDay) >= sizeof(ReqUpdateBaseCommission->TradingDay))
 			{
 				ReqUpdateBaseCommission->TradingDay[sizeof(ReqUpdateBaseCommission->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ReqUpdateBaseCommission->TradingDay);
+			WriteString(ppos, Items::TradingDay, ReqUpdateBaseCommission->TradingDay);
 			if (strlen(ReqUpdateBaseCommission->ExchangeID) >= sizeof(ReqUpdateBaseCommission->ExchangeID))
 			{
 				ReqUpdateBaseCommission->ExchangeID[sizeof(ReqUpdateBaseCommission->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqUpdateBaseCommission->ExchangeID);
-			WriteString(ppos, StepItems::SecurityType, (int)ReqUpdateBaseCommission->SecurityType);
-			WriteString(ppos, StepItems::OpenStampTaxByMoney, ReqUpdateBaseCommission->OpenStampTaxByMoney);
-			WriteString(ppos, StepItems::CloseStampTaxByMoney, ReqUpdateBaseCommission->CloseStampTaxByMoney);
-			WriteString(ppos, StepItems::OpenTransferFeeByMoney, ReqUpdateBaseCommission->OpenTransferFeeByMoney);
-			WriteString(ppos, StepItems::CloseTransferFeeByMoney, ReqUpdateBaseCommission->CloseTransferFeeByMoney);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqUpdateBaseCommissionField::FieldID);
+			WriteString(ppos, Items::ExchangeID, ReqUpdateBaseCommission->ExchangeID);
+			WriteString(ppos, Items::SecurityType, (int)ReqUpdateBaseCommission->SecurityType);
+			WriteString(ppos, Items::OpenStampTaxByMoney, ReqUpdateBaseCommission->OpenStampTaxByMoney);
+			WriteString(ppos, Items::CloseStampTaxByMoney, ReqUpdateBaseCommission->CloseStampTaxByMoney);
+			WriteString(ppos, Items::OpenTransferFeeByMoney, ReqUpdateBaseCommission->OpenTransferFeeByMoney);
+			WriteString(ppos, Items::CloseTransferFeeByMoney, ReqUpdateBaseCommission->CloseTransferFeeByMoney);
+			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateBaseCommissionField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -18948,48 +18948,48 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateBaseCommission->AdminUserID) ? sizeof(ReqUpdateBaseCommission->AdminUserID) - 1 : value.length();
 								memcpy(ReqUpdateBaseCommission->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateBaseCommission->TradingDay) ? sizeof(ReqUpdateBaseCommission->TradingDay) - 1 : value.length();
 								memcpy(ReqUpdateBaseCommission->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateBaseCommission->ExchangeID) ? sizeof(ReqUpdateBaseCommission->ExchangeID) - 1 : value.length();
 								memcpy(ReqUpdateBaseCommission->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								ReqUpdateBaseCommission->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OpenStampTaxByMoney:
+							case Items::OpenStampTaxByMoney:
 							{
 								ReqUpdateBaseCommission->OpenStampTaxByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseStampTaxByMoney:
+							case Items::CloseStampTaxByMoney:
 							{
 								ReqUpdateBaseCommission->CloseStampTaxByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::OpenTransferFeeByMoney:
+							case Items::OpenTransferFeeByMoney:
 							{
 								ReqUpdateBaseCommission->OpenTransferFeeByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseTransferFeeByMoney:
+							case Items::CloseTransferFeeByMoney:
 							{
 								ReqUpdateBaseCommission->CloseTransferFeeByMoney = atof(value.c_str());
 								break;
@@ -19074,35 +19074,35 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateBaseCommission != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspUpdateBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspUpdateBaseCommissionField::FieldID);
 			if (strlen(RspUpdateBaseCommission->AdminUserID) >= sizeof(RspUpdateBaseCommission->AdminUserID))
 			{
 				RspUpdateBaseCommission->AdminUserID[sizeof(RspUpdateBaseCommission->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspUpdateBaseCommission->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspUpdateBaseCommission->AdminUserID);
 			if (strlen(RspUpdateBaseCommission->TradingDay) >= sizeof(RspUpdateBaseCommission->TradingDay))
 			{
 				RspUpdateBaseCommission->TradingDay[sizeof(RspUpdateBaseCommission->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, RspUpdateBaseCommission->TradingDay);
+			WriteString(ppos, Items::TradingDay, RspUpdateBaseCommission->TradingDay);
 			if (strlen(RspUpdateBaseCommission->ExchangeID) >= sizeof(RspUpdateBaseCommission->ExchangeID))
 			{
 				RspUpdateBaseCommission->ExchangeID[sizeof(RspUpdateBaseCommission->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, RspUpdateBaseCommission->ExchangeID);
-			WriteString(ppos, StepItems::SecurityType, (int)RspUpdateBaseCommission->SecurityType);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspUpdateBaseCommissionField::FieldID);
+			WriteString(ppos, Items::ExchangeID, RspUpdateBaseCommission->ExchangeID);
+			WriteString(ppos, Items::SecurityType, (int)RspUpdateBaseCommission->SecurityType);
+			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateBaseCommissionField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -19131,28 +19131,28 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateBaseCommission->AdminUserID) ? sizeof(RspUpdateBaseCommission->AdminUserID) - 1 : value.length();
 								memcpy(RspUpdateBaseCommission->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateBaseCommission->TradingDay) ? sizeof(RspUpdateBaseCommission->TradingDay) - 1 : value.length();
 								memcpy(RspUpdateBaseCommission->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateBaseCommission->ExchangeID) ? sizeof(RspUpdateBaseCommission->ExchangeID) - 1 : value.length();
 								memcpy(RspUpdateBaseCommission->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								RspUpdateBaseCommission->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
@@ -19184,15 +19184,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -19278,24 +19278,24 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveBaseCommission != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRemoveBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRemoveBaseCommissionField::FieldID);
 			if (strlen(ReqRemoveBaseCommission->AdminUserID) >= sizeof(ReqRemoveBaseCommission->AdminUserID))
 			{
 				ReqRemoveBaseCommission->AdminUserID[sizeof(ReqRemoveBaseCommission->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqRemoveBaseCommission->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqRemoveBaseCommission->AdminUserID);
 			if (strlen(ReqRemoveBaseCommission->TradingDay) >= sizeof(ReqRemoveBaseCommission->TradingDay))
 			{
 				ReqRemoveBaseCommission->TradingDay[sizeof(ReqRemoveBaseCommission->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ReqRemoveBaseCommission->TradingDay);
+			WriteString(ppos, Items::TradingDay, ReqRemoveBaseCommission->TradingDay);
 			if (strlen(ReqRemoveBaseCommission->ExchangeID) >= sizeof(ReqRemoveBaseCommission->ExchangeID))
 			{
 				ReqRemoveBaseCommission->ExchangeID[sizeof(ReqRemoveBaseCommission->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqRemoveBaseCommission->ExchangeID);
-			WriteString(ppos, StepItems::SecurityType, (int)ReqRemoveBaseCommission->SecurityType);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRemoveBaseCommissionField::FieldID);
+			WriteString(ppos, Items::ExchangeID, ReqRemoveBaseCommission->ExchangeID);
+			WriteString(ppos, Items::SecurityType, (int)ReqRemoveBaseCommission->SecurityType);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveBaseCommissionField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -19324,28 +19324,28 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveBaseCommission->AdminUserID) ? sizeof(ReqRemoveBaseCommission->AdminUserID) - 1 : value.length();
 								memcpy(ReqRemoveBaseCommission->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveBaseCommission->TradingDay) ? sizeof(ReqRemoveBaseCommission->TradingDay) - 1 : value.length();
 								memcpy(ReqRemoveBaseCommission->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveBaseCommission->ExchangeID) ? sizeof(ReqRemoveBaseCommission->ExchangeID) - 1 : value.length();
 								memcpy(ReqRemoveBaseCommission->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								ReqRemoveBaseCommission->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
@@ -19430,35 +19430,35 @@ namespace step
 		char* ppos = buff;
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		if (RspRemoveBaseCommission != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRemoveBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRemoveBaseCommissionField::FieldID);
 			if (strlen(RspRemoveBaseCommission->AdminUserID) >= sizeof(RspRemoveBaseCommission->AdminUserID))
 			{
 				RspRemoveBaseCommission->AdminUserID[sizeof(RspRemoveBaseCommission->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspRemoveBaseCommission->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspRemoveBaseCommission->AdminUserID);
 			if (strlen(RspRemoveBaseCommission->TradingDay) >= sizeof(RspRemoveBaseCommission->TradingDay))
 			{
 				RspRemoveBaseCommission->TradingDay[sizeof(RspRemoveBaseCommission->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, RspRemoveBaseCommission->TradingDay);
+			WriteString(ppos, Items::TradingDay, RspRemoveBaseCommission->TradingDay);
 			if (strlen(RspRemoveBaseCommission->ExchangeID) >= sizeof(RspRemoveBaseCommission->ExchangeID))
 			{
 				RspRemoveBaseCommission->ExchangeID[sizeof(RspRemoveBaseCommission->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, RspRemoveBaseCommission->ExchangeID);
-			WriteString(ppos, StepItems::SecurityType, (int)RspRemoveBaseCommission->SecurityType);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRemoveBaseCommissionField::FieldID);
+			WriteString(ppos, Items::ExchangeID, RspRemoveBaseCommission->ExchangeID);
+			WriteString(ppos, Items::SecurityType, (int)RspRemoveBaseCommission->SecurityType);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveBaseCommissionField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -19487,15 +19487,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -19528,28 +19528,28 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveBaseCommission->AdminUserID) ? sizeof(RspRemoveBaseCommission->AdminUserID) - 1 : value.length();
 								memcpy(RspRemoveBaseCommission->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveBaseCommission->TradingDay) ? sizeof(RspRemoveBaseCommission->TradingDay) - 1 : value.length();
 								memcpy(RspRemoveBaseCommission->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveBaseCommission->ExchangeID) ? sizeof(RspRemoveBaseCommission->ExchangeID) - 1 : value.length();
 								memcpy(RspRemoveBaseCommission->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								RspRemoveBaseCommission->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
@@ -19634,40 +19634,40 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddCommissionGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddCommissionGroupField::FieldID);
 			if (strlen(ReqAddCommissionGroup->AdminUserID) >= sizeof(ReqAddCommissionGroup->AdminUserID))
 			{
 				ReqAddCommissionGroup->AdminUserID[sizeof(ReqAddCommissionGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddCommissionGroup->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqAddCommissionGroup->AdminUserID);
 			if (strlen(ReqAddCommissionGroup->TradingDay) >= sizeof(ReqAddCommissionGroup->TradingDay))
 			{
 				ReqAddCommissionGroup->TradingDay[sizeof(ReqAddCommissionGroup->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ReqAddCommissionGroup->TradingDay);
-			WriteString(ppos, StepItems::CommissionGroupID, ReqAddCommissionGroup->CommissionGroupID);
+			WriteString(ppos, Items::TradingDay, ReqAddCommissionGroup->TradingDay);
+			WriteString(ppos, Items::CommissionGroupID, ReqAddCommissionGroup->CommissionGroupID);
 			if (strlen(ReqAddCommissionGroup->CommissionGroupName) >= sizeof(ReqAddCommissionGroup->CommissionGroupName))
 			{
 				ReqAddCommissionGroup->CommissionGroupName[sizeof(ReqAddCommissionGroup->CommissionGroupName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::CommissionGroupName, ReqAddCommissionGroup->CommissionGroupName);
+			WriteString(ppos, Items::CommissionGroupName, ReqAddCommissionGroup->CommissionGroupName);
 			if (strlen(ReqAddCommissionGroup->ExchangeID) >= sizeof(ReqAddCommissionGroup->ExchangeID))
 			{
 				ReqAddCommissionGroup->ExchangeID[sizeof(ReqAddCommissionGroup->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqAddCommissionGroup->ExchangeID);
-			WriteString(ppos, StepItems::SecurityType, (int)ReqAddCommissionGroup->SecurityType);
-			WriteString(ppos, StepItems::OpenBuyByMoney, ReqAddCommissionGroup->OpenBuyByMoney);
-			WriteString(ppos, StepItems::OpenSellByMoney, ReqAddCommissionGroup->OpenSellByMoney);
-			WriteString(ppos, StepItems::CloseBuyByMoney, ReqAddCommissionGroup->CloseBuyByMoney);
-			WriteString(ppos, StepItems::CloseSellByMoney, ReqAddCommissionGroup->CloseSellByMoney);
-			WriteString(ppos, StepItems::OpenBuyByVolume, ReqAddCommissionGroup->OpenBuyByVolume);
-			WriteString(ppos, StepItems::OpenSellByVolume, ReqAddCommissionGroup->OpenSellByVolume);
-			WriteString(ppos, StepItems::CloseBuyByVolume, ReqAddCommissionGroup->CloseBuyByVolume);
-			WriteString(ppos, StepItems::CloseSellByVolume, ReqAddCommissionGroup->CloseSellByVolume);
-			WriteString(ppos, StepItems::MinCommission, ReqAddCommissionGroup->MinCommission);
-			WriteString(ppos, StepItems::MaxCommission, ReqAddCommissionGroup->MaxCommission);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddCommissionGroupField::FieldID);
+			WriteString(ppos, Items::ExchangeID, ReqAddCommissionGroup->ExchangeID);
+			WriteString(ppos, Items::SecurityType, (int)ReqAddCommissionGroup->SecurityType);
+			WriteString(ppos, Items::OpenBuyByMoney, ReqAddCommissionGroup->OpenBuyByMoney);
+			WriteString(ppos, Items::OpenSellByMoney, ReqAddCommissionGroup->OpenSellByMoney);
+			WriteString(ppos, Items::CloseBuyByMoney, ReqAddCommissionGroup->CloseBuyByMoney);
+			WriteString(ppos, Items::CloseSellByMoney, ReqAddCommissionGroup->CloseSellByMoney);
+			WriteString(ppos, Items::OpenBuyByVolume, ReqAddCommissionGroup->OpenBuyByVolume);
+			WriteString(ppos, Items::OpenSellByVolume, ReqAddCommissionGroup->OpenSellByVolume);
+			WriteString(ppos, Items::CloseBuyByVolume, ReqAddCommissionGroup->CloseBuyByVolume);
+			WriteString(ppos, Items::CloseSellByVolume, ReqAddCommissionGroup->CloseSellByVolume);
+			WriteString(ppos, Items::MinCommission, ReqAddCommissionGroup->MinCommission);
+			WriteString(ppos, Items::MaxCommission, ReqAddCommissionGroup->MaxCommission);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddCommissionGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -19696,89 +19696,89 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddCommissionGroup->AdminUserID) ? sizeof(ReqAddCommissionGroup->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddCommissionGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ReqAddCommissionGroup->TradingDay) ? sizeof(ReqAddCommissionGroup->TradingDay) - 1 : value.length();
 								memcpy(ReqAddCommissionGroup->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::CommissionGroupID:
+							case Items::CommissionGroupID:
 							{
 								ReqAddCommissionGroup->CommissionGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::CommissionGroupName:
+							case Items::CommissionGroupName:
 							{
 								size_t len = value.length() >= sizeof(ReqAddCommissionGroup->CommissionGroupName) ? sizeof(ReqAddCommissionGroup->CommissionGroupName) - 1 : value.length();
 								memcpy(ReqAddCommissionGroup->CommissionGroupName, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddCommissionGroup->ExchangeID) ? sizeof(ReqAddCommissionGroup->ExchangeID) - 1 : value.length();
 								memcpy(ReqAddCommissionGroup->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								ReqAddCommissionGroup->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OpenBuyByMoney:
+							case Items::OpenBuyByMoney:
 							{
 								ReqAddCommissionGroup->OpenBuyByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::OpenSellByMoney:
+							case Items::OpenSellByMoney:
 							{
 								ReqAddCommissionGroup->OpenSellByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseBuyByMoney:
+							case Items::CloseBuyByMoney:
 							{
 								ReqAddCommissionGroup->CloseBuyByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseSellByMoney:
+							case Items::CloseSellByMoney:
 							{
 								ReqAddCommissionGroup->CloseSellByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::OpenBuyByVolume:
+							case Items::OpenBuyByVolume:
 							{
 								ReqAddCommissionGroup->OpenBuyByVolume = atof(value.c_str());
 								break;
 							}
-							case StepItems::OpenSellByVolume:
+							case Items::OpenSellByVolume:
 							{
 								ReqAddCommissionGroup->OpenSellByVolume = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseBuyByVolume:
+							case Items::CloseBuyByVolume:
 							{
 								ReqAddCommissionGroup->CloseBuyByVolume = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseSellByVolume:
+							case Items::CloseSellByVolume:
 							{
 								ReqAddCommissionGroup->CloseSellByVolume = atof(value.c_str());
 								break;
 							}
-							case StepItems::MinCommission:
+							case Items::MinCommission:
 							{
 								ReqAddCommissionGroup->MinCommission = atof(value.c_str());
 								break;
 							}
-							case StepItems::MaxCommission:
+							case Items::MaxCommission:
 							{
 								ReqAddCommissionGroup->MaxCommission = atof(value.c_str());
 								break;
@@ -19863,36 +19863,36 @@ namespace step
 		char* ppos = buff;
 		if (RspAddCommissionGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddCommissionGroupField::FieldID);
 			if (strlen(RspAddCommissionGroup->AdminUserID) >= sizeof(RspAddCommissionGroup->AdminUserID))
 			{
 				RspAddCommissionGroup->AdminUserID[sizeof(RspAddCommissionGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddCommissionGroup->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspAddCommissionGroup->AdminUserID);
 			if (strlen(RspAddCommissionGroup->TradingDay) >= sizeof(RspAddCommissionGroup->TradingDay))
 			{
 				RspAddCommissionGroup->TradingDay[sizeof(RspAddCommissionGroup->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, RspAddCommissionGroup->TradingDay);
-			WriteString(ppos, StepItems::CommissionGroupID, RspAddCommissionGroup->CommissionGroupID);
+			WriteString(ppos, Items::TradingDay, RspAddCommissionGroup->TradingDay);
+			WriteString(ppos, Items::CommissionGroupID, RspAddCommissionGroup->CommissionGroupID);
 			if (strlen(RspAddCommissionGroup->ExchangeID) >= sizeof(RspAddCommissionGroup->ExchangeID))
 			{
 				RspAddCommissionGroup->ExchangeID[sizeof(RspAddCommissionGroup->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, RspAddCommissionGroup->ExchangeID);
-			WriteString(ppos, StepItems::SecurityType, (int)RspAddCommissionGroup->SecurityType);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddCommissionGroupField::FieldID);
+			WriteString(ppos, Items::ExchangeID, RspAddCommissionGroup->ExchangeID);
+			WriteString(ppos, Items::SecurityType, (int)RspAddCommissionGroup->SecurityType);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddCommissionGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -19921,33 +19921,33 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddCommissionGroup->AdminUserID) ? sizeof(RspAddCommissionGroup->AdminUserID) - 1 : value.length();
 								memcpy(RspAddCommissionGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(RspAddCommissionGroup->TradingDay) ? sizeof(RspAddCommissionGroup->TradingDay) - 1 : value.length();
 								memcpy(RspAddCommissionGroup->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::CommissionGroupID:
+							case Items::CommissionGroupID:
 							{
 								RspAddCommissionGroup->CommissionGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(RspAddCommissionGroup->ExchangeID) ? sizeof(RspAddCommissionGroup->ExchangeID) - 1 : value.length();
 								memcpy(RspAddCommissionGroup->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								RspAddCommissionGroup->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
@@ -19979,15 +19979,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -20073,40 +20073,40 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateCommissionGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqUpdateCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqUpdateCommissionGroupField::FieldID);
 			if (strlen(ReqUpdateCommissionGroup->AdminUserID) >= sizeof(ReqUpdateCommissionGroup->AdminUserID))
 			{
 				ReqUpdateCommissionGroup->AdminUserID[sizeof(ReqUpdateCommissionGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqUpdateCommissionGroup->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqUpdateCommissionGroup->AdminUserID);
 			if (strlen(ReqUpdateCommissionGroup->TradingDay) >= sizeof(ReqUpdateCommissionGroup->TradingDay))
 			{
 				ReqUpdateCommissionGroup->TradingDay[sizeof(ReqUpdateCommissionGroup->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ReqUpdateCommissionGroup->TradingDay);
-			WriteString(ppos, StepItems::CommissionGroupID, ReqUpdateCommissionGroup->CommissionGroupID);
+			WriteString(ppos, Items::TradingDay, ReqUpdateCommissionGroup->TradingDay);
+			WriteString(ppos, Items::CommissionGroupID, ReqUpdateCommissionGroup->CommissionGroupID);
 			if (strlen(ReqUpdateCommissionGroup->CommissionGroupName) >= sizeof(ReqUpdateCommissionGroup->CommissionGroupName))
 			{
 				ReqUpdateCommissionGroup->CommissionGroupName[sizeof(ReqUpdateCommissionGroup->CommissionGroupName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::CommissionGroupName, ReqUpdateCommissionGroup->CommissionGroupName);
+			WriteString(ppos, Items::CommissionGroupName, ReqUpdateCommissionGroup->CommissionGroupName);
 			if (strlen(ReqUpdateCommissionGroup->ExchangeID) >= sizeof(ReqUpdateCommissionGroup->ExchangeID))
 			{
 				ReqUpdateCommissionGroup->ExchangeID[sizeof(ReqUpdateCommissionGroup->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqUpdateCommissionGroup->ExchangeID);
-			WriteString(ppos, StepItems::SecurityType, (int)ReqUpdateCommissionGroup->SecurityType);
-			WriteString(ppos, StepItems::OpenBuyByMoney, ReqUpdateCommissionGroup->OpenBuyByMoney);
-			WriteString(ppos, StepItems::OpenSellByMoney, ReqUpdateCommissionGroup->OpenSellByMoney);
-			WriteString(ppos, StepItems::CloseBuyByMoney, ReqUpdateCommissionGroup->CloseBuyByMoney);
-			WriteString(ppos, StepItems::CloseSellByMoney, ReqUpdateCommissionGroup->CloseSellByMoney);
-			WriteString(ppos, StepItems::OpenBuyByVolume, ReqUpdateCommissionGroup->OpenBuyByVolume);
-			WriteString(ppos, StepItems::OpenSellByVolume, ReqUpdateCommissionGroup->OpenSellByVolume);
-			WriteString(ppos, StepItems::CloseBuyByVolume, ReqUpdateCommissionGroup->CloseBuyByVolume);
-			WriteString(ppos, StepItems::CloseSellByVolume, ReqUpdateCommissionGroup->CloseSellByVolume);
-			WriteString(ppos, StepItems::MinCommission, ReqUpdateCommissionGroup->MinCommission);
-			WriteString(ppos, StepItems::MaxCommission, ReqUpdateCommissionGroup->MaxCommission);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqUpdateCommissionGroupField::FieldID);
+			WriteString(ppos, Items::ExchangeID, ReqUpdateCommissionGroup->ExchangeID);
+			WriteString(ppos, Items::SecurityType, (int)ReqUpdateCommissionGroup->SecurityType);
+			WriteString(ppos, Items::OpenBuyByMoney, ReqUpdateCommissionGroup->OpenBuyByMoney);
+			WriteString(ppos, Items::OpenSellByMoney, ReqUpdateCommissionGroup->OpenSellByMoney);
+			WriteString(ppos, Items::CloseBuyByMoney, ReqUpdateCommissionGroup->CloseBuyByMoney);
+			WriteString(ppos, Items::CloseSellByMoney, ReqUpdateCommissionGroup->CloseSellByMoney);
+			WriteString(ppos, Items::OpenBuyByVolume, ReqUpdateCommissionGroup->OpenBuyByVolume);
+			WriteString(ppos, Items::OpenSellByVolume, ReqUpdateCommissionGroup->OpenSellByVolume);
+			WriteString(ppos, Items::CloseBuyByVolume, ReqUpdateCommissionGroup->CloseBuyByVolume);
+			WriteString(ppos, Items::CloseSellByVolume, ReqUpdateCommissionGroup->CloseSellByVolume);
+			WriteString(ppos, Items::MinCommission, ReqUpdateCommissionGroup->MinCommission);
+			WriteString(ppos, Items::MaxCommission, ReqUpdateCommissionGroup->MaxCommission);
+			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateCommissionGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -20135,89 +20135,89 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateCommissionGroup->AdminUserID) ? sizeof(ReqUpdateCommissionGroup->AdminUserID) - 1 : value.length();
 								memcpy(ReqUpdateCommissionGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateCommissionGroup->TradingDay) ? sizeof(ReqUpdateCommissionGroup->TradingDay) - 1 : value.length();
 								memcpy(ReqUpdateCommissionGroup->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::CommissionGroupID:
+							case Items::CommissionGroupID:
 							{
 								ReqUpdateCommissionGroup->CommissionGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::CommissionGroupName:
+							case Items::CommissionGroupName:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateCommissionGroup->CommissionGroupName) ? sizeof(ReqUpdateCommissionGroup->CommissionGroupName) - 1 : value.length();
 								memcpy(ReqUpdateCommissionGroup->CommissionGroupName, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateCommissionGroup->ExchangeID) ? sizeof(ReqUpdateCommissionGroup->ExchangeID) - 1 : value.length();
 								memcpy(ReqUpdateCommissionGroup->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								ReqUpdateCommissionGroup->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OpenBuyByMoney:
+							case Items::OpenBuyByMoney:
 							{
 								ReqUpdateCommissionGroup->OpenBuyByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::OpenSellByMoney:
+							case Items::OpenSellByMoney:
 							{
 								ReqUpdateCommissionGroup->OpenSellByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseBuyByMoney:
+							case Items::CloseBuyByMoney:
 							{
 								ReqUpdateCommissionGroup->CloseBuyByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseSellByMoney:
+							case Items::CloseSellByMoney:
 							{
 								ReqUpdateCommissionGroup->CloseSellByMoney = atof(value.c_str());
 								break;
 							}
-							case StepItems::OpenBuyByVolume:
+							case Items::OpenBuyByVolume:
 							{
 								ReqUpdateCommissionGroup->OpenBuyByVolume = atof(value.c_str());
 								break;
 							}
-							case StepItems::OpenSellByVolume:
+							case Items::OpenSellByVolume:
 							{
 								ReqUpdateCommissionGroup->OpenSellByVolume = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseBuyByVolume:
+							case Items::CloseBuyByVolume:
 							{
 								ReqUpdateCommissionGroup->CloseBuyByVolume = atof(value.c_str());
 								break;
 							}
-							case StepItems::CloseSellByVolume:
+							case Items::CloseSellByVolume:
 							{
 								ReqUpdateCommissionGroup->CloseSellByVolume = atof(value.c_str());
 								break;
 							}
-							case StepItems::MinCommission:
+							case Items::MinCommission:
 							{
 								ReqUpdateCommissionGroup->MinCommission = atof(value.c_str());
 								break;
 							}
-							case StepItems::MaxCommission:
+							case Items::MaxCommission:
 							{
 								ReqUpdateCommissionGroup->MaxCommission = atof(value.c_str());
 								break;
@@ -20302,36 +20302,36 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateCommissionGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspUpdateCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspUpdateCommissionGroupField::FieldID);
 			if (strlen(RspUpdateCommissionGroup->AdminUserID) >= sizeof(RspUpdateCommissionGroup->AdminUserID))
 			{
 				RspUpdateCommissionGroup->AdminUserID[sizeof(RspUpdateCommissionGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspUpdateCommissionGroup->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspUpdateCommissionGroup->AdminUserID);
 			if (strlen(RspUpdateCommissionGroup->TradingDay) >= sizeof(RspUpdateCommissionGroup->TradingDay))
 			{
 				RspUpdateCommissionGroup->TradingDay[sizeof(RspUpdateCommissionGroup->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, RspUpdateCommissionGroup->TradingDay);
-			WriteString(ppos, StepItems::CommissionGroupID, RspUpdateCommissionGroup->CommissionGroupID);
+			WriteString(ppos, Items::TradingDay, RspUpdateCommissionGroup->TradingDay);
+			WriteString(ppos, Items::CommissionGroupID, RspUpdateCommissionGroup->CommissionGroupID);
 			if (strlen(RspUpdateCommissionGroup->ExchangeID) >= sizeof(RspUpdateCommissionGroup->ExchangeID))
 			{
 				RspUpdateCommissionGroup->ExchangeID[sizeof(RspUpdateCommissionGroup->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, RspUpdateCommissionGroup->ExchangeID);
-			WriteString(ppos, StepItems::SecurityType, (int)RspUpdateCommissionGroup->SecurityType);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspUpdateCommissionGroupField::FieldID);
+			WriteString(ppos, Items::ExchangeID, RspUpdateCommissionGroup->ExchangeID);
+			WriteString(ppos, Items::SecurityType, (int)RspUpdateCommissionGroup->SecurityType);
+			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateCommissionGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -20360,33 +20360,33 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateCommissionGroup->AdminUserID) ? sizeof(RspUpdateCommissionGroup->AdminUserID) - 1 : value.length();
 								memcpy(RspUpdateCommissionGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateCommissionGroup->TradingDay) ? sizeof(RspUpdateCommissionGroup->TradingDay) - 1 : value.length();
 								memcpy(RspUpdateCommissionGroup->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::CommissionGroupID:
+							case Items::CommissionGroupID:
 							{
 								RspUpdateCommissionGroup->CommissionGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateCommissionGroup->ExchangeID) ? sizeof(RspUpdateCommissionGroup->ExchangeID) - 1 : value.length();
 								memcpy(RspUpdateCommissionGroup->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								RspUpdateCommissionGroup->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
@@ -20418,15 +20418,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -20512,25 +20512,25 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveCommissionGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRemoveCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRemoveCommissionGroupField::FieldID);
 			if (strlen(ReqRemoveCommissionGroup->AdminUserID) >= sizeof(ReqRemoveCommissionGroup->AdminUserID))
 			{
 				ReqRemoveCommissionGroup->AdminUserID[sizeof(ReqRemoveCommissionGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqRemoveCommissionGroup->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqRemoveCommissionGroup->AdminUserID);
 			if (strlen(ReqRemoveCommissionGroup->TradingDay) >= sizeof(ReqRemoveCommissionGroup->TradingDay))
 			{
 				ReqRemoveCommissionGroup->TradingDay[sizeof(ReqRemoveCommissionGroup->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ReqRemoveCommissionGroup->TradingDay);
-			WriteString(ppos, StepItems::CommissionGroupID, ReqRemoveCommissionGroup->CommissionGroupID);
+			WriteString(ppos, Items::TradingDay, ReqRemoveCommissionGroup->TradingDay);
+			WriteString(ppos, Items::CommissionGroupID, ReqRemoveCommissionGroup->CommissionGroupID);
 			if (strlen(ReqRemoveCommissionGroup->ExchangeID) >= sizeof(ReqRemoveCommissionGroup->ExchangeID))
 			{
 				ReqRemoveCommissionGroup->ExchangeID[sizeof(ReqRemoveCommissionGroup->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqRemoveCommissionGroup->ExchangeID);
-			WriteString(ppos, StepItems::SecurityType, (int)ReqRemoveCommissionGroup->SecurityType);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRemoveCommissionGroupField::FieldID);
+			WriteString(ppos, Items::ExchangeID, ReqRemoveCommissionGroup->ExchangeID);
+			WriteString(ppos, Items::SecurityType, (int)ReqRemoveCommissionGroup->SecurityType);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveCommissionGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -20559,33 +20559,33 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveCommissionGroup->AdminUserID) ? sizeof(ReqRemoveCommissionGroup->AdminUserID) - 1 : value.length();
 								memcpy(ReqRemoveCommissionGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveCommissionGroup->TradingDay) ? sizeof(ReqRemoveCommissionGroup->TradingDay) - 1 : value.length();
 								memcpy(ReqRemoveCommissionGroup->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::CommissionGroupID:
+							case Items::CommissionGroupID:
 							{
 								ReqRemoveCommissionGroup->CommissionGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveCommissionGroup->ExchangeID) ? sizeof(ReqRemoveCommissionGroup->ExchangeID) - 1 : value.length();
 								memcpy(ReqRemoveCommissionGroup->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								ReqRemoveCommissionGroup->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
@@ -20670,36 +20670,36 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveCommissionGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRemoveCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRemoveCommissionGroupField::FieldID);
 			if (strlen(RspRemoveCommissionGroup->AdminUserID) >= sizeof(RspRemoveCommissionGroup->AdminUserID))
 			{
 				RspRemoveCommissionGroup->AdminUserID[sizeof(RspRemoveCommissionGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspRemoveCommissionGroup->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspRemoveCommissionGroup->AdminUserID);
 			if (strlen(RspRemoveCommissionGroup->TradingDay) >= sizeof(RspRemoveCommissionGroup->TradingDay))
 			{
 				RspRemoveCommissionGroup->TradingDay[sizeof(RspRemoveCommissionGroup->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, RspRemoveCommissionGroup->TradingDay);
-			WriteString(ppos, StepItems::CommissionGroupID, RspRemoveCommissionGroup->CommissionGroupID);
+			WriteString(ppos, Items::TradingDay, RspRemoveCommissionGroup->TradingDay);
+			WriteString(ppos, Items::CommissionGroupID, RspRemoveCommissionGroup->CommissionGroupID);
 			if (strlen(RspRemoveCommissionGroup->ExchangeID) >= sizeof(RspRemoveCommissionGroup->ExchangeID))
 			{
 				RspRemoveCommissionGroup->ExchangeID[sizeof(RspRemoveCommissionGroup->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, RspRemoveCommissionGroup->ExchangeID);
-			WriteString(ppos, StepItems::SecurityType, (int)RspRemoveCommissionGroup->SecurityType);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRemoveCommissionGroupField::FieldID);
+			WriteString(ppos, Items::ExchangeID, RspRemoveCommissionGroup->ExchangeID);
+			WriteString(ppos, Items::SecurityType, (int)RspRemoveCommissionGroup->SecurityType);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveCommissionGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -20728,33 +20728,33 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveCommissionGroup->AdminUserID) ? sizeof(RspRemoveCommissionGroup->AdminUserID) - 1 : value.length();
 								memcpy(RspRemoveCommissionGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveCommissionGroup->TradingDay) ? sizeof(RspRemoveCommissionGroup->TradingDay) - 1 : value.length();
 								memcpy(RspRemoveCommissionGroup->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::CommissionGroupID:
+							case Items::CommissionGroupID:
 							{
 								RspRemoveCommissionGroup->CommissionGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveCommissionGroup->ExchangeID) ? sizeof(RspRemoveCommissionGroup->ExchangeID) - 1 : value.length();
 								memcpy(RspRemoveCommissionGroup->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::SecurityType:
+							case Items::SecurityType:
 							{
 								RspRemoveCommissionGroup->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
 								break;
@@ -20786,15 +20786,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -20880,25 +20880,25 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddOptionMarginParam != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddOptionMarginParamField::FieldID);
 			if (strlen(ReqAddOptionMarginParam->AdminUserID) >= sizeof(ReqAddOptionMarginParam->AdminUserID))
 			{
 				ReqAddOptionMarginParam->AdminUserID[sizeof(ReqAddOptionMarginParam->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddOptionMarginParam->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqAddOptionMarginParam->AdminUserID);
 			if (strlen(ReqAddOptionMarginParam->TradingDay) >= sizeof(ReqAddOptionMarginParam->TradingDay))
 			{
 				ReqAddOptionMarginParam->TradingDay[sizeof(ReqAddOptionMarginParam->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ReqAddOptionMarginParam->TradingDay);
+			WriteString(ppos, Items::TradingDay, ReqAddOptionMarginParam->TradingDay);
 			if (strlen(ReqAddOptionMarginParam->ExchangeID) >= sizeof(ReqAddOptionMarginParam->ExchangeID))
 			{
 				ReqAddOptionMarginParam->ExchangeID[sizeof(ReqAddOptionMarginParam->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqAddOptionMarginParam->ExchangeID);
-			WriteString(ppos, StepItems::Param1, ReqAddOptionMarginParam->Param1);
-			WriteString(ppos, StepItems::Param2, ReqAddOptionMarginParam->Param2);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddOptionMarginParamField::FieldID);
+			WriteString(ppos, Items::ExchangeID, ReqAddOptionMarginParam->ExchangeID);
+			WriteString(ppos, Items::Param1, ReqAddOptionMarginParam->Param1);
+			WriteString(ppos, Items::Param2, ReqAddOptionMarginParam->Param2);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddOptionMarginParamField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -20927,33 +20927,33 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddOptionMarginParam->AdminUserID) ? sizeof(ReqAddOptionMarginParam->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddOptionMarginParam->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ReqAddOptionMarginParam->TradingDay) ? sizeof(ReqAddOptionMarginParam->TradingDay) - 1 : value.length();
 								memcpy(ReqAddOptionMarginParam->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddOptionMarginParam->ExchangeID) ? sizeof(ReqAddOptionMarginParam->ExchangeID) - 1 : value.length();
 								memcpy(ReqAddOptionMarginParam->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Param1:
+							case Items::Param1:
 							{
 								ReqAddOptionMarginParam->Param1 = atof(value.c_str());
 								break;
 							}
-							case StepItems::Param2:
+							case Items::Param2:
 							{
 								ReqAddOptionMarginParam->Param2 = atof(value.c_str());
 								break;
@@ -21038,29 +21038,29 @@ namespace step
 		char* ppos = buff;
 		if (RspAddOptionMarginParam != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddOptionMarginParamField::FieldID);
 			if (strlen(RspAddOptionMarginParam->AdminUserID) >= sizeof(RspAddOptionMarginParam->AdminUserID))
 			{
 				RspAddOptionMarginParam->AdminUserID[sizeof(RspAddOptionMarginParam->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddOptionMarginParam->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspAddOptionMarginParam->AdminUserID);
 			if (strlen(RspAddOptionMarginParam->ExchangeID) >= sizeof(RspAddOptionMarginParam->ExchangeID))
 			{
 				RspAddOptionMarginParam->ExchangeID[sizeof(RspAddOptionMarginParam->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, RspAddOptionMarginParam->ExchangeID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddOptionMarginParamField::FieldID);
+			WriteString(ppos, Items::ExchangeID, RspAddOptionMarginParam->ExchangeID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddOptionMarginParamField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -21089,16 +21089,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddOptionMarginParam->AdminUserID) ? sizeof(RspAddOptionMarginParam->AdminUserID) - 1 : value.length();
 								memcpy(RspAddOptionMarginParam->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(RspAddOptionMarginParam->ExchangeID) ? sizeof(RspAddOptionMarginParam->ExchangeID) - 1 : value.length();
 								memcpy(RspAddOptionMarginParam->ExchangeID, value.c_str(), len);
@@ -21131,15 +21131,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -21225,25 +21225,25 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateOptionMarginParam != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqUpdateOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqUpdateOptionMarginParamField::FieldID);
 			if (strlen(ReqUpdateOptionMarginParam->AdminUserID) >= sizeof(ReqUpdateOptionMarginParam->AdminUserID))
 			{
 				ReqUpdateOptionMarginParam->AdminUserID[sizeof(ReqUpdateOptionMarginParam->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqUpdateOptionMarginParam->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqUpdateOptionMarginParam->AdminUserID);
 			if (strlen(ReqUpdateOptionMarginParam->TradingDay) >= sizeof(ReqUpdateOptionMarginParam->TradingDay))
 			{
 				ReqUpdateOptionMarginParam->TradingDay[sizeof(ReqUpdateOptionMarginParam->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ReqUpdateOptionMarginParam->TradingDay);
+			WriteString(ppos, Items::TradingDay, ReqUpdateOptionMarginParam->TradingDay);
 			if (strlen(ReqUpdateOptionMarginParam->ExchangeID) >= sizeof(ReqUpdateOptionMarginParam->ExchangeID))
 			{
 				ReqUpdateOptionMarginParam->ExchangeID[sizeof(ReqUpdateOptionMarginParam->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqUpdateOptionMarginParam->ExchangeID);
-			WriteString(ppos, StepItems::Param1, ReqUpdateOptionMarginParam->Param1);
-			WriteString(ppos, StepItems::Param2, ReqUpdateOptionMarginParam->Param2);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqUpdateOptionMarginParamField::FieldID);
+			WriteString(ppos, Items::ExchangeID, ReqUpdateOptionMarginParam->ExchangeID);
+			WriteString(ppos, Items::Param1, ReqUpdateOptionMarginParam->Param1);
+			WriteString(ppos, Items::Param2, ReqUpdateOptionMarginParam->Param2);
+			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateOptionMarginParamField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -21272,33 +21272,33 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateOptionMarginParam->AdminUserID) ? sizeof(ReqUpdateOptionMarginParam->AdminUserID) - 1 : value.length();
 								memcpy(ReqUpdateOptionMarginParam->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateOptionMarginParam->TradingDay) ? sizeof(ReqUpdateOptionMarginParam->TradingDay) - 1 : value.length();
 								memcpy(ReqUpdateOptionMarginParam->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateOptionMarginParam->ExchangeID) ? sizeof(ReqUpdateOptionMarginParam->ExchangeID) - 1 : value.length();
 								memcpy(ReqUpdateOptionMarginParam->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::Param1:
+							case Items::Param1:
 							{
 								ReqUpdateOptionMarginParam->Param1 = atof(value.c_str());
 								break;
 							}
-							case StepItems::Param2:
+							case Items::Param2:
 							{
 								ReqUpdateOptionMarginParam->Param2 = atof(value.c_str());
 								break;
@@ -21383,29 +21383,29 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateOptionMarginParam != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspUpdateOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspUpdateOptionMarginParamField::FieldID);
 			if (strlen(RspUpdateOptionMarginParam->AdminUserID) >= sizeof(RspUpdateOptionMarginParam->AdminUserID))
 			{
 				RspUpdateOptionMarginParam->AdminUserID[sizeof(RspUpdateOptionMarginParam->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspUpdateOptionMarginParam->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspUpdateOptionMarginParam->AdminUserID);
 			if (strlen(RspUpdateOptionMarginParam->ExchangeID) >= sizeof(RspUpdateOptionMarginParam->ExchangeID))
 			{
 				RspUpdateOptionMarginParam->ExchangeID[sizeof(RspUpdateOptionMarginParam->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, RspUpdateOptionMarginParam->ExchangeID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspUpdateOptionMarginParamField::FieldID);
+			WriteString(ppos, Items::ExchangeID, RspUpdateOptionMarginParam->ExchangeID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateOptionMarginParamField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -21434,16 +21434,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateOptionMarginParam->AdminUserID) ? sizeof(RspUpdateOptionMarginParam->AdminUserID) - 1 : value.length();
 								memcpy(RspUpdateOptionMarginParam->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateOptionMarginParam->ExchangeID) ? sizeof(RspUpdateOptionMarginParam->ExchangeID) - 1 : value.length();
 								memcpy(RspUpdateOptionMarginParam->ExchangeID, value.c_str(), len);
@@ -21476,15 +21476,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -21570,18 +21570,18 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveOptionMarginParam != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRemoveOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRemoveOptionMarginParamField::FieldID);
 			if (strlen(ReqRemoveOptionMarginParam->AdminUserID) >= sizeof(ReqRemoveOptionMarginParam->AdminUserID))
 			{
 				ReqRemoveOptionMarginParam->AdminUserID[sizeof(ReqRemoveOptionMarginParam->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqRemoveOptionMarginParam->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqRemoveOptionMarginParam->AdminUserID);
 			if (strlen(ReqRemoveOptionMarginParam->ExchangeID) >= sizeof(ReqRemoveOptionMarginParam->ExchangeID))
 			{
 				ReqRemoveOptionMarginParam->ExchangeID[sizeof(ReqRemoveOptionMarginParam->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqRemoveOptionMarginParam->ExchangeID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRemoveOptionMarginParamField::FieldID);
+			WriteString(ppos, Items::ExchangeID, ReqRemoveOptionMarginParam->ExchangeID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveOptionMarginParamField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -21610,16 +21610,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveOptionMarginParam->AdminUserID) ? sizeof(ReqRemoveOptionMarginParam->AdminUserID) - 1 : value.length();
 								memcpy(ReqRemoveOptionMarginParam->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveOptionMarginParam->ExchangeID) ? sizeof(ReqRemoveOptionMarginParam->ExchangeID) - 1 : value.length();
 								memcpy(ReqRemoveOptionMarginParam->ExchangeID, value.c_str(), len);
@@ -21705,29 +21705,29 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveOptionMarginParam != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRemoveOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRemoveOptionMarginParamField::FieldID);
 			if (strlen(RspRemoveOptionMarginParam->AdminUserID) >= sizeof(RspRemoveOptionMarginParam->AdminUserID))
 			{
 				RspRemoveOptionMarginParam->AdminUserID[sizeof(RspRemoveOptionMarginParam->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspRemoveOptionMarginParam->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspRemoveOptionMarginParam->AdminUserID);
 			if (strlen(RspRemoveOptionMarginParam->ExchangeID) >= sizeof(RspRemoveOptionMarginParam->ExchangeID))
 			{
 				RspRemoveOptionMarginParam->ExchangeID[sizeof(RspRemoveOptionMarginParam->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, RspRemoveOptionMarginParam->ExchangeID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRemoveOptionMarginParamField::FieldID);
+			WriteString(ppos, Items::ExchangeID, RspRemoveOptionMarginParam->ExchangeID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveOptionMarginParamField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -21756,16 +21756,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveOptionMarginParam->AdminUserID) ? sizeof(RspRemoveOptionMarginParam->AdminUserID) - 1 : value.length();
 								memcpy(RspRemoveOptionMarginParam->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveOptionMarginParam->ExchangeID) ? sizeof(RspRemoveOptionMarginParam->ExchangeID) - 1 : value.length();
 								memcpy(RspRemoveOptionMarginParam->ExchangeID, value.c_str(), len);
@@ -21798,15 +21798,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -21892,25 +21892,25 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddTradeOffer != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddTradeOfferField::FieldID);
 			if (strlen(ReqAddTradeOffer->AdminUserID) >= sizeof(ReqAddTradeOffer->AdminUserID))
 			{
 				ReqAddTradeOffer->AdminUserID[sizeof(ReqAddTradeOffer->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddTradeOffer->AdminUserID);
-			WriteString(ppos, StepItems::OfferID, ReqAddTradeOffer->OfferID);
+			WriteString(ppos, Items::AdminUserID, ReqAddTradeOffer->AdminUserID);
+			WriteString(ppos, Items::OfferID, ReqAddTradeOffer->OfferID);
 			if (strlen(ReqAddTradeOffer->OfferName) >= sizeof(ReqAddTradeOffer->OfferName))
 			{
 				ReqAddTradeOffer->OfferName[sizeof(ReqAddTradeOffer->OfferName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OfferName, ReqAddTradeOffer->OfferName);
-			WriteString(ppos, StepItems::OfferType, (int)ReqAddTradeOffer->OfferType);
+			WriteString(ppos, Items::OfferName, ReqAddTradeOffer->OfferName);
+			WriteString(ppos, Items::OfferType, (int)ReqAddTradeOffer->OfferType);
 			if (strlen(ReqAddTradeOffer->OfferPassword) >= sizeof(ReqAddTradeOffer->OfferPassword))
 			{
 				ReqAddTradeOffer->OfferPassword[sizeof(ReqAddTradeOffer->OfferPassword) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OfferPassword, ReqAddTradeOffer->OfferPassword);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddTradeOfferField::FieldID);
+			WriteString(ppos, Items::OfferPassword, ReqAddTradeOffer->OfferPassword);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddTradeOfferField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -21939,32 +21939,32 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddTradeOffer->AdminUserID) ? sizeof(ReqAddTradeOffer->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddTradeOffer->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::OfferID:
+							case Items::OfferID:
 							{
 								ReqAddTradeOffer->OfferID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OfferName:
+							case Items::OfferName:
 							{
 								size_t len = value.length() >= sizeof(ReqAddTradeOffer->OfferName) ? sizeof(ReqAddTradeOffer->OfferName) - 1 : value.length();
 								memcpy(ReqAddTradeOffer->OfferName, value.c_str(), len);
 								break;
 							}
-							case StepItems::OfferType:
+							case Items::OfferType:
 							{
 								ReqAddTradeOffer->OfferType = (OfferTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OfferPassword:
+							case Items::OfferPassword:
 							{
 								size_t len = value.length() >= sizeof(ReqAddTradeOffer->OfferPassword) ? sizeof(ReqAddTradeOffer->OfferPassword) - 1 : value.length();
 								memcpy(ReqAddTradeOffer->OfferPassword, value.c_str(), len);
@@ -22050,25 +22050,25 @@ namespace step
 		char* ppos = buff;
 		if (RspAddTradeOffer != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddTradeOfferField::FieldID);
 			if (strlen(RspAddTradeOffer->AdminUserID) >= sizeof(RspAddTradeOffer->AdminUserID))
 			{
 				RspAddTradeOffer->AdminUserID[sizeof(RspAddTradeOffer->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddTradeOffer->AdminUserID);
-			WriteString(ppos, StepItems::OfferID, RspAddTradeOffer->OfferID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddTradeOfferField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspAddTradeOffer->AdminUserID);
+			WriteString(ppos, Items::OfferID, RspAddTradeOffer->OfferID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddTradeOfferField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -22097,16 +22097,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddTradeOffer->AdminUserID) ? sizeof(RspAddTradeOffer->AdminUserID) - 1 : value.length();
 								memcpy(RspAddTradeOffer->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::OfferID:
+							case Items::OfferID:
 							{
 								RspAddTradeOffer->OfferID = atoi(value.c_str());
 								break;
@@ -22138,15 +22138,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -22232,25 +22232,25 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateTradeOffer != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqUpdateTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqUpdateTradeOfferField::FieldID);
 			if (strlen(ReqUpdateTradeOffer->AdminUserID) >= sizeof(ReqUpdateTradeOffer->AdminUserID))
 			{
 				ReqUpdateTradeOffer->AdminUserID[sizeof(ReqUpdateTradeOffer->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqUpdateTradeOffer->AdminUserID);
-			WriteString(ppos, StepItems::OfferID, ReqUpdateTradeOffer->OfferID);
+			WriteString(ppos, Items::AdminUserID, ReqUpdateTradeOffer->AdminUserID);
+			WriteString(ppos, Items::OfferID, ReqUpdateTradeOffer->OfferID);
 			if (strlen(ReqUpdateTradeOffer->OfferName) >= sizeof(ReqUpdateTradeOffer->OfferName))
 			{
 				ReqUpdateTradeOffer->OfferName[sizeof(ReqUpdateTradeOffer->OfferName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OfferName, ReqUpdateTradeOffer->OfferName);
-			WriteString(ppos, StepItems::OfferType, (int)ReqUpdateTradeOffer->OfferType);
+			WriteString(ppos, Items::OfferName, ReqUpdateTradeOffer->OfferName);
+			WriteString(ppos, Items::OfferType, (int)ReqUpdateTradeOffer->OfferType);
 			if (strlen(ReqUpdateTradeOffer->OfferPassword) >= sizeof(ReqUpdateTradeOffer->OfferPassword))
 			{
 				ReqUpdateTradeOffer->OfferPassword[sizeof(ReqUpdateTradeOffer->OfferPassword) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::OfferPassword, ReqUpdateTradeOffer->OfferPassword);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqUpdateTradeOfferField::FieldID);
+			WriteString(ppos, Items::OfferPassword, ReqUpdateTradeOffer->OfferPassword);
+			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateTradeOfferField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -22279,32 +22279,32 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateTradeOffer->AdminUserID) ? sizeof(ReqUpdateTradeOffer->AdminUserID) - 1 : value.length();
 								memcpy(ReqUpdateTradeOffer->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::OfferID:
+							case Items::OfferID:
 							{
 								ReqUpdateTradeOffer->OfferID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::OfferName:
+							case Items::OfferName:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateTradeOffer->OfferName) ? sizeof(ReqUpdateTradeOffer->OfferName) - 1 : value.length();
 								memcpy(ReqUpdateTradeOffer->OfferName, value.c_str(), len);
 								break;
 							}
-							case StepItems::OfferType:
+							case Items::OfferType:
 							{
 								ReqUpdateTradeOffer->OfferType = (OfferTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::OfferPassword:
+							case Items::OfferPassword:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateTradeOffer->OfferPassword) ? sizeof(ReqUpdateTradeOffer->OfferPassword) - 1 : value.length();
 								memcpy(ReqUpdateTradeOffer->OfferPassword, value.c_str(), len);
@@ -22390,25 +22390,25 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateTradeOffer != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspUpdateTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspUpdateTradeOfferField::FieldID);
 			if (strlen(RspUpdateTradeOffer->AdminUserID) >= sizeof(RspUpdateTradeOffer->AdminUserID))
 			{
 				RspUpdateTradeOffer->AdminUserID[sizeof(RspUpdateTradeOffer->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspUpdateTradeOffer->AdminUserID);
-			WriteString(ppos, StepItems::OfferID, RspUpdateTradeOffer->OfferID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspUpdateTradeOfferField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspUpdateTradeOffer->AdminUserID);
+			WriteString(ppos, Items::OfferID, RspUpdateTradeOffer->OfferID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateTradeOfferField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -22437,16 +22437,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateTradeOffer->AdminUserID) ? sizeof(RspUpdateTradeOffer->AdminUserID) - 1 : value.length();
 								memcpy(RspUpdateTradeOffer->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::OfferID:
+							case Items::OfferID:
 							{
 								RspUpdateTradeOffer->OfferID = atoi(value.c_str());
 								break;
@@ -22478,15 +22478,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -22572,14 +22572,14 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveTradeOffer != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRemoveTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRemoveTradeOfferField::FieldID);
 			if (strlen(ReqRemoveTradeOffer->AdminUserID) >= sizeof(ReqRemoveTradeOffer->AdminUserID))
 			{
 				ReqRemoveTradeOffer->AdminUserID[sizeof(ReqRemoveTradeOffer->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqRemoveTradeOffer->AdminUserID);
-			WriteString(ppos, StepItems::OfferID, ReqRemoveTradeOffer->OfferID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRemoveTradeOfferField::FieldID);
+			WriteString(ppos, Items::AdminUserID, ReqRemoveTradeOffer->AdminUserID);
+			WriteString(ppos, Items::OfferID, ReqRemoveTradeOffer->OfferID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveTradeOfferField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -22608,16 +22608,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveTradeOffer->AdminUserID) ? sizeof(ReqRemoveTradeOffer->AdminUserID) - 1 : value.length();
 								memcpy(ReqRemoveTradeOffer->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::OfferID:
+							case Items::OfferID:
 							{
 								ReqRemoveTradeOffer->OfferID = atoi(value.c_str());
 								break;
@@ -22702,25 +22702,25 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveTradeOffer != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRemoveTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRemoveTradeOfferField::FieldID);
 			if (strlen(RspRemoveTradeOffer->AdminUserID) >= sizeof(RspRemoveTradeOffer->AdminUserID))
 			{
 				RspRemoveTradeOffer->AdminUserID[sizeof(RspRemoveTradeOffer->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspRemoveTradeOffer->AdminUserID);
-			WriteString(ppos, StepItems::OfferID, RspRemoveTradeOffer->OfferID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRemoveTradeOfferField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspRemoveTradeOffer->AdminUserID);
+			WriteString(ppos, Items::OfferID, RspRemoveTradeOffer->OfferID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveTradeOfferField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -22749,16 +22749,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveTradeOffer->AdminUserID) ? sizeof(RspRemoveTradeOffer->AdminUserID) - 1 : value.length();
 								memcpy(RspRemoveTradeOffer->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::OfferID:
+							case Items::OfferID:
 							{
 								RspRemoveTradeOffer->OfferID = atoi(value.c_str());
 								break;
@@ -22790,15 +22790,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -22884,19 +22884,19 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddTradeGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddTradeGroupField::FieldID);
 			if (strlen(ReqAddTradeGroup->AdminUserID) >= sizeof(ReqAddTradeGroup->AdminUserID))
 			{
 				ReqAddTradeGroup->AdminUserID[sizeof(ReqAddTradeGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddTradeGroup->AdminUserID);
-			WriteString(ppos, StepItems::TradeGroupID, ReqAddTradeGroup->TradeGroupID);
+			WriteString(ppos, Items::AdminUserID, ReqAddTradeGroup->AdminUserID);
+			WriteString(ppos, Items::TradeGroupID, ReqAddTradeGroup->TradeGroupID);
 			if (strlen(ReqAddTradeGroup->TradeGroupName) >= sizeof(ReqAddTradeGroup->TradeGroupName))
 			{
 				ReqAddTradeGroup->TradeGroupName[sizeof(ReqAddTradeGroup->TradeGroupName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradeGroupName, ReqAddTradeGroup->TradeGroupName);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddTradeGroupField::FieldID);
+			WriteString(ppos, Items::TradeGroupName, ReqAddTradeGroup->TradeGroupName);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddTradeGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -22925,21 +22925,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddTradeGroup->AdminUserID) ? sizeof(ReqAddTradeGroup->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddTradeGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								ReqAddTradeGroup->TradeGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::TradeGroupName:
+							case Items::TradeGroupName:
 							{
 								size_t len = value.length() >= sizeof(ReqAddTradeGroup->TradeGroupName) ? sizeof(ReqAddTradeGroup->TradeGroupName) - 1 : value.length();
 								memcpy(ReqAddTradeGroup->TradeGroupName, value.c_str(), len);
@@ -23025,25 +23025,25 @@ namespace step
 		char* ppos = buff;
 		if (RspAddTradeGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddTradeGroupField::FieldID);
 			if (strlen(RspAddTradeGroup->AdminUserID) >= sizeof(RspAddTradeGroup->AdminUserID))
 			{
 				RspAddTradeGroup->AdminUserID[sizeof(RspAddTradeGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddTradeGroup->AdminUserID);
-			WriteString(ppos, StepItems::TradeGroupID, RspAddTradeGroup->TradeGroupID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddTradeGroupField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspAddTradeGroup->AdminUserID);
+			WriteString(ppos, Items::TradeGroupID, RspAddTradeGroup->TradeGroupID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddTradeGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -23072,16 +23072,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddTradeGroup->AdminUserID) ? sizeof(RspAddTradeGroup->AdminUserID) - 1 : value.length();
 								memcpy(RspAddTradeGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								RspAddTradeGroup->TradeGroupID = atoi(value.c_str());
 								break;
@@ -23113,15 +23113,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -23207,19 +23207,19 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateTradeGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqUpdateTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqUpdateTradeGroupField::FieldID);
 			if (strlen(ReqUpdateTradeGroup->AdminUserID) >= sizeof(ReqUpdateTradeGroup->AdminUserID))
 			{
 				ReqUpdateTradeGroup->AdminUserID[sizeof(ReqUpdateTradeGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqUpdateTradeGroup->AdminUserID);
-			WriteString(ppos, StepItems::TradeGroupID, ReqUpdateTradeGroup->TradeGroupID);
+			WriteString(ppos, Items::AdminUserID, ReqUpdateTradeGroup->AdminUserID);
+			WriteString(ppos, Items::TradeGroupID, ReqUpdateTradeGroup->TradeGroupID);
 			if (strlen(ReqUpdateTradeGroup->TradeGroupName) >= sizeof(ReqUpdateTradeGroup->TradeGroupName))
 			{
 				ReqUpdateTradeGroup->TradeGroupName[sizeof(ReqUpdateTradeGroup->TradeGroupName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradeGroupName, ReqUpdateTradeGroup->TradeGroupName);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqUpdateTradeGroupField::FieldID);
+			WriteString(ppos, Items::TradeGroupName, ReqUpdateTradeGroup->TradeGroupName);
+			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateTradeGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -23248,21 +23248,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateTradeGroup->AdminUserID) ? sizeof(ReqUpdateTradeGroup->AdminUserID) - 1 : value.length();
 								memcpy(ReqUpdateTradeGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								ReqUpdateTradeGroup->TradeGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::TradeGroupName:
+							case Items::TradeGroupName:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateTradeGroup->TradeGroupName) ? sizeof(ReqUpdateTradeGroup->TradeGroupName) - 1 : value.length();
 								memcpy(ReqUpdateTradeGroup->TradeGroupName, value.c_str(), len);
@@ -23348,25 +23348,25 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateTradeGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspUpdateTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspUpdateTradeGroupField::FieldID);
 			if (strlen(RspUpdateTradeGroup->AdminUserID) >= sizeof(RspUpdateTradeGroup->AdminUserID))
 			{
 				RspUpdateTradeGroup->AdminUserID[sizeof(RspUpdateTradeGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspUpdateTradeGroup->AdminUserID);
-			WriteString(ppos, StepItems::TradeGroupID, RspUpdateTradeGroup->TradeGroupID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspUpdateTradeGroupField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspUpdateTradeGroup->AdminUserID);
+			WriteString(ppos, Items::TradeGroupID, RspUpdateTradeGroup->TradeGroupID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateTradeGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -23395,16 +23395,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateTradeGroup->AdminUserID) ? sizeof(RspUpdateTradeGroup->AdminUserID) - 1 : value.length();
 								memcpy(RspUpdateTradeGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								RspUpdateTradeGroup->TradeGroupID = atoi(value.c_str());
 								break;
@@ -23436,15 +23436,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -23530,14 +23530,14 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveTradeGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRemoveTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRemoveTradeGroupField::FieldID);
 			if (strlen(ReqRemoveTradeGroup->AdminUserID) >= sizeof(ReqRemoveTradeGroup->AdminUserID))
 			{
 				ReqRemoveTradeGroup->AdminUserID[sizeof(ReqRemoveTradeGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqRemoveTradeGroup->AdminUserID);
-			WriteString(ppos, StepItems::TradeGroupID, ReqRemoveTradeGroup->TradeGroupID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRemoveTradeGroupField::FieldID);
+			WriteString(ppos, Items::AdminUserID, ReqRemoveTradeGroup->AdminUserID);
+			WriteString(ppos, Items::TradeGroupID, ReqRemoveTradeGroup->TradeGroupID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveTradeGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -23566,16 +23566,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveTradeGroup->AdminUserID) ? sizeof(ReqRemoveTradeGroup->AdminUserID) - 1 : value.length();
 								memcpy(ReqRemoveTradeGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								ReqRemoveTradeGroup->TradeGroupID = atoi(value.c_str());
 								break;
@@ -23660,25 +23660,25 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveTradeGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRemoveTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRemoveTradeGroupField::FieldID);
 			if (strlen(RspRemoveTradeGroup->AdminUserID) >= sizeof(RspRemoveTradeGroup->AdminUserID))
 			{
 				RspRemoveTradeGroup->AdminUserID[sizeof(RspRemoveTradeGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspRemoveTradeGroup->AdminUserID);
-			WriteString(ppos, StepItems::TradeGroupID, RspRemoveTradeGroup->TradeGroupID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRemoveTradeGroupField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspRemoveTradeGroup->AdminUserID);
+			WriteString(ppos, Items::TradeGroupID, RspRemoveTradeGroup->TradeGroupID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveTradeGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -23707,16 +23707,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveTradeGroup->AdminUserID) ? sizeof(RspRemoveTradeGroup->AdminUserID) - 1 : value.length();
 								memcpy(RspRemoveTradeGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								RspRemoveTradeGroup->TradeGroupID = atoi(value.c_str());
 								break;
@@ -23748,15 +23748,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -23842,20 +23842,20 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddTradeGroupItem != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddTradeGroupItemField::FieldID);
 			if (strlen(ReqAddTradeGroupItem->AdminUserID) >= sizeof(ReqAddTradeGroupItem->AdminUserID))
 			{
 				ReqAddTradeGroupItem->AdminUserID[sizeof(ReqAddTradeGroupItem->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddTradeGroupItem->AdminUserID);
-			WriteString(ppos, StepItems::TradeGroupID, ReqAddTradeGroupItem->TradeGroupID);
-			WriteString(ppos, StepItems::AccountClass, (int)ReqAddTradeGroupItem->AccountClass);
+			WriteString(ppos, Items::AdminUserID, ReqAddTradeGroupItem->AdminUserID);
+			WriteString(ppos, Items::TradeGroupID, ReqAddTradeGroupItem->TradeGroupID);
+			WriteString(ppos, Items::AccountClass, (int)ReqAddTradeGroupItem->AccountClass);
 			if (strlen(ReqAddTradeGroupItem->PrimaryAccountID) >= sizeof(ReqAddTradeGroupItem->PrimaryAccountID))
 			{
 				ReqAddTradeGroupItem->PrimaryAccountID[sizeof(ReqAddTradeGroupItem->PrimaryAccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::PrimaryAccountID, ReqAddTradeGroupItem->PrimaryAccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddTradeGroupItemField::FieldID);
+			WriteString(ppos, Items::PrimaryAccountID, ReqAddTradeGroupItem->PrimaryAccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddTradeGroupItemField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -23884,26 +23884,26 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddTradeGroupItem->AdminUserID) ? sizeof(ReqAddTradeGroupItem->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddTradeGroupItem->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								ReqAddTradeGroupItem->TradeGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::AccountClass:
+							case Items::AccountClass:
 							{
 								ReqAddTradeGroupItem->AccountClass = (AccountClassType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::PrimaryAccountID:
+							case Items::PrimaryAccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddTradeGroupItem->PrimaryAccountID) ? sizeof(ReqAddTradeGroupItem->PrimaryAccountID) - 1 : value.length();
 								memcpy(ReqAddTradeGroupItem->PrimaryAccountID, value.c_str(), len);
@@ -23989,26 +23989,26 @@ namespace step
 		char* ppos = buff;
 		if (RspAddTradeGroupItem != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddTradeGroupItemField::FieldID);
 			if (strlen(RspAddTradeGroupItem->AdminUserID) >= sizeof(RspAddTradeGroupItem->AdminUserID))
 			{
 				RspAddTradeGroupItem->AdminUserID[sizeof(RspAddTradeGroupItem->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddTradeGroupItem->AdminUserID);
-			WriteString(ppos, StepItems::TradeGroupID, RspAddTradeGroupItem->TradeGroupID);
-			WriteString(ppos, StepItems::AccountClass, (int)RspAddTradeGroupItem->AccountClass);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddTradeGroupItemField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspAddTradeGroupItem->AdminUserID);
+			WriteString(ppos, Items::TradeGroupID, RspAddTradeGroupItem->TradeGroupID);
+			WriteString(ppos, Items::AccountClass, (int)RspAddTradeGroupItem->AccountClass);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddTradeGroupItemField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -24037,21 +24037,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddTradeGroupItem->AdminUserID) ? sizeof(RspAddTradeGroupItem->AdminUserID) - 1 : value.length();
 								memcpy(RspAddTradeGroupItem->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								RspAddTradeGroupItem->TradeGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::AccountClass:
+							case Items::AccountClass:
 							{
 								RspAddTradeGroupItem->AccountClass = (AccountClassType)(atoi(value.c_str()));
 								break;
@@ -24083,15 +24083,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -24177,20 +24177,20 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateTradeGroupItem != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqUpdateTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqUpdateTradeGroupItemField::FieldID);
 			if (strlen(ReqUpdateTradeGroupItem->AdminUserID) >= sizeof(ReqUpdateTradeGroupItem->AdminUserID))
 			{
 				ReqUpdateTradeGroupItem->AdminUserID[sizeof(ReqUpdateTradeGroupItem->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqUpdateTradeGroupItem->AdminUserID);
-			WriteString(ppos, StepItems::TradeGroupID, ReqUpdateTradeGroupItem->TradeGroupID);
-			WriteString(ppos, StepItems::AccountClass, (int)ReqUpdateTradeGroupItem->AccountClass);
+			WriteString(ppos, Items::AdminUserID, ReqUpdateTradeGroupItem->AdminUserID);
+			WriteString(ppos, Items::TradeGroupID, ReqUpdateTradeGroupItem->TradeGroupID);
+			WriteString(ppos, Items::AccountClass, (int)ReqUpdateTradeGroupItem->AccountClass);
 			if (strlen(ReqUpdateTradeGroupItem->PrimaryAccountID) >= sizeof(ReqUpdateTradeGroupItem->PrimaryAccountID))
 			{
 				ReqUpdateTradeGroupItem->PrimaryAccountID[sizeof(ReqUpdateTradeGroupItem->PrimaryAccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::PrimaryAccountID, ReqUpdateTradeGroupItem->PrimaryAccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqUpdateTradeGroupItemField::FieldID);
+			WriteString(ppos, Items::PrimaryAccountID, ReqUpdateTradeGroupItem->PrimaryAccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateTradeGroupItemField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -24219,26 +24219,26 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateTradeGroupItem->AdminUserID) ? sizeof(ReqUpdateTradeGroupItem->AdminUserID) - 1 : value.length();
 								memcpy(ReqUpdateTradeGroupItem->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								ReqUpdateTradeGroupItem->TradeGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::AccountClass:
+							case Items::AccountClass:
 							{
 								ReqUpdateTradeGroupItem->AccountClass = (AccountClassType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::PrimaryAccountID:
+							case Items::PrimaryAccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateTradeGroupItem->PrimaryAccountID) ? sizeof(ReqUpdateTradeGroupItem->PrimaryAccountID) - 1 : value.length();
 								memcpy(ReqUpdateTradeGroupItem->PrimaryAccountID, value.c_str(), len);
@@ -24324,26 +24324,26 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateTradeGroupItem != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspUpdateTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspUpdateTradeGroupItemField::FieldID);
 			if (strlen(RspUpdateTradeGroupItem->AdminUserID) >= sizeof(RspUpdateTradeGroupItem->AdminUserID))
 			{
 				RspUpdateTradeGroupItem->AdminUserID[sizeof(RspUpdateTradeGroupItem->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspUpdateTradeGroupItem->AdminUserID);
-			WriteString(ppos, StepItems::TradeGroupID, RspUpdateTradeGroupItem->TradeGroupID);
-			WriteString(ppos, StepItems::AccountClass, (int)RspUpdateTradeGroupItem->AccountClass);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspUpdateTradeGroupItemField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspUpdateTradeGroupItem->AdminUserID);
+			WriteString(ppos, Items::TradeGroupID, RspUpdateTradeGroupItem->TradeGroupID);
+			WriteString(ppos, Items::AccountClass, (int)RspUpdateTradeGroupItem->AccountClass);
+			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateTradeGroupItemField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -24372,21 +24372,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateTradeGroupItem->AdminUserID) ? sizeof(RspUpdateTradeGroupItem->AdminUserID) - 1 : value.length();
 								memcpy(RspUpdateTradeGroupItem->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								RspUpdateTradeGroupItem->TradeGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::AccountClass:
+							case Items::AccountClass:
 							{
 								RspUpdateTradeGroupItem->AccountClass = (AccountClassType)(atoi(value.c_str()));
 								break;
@@ -24418,15 +24418,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -24512,15 +24512,15 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveTradeGroupItem != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRemoveTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRemoveTradeGroupItemField::FieldID);
 			if (strlen(ReqRemoveTradeGroupItem->AdminUserID) >= sizeof(ReqRemoveTradeGroupItem->AdminUserID))
 			{
 				ReqRemoveTradeGroupItem->AdminUserID[sizeof(ReqRemoveTradeGroupItem->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqRemoveTradeGroupItem->AdminUserID);
-			WriteString(ppos, StepItems::TradeGroupID, ReqRemoveTradeGroupItem->TradeGroupID);
-			WriteString(ppos, StepItems::AccountClass, (int)ReqRemoveTradeGroupItem->AccountClass);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRemoveTradeGroupItemField::FieldID);
+			WriteString(ppos, Items::AdminUserID, ReqRemoveTradeGroupItem->AdminUserID);
+			WriteString(ppos, Items::TradeGroupID, ReqRemoveTradeGroupItem->TradeGroupID);
+			WriteString(ppos, Items::AccountClass, (int)ReqRemoveTradeGroupItem->AccountClass);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveTradeGroupItemField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -24549,21 +24549,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveTradeGroupItem->AdminUserID) ? sizeof(ReqRemoveTradeGroupItem->AdminUserID) - 1 : value.length();
 								memcpy(ReqRemoveTradeGroupItem->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								ReqRemoveTradeGroupItem->TradeGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::AccountClass:
+							case Items::AccountClass:
 							{
 								ReqRemoveTradeGroupItem->AccountClass = (AccountClassType)(atoi(value.c_str()));
 								break;
@@ -24648,26 +24648,26 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveTradeGroupItem != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRemoveTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRemoveTradeGroupItemField::FieldID);
 			if (strlen(RspRemoveTradeGroupItem->AdminUserID) >= sizeof(RspRemoveTradeGroupItem->AdminUserID))
 			{
 				RspRemoveTradeGroupItem->AdminUserID[sizeof(RspRemoveTradeGroupItem->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspRemoveTradeGroupItem->AdminUserID);
-			WriteString(ppos, StepItems::TradeGroupID, RspRemoveTradeGroupItem->TradeGroupID);
-			WriteString(ppos, StepItems::AccountClass, (int)RspRemoveTradeGroupItem->AccountClass);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRemoveTradeGroupItemField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspRemoveTradeGroupItem->AdminUserID);
+			WriteString(ppos, Items::TradeGroupID, RspRemoveTradeGroupItem->TradeGroupID);
+			WriteString(ppos, Items::AccountClass, (int)RspRemoveTradeGroupItem->AccountClass);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveTradeGroupItemField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -24696,21 +24696,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveTradeGroupItem->AdminUserID) ? sizeof(RspRemoveTradeGroupItem->AdminUserID) - 1 : value.length();
 								memcpy(RspRemoveTradeGroupItem->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradeGroupID:
+							case Items::TradeGroupID:
 							{
 								RspRemoveTradeGroupItem->TradeGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::AccountClass:
+							case Items::AccountClass:
 							{
 								RspRemoveTradeGroupItem->AccountClass = (AccountClassType)(atoi(value.c_str()));
 								break;
@@ -24742,15 +24742,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -24836,19 +24836,19 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddRiskGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddRiskGroupField::FieldID);
 			if (strlen(ReqAddRiskGroup->AdminUserID) >= sizeof(ReqAddRiskGroup->AdminUserID))
 			{
 				ReqAddRiskGroup->AdminUserID[sizeof(ReqAddRiskGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddRiskGroup->AdminUserID);
-			WriteString(ppos, StepItems::RiskGroupID, ReqAddRiskGroup->RiskGroupID);
+			WriteString(ppos, Items::AdminUserID, ReqAddRiskGroup->AdminUserID);
+			WriteString(ppos, Items::RiskGroupID, ReqAddRiskGroup->RiskGroupID);
 			if (strlen(ReqAddRiskGroup->RiskGroupName) >= sizeof(ReqAddRiskGroup->RiskGroupName))
 			{
 				ReqAddRiskGroup->RiskGroupName[sizeof(ReqAddRiskGroup->RiskGroupName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::RiskGroupName, ReqAddRiskGroup->RiskGroupName);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddRiskGroupField::FieldID);
+			WriteString(ppos, Items::RiskGroupName, ReqAddRiskGroup->RiskGroupName);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddRiskGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -24877,21 +24877,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskGroup->AdminUserID) ? sizeof(ReqAddRiskGroup->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddRiskGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								ReqAddRiskGroup->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskGroupName:
+							case Items::RiskGroupName:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskGroup->RiskGroupName) ? sizeof(ReqAddRiskGroup->RiskGroupName) - 1 : value.length();
 								memcpy(ReqAddRiskGroup->RiskGroupName, value.c_str(), len);
@@ -24977,25 +24977,25 @@ namespace step
 		char* ppos = buff;
 		if (RspAddRiskGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddRiskGroupField::FieldID);
 			if (strlen(RspAddRiskGroup->AdminUserID) >= sizeof(RspAddRiskGroup->AdminUserID))
 			{
 				RspAddRiskGroup->AdminUserID[sizeof(RspAddRiskGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddRiskGroup->AdminUserID);
-			WriteString(ppos, StepItems::RiskGroupID, RspAddRiskGroup->RiskGroupID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddRiskGroupField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspAddRiskGroup->AdminUserID);
+			WriteString(ppos, Items::RiskGroupID, RspAddRiskGroup->RiskGroupID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddRiskGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -25024,16 +25024,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddRiskGroup->AdminUserID) ? sizeof(RspAddRiskGroup->AdminUserID) - 1 : value.length();
 								memcpy(RspAddRiskGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								RspAddRiskGroup->RiskGroupID = atoi(value.c_str());
 								break;
@@ -25065,15 +25065,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -25159,19 +25159,19 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateRiskGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqUpdateRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqUpdateRiskGroupField::FieldID);
 			if (strlen(ReqUpdateRiskGroup->AdminUserID) >= sizeof(ReqUpdateRiskGroup->AdminUserID))
 			{
 				ReqUpdateRiskGroup->AdminUserID[sizeof(ReqUpdateRiskGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqUpdateRiskGroup->AdminUserID);
-			WriteString(ppos, StepItems::RiskGroupID, ReqUpdateRiskGroup->RiskGroupID);
+			WriteString(ppos, Items::AdminUserID, ReqUpdateRiskGroup->AdminUserID);
+			WriteString(ppos, Items::RiskGroupID, ReqUpdateRiskGroup->RiskGroupID);
 			if (strlen(ReqUpdateRiskGroup->RiskGroupName) >= sizeof(ReqUpdateRiskGroup->RiskGroupName))
 			{
 				ReqUpdateRiskGroup->RiskGroupName[sizeof(ReqUpdateRiskGroup->RiskGroupName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::RiskGroupName, ReqUpdateRiskGroup->RiskGroupName);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqUpdateRiskGroupField::FieldID);
+			WriteString(ppos, Items::RiskGroupName, ReqUpdateRiskGroup->RiskGroupName);
+			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateRiskGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -25200,21 +25200,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateRiskGroup->AdminUserID) ? sizeof(ReqUpdateRiskGroup->AdminUserID) - 1 : value.length();
 								memcpy(ReqUpdateRiskGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								ReqUpdateRiskGroup->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskGroupName:
+							case Items::RiskGroupName:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateRiskGroup->RiskGroupName) ? sizeof(ReqUpdateRiskGroup->RiskGroupName) - 1 : value.length();
 								memcpy(ReqUpdateRiskGroup->RiskGroupName, value.c_str(), len);
@@ -25300,25 +25300,25 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateRiskGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspUpdateRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspUpdateRiskGroupField::FieldID);
 			if (strlen(RspUpdateRiskGroup->AdminUserID) >= sizeof(RspUpdateRiskGroup->AdminUserID))
 			{
 				RspUpdateRiskGroup->AdminUserID[sizeof(RspUpdateRiskGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspUpdateRiskGroup->AdminUserID);
-			WriteString(ppos, StepItems::RiskGroupID, RspUpdateRiskGroup->RiskGroupID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspUpdateRiskGroupField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspUpdateRiskGroup->AdminUserID);
+			WriteString(ppos, Items::RiskGroupID, RspUpdateRiskGroup->RiskGroupID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateRiskGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -25347,16 +25347,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateRiskGroup->AdminUserID) ? sizeof(RspUpdateRiskGroup->AdminUserID) - 1 : value.length();
 								memcpy(RspUpdateRiskGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								RspUpdateRiskGroup->RiskGroupID = atoi(value.c_str());
 								break;
@@ -25388,15 +25388,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -25482,14 +25482,14 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveRiskGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRemoveRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRemoveRiskGroupField::FieldID);
 			if (strlen(ReqRemoveRiskGroup->AdminUserID) >= sizeof(ReqRemoveRiskGroup->AdminUserID))
 			{
 				ReqRemoveRiskGroup->AdminUserID[sizeof(ReqRemoveRiskGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqRemoveRiskGroup->AdminUserID);
-			WriteString(ppos, StepItems::RiskGroupID, ReqRemoveRiskGroup->RiskGroupID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRemoveRiskGroupField::FieldID);
+			WriteString(ppos, Items::AdminUserID, ReqRemoveRiskGroup->AdminUserID);
+			WriteString(ppos, Items::RiskGroupID, ReqRemoveRiskGroup->RiskGroupID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveRiskGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -25518,16 +25518,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveRiskGroup->AdminUserID) ? sizeof(ReqRemoveRiskGroup->AdminUserID) - 1 : value.length();
 								memcpy(ReqRemoveRiskGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								ReqRemoveRiskGroup->RiskGroupID = atoi(value.c_str());
 								break;
@@ -25612,25 +25612,25 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveRiskGroup != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRemoveRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRemoveRiskGroupField::FieldID);
 			if (strlen(RspRemoveRiskGroup->AdminUserID) >= sizeof(RspRemoveRiskGroup->AdminUserID))
 			{
 				RspRemoveRiskGroup->AdminUserID[sizeof(RspRemoveRiskGroup->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspRemoveRiskGroup->AdminUserID);
-			WriteString(ppos, StepItems::RiskGroupID, RspRemoveRiskGroup->RiskGroupID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRemoveRiskGroupField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspRemoveRiskGroup->AdminUserID);
+			WriteString(ppos, Items::RiskGroupID, RspRemoveRiskGroup->RiskGroupID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveRiskGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -25659,16 +25659,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveRiskGroup->AdminUserID) ? sizeof(RspRemoveRiskGroup->AdminUserID) - 1 : value.length();
 								memcpy(RspRemoveRiskGroup->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								RspRemoveRiskGroup->RiskGroupID = atoi(value.c_str());
 								break;
@@ -25700,15 +25700,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -25794,15 +25794,15 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddRiskGroupItem != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddRiskGroupItemField::FieldID);
 			if (strlen(ReqAddRiskGroupItem->AdminUserID) >= sizeof(ReqAddRiskGroupItem->AdminUserID))
 			{
 				ReqAddRiskGroupItem->AdminUserID[sizeof(ReqAddRiskGroupItem->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddRiskGroupItem->AdminUserID);
-			WriteString(ppos, StepItems::RiskGroupID, ReqAddRiskGroupItem->RiskGroupID);
-			WriteString(ppos, StepItems::RiskID, ReqAddRiskGroupItem->RiskID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddRiskGroupItemField::FieldID);
+			WriteString(ppos, Items::AdminUserID, ReqAddRiskGroupItem->AdminUserID);
+			WriteString(ppos, Items::RiskGroupID, ReqAddRiskGroupItem->RiskGroupID);
+			WriteString(ppos, Items::RiskID, ReqAddRiskGroupItem->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddRiskGroupItemField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -25831,21 +25831,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskGroupItem->AdminUserID) ? sizeof(ReqAddRiskGroupItem->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddRiskGroupItem->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								ReqAddRiskGroupItem->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								ReqAddRiskGroupItem->RiskID = atoi(value.c_str());
 								break;
@@ -25930,26 +25930,26 @@ namespace step
 		char* ppos = buff;
 		if (RspAddRiskGroupItem != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddRiskGroupItemField::FieldID);
 			if (strlen(RspAddRiskGroupItem->AdminUserID) >= sizeof(RspAddRiskGroupItem->AdminUserID))
 			{
 				RspAddRiskGroupItem->AdminUserID[sizeof(RspAddRiskGroupItem->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddRiskGroupItem->AdminUserID);
-			WriteString(ppos, StepItems::RiskGroupID, RspAddRiskGroupItem->RiskGroupID);
-			WriteString(ppos, StepItems::RiskID, RspAddRiskGroupItem->RiskID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddRiskGroupItemField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspAddRiskGroupItem->AdminUserID);
+			WriteString(ppos, Items::RiskGroupID, RspAddRiskGroupItem->RiskGroupID);
+			WriteString(ppos, Items::RiskID, RspAddRiskGroupItem->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddRiskGroupItemField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -25978,21 +25978,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddRiskGroupItem->AdminUserID) ? sizeof(RspAddRiskGroupItem->AdminUserID) - 1 : value.length();
 								memcpy(RspAddRiskGroupItem->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								RspAddRiskGroupItem->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								RspAddRiskGroupItem->RiskID = atoi(value.c_str());
 								break;
@@ -26024,15 +26024,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -26118,15 +26118,15 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateRiskGroupItem != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqUpdateRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqUpdateRiskGroupItemField::FieldID);
 			if (strlen(ReqUpdateRiskGroupItem->AdminUserID) >= sizeof(ReqUpdateRiskGroupItem->AdminUserID))
 			{
 				ReqUpdateRiskGroupItem->AdminUserID[sizeof(ReqUpdateRiskGroupItem->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqUpdateRiskGroupItem->AdminUserID);
-			WriteString(ppos, StepItems::RiskGroupID, ReqUpdateRiskGroupItem->RiskGroupID);
-			WriteString(ppos, StepItems::RiskID, ReqUpdateRiskGroupItem->RiskID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqUpdateRiskGroupItemField::FieldID);
+			WriteString(ppos, Items::AdminUserID, ReqUpdateRiskGroupItem->AdminUserID);
+			WriteString(ppos, Items::RiskGroupID, ReqUpdateRiskGroupItem->RiskGroupID);
+			WriteString(ppos, Items::RiskID, ReqUpdateRiskGroupItem->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateRiskGroupItemField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -26155,21 +26155,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqUpdateRiskGroupItem->AdminUserID) ? sizeof(ReqUpdateRiskGroupItem->AdminUserID) - 1 : value.length();
 								memcpy(ReqUpdateRiskGroupItem->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								ReqUpdateRiskGroupItem->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								ReqUpdateRiskGroupItem->RiskID = atoi(value.c_str());
 								break;
@@ -26254,26 +26254,26 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateRiskGroupItem != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspUpdateRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspUpdateRiskGroupItemField::FieldID);
 			if (strlen(RspUpdateRiskGroupItem->AdminUserID) >= sizeof(RspUpdateRiskGroupItem->AdminUserID))
 			{
 				RspUpdateRiskGroupItem->AdminUserID[sizeof(RspUpdateRiskGroupItem->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspUpdateRiskGroupItem->AdminUserID);
-			WriteString(ppos, StepItems::RiskGroupID, RspUpdateRiskGroupItem->RiskGroupID);
-			WriteString(ppos, StepItems::RiskID, RspUpdateRiskGroupItem->RiskID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspUpdateRiskGroupItemField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspUpdateRiskGroupItem->AdminUserID);
+			WriteString(ppos, Items::RiskGroupID, RspUpdateRiskGroupItem->RiskGroupID);
+			WriteString(ppos, Items::RiskID, RspUpdateRiskGroupItem->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateRiskGroupItemField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -26302,21 +26302,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspUpdateRiskGroupItem->AdminUserID) ? sizeof(RspUpdateRiskGroupItem->AdminUserID) - 1 : value.length();
 								memcpy(RspUpdateRiskGroupItem->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								RspUpdateRiskGroupItem->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								RspUpdateRiskGroupItem->RiskID = atoi(value.c_str());
 								break;
@@ -26348,15 +26348,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -26442,15 +26442,15 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveRiskGroupItem != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRemoveRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRemoveRiskGroupItemField::FieldID);
 			if (strlen(ReqRemoveRiskGroupItem->AdminUserID) >= sizeof(ReqRemoveRiskGroupItem->AdminUserID))
 			{
 				ReqRemoveRiskGroupItem->AdminUserID[sizeof(ReqRemoveRiskGroupItem->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqRemoveRiskGroupItem->AdminUserID);
-			WriteString(ppos, StepItems::RiskGroupID, ReqRemoveRiskGroupItem->RiskGroupID);
-			WriteString(ppos, StepItems::RiskID, ReqRemoveRiskGroupItem->RiskID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRemoveRiskGroupItemField::FieldID);
+			WriteString(ppos, Items::AdminUserID, ReqRemoveRiskGroupItem->AdminUserID);
+			WriteString(ppos, Items::RiskGroupID, ReqRemoveRiskGroupItem->RiskGroupID);
+			WriteString(ppos, Items::RiskID, ReqRemoveRiskGroupItem->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveRiskGroupItemField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -26479,21 +26479,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveRiskGroupItem->AdminUserID) ? sizeof(ReqRemoveRiskGroupItem->AdminUserID) - 1 : value.length();
 								memcpy(ReqRemoveRiskGroupItem->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								ReqRemoveRiskGroupItem->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								ReqRemoveRiskGroupItem->RiskID = atoi(value.c_str());
 								break;
@@ -26578,26 +26578,26 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveRiskGroupItem != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRemoveRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRemoveRiskGroupItemField::FieldID);
 			if (strlen(RspRemoveRiskGroupItem->AdminUserID) >= sizeof(RspRemoveRiskGroupItem->AdminUserID))
 			{
 				RspRemoveRiskGroupItem->AdminUserID[sizeof(RspRemoveRiskGroupItem->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspRemoveRiskGroupItem->AdminUserID);
-			WriteString(ppos, StepItems::RiskGroupID, RspRemoveRiskGroupItem->RiskGroupID);
-			WriteString(ppos, StepItems::RiskID, RspRemoveRiskGroupItem->RiskID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRemoveRiskGroupItemField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspRemoveRiskGroupItem->AdminUserID);
+			WriteString(ppos, Items::RiskGroupID, RspRemoveRiskGroupItem->RiskGroupID);
+			WriteString(ppos, Items::RiskID, RspRemoveRiskGroupItem->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveRiskGroupItemField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -26626,21 +26626,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveRiskGroupItem->AdminUserID) ? sizeof(RspRemoveRiskGroupItem->AdminUserID) - 1 : value.length();
 								memcpy(RspRemoveRiskGroupItem->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskGroupID:
+							case Items::RiskGroupID:
 							{
 								RspRemoveRiskGroupItem->RiskGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								RspRemoveRiskGroupItem->RiskID = atoi(value.c_str());
 								break;
@@ -26672,15 +26672,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -26766,20 +26766,20 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddOrUpdateRisk != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddOrUpdateRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddOrUpdateRiskField::FieldID);
 			if (strlen(ReqAddOrUpdateRisk->AdminUserID) >= sizeof(ReqAddOrUpdateRisk->AdminUserID))
 			{
 				ReqAddOrUpdateRisk->AdminUserID[sizeof(ReqAddOrUpdateRisk->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddOrUpdateRisk->AdminUserID);
-			WriteString(ppos, StepItems::RiskID, ReqAddOrUpdateRisk->RiskID);
+			WriteString(ppos, Items::AdminUserID, ReqAddOrUpdateRisk->AdminUserID);
+			WriteString(ppos, Items::RiskID, ReqAddOrUpdateRisk->RiskID);
 			if (strlen(ReqAddOrUpdateRisk->RiskName) >= sizeof(ReqAddOrUpdateRisk->RiskName))
 			{
 				ReqAddOrUpdateRisk->RiskName[sizeof(ReqAddOrUpdateRisk->RiskName) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::RiskName, ReqAddOrUpdateRisk->RiskName);
-			WriteString(ppos, StepItems::RiskClassID, (int)ReqAddOrUpdateRisk->RiskClassID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddOrUpdateRiskField::FieldID);
+			WriteString(ppos, Items::RiskName, ReqAddOrUpdateRisk->RiskName);
+			WriteString(ppos, Items::RiskClassID, (int)ReqAddOrUpdateRisk->RiskClassID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddOrUpdateRiskField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -26808,27 +26808,27 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddOrUpdateRisk->AdminUserID) ? sizeof(ReqAddOrUpdateRisk->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddOrUpdateRisk->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								ReqAddOrUpdateRisk->RiskID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskName:
+							case Items::RiskName:
 							{
 								size_t len = value.length() >= sizeof(ReqAddOrUpdateRisk->RiskName) ? sizeof(ReqAddOrUpdateRisk->RiskName) - 1 : value.length();
 								memcpy(ReqAddOrUpdateRisk->RiskName, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskClassID:
+							case Items::RiskClassID:
 							{
 								ReqAddOrUpdateRisk->RiskClassID = (RiskClassIDType)(atoi(value.c_str()));
 								break;
@@ -26913,25 +26913,25 @@ namespace step
 		char* ppos = buff;
 		if (RspAddOrUpdateRisk != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddOrUpdateRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddOrUpdateRiskField::FieldID);
 			if (strlen(RspAddOrUpdateRisk->AdminUserID) >= sizeof(RspAddOrUpdateRisk->AdminUserID))
 			{
 				RspAddOrUpdateRisk->AdminUserID[sizeof(RspAddOrUpdateRisk->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddOrUpdateRisk->AdminUserID);
-			WriteString(ppos, StepItems::RiskID, RspAddOrUpdateRisk->RiskID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddOrUpdateRiskField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspAddOrUpdateRisk->AdminUserID);
+			WriteString(ppos, Items::RiskID, RspAddOrUpdateRisk->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddOrUpdateRiskField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -26960,16 +26960,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddOrUpdateRisk->AdminUserID) ? sizeof(RspAddOrUpdateRisk->AdminUserID) - 1 : value.length();
 								memcpy(RspAddOrUpdateRisk->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								RspAddOrUpdateRisk->RiskID = atoi(value.c_str());
 								break;
@@ -27001,15 +27001,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -27095,14 +27095,14 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveRisk != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRemoveRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRemoveRiskField::FieldID);
 			if (strlen(ReqRemoveRisk->AdminUserID) >= sizeof(ReqRemoveRisk->AdminUserID))
 			{
 				ReqRemoveRisk->AdminUserID[sizeof(ReqRemoveRisk->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqRemoveRisk->AdminUserID);
-			WriteString(ppos, StepItems::RiskID, ReqRemoveRisk->RiskID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRemoveRiskField::FieldID);
+			WriteString(ppos, Items::AdminUserID, ReqRemoveRisk->AdminUserID);
+			WriteString(ppos, Items::RiskID, ReqRemoveRisk->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveRiskField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -27131,16 +27131,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveRisk->AdminUserID) ? sizeof(ReqRemoveRisk->AdminUserID) - 1 : value.length();
 								memcpy(ReqRemoveRisk->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								ReqRemoveRisk->RiskID = atoi(value.c_str());
 								break;
@@ -27225,25 +27225,25 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveRisk != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRemoveRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRemoveRiskField::FieldID);
 			if (strlen(RspRemoveRisk->AdminUserID) >= sizeof(RspRemoveRisk->AdminUserID))
 			{
 				RspRemoveRisk->AdminUserID[sizeof(RspRemoveRisk->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspRemoveRisk->AdminUserID);
-			WriteString(ppos, StepItems::RiskID, RspRemoveRisk->RiskID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRemoveRiskField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspRemoveRisk->AdminUserID);
+			WriteString(ppos, Items::RiskID, RspRemoveRisk->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveRiskField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -27272,16 +27272,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveRisk->AdminUserID) ? sizeof(RspRemoveRisk->AdminUserID) - 1 : value.length();
 								memcpy(RspRemoveRisk->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								RspRemoveRisk->RiskID = atoi(value.c_str());
 								break;
@@ -27313,15 +27313,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -27407,21 +27407,21 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddRiskRule != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddRiskRuleField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddRiskRuleField::FieldID);
 			if (strlen(ReqAddRiskRule->AdminUserID) >= sizeof(ReqAddRiskRule->AdminUserID))
 			{
 				ReqAddRiskRule->AdminUserID[sizeof(ReqAddRiskRule->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddRiskRule->AdminUserID);
-			WriteString(ppos, StepItems::RiskID, ReqAddRiskRule->RiskID);
-			WriteString(ppos, StepItems::RiskRuleID, ReqAddRiskRule->RiskRuleID);
-			WriteString(ppos, StepItems::RiskRuleStyle, (int)ReqAddRiskRule->RiskRuleStyle);
+			WriteString(ppos, Items::AdminUserID, ReqAddRiskRule->AdminUserID);
+			WriteString(ppos, Items::RiskID, ReqAddRiskRule->RiskID);
+			WriteString(ppos, Items::RiskRuleID, ReqAddRiskRule->RiskRuleID);
+			WriteString(ppos, Items::RiskRuleStyle, (int)ReqAddRiskRule->RiskRuleStyle);
 			if (strlen(ReqAddRiskRule->FormatRiskMessage) >= sizeof(ReqAddRiskRule->FormatRiskMessage))
 			{
 				ReqAddRiskRule->FormatRiskMessage[sizeof(ReqAddRiskRule->FormatRiskMessage) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::FormatRiskMessage, ReqAddRiskRule->FormatRiskMessage);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddRiskRuleField::FieldID);
+			WriteString(ppos, Items::FormatRiskMessage, ReqAddRiskRule->FormatRiskMessage);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddRiskRuleField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -27450,31 +27450,31 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskRule->AdminUserID) ? sizeof(ReqAddRiskRule->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddRiskRule->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								ReqAddRiskRule->RiskID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskRuleID:
+							case Items::RiskRuleID:
 							{
 								ReqAddRiskRule->RiskRuleID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskRuleStyle:
+							case Items::RiskRuleStyle:
 							{
 								ReqAddRiskRule->RiskRuleStyle = (RiskRuleStyleType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::FormatRiskMessage:
+							case Items::FormatRiskMessage:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskRule->FormatRiskMessage) ? sizeof(ReqAddRiskRule->FormatRiskMessage) - 1 : value.length();
 								memcpy(ReqAddRiskRule->FormatRiskMessage, value.c_str(), len);
@@ -27560,26 +27560,26 @@ namespace step
 		char* ppos = buff;
 		if (RspAddRiskRule != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddRiskRuleField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddRiskRuleField::FieldID);
 			if (strlen(RspAddRiskRule->AdminUserID) >= sizeof(RspAddRiskRule->AdminUserID))
 			{
 				RspAddRiskRule->AdminUserID[sizeof(RspAddRiskRule->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddRiskRule->AdminUserID);
-			WriteString(ppos, StepItems::RiskID, RspAddRiskRule->RiskID);
-			WriteString(ppos, StepItems::RiskRuleID, RspAddRiskRule->RiskRuleID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddRiskRuleField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspAddRiskRule->AdminUserID);
+			WriteString(ppos, Items::RiskID, RspAddRiskRule->RiskID);
+			WriteString(ppos, Items::RiskRuleID, RspAddRiskRule->RiskRuleID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddRiskRuleField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -27608,21 +27608,21 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddRiskRule->AdminUserID) ? sizeof(RspAddRiskRule->AdminUserID) - 1 : value.length();
 								memcpy(RspAddRiskRule->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								RspAddRiskRule->RiskID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskRuleID:
+							case Items::RiskRuleID:
 							{
 								RspAddRiskRule->RiskRuleID = atoi(value.c_str());
 								break;
@@ -27654,15 +27654,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -27748,64 +27748,64 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddRiskRuleItem != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddRiskRuleItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddRiskRuleItemField::FieldID);
 			if (strlen(ReqAddRiskRuleItem->AdminUserID) >= sizeof(ReqAddRiskRuleItem->AdminUserID))
 			{
 				ReqAddRiskRuleItem->AdminUserID[sizeof(ReqAddRiskRuleItem->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddRiskRuleItem->AdminUserID);
-			WriteString(ppos, StepItems::RiskID, ReqAddRiskRuleItem->RiskID);
-			WriteString(ppos, StepItems::RiskRuleID, ReqAddRiskRuleItem->RiskRuleID);
-			WriteString(ppos, StepItems::RiskRuleItemID, ReqAddRiskRuleItem->RiskRuleItemID);
-			WriteString(ppos, StepItems::RiskIndexType, (int)ReqAddRiskRuleItem->RiskIndexType);
-			WriteString(ppos, StepItems::RiskIndexID, ReqAddRiskRuleItem->RiskIndexID);
-			WriteString(ppos, StepItems::RiskIndexTextRef, ReqAddRiskRuleItem->RiskIndexTextRef);
+			WriteString(ppos, Items::AdminUserID, ReqAddRiskRuleItem->AdminUserID);
+			WriteString(ppos, Items::RiskID, ReqAddRiskRuleItem->RiskID);
+			WriteString(ppos, Items::RiskRuleID, ReqAddRiskRuleItem->RiskRuleID);
+			WriteString(ppos, Items::RiskRuleItemID, ReqAddRiskRuleItem->RiskRuleItemID);
+			WriteString(ppos, Items::RiskIndexType, (int)ReqAddRiskRuleItem->RiskIndexType);
+			WriteString(ppos, Items::RiskIndexID, ReqAddRiskRuleItem->RiskIndexID);
+			WriteString(ppos, Items::RiskIndexTextRef, ReqAddRiskRuleItem->RiskIndexTextRef);
 			if (strlen(ReqAddRiskRuleItem->IndexParam1) >= sizeof(ReqAddRiskRuleItem->IndexParam1))
 			{
 				ReqAddRiskRuleItem->IndexParam1[sizeof(ReqAddRiskRuleItem->IndexParam1) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::IndexParam1, ReqAddRiskRuleItem->IndexParam1);
+			WriteString(ppos, Items::IndexParam1, ReqAddRiskRuleItem->IndexParam1);
 			if (strlen(ReqAddRiskRuleItem->IndexParam2) >= sizeof(ReqAddRiskRuleItem->IndexParam2))
 			{
 				ReqAddRiskRuleItem->IndexParam2[sizeof(ReqAddRiskRuleItem->IndexParam2) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::IndexParam2, ReqAddRiskRuleItem->IndexParam2);
+			WriteString(ppos, Items::IndexParam2, ReqAddRiskRuleItem->IndexParam2);
 			if (strlen(ReqAddRiskRuleItem->IndexParam3) >= sizeof(ReqAddRiskRuleItem->IndexParam3))
 			{
 				ReqAddRiskRuleItem->IndexParam3[sizeof(ReqAddRiskRuleItem->IndexParam3) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::IndexParam3, ReqAddRiskRuleItem->IndexParam3);
+			WriteString(ppos, Items::IndexParam3, ReqAddRiskRuleItem->IndexParam3);
 			if (strlen(ReqAddRiskRuleItem->IndexParam4) >= sizeof(ReqAddRiskRuleItem->IndexParam4))
 			{
 				ReqAddRiskRuleItem->IndexParam4[sizeof(ReqAddRiskRuleItem->IndexParam4) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::IndexParam4, ReqAddRiskRuleItem->IndexParam4);
+			WriteString(ppos, Items::IndexParam4, ReqAddRiskRuleItem->IndexParam4);
 			if (strlen(ReqAddRiskRuleItem->IndexParam5) >= sizeof(ReqAddRiskRuleItem->IndexParam5))
 			{
 				ReqAddRiskRuleItem->IndexParam5[sizeof(ReqAddRiskRuleItem->IndexParam5) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::IndexParam5, ReqAddRiskRuleItem->IndexParam5);
+			WriteString(ppos, Items::IndexParam5, ReqAddRiskRuleItem->IndexParam5);
 			if (strlen(ReqAddRiskRuleItem->IndexParam6) >= sizeof(ReqAddRiskRuleItem->IndexParam6))
 			{
 				ReqAddRiskRuleItem->IndexParam6[sizeof(ReqAddRiskRuleItem->IndexParam6) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::IndexParam6, ReqAddRiskRuleItem->IndexParam6);
-			WriteString(ppos, StepItems::LogicFunc, (int)ReqAddRiskRuleItem->LogicFunc);
-			WriteString(ppos, StepItems::LogicParamType1, (int)ReqAddRiskRuleItem->LogicParamType1);
+			WriteString(ppos, Items::IndexParam6, ReqAddRiskRuleItem->IndexParam6);
+			WriteString(ppos, Items::LogicFunc, (int)ReqAddRiskRuleItem->LogicFunc);
+			WriteString(ppos, Items::LogicParamType1, (int)ReqAddRiskRuleItem->LogicParamType1);
 			if (strlen(ReqAddRiskRuleItem->LogicParam1) >= sizeof(ReqAddRiskRuleItem->LogicParam1))
 			{
 				ReqAddRiskRuleItem->LogicParam1[sizeof(ReqAddRiskRuleItem->LogicParam1) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::LogicParam1, ReqAddRiskRuleItem->LogicParam1);
-			WriteString(ppos, StepItems::LogicParam1TextRef, ReqAddRiskRuleItem->LogicParam1TextRef);
-			WriteString(ppos, StepItems::LogicParamType2, (int)ReqAddRiskRuleItem->LogicParamType2);
+			WriteString(ppos, Items::LogicParam1, ReqAddRiskRuleItem->LogicParam1);
+			WriteString(ppos, Items::LogicParam1TextRef, ReqAddRiskRuleItem->LogicParam1TextRef);
+			WriteString(ppos, Items::LogicParamType2, (int)ReqAddRiskRuleItem->LogicParamType2);
 			if (strlen(ReqAddRiskRuleItem->LogicParam2) >= sizeof(ReqAddRiskRuleItem->LogicParam2))
 			{
 				ReqAddRiskRuleItem->LogicParam2[sizeof(ReqAddRiskRuleItem->LogicParam2) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::LogicParam2, ReqAddRiskRuleItem->LogicParam2);
-			WriteString(ppos, StepItems::LogicParam2TextRef, ReqAddRiskRuleItem->LogicParam2TextRef);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddRiskRuleItemField::FieldID);
+			WriteString(ppos, Items::LogicParam2, ReqAddRiskRuleItem->LogicParam2);
+			WriteString(ppos, Items::LogicParam2TextRef, ReqAddRiskRuleItem->LogicParam2TextRef);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddRiskRuleItemField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -27834,114 +27834,114 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskRuleItem->AdminUserID) ? sizeof(ReqAddRiskRuleItem->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddRiskRuleItem->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								ReqAddRiskRuleItem->RiskID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskRuleID:
+							case Items::RiskRuleID:
 							{
 								ReqAddRiskRuleItem->RiskRuleID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskRuleItemID:
+							case Items::RiskRuleItemID:
 							{
 								ReqAddRiskRuleItem->RiskRuleItemID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskIndexType:
+							case Items::RiskIndexType:
 							{
 								ReqAddRiskRuleItem->RiskIndexType = (RiskIndexTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::RiskIndexID:
+							case Items::RiskIndexID:
 							{
 								ReqAddRiskRuleItem->RiskIndexID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskIndexTextRef:
+							case Items::RiskIndexTextRef:
 							{
 								ReqAddRiskRuleItem->RiskIndexTextRef = atoi(value.c_str());
 								break;
 							}
-							case StepItems::IndexParam1:
+							case Items::IndexParam1:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskRuleItem->IndexParam1) ? sizeof(ReqAddRiskRuleItem->IndexParam1) - 1 : value.length();
 								memcpy(ReqAddRiskRuleItem->IndexParam1, value.c_str(), len);
 								break;
 							}
-							case StepItems::IndexParam2:
+							case Items::IndexParam2:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskRuleItem->IndexParam2) ? sizeof(ReqAddRiskRuleItem->IndexParam2) - 1 : value.length();
 								memcpy(ReqAddRiskRuleItem->IndexParam2, value.c_str(), len);
 								break;
 							}
-							case StepItems::IndexParam3:
+							case Items::IndexParam3:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskRuleItem->IndexParam3) ? sizeof(ReqAddRiskRuleItem->IndexParam3) - 1 : value.length();
 								memcpy(ReqAddRiskRuleItem->IndexParam3, value.c_str(), len);
 								break;
 							}
-							case StepItems::IndexParam4:
+							case Items::IndexParam4:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskRuleItem->IndexParam4) ? sizeof(ReqAddRiskRuleItem->IndexParam4) - 1 : value.length();
 								memcpy(ReqAddRiskRuleItem->IndexParam4, value.c_str(), len);
 								break;
 							}
-							case StepItems::IndexParam5:
+							case Items::IndexParam5:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskRuleItem->IndexParam5) ? sizeof(ReqAddRiskRuleItem->IndexParam5) - 1 : value.length();
 								memcpy(ReqAddRiskRuleItem->IndexParam5, value.c_str(), len);
 								break;
 							}
-							case StepItems::IndexParam6:
+							case Items::IndexParam6:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskRuleItem->IndexParam6) ? sizeof(ReqAddRiskRuleItem->IndexParam6) - 1 : value.length();
 								memcpy(ReqAddRiskRuleItem->IndexParam6, value.c_str(), len);
 								break;
 							}
-							case StepItems::LogicFunc:
+							case Items::LogicFunc:
 							{
 								ReqAddRiskRuleItem->LogicFunc = (LogicFuncType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::LogicParamType1:
+							case Items::LogicParamType1:
 							{
 								ReqAddRiskRuleItem->LogicParamType1 = (ParamTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::LogicParam1:
+							case Items::LogicParam1:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskRuleItem->LogicParam1) ? sizeof(ReqAddRiskRuleItem->LogicParam1) - 1 : value.length();
 								memcpy(ReqAddRiskRuleItem->LogicParam1, value.c_str(), len);
 								break;
 							}
-							case StepItems::LogicParam1TextRef:
+							case Items::LogicParam1TextRef:
 							{
 								ReqAddRiskRuleItem->LogicParam1TextRef = atoi(value.c_str());
 								break;
 							}
-							case StepItems::LogicParamType2:
+							case Items::LogicParamType2:
 							{
 								ReqAddRiskRuleItem->LogicParamType2 = (ParamTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::LogicParam2:
+							case Items::LogicParam2:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskRuleItem->LogicParam2) ? sizeof(ReqAddRiskRuleItem->LogicParam2) - 1 : value.length();
 								memcpy(ReqAddRiskRuleItem->LogicParam2, value.c_str(), len);
 								break;
 							}
-							case StepItems::LogicParam2TextRef:
+							case Items::LogicParam2TextRef:
 							{
 								ReqAddRiskRuleItem->LogicParam2TextRef = atoi(value.c_str());
 								break;
@@ -28026,27 +28026,27 @@ namespace step
 		char* ppos = buff;
 		if (RspAddRiskRuleItem != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddRiskRuleItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddRiskRuleItemField::FieldID);
 			if (strlen(RspAddRiskRuleItem->AdminUserID) >= sizeof(RspAddRiskRuleItem->AdminUserID))
 			{
 				RspAddRiskRuleItem->AdminUserID[sizeof(RspAddRiskRuleItem->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddRiskRuleItem->AdminUserID);
-			WriteString(ppos, StepItems::RiskID, RspAddRiskRuleItem->RiskID);
-			WriteString(ppos, StepItems::RiskRuleID, RspAddRiskRuleItem->RiskRuleID);
-			WriteString(ppos, StepItems::RiskRuleItemID, RspAddRiskRuleItem->RiskRuleItemID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddRiskRuleItemField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspAddRiskRuleItem->AdminUserID);
+			WriteString(ppos, Items::RiskID, RspAddRiskRuleItem->RiskID);
+			WriteString(ppos, Items::RiskRuleID, RspAddRiskRuleItem->RiskRuleID);
+			WriteString(ppos, Items::RiskRuleItemID, RspAddRiskRuleItem->RiskRuleItemID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddRiskRuleItemField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -28075,26 +28075,26 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddRiskRuleItem->AdminUserID) ? sizeof(RspAddRiskRuleItem->AdminUserID) - 1 : value.length();
 								memcpy(RspAddRiskRuleItem->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								RspAddRiskRuleItem->RiskID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskRuleID:
+							case Items::RiskRuleID:
 							{
 								RspAddRiskRuleItem->RiskRuleID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::RiskRuleItemID:
+							case Items::RiskRuleItemID:
 							{
 								RspAddRiskRuleItem->RiskRuleItemID = atoi(value.c_str());
 								break;
@@ -28126,15 +28126,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -28220,21 +28220,21 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddRiskTradeScope != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddRiskTradeScopeField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddRiskTradeScopeField::FieldID);
 			if (strlen(ReqAddRiskTradeScope->AdminUserID) >= sizeof(ReqAddRiskTradeScope->AdminUserID))
 			{
 				ReqAddRiskTradeScope->AdminUserID[sizeof(ReqAddRiskTradeScope->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddRiskTradeScope->AdminUserID);
-			WriteString(ppos, StepItems::RiskID, ReqAddRiskTradeScope->RiskID);
-			WriteString(ppos, StepItems::TradeScopeType, (int)ReqAddRiskTradeScope->TradeScopeType);
-			WriteString(ppos, StepItems::InstrumentGroupID, ReqAddRiskTradeScope->InstrumentGroupID);
+			WriteString(ppos, Items::AdminUserID, ReqAddRiskTradeScope->AdminUserID);
+			WriteString(ppos, Items::RiskID, ReqAddRiskTradeScope->RiskID);
+			WriteString(ppos, Items::TradeScopeType, (int)ReqAddRiskTradeScope->TradeScopeType);
+			WriteString(ppos, Items::InstrumentGroupID, ReqAddRiskTradeScope->InstrumentGroupID);
 			if (strlen(ReqAddRiskTradeScope->FormatRiskMessage) >= sizeof(ReqAddRiskTradeScope->FormatRiskMessage))
 			{
 				ReqAddRiskTradeScope->FormatRiskMessage[sizeof(ReqAddRiskTradeScope->FormatRiskMessage) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::FormatRiskMessage, ReqAddRiskTradeScope->FormatRiskMessage);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddRiskTradeScopeField::FieldID);
+			WriteString(ppos, Items::FormatRiskMessage, ReqAddRiskTradeScope->FormatRiskMessage);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddRiskTradeScopeField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -28263,31 +28263,31 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskTradeScope->AdminUserID) ? sizeof(ReqAddRiskTradeScope->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddRiskTradeScope->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								ReqAddRiskTradeScope->RiskID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::TradeScopeType:
+							case Items::TradeScopeType:
 							{
 								ReqAddRiskTradeScope->TradeScopeType = (TradeScopeTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::InstrumentGroupID:
+							case Items::InstrumentGroupID:
 							{
 								ReqAddRiskTradeScope->InstrumentGroupID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::FormatRiskMessage:
+							case Items::FormatRiskMessage:
 							{
 								size_t len = value.length() >= sizeof(ReqAddRiskTradeScope->FormatRiskMessage) ? sizeof(ReqAddRiskTradeScope->FormatRiskMessage) - 1 : value.length();
 								memcpy(ReqAddRiskTradeScope->FormatRiskMessage, value.c_str(), len);
@@ -28373,25 +28373,25 @@ namespace step
 		char* ppos = buff;
 		if (RspAddRiskTradeScope != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddRiskTradeScopeField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddRiskTradeScopeField::FieldID);
 			if (strlen(RspAddRiskTradeScope->AdminUserID) >= sizeof(RspAddRiskTradeScope->AdminUserID))
 			{
 				RspAddRiskTradeScope->AdminUserID[sizeof(RspAddRiskTradeScope->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddRiskTradeScope->AdminUserID);
-			WriteString(ppos, StepItems::RiskID, RspAddRiskTradeScope->RiskID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddRiskTradeScopeField::FieldID);
+			WriteString(ppos, Items::AdminUserID, RspAddRiskTradeScope->AdminUserID);
+			WriteString(ppos, Items::RiskID, RspAddRiskTradeScope->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddRiskTradeScopeField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -28420,16 +28420,16 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddRiskTradeScope->AdminUserID) ? sizeof(RspAddRiskTradeScope->AdminUserID) - 1 : value.length();
 								memcpy(RspAddRiskTradeScope->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								RspAddRiskTradeScope->RiskID = atoi(value.c_str());
 								break;
@@ -28461,15 +28461,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -28555,19 +28555,19 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddAccountRisk != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAddAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAddAccountRiskField::FieldID);
 			if (strlen(ReqAddAccountRisk->AdminUserID) >= sizeof(ReqAddAccountRisk->AdminUserID))
 			{
 				ReqAddAccountRisk->AdminUserID[sizeof(ReqAddAccountRisk->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAddAccountRisk->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqAddAccountRisk->AdminUserID);
 			if (strlen(ReqAddAccountRisk->AccountID) >= sizeof(ReqAddAccountRisk->AccountID))
 			{
 				ReqAddAccountRisk->AccountID[sizeof(ReqAddAccountRisk->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqAddAccountRisk->AccountID);
-			WriteString(ppos, StepItems::RiskID, ReqAddAccountRisk->RiskID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAddAccountRiskField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqAddAccountRisk->AccountID);
+			WriteString(ppos, Items::RiskID, ReqAddAccountRisk->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAddAccountRiskField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -28596,22 +28596,22 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddAccountRisk->AdminUserID) ? sizeof(ReqAddAccountRisk->AdminUserID) - 1 : value.length();
 								memcpy(ReqAddAccountRisk->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqAddAccountRisk->AccountID) ? sizeof(ReqAddAccountRisk->AccountID) - 1 : value.length();
 								memcpy(ReqAddAccountRisk->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								ReqAddAccountRisk->RiskID = atoi(value.c_str());
 								break;
@@ -28696,30 +28696,30 @@ namespace step
 		char* ppos = buff;
 		if (RspAddAccountRisk != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAddAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAddAccountRiskField::FieldID);
 			if (strlen(RspAddAccountRisk->AdminUserID) >= sizeof(RspAddAccountRisk->AdminUserID))
 			{
 				RspAddAccountRisk->AdminUserID[sizeof(RspAddAccountRisk->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAddAccountRisk->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspAddAccountRisk->AdminUserID);
 			if (strlen(RspAddAccountRisk->AccountID) >= sizeof(RspAddAccountRisk->AccountID))
 			{
 				RspAddAccountRisk->AccountID[sizeof(RspAddAccountRisk->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, RspAddAccountRisk->AccountID);
-			WriteString(ppos, StepItems::RiskID, RspAddAccountRisk->RiskID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAddAccountRiskField::FieldID);
+			WriteString(ppos, Items::AccountID, RspAddAccountRisk->AccountID);
+			WriteString(ppos, Items::RiskID, RspAddAccountRisk->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAddAccountRiskField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -28748,22 +28748,22 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAddAccountRisk->AdminUserID) ? sizeof(RspAddAccountRisk->AdminUserID) - 1 : value.length();
 								memcpy(RspAddAccountRisk->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(RspAddAccountRisk->AccountID) ? sizeof(RspAddAccountRisk->AccountID) - 1 : value.length();
 								memcpy(RspAddAccountRisk->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								RspAddAccountRisk->RiskID = atoi(value.c_str());
 								break;
@@ -28795,15 +28795,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -28889,19 +28889,19 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveAccountRisk != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqRemoveAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqRemoveAccountRiskField::FieldID);
 			if (strlen(ReqRemoveAccountRisk->AdminUserID) >= sizeof(ReqRemoveAccountRisk->AdminUserID))
 			{
 				ReqRemoveAccountRisk->AdminUserID[sizeof(ReqRemoveAccountRisk->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqRemoveAccountRisk->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqRemoveAccountRisk->AdminUserID);
 			if (strlen(ReqRemoveAccountRisk->AccountID) >= sizeof(ReqRemoveAccountRisk->AccountID))
 			{
 				ReqRemoveAccountRisk->AccountID[sizeof(ReqRemoveAccountRisk->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqRemoveAccountRisk->AccountID);
-			WriteString(ppos, StepItems::RiskID, ReqRemoveAccountRisk->RiskID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqRemoveAccountRiskField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqRemoveAccountRisk->AccountID);
+			WriteString(ppos, Items::RiskID, ReqRemoveAccountRisk->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveAccountRiskField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -28930,22 +28930,22 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveAccountRisk->AdminUserID) ? sizeof(ReqRemoveAccountRisk->AdminUserID) - 1 : value.length();
 								memcpy(ReqRemoveAccountRisk->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqRemoveAccountRisk->AccountID) ? sizeof(ReqRemoveAccountRisk->AccountID) - 1 : value.length();
 								memcpy(ReqRemoveAccountRisk->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								ReqRemoveAccountRisk->RiskID = atoi(value.c_str());
 								break;
@@ -29030,30 +29030,30 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveAccountRisk != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspRemoveAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspRemoveAccountRiskField::FieldID);
 			if (strlen(RspRemoveAccountRisk->AdminUserID) >= sizeof(RspRemoveAccountRisk->AdminUserID))
 			{
 				RspRemoveAccountRisk->AdminUserID[sizeof(RspRemoveAccountRisk->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspRemoveAccountRisk->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspRemoveAccountRisk->AdminUserID);
 			if (strlen(RspRemoveAccountRisk->AccountID) >= sizeof(RspRemoveAccountRisk->AccountID))
 			{
 				RspRemoveAccountRisk->AccountID[sizeof(RspRemoveAccountRisk->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, RspRemoveAccountRisk->AccountID);
-			WriteString(ppos, StepItems::RiskID, RspRemoveAccountRisk->RiskID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspRemoveAccountRiskField::FieldID);
+			WriteString(ppos, Items::AccountID, RspRemoveAccountRisk->AccountID);
+			WriteString(ppos, Items::RiskID, RspRemoveAccountRisk->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveAccountRiskField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -29082,22 +29082,22 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveAccountRisk->AdminUserID) ? sizeof(RspRemoveAccountRisk->AdminUserID) - 1 : value.length();
 								memcpy(RspRemoveAccountRisk->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(RspRemoveAccountRisk->AccountID) ? sizeof(RspRemoveAccountRisk->AccountID) - 1 : value.length();
 								memcpy(RspRemoveAccountRisk->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::RiskID:
+							case Items::RiskID:
 							{
 								RspRemoveAccountRisk->RiskID = atoi(value.c_str());
 								break;
@@ -29129,15 +29129,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -29223,47 +29223,47 @@ namespace step
 		char* ppos = buff;
 		if (ReqMoneyTransfer != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqMoneyTransferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqMoneyTransferField::FieldID);
 			if (strlen(ReqMoneyTransfer->AdminUserID) >= sizeof(ReqMoneyTransfer->AdminUserID))
 			{
 				ReqMoneyTransfer->AdminUserID[sizeof(ReqMoneyTransfer->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqMoneyTransfer->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqMoneyTransfer->AdminUserID);
 			if (strlen(ReqMoneyTransfer->TradingDay) >= sizeof(ReqMoneyTransfer->TradingDay))
 			{
 				ReqMoneyTransfer->TradingDay[sizeof(ReqMoneyTransfer->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ReqMoneyTransfer->TradingDay);
+			WriteString(ppos, Items::TradingDay, ReqMoneyTransfer->TradingDay);
 			if (strlen(ReqMoneyTransfer->AccountID) >= sizeof(ReqMoneyTransfer->AccountID))
 			{
 				ReqMoneyTransfer->AccountID[sizeof(ReqMoneyTransfer->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqMoneyTransfer->AccountID);
-			WriteString(ppos, StepItems::MoneyTransferID, ReqMoneyTransfer->MoneyTransferID);
-			WriteString(ppos, StepItems::AccountType, (int)ReqMoneyTransfer->AccountType);
-			WriteString(ppos, StepItems::TransferDirection, (int)ReqMoneyTransfer->TransferDirection);
-			WriteString(ppos, StepItems::TransferAmount, ReqMoneyTransfer->TransferAmount);
+			WriteString(ppos, Items::AccountID, ReqMoneyTransfer->AccountID);
+			WriteString(ppos, Items::MoneyTransferID, ReqMoneyTransfer->MoneyTransferID);
+			WriteString(ppos, Items::AccountType, (int)ReqMoneyTransfer->AccountType);
+			WriteString(ppos, Items::TransferDirection, (int)ReqMoneyTransfer->TransferDirection);
+			WriteString(ppos, Items::TransferAmount, ReqMoneyTransfer->TransferAmount);
 			if (strlen(ReqMoneyTransfer->InfoMessage) >= sizeof(ReqMoneyTransfer->InfoMessage))
 			{
 				ReqMoneyTransfer->InfoMessage[sizeof(ReqMoneyTransfer->InfoMessage) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InfoMessage, ReqMoneyTransfer->InfoMessage);
+			WriteString(ppos, Items::InfoMessage, ReqMoneyTransfer->InfoMessage);
 			if (strlen(ReqMoneyTransfer->UserID) >= sizeof(ReqMoneyTransfer->UserID))
 			{
 				ReqMoneyTransfer->UserID[sizeof(ReqMoneyTransfer->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, ReqMoneyTransfer->UserID);
+			WriteString(ppos, Items::UserID, ReqMoneyTransfer->UserID);
 			if (strlen(ReqMoneyTransfer->TransferDate) >= sizeof(ReqMoneyTransfer->TransferDate))
 			{
 				ReqMoneyTransfer->TransferDate[sizeof(ReqMoneyTransfer->TransferDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TransferDate, ReqMoneyTransfer->TransferDate);
+			WriteString(ppos, Items::TransferDate, ReqMoneyTransfer->TransferDate);
 			if (strlen(ReqMoneyTransfer->TransferTime) >= sizeof(ReqMoneyTransfer->TransferTime))
 			{
 				ReqMoneyTransfer->TransferTime[sizeof(ReqMoneyTransfer->TransferTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TransferTime, ReqMoneyTransfer->TransferTime);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqMoneyTransferField::FieldID);
+			WriteString(ppos, Items::TransferTime, ReqMoneyTransfer->TransferTime);
+			WriteHexString(ppos, Items::FieldEnd, StepReqMoneyTransferField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -29292,66 +29292,66 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqMoneyTransfer->AdminUserID) ? sizeof(ReqMoneyTransfer->AdminUserID) - 1 : value.length();
 								memcpy(ReqMoneyTransfer->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ReqMoneyTransfer->TradingDay) ? sizeof(ReqMoneyTransfer->TradingDay) - 1 : value.length();
 								memcpy(ReqMoneyTransfer->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqMoneyTransfer->AccountID) ? sizeof(ReqMoneyTransfer->AccountID) - 1 : value.length();
 								memcpy(ReqMoneyTransfer->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::MoneyTransferID:
+							case Items::MoneyTransferID:
 							{
 								ReqMoneyTransfer->MoneyTransferID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::AccountType:
+							case Items::AccountType:
 							{
 								ReqMoneyTransfer->AccountType = (AccountTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::TransferDirection:
+							case Items::TransferDirection:
 							{
 								ReqMoneyTransfer->TransferDirection = (TransferDirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::TransferAmount:
+							case Items::TransferAmount:
 							{
 								ReqMoneyTransfer->TransferAmount = atof(value.c_str());
 								break;
 							}
-							case StepItems::InfoMessage:
+							case Items::InfoMessage:
 							{
 								size_t len = value.length() >= sizeof(ReqMoneyTransfer->InfoMessage) ? sizeof(ReqMoneyTransfer->InfoMessage) - 1 : value.length();
 								memcpy(ReqMoneyTransfer->InfoMessage, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(ReqMoneyTransfer->UserID) ? sizeof(ReqMoneyTransfer->UserID) - 1 : value.length();
 								memcpy(ReqMoneyTransfer->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TransferDate:
+							case Items::TransferDate:
 							{
 								size_t len = value.length() >= sizeof(ReqMoneyTransfer->TransferDate) ? sizeof(ReqMoneyTransfer->TransferDate) - 1 : value.length();
 								memcpy(ReqMoneyTransfer->TransferDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::TransferTime:
+							case Items::TransferTime:
 							{
 								size_t len = value.length() >= sizeof(ReqMoneyTransfer->TransferTime) ? sizeof(ReqMoneyTransfer->TransferTime) - 1 : value.length();
 								memcpy(ReqMoneyTransfer->TransferTime, value.c_str(), len);
@@ -29437,35 +29437,35 @@ namespace step
 		char* ppos = buff;
 		if (RspMoneyTransfer != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspMoneyTransferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspMoneyTransferField::FieldID);
 			if (strlen(RspMoneyTransfer->AdminUserID) >= sizeof(RspMoneyTransfer->AdminUserID))
 			{
 				RspMoneyTransfer->AdminUserID[sizeof(RspMoneyTransfer->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspMoneyTransfer->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspMoneyTransfer->AdminUserID);
 			if (strlen(RspMoneyTransfer->TradingDay) >= sizeof(RspMoneyTransfer->TradingDay))
 			{
 				RspMoneyTransfer->TradingDay[sizeof(RspMoneyTransfer->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, RspMoneyTransfer->TradingDay);
+			WriteString(ppos, Items::TradingDay, RspMoneyTransfer->TradingDay);
 			if (strlen(RspMoneyTransfer->AccountID) >= sizeof(RspMoneyTransfer->AccountID))
 			{
 				RspMoneyTransfer->AccountID[sizeof(RspMoneyTransfer->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, RspMoneyTransfer->AccountID);
-			WriteString(ppos, StepItems::MoneyTransferID, RspMoneyTransfer->MoneyTransferID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspMoneyTransferField::FieldID);
+			WriteString(ppos, Items::AccountID, RspMoneyTransfer->AccountID);
+			WriteString(ppos, Items::MoneyTransferID, RspMoneyTransfer->MoneyTransferID);
+			WriteHexString(ppos, Items::FieldEnd, StepRspMoneyTransferField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -29494,28 +29494,28 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspMoneyTransfer->AdminUserID) ? sizeof(RspMoneyTransfer->AdminUserID) - 1 : value.length();
 								memcpy(RspMoneyTransfer->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(RspMoneyTransfer->TradingDay) ? sizeof(RspMoneyTransfer->TradingDay) - 1 : value.length();
 								memcpy(RspMoneyTransfer->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(RspMoneyTransfer->AccountID) ? sizeof(RspMoneyTransfer->AccountID) - 1 : value.length();
 								memcpy(RspMoneyTransfer->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::MoneyTransferID:
+							case Items::MoneyTransferID:
 							{
 								RspMoneyTransfer->MoneyTransferID = atoi(value.c_str());
 								break;
@@ -29547,15 +29547,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -29641,13 +29641,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryMoneyTransfer != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqQryMoneyTransferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqQryMoneyTransferField::FieldID);
 			if (strlen(ReqQryMoneyTransfer->AccountID) >= sizeof(ReqQryMoneyTransfer->AccountID))
 			{
 				ReqQryMoneyTransfer->AccountID[sizeof(ReqQryMoneyTransfer->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqQryMoneyTransfer->AccountID);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqQryMoneyTransferField::FieldID);
+			WriteString(ppos, Items::AccountID, ReqQryMoneyTransfer->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, StepReqQryMoneyTransferField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -29676,10 +29676,10 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqQryMoneyTransfer->AccountID) ? sizeof(ReqQryMoneyTransfer->AccountID) - 1 : value.length();
 								memcpy(ReqQryMoneyTransfer->AccountID, value.c_str(), len);
@@ -29765,53 +29765,53 @@ namespace step
 		char* ppos = buff;
 		if (MoneyTransfer != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepMoneyTransferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepMoneyTransferField::FieldID);
 			if (strlen(MoneyTransfer->TradingDay) >= sizeof(MoneyTransfer->TradingDay))
 			{
 				MoneyTransfer->TradingDay[sizeof(MoneyTransfer->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, MoneyTransfer->TradingDay);
+			WriteString(ppos, Items::TradingDay, MoneyTransfer->TradingDay);
 			if (strlen(MoneyTransfer->AccountID) >= sizeof(MoneyTransfer->AccountID))
 			{
 				MoneyTransfer->AccountID[sizeof(MoneyTransfer->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, MoneyTransfer->AccountID);
-			WriteString(ppos, StepItems::MoneyTransferID, MoneyTransfer->MoneyTransferID);
-			WriteString(ppos, StepItems::AccountType, (int)MoneyTransfer->AccountType);
-			WriteString(ppos, StepItems::TransferDirection, (int)MoneyTransfer->TransferDirection);
-			WriteString(ppos, StepItems::TransferAmount, MoneyTransfer->TransferAmount);
+			WriteString(ppos, Items::AccountID, MoneyTransfer->AccountID);
+			WriteString(ppos, Items::MoneyTransferID, MoneyTransfer->MoneyTransferID);
+			WriteString(ppos, Items::AccountType, (int)MoneyTransfer->AccountType);
+			WriteString(ppos, Items::TransferDirection, (int)MoneyTransfer->TransferDirection);
+			WriteString(ppos, Items::TransferAmount, MoneyTransfer->TransferAmount);
 			if (strlen(MoneyTransfer->InfoMessage) >= sizeof(MoneyTransfer->InfoMessage))
 			{
 				MoneyTransfer->InfoMessage[sizeof(MoneyTransfer->InfoMessage) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InfoMessage, MoneyTransfer->InfoMessage);
+			WriteString(ppos, Items::InfoMessage, MoneyTransfer->InfoMessage);
 			if (strlen(MoneyTransfer->UserID) >= sizeof(MoneyTransfer->UserID))
 			{
 				MoneyTransfer->UserID[sizeof(MoneyTransfer->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, MoneyTransfer->UserID);
+			WriteString(ppos, Items::UserID, MoneyTransfer->UserID);
 			if (strlen(MoneyTransfer->TransferDate) >= sizeof(MoneyTransfer->TransferDate))
 			{
 				MoneyTransfer->TransferDate[sizeof(MoneyTransfer->TransferDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TransferDate, MoneyTransfer->TransferDate);
+			WriteString(ppos, Items::TransferDate, MoneyTransfer->TransferDate);
 			if (strlen(MoneyTransfer->TransferTime) >= sizeof(MoneyTransfer->TransferTime))
 			{
 				MoneyTransfer->TransferTime[sizeof(MoneyTransfer->TransferTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TransferTime, MoneyTransfer->TransferTime);
-			WriteHexString(ppos, StepItems::FieldEnd, StepMoneyTransferField::FieldID);
+			WriteString(ppos, Items::TransferTime, MoneyTransfer->TransferTime);
+			WriteHexString(ppos, Items::FieldEnd, StepMoneyTransferField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -29840,60 +29840,60 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(MoneyTransfer->TradingDay) ? sizeof(MoneyTransfer->TradingDay) - 1 : value.length();
 								memcpy(MoneyTransfer->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(MoneyTransfer->AccountID) ? sizeof(MoneyTransfer->AccountID) - 1 : value.length();
 								memcpy(MoneyTransfer->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::MoneyTransferID:
+							case Items::MoneyTransferID:
 							{
 								MoneyTransfer->MoneyTransferID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::AccountType:
+							case Items::AccountType:
 							{
 								MoneyTransfer->AccountType = (AccountTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::TransferDirection:
+							case Items::TransferDirection:
 							{
 								MoneyTransfer->TransferDirection = (TransferDirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::TransferAmount:
+							case Items::TransferAmount:
 							{
 								MoneyTransfer->TransferAmount = atof(value.c_str());
 								break;
 							}
-							case StepItems::InfoMessage:
+							case Items::InfoMessage:
 							{
 								size_t len = value.length() >= sizeof(MoneyTransfer->InfoMessage) ? sizeof(MoneyTransfer->InfoMessage) - 1 : value.length();
 								memcpy(MoneyTransfer->InfoMessage, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(MoneyTransfer->UserID) ? sizeof(MoneyTransfer->UserID) - 1 : value.length();
 								memcpy(MoneyTransfer->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TransferDate:
+							case Items::TransferDate:
 							{
 								size_t len = value.length() >= sizeof(MoneyTransfer->TransferDate) ? sizeof(MoneyTransfer->TransferDate) - 1 : value.length();
 								memcpy(MoneyTransfer->TransferDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::TransferTime:
+							case Items::TransferTime:
 							{
 								size_t len = value.length() >= sizeof(MoneyTransfer->TransferTime) ? sizeof(MoneyTransfer->TransferTime) - 1 : value.length();
 								memcpy(MoneyTransfer->TransferTime, value.c_str(), len);
@@ -29926,15 +29926,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
@@ -30020,42 +30020,42 @@ namespace step
 		char* ppos = buff;
 		if (MoneyTransfer != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepMoneyTransferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepMoneyTransferField::FieldID);
 			if (strlen(MoneyTransfer->TradingDay) >= sizeof(MoneyTransfer->TradingDay))
 			{
 				MoneyTransfer->TradingDay[sizeof(MoneyTransfer->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, MoneyTransfer->TradingDay);
+			WriteString(ppos, Items::TradingDay, MoneyTransfer->TradingDay);
 			if (strlen(MoneyTransfer->AccountID) >= sizeof(MoneyTransfer->AccountID))
 			{
 				MoneyTransfer->AccountID[sizeof(MoneyTransfer->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, MoneyTransfer->AccountID);
-			WriteString(ppos, StepItems::MoneyTransferID, MoneyTransfer->MoneyTransferID);
-			WriteString(ppos, StepItems::AccountType, (int)MoneyTransfer->AccountType);
-			WriteString(ppos, StepItems::TransferDirection, (int)MoneyTransfer->TransferDirection);
-			WriteString(ppos, StepItems::TransferAmount, MoneyTransfer->TransferAmount);
+			WriteString(ppos, Items::AccountID, MoneyTransfer->AccountID);
+			WriteString(ppos, Items::MoneyTransferID, MoneyTransfer->MoneyTransferID);
+			WriteString(ppos, Items::AccountType, (int)MoneyTransfer->AccountType);
+			WriteString(ppos, Items::TransferDirection, (int)MoneyTransfer->TransferDirection);
+			WriteString(ppos, Items::TransferAmount, MoneyTransfer->TransferAmount);
 			if (strlen(MoneyTransfer->InfoMessage) >= sizeof(MoneyTransfer->InfoMessage))
 			{
 				MoneyTransfer->InfoMessage[sizeof(MoneyTransfer->InfoMessage) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InfoMessage, MoneyTransfer->InfoMessage);
+			WriteString(ppos, Items::InfoMessage, MoneyTransfer->InfoMessage);
 			if (strlen(MoneyTransfer->UserID) >= sizeof(MoneyTransfer->UserID))
 			{
 				MoneyTransfer->UserID[sizeof(MoneyTransfer->UserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::UserID, MoneyTransfer->UserID);
+			WriteString(ppos, Items::UserID, MoneyTransfer->UserID);
 			if (strlen(MoneyTransfer->TransferDate) >= sizeof(MoneyTransfer->TransferDate))
 			{
 				MoneyTransfer->TransferDate[sizeof(MoneyTransfer->TransferDate) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TransferDate, MoneyTransfer->TransferDate);
+			WriteString(ppos, Items::TransferDate, MoneyTransfer->TransferDate);
 			if (strlen(MoneyTransfer->TransferTime) >= sizeof(MoneyTransfer->TransferTime))
 			{
 				MoneyTransfer->TransferTime[sizeof(MoneyTransfer->TransferTime) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TransferTime, MoneyTransfer->TransferTime);
-			WriteHexString(ppos, StepItems::FieldEnd, StepMoneyTransferField::FieldID);
+			WriteString(ppos, Items::TransferTime, MoneyTransfer->TransferTime);
+			WriteHexString(ppos, Items::FieldEnd, StepMoneyTransferField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -30084,60 +30084,60 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(MoneyTransfer->TradingDay) ? sizeof(MoneyTransfer->TradingDay) - 1 : value.length();
 								memcpy(MoneyTransfer->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(MoneyTransfer->AccountID) ? sizeof(MoneyTransfer->AccountID) - 1 : value.length();
 								memcpy(MoneyTransfer->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::MoneyTransferID:
+							case Items::MoneyTransferID:
 							{
 								MoneyTransfer->MoneyTransferID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::AccountType:
+							case Items::AccountType:
 							{
 								MoneyTransfer->AccountType = (AccountTypeType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::TransferDirection:
+							case Items::TransferDirection:
 							{
 								MoneyTransfer->TransferDirection = (TransferDirectionType)(atoi(value.c_str()));
 								break;
 							}
-							case StepItems::TransferAmount:
+							case Items::TransferAmount:
 							{
 								MoneyTransfer->TransferAmount = atof(value.c_str());
 								break;
 							}
-							case StepItems::InfoMessage:
+							case Items::InfoMessage:
 							{
 								size_t len = value.length() >= sizeof(MoneyTransfer->InfoMessage) ? sizeof(MoneyTransfer->InfoMessage) - 1 : value.length();
 								memcpy(MoneyTransfer->InfoMessage, value.c_str(), len);
 								break;
 							}
-							case StepItems::UserID:
+							case Items::UserID:
 							{
 								size_t len = value.length() >= sizeof(MoneyTransfer->UserID) ? sizeof(MoneyTransfer->UserID) - 1 : value.length();
 								memcpy(MoneyTransfer->UserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TransferDate:
+							case Items::TransferDate:
 							{
 								size_t len = value.length() >= sizeof(MoneyTransfer->TransferDate) ? sizeof(MoneyTransfer->TransferDate) - 1 : value.length();
 								memcpy(MoneyTransfer->TransferDate, value.c_str(), len);
 								break;
 							}
-							case StepItems::TransferTime:
+							case Items::TransferTime:
 							{
 								size_t len = value.length() >= sizeof(MoneyTransfer->TransferTime) ? sizeof(MoneyTransfer->TransferTime) - 1 : value.length();
 								memcpy(MoneyTransfer->TransferTime, value.c_str(), len);
@@ -30218,35 +30218,35 @@ namespace step
 		char* ppos = buff;
 		if (ReqAuditOrder != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepReqAuditOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepReqAuditOrderField::FieldID);
 			if (strlen(ReqAuditOrder->AdminUserID) >= sizeof(ReqAuditOrder->AdminUserID))
 			{
 				ReqAuditOrder->AdminUserID[sizeof(ReqAuditOrder->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, ReqAuditOrder->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, ReqAuditOrder->AdminUserID);
 			if (strlen(ReqAuditOrder->TradingDay) >= sizeof(ReqAuditOrder->TradingDay))
 			{
 				ReqAuditOrder->TradingDay[sizeof(ReqAuditOrder->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, ReqAuditOrder->TradingDay);
+			WriteString(ppos, Items::TradingDay, ReqAuditOrder->TradingDay);
 			if (strlen(ReqAuditOrder->AccountID) >= sizeof(ReqAuditOrder->AccountID))
 			{
 				ReqAuditOrder->AccountID[sizeof(ReqAuditOrder->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, ReqAuditOrder->AccountID);
+			WriteString(ppos, Items::AccountID, ReqAuditOrder->AccountID);
 			if (strlen(ReqAuditOrder->ExchangeID) >= sizeof(ReqAuditOrder->ExchangeID))
 			{
 				ReqAuditOrder->ExchangeID[sizeof(ReqAuditOrder->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, ReqAuditOrder->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, ReqAuditOrder->ExchangeID);
 			if (strlen(ReqAuditOrder->InstrumentID) >= sizeof(ReqAuditOrder->InstrumentID))
 			{
 				ReqAuditOrder->InstrumentID[sizeof(ReqAuditOrder->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, ReqAuditOrder->InstrumentID);
-			WriteString(ppos, StepItems::OrderID, ReqAuditOrder->OrderID);
-			WriteString(ppos, StepItems::AuditStatus, (int)ReqAuditOrder->AuditStatus);
-			WriteHexString(ppos, StepItems::FieldEnd, StepReqAuditOrderField::FieldID);
+			WriteString(ppos, Items::InstrumentID, ReqAuditOrder->InstrumentID);
+			WriteString(ppos, Items::OrderID, ReqAuditOrder->OrderID);
+			WriteString(ppos, Items::AuditStatus, (int)ReqAuditOrder->AuditStatus);
+			WriteHexString(ppos, Items::FieldEnd, StepReqAuditOrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -30275,45 +30275,45 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(ReqAuditOrder->AdminUserID) ? sizeof(ReqAuditOrder->AdminUserID) - 1 : value.length();
 								memcpy(ReqAuditOrder->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(ReqAuditOrder->TradingDay) ? sizeof(ReqAuditOrder->TradingDay) - 1 : value.length();
 								memcpy(ReqAuditOrder->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(ReqAuditOrder->AccountID) ? sizeof(ReqAuditOrder->AccountID) - 1 : value.length();
 								memcpy(ReqAuditOrder->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(ReqAuditOrder->ExchangeID) ? sizeof(ReqAuditOrder->ExchangeID) - 1 : value.length();
 								memcpy(ReqAuditOrder->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(ReqAuditOrder->InstrumentID) ? sizeof(ReqAuditOrder->InstrumentID) - 1 : value.length();
 								memcpy(ReqAuditOrder->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::OrderID:
+							case Items::OrderID:
 							{
 								ReqAuditOrder->OrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::AuditStatus:
+							case Items::AuditStatus:
 							{
 								ReqAuditOrder->AuditStatus = (AuditStatusType)(atoi(value.c_str()));
 								break;
@@ -30398,46 +30398,46 @@ namespace step
 		char* ppos = buff;
 		if (RspAuditOrder != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspAuditOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, StepRspAuditOrderField::FieldID);
 			if (strlen(RspAuditOrder->AdminUserID) >= sizeof(RspAuditOrder->AdminUserID))
 			{
 				RspAuditOrder->AdminUserID[sizeof(RspAuditOrder->AdminUserID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AdminUserID, RspAuditOrder->AdminUserID);
+			WriteString(ppos, Items::AdminUserID, RspAuditOrder->AdminUserID);
 			if (strlen(RspAuditOrder->TradingDay) >= sizeof(RspAuditOrder->TradingDay))
 			{
 				RspAuditOrder->TradingDay[sizeof(RspAuditOrder->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::TradingDay, RspAuditOrder->TradingDay);
+			WriteString(ppos, Items::TradingDay, RspAuditOrder->TradingDay);
 			if (strlen(RspAuditOrder->AccountID) >= sizeof(RspAuditOrder->AccountID))
 			{
 				RspAuditOrder->AccountID[sizeof(RspAuditOrder->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::AccountID, RspAuditOrder->AccountID);
+			WriteString(ppos, Items::AccountID, RspAuditOrder->AccountID);
 			if (strlen(RspAuditOrder->ExchangeID) >= sizeof(RspAuditOrder->ExchangeID))
 			{
 				RspAuditOrder->ExchangeID[sizeof(RspAuditOrder->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ExchangeID, RspAuditOrder->ExchangeID);
+			WriteString(ppos, Items::ExchangeID, RspAuditOrder->ExchangeID);
 			if (strlen(RspAuditOrder->InstrumentID) >= sizeof(RspAuditOrder->InstrumentID))
 			{
 				RspAuditOrder->InstrumentID[sizeof(RspAuditOrder->InstrumentID) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::InstrumentID, RspAuditOrder->InstrumentID);
-			WriteString(ppos, StepItems::OrderID, RspAuditOrder->OrderID);
-			WriteString(ppos, StepItems::AuditStatus, (int)RspAuditOrder->AuditStatus);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspAuditOrderField::FieldID);
+			WriteString(ppos, Items::InstrumentID, RspAuditOrder->InstrumentID);
+			WriteString(ppos, Items::OrderID, RspAuditOrder->OrderID);
+			WriteString(ppos, Items::AuditStatus, (int)RspAuditOrder->AuditStatus);
+			WriteHexString(ppos, Items::FieldEnd, StepRspAuditOrderField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, StepItems::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, StepItems::ErrorID, RspInfo->ErrorID);
+			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
-			WriteString(ppos, StepItems::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, StepItems::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -30466,45 +30466,45 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::AdminUserID:
+							case Items::AdminUserID:
 							{
 								size_t len = value.length() >= sizeof(RspAuditOrder->AdminUserID) ? sizeof(RspAuditOrder->AdminUserID) - 1 : value.length();
 								memcpy(RspAuditOrder->AdminUserID, value.c_str(), len);
 								break;
 							}
-							case StepItems::TradingDay:
+							case Items::TradingDay:
 							{
 								size_t len = value.length() >= sizeof(RspAuditOrder->TradingDay) ? sizeof(RspAuditOrder->TradingDay) - 1 : value.length();
 								memcpy(RspAuditOrder->TradingDay, value.c_str(), len);
 								break;
 							}
-							case StepItems::AccountID:
+							case Items::AccountID:
 							{
 								size_t len = value.length() >= sizeof(RspAuditOrder->AccountID) ? sizeof(RspAuditOrder->AccountID) - 1 : value.length();
 								memcpy(RspAuditOrder->AccountID, value.c_str(), len);
 								break;
 							}
-							case StepItems::ExchangeID:
+							case Items::ExchangeID:
 							{
 								size_t len = value.length() >= sizeof(RspAuditOrder->ExchangeID) ? sizeof(RspAuditOrder->ExchangeID) - 1 : value.length();
 								memcpy(RspAuditOrder->ExchangeID, value.c_str(), len);
 								break;
 							}
-							case StepItems::InstrumentID:
+							case Items::InstrumentID:
 							{
 								size_t len = value.length() >= sizeof(RspAuditOrder->InstrumentID) ? sizeof(RspAuditOrder->InstrumentID) - 1 : value.length();
 								memcpy(RspAuditOrder->InstrumentID, value.c_str(), len);
 								break;
 							}
-							case StepItems::OrderID:
+							case Items::OrderID:
 							{
 								RspAuditOrder->OrderID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::AuditStatus:
+							case Items::AuditStatus:
 							{
 								RspAuditOrder->AuditStatus = (AuditStatusType)(atoi(value.c_str()));
 								break;
@@ -30536,15 +30536,15 @@ namespace step
 						{
 							switch (itemID)
 							{
-							case StepItems::FieldStart:
-							case StepItems::FieldEnd:
+							case Items::FieldStart:
+							case Items::FieldEnd:
 								break;
-							case StepItems::ErrorID:
+							case Items::ErrorID:
 							{
 								RspInfo->ErrorID = atoi(value.c_str());
 								break;
 							}
-							case StepItems::ErrorMsg:
+							case Items::ErrorMsg:
 							{
 								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
 								memcpy(RspInfo->ErrorMsg, value.c_str(), len);

@@ -27,6 +27,7 @@ add_package(TcpSelect ${CMAKE_SOURCE_DIR}/Source/Tcp/TcpSelect)
 add_package(TcpEpoll ${CMAKE_SOURCE_DIR}/Source/Tcp/TcpEpoll)
 add_package(Shm ${CMAKE_SOURCE_DIR}/Source/Shm)
 add_package(Package ${CMAKE_SOURCE_DIR}/Source/Package)
+add_package(ProtocolBase ${CMAKE_SOURCE_DIR}/Source/ProtocolBase)
 add_package(StepProtocol ${CMAKE_SOURCE_DIR}/Source/StepProtocol)
 add_package(XtpProtocol ${CMAKE_SOURCE_DIR}/Source/XtpProtocol)
 

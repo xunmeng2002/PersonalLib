@@ -48,6 +48,8 @@
 	<file name="Package.h" dest="../Libs/PersonalLib/include/" src="./Source/Package/"/>
 	<file name="PackageReader.h" dest="../Libs/PersonalLib/include/" src="./Source/Package/"/>
 	<file name="Platform.h" dest="../Libs/PersonalLib/include/" src="./Source/Platform/"/>
+	<file name="Head.h" dest="../Libs/PersonalLib/include/" src="./Source/ProtocolBase/"/>
+	<file name="Items.h" dest="../Libs/PersonalLib/include/" src="./Source/ProtocolBase/"/>
 
 	<file name="Sem.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
 	<file name="ShmBase.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
@@ -56,8 +58,6 @@
 	<file name="ShmServer.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
 	<file name="SingleShm.h" dest="../Libs/PersonalLib/include/" src="./Source/Shm/"/>
 	<file name="SocketInit.h" dest="../Libs/PersonalLib/include/" src="./Source/SocketInit/"/>
-	<file name="StepHead.h" dest="../Libs/PersonalLib/include/" src="./Source/StepProtocol/"/>
-	<file name="StepItems.h" dest="../Libs/PersonalLib/include/" src="./Source/StepProtocol/"/>
 	<file name="StepInterface.h" dest="../Libs/PersonalLib/include/" src="./Source/StepProtocol/"/>
 	<file name="StepPackageBase.h" dest="../Libs/PersonalLib/include/" src="./Source/StepProtocol/"/>
 	<file name="StepPackageFactoryBase.h" dest="../Libs/PersonalLib/include/" src="./Source/StepProtocol/"/>
@@ -82,7 +82,6 @@
 	<file name="TimeUtility.h" dest="../Libs/PersonalLib/include/" src="./Source/Utility/"/>
 	<file name="Utility.h" dest="../Libs/PersonalLib/include/" src="./Source/Utility/"/>
 
-	<file name="XtpHead.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
 	<file name="XtpInterface.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
 	<file name="XtpPackageBase.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>
 	<file name="XtpPackageFactoryBase.h" dest="../Libs/PersonalLib/include/" src="./Source/XtpProtocol/"/>

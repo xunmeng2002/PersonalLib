@@ -1,5 +1,6 @@
 #pragma once
 #include "Package.h"
+#include "Head.h"
 #include "StepUtility.h"
 
 
@@ -16,8 +17,8 @@ namespace step
 		virtual bool FromProtocolStream(char* buff, int startIndex, int endIndex) = 0;
 		virtual const char* GetDebugString() const = 0;
 
-		StepHeadField Head;
-		StepTailField Tail;
+		HeadField Head;
+		TailField Tail;
 	};
 }
 

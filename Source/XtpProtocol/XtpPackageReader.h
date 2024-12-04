@@ -20,7 +20,7 @@ namespace xtp
 		XtpPackageFactoryBase* m_XtpPackageFactory;
 		SessionIDType m_SessionID;
 		IPAddressType m_IPAddress;
-		XtpHeadField m_Head;
-		XtpTailField m_Tail;
+		HeadField m_Head;
+		TailField m_Tail;
 	};
 }

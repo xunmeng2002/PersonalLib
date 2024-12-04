@@ -2,7 +2,7 @@
 #include <string>
 #include <unordered_map>
 #include "Types.h"
-#include "StepHead.h"
+#include "Head.h"
 
 namespace step
 {
@@ -37,9 +37,9 @@ namespace step
 	void WriteHexString(char*& ppos, int key, unsigned short value);
 
 
-	void HeadToStream(StepHeadField* head, char* buff, int size);
-	bool HeadFromStream(char* buff, int startIndex, int endIndex, StepHeadField* head);
-	void TailToStream(StepTailField* tail, char* buff, int size);
-	bool TailFromStream(char* buff, int startIndex, int endIndex, StepTailField* tail);
+	void HeadToStream(HeadField* head, char* buff, int size);
+	bool HeadFromStream(char* buff, int startIndex, int endIndex, HeadField* head);
+	void TailToStream(TailField* tail, char* buff, int size);
+	bool TailFromStream(char* buff, int startIndex, int endIndex, TailField* tail);
 	short CalculateSum(unsigned char* buff, int startIndex, int endIndex);
 }

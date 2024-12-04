@@ -1,5 +1,5 @@
 #include "StepUtility.h"
-#include "StepItems.h"
+#include "Items.h"
 #include "Logger.h"
 
 using namespace std;
@@ -163,17 +163,17 @@ namespace step
 		*ppos++ = SOH;
 	}
 
-	void HeadToStream(StepHeadField* head, char* buff, int size)
+	void HeadToStream(HeadField* head, char* buff, int size)
 	{
 		int len = 0;
-		len += ::sprintf(buff + len, "%c%u=%04X%c", SOH, StepItems::PackageID, head->PackageID, SOH);
-		len += ::sprintf(buff + len, "%u=%05u%c", StepItems::BodyLen, head->BodyLen, SOH);
-		len += ::sprintf(buff + len, "%u=%d%c", StepItems::MessageChain, head->MessageChain, SOH);
-		len += ::sprintf(buff + len, "%u=%13d", StepItems::MsgSeqNum, head->MsgSeqNum);
+		len += ::sprintf(buff + len, "%c%u=%04X%c", SOH, Items::PackageID, head->PackageID, SOH);
+		len += ::sprintf(buff + len, "%u=%05u%c", Items::BodyLen, head->BodyLen, SOH);
+		len += ::sprintf(buff + len, "%u=%d%c", Items::MessageChain, head->MessageChain, SOH);
+		len += ::sprintf(buff + len, "%u=%13d", Items::MsgSeqNum, head->MsgSeqNum);
 		//最后一个不能使用sprintf赋值，因为sprintf会在末尾自动补上0
 		buff[len] = SOH;
 	}
-	bool HeadFromStream(char* buff, int startIndex, int endIndex, StepHeadField* head)
+	bool HeadFromStream(char* buff, int startIndex, int endIndex, HeadField* head)
 	{
 		//跳过报文首个SOH符号
 		startIndex += 1;
@@ -186,20 +186,20 @@ namespace step
 			{
 				switch (key)
 				{
-				case StepItems::PackageID:
+				case Items::PackageID:
 					head->PackageID = stoi(value.c_str(), nullptr, 16);
 					break;
-				case StepItems::BodyLen:
+				case Items::BodyLen:
 					head->BodyLen = atoi(value.c_str());
 					break;
-				case StepItems::MessageChain:
+				case Items::MessageChain:
 					head->MessageChain = atoi(value.c_str());
 					break;
-				case StepItems::MsgSeqNum:
+				case Items::MsgSeqNum:
 					head->MsgSeqNum = atoi(value.c_str());
 					break;
 				default:
-					WriteLog(LogLevel::Warning, "UnExpected Key:0x%X For StepHeadField, buff:[%s]", key, buff);
+					WriteLog(LogLevel::Warning, "UnExpected Key:0x%X For HeadField, buff:[%s]", key, buff);
 					return false;
 				}
 				startIndex = sohIndex + 1;
@@ -211,11 +211,11 @@ namespace step
 		}
 		return true;
 	}
-	void TailToStream(StepTailField* tail, char* buff, int size)
+	void TailToStream(TailField* tail, char* buff, int size)
 	{
-		sprintf(buff, "%u=%03u%c", StepItems::CheckSum, tail->CheckSum, SOH);
+		sprintf(buff, "%u=%03u%c", Items::CheckSum, tail->CheckSum, SOH);
 	}
-	bool TailFromStream(char* buff, int startIndex, int endIndex, StepTailField* tail)
+	bool TailFromStream(char* buff, int startIndex, int endIndex, TailField* tail)
 	{
 		while (startIndex < endIndex)
 		{
@@ -226,11 +226,11 @@ namespace step
 			{
 				switch (key)
 				{
-				case StepItems::CheckSum:
+				case Items::CheckSum:
 					tail->CheckSum = atoi(value.c_str());
 					break;
 				default:
-					WriteLog(LogLevel::Warning, "UnExpected Key:0x%X for StepTailField.", key);
+					WriteLog(LogLevel::Warning, "UnExpected Key:0x%X for TailField.", key);
 					return false;
 				}
 				startIndex = sohIndex + 1;
