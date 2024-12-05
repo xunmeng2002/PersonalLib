@@ -300,8 +300,6 @@ enum class ComponentType : int
 	OfferFront = '3',
 	//行情
 	MarketData = '4',
-	//风控检查
-	RiskCheck = '5',
 };
 
 //触发条件类型
