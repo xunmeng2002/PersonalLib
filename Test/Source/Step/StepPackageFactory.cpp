@@ -8,6 +8,10 @@ namespace step
 	{
 		switch (packageID)
 		{
+		case StepNotifyComponentConnectStatusPackage::PackageID:
+		{
+			return StepNotifyComponentConnectStatusPackage::Allocate();
+		}
 		case StepReqAccountLoginPackage::PackageID:
 		{
 			return StepReqAccountLoginPackage::Allocate();
@@ -23,66 +27,6 @@ namespace step
 		case StepRspAccountLogoutPackage::PackageID:
 		{
 			return StepRspAccountLogoutPackage::Allocate();
-		}
-		case StepRtnAccountLogoutPackage::PackageID:
-		{
-			return StepRtnAccountLogoutPackage::Allocate();
-		}
-		case StepReqRiskUserLoginPackage::PackageID:
-		{
-			return StepReqRiskUserLoginPackage::Allocate();
-		}
-		case StepRspRiskUserLoginPackage::PackageID:
-		{
-			return StepRspRiskUserLoginPackage::Allocate();
-		}
-		case StepReqRiskUserLogoutPackage::PackageID:
-		{
-			return StepReqRiskUserLogoutPackage::Allocate();
-		}
-		case StepRspRiskUserLogoutPackage::PackageID:
-		{
-			return StepRspRiskUserLogoutPackage::Allocate();
-		}
-		case StepRtnRiskUserLogoutPackage::PackageID:
-		{
-			return StepRtnRiskUserLogoutPackage::Allocate();
-		}
-		case StepReqAdminUserLoginPackage::PackageID:
-		{
-			return StepReqAdminUserLoginPackage::Allocate();
-		}
-		case StepRspAdminUserLoginPackage::PackageID:
-		{
-			return StepRspAdminUserLoginPackage::Allocate();
-		}
-		case StepReqAdminUserLogoutPackage::PackageID:
-		{
-			return StepReqAdminUserLogoutPackage::Allocate();
-		}
-		case StepRspAdminUserLogoutPackage::PackageID:
-		{
-			return StepRspAdminUserLogoutPackage::Allocate();
-		}
-		case StepRtnAdminUserLogoutPackage::PackageID:
-		{
-			return StepRtnAdminUserLogoutPackage::Allocate();
-		}
-		case StepReqMdUserLoginPackage::PackageID:
-		{
-			return StepReqMdUserLoginPackage::Allocate();
-		}
-		case StepRspMdUserLoginPackage::PackageID:
-		{
-			return StepRspMdUserLoginPackage::Allocate();
-		}
-		case StepReqMdUserLogoutPackage::PackageID:
-		{
-			return StepReqMdUserLogoutPackage::Allocate();
-		}
-		case StepRspMdUserLogoutPackage::PackageID:
-		{
-			return StepRspMdUserLogoutPackage::Allocate();
 		}
 		case StepReqQryAccountPackage::PackageID:
 		{
@@ -116,10 +60,6 @@ namespace step
 		{
 			return StepRspQryPositionPackage::Allocate();
 		}
-		case StepRtnPositionPackage::PackageID:
-		{
-			return StepRtnPositionPackage::Allocate();
-		}
 		case StepReqQryOrderPackage::PackageID:
 		{
 			return StepReqQryOrderPackage::Allocate();
@@ -128,10 +68,6 @@ namespace step
 		{
 			return StepRspQryOrderPackage::Allocate();
 		}
-		case StepRtnOrderPackage::PackageID:
-		{
-			return StepRtnOrderPackage::Allocate();
-		}
 		case StepReqQryTradePackage::PackageID:
 		{
 			return StepReqQryTradePackage::Allocate();
@@ -139,10 +75,6 @@ namespace step
 		case StepRspQryTradePackage::PackageID:
 		{
 			return StepRspQryTradePackage::Allocate();
-		}
-		case StepRtnTradePackage::PackageID:
-		{
-			return StepRtnTradePackage::Allocate();
 		}
 		case StepReqQryInstrumentPackage::PackageID:
 		{
@@ -168,6 +100,14 @@ namespace step
 		{
 			return StepRspQryCommissionRatePackage::Allocate();
 		}
+		case StepReqQryMoneyTransferPackage::PackageID:
+		{
+			return StepReqQryMoneyTransferPackage::Allocate();
+		}
+		case StepRspQryMoneyTransferPackage::PackageID:
+		{
+			return StepRspQryMoneyTransferPackage::Allocate();
+		}
 		case StepReqInsertOrderPackage::PackageID:
 		{
 			return StepReqInsertOrderPackage::Allocate();
@@ -184,21 +124,41 @@ namespace step
 		{
 			return StepRspCancelOrderPackage::Allocate();
 		}
-		case StepReqMdInitPackage::PackageID:
+		case StepRtnOrderPackage::PackageID:
 		{
-			return StepReqMdInitPackage::Allocate();
+			return StepRtnOrderPackage::Allocate();
 		}
-		case StepRspMdInitPackage::PackageID:
+		case StepRtnTradePackage::PackageID:
 		{
-			return StepRspMdInitPackage::Allocate();
+			return StepRtnTradePackage::Allocate();
 		}
-		case StepReqSubscribeMdPackage::PackageID:
+		case StepRtnMoneyTransferPackage::PackageID:
 		{
-			return StepReqSubscribeMdPackage::Allocate();
+			return StepRtnMoneyTransferPackage::Allocate();
 		}
-		case StepRspSubscribeMdPackage::PackageID:
+		case StepRtnAccountLogoutPackage::PackageID:
 		{
-			return StepRspSubscribeMdPackage::Allocate();
+			return StepRtnAccountLogoutPackage::Allocate();
+		}
+		case StepReqRiskUserLoginPackage::PackageID:
+		{
+			return StepReqRiskUserLoginPackage::Allocate();
+		}
+		case StepRspRiskUserLoginPackage::PackageID:
+		{
+			return StepRspRiskUserLoginPackage::Allocate();
+		}
+		case StepReqRiskUserLogoutPackage::PackageID:
+		{
+			return StepReqRiskUserLogoutPackage::Allocate();
+		}
+		case StepRspRiskUserLogoutPackage::PackageID:
+		{
+			return StepRspRiskUserLogoutPackage::Allocate();
+		}
+		case StepRtnRiskUserLogoutPackage::PackageID:
+		{
+			return StepRtnRiskUserLogoutPackage::Allocate();
 		}
 		case StepRtnAccountPackage::PackageID:
 		{
@@ -207,6 +167,10 @@ namespace step
 		case StepRtnAccountDeletePackage::PackageID:
 		{
 			return StepRtnAccountDeletePackage::Allocate();
+		}
+		case StepRtnPositionPackage::PackageID:
+		{
+			return StepRtnPositionPackage::Allocate();
 		}
 		case StepRtnAccountRiskPackage::PackageID:
 		{
@@ -219,18 +183,6 @@ namespace step
 		case StepRtnAccountRiskNotifyPackage::PackageID:
 		{
 			return StepRtnAccountRiskNotifyPackage::Allocate();
-		}
-		case StepRtnShortMdPackage::PackageID:
-		{
-			return StepRtnShortMdPackage::Allocate();
-		}
-		case StepRtnExchangeStatusPackage::PackageID:
-		{
-			return StepRtnExchangeStatusPackage::Allocate();
-		}
-		case StepRtnMdInitCompletedPackage::PackageID:
-		{
-			return StepRtnMdInitCompletedPackage::Allocate();
 		}
 		case StepReqQryRiskGroupAccountPackage::PackageID:
 		{
@@ -303,6 +255,70 @@ namespace step
 		case StepRspRiskCancelOrderPackage::PackageID:
 		{
 			return StepRspRiskCancelOrderPackage::Allocate();
+		}
+		case StepReqMdUserLoginPackage::PackageID:
+		{
+			return StepReqMdUserLoginPackage::Allocate();
+		}
+		case StepRspMdUserLoginPackage::PackageID:
+		{
+			return StepRspMdUserLoginPackage::Allocate();
+		}
+		case StepReqMdUserLogoutPackage::PackageID:
+		{
+			return StepReqMdUserLogoutPackage::Allocate();
+		}
+		case StepRspMdUserLogoutPackage::PackageID:
+		{
+			return StepRspMdUserLogoutPackage::Allocate();
+		}
+		case StepReqMdInitPackage::PackageID:
+		{
+			return StepReqMdInitPackage::Allocate();
+		}
+		case StepRspMdInitPackage::PackageID:
+		{
+			return StepRspMdInitPackage::Allocate();
+		}
+		case StepReqSubscribeMdPackage::PackageID:
+		{
+			return StepReqSubscribeMdPackage::Allocate();
+		}
+		case StepRspSubscribeMdPackage::PackageID:
+		{
+			return StepRspSubscribeMdPackage::Allocate();
+		}
+		case StepRtnShortMdPackage::PackageID:
+		{
+			return StepRtnShortMdPackage::Allocate();
+		}
+		case StepRtnExchangeStatusPackage::PackageID:
+		{
+			return StepRtnExchangeStatusPackage::Allocate();
+		}
+		case StepRtnMdInitCompletedPackage::PackageID:
+		{
+			return StepRtnMdInitCompletedPackage::Allocate();
+		}
+		case StepReqAdminUserLoginPackage::PackageID:
+		{
+			return StepReqAdminUserLoginPackage::Allocate();
+		}
+		case StepRspAdminUserLoginPackage::PackageID:
+		{
+			return StepRspAdminUserLoginPackage::Allocate();
+		}
+		case StepReqAdminUserLogoutPackage::PackageID:
+		{
+			return StepReqAdminUserLogoutPackage::Allocate();
+		}
+		case StepRspAdminUserLogoutPackage::PackageID:
+		{
+			return StepRspAdminUserLogoutPackage::Allocate();
+		}
+		case StepRtnAdminUserLogoutPackage::PackageID:
+		{
+			return StepRtnAdminUserLogoutPackage::Allocate();
 		}
 		case StepReqAddRiskUserPackage::PackageID:
 		{
@@ -656,18 +672,6 @@ namespace step
 		{
 			return StepRspMoneyTransferPackage::Allocate();
 		}
-		case StepReqQryMoneyTransferPackage::PackageID:
-		{
-			return StepReqQryMoneyTransferPackage::Allocate();
-		}
-		case StepRspQryMoneyTransferPackage::PackageID:
-		{
-			return StepRspQryMoneyTransferPackage::Allocate();
-		}
-		case StepRtnMoneyTransferPackage::PackageID:
-		{
-			return StepRtnMoneyTransferPackage::Allocate();
-		}
 		case StepReqAuditOrderPackage::PackageID:
 		{
 			return StepReqAuditOrderPackage::Allocate();
@@ -675,6 +679,86 @@ namespace step
 		case StepRspAuditOrderPackage::PackageID:
 		{
 			return StepRspAuditOrderPackage::Allocate();
+		}
+		case StepReqOfferLoginPackage::PackageID:
+		{
+			return StepReqOfferLoginPackage::Allocate();
+		}
+		case StepRspOfferLoginPackage::PackageID:
+		{
+			return StepRspOfferLoginPackage::Allocate();
+		}
+		case StepReqPrimaryAccountLoginPackage::PackageID:
+		{
+			return StepReqPrimaryAccountLoginPackage::Allocate();
+		}
+		case StepRspPrimaryAccountLoginPackage::PackageID:
+		{
+			return StepRspPrimaryAccountLoginPackage::Allocate();
+		}
+		case StepReqPrimaryAccountLogoutPackage::PackageID:
+		{
+			return StepReqPrimaryAccountLogoutPackage::Allocate();
+		}
+		case StepRtnPrimaryAccountLogoutPackage::PackageID:
+		{
+			return StepRtnPrimaryAccountLogoutPackage::Allocate();
+		}
+		case StepReqPrimaryAccountInitPackage::PackageID:
+		{
+			return StepReqPrimaryAccountInitPackage::Allocate();
+		}
+		case StepRspPrimaryAccountInitPackage::PackageID:
+		{
+			return StepRspPrimaryAccountInitPackage::Allocate();
+		}
+		case StepReqPrimaryAccountQueryPackage::PackageID:
+		{
+			return StepReqPrimaryAccountQueryPackage::Allocate();
+		}
+		case StepRspPrimaryAccountQueryPackage::PackageID:
+		{
+			return StepRspPrimaryAccountQueryPackage::Allocate();
+		}
+		case StepReqQryOfferOptionInstrumentPackage::PackageID:
+		{
+			return StepReqQryOfferOptionInstrumentPackage::Allocate();
+		}
+		case StepRspQryOfferOptionInstrumentPackage::PackageID:
+		{
+			return StepRspQryOfferOptionInstrumentPackage::Allocate();
+		}
+		case StepRtnOfferOptionInstrumentPackage::PackageID:
+		{
+			return StepRtnOfferOptionInstrumentPackage::Allocate();
+		}
+		case StepReqOfferOrderPackage::PackageID:
+		{
+			return StepReqOfferOrderPackage::Allocate();
+		}
+		case StepReqOfferCancelOrderPackage::PackageID:
+		{
+			return StepReqOfferCancelOrderPackage::Allocate();
+		}
+		case StepRtnOfferOrderPackage::PackageID:
+		{
+			return StepRtnOfferOrderPackage::Allocate();
+		}
+		case StepRtnOfferTradePackage::PackageID:
+		{
+			return StepRtnOfferTradePackage::Allocate();
+		}
+		case StepRtnOfferErrorCancelOrderPackage::PackageID:
+		{
+			return StepRtnOfferErrorCancelOrderPackage::Allocate();
+		}
+		case StepRtnOfferCapitalPackage::PackageID:
+		{
+			return StepRtnOfferCapitalPackage::Allocate();
+		}
+		case StepRtnOfferPositionPackage::PackageID:
+		{
+			return StepRtnOfferPositionPackage::Allocate();
 		}
 		default:
 			break;

@@ -10,6 +10,132 @@ thread_local char t_StepPackageStringBuffer[10240];
 
 namespace step
 {
+	StepNotifyComponentConnectStatusPackage::StepNotifyComponentConnectStatusPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepNotifyComponentConnectStatusPackage* StepNotifyComponentConnectStatusPackage::Allocate()
+	{
+		return ::Allocate<StepNotifyComponentConnectStatusPackage>();
+	}
+	void StepNotifyComponentConnectStatusPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (NotifyComponentConnectStatus != nullptr)
+		{
+			::Free<NotifyComponentConnectStatusField>(NotifyComponentConnectStatus);
+			NotifyComponentConnectStatus = nullptr;
+		}
+		MemCacheTemplateSingleton<StepNotifyComponentConnectStatusPackage>::GetInstance().Free(this);
+	}
+	void StepNotifyComponentConnectStatusPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepNotifyComponentConnectStatusPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (NotifyComponentConnectStatus != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, NotifyComponentConnectStatusField::FieldID);
+			WriteString(ppos, Items::SessionID, NotifyComponentConnectStatus->SessionID);
+			WriteString(ppos, Items::Component, (int)NotifyComponentConnectStatus->Component);
+			WriteString(ppos, Items::IsConnected, NotifyComponentConnectStatus->IsConnected);
+			WriteHexString(ppos, Items::FieldEnd, NotifyComponentConnectStatusField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepNotifyComponentConnectStatusPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case NotifyComponentConnectStatusField::FieldID:
+				{
+					NotifyComponentConnectStatus = ::Allocate<NotifyComponentConnectStatusField>();
+					memset(NotifyComponentConnectStatus, 0, sizeof(*NotifyComponentConnectStatus));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::SessionID:
+							{
+								NotifyComponentConnectStatus->SessionID = atoll(value.c_str());
+								break;
+							}
+							case Items::Component:
+							{
+								NotifyComponentConnectStatus->Component = (ComponentType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::IsConnected:
+							{
+								NotifyComponentConnectStatus->IsConnected = atoi(value.c_str());
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for NotifyComponentConnectStatusField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepNotifyComponentConnectStatusPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepNotifyComponentConnectStatusPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepNotifyComponentConnectStatusPackage::GetDebugString() const
+	{
+		if (NotifyComponentConnectStatus == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (NotifyComponentConnectStatus != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepNotifyComponentConnectStatusPackage:SessionID:[%lld], Component:[%d], IsConnected:[%d]", 
+				NotifyComponentConnectStatus->SessionID, (int)NotifyComponentConnectStatus->Component, NotifyComponentConnectStatus->IsConnected);
+		}
+		return t_StepPackageStringBuffer;
+	}
 	StepReqAccountLoginPackage::StepReqAccountLoginPackage()
 	{
 		Head.PackageID = PackageID;
@@ -27,7 +153,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAccountLogin != nullptr)
 		{
-			::Free<StepReqAccountLoginField>(ReqAccountLogin);
+			::Free<ReqAccountLoginField>(ReqAccountLogin);
 			ReqAccountLogin = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAccountLoginPackage>::GetInstance().Free(this);
@@ -43,7 +169,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAccountLogin != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAccountLoginField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAccountLoginField::FieldID);
 			if (strlen(ReqAccountLogin->AccountID) >= sizeof(ReqAccountLogin->AccountID))
 			{
 				ReqAccountLogin->AccountID[sizeof(ReqAccountLogin->AccountID) - 1] = 0;
@@ -54,7 +180,7 @@ namespace step
 				ReqAccountLogin->Password[sizeof(ReqAccountLogin->Password) - 1] = 0;
 			}
 			WriteString(ppos, Items::Password, ReqAccountLogin->Password);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAccountLoginField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAccountLoginField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -70,9 +196,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAccountLoginField::FieldID:
+				case ReqAccountLoginField::FieldID:
 				{
-					ReqAccountLogin = ::Allocate<StepReqAccountLoginField>();
+					ReqAccountLogin = ::Allocate<ReqAccountLoginField>();
 					memset(ReqAccountLogin, 0, sizeof(*ReqAccountLogin));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -99,7 +225,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAccountLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAccountLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -157,12 +283,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAccountLogin != nullptr)
 		{
-			::Free<StepRspAccountLoginField>(RspAccountLogin);
+			::Free<RspAccountLoginField>(RspAccountLogin);
 			RspAccountLogin = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAccountLoginPackage>::GetInstance().Free(this);
@@ -178,7 +304,7 @@ namespace step
 		char* ppos = buff;
 		if (RspAccountLogin != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAccountLoginField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAccountLoginField::FieldID);
 			if (strlen(RspAccountLogin->AccountID) >= sizeof(RspAccountLogin->AccountID))
 			{
 				RspAccountLogin->AccountID[sizeof(RspAccountLogin->AccountID) - 1] = 0;
@@ -195,18 +321,18 @@ namespace step
 			}
 			WriteString(ppos, Items::LoginTime, RspAccountLogin->LoginTime);
 			WriteString(ppos, Items::SessionID, RspAccountLogin->SessionID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAccountLoginField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAccountLoginField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -222,9 +348,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAccountLoginField::FieldID:
+				case RspAccountLoginField::FieldID:
 				{
-					RspAccountLogin = ::Allocate<StepRspAccountLoginField>();
+					RspAccountLogin = ::Allocate<RspAccountLoginField>();
 					memset(RspAccountLogin, 0, sizeof(*RspAccountLogin));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -262,7 +388,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAccountLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAccountLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -275,9 +401,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -303,7 +429,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -366,7 +492,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAccountLogout != nullptr)
 		{
-			::Free<StepReqAccountLogoutField>(ReqAccountLogout);
+			::Free<ReqAccountLogoutField>(ReqAccountLogout);
 			ReqAccountLogout = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAccountLogoutPackage>::GetInstance().Free(this);
@@ -382,13 +508,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqAccountLogout != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAccountLogoutField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAccountLogoutField::FieldID);
 			if (strlen(ReqAccountLogout->AccountID) >= sizeof(ReqAccountLogout->AccountID))
 			{
 				ReqAccountLogout->AccountID[sizeof(ReqAccountLogout->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, ReqAccountLogout->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAccountLogoutField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAccountLogoutField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -404,9 +530,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAccountLogoutField::FieldID:
+				case ReqAccountLogoutField::FieldID:
 				{
-					ReqAccountLogout = ::Allocate<StepReqAccountLogoutField>();
+					ReqAccountLogout = ::Allocate<ReqAccountLogoutField>();
 					memset(ReqAccountLogout, 0, sizeof(*ReqAccountLogout));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -427,7 +553,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAccountLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAccountLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -485,12 +611,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAccountLogout != nullptr)
 		{
-			::Free<StepRspAccountLogoutField>(RspAccountLogout);
+			::Free<RspAccountLogoutField>(RspAccountLogout);
 			RspAccountLogout = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAccountLogoutPackage>::GetInstance().Free(this);
@@ -506,24 +632,24 @@ namespace step
 		char* ppos = buff;
 		if (RspAccountLogout != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAccountLogoutField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAccountLogoutField::FieldID);
 			if (strlen(RspAccountLogout->AccountID) >= sizeof(RspAccountLogout->AccountID))
 			{
 				RspAccountLogout->AccountID[sizeof(RspAccountLogout->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, RspAccountLogout->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAccountLogoutField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAccountLogoutField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -539,9 +665,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAccountLogoutField::FieldID:
+				case RspAccountLogoutField::FieldID:
 				{
-					RspAccountLogout = ::Allocate<StepRspAccountLogoutField>();
+					RspAccountLogout = ::Allocate<RspAccountLogoutField>();
 					memset(RspAccountLogout, 0, sizeof(*RspAccountLogout));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -562,7 +688,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAccountLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAccountLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -575,9 +701,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -603,7 +729,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -649,2337 +775,6 @@ namespace step
 		}
 		return t_StepPackageStringBuffer;
 	}
-	StepRtnAccountLogoutPackage::StepRtnAccountLogoutPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRtnAccountLogoutPackage* StepRtnAccountLogoutPackage::Allocate()
-	{
-		return ::Allocate<StepRtnAccountLogoutPackage>();
-	}
-	void StepRtnAccountLogoutPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (AccountLogout != nullptr)
-		{
-			::Free<StepAccountLogoutField>(AccountLogout);
-			AccountLogout = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRtnAccountLogoutPackage>::GetInstance().Free(this);
-	}
-	void StepRtnAccountLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRtnAccountLogoutPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (AccountLogout != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepAccountLogoutField::FieldID);
-			if (strlen(AccountLogout->AccountID) >= sizeof(AccountLogout->AccountID))
-			{
-				AccountLogout->AccountID[sizeof(AccountLogout->AccountID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AccountID, AccountLogout->AccountID);
-			WriteString(ppos, Items::ErrorID, AccountLogout->ErrorID);
-			if (strlen(AccountLogout->ErrorMsg) >= sizeof(AccountLogout->ErrorMsg))
-			{
-				AccountLogout->ErrorMsg[sizeof(AccountLogout->ErrorMsg) - 1] = 0;
-			}
-			WriteString(ppos, Items::ErrorMsg, AccountLogout->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepAccountLogoutField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRtnAccountLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepAccountLogoutField::FieldID:
-				{
-					AccountLogout = ::Allocate<StepAccountLogoutField>();
-					memset(AccountLogout, 0, sizeof(*AccountLogout));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::AccountID:
-							{
-								size_t len = value.length() >= sizeof(AccountLogout->AccountID) ? sizeof(AccountLogout->AccountID) - 1 : value.length();
-								memcpy(AccountLogout->AccountID, value.c_str(), len);
-								break;
-							}
-							case Items::ErrorID:
-							{
-								AccountLogout->ErrorID = atoi(value.c_str());
-								break;
-							}
-							case Items::ErrorMsg:
-							{
-								size_t len = value.length() >= sizeof(AccountLogout->ErrorMsg) ? sizeof(AccountLogout->ErrorMsg) - 1 : value.length();
-								memcpy(AccountLogout->ErrorMsg, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepAccountLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnAccountLogoutPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnAccountLogoutPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRtnAccountLogoutPackage::GetDebugString() const
-	{
-		if (AccountLogout == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (AccountLogout != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountLogoutPackage:AccountID:[%s], ErrorID:[%d], ErrorMsg:[%s]", 
-				AccountLogout->AccountID, AccountLogout->ErrorID, AccountLogout->ErrorMsg);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepReqRiskUserLoginPackage::StepReqRiskUserLoginPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepReqRiskUserLoginPackage* StepReqRiskUserLoginPackage::Allocate()
-	{
-		return ::Allocate<StepReqRiskUserLoginPackage>();
-	}
-	void StepReqRiskUserLoginPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (ReqRiskUserLogin != nullptr)
-		{
-			::Free<StepReqRiskUserLoginField>(ReqRiskUserLogin);
-			ReqRiskUserLogin = nullptr;
-		}
-		MemCacheTemplateSingleton<StepReqRiskUserLoginPackage>::GetInstance().Free(this);
-	}
-	void StepReqRiskUserLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepReqRiskUserLoginPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (ReqRiskUserLogin != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRiskUserLoginField::FieldID);
-			if (strlen(ReqRiskUserLogin->UserID) >= sizeof(ReqRiskUserLogin->UserID))
-			{
-				ReqRiskUserLogin->UserID[sizeof(ReqRiskUserLogin->UserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::UserID, ReqRiskUserLogin->UserID);
-			if (strlen(ReqRiskUserLogin->Password) >= sizeof(ReqRiskUserLogin->Password))
-			{
-				ReqRiskUserLogin->Password[sizeof(ReqRiskUserLogin->Password) - 1] = 0;
-			}
-			WriteString(ppos, Items::Password, ReqRiskUserLogin->Password);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRiskUserLoginField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepReqRiskUserLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepReqRiskUserLoginField::FieldID:
-				{
-					ReqRiskUserLogin = ::Allocate<StepReqRiskUserLoginField>();
-					memset(ReqRiskUserLogin, 0, sizeof(*ReqRiskUserLogin));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::UserID:
-							{
-								size_t len = value.length() >= sizeof(ReqRiskUserLogin->UserID) ? sizeof(ReqRiskUserLogin->UserID) - 1 : value.length();
-								memcpy(ReqRiskUserLogin->UserID, value.c_str(), len);
-								break;
-							}
-							case Items::Password:
-							{
-								size_t len = value.length() >= sizeof(ReqRiskUserLogin->Password) ? sizeof(ReqRiskUserLogin->Password) - 1 : value.length();
-								memcpy(ReqRiskUserLogin->Password, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRiskUserLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqRiskUserLoginPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqRiskUserLoginPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepReqRiskUserLoginPackage::GetDebugString() const
-	{
-		if (ReqRiskUserLogin == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (ReqRiskUserLogin != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRiskUserLoginPackage:UserID:[%s], Password:[%s]", 
-				ReqRiskUserLogin->UserID, ReqRiskUserLogin->Password);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRspRiskUserLoginPackage::StepRspRiskUserLoginPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRspRiskUserLoginPackage* StepRspRiskUserLoginPackage::Allocate()
-	{
-		return ::Allocate<StepRspRiskUserLoginPackage>();
-	}
-	void StepRspRiskUserLoginPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (RspRiskUserLogin != nullptr)
-		{
-			::Free<StepRspRiskUserLoginField>(RspRiskUserLogin);
-			RspRiskUserLogin = nullptr;
-		}
-		if (RspInfo != nullptr)
-		{
-			::Free<StepRspInfoField>(RspInfo);
-			RspInfo = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRspRiskUserLoginPackage>::GetInstance().Free(this);
-	}
-	void StepRspRiskUserLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRspRiskUserLoginPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (RspRiskUserLogin != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRiskUserLoginField::FieldID);
-			if (strlen(RspRiskUserLogin->UserID) >= sizeof(RspRiskUserLogin->UserID))
-			{
-				RspRiskUserLogin->UserID[sizeof(RspRiskUserLogin->UserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::UserID, RspRiskUserLogin->UserID);
-			WriteString(ppos, Items::RiskGroupID, RspRiskUserLogin->RiskGroupID);
-			if (strlen(RspRiskUserLogin->LoginDate) >= sizeof(RspRiskUserLogin->LoginDate))
-			{
-				RspRiskUserLogin->LoginDate[sizeof(RspRiskUserLogin->LoginDate) - 1] = 0;
-			}
-			WriteString(ppos, Items::LoginDate, RspRiskUserLogin->LoginDate);
-			if (strlen(RspRiskUserLogin->LoginTime) >= sizeof(RspRiskUserLogin->LoginTime))
-			{
-				RspRiskUserLogin->LoginTime[sizeof(RspRiskUserLogin->LoginTime) - 1] = 0;
-			}
-			WriteString(ppos, Items::LoginTime, RspRiskUserLogin->LoginTime);
-			WriteString(ppos, Items::SessionID, RspRiskUserLogin->SessionID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRiskUserLoginField::FieldID);
-		}
-		if (RspInfo != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
-			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
-			{
-				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
-			}
-			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRspRiskUserLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepRspRiskUserLoginField::FieldID:
-				{
-					RspRiskUserLogin = ::Allocate<StepRspRiskUserLoginField>();
-					memset(RspRiskUserLogin, 0, sizeof(*RspRiskUserLogin));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::UserID:
-							{
-								size_t len = value.length() >= sizeof(RspRiskUserLogin->UserID) ? sizeof(RspRiskUserLogin->UserID) - 1 : value.length();
-								memcpy(RspRiskUserLogin->UserID, value.c_str(), len);
-								break;
-							}
-							case Items::RiskGroupID:
-							{
-								RspRiskUserLogin->RiskGroupID = atoi(value.c_str());
-								break;
-							}
-							case Items::LoginDate:
-							{
-								size_t len = value.length() >= sizeof(RspRiskUserLogin->LoginDate) ? sizeof(RspRiskUserLogin->LoginDate) - 1 : value.length();
-								memcpy(RspRiskUserLogin->LoginDate, value.c_str(), len);
-								break;
-							}
-							case Items::LoginTime:
-							{
-								size_t len = value.length() >= sizeof(RspRiskUserLogin->LoginTime) ? sizeof(RspRiskUserLogin->LoginTime) - 1 : value.length();
-								memcpy(RspRiskUserLogin->LoginTime, value.c_str(), len);
-								break;
-							}
-							case Items::SessionID:
-							{
-								RspRiskUserLogin->SessionID = atoll(value.c_str());
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRiskUserLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspRiskUserLoginPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				case StepRspInfoField::FieldID:
-				{
-					RspInfo = ::Allocate<StepRspInfoField>();
-					memset(RspInfo, 0, sizeof(*RspInfo));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::ErrorID:
-							{
-								RspInfo->ErrorID = atoi(value.c_str());
-								break;
-							}
-							case Items::ErrorMsg:
-							{
-								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
-								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspRiskUserLoginPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspRiskUserLoginPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRspRiskUserLoginPackage::GetDebugString() const
-	{
-		if (RspRiskUserLogin == nullptr && RspInfo == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (RspRiskUserLogin != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLoginPackage:UserID:[%s], RiskGroupID:[%d], LoginDate:[%s], LoginTime:[%s], SessionID:[%lld]", 
-				RspRiskUserLogin->UserID, RspRiskUserLogin->RiskGroupID, RspRiskUserLogin->LoginDate, RspRiskUserLogin->LoginTime, RspRiskUserLogin->SessionID);
-		}
-		if (RspInfo != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLoginPackage:ErrorID:[%d], ErrorMsg:[%s]", 
-				RspInfo->ErrorID, RspInfo->ErrorMsg);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepReqRiskUserLogoutPackage::StepReqRiskUserLogoutPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepReqRiskUserLogoutPackage* StepReqRiskUserLogoutPackage::Allocate()
-	{
-		return ::Allocate<StepReqRiskUserLogoutPackage>();
-	}
-	void StepReqRiskUserLogoutPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (ReqRiskUserLogout != nullptr)
-		{
-			::Free<StepReqRiskUserLogoutField>(ReqRiskUserLogout);
-			ReqRiskUserLogout = nullptr;
-		}
-		MemCacheTemplateSingleton<StepReqRiskUserLogoutPackage>::GetInstance().Free(this);
-	}
-	void StepReqRiskUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepReqRiskUserLogoutPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (ReqRiskUserLogout != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRiskUserLogoutField::FieldID);
-			if (strlen(ReqRiskUserLogout->UserID) >= sizeof(ReqRiskUserLogout->UserID))
-			{
-				ReqRiskUserLogout->UserID[sizeof(ReqRiskUserLogout->UserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::UserID, ReqRiskUserLogout->UserID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRiskUserLogoutField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepReqRiskUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepReqRiskUserLogoutField::FieldID:
-				{
-					ReqRiskUserLogout = ::Allocate<StepReqRiskUserLogoutField>();
-					memset(ReqRiskUserLogout, 0, sizeof(*ReqRiskUserLogout));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::UserID:
-							{
-								size_t len = value.length() >= sizeof(ReqRiskUserLogout->UserID) ? sizeof(ReqRiskUserLogout->UserID) - 1 : value.length();
-								memcpy(ReqRiskUserLogout->UserID, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRiskUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqRiskUserLogoutPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqRiskUserLogoutPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepReqRiskUserLogoutPackage::GetDebugString() const
-	{
-		if (ReqRiskUserLogout == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (ReqRiskUserLogout != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRiskUserLogoutPackage:UserID:[%s]", 
-				ReqRiskUserLogout->UserID);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRspRiskUserLogoutPackage::StepRspRiskUserLogoutPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRspRiskUserLogoutPackage* StepRspRiskUserLogoutPackage::Allocate()
-	{
-		return ::Allocate<StepRspRiskUserLogoutPackage>();
-	}
-	void StepRspRiskUserLogoutPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (RspRiskUserLogout != nullptr)
-		{
-			::Free<StepRspRiskUserLogoutField>(RspRiskUserLogout);
-			RspRiskUserLogout = nullptr;
-		}
-		if (RspInfo != nullptr)
-		{
-			::Free<StepRspInfoField>(RspInfo);
-			RspInfo = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRspRiskUserLogoutPackage>::GetInstance().Free(this);
-	}
-	void StepRspRiskUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRspRiskUserLogoutPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (RspRiskUserLogout != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRiskUserLogoutField::FieldID);
-			if (strlen(RspRiskUserLogout->UserID) >= sizeof(RspRiskUserLogout->UserID))
-			{
-				RspRiskUserLogout->UserID[sizeof(RspRiskUserLogout->UserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::UserID, RspRiskUserLogout->UserID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRiskUserLogoutField::FieldID);
-		}
-		if (RspInfo != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
-			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
-			{
-				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
-			}
-			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRspRiskUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepRspRiskUserLogoutField::FieldID:
-				{
-					RspRiskUserLogout = ::Allocate<StepRspRiskUserLogoutField>();
-					memset(RspRiskUserLogout, 0, sizeof(*RspRiskUserLogout));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::UserID:
-							{
-								size_t len = value.length() >= sizeof(RspRiskUserLogout->UserID) ? sizeof(RspRiskUserLogout->UserID) - 1 : value.length();
-								memcpy(RspRiskUserLogout->UserID, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRiskUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspRiskUserLogoutPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				case StepRspInfoField::FieldID:
-				{
-					RspInfo = ::Allocate<StepRspInfoField>();
-					memset(RspInfo, 0, sizeof(*RspInfo));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::ErrorID:
-							{
-								RspInfo->ErrorID = atoi(value.c_str());
-								break;
-							}
-							case Items::ErrorMsg:
-							{
-								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
-								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspRiskUserLogoutPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspRiskUserLogoutPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRspRiskUserLogoutPackage::GetDebugString() const
-	{
-		if (RspRiskUserLogout == nullptr && RspInfo == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (RspRiskUserLogout != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLogoutPackage:UserID:[%s]", 
-				RspRiskUserLogout->UserID);
-		}
-		if (RspInfo != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLogoutPackage:ErrorID:[%d], ErrorMsg:[%s]", 
-				RspInfo->ErrorID, RspInfo->ErrorMsg);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRtnRiskUserLogoutPackage::StepRtnRiskUserLogoutPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRtnRiskUserLogoutPackage* StepRtnRiskUserLogoutPackage::Allocate()
-	{
-		return ::Allocate<StepRtnRiskUserLogoutPackage>();
-	}
-	void StepRtnRiskUserLogoutPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (RiskUserLogout != nullptr)
-		{
-			::Free<StepRiskUserLogoutField>(RiskUserLogout);
-			RiskUserLogout = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRtnRiskUserLogoutPackage>::GetInstance().Free(this);
-	}
-	void StepRtnRiskUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRtnRiskUserLogoutPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (RiskUserLogout != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRiskUserLogoutField::FieldID);
-			if (strlen(RiskUserLogout->UserID) >= sizeof(RiskUserLogout->UserID))
-			{
-				RiskUserLogout->UserID[sizeof(RiskUserLogout->UserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::UserID, RiskUserLogout->UserID);
-			WriteString(ppos, Items::ErrorID, RiskUserLogout->ErrorID);
-			if (strlen(RiskUserLogout->ErrorMsg) >= sizeof(RiskUserLogout->ErrorMsg))
-			{
-				RiskUserLogout->ErrorMsg[sizeof(RiskUserLogout->ErrorMsg) - 1] = 0;
-			}
-			WriteString(ppos, Items::ErrorMsg, RiskUserLogout->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRiskUserLogoutField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRtnRiskUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepRiskUserLogoutField::FieldID:
-				{
-					RiskUserLogout = ::Allocate<StepRiskUserLogoutField>();
-					memset(RiskUserLogout, 0, sizeof(*RiskUserLogout));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::UserID:
-							{
-								size_t len = value.length() >= sizeof(RiskUserLogout->UserID) ? sizeof(RiskUserLogout->UserID) - 1 : value.length();
-								memcpy(RiskUserLogout->UserID, value.c_str(), len);
-								break;
-							}
-							case Items::ErrorID:
-							{
-								RiskUserLogout->ErrorID = atoi(value.c_str());
-								break;
-							}
-							case Items::ErrorMsg:
-							{
-								size_t len = value.length() >= sizeof(RiskUserLogout->ErrorMsg) ? sizeof(RiskUserLogout->ErrorMsg) - 1 : value.length();
-								memcpy(RiskUserLogout->ErrorMsg, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRiskUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnRiskUserLogoutPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnRiskUserLogoutPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRtnRiskUserLogoutPackage::GetDebugString() const
-	{
-		if (RiskUserLogout == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (RiskUserLogout != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnRiskUserLogoutPackage:UserID:[%s], ErrorID:[%d], ErrorMsg:[%s]", 
-				RiskUserLogout->UserID, RiskUserLogout->ErrorID, RiskUserLogout->ErrorMsg);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepReqAdminUserLoginPackage::StepReqAdminUserLoginPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepReqAdminUserLoginPackage* StepReqAdminUserLoginPackage::Allocate()
-	{
-		return ::Allocate<StepReqAdminUserLoginPackage>();
-	}
-	void StepReqAdminUserLoginPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (ReqAdminUserLogin != nullptr)
-		{
-			::Free<StepReqAdminUserLoginField>(ReqAdminUserLogin);
-			ReqAdminUserLogin = nullptr;
-		}
-		MemCacheTemplateSingleton<StepReqAdminUserLoginPackage>::GetInstance().Free(this);
-	}
-	void StepReqAdminUserLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepReqAdminUserLoginPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (ReqAdminUserLogin != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAdminUserLoginField::FieldID);
-			if (strlen(ReqAdminUserLogin->AdminUserID) >= sizeof(ReqAdminUserLogin->AdminUserID))
-			{
-				ReqAdminUserLogin->AdminUserID[sizeof(ReqAdminUserLogin->AdminUserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AdminUserID, ReqAdminUserLogin->AdminUserID);
-			if (strlen(ReqAdminUserLogin->Password) >= sizeof(ReqAdminUserLogin->Password))
-			{
-				ReqAdminUserLogin->Password[sizeof(ReqAdminUserLogin->Password) - 1] = 0;
-			}
-			WriteString(ppos, Items::Password, ReqAdminUserLogin->Password);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAdminUserLoginField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepReqAdminUserLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepReqAdminUserLoginField::FieldID:
-				{
-					ReqAdminUserLogin = ::Allocate<StepReqAdminUserLoginField>();
-					memset(ReqAdminUserLogin, 0, sizeof(*ReqAdminUserLogin));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::AdminUserID:
-							{
-								size_t len = value.length() >= sizeof(ReqAdminUserLogin->AdminUserID) ? sizeof(ReqAdminUserLogin->AdminUserID) - 1 : value.length();
-								memcpy(ReqAdminUserLogin->AdminUserID, value.c_str(), len);
-								break;
-							}
-							case Items::Password:
-							{
-								size_t len = value.length() >= sizeof(ReqAdminUserLogin->Password) ? sizeof(ReqAdminUserLogin->Password) - 1 : value.length();
-								memcpy(ReqAdminUserLogin->Password, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAdminUserLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqAdminUserLoginPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqAdminUserLoginPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepReqAdminUserLoginPackage::GetDebugString() const
-	{
-		if (ReqAdminUserLogin == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (ReqAdminUserLogin != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAdminUserLoginPackage:AdminUserID:[%s], Password:[%s]", 
-				ReqAdminUserLogin->AdminUserID, ReqAdminUserLogin->Password);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRspAdminUserLoginPackage::StepRspAdminUserLoginPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRspAdminUserLoginPackage* StepRspAdminUserLoginPackage::Allocate()
-	{
-		return ::Allocate<StepRspAdminUserLoginPackage>();
-	}
-	void StepRspAdminUserLoginPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (RspAdminUserLogin != nullptr)
-		{
-			::Free<StepRspAdminUserLoginField>(RspAdminUserLogin);
-			RspAdminUserLogin = nullptr;
-		}
-		if (RspInfo != nullptr)
-		{
-			::Free<StepRspInfoField>(RspInfo);
-			RspInfo = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRspAdminUserLoginPackage>::GetInstance().Free(this);
-	}
-	void StepRspAdminUserLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRspAdminUserLoginPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (RspAdminUserLogin != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAdminUserLoginField::FieldID);
-			if (strlen(RspAdminUserLogin->AdminUserID) >= sizeof(RspAdminUserLogin->AdminUserID))
-			{
-				RspAdminUserLogin->AdminUserID[sizeof(RspAdminUserLogin->AdminUserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AdminUserID, RspAdminUserLogin->AdminUserID);
-			if (strlen(RspAdminUserLogin->LoginDate) >= sizeof(RspAdminUserLogin->LoginDate))
-			{
-				RspAdminUserLogin->LoginDate[sizeof(RspAdminUserLogin->LoginDate) - 1] = 0;
-			}
-			WriteString(ppos, Items::LoginDate, RspAdminUserLogin->LoginDate);
-			if (strlen(RspAdminUserLogin->LoginTime) >= sizeof(RspAdminUserLogin->LoginTime))
-			{
-				RspAdminUserLogin->LoginTime[sizeof(RspAdminUserLogin->LoginTime) - 1] = 0;
-			}
-			WriteString(ppos, Items::LoginTime, RspAdminUserLogin->LoginTime);
-			WriteString(ppos, Items::SessionID, RspAdminUserLogin->SessionID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAdminUserLoginField::FieldID);
-		}
-		if (RspInfo != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
-			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
-			{
-				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
-			}
-			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRspAdminUserLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepRspAdminUserLoginField::FieldID:
-				{
-					RspAdminUserLogin = ::Allocate<StepRspAdminUserLoginField>();
-					memset(RspAdminUserLogin, 0, sizeof(*RspAdminUserLogin));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::AdminUserID:
-							{
-								size_t len = value.length() >= sizeof(RspAdminUserLogin->AdminUserID) ? sizeof(RspAdminUserLogin->AdminUserID) - 1 : value.length();
-								memcpy(RspAdminUserLogin->AdminUserID, value.c_str(), len);
-								break;
-							}
-							case Items::LoginDate:
-							{
-								size_t len = value.length() >= sizeof(RspAdminUserLogin->LoginDate) ? sizeof(RspAdminUserLogin->LoginDate) - 1 : value.length();
-								memcpy(RspAdminUserLogin->LoginDate, value.c_str(), len);
-								break;
-							}
-							case Items::LoginTime:
-							{
-								size_t len = value.length() >= sizeof(RspAdminUserLogin->LoginTime) ? sizeof(RspAdminUserLogin->LoginTime) - 1 : value.length();
-								memcpy(RspAdminUserLogin->LoginTime, value.c_str(), len);
-								break;
-							}
-							case Items::SessionID:
-							{
-								RspAdminUserLogin->SessionID = atoll(value.c_str());
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAdminUserLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspAdminUserLoginPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				case StepRspInfoField::FieldID:
-				{
-					RspInfo = ::Allocate<StepRspInfoField>();
-					memset(RspInfo, 0, sizeof(*RspInfo));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::ErrorID:
-							{
-								RspInfo->ErrorID = atoi(value.c_str());
-								break;
-							}
-							case Items::ErrorMsg:
-							{
-								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
-								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspAdminUserLoginPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspAdminUserLoginPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRspAdminUserLoginPackage::GetDebugString() const
-	{
-		if (RspAdminUserLogin == nullptr && RspInfo == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (RspAdminUserLogin != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLoginPackage:AdminUserID:[%s], LoginDate:[%s], LoginTime:[%s], SessionID:[%lld]", 
-				RspAdminUserLogin->AdminUserID, RspAdminUserLogin->LoginDate, RspAdminUserLogin->LoginTime, RspAdminUserLogin->SessionID);
-		}
-		if (RspInfo != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLoginPackage:ErrorID:[%d], ErrorMsg:[%s]", 
-				RspInfo->ErrorID, RspInfo->ErrorMsg);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepReqAdminUserLogoutPackage::StepReqAdminUserLogoutPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepReqAdminUserLogoutPackage* StepReqAdminUserLogoutPackage::Allocate()
-	{
-		return ::Allocate<StepReqAdminUserLogoutPackage>();
-	}
-	void StepReqAdminUserLogoutPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (ReqAdminUserLogout != nullptr)
-		{
-			::Free<StepReqAdminUserLogoutField>(ReqAdminUserLogout);
-			ReqAdminUserLogout = nullptr;
-		}
-		MemCacheTemplateSingleton<StepReqAdminUserLogoutPackage>::GetInstance().Free(this);
-	}
-	void StepReqAdminUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepReqAdminUserLogoutPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (ReqAdminUserLogout != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAdminUserLogoutField::FieldID);
-			if (strlen(ReqAdminUserLogout->AdminUserID) >= sizeof(ReqAdminUserLogout->AdminUserID))
-			{
-				ReqAdminUserLogout->AdminUserID[sizeof(ReqAdminUserLogout->AdminUserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AdminUserID, ReqAdminUserLogout->AdminUserID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAdminUserLogoutField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepReqAdminUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepReqAdminUserLogoutField::FieldID:
-				{
-					ReqAdminUserLogout = ::Allocate<StepReqAdminUserLogoutField>();
-					memset(ReqAdminUserLogout, 0, sizeof(*ReqAdminUserLogout));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::AdminUserID:
-							{
-								size_t len = value.length() >= sizeof(ReqAdminUserLogout->AdminUserID) ? sizeof(ReqAdminUserLogout->AdminUserID) - 1 : value.length();
-								memcpy(ReqAdminUserLogout->AdminUserID, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAdminUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqAdminUserLogoutPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqAdminUserLogoutPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepReqAdminUserLogoutPackage::GetDebugString() const
-	{
-		if (ReqAdminUserLogout == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (ReqAdminUserLogout != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAdminUserLogoutPackage:AdminUserID:[%s]", 
-				ReqAdminUserLogout->AdminUserID);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRspAdminUserLogoutPackage::StepRspAdminUserLogoutPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRspAdminUserLogoutPackage* StepRspAdminUserLogoutPackage::Allocate()
-	{
-		return ::Allocate<StepRspAdminUserLogoutPackage>();
-	}
-	void StepRspAdminUserLogoutPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (RspAdminUserLogout != nullptr)
-		{
-			::Free<StepRspAdminUserLogoutField>(RspAdminUserLogout);
-			RspAdminUserLogout = nullptr;
-		}
-		if (RspInfo != nullptr)
-		{
-			::Free<StepRspInfoField>(RspInfo);
-			RspInfo = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRspAdminUserLogoutPackage>::GetInstance().Free(this);
-	}
-	void StepRspAdminUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRspAdminUserLogoutPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (RspAdminUserLogout != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAdminUserLogoutField::FieldID);
-			if (strlen(RspAdminUserLogout->AdminUserID) >= sizeof(RspAdminUserLogout->AdminUserID))
-			{
-				RspAdminUserLogout->AdminUserID[sizeof(RspAdminUserLogout->AdminUserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AdminUserID, RspAdminUserLogout->AdminUserID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAdminUserLogoutField::FieldID);
-		}
-		if (RspInfo != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
-			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
-			{
-				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
-			}
-			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRspAdminUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepRspAdminUserLogoutField::FieldID:
-				{
-					RspAdminUserLogout = ::Allocate<StepRspAdminUserLogoutField>();
-					memset(RspAdminUserLogout, 0, sizeof(*RspAdminUserLogout));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::AdminUserID:
-							{
-								size_t len = value.length() >= sizeof(RspAdminUserLogout->AdminUserID) ? sizeof(RspAdminUserLogout->AdminUserID) - 1 : value.length();
-								memcpy(RspAdminUserLogout->AdminUserID, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAdminUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspAdminUserLogoutPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				case StepRspInfoField::FieldID:
-				{
-					RspInfo = ::Allocate<StepRspInfoField>();
-					memset(RspInfo, 0, sizeof(*RspInfo));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::ErrorID:
-							{
-								RspInfo->ErrorID = atoi(value.c_str());
-								break;
-							}
-							case Items::ErrorMsg:
-							{
-								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
-								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspAdminUserLogoutPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspAdminUserLogoutPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRspAdminUserLogoutPackage::GetDebugString() const
-	{
-		if (RspAdminUserLogout == nullptr && RspInfo == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (RspAdminUserLogout != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLogoutPackage:AdminUserID:[%s]", 
-				RspAdminUserLogout->AdminUserID);
-		}
-		if (RspInfo != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLogoutPackage:ErrorID:[%d], ErrorMsg:[%s]", 
-				RspInfo->ErrorID, RspInfo->ErrorMsg);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRtnAdminUserLogoutPackage::StepRtnAdminUserLogoutPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRtnAdminUserLogoutPackage* StepRtnAdminUserLogoutPackage::Allocate()
-	{
-		return ::Allocate<StepRtnAdminUserLogoutPackage>();
-	}
-	void StepRtnAdminUserLogoutPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (AdminUserLogout != nullptr)
-		{
-			::Free<StepAdminUserLogoutField>(AdminUserLogout);
-			AdminUserLogout = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRtnAdminUserLogoutPackage>::GetInstance().Free(this);
-	}
-	void StepRtnAdminUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRtnAdminUserLogoutPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (AdminUserLogout != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepAdminUserLogoutField::FieldID);
-			if (strlen(AdminUserLogout->UserID) >= sizeof(AdminUserLogout->UserID))
-			{
-				AdminUserLogout->UserID[sizeof(AdminUserLogout->UserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::UserID, AdminUserLogout->UserID);
-			WriteString(ppos, Items::ErrorID, AdminUserLogout->ErrorID);
-			if (strlen(AdminUserLogout->ErrorMsg) >= sizeof(AdminUserLogout->ErrorMsg))
-			{
-				AdminUserLogout->ErrorMsg[sizeof(AdminUserLogout->ErrorMsg) - 1] = 0;
-			}
-			WriteString(ppos, Items::ErrorMsg, AdminUserLogout->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepAdminUserLogoutField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRtnAdminUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepAdminUserLogoutField::FieldID:
-				{
-					AdminUserLogout = ::Allocate<StepAdminUserLogoutField>();
-					memset(AdminUserLogout, 0, sizeof(*AdminUserLogout));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::UserID:
-							{
-								size_t len = value.length() >= sizeof(AdminUserLogout->UserID) ? sizeof(AdminUserLogout->UserID) - 1 : value.length();
-								memcpy(AdminUserLogout->UserID, value.c_str(), len);
-								break;
-							}
-							case Items::ErrorID:
-							{
-								AdminUserLogout->ErrorID = atoi(value.c_str());
-								break;
-							}
-							case Items::ErrorMsg:
-							{
-								size_t len = value.length() >= sizeof(AdminUserLogout->ErrorMsg) ? sizeof(AdminUserLogout->ErrorMsg) - 1 : value.length();
-								memcpy(AdminUserLogout->ErrorMsg, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepAdminUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnAdminUserLogoutPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnAdminUserLogoutPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRtnAdminUserLogoutPackage::GetDebugString() const
-	{
-		if (AdminUserLogout == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (AdminUserLogout != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAdminUserLogoutPackage:UserID:[%s], ErrorID:[%d], ErrorMsg:[%s]", 
-				AdminUserLogout->UserID, AdminUserLogout->ErrorID, AdminUserLogout->ErrorMsg);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepReqMdUserLoginPackage::StepReqMdUserLoginPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepReqMdUserLoginPackage* StepReqMdUserLoginPackage::Allocate()
-	{
-		return ::Allocate<StepReqMdUserLoginPackage>();
-	}
-	void StepReqMdUserLoginPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (ReqMdUserLogin != nullptr)
-		{
-			::Free<StepReqMdUserLoginField>(ReqMdUserLogin);
-			ReqMdUserLogin = nullptr;
-		}
-		MemCacheTemplateSingleton<StepReqMdUserLoginPackage>::GetInstance().Free(this);
-	}
-	void StepReqMdUserLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepReqMdUserLoginPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (ReqMdUserLogin != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepReqMdUserLoginField::FieldID);
-			if (strlen(ReqMdUserLogin->MdUserID) >= sizeof(ReqMdUserLogin->MdUserID))
-			{
-				ReqMdUserLogin->MdUserID[sizeof(ReqMdUserLogin->MdUserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::MdUserID, ReqMdUserLogin->MdUserID);
-			if (strlen(ReqMdUserLogin->Password) >= sizeof(ReqMdUserLogin->Password))
-			{
-				ReqMdUserLogin->Password[sizeof(ReqMdUserLogin->Password) - 1] = 0;
-			}
-			WriteString(ppos, Items::Password, ReqMdUserLogin->Password);
-			WriteHexString(ppos, Items::FieldEnd, StepReqMdUserLoginField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepReqMdUserLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepReqMdUserLoginField::FieldID:
-				{
-					ReqMdUserLogin = ::Allocate<StepReqMdUserLoginField>();
-					memset(ReqMdUserLogin, 0, sizeof(*ReqMdUserLogin));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::MdUserID:
-							{
-								size_t len = value.length() >= sizeof(ReqMdUserLogin->MdUserID) ? sizeof(ReqMdUserLogin->MdUserID) - 1 : value.length();
-								memcpy(ReqMdUserLogin->MdUserID, value.c_str(), len);
-								break;
-							}
-							case Items::Password:
-							{
-								size_t len = value.length() >= sizeof(ReqMdUserLogin->Password) ? sizeof(ReqMdUserLogin->Password) - 1 : value.length();
-								memcpy(ReqMdUserLogin->Password, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqMdUserLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqMdUserLoginPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqMdUserLoginPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepReqMdUserLoginPackage::GetDebugString() const
-	{
-		if (ReqMdUserLogin == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (ReqMdUserLogin != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqMdUserLoginPackage:MdUserID:[%s], Password:[%s]", 
-				ReqMdUserLogin->MdUserID, ReqMdUserLogin->Password);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRspMdUserLoginPackage::StepRspMdUserLoginPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRspMdUserLoginPackage* StepRspMdUserLoginPackage::Allocate()
-	{
-		return ::Allocate<StepRspMdUserLoginPackage>();
-	}
-	void StepRspMdUserLoginPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (RspMdUserLogin != nullptr)
-		{
-			::Free<StepRspMdUserLoginField>(RspMdUserLogin);
-			RspMdUserLogin = nullptr;
-		}
-		if (RspInfo != nullptr)
-		{
-			::Free<StepRspInfoField>(RspInfo);
-			RspInfo = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRspMdUserLoginPackage>::GetInstance().Free(this);
-	}
-	void StepRspMdUserLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRspMdUserLoginPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (RspMdUserLogin != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspMdUserLoginField::FieldID);
-			if (strlen(RspMdUserLogin->MdUserID) >= sizeof(RspMdUserLogin->MdUserID))
-			{
-				RspMdUserLogin->MdUserID[sizeof(RspMdUserLogin->MdUserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::MdUserID, RspMdUserLogin->MdUserID);
-			if (strlen(RspMdUserLogin->LoginDate) >= sizeof(RspMdUserLogin->LoginDate))
-			{
-				RspMdUserLogin->LoginDate[sizeof(RspMdUserLogin->LoginDate) - 1] = 0;
-			}
-			WriteString(ppos, Items::LoginDate, RspMdUserLogin->LoginDate);
-			if (strlen(RspMdUserLogin->LoginTime) >= sizeof(RspMdUserLogin->LoginTime))
-			{
-				RspMdUserLogin->LoginTime[sizeof(RspMdUserLogin->LoginTime) - 1] = 0;
-			}
-			WriteString(ppos, Items::LoginTime, RspMdUserLogin->LoginTime);
-			WriteString(ppos, Items::SessionID, RspMdUserLogin->SessionID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspMdUserLoginField::FieldID);
-		}
-		if (RspInfo != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
-			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
-			{
-				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
-			}
-			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRspMdUserLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepRspMdUserLoginField::FieldID:
-				{
-					RspMdUserLogin = ::Allocate<StepRspMdUserLoginField>();
-					memset(RspMdUserLogin, 0, sizeof(*RspMdUserLogin));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::MdUserID:
-							{
-								size_t len = value.length() >= sizeof(RspMdUserLogin->MdUserID) ? sizeof(RspMdUserLogin->MdUserID) - 1 : value.length();
-								memcpy(RspMdUserLogin->MdUserID, value.c_str(), len);
-								break;
-							}
-							case Items::LoginDate:
-							{
-								size_t len = value.length() >= sizeof(RspMdUserLogin->LoginDate) ? sizeof(RspMdUserLogin->LoginDate) - 1 : value.length();
-								memcpy(RspMdUserLogin->LoginDate, value.c_str(), len);
-								break;
-							}
-							case Items::LoginTime:
-							{
-								size_t len = value.length() >= sizeof(RspMdUserLogin->LoginTime) ? sizeof(RspMdUserLogin->LoginTime) - 1 : value.length();
-								memcpy(RspMdUserLogin->LoginTime, value.c_str(), len);
-								break;
-							}
-							case Items::SessionID:
-							{
-								RspMdUserLogin->SessionID = atoll(value.c_str());
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspMdUserLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspMdUserLoginPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				case StepRspInfoField::FieldID:
-				{
-					RspInfo = ::Allocate<StepRspInfoField>();
-					memset(RspInfo, 0, sizeof(*RspInfo));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::ErrorID:
-							{
-								RspInfo->ErrorID = atoi(value.c_str());
-								break;
-							}
-							case Items::ErrorMsg:
-							{
-								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
-								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspMdUserLoginPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspMdUserLoginPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRspMdUserLoginPackage::GetDebugString() const
-	{
-		if (RspMdUserLogin == nullptr && RspInfo == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (RspMdUserLogin != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLoginPackage:MdUserID:[%s], LoginDate:[%s], LoginTime:[%s], SessionID:[%lld]", 
-				RspMdUserLogin->MdUserID, RspMdUserLogin->LoginDate, RspMdUserLogin->LoginTime, RspMdUserLogin->SessionID);
-		}
-		if (RspInfo != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLoginPackage:ErrorID:[%d], ErrorMsg:[%s]", 
-				RspInfo->ErrorID, RspInfo->ErrorMsg);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepReqMdUserLogoutPackage::StepReqMdUserLogoutPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepReqMdUserLogoutPackage* StepReqMdUserLogoutPackage::Allocate()
-	{
-		return ::Allocate<StepReqMdUserLogoutPackage>();
-	}
-	void StepReqMdUserLogoutPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (ReqMdUserLogout != nullptr)
-		{
-			::Free<StepReqMdUserLogoutField>(ReqMdUserLogout);
-			ReqMdUserLogout = nullptr;
-		}
-		MemCacheTemplateSingleton<StepReqMdUserLogoutPackage>::GetInstance().Free(this);
-	}
-	void StepReqMdUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepReqMdUserLogoutPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (ReqMdUserLogout != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepReqMdUserLogoutField::FieldID);
-			if (strlen(ReqMdUserLogout->MdUserID) >= sizeof(ReqMdUserLogout->MdUserID))
-			{
-				ReqMdUserLogout->MdUserID[sizeof(ReqMdUserLogout->MdUserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::MdUserID, ReqMdUserLogout->MdUserID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqMdUserLogoutField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepReqMdUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepReqMdUserLogoutField::FieldID:
-				{
-					ReqMdUserLogout = ::Allocate<StepReqMdUserLogoutField>();
-					memset(ReqMdUserLogout, 0, sizeof(*ReqMdUserLogout));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::MdUserID:
-							{
-								size_t len = value.length() >= sizeof(ReqMdUserLogout->MdUserID) ? sizeof(ReqMdUserLogout->MdUserID) - 1 : value.length();
-								memcpy(ReqMdUserLogout->MdUserID, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqMdUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqMdUserLogoutPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqMdUserLogoutPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepReqMdUserLogoutPackage::GetDebugString() const
-	{
-		if (ReqMdUserLogout == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (ReqMdUserLogout != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqMdUserLogoutPackage:MdUserID:[%s]", 
-				ReqMdUserLogout->MdUserID);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRspMdUserLogoutPackage::StepRspMdUserLogoutPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRspMdUserLogoutPackage* StepRspMdUserLogoutPackage::Allocate()
-	{
-		return ::Allocate<StepRspMdUserLogoutPackage>();
-	}
-	void StepRspMdUserLogoutPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (RspMdUserLogout != nullptr)
-		{
-			::Free<StepRspMdUserLogoutField>(RspMdUserLogout);
-			RspMdUserLogout = nullptr;
-		}
-		if (RspInfo != nullptr)
-		{
-			::Free<StepRspInfoField>(RspInfo);
-			RspInfo = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRspMdUserLogoutPackage>::GetInstance().Free(this);
-	}
-	void StepRspMdUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRspMdUserLogoutPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (RspMdUserLogout != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspMdUserLogoutField::FieldID);
-			if (strlen(RspMdUserLogout->MdUserID) >= sizeof(RspMdUserLogout->MdUserID))
-			{
-				RspMdUserLogout->MdUserID[sizeof(RspMdUserLogout->MdUserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::MdUserID, RspMdUserLogout->MdUserID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspMdUserLogoutField::FieldID);
-		}
-		if (RspInfo != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
-			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
-			{
-				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
-			}
-			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRspMdUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepRspMdUserLogoutField::FieldID:
-				{
-					RspMdUserLogout = ::Allocate<StepRspMdUserLogoutField>();
-					memset(RspMdUserLogout, 0, sizeof(*RspMdUserLogout));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::MdUserID:
-							{
-								size_t len = value.length() >= sizeof(RspMdUserLogout->MdUserID) ? sizeof(RspMdUserLogout->MdUserID) - 1 : value.length();
-								memcpy(RspMdUserLogout->MdUserID, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspMdUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspMdUserLogoutPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				case StepRspInfoField::FieldID:
-				{
-					RspInfo = ::Allocate<StepRspInfoField>();
-					memset(RspInfo, 0, sizeof(*RspInfo));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::ErrorID:
-							{
-								RspInfo->ErrorID = atoi(value.c_str());
-								break;
-							}
-							case Items::ErrorMsg:
-							{
-								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
-								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspMdUserLogoutPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspMdUserLogoutPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRspMdUserLogoutPackage::GetDebugString() const
-	{
-		if (RspMdUserLogout == nullptr && RspInfo == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (RspMdUserLogout != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLogoutPackage:MdUserID:[%s]", 
-				RspMdUserLogout->MdUserID);
-		}
-		if (RspInfo != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLogoutPackage:ErrorID:[%d], ErrorMsg:[%s]", 
-				RspInfo->ErrorID, RspInfo->ErrorMsg);
-		}
-		return t_StepPackageStringBuffer;
-	}
 	StepReqQryAccountPackage::StepReqQryAccountPackage()
 	{
 		Head.PackageID = PackageID;
@@ -2997,7 +792,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqQryAccount != nullptr)
 		{
-			::Free<StepReqQryAccountField>(ReqQryAccount);
+			::Free<ReqQryAccountField>(ReqQryAccount);
 			ReqQryAccount = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqQryAccountPackage>::GetInstance().Free(this);
@@ -3013,13 +808,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryAccount != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqQryAccountField::FieldID);
 			if (strlen(ReqQryAccount->AccountID) >= sizeof(ReqQryAccount->AccountID))
 			{
 				ReqQryAccount->AccountID[sizeof(ReqQryAccount->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, ReqQryAccount->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -3035,9 +830,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqQryAccountField::FieldID:
+				case ReqQryAccountField::FieldID:
 				{
-					ReqQryAccount = ::Allocate<StepReqQryAccountField>();
+					ReqQryAccount = ::Allocate<ReqQryAccountField>();
 					memset(ReqQryAccount, 0, sizeof(*ReqQryAccount));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -3058,7 +853,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -3116,12 +911,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (Account != nullptr)
 		{
-			::Free<StepAccountField>(Account);
+			::Free<AccountField>(Account);
 			Account = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspQryAccountPackage>::GetInstance().Free(this);
@@ -3137,7 +932,7 @@ namespace step
 		char* ppos = buff;
 		if (Account != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, AccountField::FieldID);
 			if (strlen(Account->AccountID) >= sizeof(Account->AccountID))
 			{
 				Account->AccountID[sizeof(Account->AccountID) - 1] = 0;
@@ -3148,18 +943,18 @@ namespace step
 			WriteString(ppos, Items::TradeGroupID, Account->TradeGroupID);
 			WriteString(ppos, Items::RiskGroupID, Account->RiskGroupID);
 			WriteString(ppos, Items::CommissionGroupID, Account->CommissionGroupID);
-			WriteHexString(ppos, Items::FieldEnd, StepAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, AccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -3175,9 +970,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepAccountField::FieldID:
+				case AccountField::FieldID:
 				{
-					Account = ::Allocate<StepAccountField>();
+					Account = ::Allocate<AccountField>();
 					memset(Account, 0, sizeof(*Account));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -3223,7 +1018,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for AccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -3236,9 +1031,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -3264,7 +1059,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -3327,7 +1122,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqQryHolderAccount != nullptr)
 		{
-			::Free<StepReqQryHolderAccountField>(ReqQryHolderAccount);
+			::Free<ReqQryHolderAccountField>(ReqQryHolderAccount);
 			ReqQryHolderAccount = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqQryHolderAccountPackage>::GetInstance().Free(this);
@@ -3343,13 +1138,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryHolderAccount != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryHolderAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqQryHolderAccountField::FieldID);
 			if (strlen(ReqQryHolderAccount->AccountID) >= sizeof(ReqQryHolderAccount->AccountID))
 			{
 				ReqQryHolderAccount->AccountID[sizeof(ReqQryHolderAccount->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, ReqQryHolderAccount->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryHolderAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryHolderAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -3365,9 +1160,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqQryHolderAccountField::FieldID:
+				case ReqQryHolderAccountField::FieldID:
 				{
-					ReqQryHolderAccount = ::Allocate<StepReqQryHolderAccountField>();
+					ReqQryHolderAccount = ::Allocate<ReqQryHolderAccountField>();
 					memset(ReqQryHolderAccount, 0, sizeof(*ReqQryHolderAccount));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -3388,7 +1183,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryHolderAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryHolderAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -3446,12 +1241,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (HolderAccount != nullptr)
 		{
-			::Free<StepHolderAccountField>(HolderAccount);
+			::Free<HolderAccountField>(HolderAccount);
 			HolderAccount = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspQryHolderAccountPackage>::GetInstance().Free(this);
@@ -3467,7 +1262,7 @@ namespace step
 		char* ppos = buff;
 		if (HolderAccount != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepHolderAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, HolderAccountField::FieldID);
 			if (strlen(HolderAccount->ExchangeID) >= sizeof(HolderAccount->ExchangeID))
 			{
 				HolderAccount->ExchangeID[sizeof(HolderAccount->ExchangeID) - 1] = 0;
@@ -3479,18 +1274,18 @@ namespace step
 			}
 			WriteString(ppos, Items::HolderAccountID, HolderAccount->HolderAccountID);
 			WriteString(ppos, Items::PrimaryFlag, HolderAccount->PrimaryFlag);
-			WriteHexString(ppos, Items::FieldEnd, StepHolderAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, HolderAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -3506,9 +1301,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepHolderAccountField::FieldID:
+				case HolderAccountField::FieldID:
 				{
-					HolderAccount = ::Allocate<StepHolderAccountField>();
+					HolderAccount = ::Allocate<HolderAccountField>();
 					memset(HolderAccount, 0, sizeof(*HolderAccount));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -3540,7 +1335,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepHolderAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for HolderAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -3553,9 +1348,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -3581,7 +1376,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -3644,7 +1439,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqQryCapital != nullptr)
 		{
-			::Free<StepReqQryCapitalField>(ReqQryCapital);
+			::Free<ReqQryCapitalField>(ReqQryCapital);
 			ReqQryCapital = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqQryCapitalPackage>::GetInstance().Free(this);
@@ -3660,13 +1455,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryCapital != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryCapitalField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqQryCapitalField::FieldID);
 			if (strlen(ReqQryCapital->AccountID) >= sizeof(ReqQryCapital->AccountID))
 			{
 				ReqQryCapital->AccountID[sizeof(ReqQryCapital->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, ReqQryCapital->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryCapitalField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryCapitalField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -3682,9 +1477,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqQryCapitalField::FieldID:
+				case ReqQryCapitalField::FieldID:
 				{
-					ReqQryCapital = ::Allocate<StepReqQryCapitalField>();
+					ReqQryCapital = ::Allocate<ReqQryCapitalField>();
 					memset(ReqQryCapital, 0, sizeof(*ReqQryCapital));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -3705,7 +1500,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryCapitalField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryCapitalField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -3763,12 +1558,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (Capital != nullptr)
 		{
-			::Free<StepCapitalField>(Capital);
+			::Free<CapitalField>(Capital);
 			Capital = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspQryCapitalPackage>::GetInstance().Free(this);
@@ -3784,7 +1579,7 @@ namespace step
 		char* ppos = buff;
 		if (Capital != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepCapitalField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, CapitalField::FieldID);
 			if (strlen(Capital->TradingDay) >= sizeof(Capital->TradingDay))
 			{
 				Capital->TradingDay[sizeof(Capital->TradingDay) - 1] = 0;
@@ -3817,18 +1612,18 @@ namespace step
 			WriteString(ppos, Items::TodayProfit, Capital->TodayProfit);
 			WriteString(ppos, Items::Deposit, Capital->Deposit);
 			WriteString(ppos, Items::Withdraw, Capital->Withdraw);
-			WriteHexString(ppos, Items::FieldEnd, StepCapitalField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, CapitalField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -3844,9 +1639,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepCapitalField::FieldID:
+				case CapitalField::FieldID:
 				{
-					Capital = ::Allocate<StepCapitalField>();
+					Capital = ::Allocate<CapitalField>();
 					memset(Capital, 0, sizeof(*Capital));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -3983,7 +1778,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepCapitalField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for CapitalField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -3996,9 +1791,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -4024,7 +1819,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -4087,7 +1882,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqQryPosition != nullptr)
 		{
-			::Free<StepReqQryPositionField>(ReqQryPosition);
+			::Free<ReqQryPositionField>(ReqQryPosition);
 			ReqQryPosition = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqQryPositionPackage>::GetInstance().Free(this);
@@ -4103,13 +1898,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryPosition != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryPositionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqQryPositionField::FieldID);
 			if (strlen(ReqQryPosition->AccountID) >= sizeof(ReqQryPosition->AccountID))
 			{
 				ReqQryPosition->AccountID[sizeof(ReqQryPosition->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, ReqQryPosition->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryPositionField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryPositionField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -4125,9 +1920,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqQryPositionField::FieldID:
+				case ReqQryPositionField::FieldID:
 				{
-					ReqQryPosition = ::Allocate<StepReqQryPositionField>();
+					ReqQryPosition = ::Allocate<ReqQryPositionField>();
 					memset(ReqQryPosition, 0, sizeof(*ReqQryPosition));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -4148,7 +1943,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryPositionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryPositionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -4206,12 +2001,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (Position != nullptr)
 		{
-			::Free<StepPositionField>(Position);
+			::Free<PositionField>(Position);
 			Position = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspQryPositionPackage>::GetInstance().Free(this);
@@ -4227,7 +2022,7 @@ namespace step
 		char* ppos = buff;
 		if (Position != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepPositionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, PositionField::FieldID);
 			if (strlen(Position->TradingDay) >= sizeof(Position->TradingDay))
 			{
 				Position->TradingDay[sizeof(Position->TradingDay) - 1] = 0;
@@ -4270,18 +2065,18 @@ namespace step
 			WriteString(ppos, Items::TodayProfit, Position->TodayProfit);
 			WriteString(ppos, Items::LastPrice, Position->LastPrice);
 			WriteString(ppos, Items::PrePrice, Position->PrePrice);
-			WriteHexString(ppos, Items::FieldEnd, StepPositionField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, PositionField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -4297,9 +2092,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepPositionField::FieldID:
+				case PositionField::FieldID:
 				{
-					Position = ::Allocate<StepPositionField>();
+					Position = ::Allocate<PositionField>();
 					memset(Position, 0, sizeof(*Position));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -4448,7 +2243,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepPositionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for PositionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -4461,9 +2256,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -4489,7 +2284,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -4535,290 +2330,6 @@ namespace step
 		}
 		return t_StepPackageStringBuffer;
 	}
-	StepRtnPositionPackage::StepRtnPositionPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRtnPositionPackage* StepRtnPositionPackage::Allocate()
-	{
-		return ::Allocate<StepRtnPositionPackage>();
-	}
-	void StepRtnPositionPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (Position != nullptr)
-		{
-			::Free<StepPositionField>(Position);
-			Position = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRtnPositionPackage>::GetInstance().Free(this);
-	}
-	void StepRtnPositionPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRtnPositionPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (Position != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepPositionField::FieldID);
-			if (strlen(Position->TradingDay) >= sizeof(Position->TradingDay))
-			{
-				Position->TradingDay[sizeof(Position->TradingDay) - 1] = 0;
-			}
-			WriteString(ppos, Items::TradingDay, Position->TradingDay);
-			if (strlen(Position->AccountID) >= sizeof(Position->AccountID))
-			{
-				Position->AccountID[sizeof(Position->AccountID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AccountID, Position->AccountID);
-			WriteString(ppos, Items::AccountType, (int)Position->AccountType);
-			if (strlen(Position->ExchangeID) >= sizeof(Position->ExchangeID))
-			{
-				Position->ExchangeID[sizeof(Position->ExchangeID) - 1] = 0;
-			}
-			WriteString(ppos, Items::ExchangeID, Position->ExchangeID);
-			if (strlen(Position->InstrumentID) >= sizeof(Position->InstrumentID))
-			{
-				Position->InstrumentID[sizeof(Position->InstrumentID) - 1] = 0;
-			}
-			WriteString(ppos, Items::InstrumentID, Position->InstrumentID);
-			WriteString(ppos, Items::SecurityType, (int)Position->SecurityType);
-			WriteString(ppos, Items::PosiDirection, (int)Position->PosiDirection);
-			WriteString(ppos, Items::TotalPosition, Position->TotalPosition);
-			WriteString(ppos, Items::PositionFrozen, Position->PositionFrozen);
-			WriteString(ppos, Items::TodayPosition, Position->TodayPosition);
-			WriteString(ppos, Items::TotalCostPrice, Position->TotalCostPrice);
-			WriteString(ppos, Items::TodayCostPrice, Position->TodayCostPrice);
-			WriteString(ppos, Items::CashIn, Position->CashIn);
-			WriteString(ppos, Items::CashOut, Position->CashOut);
-			WriteString(ppos, Items::Margin, Position->Margin);
-			WriteString(ppos, Items::Commission, Position->Commission);
-			WriteString(ppos, Items::StampTax, Position->StampTax);
-			WriteString(ppos, Items::TransferFee, Position->TransferFee);
-			WriteString(ppos, Items::MarketValue, Position->MarketValue);
-			WriteString(ppos, Items::VolumeMultiple, Position->VolumeMultiple);
-			WriteString(ppos, Items::TotalCost, Position->TotalCost);
-			WriteString(ppos, Items::TodayCost, Position->TodayCost);
-			WriteString(ppos, Items::TotalProfit, Position->TotalProfit);
-			WriteString(ppos, Items::TodayProfit, Position->TodayProfit);
-			WriteString(ppos, Items::LastPrice, Position->LastPrice);
-			WriteString(ppos, Items::PrePrice, Position->PrePrice);
-			WriteHexString(ppos, Items::FieldEnd, StepPositionField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRtnPositionPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepPositionField::FieldID:
-				{
-					Position = ::Allocate<StepPositionField>();
-					memset(Position, 0, sizeof(*Position));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::TradingDay:
-							{
-								size_t len = value.length() >= sizeof(Position->TradingDay) ? sizeof(Position->TradingDay) - 1 : value.length();
-								memcpy(Position->TradingDay, value.c_str(), len);
-								break;
-							}
-							case Items::AccountID:
-							{
-								size_t len = value.length() >= sizeof(Position->AccountID) ? sizeof(Position->AccountID) - 1 : value.length();
-								memcpy(Position->AccountID, value.c_str(), len);
-								break;
-							}
-							case Items::AccountType:
-							{
-								Position->AccountType = (AccountTypeType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::ExchangeID:
-							{
-								size_t len = value.length() >= sizeof(Position->ExchangeID) ? sizeof(Position->ExchangeID) - 1 : value.length();
-								memcpy(Position->ExchangeID, value.c_str(), len);
-								break;
-							}
-							case Items::InstrumentID:
-							{
-								size_t len = value.length() >= sizeof(Position->InstrumentID) ? sizeof(Position->InstrumentID) - 1 : value.length();
-								memcpy(Position->InstrumentID, value.c_str(), len);
-								break;
-							}
-							case Items::SecurityType:
-							{
-								Position->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::PosiDirection:
-							{
-								Position->PosiDirection = (PosiDirectionType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::TotalPosition:
-							{
-								Position->TotalPosition = atoi(value.c_str());
-								break;
-							}
-							case Items::PositionFrozen:
-							{
-								Position->PositionFrozen = atoi(value.c_str());
-								break;
-							}
-							case Items::TodayPosition:
-							{
-								Position->TodayPosition = atoi(value.c_str());
-								break;
-							}
-							case Items::TotalCostPrice:
-							{
-								Position->TotalCostPrice = atof(value.c_str());
-								break;
-							}
-							case Items::TodayCostPrice:
-							{
-								Position->TodayCostPrice = atof(value.c_str());
-								break;
-							}
-							case Items::CashIn:
-							{
-								Position->CashIn = atof(value.c_str());
-								break;
-							}
-							case Items::CashOut:
-							{
-								Position->CashOut = atof(value.c_str());
-								break;
-							}
-							case Items::Margin:
-							{
-								Position->Margin = atof(value.c_str());
-								break;
-							}
-							case Items::Commission:
-							{
-								Position->Commission = atof(value.c_str());
-								break;
-							}
-							case Items::StampTax:
-							{
-								Position->StampTax = atof(value.c_str());
-								break;
-							}
-							case Items::TransferFee:
-							{
-								Position->TransferFee = atof(value.c_str());
-								break;
-							}
-							case Items::MarketValue:
-							{
-								Position->MarketValue = atof(value.c_str());
-								break;
-							}
-							case Items::VolumeMultiple:
-							{
-								Position->VolumeMultiple = atoi(value.c_str());
-								break;
-							}
-							case Items::TotalCost:
-							{
-								Position->TotalCost = atof(value.c_str());
-								break;
-							}
-							case Items::TodayCost:
-							{
-								Position->TodayCost = atof(value.c_str());
-								break;
-							}
-							case Items::TotalProfit:
-							{
-								Position->TotalProfit = atof(value.c_str());
-								break;
-							}
-							case Items::TodayProfit:
-							{
-								Position->TodayProfit = atof(value.c_str());
-								break;
-							}
-							case Items::LastPrice:
-							{
-								Position->LastPrice = atof(value.c_str());
-								break;
-							}
-							case Items::PrePrice:
-							{
-								Position->PrePrice = atof(value.c_str());
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepPositionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnPositionPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnPositionPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRtnPositionPackage::GetDebugString() const
-	{
-		if (Position == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (Position != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnPositionPackage:TradingDay:[%s], AccountID:[%s], AccountType:[%d], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], PosiDirection:[%d], TotalPosition:[%d], PositionFrozen:[%d], TodayPosition:[%d], TotalCostPrice:[%f], TodayCostPrice:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], MarketValue:[%f], VolumeMultiple:[%d], TotalCost:[%f], TodayCost:[%f], TotalProfit:[%f], TodayProfit:[%f], LastPrice:[%f], PrePrice:[%f]", 
-				Position->TradingDay, Position->AccountID, (int)Position->AccountType, Position->ExchangeID, Position->InstrumentID, (int)Position->SecurityType, (int)Position->PosiDirection, Position->TotalPosition, Position->PositionFrozen, Position->TodayPosition, Position->TotalCostPrice, Position->TodayCostPrice, Position->CashIn, Position->CashOut, Position->Margin, Position->Commission, Position->StampTax, Position->TransferFee, Position->MarketValue, Position->VolumeMultiple, Position->TotalCost, Position->TodayCost, Position->TotalProfit, Position->TodayProfit, Position->LastPrice, Position->PrePrice);
-		}
-		return t_StepPackageStringBuffer;
-	}
 	StepReqQryOrderPackage::StepReqQryOrderPackage()
 	{
 		Head.PackageID = PackageID;
@@ -4836,7 +2347,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqQryOrder != nullptr)
 		{
-			::Free<StepReqQryOrderField>(ReqQryOrder);
+			::Free<ReqQryOrderField>(ReqQryOrder);
 			ReqQryOrder = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqQryOrderPackage>::GetInstance().Free(this);
@@ -4852,13 +2363,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryOrder != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqQryOrderField::FieldID);
 			if (strlen(ReqQryOrder->AccountID) >= sizeof(ReqQryOrder->AccountID))
 			{
 				ReqQryOrder->AccountID[sizeof(ReqQryOrder->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, ReqQryOrder->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryOrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -4874,9 +2385,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqQryOrderField::FieldID:
+				case ReqQryOrderField::FieldID:
 				{
-					ReqQryOrder = ::Allocate<StepReqQryOrderField>();
+					ReqQryOrder = ::Allocate<ReqQryOrderField>();
 					memset(ReqQryOrder, 0, sizeof(*ReqQryOrder));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -4897,7 +2408,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -4955,12 +2466,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (Order != nullptr)
 		{
-			::Free<StepOrderField>(Order);
+			::Free<OrderField>(Order);
 			Order = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspQryOrderPackage>::GetInstance().Free(this);
@@ -4976,7 +2487,7 @@ namespace step
 		char* ppos = buff;
 		if (Order != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, OrderField::FieldID);
 			if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
 			{
 				Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
@@ -5046,18 +2557,18 @@ namespace step
 			WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
 			WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
 			WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
-			WriteHexString(ppos, Items::FieldEnd, StepOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, OrderField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -5073,9 +2584,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepOrderField::FieldID:
+				case OrderField::FieldID:
 				{
-					Order = ::Allocate<StepOrderField>();
+					Order = ::Allocate<OrderField>();
 					memset(Order, 0, sizeof(*Order));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -5245,7 +2756,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for OrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -5258,9 +2769,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -5286,7 +2797,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -5332,338 +2843,6 @@ namespace step
 		}
 		return t_StepPackageStringBuffer;
 	}
-	StepRtnOrderPackage::StepRtnOrderPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRtnOrderPackage* StepRtnOrderPackage::Allocate()
-	{
-		return ::Allocate<StepRtnOrderPackage>();
-	}
-	void StepRtnOrderPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (Order != nullptr)
-		{
-			::Free<StepOrderField>(Order);
-			Order = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRtnOrderPackage>::GetInstance().Free(this);
-	}
-	void StepRtnOrderPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRtnOrderPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (Order != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepOrderField::FieldID);
-			if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
-			{
-				Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
-			}
-			WriteString(ppos, Items::TradingDay, Order->TradingDay);
-			if (strlen(Order->AccountID) >= sizeof(Order->AccountID))
-			{
-				Order->AccountID[sizeof(Order->AccountID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AccountID, Order->AccountID);
-			if (strlen(Order->ExchangeID) >= sizeof(Order->ExchangeID))
-			{
-				Order->ExchangeID[sizeof(Order->ExchangeID) - 1] = 0;
-			}
-			WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
-			if (strlen(Order->InstrumentID) >= sizeof(Order->InstrumentID))
-			{
-				Order->InstrumentID[sizeof(Order->InstrumentID) - 1] = 0;
-			}
-			WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
-			WriteString(ppos, Items::SecurityType, (int)Order->SecurityType);
-			WriteString(ppos, Items::OrderID, Order->OrderID);
-			if (strlen(Order->OrderSysID) >= sizeof(Order->OrderSysID))
-			{
-				Order->OrderSysID[sizeof(Order->OrderSysID) - 1] = 0;
-			}
-			WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
-			WriteString(ppos, Items::Direction, (int)Order->Direction);
-			WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
-			WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
-			WriteString(ppos, Items::Price, Order->Price);
-			WriteString(ppos, Items::Volume, Order->Volume);
-			WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
-			WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
-			WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
-			WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
-			if (strlen(Order->StatusMsg) >= sizeof(Order->StatusMsg))
-			{
-				Order->StatusMsg[sizeof(Order->StatusMsg) - 1] = 0;
-			}
-			WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
-			if (strlen(Order->OrderDate) >= sizeof(Order->OrderDate))
-			{
-				Order->OrderDate[sizeof(Order->OrderDate) - 1] = 0;
-			}
-			WriteString(ppos, Items::OrderDate, Order->OrderDate);
-			if (strlen(Order->OrderTime) >= sizeof(Order->OrderTime))
-			{
-				Order->OrderTime[sizeof(Order->OrderTime) - 1] = 0;
-			}
-			WriteString(ppos, Items::OrderTime, Order->OrderTime);
-			if (strlen(Order->CancelDate) >= sizeof(Order->CancelDate))
-			{
-				Order->CancelDate[sizeof(Order->CancelDate) - 1] = 0;
-			}
-			WriteString(ppos, Items::CancelDate, Order->CancelDate);
-			if (strlen(Order->CancelTime) >= sizeof(Order->CancelTime))
-			{
-				Order->CancelTime[sizeof(Order->CancelTime) - 1] = 0;
-			}
-			WriteString(ppos, Items::CancelTime, Order->CancelTime);
-			WriteString(ppos, Items::SessionID, Order->SessionID);
-			WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
-			WriteString(ppos, Items::RequestID, Order->RequestID);
-			WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
-			WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
-			WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
-			WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
-			WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
-			WriteHexString(ppos, Items::FieldEnd, StepOrderField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRtnOrderPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepOrderField::FieldID:
-				{
-					Order = ::Allocate<StepOrderField>();
-					memset(Order, 0, sizeof(*Order));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::TradingDay:
-							{
-								size_t len = value.length() >= sizeof(Order->TradingDay) ? sizeof(Order->TradingDay) - 1 : value.length();
-								memcpy(Order->TradingDay, value.c_str(), len);
-								break;
-							}
-							case Items::AccountID:
-							{
-								size_t len = value.length() >= sizeof(Order->AccountID) ? sizeof(Order->AccountID) - 1 : value.length();
-								memcpy(Order->AccountID, value.c_str(), len);
-								break;
-							}
-							case Items::ExchangeID:
-							{
-								size_t len = value.length() >= sizeof(Order->ExchangeID) ? sizeof(Order->ExchangeID) - 1 : value.length();
-								memcpy(Order->ExchangeID, value.c_str(), len);
-								break;
-							}
-							case Items::InstrumentID:
-							{
-								size_t len = value.length() >= sizeof(Order->InstrumentID) ? sizeof(Order->InstrumentID) - 1 : value.length();
-								memcpy(Order->InstrumentID, value.c_str(), len);
-								break;
-							}
-							case Items::SecurityType:
-							{
-								Order->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::OrderID:
-							{
-								Order->OrderID = atoi(value.c_str());
-								break;
-							}
-							case Items::OrderSysID:
-							{
-								size_t len = value.length() >= sizeof(Order->OrderSysID) ? sizeof(Order->OrderSysID) - 1 : value.length();
-								memcpy(Order->OrderSysID, value.c_str(), len);
-								break;
-							}
-							case Items::Direction:
-							{
-								Order->Direction = (DirectionType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::OffsetFlag:
-							{
-								Order->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::OrderPriceType:
-							{
-								Order->OrderPriceType = (OrderPriceTypeType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::Price:
-							{
-								Order->Price = atof(value.c_str());
-								break;
-							}
-							case Items::Volume:
-							{
-								Order->Volume = atoi(value.c_str());
-								break;
-							}
-							case Items::VolumeTotal:
-							{
-								Order->VolumeTotal = atoi(value.c_str());
-								break;
-							}
-							case Items::VolumeTraded:
-							{
-								Order->VolumeTraded = atoi(value.c_str());
-								break;
-							}
-							case Items::VolumeMultiple:
-							{
-								Order->VolumeMultiple = atoi(value.c_str());
-								break;
-							}
-							case Items::OrderStatus:
-							{
-								Order->OrderStatus = (OrderStatusType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::StatusMsg:
-							{
-								size_t len = value.length() >= sizeof(Order->StatusMsg) ? sizeof(Order->StatusMsg) - 1 : value.length();
-								memcpy(Order->StatusMsg, value.c_str(), len);
-								break;
-							}
-							case Items::OrderDate:
-							{
-								size_t len = value.length() >= sizeof(Order->OrderDate) ? sizeof(Order->OrderDate) - 1 : value.length();
-								memcpy(Order->OrderDate, value.c_str(), len);
-								break;
-							}
-							case Items::OrderTime:
-							{
-								size_t len = value.length() >= sizeof(Order->OrderTime) ? sizeof(Order->OrderTime) - 1 : value.length();
-								memcpy(Order->OrderTime, value.c_str(), len);
-								break;
-							}
-							case Items::CancelDate:
-							{
-								size_t len = value.length() >= sizeof(Order->CancelDate) ? sizeof(Order->CancelDate) - 1 : value.length();
-								memcpy(Order->CancelDate, value.c_str(), len);
-								break;
-							}
-							case Items::CancelTime:
-							{
-								size_t len = value.length() >= sizeof(Order->CancelTime) ? sizeof(Order->CancelTime) - 1 : value.length();
-								memcpy(Order->CancelTime, value.c_str(), len);
-								break;
-							}
-							case Items::SessionID:
-							{
-								Order->SessionID = atoll(value.c_str());
-								break;
-							}
-							case Items::ClientOrderID:
-							{
-								Order->ClientOrderID = atoi(value.c_str());
-								break;
-							}
-							case Items::RequestID:
-							{
-								Order->RequestID = atoi(value.c_str());
-								break;
-							}
-							case Items::FrozenCash:
-							{
-								Order->FrozenCash = atof(value.c_str());
-								break;
-							}
-							case Items::FrozenMargin:
-							{
-								Order->FrozenMargin = atof(value.c_str());
-								break;
-							}
-							case Items::FrozenCommission:
-							{
-								Order->FrozenCommission = atof(value.c_str());
-								break;
-							}
-							case Items::FrozenStampTax:
-							{
-								Order->FrozenStampTax = atof(value.c_str());
-								break;
-							}
-							case Items::FrozenTransferFee:
-							{
-								Order->FrozenTransferFee = atof(value.c_str());
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnOrderPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnOrderPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRtnOrderPackage::GetDebugString() const
-	{
-		if (Order == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (Order != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnOrderPackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]", 
-				Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
-		}
-		return t_StepPackageStringBuffer;
-	}
 	StepReqQryTradePackage::StepReqQryTradePackage()
 	{
 		Head.PackageID = PackageID;
@@ -5681,7 +2860,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqQryTrade != nullptr)
 		{
-			::Free<StepReqQryTradeField>(ReqQryTrade);
+			::Free<ReqQryTradeField>(ReqQryTrade);
 			ReqQryTrade = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqQryTradePackage>::GetInstance().Free(this);
@@ -5697,13 +2876,13 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryTrade != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryTradeField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqQryTradeField::FieldID);
 			if (strlen(ReqQryTrade->AccountID) >= sizeof(ReqQryTrade->AccountID))
 			{
 				ReqQryTrade->AccountID[sizeof(ReqQryTrade->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, ReqQryTrade->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryTradeField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryTradeField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -5719,9 +2898,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqQryTradeField::FieldID:
+				case ReqQryTradeField::FieldID:
 				{
-					ReqQryTrade = ::Allocate<StepReqQryTradeField>();
+					ReqQryTrade = ::Allocate<ReqQryTradeField>();
 					memset(ReqQryTrade, 0, sizeof(*ReqQryTrade));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -5742,7 +2921,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryTradeField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryTradeField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -5800,12 +2979,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (Trade != nullptr)
 		{
-			::Free<StepTradeField>(Trade);
+			::Free<TradeField>(Trade);
 			Trade = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspQryTradePackage>::GetInstance().Free(this);
@@ -5821,7 +3000,7 @@ namespace step
 		char* ppos = buff;
 		if (Trade != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepTradeField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, TradeField::FieldID);
 			if (strlen(Trade->TradingDay) >= sizeof(Trade->TradingDay))
 			{
 				Trade->TradingDay[sizeof(Trade->TradingDay) - 1] = 0;
@@ -5873,18 +3052,18 @@ namespace step
 				Trade->TradeTime[sizeof(Trade->TradeTime) - 1] = 0;
 			}
 			WriteString(ppos, Items::TradeTime, Trade->TradeTime);
-			WriteHexString(ppos, Items::FieldEnd, StepTradeField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, TradeField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -5900,9 +3079,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepTradeField::FieldID:
+				case TradeField::FieldID:
 				{
-					Trade = ::Allocate<StepTradeField>();
+					Trade = ::Allocate<TradeField>();
 					memset(Trade, 0, sizeof(*Trade));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -6020,7 +3199,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepTradeField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for TradeField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -6033,9 +3212,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -6061,7 +3240,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -6107,268 +3286,6 @@ namespace step
 		}
 		return t_StepPackageStringBuffer;
 	}
-	StepRtnTradePackage::StepRtnTradePackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRtnTradePackage* StepRtnTradePackage::Allocate()
-	{
-		return ::Allocate<StepRtnTradePackage>();
-	}
-	void StepRtnTradePackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (Trade != nullptr)
-		{
-			::Free<StepTradeField>(Trade);
-			Trade = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRtnTradePackage>::GetInstance().Free(this);
-	}
-	void StepRtnTradePackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRtnTradePackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (Trade != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepTradeField::FieldID);
-			if (strlen(Trade->TradingDay) >= sizeof(Trade->TradingDay))
-			{
-				Trade->TradingDay[sizeof(Trade->TradingDay) - 1] = 0;
-			}
-			WriteString(ppos, Items::TradingDay, Trade->TradingDay);
-			if (strlen(Trade->AccountID) >= sizeof(Trade->AccountID))
-			{
-				Trade->AccountID[sizeof(Trade->AccountID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AccountID, Trade->AccountID);
-			if (strlen(Trade->ExchangeID) >= sizeof(Trade->ExchangeID))
-			{
-				Trade->ExchangeID[sizeof(Trade->ExchangeID) - 1] = 0;
-			}
-			WriteString(ppos, Items::ExchangeID, Trade->ExchangeID);
-			if (strlen(Trade->InstrumentID) >= sizeof(Trade->InstrumentID))
-			{
-				Trade->InstrumentID[sizeof(Trade->InstrumentID) - 1] = 0;
-			}
-			WriteString(ppos, Items::InstrumentID, Trade->InstrumentID);
-			WriteString(ppos, Items::SecurityType, (int)Trade->SecurityType);
-			WriteString(ppos, Items::OrderID, Trade->OrderID);
-			if (strlen(Trade->OrderSysID) >= sizeof(Trade->OrderSysID))
-			{
-				Trade->OrderSysID[sizeof(Trade->OrderSysID) - 1] = 0;
-			}
-			WriteString(ppos, Items::OrderSysID, Trade->OrderSysID);
-			if (strlen(Trade->TradeID) >= sizeof(Trade->TradeID))
-			{
-				Trade->TradeID[sizeof(Trade->TradeID) - 1] = 0;
-			}
-			WriteString(ppos, Items::TradeID, Trade->TradeID);
-			WriteString(ppos, Items::Direction, (int)Trade->Direction);
-			WriteString(ppos, Items::OffsetFlag, (int)Trade->OffsetFlag);
-			WriteString(ppos, Items::Price, Trade->Price);
-			WriteString(ppos, Items::Volume, Trade->Volume);
-			WriteString(ppos, Items::VolumeMultiple, Trade->VolumeMultiple);
-			WriteString(ppos, Items::TradeAmount, Trade->TradeAmount);
-			WriteString(ppos, Items::Commission, Trade->Commission);
-			WriteString(ppos, Items::StampTax, Trade->StampTax);
-			WriteString(ppos, Items::TransferFee, Trade->TransferFee);
-			if (strlen(Trade->TradeDate) >= sizeof(Trade->TradeDate))
-			{
-				Trade->TradeDate[sizeof(Trade->TradeDate) - 1] = 0;
-			}
-			WriteString(ppos, Items::TradeDate, Trade->TradeDate);
-			if (strlen(Trade->TradeTime) >= sizeof(Trade->TradeTime))
-			{
-				Trade->TradeTime[sizeof(Trade->TradeTime) - 1] = 0;
-			}
-			WriteString(ppos, Items::TradeTime, Trade->TradeTime);
-			WriteHexString(ppos, Items::FieldEnd, StepTradeField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRtnTradePackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepTradeField::FieldID:
-				{
-					Trade = ::Allocate<StepTradeField>();
-					memset(Trade, 0, sizeof(*Trade));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::TradingDay:
-							{
-								size_t len = value.length() >= sizeof(Trade->TradingDay) ? sizeof(Trade->TradingDay) - 1 : value.length();
-								memcpy(Trade->TradingDay, value.c_str(), len);
-								break;
-							}
-							case Items::AccountID:
-							{
-								size_t len = value.length() >= sizeof(Trade->AccountID) ? sizeof(Trade->AccountID) - 1 : value.length();
-								memcpy(Trade->AccountID, value.c_str(), len);
-								break;
-							}
-							case Items::ExchangeID:
-							{
-								size_t len = value.length() >= sizeof(Trade->ExchangeID) ? sizeof(Trade->ExchangeID) - 1 : value.length();
-								memcpy(Trade->ExchangeID, value.c_str(), len);
-								break;
-							}
-							case Items::InstrumentID:
-							{
-								size_t len = value.length() >= sizeof(Trade->InstrumentID) ? sizeof(Trade->InstrumentID) - 1 : value.length();
-								memcpy(Trade->InstrumentID, value.c_str(), len);
-								break;
-							}
-							case Items::SecurityType:
-							{
-								Trade->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::OrderID:
-							{
-								Trade->OrderID = atoi(value.c_str());
-								break;
-							}
-							case Items::OrderSysID:
-							{
-								size_t len = value.length() >= sizeof(Trade->OrderSysID) ? sizeof(Trade->OrderSysID) - 1 : value.length();
-								memcpy(Trade->OrderSysID, value.c_str(), len);
-								break;
-							}
-							case Items::TradeID:
-							{
-								size_t len = value.length() >= sizeof(Trade->TradeID) ? sizeof(Trade->TradeID) - 1 : value.length();
-								memcpy(Trade->TradeID, value.c_str(), len);
-								break;
-							}
-							case Items::Direction:
-							{
-								Trade->Direction = (DirectionType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::OffsetFlag:
-							{
-								Trade->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::Price:
-							{
-								Trade->Price = atof(value.c_str());
-								break;
-							}
-							case Items::Volume:
-							{
-								Trade->Volume = atoi(value.c_str());
-								break;
-							}
-							case Items::VolumeMultiple:
-							{
-								Trade->VolumeMultiple = atoi(value.c_str());
-								break;
-							}
-							case Items::TradeAmount:
-							{
-								Trade->TradeAmount = atof(value.c_str());
-								break;
-							}
-							case Items::Commission:
-							{
-								Trade->Commission = atof(value.c_str());
-								break;
-							}
-							case Items::StampTax:
-							{
-								Trade->StampTax = atof(value.c_str());
-								break;
-							}
-							case Items::TransferFee:
-							{
-								Trade->TransferFee = atof(value.c_str());
-								break;
-							}
-							case Items::TradeDate:
-							{
-								size_t len = value.length() >= sizeof(Trade->TradeDate) ? sizeof(Trade->TradeDate) - 1 : value.length();
-								memcpy(Trade->TradeDate, value.c_str(), len);
-								break;
-							}
-							case Items::TradeTime:
-							{
-								size_t len = value.length() >= sizeof(Trade->TradeTime) ? sizeof(Trade->TradeTime) - 1 : value.length();
-								memcpy(Trade->TradeTime, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepTradeField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnTradePackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnTradePackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRtnTradePackage::GetDebugString() const
-	{
-		if (Trade == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (Trade != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnTradePackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%d], VolumeMultiple:[%d], TradeAmount:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], TradeDate:[%s], TradeTime:[%s]", 
-				Trade->TradingDay, Trade->AccountID, Trade->ExchangeID, Trade->InstrumentID, (int)Trade->SecurityType, Trade->OrderID, Trade->OrderSysID, Trade->TradeID, (int)Trade->Direction, (int)Trade->OffsetFlag, Trade->Price, Trade->Volume, Trade->VolumeMultiple, Trade->TradeAmount, Trade->Commission, Trade->StampTax, Trade->TransferFee, Trade->TradeDate, Trade->TradeTime);
-		}
-		return t_StepPackageStringBuffer;
-	}
 	StepReqQryInstrumentPackage::StepReqQryInstrumentPackage()
 	{
 		Head.PackageID = PackageID;
@@ -6386,7 +3303,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqQryInstrument != nullptr)
 		{
-			::Free<StepReqQryInstrumentField>(ReqQryInstrument);
+			::Free<ReqQryInstrumentField>(ReqQryInstrument);
 			ReqQryInstrument = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqQryInstrumentPackage>::GetInstance().Free(this);
@@ -6402,7 +3319,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryInstrument != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryInstrumentField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqQryInstrumentField::FieldID);
 			if (strlen(ReqQryInstrument->ExchangeID) >= sizeof(ReqQryInstrument->ExchangeID))
 			{
 				ReqQryInstrument->ExchangeID[sizeof(ReqQryInstrument->ExchangeID) - 1] = 0;
@@ -6413,7 +3330,7 @@ namespace step
 				ReqQryInstrument->InstrumentID[sizeof(ReqQryInstrument->InstrumentID) - 1] = 0;
 			}
 			WriteString(ppos, Items::InstrumentID, ReqQryInstrument->InstrumentID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryInstrumentField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryInstrumentField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -6429,9 +3346,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqQryInstrumentField::FieldID:
+				case ReqQryInstrumentField::FieldID:
 				{
-					ReqQryInstrument = ::Allocate<StepReqQryInstrumentField>();
+					ReqQryInstrument = ::Allocate<ReqQryInstrumentField>();
 					memset(ReqQryInstrument, 0, sizeof(*ReqQryInstrument));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -6458,7 +3375,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryInstrumentField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryInstrumentField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -6516,12 +3433,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (Instrument != nullptr)
 		{
-			::Free<StepInstrumentField>(Instrument);
+			::Free<InstrumentField>(Instrument);
 			Instrument = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspQryInstrumentPackage>::GetInstance().Free(this);
@@ -6537,7 +3454,7 @@ namespace step
 		char* ppos = buff;
 		if (Instrument != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepInstrumentField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, InstrumentField::FieldID);
 			if (strlen(Instrument->ExchangeID) >= sizeof(Instrument->ExchangeID))
 			{
 				Instrument->ExchangeID[sizeof(Instrument->ExchangeID) - 1] = 0;
@@ -6560,18 +3477,18 @@ namespace step
 			WriteString(ppos, Items::InstrumentName, Instrument->InstrumentName);
 			WriteString(ppos, Items::VolumeMultiple, Instrument->VolumeMultiple);
 			WriteString(ppos, Items::SecurityType, (int)Instrument->SecurityType);
-			WriteHexString(ppos, Items::FieldEnd, StepInstrumentField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, InstrumentField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -6587,9 +3504,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepInstrumentField::FieldID:
+				case InstrumentField::FieldID:
 				{
-					Instrument = ::Allocate<StepInstrumentField>();
+					Instrument = ::Allocate<InstrumentField>();
 					memset(Instrument, 0, sizeof(*Instrument));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -6638,7 +3555,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepInstrumentField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for InstrumentField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -6651,9 +3568,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -6679,7 +3596,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -6742,7 +3659,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqQryOptionInstrument != nullptr)
 		{
-			::Free<StepReqQryOptionInstrumentField>(ReqQryOptionInstrument);
+			::Free<ReqQryOptionInstrumentField>(ReqQryOptionInstrument);
 			ReqQryOptionInstrument = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqQryOptionInstrumentPackage>::GetInstance().Free(this);
@@ -6758,7 +3675,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryOptionInstrument != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryOptionInstrumentField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqQryOptionInstrumentField::FieldID);
 			if (strlen(ReqQryOptionInstrument->ExchangeID) >= sizeof(ReqQryOptionInstrument->ExchangeID))
 			{
 				ReqQryOptionInstrument->ExchangeID[sizeof(ReqQryOptionInstrument->ExchangeID) - 1] = 0;
@@ -6769,7 +3686,7 @@ namespace step
 				ReqQryOptionInstrument->InstrumentID[sizeof(ReqQryOptionInstrument->InstrumentID) - 1] = 0;
 			}
 			WriteString(ppos, Items::InstrumentID, ReqQryOptionInstrument->InstrumentID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryOptionInstrumentField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryOptionInstrumentField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -6785,9 +3702,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqQryOptionInstrumentField::FieldID:
+				case ReqQryOptionInstrumentField::FieldID:
 				{
-					ReqQryOptionInstrument = ::Allocate<StepReqQryOptionInstrumentField>();
+					ReqQryOptionInstrument = ::Allocate<ReqQryOptionInstrumentField>();
 					memset(ReqQryOptionInstrument, 0, sizeof(*ReqQryOptionInstrument));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -6814,7 +3731,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryOptionInstrumentField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryOptionInstrumentField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -6872,12 +3789,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (OptionInstrument != nullptr)
 		{
-			::Free<StepOptionInstrumentField>(OptionInstrument);
+			::Free<OptionInstrumentField>(OptionInstrument);
 			OptionInstrument = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspQryOptionInstrumentPackage>::GetInstance().Free(this);
@@ -6893,7 +3810,7 @@ namespace step
 		char* ppos = buff;
 		if (OptionInstrument != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepOptionInstrumentField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, OptionInstrumentField::FieldID);
 			if (strlen(OptionInstrument->ExchangeID) >= sizeof(OptionInstrument->ExchangeID))
 			{
 				OptionInstrument->ExchangeID[sizeof(OptionInstrument->ExchangeID) - 1] = 0;
@@ -6931,18 +3848,18 @@ namespace step
 				OptionInstrument->ExpiringDate[sizeof(OptionInstrument->ExpiringDate) - 1] = 0;
 			}
 			WriteString(ppos, Items::ExpiringDate, OptionInstrument->ExpiringDate);
-			WriteHexString(ppos, Items::FieldEnd, StepOptionInstrumentField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, OptionInstrumentField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -6958,9 +3875,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepOptionInstrumentField::FieldID:
+				case OptionInstrumentField::FieldID:
 				{
-					OptionInstrument = ::Allocate<StepOptionInstrumentField>();
+					OptionInstrument = ::Allocate<OptionInstrumentField>();
 					memset(OptionInstrument, 0, sizeof(*OptionInstrument));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -7046,7 +3963,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepOptionInstrumentField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for OptionInstrumentField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -7059,9 +3976,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -7087,7 +4004,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -7150,7 +4067,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqQryCommissionRate != nullptr)
 		{
-			::Free<StepReqQryCommissionRateField>(ReqQryCommissionRate);
+			::Free<ReqQryCommissionRateField>(ReqQryCommissionRate);
 			ReqQryCommissionRate = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqQryCommissionRatePackage>::GetInstance().Free(this);
@@ -7166,7 +4083,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryCommissionRate != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryCommissionRateField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqQryCommissionRateField::FieldID);
 			if (strlen(ReqQryCommissionRate->AccountID) >= sizeof(ReqQryCommissionRate->AccountID))
 			{
 				ReqQryCommissionRate->AccountID[sizeof(ReqQryCommissionRate->AccountID) - 1] = 0;
@@ -7178,7 +4095,7 @@ namespace step
 			}
 			WriteString(ppos, Items::ExchangeID, ReqQryCommissionRate->ExchangeID);
 			WriteString(ppos, Items::SecurityType, (int)ReqQryCommissionRate->SecurityType);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryCommissionRateField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryCommissionRateField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -7194,9 +4111,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqQryCommissionRateField::FieldID:
+				case ReqQryCommissionRateField::FieldID:
 				{
-					ReqQryCommissionRate = ::Allocate<StepReqQryCommissionRateField>();
+					ReqQryCommissionRate = ::Allocate<ReqQryCommissionRateField>();
 					memset(ReqQryCommissionRate, 0, sizeof(*ReqQryCommissionRate));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -7228,7 +4145,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryCommissionRateField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryCommissionRateField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -7286,12 +4203,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (CommissionRate != nullptr)
 		{
-			::Free<StepCommissionRateField>(CommissionRate);
+			::Free<CommissionRateField>(CommissionRate);
 			CommissionRate = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspQryCommissionRatePackage>::GetInstance().Free(this);
@@ -7307,7 +4224,7 @@ namespace step
 		char* ppos = buff;
 		if (CommissionRate != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepCommissionRateField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, CommissionRateField::FieldID);
 			if (strlen(CommissionRate->AccountID) >= sizeof(CommissionRate->AccountID))
 			{
 				CommissionRate->AccountID[sizeof(CommissionRate->AccountID) - 1] = 0;
@@ -7329,18 +4246,18 @@ namespace step
 			WriteString(ppos, Items::CloseSellByVolume, CommissionRate->CloseSellByVolume);
 			WriteString(ppos, Items::MinCommission, CommissionRate->MinCommission);
 			WriteString(ppos, Items::MaxCommission, CommissionRate->MaxCommission);
-			WriteHexString(ppos, Items::FieldEnd, StepCommissionRateField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, CommissionRateField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -7356,9 +4273,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepCommissionRateField::FieldID:
+				case CommissionRateField::FieldID:
 				{
-					CommissionRate = ::Allocate<StepCommissionRateField>();
+					CommissionRate = ::Allocate<CommissionRateField>();
 					memset(CommissionRate, 0, sizeof(*CommissionRate));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -7440,7 +4357,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepCommissionRateField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for CommissionRateField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -7453,9 +4370,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -7481,7 +4398,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -7527,6 +4444,385 @@ namespace step
 		}
 		return t_StepPackageStringBuffer;
 	}
+	StepReqQryMoneyTransferPackage::StepReqQryMoneyTransferPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqQryMoneyTransferPackage* StepReqQryMoneyTransferPackage::Allocate()
+	{
+		return ::Allocate<StepReqQryMoneyTransferPackage>();
+	}
+	void StepReqQryMoneyTransferPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqQryMoneyTransfer != nullptr)
+		{
+			::Free<ReqQryMoneyTransferField>(ReqQryMoneyTransfer);
+			ReqQryMoneyTransfer = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqQryMoneyTransferPackage>::GetInstance().Free(this);
+	}
+	void StepReqQryMoneyTransferPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqQryMoneyTransferPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqQryMoneyTransfer != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqQryMoneyTransferField::FieldID);
+			if (strlen(ReqQryMoneyTransfer->AccountID) >= sizeof(ReqQryMoneyTransfer->AccountID))
+			{
+				ReqQryMoneyTransfer->AccountID[sizeof(ReqQryMoneyTransfer->AccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AccountID, ReqQryMoneyTransfer->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryMoneyTransferField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqQryMoneyTransferPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqQryMoneyTransferField::FieldID:
+				{
+					ReqQryMoneyTransfer = ::Allocate<ReqQryMoneyTransferField>();
+					memset(ReqQryMoneyTransfer, 0, sizeof(*ReqQryMoneyTransfer));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::AccountID:
+							{
+								size_t len = value.length() >= sizeof(ReqQryMoneyTransfer->AccountID) ? sizeof(ReqQryMoneyTransfer->AccountID) - 1 : value.length();
+								memcpy(ReqQryMoneyTransfer->AccountID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryMoneyTransferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqQryMoneyTransferPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqQryMoneyTransferPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqQryMoneyTransferPackage::GetDebugString() const
+	{
+		if (ReqQryMoneyTransfer == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqQryMoneyTransfer != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryMoneyTransferPackage:AccountID:[%s]", 
+				ReqQryMoneyTransfer->AccountID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspQryMoneyTransferPackage::StepRspQryMoneyTransferPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspQryMoneyTransferPackage* StepRspQryMoneyTransferPackage::Allocate()
+	{
+		return ::Allocate<StepRspQryMoneyTransferPackage>();
+	}
+	void StepRspQryMoneyTransferPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (MoneyTransfer != nullptr)
+		{
+			::Free<MoneyTransferField>(MoneyTransfer);
+			MoneyTransfer = nullptr;
+		}
+		if (RspInfo != nullptr)
+		{
+			::Free<RspInfoField>(RspInfo);
+			RspInfo = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspQryMoneyTransferPackage>::GetInstance().Free(this);
+	}
+	void StepRspQryMoneyTransferPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspQryMoneyTransferPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (MoneyTransfer != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, MoneyTransferField::FieldID);
+			if (strlen(MoneyTransfer->TradingDay) >= sizeof(MoneyTransfer->TradingDay))
+			{
+				MoneyTransfer->TradingDay[sizeof(MoneyTransfer->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, MoneyTransfer->TradingDay);
+			if (strlen(MoneyTransfer->AccountID) >= sizeof(MoneyTransfer->AccountID))
+			{
+				MoneyTransfer->AccountID[sizeof(MoneyTransfer->AccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AccountID, MoneyTransfer->AccountID);
+			WriteString(ppos, Items::MoneyTransferID, MoneyTransfer->MoneyTransferID);
+			WriteString(ppos, Items::AccountType, (int)MoneyTransfer->AccountType);
+			WriteString(ppos, Items::TransferDirection, (int)MoneyTransfer->TransferDirection);
+			WriteString(ppos, Items::TransferAmount, MoneyTransfer->TransferAmount);
+			if (strlen(MoneyTransfer->InfoMessage) >= sizeof(MoneyTransfer->InfoMessage))
+			{
+				MoneyTransfer->InfoMessage[sizeof(MoneyTransfer->InfoMessage) - 1] = 0;
+			}
+			WriteString(ppos, Items::InfoMessage, MoneyTransfer->InfoMessage);
+			if (strlen(MoneyTransfer->UserID) >= sizeof(MoneyTransfer->UserID))
+			{
+				MoneyTransfer->UserID[sizeof(MoneyTransfer->UserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::UserID, MoneyTransfer->UserID);
+			if (strlen(MoneyTransfer->TransferDate) >= sizeof(MoneyTransfer->TransferDate))
+			{
+				MoneyTransfer->TransferDate[sizeof(MoneyTransfer->TransferDate) - 1] = 0;
+			}
+			WriteString(ppos, Items::TransferDate, MoneyTransfer->TransferDate);
+			if (strlen(MoneyTransfer->TransferTime) >= sizeof(MoneyTransfer->TransferTime))
+			{
+				MoneyTransfer->TransferTime[sizeof(MoneyTransfer->TransferTime) - 1] = 0;
+			}
+			WriteString(ppos, Items::TransferTime, MoneyTransfer->TransferTime);
+			WriteHexString(ppos, Items::FieldEnd, MoneyTransferField::FieldID);
+		}
+		if (RspInfo != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
+			{
+				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspQryMoneyTransferPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case MoneyTransferField::FieldID:
+				{
+					MoneyTransfer = ::Allocate<MoneyTransferField>();
+					memset(MoneyTransfer, 0, sizeof(*MoneyTransfer));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(MoneyTransfer->TradingDay) ? sizeof(MoneyTransfer->TradingDay) - 1 : value.length();
+								memcpy(MoneyTransfer->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::AccountID:
+							{
+								size_t len = value.length() >= sizeof(MoneyTransfer->AccountID) ? sizeof(MoneyTransfer->AccountID) - 1 : value.length();
+								memcpy(MoneyTransfer->AccountID, value.c_str(), len);
+								break;
+							}
+							case Items::MoneyTransferID:
+							{
+								MoneyTransfer->MoneyTransferID = atoi(value.c_str());
+								break;
+							}
+							case Items::AccountType:
+							{
+								MoneyTransfer->AccountType = (AccountTypeType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::TransferDirection:
+							{
+								MoneyTransfer->TransferDirection = (TransferDirectionType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::TransferAmount:
+							{
+								MoneyTransfer->TransferAmount = atof(value.c_str());
+								break;
+							}
+							case Items::InfoMessage:
+							{
+								size_t len = value.length() >= sizeof(MoneyTransfer->InfoMessage) ? sizeof(MoneyTransfer->InfoMessage) - 1 : value.length();
+								memcpy(MoneyTransfer->InfoMessage, value.c_str(), len);
+								break;
+							}
+							case Items::UserID:
+							{
+								size_t len = value.length() >= sizeof(MoneyTransfer->UserID) ? sizeof(MoneyTransfer->UserID) - 1 : value.length();
+								memcpy(MoneyTransfer->UserID, value.c_str(), len);
+								break;
+							}
+							case Items::TransferDate:
+							{
+								size_t len = value.length() >= sizeof(MoneyTransfer->TransferDate) ? sizeof(MoneyTransfer->TransferDate) - 1 : value.length();
+								memcpy(MoneyTransfer->TransferDate, value.c_str(), len);
+								break;
+							}
+							case Items::TransferTime:
+							{
+								size_t len = value.length() >= sizeof(MoneyTransfer->TransferTime) ? sizeof(MoneyTransfer->TransferTime) - 1 : value.length();
+								memcpy(MoneyTransfer->TransferTime, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for MoneyTransferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspQryMoneyTransferPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				case RspInfoField::FieldID:
+				{
+					RspInfo = ::Allocate<RspInfoField>();
+					memset(RspInfo, 0, sizeof(*RspInfo));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ErrorID:
+							{
+								RspInfo->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
+								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspQryMoneyTransferPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspQryMoneyTransferPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRspQryMoneyTransferPackage::GetDebugString() const
+	{
+		if (MoneyTransfer == nullptr && RspInfo == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (MoneyTransfer != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryMoneyTransferPackage:TradingDay:[%s], AccountID:[%s], MoneyTransferID:[%d], AccountType:[%d], TransferDirection:[%d], TransferAmount:[%f], InfoMessage:[%s], UserID:[%s], TransferDate:[%s], TransferTime:[%s]", 
+				MoneyTransfer->TradingDay, MoneyTransfer->AccountID, MoneyTransfer->MoneyTransferID, (int)MoneyTransfer->AccountType, (int)MoneyTransfer->TransferDirection, MoneyTransfer->TransferAmount, MoneyTransfer->InfoMessage, MoneyTransfer->UserID, MoneyTransfer->TransferDate, MoneyTransfer->TransferTime);
+		}
+		if (RspInfo != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryMoneyTransferPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
+		}
+		return t_StepPackageStringBuffer;
+	}
 	StepReqInsertOrderPackage::StepReqInsertOrderPackage()
 	{
 		Head.PackageID = PackageID;
@@ -7544,7 +4840,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqInsertOrder != nullptr)
 		{
-			::Free<StepReqInsertOrderField>(ReqInsertOrder);
+			::Free<ReqInsertOrderField>(ReqInsertOrder);
 			ReqInsertOrder = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqInsertOrderPackage>::GetInstance().Free(this);
@@ -7560,7 +4856,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqInsertOrder != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqInsertOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqInsertOrderField::FieldID);
 			if (strlen(ReqInsertOrder->AccountID) >= sizeof(ReqInsertOrder->AccountID))
 			{
 				ReqInsertOrder->AccountID[sizeof(ReqInsertOrder->AccountID) - 1] = 0;
@@ -7582,7 +4878,7 @@ namespace step
 			WriteString(ppos, Items::Price, ReqInsertOrder->Price);
 			WriteString(ppos, Items::Volume, ReqInsertOrder->Volume);
 			WriteString(ppos, Items::ClientOrderID, ReqInsertOrder->ClientOrderID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqInsertOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqInsertOrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -7598,9 +4894,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqInsertOrderField::FieldID:
+				case ReqInsertOrderField::FieldID:
 				{
-					ReqInsertOrder = ::Allocate<StepReqInsertOrderField>();
+					ReqInsertOrder = ::Allocate<ReqInsertOrderField>();
 					memset(ReqInsertOrder, 0, sizeof(*ReqInsertOrder));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -7663,7 +4959,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqInsertOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqInsertOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -7721,12 +5017,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (Order != nullptr)
 		{
-			::Free<StepOrderField>(Order);
+			::Free<OrderField>(Order);
 			Order = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspInsertOrderPackage>::GetInstance().Free(this);
@@ -7742,7 +5038,7 @@ namespace step
 		char* ppos = buff;
 		if (Order != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, OrderField::FieldID);
 			if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
 			{
 				Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
@@ -7812,18 +5108,18 @@ namespace step
 			WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
 			WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
 			WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
-			WriteHexString(ppos, Items::FieldEnd, StepOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, OrderField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -7839,9 +5135,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepOrderField::FieldID:
+				case OrderField::FieldID:
 				{
-					Order = ::Allocate<StepOrderField>();
+					Order = ::Allocate<OrderField>();
 					memset(Order, 0, sizeof(*Order));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -8011,7 +5307,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for OrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -8024,9 +5320,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -8052,7 +5348,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -8115,7 +5411,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqCancelOrder != nullptr)
 		{
-			::Free<StepReqCancelOrderField>(ReqCancelOrder);
+			::Free<ReqCancelOrderField>(ReqCancelOrder);
 			ReqCancelOrder = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqCancelOrderPackage>::GetInstance().Free(this);
@@ -8131,7 +5427,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqCancelOrder != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqCancelOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqCancelOrderField::FieldID);
 			if (strlen(ReqCancelOrder->AccountID) >= sizeof(ReqCancelOrder->AccountID))
 			{
 				ReqCancelOrder->AccountID[sizeof(ReqCancelOrder->AccountID) - 1] = 0;
@@ -8155,7 +5451,7 @@ namespace step
 			}
 			WriteString(ppos, Items::OrderSysID, ReqCancelOrder->OrderSysID);
 			WriteString(ppos, Items::ClientOrderID, ReqCancelOrder->ClientOrderID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqCancelOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqCancelOrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -8171,9 +5467,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqCancelOrderField::FieldID:
+				case ReqCancelOrderField::FieldID:
 				{
-					ReqCancelOrder = ::Allocate<StepReqCancelOrderField>();
+					ReqCancelOrder = ::Allocate<ReqCancelOrderField>();
 					memset(ReqCancelOrder, 0, sizeof(*ReqCancelOrder));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -8227,7 +5523,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqCancelOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqCancelOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -8285,12 +5581,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (CancelOrder != nullptr)
 		{
-			::Free<StepCancelOrderField>(CancelOrder);
+			::Free<CancelOrderField>(CancelOrder);
 			CancelOrder = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspCancelOrderPackage>::GetInstance().Free(this);
@@ -8306,7 +5602,7 @@ namespace step
 		char* ppos = buff;
 		if (CancelOrder != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepCancelOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, CancelOrderField::FieldID);
 			if (strlen(CancelOrder->AccountID) >= sizeof(CancelOrder->AccountID))
 			{
 				CancelOrder->AccountID[sizeof(CancelOrder->AccountID) - 1] = 0;
@@ -8330,18 +5626,18 @@ namespace step
 			}
 			WriteString(ppos, Items::OrderSysID, CancelOrder->OrderSysID);
 			WriteString(ppos, Items::ClientOrderID, CancelOrder->ClientOrderID);
-			WriteHexString(ppos, Items::FieldEnd, StepCancelOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, CancelOrderField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -8357,9 +5653,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepCancelOrderField::FieldID:
+				case CancelOrderField::FieldID:
 				{
-					CancelOrder = ::Allocate<StepCancelOrderField>();
+					CancelOrder = ::Allocate<CancelOrderField>();
 					memset(CancelOrder, 0, sizeof(*CancelOrder));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -8413,7 +5709,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepCancelOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for CancelOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -8426,9 +5722,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -8454,7 +5750,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -8500,55 +5796,114 @@ namespace step
 		}
 		return t_StepPackageStringBuffer;
 	}
-	StepReqMdInitPackage::StepReqMdInitPackage()
+	StepRtnOrderPackage::StepRtnOrderPackage()
 	{
 		Head.PackageID = PackageID;
 	}
-	StepReqMdInitPackage* StepReqMdInitPackage::Allocate()
+	StepRtnOrderPackage* StepRtnOrderPackage::Allocate()
 	{
-		return ::Allocate<StepReqMdInitPackage>();
+		return ::Allocate<StepRtnOrderPackage>();
 	}
-	void StepReqMdInitPackage::Free()
+	void StepRtnOrderPackage::Free()
 	{
 		SessionID = 0;
 		memset(IPAddress, 0, sizeof(IPAddressType));
 		memset(&Head, 0, sizeof(Head));
 		memset(&Tail, 0, sizeof(Tail));
 		Head.PackageID = PackageID;
-		if (ReqMdInit != nullptr)
+		if (Order != nullptr)
 		{
-			::Free<StepReqMdInitField>(ReqMdInit);
-			ReqMdInit = nullptr;
+			::Free<OrderField>(Order);
+			Order = nullptr;
 		}
-		MemCacheTemplateSingleton<StepReqMdInitPackage>::GetInstance().Free(this);
+		MemCacheTemplateSingleton<StepRtnOrderPackage>::GetInstance().Free(this);
 	}
-	void StepReqMdInitPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	void StepRtnOrderPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
 	{
 		SessionID = sessionID;
 		Head.MessageChain = messageChain;
 		Head.MsgSeqNum = msgSeqNum;
 	}
-	int StepReqMdInitPackage::ToProtocolStream(char* buff, int size) const
+	int StepRtnOrderPackage::ToProtocolStream(char* buff, int size) const
 	{
 		char* ppos = buff;
-		if (ReqMdInit != nullptr)
+		if (Order != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqMdInitField::FieldID);
-			if (strlen(ReqMdInit->ExchangeID) >= sizeof(ReqMdInit->ExchangeID))
+			WriteHexString(ppos, Items::FieldStart, OrderField::FieldID);
+			if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
 			{
-				ReqMdInit->ExchangeID[sizeof(ReqMdInit->ExchangeID) - 1] = 0;
+				Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, Items::ExchangeID, ReqMdInit->ExchangeID);
-			if (strlen(ReqMdInit->TradingDay) >= sizeof(ReqMdInit->TradingDay))
+			WriteString(ppos, Items::TradingDay, Order->TradingDay);
+			if (strlen(Order->AccountID) >= sizeof(Order->AccountID))
 			{
-				ReqMdInit->TradingDay[sizeof(ReqMdInit->TradingDay) - 1] = 0;
+				Order->AccountID[sizeof(Order->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, Items::TradingDay, ReqMdInit->TradingDay);
-			WriteHexString(ppos, Items::FieldEnd, StepReqMdInitField::FieldID);
+			WriteString(ppos, Items::AccountID, Order->AccountID);
+			if (strlen(Order->ExchangeID) >= sizeof(Order->ExchangeID))
+			{
+				Order->ExchangeID[sizeof(Order->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
+			if (strlen(Order->InstrumentID) >= sizeof(Order->InstrumentID))
+			{
+				Order->InstrumentID[sizeof(Order->InstrumentID) - 1] = 0;
+			}
+			WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)Order->SecurityType);
+			WriteString(ppos, Items::OrderID, Order->OrderID);
+			if (strlen(Order->OrderSysID) >= sizeof(Order->OrderSysID))
+			{
+				Order->OrderSysID[sizeof(Order->OrderSysID) - 1] = 0;
+			}
+			WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
+			WriteString(ppos, Items::Direction, (int)Order->Direction);
+			WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
+			WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
+			WriteString(ppos, Items::Price, Order->Price);
+			WriteString(ppos, Items::Volume, Order->Volume);
+			WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
+			WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
+			WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
+			WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
+			if (strlen(Order->StatusMsg) >= sizeof(Order->StatusMsg))
+			{
+				Order->StatusMsg[sizeof(Order->StatusMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
+			if (strlen(Order->OrderDate) >= sizeof(Order->OrderDate))
+			{
+				Order->OrderDate[sizeof(Order->OrderDate) - 1] = 0;
+			}
+			WriteString(ppos, Items::OrderDate, Order->OrderDate);
+			if (strlen(Order->OrderTime) >= sizeof(Order->OrderTime))
+			{
+				Order->OrderTime[sizeof(Order->OrderTime) - 1] = 0;
+			}
+			WriteString(ppos, Items::OrderTime, Order->OrderTime);
+			if (strlen(Order->CancelDate) >= sizeof(Order->CancelDate))
+			{
+				Order->CancelDate[sizeof(Order->CancelDate) - 1] = 0;
+			}
+			WriteString(ppos, Items::CancelDate, Order->CancelDate);
+			if (strlen(Order->CancelTime) >= sizeof(Order->CancelTime))
+			{
+				Order->CancelTime[sizeof(Order->CancelTime) - 1] = 0;
+			}
+			WriteString(ppos, Items::CancelTime, Order->CancelTime);
+			WriteString(ppos, Items::SessionID, Order->SessionID);
+			WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
+			WriteString(ppos, Items::RequestID, Order->RequestID);
+			WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
+			WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
+			WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
+			WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
+			WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
+			WriteHexString(ppos, Items::FieldEnd, OrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
-	bool StepReqMdInitPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	bool StepRtnOrderPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
 		while (startIndex < endIndex)
 		{
@@ -8560,10 +5915,10 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqMdInitField::FieldID:
+				case OrderField::FieldID:
 				{
-					ReqMdInit = ::Allocate<StepReqMdInitField>();
-					memset(ReqMdInit, 0, sizeof(*ReqMdInit));
+					Order = ::Allocate<OrderField>();
+					memset(Order, 0, sizeof(*Order));
 					while (itemStartIndex < fieldEndIndex)
 					{
 						unsigned short  itemID;
@@ -8576,27 +5931,170 @@ namespace step
 							case Items::FieldStart:
 							case Items::FieldEnd:
 								break;
-							case Items::ExchangeID:
-							{
-								size_t len = value.length() >= sizeof(ReqMdInit->ExchangeID) ? sizeof(ReqMdInit->ExchangeID) - 1 : value.length();
-								memcpy(ReqMdInit->ExchangeID, value.c_str(), len);
-								break;
-							}
 							case Items::TradingDay:
 							{
-								size_t len = value.length() >= sizeof(ReqMdInit->TradingDay) ? sizeof(ReqMdInit->TradingDay) - 1 : value.length();
-								memcpy(ReqMdInit->TradingDay, value.c_str(), len);
+								size_t len = value.length() >= sizeof(Order->TradingDay) ? sizeof(Order->TradingDay) - 1 : value.length();
+								memcpy(Order->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::AccountID:
+							{
+								size_t len = value.length() >= sizeof(Order->AccountID) ? sizeof(Order->AccountID) - 1 : value.length();
+								memcpy(Order->AccountID, value.c_str(), len);
+								break;
+							}
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(Order->ExchangeID) ? sizeof(Order->ExchangeID) - 1 : value.length();
+								memcpy(Order->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::InstrumentID:
+							{
+								size_t len = value.length() >= sizeof(Order->InstrumentID) ? sizeof(Order->InstrumentID) - 1 : value.length();
+								memcpy(Order->InstrumentID, value.c_str(), len);
+								break;
+							}
+							case Items::SecurityType:
+							{
+								Order->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::OrderID:
+							{
+								Order->OrderID = atoi(value.c_str());
+								break;
+							}
+							case Items::OrderSysID:
+							{
+								size_t len = value.length() >= sizeof(Order->OrderSysID) ? sizeof(Order->OrderSysID) - 1 : value.length();
+								memcpy(Order->OrderSysID, value.c_str(), len);
+								break;
+							}
+							case Items::Direction:
+							{
+								Order->Direction = (DirectionType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::OffsetFlag:
+							{
+								Order->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::OrderPriceType:
+							{
+								Order->OrderPriceType = (OrderPriceTypeType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::Price:
+							{
+								Order->Price = atof(value.c_str());
+								break;
+							}
+							case Items::Volume:
+							{
+								Order->Volume = atoi(value.c_str());
+								break;
+							}
+							case Items::VolumeTotal:
+							{
+								Order->VolumeTotal = atoi(value.c_str());
+								break;
+							}
+							case Items::VolumeTraded:
+							{
+								Order->VolumeTraded = atoi(value.c_str());
+								break;
+							}
+							case Items::VolumeMultiple:
+							{
+								Order->VolumeMultiple = atoi(value.c_str());
+								break;
+							}
+							case Items::OrderStatus:
+							{
+								Order->OrderStatus = (OrderStatusType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::StatusMsg:
+							{
+								size_t len = value.length() >= sizeof(Order->StatusMsg) ? sizeof(Order->StatusMsg) - 1 : value.length();
+								memcpy(Order->StatusMsg, value.c_str(), len);
+								break;
+							}
+							case Items::OrderDate:
+							{
+								size_t len = value.length() >= sizeof(Order->OrderDate) ? sizeof(Order->OrderDate) - 1 : value.length();
+								memcpy(Order->OrderDate, value.c_str(), len);
+								break;
+							}
+							case Items::OrderTime:
+							{
+								size_t len = value.length() >= sizeof(Order->OrderTime) ? sizeof(Order->OrderTime) - 1 : value.length();
+								memcpy(Order->OrderTime, value.c_str(), len);
+								break;
+							}
+							case Items::CancelDate:
+							{
+								size_t len = value.length() >= sizeof(Order->CancelDate) ? sizeof(Order->CancelDate) - 1 : value.length();
+								memcpy(Order->CancelDate, value.c_str(), len);
+								break;
+							}
+							case Items::CancelTime:
+							{
+								size_t len = value.length() >= sizeof(Order->CancelTime) ? sizeof(Order->CancelTime) - 1 : value.length();
+								memcpy(Order->CancelTime, value.c_str(), len);
+								break;
+							}
+							case Items::SessionID:
+							{
+								Order->SessionID = atoll(value.c_str());
+								break;
+							}
+							case Items::ClientOrderID:
+							{
+								Order->ClientOrderID = atoi(value.c_str());
+								break;
+							}
+							case Items::RequestID:
+							{
+								Order->RequestID = atoi(value.c_str());
+								break;
+							}
+							case Items::FrozenCash:
+							{
+								Order->FrozenCash = atof(value.c_str());
+								break;
+							}
+							case Items::FrozenMargin:
+							{
+								Order->FrozenMargin = atof(value.c_str());
+								break;
+							}
+							case Items::FrozenCommission:
+							{
+								Order->FrozenCommission = atof(value.c_str());
+								break;
+							}
+							case Items::FrozenStampTax:
+							{
+								Order->FrozenStampTax = atof(value.c_str());
+								break;
+							}
+							case Items::FrozenTransferFee:
+							{
+								Order->FrozenTransferFee = atof(value.c_str());
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqMdInitField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for OrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
 						}
 						else
 						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqMdInitPackage FieldID:0x%X", fieldID);
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnOrderPackage FieldID:0x%X", fieldID);
 							return false;
 						}
 					}
@@ -8610,91 +6108,116 @@ namespace step
 			}
 			else
 			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqMdInitPackage");
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnOrderPackage");
 				return false;
 			}
 		}
 		return true;
 	}
-	const char* StepReqMdInitPackage::GetDebugString() const
+	const char* StepRtnOrderPackage::GetDebugString() const
 	{
-		if (ReqMdInit == nullptr)
+		if (Order == nullptr)
 		{
 			return "";
 		}
 		int index = 0;
-		if (ReqMdInit != nullptr)
+		if (Order != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqMdInitPackage:ExchangeID:[%s], TradingDay:[%s]", 
-				ReqMdInit->ExchangeID, ReqMdInit->TradingDay);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnOrderPackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]", 
+				Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
 		}
 		return t_StepPackageStringBuffer;
 	}
-	StepRspMdInitPackage::StepRspMdInitPackage()
+	StepRtnTradePackage::StepRtnTradePackage()
 	{
 		Head.PackageID = PackageID;
 	}
-	StepRspMdInitPackage* StepRspMdInitPackage::Allocate()
+	StepRtnTradePackage* StepRtnTradePackage::Allocate()
 	{
-		return ::Allocate<StepRspMdInitPackage>();
+		return ::Allocate<StepRtnTradePackage>();
 	}
-	void StepRspMdInitPackage::Free()
+	void StepRtnTradePackage::Free()
 	{
 		SessionID = 0;
 		memset(IPAddress, 0, sizeof(IPAddressType));
 		memset(&Head, 0, sizeof(Head));
 		memset(&Tail, 0, sizeof(Tail));
 		Head.PackageID = PackageID;
-		if (RspMdInit != nullptr)
+		if (Trade != nullptr)
 		{
-			::Free<StepRspMdInitField>(RspMdInit);
-			RspMdInit = nullptr;
+			::Free<TradeField>(Trade);
+			Trade = nullptr;
 		}
-		if (RspInfo != nullptr)
-		{
-			::Free<StepRspInfoField>(RspInfo);
-			RspInfo = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRspMdInitPackage>::GetInstance().Free(this);
+		MemCacheTemplateSingleton<StepRtnTradePackage>::GetInstance().Free(this);
 	}
-	void StepRspMdInitPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	void StepRtnTradePackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
 	{
 		SessionID = sessionID;
 		Head.MessageChain = messageChain;
 		Head.MsgSeqNum = msgSeqNum;
 	}
-	int StepRspMdInitPackage::ToProtocolStream(char* buff, int size) const
+	int StepRtnTradePackage::ToProtocolStream(char* buff, int size) const
 	{
 		char* ppos = buff;
-		if (RspMdInit != nullptr)
+		if (Trade != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspMdInitField::FieldID);
-			if (strlen(RspMdInit->ExchangeID) >= sizeof(RspMdInit->ExchangeID))
+			WriteHexString(ppos, Items::FieldStart, TradeField::FieldID);
+			if (strlen(Trade->TradingDay) >= sizeof(Trade->TradingDay))
 			{
-				RspMdInit->ExchangeID[sizeof(RspMdInit->ExchangeID) - 1] = 0;
+				Trade->TradingDay[sizeof(Trade->TradingDay) - 1] = 0;
 			}
-			WriteString(ppos, Items::ExchangeID, RspMdInit->ExchangeID);
-			if (strlen(RspMdInit->TradingDay) >= sizeof(RspMdInit->TradingDay))
+			WriteString(ppos, Items::TradingDay, Trade->TradingDay);
+			if (strlen(Trade->AccountID) >= sizeof(Trade->AccountID))
 			{
-				RspMdInit->TradingDay[sizeof(RspMdInit->TradingDay) - 1] = 0;
+				Trade->AccountID[sizeof(Trade->AccountID) - 1] = 0;
 			}
-			WriteString(ppos, Items::TradingDay, RspMdInit->TradingDay);
-			WriteHexString(ppos, Items::FieldEnd, StepRspMdInitField::FieldID);
-		}
-		if (RspInfo != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
-			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
+			WriteString(ppos, Items::AccountID, Trade->AccountID);
+			if (strlen(Trade->ExchangeID) >= sizeof(Trade->ExchangeID))
 			{
-				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
+				Trade->ExchangeID[sizeof(Trade->ExchangeID) - 1] = 0;
 			}
-			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteString(ppos, Items::ExchangeID, Trade->ExchangeID);
+			if (strlen(Trade->InstrumentID) >= sizeof(Trade->InstrumentID))
+			{
+				Trade->InstrumentID[sizeof(Trade->InstrumentID) - 1] = 0;
+			}
+			WriteString(ppos, Items::InstrumentID, Trade->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)Trade->SecurityType);
+			WriteString(ppos, Items::OrderID, Trade->OrderID);
+			if (strlen(Trade->OrderSysID) >= sizeof(Trade->OrderSysID))
+			{
+				Trade->OrderSysID[sizeof(Trade->OrderSysID) - 1] = 0;
+			}
+			WriteString(ppos, Items::OrderSysID, Trade->OrderSysID);
+			if (strlen(Trade->TradeID) >= sizeof(Trade->TradeID))
+			{
+				Trade->TradeID[sizeof(Trade->TradeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradeID, Trade->TradeID);
+			WriteString(ppos, Items::Direction, (int)Trade->Direction);
+			WriteString(ppos, Items::OffsetFlag, (int)Trade->OffsetFlag);
+			WriteString(ppos, Items::Price, Trade->Price);
+			WriteString(ppos, Items::Volume, Trade->Volume);
+			WriteString(ppos, Items::VolumeMultiple, Trade->VolumeMultiple);
+			WriteString(ppos, Items::TradeAmount, Trade->TradeAmount);
+			WriteString(ppos, Items::Commission, Trade->Commission);
+			WriteString(ppos, Items::StampTax, Trade->StampTax);
+			WriteString(ppos, Items::TransferFee, Trade->TransferFee);
+			if (strlen(Trade->TradeDate) >= sizeof(Trade->TradeDate))
+			{
+				Trade->TradeDate[sizeof(Trade->TradeDate) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradeDate, Trade->TradeDate);
+			if (strlen(Trade->TradeTime) >= sizeof(Trade->TradeTime))
+			{
+				Trade->TradeTime[sizeof(Trade->TradeTime) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradeTime, Trade->TradeTime);
+			WriteHexString(ppos, Items::FieldEnd, TradeField::FieldID);
 		}
 		return int(ppos - buff);
 	}
-	bool StepRspMdInitPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	bool StepRtnTradePackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
 		while (startIndex < endIndex)
 		{
@@ -8706,10 +6229,10 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspMdInitField::FieldID:
+				case TradeField::FieldID:
 				{
-					RspMdInit = ::Allocate<StepRspMdInitField>();
-					memset(RspMdInit, 0, sizeof(*RspMdInit));
+					Trade = ::Allocate<TradeField>();
+					memset(Trade, 0, sizeof(*Trade));
 					while (itemStartIndex < fieldEndIndex)
 					{
 						unsigned short  itemID;
@@ -8722,35 +6245,759 @@ namespace step
 							case Items::FieldStart:
 							case Items::FieldEnd:
 								break;
-							case Items::ExchangeID:
-							{
-								size_t len = value.length() >= sizeof(RspMdInit->ExchangeID) ? sizeof(RspMdInit->ExchangeID) - 1 : value.length();
-								memcpy(RspMdInit->ExchangeID, value.c_str(), len);
-								break;
-							}
 							case Items::TradingDay:
 							{
-								size_t len = value.length() >= sizeof(RspMdInit->TradingDay) ? sizeof(RspMdInit->TradingDay) - 1 : value.length();
-								memcpy(RspMdInit->TradingDay, value.c_str(), len);
+								size_t len = value.length() >= sizeof(Trade->TradingDay) ? sizeof(Trade->TradingDay) - 1 : value.length();
+								memcpy(Trade->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::AccountID:
+							{
+								size_t len = value.length() >= sizeof(Trade->AccountID) ? sizeof(Trade->AccountID) - 1 : value.length();
+								memcpy(Trade->AccountID, value.c_str(), len);
+								break;
+							}
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(Trade->ExchangeID) ? sizeof(Trade->ExchangeID) - 1 : value.length();
+								memcpy(Trade->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::InstrumentID:
+							{
+								size_t len = value.length() >= sizeof(Trade->InstrumentID) ? sizeof(Trade->InstrumentID) - 1 : value.length();
+								memcpy(Trade->InstrumentID, value.c_str(), len);
+								break;
+							}
+							case Items::SecurityType:
+							{
+								Trade->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::OrderID:
+							{
+								Trade->OrderID = atoi(value.c_str());
+								break;
+							}
+							case Items::OrderSysID:
+							{
+								size_t len = value.length() >= sizeof(Trade->OrderSysID) ? sizeof(Trade->OrderSysID) - 1 : value.length();
+								memcpy(Trade->OrderSysID, value.c_str(), len);
+								break;
+							}
+							case Items::TradeID:
+							{
+								size_t len = value.length() >= sizeof(Trade->TradeID) ? sizeof(Trade->TradeID) - 1 : value.length();
+								memcpy(Trade->TradeID, value.c_str(), len);
+								break;
+							}
+							case Items::Direction:
+							{
+								Trade->Direction = (DirectionType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::OffsetFlag:
+							{
+								Trade->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::Price:
+							{
+								Trade->Price = atof(value.c_str());
+								break;
+							}
+							case Items::Volume:
+							{
+								Trade->Volume = atoi(value.c_str());
+								break;
+							}
+							case Items::VolumeMultiple:
+							{
+								Trade->VolumeMultiple = atoi(value.c_str());
+								break;
+							}
+							case Items::TradeAmount:
+							{
+								Trade->TradeAmount = atof(value.c_str());
+								break;
+							}
+							case Items::Commission:
+							{
+								Trade->Commission = atof(value.c_str());
+								break;
+							}
+							case Items::StampTax:
+							{
+								Trade->StampTax = atof(value.c_str());
+								break;
+							}
+							case Items::TransferFee:
+							{
+								Trade->TransferFee = atof(value.c_str());
+								break;
+							}
+							case Items::TradeDate:
+							{
+								size_t len = value.length() >= sizeof(Trade->TradeDate) ? sizeof(Trade->TradeDate) - 1 : value.length();
+								memcpy(Trade->TradeDate, value.c_str(), len);
+								break;
+							}
+							case Items::TradeTime:
+							{
+								size_t len = value.length() >= sizeof(Trade->TradeTime) ? sizeof(Trade->TradeTime) - 1 : value.length();
+								memcpy(Trade->TradeTime, value.c_str(), len);
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspMdInitField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for TradeField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
 						}
 						else
 						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspMdInitPackage FieldID:0x%X", fieldID);
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnTradePackage FieldID:0x%X", fieldID);
 							return false;
 						}
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnTradePackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnTradePackage::GetDebugString() const
+	{
+		if (Trade == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (Trade != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnTradePackage:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%d], VolumeMultiple:[%d], TradeAmount:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], TradeDate:[%s], TradeTime:[%s]", 
+				Trade->TradingDay, Trade->AccountID, Trade->ExchangeID, Trade->InstrumentID, (int)Trade->SecurityType, Trade->OrderID, Trade->OrderSysID, Trade->TradeID, (int)Trade->Direction, (int)Trade->OffsetFlag, Trade->Price, Trade->Volume, Trade->VolumeMultiple, Trade->TradeAmount, Trade->Commission, Trade->StampTax, Trade->TransferFee, Trade->TradeDate, Trade->TradeTime);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnMoneyTransferPackage::StepRtnMoneyTransferPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnMoneyTransferPackage* StepRtnMoneyTransferPackage::Allocate()
+	{
+		return ::Allocate<StepRtnMoneyTransferPackage>();
+	}
+	void StepRtnMoneyTransferPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (MoneyTransfer != nullptr)
+		{
+			::Free<MoneyTransferField>(MoneyTransfer);
+			MoneyTransfer = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnMoneyTransferPackage>::GetInstance().Free(this);
+	}
+	void StepRtnMoneyTransferPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnMoneyTransferPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (MoneyTransfer != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, MoneyTransferField::FieldID);
+			if (strlen(MoneyTransfer->TradingDay) >= sizeof(MoneyTransfer->TradingDay))
+			{
+				MoneyTransfer->TradingDay[sizeof(MoneyTransfer->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, MoneyTransfer->TradingDay);
+			if (strlen(MoneyTransfer->AccountID) >= sizeof(MoneyTransfer->AccountID))
+			{
+				MoneyTransfer->AccountID[sizeof(MoneyTransfer->AccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AccountID, MoneyTransfer->AccountID);
+			WriteString(ppos, Items::MoneyTransferID, MoneyTransfer->MoneyTransferID);
+			WriteString(ppos, Items::AccountType, (int)MoneyTransfer->AccountType);
+			WriteString(ppos, Items::TransferDirection, (int)MoneyTransfer->TransferDirection);
+			WriteString(ppos, Items::TransferAmount, MoneyTransfer->TransferAmount);
+			if (strlen(MoneyTransfer->InfoMessage) >= sizeof(MoneyTransfer->InfoMessage))
+			{
+				MoneyTransfer->InfoMessage[sizeof(MoneyTransfer->InfoMessage) - 1] = 0;
+			}
+			WriteString(ppos, Items::InfoMessage, MoneyTransfer->InfoMessage);
+			if (strlen(MoneyTransfer->UserID) >= sizeof(MoneyTransfer->UserID))
+			{
+				MoneyTransfer->UserID[sizeof(MoneyTransfer->UserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::UserID, MoneyTransfer->UserID);
+			if (strlen(MoneyTransfer->TransferDate) >= sizeof(MoneyTransfer->TransferDate))
+			{
+				MoneyTransfer->TransferDate[sizeof(MoneyTransfer->TransferDate) - 1] = 0;
+			}
+			WriteString(ppos, Items::TransferDate, MoneyTransfer->TransferDate);
+			if (strlen(MoneyTransfer->TransferTime) >= sizeof(MoneyTransfer->TransferTime))
+			{
+				MoneyTransfer->TransferTime[sizeof(MoneyTransfer->TransferTime) - 1] = 0;
+			}
+			WriteString(ppos, Items::TransferTime, MoneyTransfer->TransferTime);
+			WriteHexString(ppos, Items::FieldEnd, MoneyTransferField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnMoneyTransferPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+				case MoneyTransferField::FieldID:
+				{
+					MoneyTransfer = ::Allocate<MoneyTransferField>();
+					memset(MoneyTransfer, 0, sizeof(*MoneyTransfer));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(MoneyTransfer->TradingDay) ? sizeof(MoneyTransfer->TradingDay) - 1 : value.length();
+								memcpy(MoneyTransfer->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::AccountID:
+							{
+								size_t len = value.length() >= sizeof(MoneyTransfer->AccountID) ? sizeof(MoneyTransfer->AccountID) - 1 : value.length();
+								memcpy(MoneyTransfer->AccountID, value.c_str(), len);
+								break;
+							}
+							case Items::MoneyTransferID:
+							{
+								MoneyTransfer->MoneyTransferID = atoi(value.c_str());
+								break;
+							}
+							case Items::AccountType:
+							{
+								MoneyTransfer->AccountType = (AccountTypeType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::TransferDirection:
+							{
+								MoneyTransfer->TransferDirection = (TransferDirectionType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::TransferAmount:
+							{
+								MoneyTransfer->TransferAmount = atof(value.c_str());
+								break;
+							}
+							case Items::InfoMessage:
+							{
+								size_t len = value.length() >= sizeof(MoneyTransfer->InfoMessage) ? sizeof(MoneyTransfer->InfoMessage) - 1 : value.length();
+								memcpy(MoneyTransfer->InfoMessage, value.c_str(), len);
+								break;
+							}
+							case Items::UserID:
+							{
+								size_t len = value.length() >= sizeof(MoneyTransfer->UserID) ? sizeof(MoneyTransfer->UserID) - 1 : value.length();
+								memcpy(MoneyTransfer->UserID, value.c_str(), len);
+								break;
+							}
+							case Items::TransferDate:
+							{
+								size_t len = value.length() >= sizeof(MoneyTransfer->TransferDate) ? sizeof(MoneyTransfer->TransferDate) - 1 : value.length();
+								memcpy(MoneyTransfer->TransferDate, value.c_str(), len);
+								break;
+							}
+							case Items::TransferTime:
+							{
+								size_t len = value.length() >= sizeof(MoneyTransfer->TransferTime) ? sizeof(MoneyTransfer->TransferTime) - 1 : value.length();
+								memcpy(MoneyTransfer->TransferTime, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for MoneyTransferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnMoneyTransferPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnMoneyTransferPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnMoneyTransferPackage::GetDebugString() const
+	{
+		if (MoneyTransfer == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (MoneyTransfer != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnMoneyTransferPackage:TradingDay:[%s], AccountID:[%s], MoneyTransferID:[%d], AccountType:[%d], TransferDirection:[%d], TransferAmount:[%f], InfoMessage:[%s], UserID:[%s], TransferDate:[%s], TransferTime:[%s]", 
+				MoneyTransfer->TradingDay, MoneyTransfer->AccountID, MoneyTransfer->MoneyTransferID, (int)MoneyTransfer->AccountType, (int)MoneyTransfer->TransferDirection, MoneyTransfer->TransferAmount, MoneyTransfer->InfoMessage, MoneyTransfer->UserID, MoneyTransfer->TransferDate, MoneyTransfer->TransferTime);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnAccountLogoutPackage::StepRtnAccountLogoutPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnAccountLogoutPackage* StepRtnAccountLogoutPackage::Allocate()
+	{
+		return ::Allocate<StepRtnAccountLogoutPackage>();
+	}
+	void StepRtnAccountLogoutPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (AccountLogout != nullptr)
+		{
+			::Free<AccountLogoutField>(AccountLogout);
+			AccountLogout = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnAccountLogoutPackage>::GetInstance().Free(this);
+	}
+	void StepRtnAccountLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnAccountLogoutPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (AccountLogout != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, AccountLogoutField::FieldID);
+			if (strlen(AccountLogout->AccountID) >= sizeof(AccountLogout->AccountID))
+			{
+				AccountLogout->AccountID[sizeof(AccountLogout->AccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AccountID, AccountLogout->AccountID);
+			WriteString(ppos, Items::ErrorID, AccountLogout->ErrorID);
+			if (strlen(AccountLogout->ErrorMsg) >= sizeof(AccountLogout->ErrorMsg))
+			{
+				AccountLogout->ErrorMsg[sizeof(AccountLogout->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, AccountLogout->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, AccountLogoutField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnAccountLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case AccountLogoutField::FieldID:
+				{
+					AccountLogout = ::Allocate<AccountLogoutField>();
+					memset(AccountLogout, 0, sizeof(*AccountLogout));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::AccountID:
+							{
+								size_t len = value.length() >= sizeof(AccountLogout->AccountID) ? sizeof(AccountLogout->AccountID) - 1 : value.length();
+								memcpy(AccountLogout->AccountID, value.c_str(), len);
+								break;
+							}
+							case Items::ErrorID:
+							{
+								AccountLogout->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(AccountLogout->ErrorMsg) ? sizeof(AccountLogout->ErrorMsg) - 1 : value.length();
+								memcpy(AccountLogout->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for AccountLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnAccountLogoutPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnAccountLogoutPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnAccountLogoutPackage::GetDebugString() const
+	{
+		if (AccountLogout == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (AccountLogout != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountLogoutPackage:AccountID:[%s], ErrorID:[%d], ErrorMsg:[%s]", 
+				AccountLogout->AccountID, AccountLogout->ErrorID, AccountLogout->ErrorMsg);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqRiskUserLoginPackage::StepReqRiskUserLoginPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqRiskUserLoginPackage* StepReqRiskUserLoginPackage::Allocate()
+	{
+		return ::Allocate<StepReqRiskUserLoginPackage>();
+	}
+	void StepReqRiskUserLoginPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqRiskUserLogin != nullptr)
+		{
+			::Free<ReqRiskUserLoginField>(ReqRiskUserLogin);
+			ReqRiskUserLogin = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqRiskUserLoginPackage>::GetInstance().Free(this);
+	}
+	void StepReqRiskUserLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqRiskUserLoginPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqRiskUserLogin != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqRiskUserLoginField::FieldID);
+			if (strlen(ReqRiskUserLogin->UserID) >= sizeof(ReqRiskUserLogin->UserID))
+			{
+				ReqRiskUserLogin->UserID[sizeof(ReqRiskUserLogin->UserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::UserID, ReqRiskUserLogin->UserID);
+			if (strlen(ReqRiskUserLogin->Password) >= sizeof(ReqRiskUserLogin->Password))
+			{
+				ReqRiskUserLogin->Password[sizeof(ReqRiskUserLogin->Password) - 1] = 0;
+			}
+			WriteString(ppos, Items::Password, ReqRiskUserLogin->Password);
+			WriteHexString(ppos, Items::FieldEnd, ReqRiskUserLoginField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqRiskUserLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqRiskUserLoginField::FieldID:
+				{
+					ReqRiskUserLogin = ::Allocate<ReqRiskUserLoginField>();
+					memset(ReqRiskUserLogin, 0, sizeof(*ReqRiskUserLogin));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::UserID:
+							{
+								size_t len = value.length() >= sizeof(ReqRiskUserLogin->UserID) ? sizeof(ReqRiskUserLogin->UserID) - 1 : value.length();
+								memcpy(ReqRiskUserLogin->UserID, value.c_str(), len);
+								break;
+							}
+							case Items::Password:
+							{
+								size_t len = value.length() >= sizeof(ReqRiskUserLogin->Password) ? sizeof(ReqRiskUserLogin->Password) - 1 : value.length();
+								memcpy(ReqRiskUserLogin->Password, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRiskUserLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqRiskUserLoginPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqRiskUserLoginPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqRiskUserLoginPackage::GetDebugString() const
+	{
+		if (ReqRiskUserLogin == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqRiskUserLogin != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRiskUserLoginPackage:UserID:[%s], Password:[%s]", 
+				ReqRiskUserLogin->UserID, ReqRiskUserLogin->Password);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspRiskUserLoginPackage::StepRspRiskUserLoginPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspRiskUserLoginPackage* StepRspRiskUserLoginPackage::Allocate()
+	{
+		return ::Allocate<StepRspRiskUserLoginPackage>();
+	}
+	void StepRspRiskUserLoginPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (RspRiskUserLogin != nullptr)
+		{
+			::Free<RspRiskUserLoginField>(RspRiskUserLogin);
+			RspRiskUserLogin = nullptr;
+		}
+		if (RspInfo != nullptr)
+		{
+			::Free<RspInfoField>(RspInfo);
+			RspInfo = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspRiskUserLoginPackage>::GetInstance().Free(this);
+	}
+	void StepRspRiskUserLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspRiskUserLoginPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (RspRiskUserLogin != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspRiskUserLoginField::FieldID);
+			if (strlen(RspRiskUserLogin->UserID) >= sizeof(RspRiskUserLogin->UserID))
+			{
+				RspRiskUserLogin->UserID[sizeof(RspRiskUserLogin->UserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::UserID, RspRiskUserLogin->UserID);
+			WriteString(ppos, Items::RiskGroupID, RspRiskUserLogin->RiskGroupID);
+			if (strlen(RspRiskUserLogin->LoginDate) >= sizeof(RspRiskUserLogin->LoginDate))
+			{
+				RspRiskUserLogin->LoginDate[sizeof(RspRiskUserLogin->LoginDate) - 1] = 0;
+			}
+			WriteString(ppos, Items::LoginDate, RspRiskUserLogin->LoginDate);
+			if (strlen(RspRiskUserLogin->LoginTime) >= sizeof(RspRiskUserLogin->LoginTime))
+			{
+				RspRiskUserLogin->LoginTime[sizeof(RspRiskUserLogin->LoginTime) - 1] = 0;
+			}
+			WriteString(ppos, Items::LoginTime, RspRiskUserLogin->LoginTime);
+			WriteString(ppos, Items::SessionID, RspRiskUserLogin->SessionID);
+			WriteHexString(ppos, Items::FieldEnd, RspRiskUserLoginField::FieldID);
+		}
+		if (RspInfo != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
+			{
+				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspRiskUserLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case RspRiskUserLoginField::FieldID:
+				{
+					RspRiskUserLogin = ::Allocate<RspRiskUserLoginField>();
+					memset(RspRiskUserLogin, 0, sizeof(*RspRiskUserLogin));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::UserID:
+							{
+								size_t len = value.length() >= sizeof(RspRiskUserLogin->UserID) ? sizeof(RspRiskUserLogin->UserID) - 1 : value.length();
+								memcpy(RspRiskUserLogin->UserID, value.c_str(), len);
+								break;
+							}
+							case Items::RiskGroupID:
+							{
+								RspRiskUserLogin->RiskGroupID = atoi(value.c_str());
+								break;
+							}
+							case Items::LoginDate:
+							{
+								size_t len = value.length() >= sizeof(RspRiskUserLogin->LoginDate) ? sizeof(RspRiskUserLogin->LoginDate) - 1 : value.length();
+								memcpy(RspRiskUserLogin->LoginDate, value.c_str(), len);
+								break;
+							}
+							case Items::LoginTime:
+							{
+								size_t len = value.length() >= sizeof(RspRiskUserLogin->LoginTime) ? sizeof(RspRiskUserLogin->LoginTime) - 1 : value.length();
+								memcpy(RspRiskUserLogin->LoginTime, value.c_str(), len);
+								break;
+							}
+							case Items::SessionID:
+							{
+								RspRiskUserLogin->SessionID = atoll(value.c_str());
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRiskUserLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspRiskUserLoginPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				case RspInfoField::FieldID:
+				{
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -8776,14 +7023,14 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
 						}
 						else
 						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspMdInitPackage FieldID:0x%X", fieldID);
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspRiskUserLoginPackage FieldID:0x%X", fieldID);
 							return false;
 						}
 					}
@@ -8797,80 +7044,75 @@ namespace step
 			}
 			else
 			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspMdInitPackage");
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspRiskUserLoginPackage");
 				return false;
 			}
 		}
 		return true;
 	}
-	const char* StepRspMdInitPackage::GetDebugString() const
+	const char* StepRspRiskUserLoginPackage::GetDebugString() const
 	{
-		if (RspMdInit == nullptr && RspInfo == nullptr)
+		if (RspRiskUserLogin == nullptr && RspInfo == nullptr)
 		{
 			return "";
 		}
 		int index = 0;
-		if (RspMdInit != nullptr)
+		if (RspRiskUserLogin != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdInitPackage:ExchangeID:[%s], TradingDay:[%s]", 
-				RspMdInit->ExchangeID, RspMdInit->TradingDay);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLoginPackage:UserID:[%s], RiskGroupID:[%d], LoginDate:[%s], LoginTime:[%s], SessionID:[%lld]", 
+				RspRiskUserLogin->UserID, RspRiskUserLogin->RiskGroupID, RspRiskUserLogin->LoginDate, RspRiskUserLogin->LoginTime, RspRiskUserLogin->SessionID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdInitPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLoginPackage:ErrorID:[%d], ErrorMsg:[%s]", 
 				RspInfo->ErrorID, RspInfo->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
-	StepReqSubscribeMdPackage::StepReqSubscribeMdPackage()
+	StepReqRiskUserLogoutPackage::StepReqRiskUserLogoutPackage()
 	{
 		Head.PackageID = PackageID;
 	}
-	StepReqSubscribeMdPackage* StepReqSubscribeMdPackage::Allocate()
+	StepReqRiskUserLogoutPackage* StepReqRiskUserLogoutPackage::Allocate()
 	{
-		return ::Allocate<StepReqSubscribeMdPackage>();
+		return ::Allocate<StepReqRiskUserLogoutPackage>();
 	}
-	void StepReqSubscribeMdPackage::Free()
+	void StepReqRiskUserLogoutPackage::Free()
 	{
 		SessionID = 0;
 		memset(IPAddress, 0, sizeof(IPAddressType));
 		memset(&Head, 0, sizeof(Head));
 		memset(&Tail, 0, sizeof(Tail));
 		Head.PackageID = PackageID;
-		if (ReqSubscribeMd != nullptr)
+		if (ReqRiskUserLogout != nullptr)
 		{
-			::Free<StepReqSubscribeMdField>(ReqSubscribeMd);
-			ReqSubscribeMd = nullptr;
+			::Free<ReqRiskUserLogoutField>(ReqRiskUserLogout);
+			ReqRiskUserLogout = nullptr;
 		}
-		MemCacheTemplateSingleton<StepReqSubscribeMdPackage>::GetInstance().Free(this);
+		MemCacheTemplateSingleton<StepReqRiskUserLogoutPackage>::GetInstance().Free(this);
 	}
-	void StepReqSubscribeMdPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	void StepReqRiskUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
 	{
 		SessionID = sessionID;
 		Head.MessageChain = messageChain;
 		Head.MsgSeqNum = msgSeqNum;
 	}
-	int StepReqSubscribeMdPackage::ToProtocolStream(char* buff, int size) const
+	int StepReqRiskUserLogoutPackage::ToProtocolStream(char* buff, int size) const
 	{
 		char* ppos = buff;
-		if (ReqSubscribeMd != nullptr)
+		if (ReqRiskUserLogout != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqSubscribeMdField::FieldID);
-			if (strlen(ReqSubscribeMd->ExchangeID) >= sizeof(ReqSubscribeMd->ExchangeID))
+			WriteHexString(ppos, Items::FieldStart, ReqRiskUserLogoutField::FieldID);
+			if (strlen(ReqRiskUserLogout->UserID) >= sizeof(ReqRiskUserLogout->UserID))
 			{
-				ReqSubscribeMd->ExchangeID[sizeof(ReqSubscribeMd->ExchangeID) - 1] = 0;
+				ReqRiskUserLogout->UserID[sizeof(ReqRiskUserLogout->UserID) - 1] = 0;
 			}
-			WriteString(ppos, Items::ExchangeID, ReqSubscribeMd->ExchangeID);
-			if (strlen(ReqSubscribeMd->InstrumentID) >= sizeof(ReqSubscribeMd->InstrumentID))
-			{
-				ReqSubscribeMd->InstrumentID[sizeof(ReqSubscribeMd->InstrumentID) - 1] = 0;
-			}
-			WriteString(ppos, Items::InstrumentID, ReqSubscribeMd->InstrumentID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqSubscribeMdField::FieldID);
+			WriteString(ppos, Items::UserID, ReqRiskUserLogout->UserID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRiskUserLogoutField::FieldID);
 		}
 		return int(ppos - buff);
 	}
-	bool StepReqSubscribeMdPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	bool StepReqRiskUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
 		while (startIndex < endIndex)
 		{
@@ -8882,10 +7124,10 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqSubscribeMdField::FieldID:
+				case ReqRiskUserLogoutField::FieldID:
 				{
-					ReqSubscribeMd = ::Allocate<StepReqSubscribeMdField>();
-					memset(ReqSubscribeMd, 0, sizeof(*ReqSubscribeMd));
+					ReqRiskUserLogout = ::Allocate<ReqRiskUserLogoutField>();
+					memset(ReqRiskUserLogout, 0, sizeof(*ReqRiskUserLogout));
 					while (itemStartIndex < fieldEndIndex)
 					{
 						unsigned short  itemID;
@@ -8898,27 +7140,21 @@ namespace step
 							case Items::FieldStart:
 							case Items::FieldEnd:
 								break;
-							case Items::ExchangeID:
+							case Items::UserID:
 							{
-								size_t len = value.length() >= sizeof(ReqSubscribeMd->ExchangeID) ? sizeof(ReqSubscribeMd->ExchangeID) - 1 : value.length();
-								memcpy(ReqSubscribeMd->ExchangeID, value.c_str(), len);
-								break;
-							}
-							case Items::InstrumentID:
-							{
-								size_t len = value.length() >= sizeof(ReqSubscribeMd->InstrumentID) ? sizeof(ReqSubscribeMd->InstrumentID) - 1 : value.length();
-								memcpy(ReqSubscribeMd->InstrumentID, value.c_str(), len);
+								size_t len = value.length() >= sizeof(ReqRiskUserLogout->UserID) ? sizeof(ReqRiskUserLogout->UserID) - 1 : value.length();
+								memcpy(ReqRiskUserLogout->UserID, value.c_str(), len);
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqSubscribeMdField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRiskUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
 						}
 						else
 						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqSubscribeMdPackage FieldID:0x%X", fieldID);
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqRiskUserLogoutPackage FieldID:0x%X", fieldID);
 							return false;
 						}
 					}
@@ -8932,91 +7168,86 @@ namespace step
 			}
 			else
 			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqSubscribeMdPackage");
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqRiskUserLogoutPackage");
 				return false;
 			}
 		}
 		return true;
 	}
-	const char* StepReqSubscribeMdPackage::GetDebugString() const
+	const char* StepReqRiskUserLogoutPackage::GetDebugString() const
 	{
-		if (ReqSubscribeMd == nullptr)
+		if (ReqRiskUserLogout == nullptr)
 		{
 			return "";
 		}
 		int index = 0;
-		if (ReqSubscribeMd != nullptr)
+		if (ReqRiskUserLogout != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqSubscribeMdPackage:ExchangeID:[%s], InstrumentID:[%s]", 
-				ReqSubscribeMd->ExchangeID, ReqSubscribeMd->InstrumentID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqRiskUserLogoutPackage:UserID:[%s]", 
+				ReqRiskUserLogout->UserID);
 		}
 		return t_StepPackageStringBuffer;
 	}
-	StepRspSubscribeMdPackage::StepRspSubscribeMdPackage()
+	StepRspRiskUserLogoutPackage::StepRspRiskUserLogoutPackage()
 	{
 		Head.PackageID = PackageID;
 	}
-	StepRspSubscribeMdPackage* StepRspSubscribeMdPackage::Allocate()
+	StepRspRiskUserLogoutPackage* StepRspRiskUserLogoutPackage::Allocate()
 	{
-		return ::Allocate<StepRspSubscribeMdPackage>();
+		return ::Allocate<StepRspRiskUserLogoutPackage>();
 	}
-	void StepRspSubscribeMdPackage::Free()
+	void StepRspRiskUserLogoutPackage::Free()
 	{
 		SessionID = 0;
 		memset(IPAddress, 0, sizeof(IPAddressType));
 		memset(&Head, 0, sizeof(Head));
 		memset(&Tail, 0, sizeof(Tail));
 		Head.PackageID = PackageID;
-		if (RspSubscribeMd != nullptr)
+		if (RspRiskUserLogout != nullptr)
 		{
-			::Free<StepRspSubscribeMdField>(RspSubscribeMd);
-			RspSubscribeMd = nullptr;
+			::Free<RspRiskUserLogoutField>(RspRiskUserLogout);
+			RspRiskUserLogout = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
-		MemCacheTemplateSingleton<StepRspSubscribeMdPackage>::GetInstance().Free(this);
+		MemCacheTemplateSingleton<StepRspRiskUserLogoutPackage>::GetInstance().Free(this);
 	}
-	void StepRspSubscribeMdPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	void StepRspRiskUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
 	{
 		SessionID = sessionID;
 		Head.MessageChain = messageChain;
 		Head.MsgSeqNum = msgSeqNum;
 	}
-	int StepRspSubscribeMdPackage::ToProtocolStream(char* buff, int size) const
+	int StepRspRiskUserLogoutPackage::ToProtocolStream(char* buff, int size) const
 	{
 		char* ppos = buff;
-		if (RspSubscribeMd != nullptr)
+		if (RspRiskUserLogout != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspSubscribeMdField::FieldID);
-			if (strlen(RspSubscribeMd->ExchangeID) >= sizeof(RspSubscribeMd->ExchangeID))
+			WriteHexString(ppos, Items::FieldStart, RspRiskUserLogoutField::FieldID);
+			if (strlen(RspRiskUserLogout->UserID) >= sizeof(RspRiskUserLogout->UserID))
 			{
-				RspSubscribeMd->ExchangeID[sizeof(RspSubscribeMd->ExchangeID) - 1] = 0;
+				RspRiskUserLogout->UserID[sizeof(RspRiskUserLogout->UserID) - 1] = 0;
 			}
-			WriteString(ppos, Items::ExchangeID, RspSubscribeMd->ExchangeID);
-			if (strlen(RspSubscribeMd->InstrumentID) >= sizeof(RspSubscribeMd->InstrumentID))
-			{
-				RspSubscribeMd->InstrumentID[sizeof(RspSubscribeMd->InstrumentID) - 1] = 0;
-			}
-			WriteString(ppos, Items::InstrumentID, RspSubscribeMd->InstrumentID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspSubscribeMdField::FieldID);
+			WriteString(ppos, Items::UserID, RspRiskUserLogout->UserID);
+			WriteHexString(ppos, Items::FieldEnd, RspRiskUserLogoutField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
-	bool StepRspSubscribeMdPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	bool StepRspRiskUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
 		while (startIndex < endIndex)
 		{
@@ -9028,10 +7259,10 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspSubscribeMdField::FieldID:
+				case RspRiskUserLogoutField::FieldID:
 				{
-					RspSubscribeMd = ::Allocate<StepRspSubscribeMdField>();
-					memset(RspSubscribeMd, 0, sizeof(*RspSubscribeMd));
+					RspRiskUserLogout = ::Allocate<RspRiskUserLogoutField>();
+					memset(RspRiskUserLogout, 0, sizeof(*RspRiskUserLogout));
 					while (itemStartIndex < fieldEndIndex)
 					{
 						unsigned short  itemID;
@@ -9044,35 +7275,29 @@ namespace step
 							case Items::FieldStart:
 							case Items::FieldEnd:
 								break;
-							case Items::ExchangeID:
+							case Items::UserID:
 							{
-								size_t len = value.length() >= sizeof(RspSubscribeMd->ExchangeID) ? sizeof(RspSubscribeMd->ExchangeID) - 1 : value.length();
-								memcpy(RspSubscribeMd->ExchangeID, value.c_str(), len);
-								break;
-							}
-							case Items::InstrumentID:
-							{
-								size_t len = value.length() >= sizeof(RspSubscribeMd->InstrumentID) ? sizeof(RspSubscribeMd->InstrumentID) - 1 : value.length();
-								memcpy(RspSubscribeMd->InstrumentID, value.c_str(), len);
+								size_t len = value.length() >= sizeof(RspRiskUserLogout->UserID) ? sizeof(RspRiskUserLogout->UserID) - 1 : value.length();
+								memcpy(RspRiskUserLogout->UserID, value.c_str(), len);
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspSubscribeMdField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRiskUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
 						}
 						else
 						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspSubscribeMdPackage FieldID:0x%X", fieldID);
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspRiskUserLogoutPackage FieldID:0x%X", fieldID);
 							return false;
 						}
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -9098,14 +7323,14 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
 						}
 						else
 						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspSubscribeMdPackage FieldID:0x%X", fieldID);
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspRiskUserLogoutPackage FieldID:0x%X", fieldID);
 							return false;
 						}
 					}
@@ -9119,28 +7344,164 @@ namespace step
 			}
 			else
 			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspSubscribeMdPackage");
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspRiskUserLogoutPackage");
 				return false;
 			}
 		}
 		return true;
 	}
-	const char* StepRspSubscribeMdPackage::GetDebugString() const
+	const char* StepRspRiskUserLogoutPackage::GetDebugString() const
 	{
-		if (RspSubscribeMd == nullptr && RspInfo == nullptr)
+		if (RspRiskUserLogout == nullptr && RspInfo == nullptr)
 		{
 			return "";
 		}
 		int index = 0;
-		if (RspSubscribeMd != nullptr)
+		if (RspRiskUserLogout != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspSubscribeMdPackage:ExchangeID:[%s], InstrumentID:[%s]", 
-				RspSubscribeMd->ExchangeID, RspSubscribeMd->InstrumentID);
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLogoutPackage:UserID:[%s]", 
+				RspRiskUserLogout->UserID);
 		}
 		if (RspInfo != nullptr)
 		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspSubscribeMdPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspRiskUserLogoutPackage:ErrorID:[%d], ErrorMsg:[%s]", 
 				RspInfo->ErrorID, RspInfo->ErrorMsg);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnRiskUserLogoutPackage::StepRtnRiskUserLogoutPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnRiskUserLogoutPackage* StepRtnRiskUserLogoutPackage::Allocate()
+	{
+		return ::Allocate<StepRtnRiskUserLogoutPackage>();
+	}
+	void StepRtnRiskUserLogoutPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (RiskUserLogout != nullptr)
+		{
+			::Free<RiskUserLogoutField>(RiskUserLogout);
+			RiskUserLogout = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnRiskUserLogoutPackage>::GetInstance().Free(this);
+	}
+	void StepRtnRiskUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnRiskUserLogoutPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (RiskUserLogout != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RiskUserLogoutField::FieldID);
+			if (strlen(RiskUserLogout->UserID) >= sizeof(RiskUserLogout->UserID))
+			{
+				RiskUserLogout->UserID[sizeof(RiskUserLogout->UserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::UserID, RiskUserLogout->UserID);
+			WriteString(ppos, Items::ErrorID, RiskUserLogout->ErrorID);
+			if (strlen(RiskUserLogout->ErrorMsg) >= sizeof(RiskUserLogout->ErrorMsg))
+			{
+				RiskUserLogout->ErrorMsg[sizeof(RiskUserLogout->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RiskUserLogout->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, RiskUserLogoutField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnRiskUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case RiskUserLogoutField::FieldID:
+				{
+					RiskUserLogout = ::Allocate<RiskUserLogoutField>();
+					memset(RiskUserLogout, 0, sizeof(*RiskUserLogout));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::UserID:
+							{
+								size_t len = value.length() >= sizeof(RiskUserLogout->UserID) ? sizeof(RiskUserLogout->UserID) - 1 : value.length();
+								memcpy(RiskUserLogout->UserID, value.c_str(), len);
+								break;
+							}
+							case Items::ErrorID:
+							{
+								RiskUserLogout->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(RiskUserLogout->ErrorMsg) ? sizeof(RiskUserLogout->ErrorMsg) - 1 : value.length();
+								memcpy(RiskUserLogout->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RiskUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnRiskUserLogoutPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnRiskUserLogoutPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnRiskUserLogoutPackage::GetDebugString() const
+	{
+		if (RiskUserLogout == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (RiskUserLogout != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnRiskUserLogoutPackage:UserID:[%s], ErrorID:[%d], ErrorMsg:[%s]", 
+				RiskUserLogout->UserID, RiskUserLogout->ErrorID, RiskUserLogout->ErrorMsg);
 		}
 		return t_StepPackageStringBuffer;
 	}
@@ -9161,7 +7522,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (Account != nullptr)
 		{
-			::Free<StepAccountField>(Account);
+			::Free<AccountField>(Account);
 			Account = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRtnAccountPackage>::GetInstance().Free(this);
@@ -9177,7 +7538,7 @@ namespace step
 		char* ppos = buff;
 		if (Account != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, AccountField::FieldID);
 			if (strlen(Account->AccountID) >= sizeof(Account->AccountID))
 			{
 				Account->AccountID[sizeof(Account->AccountID) - 1] = 0;
@@ -9188,7 +7549,7 @@ namespace step
 			WriteString(ppos, Items::TradeGroupID, Account->TradeGroupID);
 			WriteString(ppos, Items::RiskGroupID, Account->RiskGroupID);
 			WriteString(ppos, Items::CommissionGroupID, Account->CommissionGroupID);
-			WriteHexString(ppos, Items::FieldEnd, StepAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, AccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -9204,9 +7565,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepAccountField::FieldID:
+				case AccountField::FieldID:
 				{
-					Account = ::Allocate<StepAccountField>();
+					Account = ::Allocate<AccountField>();
 					memset(Account, 0, sizeof(*Account));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -9252,7 +7613,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for AccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -9310,7 +7671,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (AccountDelete != nullptr)
 		{
-			::Free<StepAccountDeleteField>(AccountDelete);
+			::Free<AccountDeleteField>(AccountDelete);
 			AccountDelete = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRtnAccountDeletePackage>::GetInstance().Free(this);
@@ -9326,13 +7687,13 @@ namespace step
 		char* ppos = buff;
 		if (AccountDelete != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepAccountDeleteField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, AccountDeleteField::FieldID);
 			if (strlen(AccountDelete->AccountID) >= sizeof(AccountDelete->AccountID))
 			{
 				AccountDelete->AccountID[sizeof(AccountDelete->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, AccountDelete->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepAccountDeleteField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, AccountDeleteField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -9348,9 +7709,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepAccountDeleteField::FieldID:
+				case AccountDeleteField::FieldID:
 				{
-					AccountDelete = ::Allocate<StepAccountDeleteField>();
+					AccountDelete = ::Allocate<AccountDeleteField>();
 					memset(AccountDelete, 0, sizeof(*AccountDelete));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -9371,7 +7732,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepAccountDeleteField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for AccountDeleteField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -9412,1804 +7773,15 @@ namespace step
 		}
 		return t_StepPackageStringBuffer;
 	}
-	StepRtnAccountRiskPackage::StepRtnAccountRiskPackage()
+	StepRtnPositionPackage::StepRtnPositionPackage()
 	{
 		Head.PackageID = PackageID;
 	}
-	StepRtnAccountRiskPackage* StepRtnAccountRiskPackage::Allocate()
+	StepRtnPositionPackage* StepRtnPositionPackage::Allocate()
 	{
-		return ::Allocate<StepRtnAccountRiskPackage>();
+		return ::Allocate<StepRtnPositionPackage>();
 	}
-	void StepRtnAccountRiskPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (AccountRisk != nullptr)
-		{
-			::Free<StepAccountRiskField>(AccountRisk);
-			AccountRisk = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRtnAccountRiskPackage>::GetInstance().Free(this);
-	}
-	void StepRtnAccountRiskPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRtnAccountRiskPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (AccountRisk != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepAccountRiskField::FieldID);
-			if (strlen(AccountRisk->AccountID) >= sizeof(AccountRisk->AccountID))
-			{
-				AccountRisk->AccountID[sizeof(AccountRisk->AccountID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AccountID, AccountRisk->AccountID);
-			WriteString(ppos, Items::RiskID, AccountRisk->RiskID);
-			WriteString(ppos, Items::RiskStatus, (int)AccountRisk->RiskStatus);
-			WriteHexString(ppos, Items::FieldEnd, StepAccountRiskField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRtnAccountRiskPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepAccountRiskField::FieldID:
-				{
-					AccountRisk = ::Allocate<StepAccountRiskField>();
-					memset(AccountRisk, 0, sizeof(*AccountRisk));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::AccountID:
-							{
-								size_t len = value.length() >= sizeof(AccountRisk->AccountID) ? sizeof(AccountRisk->AccountID) - 1 : value.length();
-								memcpy(AccountRisk->AccountID, value.c_str(), len);
-								break;
-							}
-							case Items::RiskID:
-							{
-								AccountRisk->RiskID = atoi(value.c_str());
-								break;
-							}
-							case Items::RiskStatus:
-							{
-								AccountRisk->RiskStatus = (RiskStatusType)(atoi(value.c_str()));
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepAccountRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnAccountRiskPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnAccountRiskPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRtnAccountRiskPackage::GetDebugString() const
-	{
-		if (AccountRisk == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (AccountRisk != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountRiskPackage:AccountID:[%s], RiskID:[%d], RiskStatus:[%d]", 
-				AccountRisk->AccountID, AccountRisk->RiskID, (int)AccountRisk->RiskStatus);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRtnAccountRiskDeletePackage::StepRtnAccountRiskDeletePackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRtnAccountRiskDeletePackage* StepRtnAccountRiskDeletePackage::Allocate()
-	{
-		return ::Allocate<StepRtnAccountRiskDeletePackage>();
-	}
-	void StepRtnAccountRiskDeletePackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (AccountRiskDelete != nullptr)
-		{
-			::Free<StepAccountRiskDeleteField>(AccountRiskDelete);
-			AccountRiskDelete = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRtnAccountRiskDeletePackage>::GetInstance().Free(this);
-	}
-	void StepRtnAccountRiskDeletePackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRtnAccountRiskDeletePackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (AccountRiskDelete != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepAccountRiskDeleteField::FieldID);
-			if (strlen(AccountRiskDelete->AccountID) >= sizeof(AccountRiskDelete->AccountID))
-			{
-				AccountRiskDelete->AccountID[sizeof(AccountRiskDelete->AccountID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AccountID, AccountRiskDelete->AccountID);
-			WriteString(ppos, Items::RiskID, AccountRiskDelete->RiskID);
-			WriteHexString(ppos, Items::FieldEnd, StepAccountRiskDeleteField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRtnAccountRiskDeletePackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepAccountRiskDeleteField::FieldID:
-				{
-					AccountRiskDelete = ::Allocate<StepAccountRiskDeleteField>();
-					memset(AccountRiskDelete, 0, sizeof(*AccountRiskDelete));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::AccountID:
-							{
-								size_t len = value.length() >= sizeof(AccountRiskDelete->AccountID) ? sizeof(AccountRiskDelete->AccountID) - 1 : value.length();
-								memcpy(AccountRiskDelete->AccountID, value.c_str(), len);
-								break;
-							}
-							case Items::RiskID:
-							{
-								AccountRiskDelete->RiskID = atoi(value.c_str());
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepAccountRiskDeleteField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnAccountRiskDeletePackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnAccountRiskDeletePackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRtnAccountRiskDeletePackage::GetDebugString() const
-	{
-		if (AccountRiskDelete == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (AccountRiskDelete != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountRiskDeletePackage:AccountID:[%s], RiskID:[%d]", 
-				AccountRiskDelete->AccountID, AccountRiskDelete->RiskID);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRtnAccountRiskNotifyPackage::StepRtnAccountRiskNotifyPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRtnAccountRiskNotifyPackage* StepRtnAccountRiskNotifyPackage::Allocate()
-	{
-		return ::Allocate<StepRtnAccountRiskNotifyPackage>();
-	}
-	void StepRtnAccountRiskNotifyPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (AccountRiskNotify != nullptr)
-		{
-			::Free<StepAccountRiskNotifyField>(AccountRiskNotify);
-			AccountRiskNotify = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRtnAccountRiskNotifyPackage>::GetInstance().Free(this);
-	}
-	void StepRtnAccountRiskNotifyPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRtnAccountRiskNotifyPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (AccountRiskNotify != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepAccountRiskNotifyField::FieldID);
-			if (strlen(AccountRiskNotify->NotifyDate) >= sizeof(AccountRiskNotify->NotifyDate))
-			{
-				AccountRiskNotify->NotifyDate[sizeof(AccountRiskNotify->NotifyDate) - 1] = 0;
-			}
-			WriteString(ppos, Items::NotifyDate, AccountRiskNotify->NotifyDate);
-			if (strlen(AccountRiskNotify->NotifyTime) >= sizeof(AccountRiskNotify->NotifyTime))
-			{
-				AccountRiskNotify->NotifyTime[sizeof(AccountRiskNotify->NotifyTime) - 1] = 0;
-			}
-			WriteString(ppos, Items::NotifyTime, AccountRiskNotify->NotifyTime);
-			if (strlen(AccountRiskNotify->AccountID) >= sizeof(AccountRiskNotify->AccountID))
-			{
-				AccountRiskNotify->AccountID[sizeof(AccountRiskNotify->AccountID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AccountID, AccountRiskNotify->AccountID);
-			WriteString(ppos, Items::RiskID, AccountRiskNotify->RiskID);
-			WriteString(ppos, Items::RiskRuleID, AccountRiskNotify->RiskRuleID);
-			WriteString(ppos, Items::RiskStatus, (int)AccountRiskNotify->RiskStatus);
-			if (strlen(AccountRiskNotify->RiskMessage) >= sizeof(AccountRiskNotify->RiskMessage))
-			{
-				AccountRiskNotify->RiskMessage[sizeof(AccountRiskNotify->RiskMessage) - 1] = 0;
-			}
-			WriteString(ppos, Items::RiskMessage, AccountRiskNotify->RiskMessage);
-			WriteHexString(ppos, Items::FieldEnd, StepAccountRiskNotifyField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRtnAccountRiskNotifyPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepAccountRiskNotifyField::FieldID:
-				{
-					AccountRiskNotify = ::Allocate<StepAccountRiskNotifyField>();
-					memset(AccountRiskNotify, 0, sizeof(*AccountRiskNotify));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::NotifyDate:
-							{
-								size_t len = value.length() >= sizeof(AccountRiskNotify->NotifyDate) ? sizeof(AccountRiskNotify->NotifyDate) - 1 : value.length();
-								memcpy(AccountRiskNotify->NotifyDate, value.c_str(), len);
-								break;
-							}
-							case Items::NotifyTime:
-							{
-								size_t len = value.length() >= sizeof(AccountRiskNotify->NotifyTime) ? sizeof(AccountRiskNotify->NotifyTime) - 1 : value.length();
-								memcpy(AccountRiskNotify->NotifyTime, value.c_str(), len);
-								break;
-							}
-							case Items::AccountID:
-							{
-								size_t len = value.length() >= sizeof(AccountRiskNotify->AccountID) ? sizeof(AccountRiskNotify->AccountID) - 1 : value.length();
-								memcpy(AccountRiskNotify->AccountID, value.c_str(), len);
-								break;
-							}
-							case Items::RiskID:
-							{
-								AccountRiskNotify->RiskID = atoi(value.c_str());
-								break;
-							}
-							case Items::RiskRuleID:
-							{
-								AccountRiskNotify->RiskRuleID = atoi(value.c_str());
-								break;
-							}
-							case Items::RiskStatus:
-							{
-								AccountRiskNotify->RiskStatus = (RiskStatusType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::RiskMessage:
-							{
-								size_t len = value.length() >= sizeof(AccountRiskNotify->RiskMessage) ? sizeof(AccountRiskNotify->RiskMessage) - 1 : value.length();
-								memcpy(AccountRiskNotify->RiskMessage, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepAccountRiskNotifyField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnAccountRiskNotifyPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnAccountRiskNotifyPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRtnAccountRiskNotifyPackage::GetDebugString() const
-	{
-		if (AccountRiskNotify == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (AccountRiskNotify != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountRiskNotifyPackage:NotifyDate:[%s], NotifyTime:[%s], AccountID:[%s], RiskID:[%d], RiskRuleID:[%d], RiskStatus:[%d], RiskMessage:[%s]", 
-				AccountRiskNotify->NotifyDate, AccountRiskNotify->NotifyTime, AccountRiskNotify->AccountID, AccountRiskNotify->RiskID, AccountRiskNotify->RiskRuleID, (int)AccountRiskNotify->RiskStatus, AccountRiskNotify->RiskMessage);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRtnShortMdPackage::StepRtnShortMdPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRtnShortMdPackage* StepRtnShortMdPackage::Allocate()
-	{
-		return ::Allocate<StepRtnShortMdPackage>();
-	}
-	void StepRtnShortMdPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (ShortMd != nullptr)
-		{
-			::Free<StepShortMdField>(ShortMd);
-			ShortMd = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRtnShortMdPackage>::GetInstance().Free(this);
-	}
-	void StepRtnShortMdPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRtnShortMdPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (ShortMd != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepShortMdField::FieldID);
-			if (strlen(ShortMd->TradingDay) >= sizeof(ShortMd->TradingDay))
-			{
-				ShortMd->TradingDay[sizeof(ShortMd->TradingDay) - 1] = 0;
-			}
-			WriteString(ppos, Items::TradingDay, ShortMd->TradingDay);
-			if (strlen(ShortMd->ExchangeID) >= sizeof(ShortMd->ExchangeID))
-			{
-				ShortMd->ExchangeID[sizeof(ShortMd->ExchangeID) - 1] = 0;
-			}
-			WriteString(ppos, Items::ExchangeID, ShortMd->ExchangeID);
-			if (strlen(ShortMd->InstrumentID) >= sizeof(ShortMd->InstrumentID))
-			{
-				ShortMd->InstrumentID[sizeof(ShortMd->InstrumentID) - 1] = 0;
-			}
-			WriteString(ppos, Items::InstrumentID, ShortMd->InstrumentID);
-			WriteString(ppos, Items::LastPrice, ShortMd->LastPrice);
-			WriteString(ppos, Items::ClosePrice, ShortMd->ClosePrice);
-			WriteString(ppos, Items::PreClosePrice, ShortMd->PreClosePrice);
-			WriteString(ppos, Items::SettlementPrice, ShortMd->SettlementPrice);
-			WriteString(ppos, Items::PreSettlementPrice, ShortMd->PreSettlementPrice);
-			WriteString(ppos, Items::UpperLimitPrice, ShortMd->UpperLimitPrice);
-			WriteString(ppos, Items::LowerLimitPrice, ShortMd->LowerLimitPrice);
-			WriteHexString(ppos, Items::FieldEnd, StepShortMdField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRtnShortMdPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepShortMdField::FieldID:
-				{
-					ShortMd = ::Allocate<StepShortMdField>();
-					memset(ShortMd, 0, sizeof(*ShortMd));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::TradingDay:
-							{
-								size_t len = value.length() >= sizeof(ShortMd->TradingDay) ? sizeof(ShortMd->TradingDay) - 1 : value.length();
-								memcpy(ShortMd->TradingDay, value.c_str(), len);
-								break;
-							}
-							case Items::ExchangeID:
-							{
-								size_t len = value.length() >= sizeof(ShortMd->ExchangeID) ? sizeof(ShortMd->ExchangeID) - 1 : value.length();
-								memcpy(ShortMd->ExchangeID, value.c_str(), len);
-								break;
-							}
-							case Items::InstrumentID:
-							{
-								size_t len = value.length() >= sizeof(ShortMd->InstrumentID) ? sizeof(ShortMd->InstrumentID) - 1 : value.length();
-								memcpy(ShortMd->InstrumentID, value.c_str(), len);
-								break;
-							}
-							case Items::LastPrice:
-							{
-								ShortMd->LastPrice = atof(value.c_str());
-								break;
-							}
-							case Items::ClosePrice:
-							{
-								ShortMd->ClosePrice = atof(value.c_str());
-								break;
-							}
-							case Items::PreClosePrice:
-							{
-								ShortMd->PreClosePrice = atof(value.c_str());
-								break;
-							}
-							case Items::SettlementPrice:
-							{
-								ShortMd->SettlementPrice = atof(value.c_str());
-								break;
-							}
-							case Items::PreSettlementPrice:
-							{
-								ShortMd->PreSettlementPrice = atof(value.c_str());
-								break;
-							}
-							case Items::UpperLimitPrice:
-							{
-								ShortMd->UpperLimitPrice = atof(value.c_str());
-								break;
-							}
-							case Items::LowerLimitPrice:
-							{
-								ShortMd->LowerLimitPrice = atof(value.c_str());
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepShortMdField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnShortMdPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnShortMdPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRtnShortMdPackage::GetDebugString() const
-	{
-		if (ShortMd == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (ShortMd != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnShortMdPackage:TradingDay:[%s], ExchangeID:[%s], InstrumentID:[%s], LastPrice:[%f], ClosePrice:[%f], PreClosePrice:[%f], SettlementPrice:[%f], PreSettlementPrice:[%f], UpperLimitPrice:[%f], LowerLimitPrice:[%f]", 
-				ShortMd->TradingDay, ShortMd->ExchangeID, ShortMd->InstrumentID, ShortMd->LastPrice, ShortMd->ClosePrice, ShortMd->PreClosePrice, ShortMd->SettlementPrice, ShortMd->PreSettlementPrice, ShortMd->UpperLimitPrice, ShortMd->LowerLimitPrice);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRtnExchangeStatusPackage::StepRtnExchangeStatusPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRtnExchangeStatusPackage* StepRtnExchangeStatusPackage::Allocate()
-	{
-		return ::Allocate<StepRtnExchangeStatusPackage>();
-	}
-	void StepRtnExchangeStatusPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (RtnExchangeStatus != nullptr)
-		{
-			::Free<StepRtnExchangeStatusField>(RtnExchangeStatus);
-			RtnExchangeStatus = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRtnExchangeStatusPackage>::GetInstance().Free(this);
-	}
-	void StepRtnExchangeStatusPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRtnExchangeStatusPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (RtnExchangeStatus != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRtnExchangeStatusField::FieldID);
-			if (strlen(RtnExchangeStatus->ExchangeID) >= sizeof(RtnExchangeStatus->ExchangeID))
-			{
-				RtnExchangeStatus->ExchangeID[sizeof(RtnExchangeStatus->ExchangeID) - 1] = 0;
-			}
-			WriteString(ppos, Items::ExchangeID, RtnExchangeStatus->ExchangeID);
-			if (strlen(RtnExchangeStatus->ExchangeDate) >= sizeof(RtnExchangeStatus->ExchangeDate))
-			{
-				RtnExchangeStatus->ExchangeDate[sizeof(RtnExchangeStatus->ExchangeDate) - 1] = 0;
-			}
-			WriteString(ppos, Items::ExchangeDate, RtnExchangeStatus->ExchangeDate);
-			WriteString(ppos, Items::ExchangeStatus, (int)RtnExchangeStatus->ExchangeStatus);
-			WriteHexString(ppos, Items::FieldEnd, StepRtnExchangeStatusField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRtnExchangeStatusPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepRtnExchangeStatusField::FieldID:
-				{
-					RtnExchangeStatus = ::Allocate<StepRtnExchangeStatusField>();
-					memset(RtnExchangeStatus, 0, sizeof(*RtnExchangeStatus));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::ExchangeID:
-							{
-								size_t len = value.length() >= sizeof(RtnExchangeStatus->ExchangeID) ? sizeof(RtnExchangeStatus->ExchangeID) - 1 : value.length();
-								memcpy(RtnExchangeStatus->ExchangeID, value.c_str(), len);
-								break;
-							}
-							case Items::ExchangeDate:
-							{
-								size_t len = value.length() >= sizeof(RtnExchangeStatus->ExchangeDate) ? sizeof(RtnExchangeStatus->ExchangeDate) - 1 : value.length();
-								memcpy(RtnExchangeStatus->ExchangeDate, value.c_str(), len);
-								break;
-							}
-							case Items::ExchangeStatus:
-							{
-								RtnExchangeStatus->ExchangeStatus = (ExchangeStatusType)(atoi(value.c_str()));
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRtnExchangeStatusField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnExchangeStatusPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnExchangeStatusPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRtnExchangeStatusPackage::GetDebugString() const
-	{
-		if (RtnExchangeStatus == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (RtnExchangeStatus != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnExchangeStatusPackage:ExchangeID:[%s], ExchangeDate:[%s], ExchangeStatus:[%d]", 
-				RtnExchangeStatus->ExchangeID, RtnExchangeStatus->ExchangeDate, (int)RtnExchangeStatus->ExchangeStatus);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRtnMdInitCompletedPackage::StepRtnMdInitCompletedPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRtnMdInitCompletedPackage* StepRtnMdInitCompletedPackage::Allocate()
-	{
-		return ::Allocate<StepRtnMdInitCompletedPackage>();
-	}
-	void StepRtnMdInitCompletedPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (MdInitCompleted != nullptr)
-		{
-			::Free<StepMdInitCompletedField>(MdInitCompleted);
-			MdInitCompleted = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRtnMdInitCompletedPackage>::GetInstance().Free(this);
-	}
-	void StepRtnMdInitCompletedPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRtnMdInitCompletedPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (MdInitCompleted != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepMdInitCompletedField::FieldID);
-			if (strlen(MdInitCompleted->ExchangeID) >= sizeof(MdInitCompleted->ExchangeID))
-			{
-				MdInitCompleted->ExchangeID[sizeof(MdInitCompleted->ExchangeID) - 1] = 0;
-			}
-			WriteString(ppos, Items::ExchangeID, MdInitCompleted->ExchangeID);
-			if (strlen(MdInitCompleted->TradingDay) >= sizeof(MdInitCompleted->TradingDay))
-			{
-				MdInitCompleted->TradingDay[sizeof(MdInitCompleted->TradingDay) - 1] = 0;
-			}
-			WriteString(ppos, Items::TradingDay, MdInitCompleted->TradingDay);
-			WriteHexString(ppos, Items::FieldEnd, StepMdInitCompletedField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRtnMdInitCompletedPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepMdInitCompletedField::FieldID:
-				{
-					MdInitCompleted = ::Allocate<StepMdInitCompletedField>();
-					memset(MdInitCompleted, 0, sizeof(*MdInitCompleted));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::ExchangeID:
-							{
-								size_t len = value.length() >= sizeof(MdInitCompleted->ExchangeID) ? sizeof(MdInitCompleted->ExchangeID) - 1 : value.length();
-								memcpy(MdInitCompleted->ExchangeID, value.c_str(), len);
-								break;
-							}
-							case Items::TradingDay:
-							{
-								size_t len = value.length() >= sizeof(MdInitCompleted->TradingDay) ? sizeof(MdInitCompleted->TradingDay) - 1 : value.length();
-								memcpy(MdInitCompleted->TradingDay, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepMdInitCompletedField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnMdInitCompletedPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnMdInitCompletedPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRtnMdInitCompletedPackage::GetDebugString() const
-	{
-		if (MdInitCompleted == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (MdInitCompleted != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnMdInitCompletedPackage:ExchangeID:[%s], TradingDay:[%s]", 
-				MdInitCompleted->ExchangeID, MdInitCompleted->TradingDay);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepReqQryRiskGroupAccountPackage::StepReqQryRiskGroupAccountPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepReqQryRiskGroupAccountPackage* StepReqQryRiskGroupAccountPackage::Allocate()
-	{
-		return ::Allocate<StepReqQryRiskGroupAccountPackage>();
-	}
-	void StepReqQryRiskGroupAccountPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (ReqQryRiskGroupAccount != nullptr)
-		{
-			::Free<StepReqQryRiskGroupAccountField>(ReqQryRiskGroupAccount);
-			ReqQryRiskGroupAccount = nullptr;
-		}
-		MemCacheTemplateSingleton<StepReqQryRiskGroupAccountPackage>::GetInstance().Free(this);
-	}
-	void StepReqQryRiskGroupAccountPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepReqQryRiskGroupAccountPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (ReqQryRiskGroupAccount != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryRiskGroupAccountField::FieldID);
-			if (strlen(ReqQryRiskGroupAccount->UserID) >= sizeof(ReqQryRiskGroupAccount->UserID))
-			{
-				ReqQryRiskGroupAccount->UserID[sizeof(ReqQryRiskGroupAccount->UserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::UserID, ReqQryRiskGroupAccount->UserID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryRiskGroupAccountField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepReqQryRiskGroupAccountPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepReqQryRiskGroupAccountField::FieldID:
-				{
-					ReqQryRiskGroupAccount = ::Allocate<StepReqQryRiskGroupAccountField>();
-					memset(ReqQryRiskGroupAccount, 0, sizeof(*ReqQryRiskGroupAccount));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::UserID:
-							{
-								size_t len = value.length() >= sizeof(ReqQryRiskGroupAccount->UserID) ? sizeof(ReqQryRiskGroupAccount->UserID) - 1 : value.length();
-								memcpy(ReqQryRiskGroupAccount->UserID, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryRiskGroupAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqQryRiskGroupAccountPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqQryRiskGroupAccountPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepReqQryRiskGroupAccountPackage::GetDebugString() const
-	{
-		if (ReqQryRiskGroupAccount == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (ReqQryRiskGroupAccount != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupAccountPackage:UserID:[%s]", 
-				ReqQryRiskGroupAccount->UserID);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRspQryRiskGroupAccountPackage::StepRspQryRiskGroupAccountPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRspQryRiskGroupAccountPackage* StepRspQryRiskGroupAccountPackage::Allocate()
-	{
-		return ::Allocate<StepRspQryRiskGroupAccountPackage>();
-	}
-	void StepRspQryRiskGroupAccountPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (Account != nullptr)
-		{
-			::Free<StepAccountField>(Account);
-			Account = nullptr;
-		}
-		if (RspInfo != nullptr)
-		{
-			::Free<StepRspInfoField>(RspInfo);
-			RspInfo = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRspQryRiskGroupAccountPackage>::GetInstance().Free(this);
-	}
-	void StepRspQryRiskGroupAccountPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRspQryRiskGroupAccountPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (Account != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepAccountField::FieldID);
-			if (strlen(Account->AccountID) >= sizeof(Account->AccountID))
-			{
-				Account->AccountID[sizeof(Account->AccountID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AccountID, Account->AccountID);
-			WriteString(ppos, Items::AccountType, (int)Account->AccountType);
-			WriteString(ppos, Items::AccountStatus, (int)Account->AccountStatus);
-			WriteString(ppos, Items::TradeGroupID, Account->TradeGroupID);
-			WriteString(ppos, Items::RiskGroupID, Account->RiskGroupID);
-			WriteString(ppos, Items::CommissionGroupID, Account->CommissionGroupID);
-			WriteHexString(ppos, Items::FieldEnd, StepAccountField::FieldID);
-		}
-		if (RspInfo != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
-			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
-			{
-				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
-			}
-			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRspQryRiskGroupAccountPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepAccountField::FieldID:
-				{
-					Account = ::Allocate<StepAccountField>();
-					memset(Account, 0, sizeof(*Account));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::AccountID:
-							{
-								size_t len = value.length() >= sizeof(Account->AccountID) ? sizeof(Account->AccountID) - 1 : value.length();
-								memcpy(Account->AccountID, value.c_str(), len);
-								break;
-							}
-							case Items::AccountType:
-							{
-								Account->AccountType = (AccountTypeType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::AccountStatus:
-							{
-								Account->AccountStatus = (AccountStatusType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::TradeGroupID:
-							{
-								Account->TradeGroupID = atoi(value.c_str());
-								break;
-							}
-							case Items::RiskGroupID:
-							{
-								Account->RiskGroupID = atoi(value.c_str());
-								break;
-							}
-							case Items::CommissionGroupID:
-							{
-								Account->CommissionGroupID = atoi(value.c_str());
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspQryRiskGroupAccountPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				case StepRspInfoField::FieldID:
-				{
-					RspInfo = ::Allocate<StepRspInfoField>();
-					memset(RspInfo, 0, sizeof(*RspInfo));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::ErrorID:
-							{
-								RspInfo->ErrorID = atoi(value.c_str());
-								break;
-							}
-							case Items::ErrorMsg:
-							{
-								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
-								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspQryRiskGroupAccountPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspQryRiskGroupAccountPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRspQryRiskGroupAccountPackage::GetDebugString() const
-	{
-		if (Account == nullptr && RspInfo == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (Account != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountPackage:AccountID:[%s], AccountType:[%d], AccountStatus:[%d], TradeGroupID:[%d], RiskGroupID:[%d], CommissionGroupID:[%d]", 
-				Account->AccountID, (int)Account->AccountType, (int)Account->AccountStatus, Account->TradeGroupID, Account->RiskGroupID, Account->CommissionGroupID);
-		}
-		if (RspInfo != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", 
-				RspInfo->ErrorID, RspInfo->ErrorMsg);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepReqQryRiskGroupCapitalPackage::StepReqQryRiskGroupCapitalPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepReqQryRiskGroupCapitalPackage* StepReqQryRiskGroupCapitalPackage::Allocate()
-	{
-		return ::Allocate<StepReqQryRiskGroupCapitalPackage>();
-	}
-	void StepReqQryRiskGroupCapitalPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (ReqQryRiskGroupCapital != nullptr)
-		{
-			::Free<StepReqQryRiskGroupCapitalField>(ReqQryRiskGroupCapital);
-			ReqQryRiskGroupCapital = nullptr;
-		}
-		MemCacheTemplateSingleton<StepReqQryRiskGroupCapitalPackage>::GetInstance().Free(this);
-	}
-	void StepReqQryRiskGroupCapitalPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepReqQryRiskGroupCapitalPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (ReqQryRiskGroupCapital != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryRiskGroupCapitalField::FieldID);
-			if (strlen(ReqQryRiskGroupCapital->UserID) >= sizeof(ReqQryRiskGroupCapital->UserID))
-			{
-				ReqQryRiskGroupCapital->UserID[sizeof(ReqQryRiskGroupCapital->UserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::UserID, ReqQryRiskGroupCapital->UserID);
-			if (strlen(ReqQryRiskGroupCapital->AccountID) >= sizeof(ReqQryRiskGroupCapital->AccountID))
-			{
-				ReqQryRiskGroupCapital->AccountID[sizeof(ReqQryRiskGroupCapital->AccountID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AccountID, ReqQryRiskGroupCapital->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryRiskGroupCapitalField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepReqQryRiskGroupCapitalPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepReqQryRiskGroupCapitalField::FieldID:
-				{
-					ReqQryRiskGroupCapital = ::Allocate<StepReqQryRiskGroupCapitalField>();
-					memset(ReqQryRiskGroupCapital, 0, sizeof(*ReqQryRiskGroupCapital));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::UserID:
-							{
-								size_t len = value.length() >= sizeof(ReqQryRiskGroupCapital->UserID) ? sizeof(ReqQryRiskGroupCapital->UserID) - 1 : value.length();
-								memcpy(ReqQryRiskGroupCapital->UserID, value.c_str(), len);
-								break;
-							}
-							case Items::AccountID:
-							{
-								size_t len = value.length() >= sizeof(ReqQryRiskGroupCapital->AccountID) ? sizeof(ReqQryRiskGroupCapital->AccountID) - 1 : value.length();
-								memcpy(ReqQryRiskGroupCapital->AccountID, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryRiskGroupCapitalField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqQryRiskGroupCapitalPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqQryRiskGroupCapitalPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepReqQryRiskGroupCapitalPackage::GetDebugString() const
-	{
-		if (ReqQryRiskGroupCapital == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (ReqQryRiskGroupCapital != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupCapitalPackage:UserID:[%s], AccountID:[%s]", 
-				ReqQryRiskGroupCapital->UserID, ReqQryRiskGroupCapital->AccountID);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRspQryRiskGroupCapitalPackage::StepRspQryRiskGroupCapitalPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRspQryRiskGroupCapitalPackage* StepRspQryRiskGroupCapitalPackage::Allocate()
-	{
-		return ::Allocate<StepRspQryRiskGroupCapitalPackage>();
-	}
-	void StepRspQryRiskGroupCapitalPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (Capital != nullptr)
-		{
-			::Free<StepCapitalField>(Capital);
-			Capital = nullptr;
-		}
-		if (RspInfo != nullptr)
-		{
-			::Free<StepRspInfoField>(RspInfo);
-			RspInfo = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRspQryRiskGroupCapitalPackage>::GetInstance().Free(this);
-	}
-	void StepRspQryRiskGroupCapitalPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRspQryRiskGroupCapitalPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (Capital != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepCapitalField::FieldID);
-			if (strlen(Capital->TradingDay) >= sizeof(Capital->TradingDay))
-			{
-				Capital->TradingDay[sizeof(Capital->TradingDay) - 1] = 0;
-			}
-			WriteString(ppos, Items::TradingDay, Capital->TradingDay);
-			if (strlen(Capital->AccountID) >= sizeof(Capital->AccountID))
-			{
-				Capital->AccountID[sizeof(Capital->AccountID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AccountID, Capital->AccountID);
-			WriteString(ppos, Items::AccountType, (int)Capital->AccountType);
-			WriteString(ppos, Items::Asset, Capital->Asset);
-			WriteString(ppos, Items::PreAsset, Capital->PreAsset);
-			WriteString(ppos, Items::CashAsset, Capital->CashAsset);
-			WriteString(ppos, Items::PreCashAsset, Capital->PreCashAsset);
-			WriteString(ppos, Items::Available, Capital->Available);
-			WriteString(ppos, Items::CashIn, Capital->CashIn);
-			WriteString(ppos, Items::CashOut, Capital->CashOut);
-			WriteString(ppos, Items::Margin, Capital->Margin);
-			WriteString(ppos, Items::Commission, Capital->Commission);
-			WriteString(ppos, Items::StampTax, Capital->StampTax);
-			WriteString(ppos, Items::TransferFee, Capital->TransferFee);
-			WriteString(ppos, Items::FrozenCash, Capital->FrozenCash);
-			WriteString(ppos, Items::FrozenMargin, Capital->FrozenMargin);
-			WriteString(ppos, Items::FrozenCommission, Capital->FrozenCommission);
-			WriteString(ppos, Items::FrozenStampTax, Capital->FrozenStampTax);
-			WriteString(ppos, Items::FrozenTransferFee, Capital->FrozenTransferFee);
-			WriteString(ppos, Items::MarketValue, Capital->MarketValue);
-			WriteString(ppos, Items::TotalProfit, Capital->TotalProfit);
-			WriteString(ppos, Items::TodayProfit, Capital->TodayProfit);
-			WriteString(ppos, Items::Deposit, Capital->Deposit);
-			WriteString(ppos, Items::Withdraw, Capital->Withdraw);
-			WriteHexString(ppos, Items::FieldEnd, StepCapitalField::FieldID);
-		}
-		if (RspInfo != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
-			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
-			{
-				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
-			}
-			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRspQryRiskGroupCapitalPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepCapitalField::FieldID:
-				{
-					Capital = ::Allocate<StepCapitalField>();
-					memset(Capital, 0, sizeof(*Capital));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::TradingDay:
-							{
-								size_t len = value.length() >= sizeof(Capital->TradingDay) ? sizeof(Capital->TradingDay) - 1 : value.length();
-								memcpy(Capital->TradingDay, value.c_str(), len);
-								break;
-							}
-							case Items::AccountID:
-							{
-								size_t len = value.length() >= sizeof(Capital->AccountID) ? sizeof(Capital->AccountID) - 1 : value.length();
-								memcpy(Capital->AccountID, value.c_str(), len);
-								break;
-							}
-							case Items::AccountType:
-							{
-								Capital->AccountType = (AccountTypeType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::Asset:
-							{
-								Capital->Asset = atof(value.c_str());
-								break;
-							}
-							case Items::PreAsset:
-							{
-								Capital->PreAsset = atof(value.c_str());
-								break;
-							}
-							case Items::CashAsset:
-							{
-								Capital->CashAsset = atof(value.c_str());
-								break;
-							}
-							case Items::PreCashAsset:
-							{
-								Capital->PreCashAsset = atof(value.c_str());
-								break;
-							}
-							case Items::Available:
-							{
-								Capital->Available = atof(value.c_str());
-								break;
-							}
-							case Items::CashIn:
-							{
-								Capital->CashIn = atof(value.c_str());
-								break;
-							}
-							case Items::CashOut:
-							{
-								Capital->CashOut = atof(value.c_str());
-								break;
-							}
-							case Items::Margin:
-							{
-								Capital->Margin = atof(value.c_str());
-								break;
-							}
-							case Items::Commission:
-							{
-								Capital->Commission = atof(value.c_str());
-								break;
-							}
-							case Items::StampTax:
-							{
-								Capital->StampTax = atof(value.c_str());
-								break;
-							}
-							case Items::TransferFee:
-							{
-								Capital->TransferFee = atof(value.c_str());
-								break;
-							}
-							case Items::FrozenCash:
-							{
-								Capital->FrozenCash = atof(value.c_str());
-								break;
-							}
-							case Items::FrozenMargin:
-							{
-								Capital->FrozenMargin = atof(value.c_str());
-								break;
-							}
-							case Items::FrozenCommission:
-							{
-								Capital->FrozenCommission = atof(value.c_str());
-								break;
-							}
-							case Items::FrozenStampTax:
-							{
-								Capital->FrozenStampTax = atof(value.c_str());
-								break;
-							}
-							case Items::FrozenTransferFee:
-							{
-								Capital->FrozenTransferFee = atof(value.c_str());
-								break;
-							}
-							case Items::MarketValue:
-							{
-								Capital->MarketValue = atof(value.c_str());
-								break;
-							}
-							case Items::TotalProfit:
-							{
-								Capital->TotalProfit = atof(value.c_str());
-								break;
-							}
-							case Items::TodayProfit:
-							{
-								Capital->TodayProfit = atof(value.c_str());
-								break;
-							}
-							case Items::Deposit:
-							{
-								Capital->Deposit = atof(value.c_str());
-								break;
-							}
-							case Items::Withdraw:
-							{
-								Capital->Withdraw = atof(value.c_str());
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepCapitalField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspQryRiskGroupCapitalPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				case StepRspInfoField::FieldID:
-				{
-					RspInfo = ::Allocate<StepRspInfoField>();
-					memset(RspInfo, 0, sizeof(*RspInfo));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::ErrorID:
-							{
-								RspInfo->ErrorID = atoi(value.c_str());
-								break;
-							}
-							case Items::ErrorMsg:
-							{
-								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
-								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspQryRiskGroupCapitalPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspQryRiskGroupCapitalPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRspQryRiskGroupCapitalPackage::GetDebugString() const
-	{
-		if (Capital == nullptr && RspInfo == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (Capital != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupCapitalPackage:TradingDay:[%s], AccountID:[%s], AccountType:[%d], Asset:[%f], PreAsset:[%f], CashAsset:[%f], PreCashAsset:[%f], Available:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f], MarketValue:[%f], TotalProfit:[%f], TodayProfit:[%f], Deposit:[%f], Withdraw:[%f]", 
-				Capital->TradingDay, Capital->AccountID, (int)Capital->AccountType, Capital->Asset, Capital->PreAsset, Capital->CashAsset, Capital->PreCashAsset, Capital->Available, Capital->CashIn, Capital->CashOut, Capital->Margin, Capital->Commission, Capital->StampTax, Capital->TransferFee, Capital->FrozenCash, Capital->FrozenMargin, Capital->FrozenCommission, Capital->FrozenStampTax, Capital->FrozenTransferFee, Capital->MarketValue, Capital->TotalProfit, Capital->TodayProfit, Capital->Deposit, Capital->Withdraw);
-		}
-		if (RspInfo != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupCapitalPackage:ErrorID:[%d], ErrorMsg:[%s]", 
-				RspInfo->ErrorID, RspInfo->ErrorMsg);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepReqQryRiskGroupPositionPackage::StepReqQryRiskGroupPositionPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepReqQryRiskGroupPositionPackage* StepReqQryRiskGroupPositionPackage::Allocate()
-	{
-		return ::Allocate<StepReqQryRiskGroupPositionPackage>();
-	}
-	void StepReqQryRiskGroupPositionPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (ReqQryRiskGroupPosition != nullptr)
-		{
-			::Free<StepReqQryRiskGroupPositionField>(ReqQryRiskGroupPosition);
-			ReqQryRiskGroupPosition = nullptr;
-		}
-		MemCacheTemplateSingleton<StepReqQryRiskGroupPositionPackage>::GetInstance().Free(this);
-	}
-	void StepReqQryRiskGroupPositionPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepReqQryRiskGroupPositionPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (ReqQryRiskGroupPosition != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryRiskGroupPositionField::FieldID);
-			if (strlen(ReqQryRiskGroupPosition->UserID) >= sizeof(ReqQryRiskGroupPosition->UserID))
-			{
-				ReqQryRiskGroupPosition->UserID[sizeof(ReqQryRiskGroupPosition->UserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::UserID, ReqQryRiskGroupPosition->UserID);
-			if (strlen(ReqQryRiskGroupPosition->AccountID) >= sizeof(ReqQryRiskGroupPosition->AccountID))
-			{
-				ReqQryRiskGroupPosition->AccountID[sizeof(ReqQryRiskGroupPosition->AccountID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AccountID, ReqQryRiskGroupPosition->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryRiskGroupPositionField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepReqQryRiskGroupPositionPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepReqQryRiskGroupPositionField::FieldID:
-				{
-					ReqQryRiskGroupPosition = ::Allocate<StepReqQryRiskGroupPositionField>();
-					memset(ReqQryRiskGroupPosition, 0, sizeof(*ReqQryRiskGroupPosition));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::UserID:
-							{
-								size_t len = value.length() >= sizeof(ReqQryRiskGroupPosition->UserID) ? sizeof(ReqQryRiskGroupPosition->UserID) - 1 : value.length();
-								memcpy(ReqQryRiskGroupPosition->UserID, value.c_str(), len);
-								break;
-							}
-							case Items::AccountID:
-							{
-								size_t len = value.length() >= sizeof(ReqQryRiskGroupPosition->AccountID) ? sizeof(ReqQryRiskGroupPosition->AccountID) - 1 : value.length();
-								memcpy(ReqQryRiskGroupPosition->AccountID, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryRiskGroupPositionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqQryRiskGroupPositionPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqQryRiskGroupPositionPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepReqQryRiskGroupPositionPackage::GetDebugString() const
-	{
-		if (ReqQryRiskGroupPosition == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (ReqQryRiskGroupPosition != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupPositionPackage:UserID:[%s], AccountID:[%s]", 
-				ReqQryRiskGroupPosition->UserID, ReqQryRiskGroupPosition->AccountID);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRspQryRiskGroupPositionPackage::StepRspQryRiskGroupPositionPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRspQryRiskGroupPositionPackage* StepRspQryRiskGroupPositionPackage::Allocate()
-	{
-		return ::Allocate<StepRspQryRiskGroupPositionPackage>();
-	}
-	void StepRspQryRiskGroupPositionPackage::Free()
+	void StepRtnPositionPackage::Free()
 	{
 		SessionID = 0;
 		memset(IPAddress, 0, sizeof(IPAddressType));
@@ -11218,28 +7790,23 @@ namespace step
 		Head.PackageID = PackageID;
 		if (Position != nullptr)
 		{
-			::Free<StepPositionField>(Position);
+			::Free<PositionField>(Position);
 			Position = nullptr;
 		}
-		if (RspInfo != nullptr)
-		{
-			::Free<StepRspInfoField>(RspInfo);
-			RspInfo = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRspQryRiskGroupPositionPackage>::GetInstance().Free(this);
+		MemCacheTemplateSingleton<StepRtnPositionPackage>::GetInstance().Free(this);
 	}
-	void StepRspQryRiskGroupPositionPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	void StepRtnPositionPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
 	{
 		SessionID = sessionID;
 		Head.MessageChain = messageChain;
 		Head.MsgSeqNum = msgSeqNum;
 	}
-	int StepRspQryRiskGroupPositionPackage::ToProtocolStream(char* buff, int size) const
+	int StepRtnPositionPackage::ToProtocolStream(char* buff, int size) const
 	{
 		char* ppos = buff;
 		if (Position != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepPositionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, PositionField::FieldID);
 			if (strlen(Position->TradingDay) >= sizeof(Position->TradingDay))
 			{
 				Position->TradingDay[sizeof(Position->TradingDay) - 1] = 0;
@@ -11282,22 +7849,11 @@ namespace step
 			WriteString(ppos, Items::TodayProfit, Position->TodayProfit);
 			WriteString(ppos, Items::LastPrice, Position->LastPrice);
 			WriteString(ppos, Items::PrePrice, Position->PrePrice);
-			WriteHexString(ppos, Items::FieldEnd, StepPositionField::FieldID);
-		}
-		if (RspInfo != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
-			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
-			{
-				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
-			}
-			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, PositionField::FieldID);
 		}
 		return int(ppos - buff);
 	}
-	bool StepRspQryRiskGroupPositionPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	bool StepRtnPositionPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
 	{
 		while (startIndex < endIndex)
 		{
@@ -11309,9 +7865,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepPositionField::FieldID:
+				case PositionField::FieldID:
 				{
-					Position = ::Allocate<StepPositionField>();
+					Position = ::Allocate<PositionField>();
 					memset(Position, 0, sizeof(*Position));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -11460,22 +8016,732 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepPositionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for PositionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
 						}
 						else
 						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspQryRiskGroupPositionPackage FieldID:0x%X", fieldID);
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnPositionPackage FieldID:0x%X", fieldID);
 							return false;
 						}
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnPositionPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnPositionPackage::GetDebugString() const
+	{
+		if (Position == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (Position != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnPositionPackage:TradingDay:[%s], AccountID:[%s], AccountType:[%d], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], PosiDirection:[%d], TotalPosition:[%d], PositionFrozen:[%d], TodayPosition:[%d], TotalCostPrice:[%f], TodayCostPrice:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], MarketValue:[%f], VolumeMultiple:[%d], TotalCost:[%f], TodayCost:[%f], TotalProfit:[%f], TodayProfit:[%f], LastPrice:[%f], PrePrice:[%f]", 
+				Position->TradingDay, Position->AccountID, (int)Position->AccountType, Position->ExchangeID, Position->InstrumentID, (int)Position->SecurityType, (int)Position->PosiDirection, Position->TotalPosition, Position->PositionFrozen, Position->TodayPosition, Position->TotalCostPrice, Position->TodayCostPrice, Position->CashIn, Position->CashOut, Position->Margin, Position->Commission, Position->StampTax, Position->TransferFee, Position->MarketValue, Position->VolumeMultiple, Position->TotalCost, Position->TodayCost, Position->TotalProfit, Position->TodayProfit, Position->LastPrice, Position->PrePrice);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnAccountRiskPackage::StepRtnAccountRiskPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnAccountRiskPackage* StepRtnAccountRiskPackage::Allocate()
+	{
+		return ::Allocate<StepRtnAccountRiskPackage>();
+	}
+	void StepRtnAccountRiskPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (AccountRisk != nullptr)
+		{
+			::Free<AccountRiskField>(AccountRisk);
+			AccountRisk = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnAccountRiskPackage>::GetInstance().Free(this);
+	}
+	void StepRtnAccountRiskPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnAccountRiskPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (AccountRisk != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, AccountRiskField::FieldID);
+			if (strlen(AccountRisk->AccountID) >= sizeof(AccountRisk->AccountID))
+			{
+				AccountRisk->AccountID[sizeof(AccountRisk->AccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AccountID, AccountRisk->AccountID);
+			WriteString(ppos, Items::RiskID, AccountRisk->RiskID);
+			WriteString(ppos, Items::RiskStatus, (int)AccountRisk->RiskStatus);
+			WriteHexString(ppos, Items::FieldEnd, AccountRiskField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnAccountRiskPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+				case AccountRiskField::FieldID:
+				{
+					AccountRisk = ::Allocate<AccountRiskField>();
+					memset(AccountRisk, 0, sizeof(*AccountRisk));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::AccountID:
+							{
+								size_t len = value.length() >= sizeof(AccountRisk->AccountID) ? sizeof(AccountRisk->AccountID) - 1 : value.length();
+								memcpy(AccountRisk->AccountID, value.c_str(), len);
+								break;
+							}
+							case Items::RiskID:
+							{
+								AccountRisk->RiskID = atoi(value.c_str());
+								break;
+							}
+							case Items::RiskStatus:
+							{
+								AccountRisk->RiskStatus = (RiskStatusType)(atoi(value.c_str()));
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for AccountRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnAccountRiskPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnAccountRiskPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnAccountRiskPackage::GetDebugString() const
+	{
+		if (AccountRisk == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (AccountRisk != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountRiskPackage:AccountID:[%s], RiskID:[%d], RiskStatus:[%d]", 
+				AccountRisk->AccountID, AccountRisk->RiskID, (int)AccountRisk->RiskStatus);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnAccountRiskDeletePackage::StepRtnAccountRiskDeletePackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnAccountRiskDeletePackage* StepRtnAccountRiskDeletePackage::Allocate()
+	{
+		return ::Allocate<StepRtnAccountRiskDeletePackage>();
+	}
+	void StepRtnAccountRiskDeletePackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (AccountRiskDelete != nullptr)
+		{
+			::Free<AccountRiskDeleteField>(AccountRiskDelete);
+			AccountRiskDelete = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnAccountRiskDeletePackage>::GetInstance().Free(this);
+	}
+	void StepRtnAccountRiskDeletePackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnAccountRiskDeletePackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (AccountRiskDelete != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, AccountRiskDeleteField::FieldID);
+			if (strlen(AccountRiskDelete->AccountID) >= sizeof(AccountRiskDelete->AccountID))
+			{
+				AccountRiskDelete->AccountID[sizeof(AccountRiskDelete->AccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AccountID, AccountRiskDelete->AccountID);
+			WriteString(ppos, Items::RiskID, AccountRiskDelete->RiskID);
+			WriteHexString(ppos, Items::FieldEnd, AccountRiskDeleteField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnAccountRiskDeletePackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case AccountRiskDeleteField::FieldID:
+				{
+					AccountRiskDelete = ::Allocate<AccountRiskDeleteField>();
+					memset(AccountRiskDelete, 0, sizeof(*AccountRiskDelete));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::AccountID:
+							{
+								size_t len = value.length() >= sizeof(AccountRiskDelete->AccountID) ? sizeof(AccountRiskDelete->AccountID) - 1 : value.length();
+								memcpy(AccountRiskDelete->AccountID, value.c_str(), len);
+								break;
+							}
+							case Items::RiskID:
+							{
+								AccountRiskDelete->RiskID = atoi(value.c_str());
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for AccountRiskDeleteField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnAccountRiskDeletePackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnAccountRiskDeletePackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnAccountRiskDeletePackage::GetDebugString() const
+	{
+		if (AccountRiskDelete == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (AccountRiskDelete != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountRiskDeletePackage:AccountID:[%s], RiskID:[%d]", 
+				AccountRiskDelete->AccountID, AccountRiskDelete->RiskID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnAccountRiskNotifyPackage::StepRtnAccountRiskNotifyPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnAccountRiskNotifyPackage* StepRtnAccountRiskNotifyPackage::Allocate()
+	{
+		return ::Allocate<StepRtnAccountRiskNotifyPackage>();
+	}
+	void StepRtnAccountRiskNotifyPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (AccountRiskNotify != nullptr)
+		{
+			::Free<AccountRiskNotifyField>(AccountRiskNotify);
+			AccountRiskNotify = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnAccountRiskNotifyPackage>::GetInstance().Free(this);
+	}
+	void StepRtnAccountRiskNotifyPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnAccountRiskNotifyPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (AccountRiskNotify != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, AccountRiskNotifyField::FieldID);
+			if (strlen(AccountRiskNotify->NotifyDate) >= sizeof(AccountRiskNotify->NotifyDate))
+			{
+				AccountRiskNotify->NotifyDate[sizeof(AccountRiskNotify->NotifyDate) - 1] = 0;
+			}
+			WriteString(ppos, Items::NotifyDate, AccountRiskNotify->NotifyDate);
+			if (strlen(AccountRiskNotify->NotifyTime) >= sizeof(AccountRiskNotify->NotifyTime))
+			{
+				AccountRiskNotify->NotifyTime[sizeof(AccountRiskNotify->NotifyTime) - 1] = 0;
+			}
+			WriteString(ppos, Items::NotifyTime, AccountRiskNotify->NotifyTime);
+			if (strlen(AccountRiskNotify->AccountID) >= sizeof(AccountRiskNotify->AccountID))
+			{
+				AccountRiskNotify->AccountID[sizeof(AccountRiskNotify->AccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AccountID, AccountRiskNotify->AccountID);
+			WriteString(ppos, Items::RiskID, AccountRiskNotify->RiskID);
+			WriteString(ppos, Items::RiskRuleID, AccountRiskNotify->RiskRuleID);
+			WriteString(ppos, Items::RiskStatus, (int)AccountRiskNotify->RiskStatus);
+			if (strlen(AccountRiskNotify->RiskMessage) >= sizeof(AccountRiskNotify->RiskMessage))
+			{
+				AccountRiskNotify->RiskMessage[sizeof(AccountRiskNotify->RiskMessage) - 1] = 0;
+			}
+			WriteString(ppos, Items::RiskMessage, AccountRiskNotify->RiskMessage);
+			WriteHexString(ppos, Items::FieldEnd, AccountRiskNotifyField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnAccountRiskNotifyPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case AccountRiskNotifyField::FieldID:
+				{
+					AccountRiskNotify = ::Allocate<AccountRiskNotifyField>();
+					memset(AccountRiskNotify, 0, sizeof(*AccountRiskNotify));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::NotifyDate:
+							{
+								size_t len = value.length() >= sizeof(AccountRiskNotify->NotifyDate) ? sizeof(AccountRiskNotify->NotifyDate) - 1 : value.length();
+								memcpy(AccountRiskNotify->NotifyDate, value.c_str(), len);
+								break;
+							}
+							case Items::NotifyTime:
+							{
+								size_t len = value.length() >= sizeof(AccountRiskNotify->NotifyTime) ? sizeof(AccountRiskNotify->NotifyTime) - 1 : value.length();
+								memcpy(AccountRiskNotify->NotifyTime, value.c_str(), len);
+								break;
+							}
+							case Items::AccountID:
+							{
+								size_t len = value.length() >= sizeof(AccountRiskNotify->AccountID) ? sizeof(AccountRiskNotify->AccountID) - 1 : value.length();
+								memcpy(AccountRiskNotify->AccountID, value.c_str(), len);
+								break;
+							}
+							case Items::RiskID:
+							{
+								AccountRiskNotify->RiskID = atoi(value.c_str());
+								break;
+							}
+							case Items::RiskRuleID:
+							{
+								AccountRiskNotify->RiskRuleID = atoi(value.c_str());
+								break;
+							}
+							case Items::RiskStatus:
+							{
+								AccountRiskNotify->RiskStatus = (RiskStatusType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::RiskMessage:
+							{
+								size_t len = value.length() >= sizeof(AccountRiskNotify->RiskMessage) ? sizeof(AccountRiskNotify->RiskMessage) - 1 : value.length();
+								memcpy(AccountRiskNotify->RiskMessage, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for AccountRiskNotifyField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnAccountRiskNotifyPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnAccountRiskNotifyPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnAccountRiskNotifyPackage::GetDebugString() const
+	{
+		if (AccountRiskNotify == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (AccountRiskNotify != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAccountRiskNotifyPackage:NotifyDate:[%s], NotifyTime:[%s], AccountID:[%s], RiskID:[%d], RiskRuleID:[%d], RiskStatus:[%d], RiskMessage:[%s]", 
+				AccountRiskNotify->NotifyDate, AccountRiskNotify->NotifyTime, AccountRiskNotify->AccountID, AccountRiskNotify->RiskID, AccountRiskNotify->RiskRuleID, (int)AccountRiskNotify->RiskStatus, AccountRiskNotify->RiskMessage);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqQryRiskGroupAccountPackage::StepReqQryRiskGroupAccountPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqQryRiskGroupAccountPackage* StepReqQryRiskGroupAccountPackage::Allocate()
+	{
+		return ::Allocate<StepReqQryRiskGroupAccountPackage>();
+	}
+	void StepReqQryRiskGroupAccountPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqQryRiskGroupAccount != nullptr)
+		{
+			::Free<ReqQryRiskGroupAccountField>(ReqQryRiskGroupAccount);
+			ReqQryRiskGroupAccount = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqQryRiskGroupAccountPackage>::GetInstance().Free(this);
+	}
+	void StepReqQryRiskGroupAccountPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqQryRiskGroupAccountPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqQryRiskGroupAccount != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupAccountField::FieldID);
+			if (strlen(ReqQryRiskGroupAccount->UserID) >= sizeof(ReqQryRiskGroupAccount->UserID))
+			{
+				ReqQryRiskGroupAccount->UserID[sizeof(ReqQryRiskGroupAccount->UserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::UserID, ReqQryRiskGroupAccount->UserID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupAccountField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqQryRiskGroupAccountPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqQryRiskGroupAccountField::FieldID:
+				{
+					ReqQryRiskGroupAccount = ::Allocate<ReqQryRiskGroupAccountField>();
+					memset(ReqQryRiskGroupAccount, 0, sizeof(*ReqQryRiskGroupAccount));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::UserID:
+							{
+								size_t len = value.length() >= sizeof(ReqQryRiskGroupAccount->UserID) ? sizeof(ReqQryRiskGroupAccount->UserID) - 1 : value.length();
+								memcpy(ReqQryRiskGroupAccount->UserID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryRiskGroupAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqQryRiskGroupAccountPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqQryRiskGroupAccountPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqQryRiskGroupAccountPackage::GetDebugString() const
+	{
+		if (ReqQryRiskGroupAccount == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqQryRiskGroupAccount != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupAccountPackage:UserID:[%s]", 
+				ReqQryRiskGroupAccount->UserID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspQryRiskGroupAccountPackage::StepRspQryRiskGroupAccountPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspQryRiskGroupAccountPackage* StepRspQryRiskGroupAccountPackage::Allocate()
+	{
+		return ::Allocate<StepRspQryRiskGroupAccountPackage>();
+	}
+	void StepRspQryRiskGroupAccountPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (Account != nullptr)
+		{
+			::Free<AccountField>(Account);
+			Account = nullptr;
+		}
+		if (RspInfo != nullptr)
+		{
+			::Free<RspInfoField>(RspInfo);
+			RspInfo = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspQryRiskGroupAccountPackage>::GetInstance().Free(this);
+	}
+	void StepRspQryRiskGroupAccountPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspQryRiskGroupAccountPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (Account != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, AccountField::FieldID);
+			if (strlen(Account->AccountID) >= sizeof(Account->AccountID))
+			{
+				Account->AccountID[sizeof(Account->AccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AccountID, Account->AccountID);
+			WriteString(ppos, Items::AccountType, (int)Account->AccountType);
+			WriteString(ppos, Items::AccountStatus, (int)Account->AccountStatus);
+			WriteString(ppos, Items::TradeGroupID, Account->TradeGroupID);
+			WriteString(ppos, Items::RiskGroupID, Account->RiskGroupID);
+			WriteString(ppos, Items::CommissionGroupID, Account->CommissionGroupID);
+			WriteHexString(ppos, Items::FieldEnd, AccountField::FieldID);
+		}
+		if (RspInfo != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
+			{
+				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspQryRiskGroupAccountPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case AccountField::FieldID:
+				{
+					Account = ::Allocate<AccountField>();
+					memset(Account, 0, sizeof(*Account));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::AccountID:
+							{
+								size_t len = value.length() >= sizeof(Account->AccountID) ? sizeof(Account->AccountID) - 1 : value.length();
+								memcpy(Account->AccountID, value.c_str(), len);
+								break;
+							}
+							case Items::AccountType:
+							{
+								Account->AccountType = (AccountTypeType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::AccountStatus:
+							{
+								Account->AccountStatus = (AccountStatusType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::TradeGroupID:
+							{
+								Account->TradeGroupID = atoi(value.c_str());
+								break;
+							}
+							case Items::RiskGroupID:
+							{
+								Account->RiskGroupID = atoi(value.c_str());
+								break;
+							}
+							case Items::CommissionGroupID:
+							{
+								Account->CommissionGroupID = atoi(value.c_str());
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for AccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspQryRiskGroupAccountPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				case RspInfoField::FieldID:
+				{
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -11501,7 +8767,937 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspQryRiskGroupAccountPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspQryRiskGroupAccountPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRspQryRiskGroupAccountPackage::GetDebugString() const
+	{
+		if (Account == nullptr && RspInfo == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (Account != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountPackage:AccountID:[%s], AccountType:[%d], AccountStatus:[%d], TradeGroupID:[%d], RiskGroupID:[%d], CommissionGroupID:[%d]", 
+				Account->AccountID, (int)Account->AccountType, (int)Account->AccountStatus, Account->TradeGroupID, Account->RiskGroupID, Account->CommissionGroupID);
+		}
+		if (RspInfo != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupAccountPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqQryRiskGroupCapitalPackage::StepReqQryRiskGroupCapitalPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqQryRiskGroupCapitalPackage* StepReqQryRiskGroupCapitalPackage::Allocate()
+	{
+		return ::Allocate<StepReqQryRiskGroupCapitalPackage>();
+	}
+	void StepReqQryRiskGroupCapitalPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqQryRiskGroupCapital != nullptr)
+		{
+			::Free<ReqQryRiskGroupCapitalField>(ReqQryRiskGroupCapital);
+			ReqQryRiskGroupCapital = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqQryRiskGroupCapitalPackage>::GetInstance().Free(this);
+	}
+	void StepReqQryRiskGroupCapitalPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqQryRiskGroupCapitalPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqQryRiskGroupCapital != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupCapitalField::FieldID);
+			if (strlen(ReqQryRiskGroupCapital->UserID) >= sizeof(ReqQryRiskGroupCapital->UserID))
+			{
+				ReqQryRiskGroupCapital->UserID[sizeof(ReqQryRiskGroupCapital->UserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::UserID, ReqQryRiskGroupCapital->UserID);
+			if (strlen(ReqQryRiskGroupCapital->AccountID) >= sizeof(ReqQryRiskGroupCapital->AccountID))
+			{
+				ReqQryRiskGroupCapital->AccountID[sizeof(ReqQryRiskGroupCapital->AccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AccountID, ReqQryRiskGroupCapital->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupCapitalField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqQryRiskGroupCapitalPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqQryRiskGroupCapitalField::FieldID:
+				{
+					ReqQryRiskGroupCapital = ::Allocate<ReqQryRiskGroupCapitalField>();
+					memset(ReqQryRiskGroupCapital, 0, sizeof(*ReqQryRiskGroupCapital));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::UserID:
+							{
+								size_t len = value.length() >= sizeof(ReqQryRiskGroupCapital->UserID) ? sizeof(ReqQryRiskGroupCapital->UserID) - 1 : value.length();
+								memcpy(ReqQryRiskGroupCapital->UserID, value.c_str(), len);
+								break;
+							}
+							case Items::AccountID:
+							{
+								size_t len = value.length() >= sizeof(ReqQryRiskGroupCapital->AccountID) ? sizeof(ReqQryRiskGroupCapital->AccountID) - 1 : value.length();
+								memcpy(ReqQryRiskGroupCapital->AccountID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryRiskGroupCapitalField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqQryRiskGroupCapitalPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqQryRiskGroupCapitalPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqQryRiskGroupCapitalPackage::GetDebugString() const
+	{
+		if (ReqQryRiskGroupCapital == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqQryRiskGroupCapital != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupCapitalPackage:UserID:[%s], AccountID:[%s]", 
+				ReqQryRiskGroupCapital->UserID, ReqQryRiskGroupCapital->AccountID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspQryRiskGroupCapitalPackage::StepRspQryRiskGroupCapitalPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspQryRiskGroupCapitalPackage* StepRspQryRiskGroupCapitalPackage::Allocate()
+	{
+		return ::Allocate<StepRspQryRiskGroupCapitalPackage>();
+	}
+	void StepRspQryRiskGroupCapitalPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (Capital != nullptr)
+		{
+			::Free<CapitalField>(Capital);
+			Capital = nullptr;
+		}
+		if (RspInfo != nullptr)
+		{
+			::Free<RspInfoField>(RspInfo);
+			RspInfo = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspQryRiskGroupCapitalPackage>::GetInstance().Free(this);
+	}
+	void StepRspQryRiskGroupCapitalPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspQryRiskGroupCapitalPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (Capital != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, CapitalField::FieldID);
+			if (strlen(Capital->TradingDay) >= sizeof(Capital->TradingDay))
+			{
+				Capital->TradingDay[sizeof(Capital->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, Capital->TradingDay);
+			if (strlen(Capital->AccountID) >= sizeof(Capital->AccountID))
+			{
+				Capital->AccountID[sizeof(Capital->AccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AccountID, Capital->AccountID);
+			WriteString(ppos, Items::AccountType, (int)Capital->AccountType);
+			WriteString(ppos, Items::Asset, Capital->Asset);
+			WriteString(ppos, Items::PreAsset, Capital->PreAsset);
+			WriteString(ppos, Items::CashAsset, Capital->CashAsset);
+			WriteString(ppos, Items::PreCashAsset, Capital->PreCashAsset);
+			WriteString(ppos, Items::Available, Capital->Available);
+			WriteString(ppos, Items::CashIn, Capital->CashIn);
+			WriteString(ppos, Items::CashOut, Capital->CashOut);
+			WriteString(ppos, Items::Margin, Capital->Margin);
+			WriteString(ppos, Items::Commission, Capital->Commission);
+			WriteString(ppos, Items::StampTax, Capital->StampTax);
+			WriteString(ppos, Items::TransferFee, Capital->TransferFee);
+			WriteString(ppos, Items::FrozenCash, Capital->FrozenCash);
+			WriteString(ppos, Items::FrozenMargin, Capital->FrozenMargin);
+			WriteString(ppos, Items::FrozenCommission, Capital->FrozenCommission);
+			WriteString(ppos, Items::FrozenStampTax, Capital->FrozenStampTax);
+			WriteString(ppos, Items::FrozenTransferFee, Capital->FrozenTransferFee);
+			WriteString(ppos, Items::MarketValue, Capital->MarketValue);
+			WriteString(ppos, Items::TotalProfit, Capital->TotalProfit);
+			WriteString(ppos, Items::TodayProfit, Capital->TodayProfit);
+			WriteString(ppos, Items::Deposit, Capital->Deposit);
+			WriteString(ppos, Items::Withdraw, Capital->Withdraw);
+			WriteHexString(ppos, Items::FieldEnd, CapitalField::FieldID);
+		}
+		if (RspInfo != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
+			{
+				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspQryRiskGroupCapitalPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case CapitalField::FieldID:
+				{
+					Capital = ::Allocate<CapitalField>();
+					memset(Capital, 0, sizeof(*Capital));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(Capital->TradingDay) ? sizeof(Capital->TradingDay) - 1 : value.length();
+								memcpy(Capital->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::AccountID:
+							{
+								size_t len = value.length() >= sizeof(Capital->AccountID) ? sizeof(Capital->AccountID) - 1 : value.length();
+								memcpy(Capital->AccountID, value.c_str(), len);
+								break;
+							}
+							case Items::AccountType:
+							{
+								Capital->AccountType = (AccountTypeType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::Asset:
+							{
+								Capital->Asset = atof(value.c_str());
+								break;
+							}
+							case Items::PreAsset:
+							{
+								Capital->PreAsset = atof(value.c_str());
+								break;
+							}
+							case Items::CashAsset:
+							{
+								Capital->CashAsset = atof(value.c_str());
+								break;
+							}
+							case Items::PreCashAsset:
+							{
+								Capital->PreCashAsset = atof(value.c_str());
+								break;
+							}
+							case Items::Available:
+							{
+								Capital->Available = atof(value.c_str());
+								break;
+							}
+							case Items::CashIn:
+							{
+								Capital->CashIn = atof(value.c_str());
+								break;
+							}
+							case Items::CashOut:
+							{
+								Capital->CashOut = atof(value.c_str());
+								break;
+							}
+							case Items::Margin:
+							{
+								Capital->Margin = atof(value.c_str());
+								break;
+							}
+							case Items::Commission:
+							{
+								Capital->Commission = atof(value.c_str());
+								break;
+							}
+							case Items::StampTax:
+							{
+								Capital->StampTax = atof(value.c_str());
+								break;
+							}
+							case Items::TransferFee:
+							{
+								Capital->TransferFee = atof(value.c_str());
+								break;
+							}
+							case Items::FrozenCash:
+							{
+								Capital->FrozenCash = atof(value.c_str());
+								break;
+							}
+							case Items::FrozenMargin:
+							{
+								Capital->FrozenMargin = atof(value.c_str());
+								break;
+							}
+							case Items::FrozenCommission:
+							{
+								Capital->FrozenCommission = atof(value.c_str());
+								break;
+							}
+							case Items::FrozenStampTax:
+							{
+								Capital->FrozenStampTax = atof(value.c_str());
+								break;
+							}
+							case Items::FrozenTransferFee:
+							{
+								Capital->FrozenTransferFee = atof(value.c_str());
+								break;
+							}
+							case Items::MarketValue:
+							{
+								Capital->MarketValue = atof(value.c_str());
+								break;
+							}
+							case Items::TotalProfit:
+							{
+								Capital->TotalProfit = atof(value.c_str());
+								break;
+							}
+							case Items::TodayProfit:
+							{
+								Capital->TodayProfit = atof(value.c_str());
+								break;
+							}
+							case Items::Deposit:
+							{
+								Capital->Deposit = atof(value.c_str());
+								break;
+							}
+							case Items::Withdraw:
+							{
+								Capital->Withdraw = atof(value.c_str());
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for CapitalField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspQryRiskGroupCapitalPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				case RspInfoField::FieldID:
+				{
+					RspInfo = ::Allocate<RspInfoField>();
+					memset(RspInfo, 0, sizeof(*RspInfo));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ErrorID:
+							{
+								RspInfo->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
+								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspQryRiskGroupCapitalPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspQryRiskGroupCapitalPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRspQryRiskGroupCapitalPackage::GetDebugString() const
+	{
+		if (Capital == nullptr && RspInfo == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (Capital != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupCapitalPackage:TradingDay:[%s], AccountID:[%s], AccountType:[%d], Asset:[%f], PreAsset:[%f], CashAsset:[%f], PreCashAsset:[%f], Available:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f], MarketValue:[%f], TotalProfit:[%f], TodayProfit:[%f], Deposit:[%f], Withdraw:[%f]", 
+				Capital->TradingDay, Capital->AccountID, (int)Capital->AccountType, Capital->Asset, Capital->PreAsset, Capital->CashAsset, Capital->PreCashAsset, Capital->Available, Capital->CashIn, Capital->CashOut, Capital->Margin, Capital->Commission, Capital->StampTax, Capital->TransferFee, Capital->FrozenCash, Capital->FrozenMargin, Capital->FrozenCommission, Capital->FrozenStampTax, Capital->FrozenTransferFee, Capital->MarketValue, Capital->TotalProfit, Capital->TodayProfit, Capital->Deposit, Capital->Withdraw);
+		}
+		if (RspInfo != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryRiskGroupCapitalPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqQryRiskGroupPositionPackage::StepReqQryRiskGroupPositionPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqQryRiskGroupPositionPackage* StepReqQryRiskGroupPositionPackage::Allocate()
+	{
+		return ::Allocate<StepReqQryRiskGroupPositionPackage>();
+	}
+	void StepReqQryRiskGroupPositionPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqQryRiskGroupPosition != nullptr)
+		{
+			::Free<ReqQryRiskGroupPositionField>(ReqQryRiskGroupPosition);
+			ReqQryRiskGroupPosition = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqQryRiskGroupPositionPackage>::GetInstance().Free(this);
+	}
+	void StepReqQryRiskGroupPositionPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqQryRiskGroupPositionPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqQryRiskGroupPosition != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupPositionField::FieldID);
+			if (strlen(ReqQryRiskGroupPosition->UserID) >= sizeof(ReqQryRiskGroupPosition->UserID))
+			{
+				ReqQryRiskGroupPosition->UserID[sizeof(ReqQryRiskGroupPosition->UserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::UserID, ReqQryRiskGroupPosition->UserID);
+			if (strlen(ReqQryRiskGroupPosition->AccountID) >= sizeof(ReqQryRiskGroupPosition->AccountID))
+			{
+				ReqQryRiskGroupPosition->AccountID[sizeof(ReqQryRiskGroupPosition->AccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AccountID, ReqQryRiskGroupPosition->AccountID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupPositionField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqQryRiskGroupPositionPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqQryRiskGroupPositionField::FieldID:
+				{
+					ReqQryRiskGroupPosition = ::Allocate<ReqQryRiskGroupPositionField>();
+					memset(ReqQryRiskGroupPosition, 0, sizeof(*ReqQryRiskGroupPosition));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::UserID:
+							{
+								size_t len = value.length() >= sizeof(ReqQryRiskGroupPosition->UserID) ? sizeof(ReqQryRiskGroupPosition->UserID) - 1 : value.length();
+								memcpy(ReqQryRiskGroupPosition->UserID, value.c_str(), len);
+								break;
+							}
+							case Items::AccountID:
+							{
+								size_t len = value.length() >= sizeof(ReqQryRiskGroupPosition->AccountID) ? sizeof(ReqQryRiskGroupPosition->AccountID) - 1 : value.length();
+								memcpy(ReqQryRiskGroupPosition->AccountID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryRiskGroupPositionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqQryRiskGroupPositionPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqQryRiskGroupPositionPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqQryRiskGroupPositionPackage::GetDebugString() const
+	{
+		if (ReqQryRiskGroupPosition == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqQryRiskGroupPosition != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryRiskGroupPositionPackage:UserID:[%s], AccountID:[%s]", 
+				ReqQryRiskGroupPosition->UserID, ReqQryRiskGroupPosition->AccountID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspQryRiskGroupPositionPackage::StepRspQryRiskGroupPositionPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspQryRiskGroupPositionPackage* StepRspQryRiskGroupPositionPackage::Allocate()
+	{
+		return ::Allocate<StepRspQryRiskGroupPositionPackage>();
+	}
+	void StepRspQryRiskGroupPositionPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (Position != nullptr)
+		{
+			::Free<PositionField>(Position);
+			Position = nullptr;
+		}
+		if (RspInfo != nullptr)
+		{
+			::Free<RspInfoField>(RspInfo);
+			RspInfo = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspQryRiskGroupPositionPackage>::GetInstance().Free(this);
+	}
+	void StepRspQryRiskGroupPositionPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspQryRiskGroupPositionPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (Position != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, PositionField::FieldID);
+			if (strlen(Position->TradingDay) >= sizeof(Position->TradingDay))
+			{
+				Position->TradingDay[sizeof(Position->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, Position->TradingDay);
+			if (strlen(Position->AccountID) >= sizeof(Position->AccountID))
+			{
+				Position->AccountID[sizeof(Position->AccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AccountID, Position->AccountID);
+			WriteString(ppos, Items::AccountType, (int)Position->AccountType);
+			if (strlen(Position->ExchangeID) >= sizeof(Position->ExchangeID))
+			{
+				Position->ExchangeID[sizeof(Position->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, Position->ExchangeID);
+			if (strlen(Position->InstrumentID) >= sizeof(Position->InstrumentID))
+			{
+				Position->InstrumentID[sizeof(Position->InstrumentID) - 1] = 0;
+			}
+			WriteString(ppos, Items::InstrumentID, Position->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)Position->SecurityType);
+			WriteString(ppos, Items::PosiDirection, (int)Position->PosiDirection);
+			WriteString(ppos, Items::TotalPosition, Position->TotalPosition);
+			WriteString(ppos, Items::PositionFrozen, Position->PositionFrozen);
+			WriteString(ppos, Items::TodayPosition, Position->TodayPosition);
+			WriteString(ppos, Items::TotalCostPrice, Position->TotalCostPrice);
+			WriteString(ppos, Items::TodayCostPrice, Position->TodayCostPrice);
+			WriteString(ppos, Items::CashIn, Position->CashIn);
+			WriteString(ppos, Items::CashOut, Position->CashOut);
+			WriteString(ppos, Items::Margin, Position->Margin);
+			WriteString(ppos, Items::Commission, Position->Commission);
+			WriteString(ppos, Items::StampTax, Position->StampTax);
+			WriteString(ppos, Items::TransferFee, Position->TransferFee);
+			WriteString(ppos, Items::MarketValue, Position->MarketValue);
+			WriteString(ppos, Items::VolumeMultiple, Position->VolumeMultiple);
+			WriteString(ppos, Items::TotalCost, Position->TotalCost);
+			WriteString(ppos, Items::TodayCost, Position->TodayCost);
+			WriteString(ppos, Items::TotalProfit, Position->TotalProfit);
+			WriteString(ppos, Items::TodayProfit, Position->TodayProfit);
+			WriteString(ppos, Items::LastPrice, Position->LastPrice);
+			WriteString(ppos, Items::PrePrice, Position->PrePrice);
+			WriteHexString(ppos, Items::FieldEnd, PositionField::FieldID);
+		}
+		if (RspInfo != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
+			{
+				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspQryRiskGroupPositionPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case PositionField::FieldID:
+				{
+					Position = ::Allocate<PositionField>();
+					memset(Position, 0, sizeof(*Position));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(Position->TradingDay) ? sizeof(Position->TradingDay) - 1 : value.length();
+								memcpy(Position->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::AccountID:
+							{
+								size_t len = value.length() >= sizeof(Position->AccountID) ? sizeof(Position->AccountID) - 1 : value.length();
+								memcpy(Position->AccountID, value.c_str(), len);
+								break;
+							}
+							case Items::AccountType:
+							{
+								Position->AccountType = (AccountTypeType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(Position->ExchangeID) ? sizeof(Position->ExchangeID) - 1 : value.length();
+								memcpy(Position->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::InstrumentID:
+							{
+								size_t len = value.length() >= sizeof(Position->InstrumentID) ? sizeof(Position->InstrumentID) - 1 : value.length();
+								memcpy(Position->InstrumentID, value.c_str(), len);
+								break;
+							}
+							case Items::SecurityType:
+							{
+								Position->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::PosiDirection:
+							{
+								Position->PosiDirection = (PosiDirectionType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::TotalPosition:
+							{
+								Position->TotalPosition = atoi(value.c_str());
+								break;
+							}
+							case Items::PositionFrozen:
+							{
+								Position->PositionFrozen = atoi(value.c_str());
+								break;
+							}
+							case Items::TodayPosition:
+							{
+								Position->TodayPosition = atoi(value.c_str());
+								break;
+							}
+							case Items::TotalCostPrice:
+							{
+								Position->TotalCostPrice = atof(value.c_str());
+								break;
+							}
+							case Items::TodayCostPrice:
+							{
+								Position->TodayCostPrice = atof(value.c_str());
+								break;
+							}
+							case Items::CashIn:
+							{
+								Position->CashIn = atof(value.c_str());
+								break;
+							}
+							case Items::CashOut:
+							{
+								Position->CashOut = atof(value.c_str());
+								break;
+							}
+							case Items::Margin:
+							{
+								Position->Margin = atof(value.c_str());
+								break;
+							}
+							case Items::Commission:
+							{
+								Position->Commission = atof(value.c_str());
+								break;
+							}
+							case Items::StampTax:
+							{
+								Position->StampTax = atof(value.c_str());
+								break;
+							}
+							case Items::TransferFee:
+							{
+								Position->TransferFee = atof(value.c_str());
+								break;
+							}
+							case Items::MarketValue:
+							{
+								Position->MarketValue = atof(value.c_str());
+								break;
+							}
+							case Items::VolumeMultiple:
+							{
+								Position->VolumeMultiple = atoi(value.c_str());
+								break;
+							}
+							case Items::TotalCost:
+							{
+								Position->TotalCost = atof(value.c_str());
+								break;
+							}
+							case Items::TodayCost:
+							{
+								Position->TodayCost = atof(value.c_str());
+								break;
+							}
+							case Items::TotalProfit:
+							{
+								Position->TotalProfit = atof(value.c_str());
+								break;
+							}
+							case Items::TodayProfit:
+							{
+								Position->TodayProfit = atof(value.c_str());
+								break;
+							}
+							case Items::LastPrice:
+							{
+								Position->LastPrice = atof(value.c_str());
+								break;
+							}
+							case Items::PrePrice:
+							{
+								Position->PrePrice = atof(value.c_str());
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for PositionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspQryRiskGroupPositionPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				case RspInfoField::FieldID:
+				{
+					RspInfo = ::Allocate<RspInfoField>();
+					memset(RspInfo, 0, sizeof(*RspInfo));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ErrorID:
+							{
+								RspInfo->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
+								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -11564,7 +9760,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqQryRiskGroupOrder != nullptr)
 		{
-			::Free<StepReqQryRiskGroupOrderField>(ReqQryRiskGroupOrder);
+			::Free<ReqQryRiskGroupOrderField>(ReqQryRiskGroupOrder);
 			ReqQryRiskGroupOrder = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqQryRiskGroupOrderPackage>::GetInstance().Free(this);
@@ -11580,7 +9776,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryRiskGroupOrder != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryRiskGroupOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupOrderField::FieldID);
 			if (strlen(ReqQryRiskGroupOrder->UserID) >= sizeof(ReqQryRiskGroupOrder->UserID))
 			{
 				ReqQryRiskGroupOrder->UserID[sizeof(ReqQryRiskGroupOrder->UserID) - 1] = 0;
@@ -11591,7 +9787,7 @@ namespace step
 				ReqQryRiskGroupOrder->AccountID[sizeof(ReqQryRiskGroupOrder->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, ReqQryRiskGroupOrder->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryRiskGroupOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupOrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -11607,9 +9803,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqQryRiskGroupOrderField::FieldID:
+				case ReqQryRiskGroupOrderField::FieldID:
 				{
-					ReqQryRiskGroupOrder = ::Allocate<StepReqQryRiskGroupOrderField>();
+					ReqQryRiskGroupOrder = ::Allocate<ReqQryRiskGroupOrderField>();
 					memset(ReqQryRiskGroupOrder, 0, sizeof(*ReqQryRiskGroupOrder));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -11636,7 +9832,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryRiskGroupOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryRiskGroupOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -11694,12 +9890,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (Order != nullptr)
 		{
-			::Free<StepOrderField>(Order);
+			::Free<OrderField>(Order);
 			Order = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspQryRiskGroupOrderPackage>::GetInstance().Free(this);
@@ -11715,7 +9911,7 @@ namespace step
 		char* ppos = buff;
 		if (Order != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, OrderField::FieldID);
 			if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
 			{
 				Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
@@ -11785,18 +9981,18 @@ namespace step
 			WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
 			WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
 			WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
-			WriteHexString(ppos, Items::FieldEnd, StepOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, OrderField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -11812,9 +10008,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepOrderField::FieldID:
+				case OrderField::FieldID:
 				{
-					Order = ::Allocate<StepOrderField>();
+					Order = ::Allocate<OrderField>();
 					memset(Order, 0, sizeof(*Order));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -11984,7 +10180,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for OrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -11997,9 +10193,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -12025,7 +10221,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -12088,7 +10284,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqQryRiskGroupTrade != nullptr)
 		{
-			::Free<StepReqQryRiskGroupTradeField>(ReqQryRiskGroupTrade);
+			::Free<ReqQryRiskGroupTradeField>(ReqQryRiskGroupTrade);
 			ReqQryRiskGroupTrade = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqQryRiskGroupTradePackage>::GetInstance().Free(this);
@@ -12104,7 +10300,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryRiskGroupTrade != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryRiskGroupTradeField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupTradeField::FieldID);
 			if (strlen(ReqQryRiskGroupTrade->UserID) >= sizeof(ReqQryRiskGroupTrade->UserID))
 			{
 				ReqQryRiskGroupTrade->UserID[sizeof(ReqQryRiskGroupTrade->UserID) - 1] = 0;
@@ -12115,7 +10311,7 @@ namespace step
 				ReqQryRiskGroupTrade->AccountID[sizeof(ReqQryRiskGroupTrade->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, ReqQryRiskGroupTrade->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryRiskGroupTradeField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupTradeField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -12131,9 +10327,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqQryRiskGroupTradeField::FieldID:
+				case ReqQryRiskGroupTradeField::FieldID:
 				{
-					ReqQryRiskGroupTrade = ::Allocate<StepReqQryRiskGroupTradeField>();
+					ReqQryRiskGroupTrade = ::Allocate<ReqQryRiskGroupTradeField>();
 					memset(ReqQryRiskGroupTrade, 0, sizeof(*ReqQryRiskGroupTrade));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -12160,7 +10356,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryRiskGroupTradeField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryRiskGroupTradeField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -12218,12 +10414,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (Trade != nullptr)
 		{
-			::Free<StepTradeField>(Trade);
+			::Free<TradeField>(Trade);
 			Trade = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspQryRiskGroupTradePackage>::GetInstance().Free(this);
@@ -12239,7 +10435,7 @@ namespace step
 		char* ppos = buff;
 		if (Trade != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepTradeField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, TradeField::FieldID);
 			if (strlen(Trade->TradingDay) >= sizeof(Trade->TradingDay))
 			{
 				Trade->TradingDay[sizeof(Trade->TradingDay) - 1] = 0;
@@ -12291,18 +10487,18 @@ namespace step
 				Trade->TradeTime[sizeof(Trade->TradeTime) - 1] = 0;
 			}
 			WriteString(ppos, Items::TradeTime, Trade->TradeTime);
-			WriteHexString(ppos, Items::FieldEnd, StepTradeField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, TradeField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -12318,9 +10514,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepTradeField::FieldID:
+				case TradeField::FieldID:
 				{
-					Trade = ::Allocate<StepTradeField>();
+					Trade = ::Allocate<TradeField>();
 					memset(Trade, 0, sizeof(*Trade));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -12438,7 +10634,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepTradeField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for TradeField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -12451,9 +10647,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -12479,7 +10675,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -12542,7 +10738,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqQryRiskGroupAccountRisk != nullptr)
 		{
-			::Free<StepReqQryRiskGroupAccountRiskField>(ReqQryRiskGroupAccountRisk);
+			::Free<ReqQryRiskGroupAccountRiskField>(ReqQryRiskGroupAccountRisk);
 			ReqQryRiskGroupAccountRisk = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqQryRiskGroupAccountRiskPackage>::GetInstance().Free(this);
@@ -12558,7 +10754,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryRiskGroupAccountRisk != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryRiskGroupAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupAccountRiskField::FieldID);
 			if (strlen(ReqQryRiskGroupAccountRisk->UserID) >= sizeof(ReqQryRiskGroupAccountRisk->UserID))
 			{
 				ReqQryRiskGroupAccountRisk->UserID[sizeof(ReqQryRiskGroupAccountRisk->UserID) - 1] = 0;
@@ -12569,7 +10765,7 @@ namespace step
 				ReqQryRiskGroupAccountRisk->AccountID[sizeof(ReqQryRiskGroupAccountRisk->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, ReqQryRiskGroupAccountRisk->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryRiskGroupAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupAccountRiskField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -12585,9 +10781,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqQryRiskGroupAccountRiskField::FieldID:
+				case ReqQryRiskGroupAccountRiskField::FieldID:
 				{
-					ReqQryRiskGroupAccountRisk = ::Allocate<StepReqQryRiskGroupAccountRiskField>();
+					ReqQryRiskGroupAccountRisk = ::Allocate<ReqQryRiskGroupAccountRiskField>();
 					memset(ReqQryRiskGroupAccountRisk, 0, sizeof(*ReqQryRiskGroupAccountRisk));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -12614,7 +10810,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryRiskGroupAccountRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryRiskGroupAccountRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -12672,12 +10868,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (AccountRisk != nullptr)
 		{
-			::Free<StepAccountRiskField>(AccountRisk);
+			::Free<AccountRiskField>(AccountRisk);
 			AccountRisk = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspQryRiskGroupAccountRiskPackage>::GetInstance().Free(this);
@@ -12693,7 +10889,7 @@ namespace step
 		char* ppos = buff;
 		if (AccountRisk != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, AccountRiskField::FieldID);
 			if (strlen(AccountRisk->AccountID) >= sizeof(AccountRisk->AccountID))
 			{
 				AccountRisk->AccountID[sizeof(AccountRisk->AccountID) - 1] = 0;
@@ -12701,18 +10897,18 @@ namespace step
 			WriteString(ppos, Items::AccountID, AccountRisk->AccountID);
 			WriteString(ppos, Items::RiskID, AccountRisk->RiskID);
 			WriteString(ppos, Items::RiskStatus, (int)AccountRisk->RiskStatus);
-			WriteHexString(ppos, Items::FieldEnd, StepAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, AccountRiskField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -12728,9 +10924,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepAccountRiskField::FieldID:
+				case AccountRiskField::FieldID:
 				{
-					AccountRisk = ::Allocate<StepAccountRiskField>();
+					AccountRisk = ::Allocate<AccountRiskField>();
 					memset(AccountRisk, 0, sizeof(*AccountRisk));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -12761,7 +10957,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepAccountRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for AccountRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -12774,9 +10970,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -12802,7 +10998,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -12865,7 +11061,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqQryRiskGroupAccountRiskNotify != nullptr)
 		{
-			::Free<StepReqQryRiskGroupAccountRiskNotifyField>(ReqQryRiskGroupAccountRiskNotify);
+			::Free<ReqQryRiskGroupAccountRiskNotifyField>(ReqQryRiskGroupAccountRiskNotify);
 			ReqQryRiskGroupAccountRiskNotify = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqQryRiskGroupAccountRiskNotifyPackage>::GetInstance().Free(this);
@@ -12881,7 +11077,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqQryRiskGroupAccountRiskNotify != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryRiskGroupAccountRiskNotifyField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupAccountRiskNotifyField::FieldID);
 			if (strlen(ReqQryRiskGroupAccountRiskNotify->UserID) >= sizeof(ReqQryRiskGroupAccountRiskNotify->UserID))
 			{
 				ReqQryRiskGroupAccountRiskNotify->UserID[sizeof(ReqQryRiskGroupAccountRiskNotify->UserID) - 1] = 0;
@@ -12892,7 +11088,7 @@ namespace step
 				ReqQryRiskGroupAccountRiskNotify->AccountID[sizeof(ReqQryRiskGroupAccountRiskNotify->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, ReqQryRiskGroupAccountRiskNotify->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryRiskGroupAccountRiskNotifyField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupAccountRiskNotifyField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -12908,9 +11104,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqQryRiskGroupAccountRiskNotifyField::FieldID:
+				case ReqQryRiskGroupAccountRiskNotifyField::FieldID:
 				{
-					ReqQryRiskGroupAccountRiskNotify = ::Allocate<StepReqQryRiskGroupAccountRiskNotifyField>();
+					ReqQryRiskGroupAccountRiskNotify = ::Allocate<ReqQryRiskGroupAccountRiskNotifyField>();
 					memset(ReqQryRiskGroupAccountRiskNotify, 0, sizeof(*ReqQryRiskGroupAccountRiskNotify));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -12937,7 +11133,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryRiskGroupAccountRiskNotifyField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryRiskGroupAccountRiskNotifyField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -12995,12 +11191,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (AccountRiskNotify != nullptr)
 		{
-			::Free<StepAccountRiskNotifyField>(AccountRiskNotify);
+			::Free<AccountRiskNotifyField>(AccountRiskNotify);
 			AccountRiskNotify = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspQryRiskGroupAccountRiskNotifyPackage>::GetInstance().Free(this);
@@ -13016,7 +11212,7 @@ namespace step
 		char* ppos = buff;
 		if (AccountRiskNotify != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepAccountRiskNotifyField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, AccountRiskNotifyField::FieldID);
 			if (strlen(AccountRiskNotify->NotifyDate) >= sizeof(AccountRiskNotify->NotifyDate))
 			{
 				AccountRiskNotify->NotifyDate[sizeof(AccountRiskNotify->NotifyDate) - 1] = 0;
@@ -13040,18 +11236,18 @@ namespace step
 				AccountRiskNotify->RiskMessage[sizeof(AccountRiskNotify->RiskMessage) - 1] = 0;
 			}
 			WriteString(ppos, Items::RiskMessage, AccountRiskNotify->RiskMessage);
-			WriteHexString(ppos, Items::FieldEnd, StepAccountRiskNotifyField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, AccountRiskNotifyField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -13067,9 +11263,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepAccountRiskNotifyField::FieldID:
+				case AccountRiskNotifyField::FieldID:
 				{
-					AccountRiskNotify = ::Allocate<StepAccountRiskNotifyField>();
+					AccountRiskNotify = ::Allocate<AccountRiskNotifyField>();
 					memset(AccountRiskNotify, 0, sizeof(*AccountRiskNotify));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -13123,7 +11319,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepAccountRiskNotifyField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for AccountRiskNotifyField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -13136,9 +11332,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -13164,7 +11360,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -13227,7 +11423,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRiskInsertOrder != nullptr)
 		{
-			::Free<StepReqRiskInsertOrderField>(ReqRiskInsertOrder);
+			::Free<ReqRiskInsertOrderField>(ReqRiskInsertOrder);
 			ReqRiskInsertOrder = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRiskInsertOrderPackage>::GetInstance().Free(this);
@@ -13243,7 +11439,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqRiskInsertOrder != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRiskInsertOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRiskInsertOrderField::FieldID);
 			if (strlen(ReqRiskInsertOrder->UserID) >= sizeof(ReqRiskInsertOrder->UserID))
 			{
 				ReqRiskInsertOrder->UserID[sizeof(ReqRiskInsertOrder->UserID) - 1] = 0;
@@ -13271,7 +11467,7 @@ namespace step
 			WriteString(ppos, Items::Volume, ReqRiskInsertOrder->Volume);
 			WriteString(ppos, Items::ClientOrderID, ReqRiskInsertOrder->ClientOrderID);
 			WriteString(ppos, Items::IsForceClose, ReqRiskInsertOrder->IsForceClose);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRiskInsertOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRiskInsertOrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -13287,9 +11483,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRiskInsertOrderField::FieldID:
+				case ReqRiskInsertOrderField::FieldID:
 				{
-					ReqRiskInsertOrder = ::Allocate<StepReqRiskInsertOrderField>();
+					ReqRiskInsertOrder = ::Allocate<ReqRiskInsertOrderField>();
 					memset(ReqRiskInsertOrder, 0, sizeof(*ReqRiskInsertOrder));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -13363,7 +11559,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRiskInsertOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRiskInsertOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -13421,12 +11617,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (Order != nullptr)
 		{
-			::Free<StepOrderField>(Order);
+			::Free<OrderField>(Order);
 			Order = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRiskInsertOrderPackage>::GetInstance().Free(this);
@@ -13442,7 +11638,7 @@ namespace step
 		char* ppos = buff;
 		if (Order != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, OrderField::FieldID);
 			if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
 			{
 				Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
@@ -13512,18 +11708,18 @@ namespace step
 			WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
 			WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
 			WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
-			WriteHexString(ppos, Items::FieldEnd, StepOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, OrderField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -13539,9 +11735,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepOrderField::FieldID:
+				case OrderField::FieldID:
 				{
-					Order = ::Allocate<StepOrderField>();
+					Order = ::Allocate<OrderField>();
 					memset(Order, 0, sizeof(*Order));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -13711,7 +11907,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for OrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -13724,9 +11920,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -13752,7 +11948,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -13815,7 +12011,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRiskCancelOrder != nullptr)
 		{
-			::Free<StepReqRiskCancelOrderField>(ReqRiskCancelOrder);
+			::Free<ReqRiskCancelOrderField>(ReqRiskCancelOrder);
 			ReqRiskCancelOrder = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRiskCancelOrderPackage>::GetInstance().Free(this);
@@ -13831,7 +12027,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqRiskCancelOrder != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRiskCancelOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRiskCancelOrderField::FieldID);
 			if (strlen(ReqRiskCancelOrder->UserID) >= sizeof(ReqRiskCancelOrder->UserID))
 			{
 				ReqRiskCancelOrder->UserID[sizeof(ReqRiskCancelOrder->UserID) - 1] = 0;
@@ -13860,7 +12056,7 @@ namespace step
 			}
 			WriteString(ppos, Items::OrderSysID, ReqRiskCancelOrder->OrderSysID);
 			WriteString(ppos, Items::ClientOrderID, ReqRiskCancelOrder->ClientOrderID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRiskCancelOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRiskCancelOrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -13876,9 +12072,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRiskCancelOrderField::FieldID:
+				case ReqRiskCancelOrderField::FieldID:
 				{
-					ReqRiskCancelOrder = ::Allocate<StepReqRiskCancelOrderField>();
+					ReqRiskCancelOrder = ::Allocate<ReqRiskCancelOrderField>();
 					memset(ReqRiskCancelOrder, 0, sizeof(*ReqRiskCancelOrder));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -13938,7 +12134,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRiskCancelOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRiskCancelOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -13996,12 +12192,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (CancelOrder != nullptr)
 		{
-			::Free<StepCancelOrderField>(CancelOrder);
+			::Free<CancelOrderField>(CancelOrder);
 			CancelOrder = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRiskCancelOrderPackage>::GetInstance().Free(this);
@@ -14017,7 +12213,7 @@ namespace step
 		char* ppos = buff;
 		if (CancelOrder != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepCancelOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, CancelOrderField::FieldID);
 			if (strlen(CancelOrder->AccountID) >= sizeof(CancelOrder->AccountID))
 			{
 				CancelOrder->AccountID[sizeof(CancelOrder->AccountID) - 1] = 0;
@@ -14041,18 +12237,18 @@ namespace step
 			}
 			WriteString(ppos, Items::OrderSysID, CancelOrder->OrderSysID);
 			WriteString(ppos, Items::ClientOrderID, CancelOrder->ClientOrderID);
-			WriteHexString(ppos, Items::FieldEnd, StepCancelOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, CancelOrderField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -14068,9 +12264,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepCancelOrderField::FieldID:
+				case CancelOrderField::FieldID:
 				{
-					CancelOrder = ::Allocate<StepCancelOrderField>();
+					CancelOrder = ::Allocate<CancelOrderField>();
 					memset(CancelOrder, 0, sizeof(*CancelOrder));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -14124,7 +12320,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepCancelOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for CancelOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -14137,9 +12333,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -14165,7 +12361,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -14211,6 +12407,2513 @@ namespace step
 		}
 		return t_StepPackageStringBuffer;
 	}
+	StepReqMdUserLoginPackage::StepReqMdUserLoginPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqMdUserLoginPackage* StepReqMdUserLoginPackage::Allocate()
+	{
+		return ::Allocate<StepReqMdUserLoginPackage>();
+	}
+	void StepReqMdUserLoginPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqMdUserLogin != nullptr)
+		{
+			::Free<ReqMdUserLoginField>(ReqMdUserLogin);
+			ReqMdUserLogin = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqMdUserLoginPackage>::GetInstance().Free(this);
+	}
+	void StepReqMdUserLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqMdUserLoginPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqMdUserLogin != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqMdUserLoginField::FieldID);
+			if (strlen(ReqMdUserLogin->MdUserID) >= sizeof(ReqMdUserLogin->MdUserID))
+			{
+				ReqMdUserLogin->MdUserID[sizeof(ReqMdUserLogin->MdUserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::MdUserID, ReqMdUserLogin->MdUserID);
+			if (strlen(ReqMdUserLogin->Password) >= sizeof(ReqMdUserLogin->Password))
+			{
+				ReqMdUserLogin->Password[sizeof(ReqMdUserLogin->Password) - 1] = 0;
+			}
+			WriteString(ppos, Items::Password, ReqMdUserLogin->Password);
+			WriteHexString(ppos, Items::FieldEnd, ReqMdUserLoginField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqMdUserLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqMdUserLoginField::FieldID:
+				{
+					ReqMdUserLogin = ::Allocate<ReqMdUserLoginField>();
+					memset(ReqMdUserLogin, 0, sizeof(*ReqMdUserLogin));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::MdUserID:
+							{
+								size_t len = value.length() >= sizeof(ReqMdUserLogin->MdUserID) ? sizeof(ReqMdUserLogin->MdUserID) - 1 : value.length();
+								memcpy(ReqMdUserLogin->MdUserID, value.c_str(), len);
+								break;
+							}
+							case Items::Password:
+							{
+								size_t len = value.length() >= sizeof(ReqMdUserLogin->Password) ? sizeof(ReqMdUserLogin->Password) - 1 : value.length();
+								memcpy(ReqMdUserLogin->Password, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqMdUserLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqMdUserLoginPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqMdUserLoginPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqMdUserLoginPackage::GetDebugString() const
+	{
+		if (ReqMdUserLogin == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqMdUserLogin != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqMdUserLoginPackage:MdUserID:[%s], Password:[%s]", 
+				ReqMdUserLogin->MdUserID, ReqMdUserLogin->Password);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspMdUserLoginPackage::StepRspMdUserLoginPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspMdUserLoginPackage* StepRspMdUserLoginPackage::Allocate()
+	{
+		return ::Allocate<StepRspMdUserLoginPackage>();
+	}
+	void StepRspMdUserLoginPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (RspMdUserLogin != nullptr)
+		{
+			::Free<RspMdUserLoginField>(RspMdUserLogin);
+			RspMdUserLogin = nullptr;
+		}
+		if (RspInfo != nullptr)
+		{
+			::Free<RspInfoField>(RspInfo);
+			RspInfo = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspMdUserLoginPackage>::GetInstance().Free(this);
+	}
+	void StepRspMdUserLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspMdUserLoginPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (RspMdUserLogin != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspMdUserLoginField::FieldID);
+			if (strlen(RspMdUserLogin->MdUserID) >= sizeof(RspMdUserLogin->MdUserID))
+			{
+				RspMdUserLogin->MdUserID[sizeof(RspMdUserLogin->MdUserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::MdUserID, RspMdUserLogin->MdUserID);
+			if (strlen(RspMdUserLogin->LoginDate) >= sizeof(RspMdUserLogin->LoginDate))
+			{
+				RspMdUserLogin->LoginDate[sizeof(RspMdUserLogin->LoginDate) - 1] = 0;
+			}
+			WriteString(ppos, Items::LoginDate, RspMdUserLogin->LoginDate);
+			if (strlen(RspMdUserLogin->LoginTime) >= sizeof(RspMdUserLogin->LoginTime))
+			{
+				RspMdUserLogin->LoginTime[sizeof(RspMdUserLogin->LoginTime) - 1] = 0;
+			}
+			WriteString(ppos, Items::LoginTime, RspMdUserLogin->LoginTime);
+			WriteString(ppos, Items::SessionID, RspMdUserLogin->SessionID);
+			WriteHexString(ppos, Items::FieldEnd, RspMdUserLoginField::FieldID);
+		}
+		if (RspInfo != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
+			{
+				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspMdUserLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case RspMdUserLoginField::FieldID:
+				{
+					RspMdUserLogin = ::Allocate<RspMdUserLoginField>();
+					memset(RspMdUserLogin, 0, sizeof(*RspMdUserLogin));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::MdUserID:
+							{
+								size_t len = value.length() >= sizeof(RspMdUserLogin->MdUserID) ? sizeof(RspMdUserLogin->MdUserID) - 1 : value.length();
+								memcpy(RspMdUserLogin->MdUserID, value.c_str(), len);
+								break;
+							}
+							case Items::LoginDate:
+							{
+								size_t len = value.length() >= sizeof(RspMdUserLogin->LoginDate) ? sizeof(RspMdUserLogin->LoginDate) - 1 : value.length();
+								memcpy(RspMdUserLogin->LoginDate, value.c_str(), len);
+								break;
+							}
+							case Items::LoginTime:
+							{
+								size_t len = value.length() >= sizeof(RspMdUserLogin->LoginTime) ? sizeof(RspMdUserLogin->LoginTime) - 1 : value.length();
+								memcpy(RspMdUserLogin->LoginTime, value.c_str(), len);
+								break;
+							}
+							case Items::SessionID:
+							{
+								RspMdUserLogin->SessionID = atoll(value.c_str());
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspMdUserLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspMdUserLoginPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				case RspInfoField::FieldID:
+				{
+					RspInfo = ::Allocate<RspInfoField>();
+					memset(RspInfo, 0, sizeof(*RspInfo));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ErrorID:
+							{
+								RspInfo->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
+								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspMdUserLoginPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspMdUserLoginPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRspMdUserLoginPackage::GetDebugString() const
+	{
+		if (RspMdUserLogin == nullptr && RspInfo == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (RspMdUserLogin != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLoginPackage:MdUserID:[%s], LoginDate:[%s], LoginTime:[%s], SessionID:[%lld]", 
+				RspMdUserLogin->MdUserID, RspMdUserLogin->LoginDate, RspMdUserLogin->LoginTime, RspMdUserLogin->SessionID);
+		}
+		if (RspInfo != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLoginPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqMdUserLogoutPackage::StepReqMdUserLogoutPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqMdUserLogoutPackage* StepReqMdUserLogoutPackage::Allocate()
+	{
+		return ::Allocate<StepReqMdUserLogoutPackage>();
+	}
+	void StepReqMdUserLogoutPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqMdUserLogout != nullptr)
+		{
+			::Free<ReqMdUserLogoutField>(ReqMdUserLogout);
+			ReqMdUserLogout = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqMdUserLogoutPackage>::GetInstance().Free(this);
+	}
+	void StepReqMdUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqMdUserLogoutPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqMdUserLogout != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqMdUserLogoutField::FieldID);
+			if (strlen(ReqMdUserLogout->MdUserID) >= sizeof(ReqMdUserLogout->MdUserID))
+			{
+				ReqMdUserLogout->MdUserID[sizeof(ReqMdUserLogout->MdUserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::MdUserID, ReqMdUserLogout->MdUserID);
+			WriteHexString(ppos, Items::FieldEnd, ReqMdUserLogoutField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqMdUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqMdUserLogoutField::FieldID:
+				{
+					ReqMdUserLogout = ::Allocate<ReqMdUserLogoutField>();
+					memset(ReqMdUserLogout, 0, sizeof(*ReqMdUserLogout));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::MdUserID:
+							{
+								size_t len = value.length() >= sizeof(ReqMdUserLogout->MdUserID) ? sizeof(ReqMdUserLogout->MdUserID) - 1 : value.length();
+								memcpy(ReqMdUserLogout->MdUserID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqMdUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqMdUserLogoutPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqMdUserLogoutPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqMdUserLogoutPackage::GetDebugString() const
+	{
+		if (ReqMdUserLogout == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqMdUserLogout != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqMdUserLogoutPackage:MdUserID:[%s]", 
+				ReqMdUserLogout->MdUserID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspMdUserLogoutPackage::StepRspMdUserLogoutPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspMdUserLogoutPackage* StepRspMdUserLogoutPackage::Allocate()
+	{
+		return ::Allocate<StepRspMdUserLogoutPackage>();
+	}
+	void StepRspMdUserLogoutPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (RspMdUserLogout != nullptr)
+		{
+			::Free<RspMdUserLogoutField>(RspMdUserLogout);
+			RspMdUserLogout = nullptr;
+		}
+		if (RspInfo != nullptr)
+		{
+			::Free<RspInfoField>(RspInfo);
+			RspInfo = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspMdUserLogoutPackage>::GetInstance().Free(this);
+	}
+	void StepRspMdUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspMdUserLogoutPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (RspMdUserLogout != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspMdUserLogoutField::FieldID);
+			if (strlen(RspMdUserLogout->MdUserID) >= sizeof(RspMdUserLogout->MdUserID))
+			{
+				RspMdUserLogout->MdUserID[sizeof(RspMdUserLogout->MdUserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::MdUserID, RspMdUserLogout->MdUserID);
+			WriteHexString(ppos, Items::FieldEnd, RspMdUserLogoutField::FieldID);
+		}
+		if (RspInfo != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
+			{
+				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspMdUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case RspMdUserLogoutField::FieldID:
+				{
+					RspMdUserLogout = ::Allocate<RspMdUserLogoutField>();
+					memset(RspMdUserLogout, 0, sizeof(*RspMdUserLogout));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::MdUserID:
+							{
+								size_t len = value.length() >= sizeof(RspMdUserLogout->MdUserID) ? sizeof(RspMdUserLogout->MdUserID) - 1 : value.length();
+								memcpy(RspMdUserLogout->MdUserID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspMdUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspMdUserLogoutPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				case RspInfoField::FieldID:
+				{
+					RspInfo = ::Allocate<RspInfoField>();
+					memset(RspInfo, 0, sizeof(*RspInfo));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ErrorID:
+							{
+								RspInfo->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
+								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspMdUserLogoutPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspMdUserLogoutPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRspMdUserLogoutPackage::GetDebugString() const
+	{
+		if (RspMdUserLogout == nullptr && RspInfo == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (RspMdUserLogout != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLogoutPackage:MdUserID:[%s]", 
+				RspMdUserLogout->MdUserID);
+		}
+		if (RspInfo != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdUserLogoutPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqMdInitPackage::StepReqMdInitPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqMdInitPackage* StepReqMdInitPackage::Allocate()
+	{
+		return ::Allocate<StepReqMdInitPackage>();
+	}
+	void StepReqMdInitPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqMdInit != nullptr)
+		{
+			::Free<ReqMdInitField>(ReqMdInit);
+			ReqMdInit = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqMdInitPackage>::GetInstance().Free(this);
+	}
+	void StepReqMdInitPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqMdInitPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqMdInit != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqMdInitField::FieldID);
+			if (strlen(ReqMdInit->ExchangeID) >= sizeof(ReqMdInit->ExchangeID))
+			{
+				ReqMdInit->ExchangeID[sizeof(ReqMdInit->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, ReqMdInit->ExchangeID);
+			if (strlen(ReqMdInit->TradingDay) >= sizeof(ReqMdInit->TradingDay))
+			{
+				ReqMdInit->TradingDay[sizeof(ReqMdInit->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, ReqMdInit->TradingDay);
+			WriteHexString(ppos, Items::FieldEnd, ReqMdInitField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqMdInitPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqMdInitField::FieldID:
+				{
+					ReqMdInit = ::Allocate<ReqMdInitField>();
+					memset(ReqMdInit, 0, sizeof(*ReqMdInit));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(ReqMdInit->ExchangeID) ? sizeof(ReqMdInit->ExchangeID) - 1 : value.length();
+								memcpy(ReqMdInit->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(ReqMdInit->TradingDay) ? sizeof(ReqMdInit->TradingDay) - 1 : value.length();
+								memcpy(ReqMdInit->TradingDay, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqMdInitField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqMdInitPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqMdInitPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqMdInitPackage::GetDebugString() const
+	{
+		if (ReqMdInit == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqMdInit != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqMdInitPackage:ExchangeID:[%s], TradingDay:[%s]", 
+				ReqMdInit->ExchangeID, ReqMdInit->TradingDay);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspMdInitPackage::StepRspMdInitPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspMdInitPackage* StepRspMdInitPackage::Allocate()
+	{
+		return ::Allocate<StepRspMdInitPackage>();
+	}
+	void StepRspMdInitPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (RspMdInit != nullptr)
+		{
+			::Free<RspMdInitField>(RspMdInit);
+			RspMdInit = nullptr;
+		}
+		if (RspInfo != nullptr)
+		{
+			::Free<RspInfoField>(RspInfo);
+			RspInfo = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspMdInitPackage>::GetInstance().Free(this);
+	}
+	void StepRspMdInitPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspMdInitPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (RspMdInit != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspMdInitField::FieldID);
+			if (strlen(RspMdInit->ExchangeID) >= sizeof(RspMdInit->ExchangeID))
+			{
+				RspMdInit->ExchangeID[sizeof(RspMdInit->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, RspMdInit->ExchangeID);
+			if (strlen(RspMdInit->TradingDay) >= sizeof(RspMdInit->TradingDay))
+			{
+				RspMdInit->TradingDay[sizeof(RspMdInit->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, RspMdInit->TradingDay);
+			WriteHexString(ppos, Items::FieldEnd, RspMdInitField::FieldID);
+		}
+		if (RspInfo != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
+			{
+				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspMdInitPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case RspMdInitField::FieldID:
+				{
+					RspMdInit = ::Allocate<RspMdInitField>();
+					memset(RspMdInit, 0, sizeof(*RspMdInit));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(RspMdInit->ExchangeID) ? sizeof(RspMdInit->ExchangeID) - 1 : value.length();
+								memcpy(RspMdInit->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(RspMdInit->TradingDay) ? sizeof(RspMdInit->TradingDay) - 1 : value.length();
+								memcpy(RspMdInit->TradingDay, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspMdInitField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspMdInitPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				case RspInfoField::FieldID:
+				{
+					RspInfo = ::Allocate<RspInfoField>();
+					memset(RspInfo, 0, sizeof(*RspInfo));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ErrorID:
+							{
+								RspInfo->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
+								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspMdInitPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspMdInitPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRspMdInitPackage::GetDebugString() const
+	{
+		if (RspMdInit == nullptr && RspInfo == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (RspMdInit != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdInitPackage:ExchangeID:[%s], TradingDay:[%s]", 
+				RspMdInit->ExchangeID, RspMdInit->TradingDay);
+		}
+		if (RspInfo != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspMdInitPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqSubscribeMdPackage::StepReqSubscribeMdPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqSubscribeMdPackage* StepReqSubscribeMdPackage::Allocate()
+	{
+		return ::Allocate<StepReqSubscribeMdPackage>();
+	}
+	void StepReqSubscribeMdPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqSubscribeMd != nullptr)
+		{
+			::Free<ReqSubscribeMdField>(ReqSubscribeMd);
+			ReqSubscribeMd = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqSubscribeMdPackage>::GetInstance().Free(this);
+	}
+	void StepReqSubscribeMdPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqSubscribeMdPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqSubscribeMd != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqSubscribeMdField::FieldID);
+			if (strlen(ReqSubscribeMd->ExchangeID) >= sizeof(ReqSubscribeMd->ExchangeID))
+			{
+				ReqSubscribeMd->ExchangeID[sizeof(ReqSubscribeMd->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, ReqSubscribeMd->ExchangeID);
+			if (strlen(ReqSubscribeMd->InstrumentID) >= sizeof(ReqSubscribeMd->InstrumentID))
+			{
+				ReqSubscribeMd->InstrumentID[sizeof(ReqSubscribeMd->InstrumentID) - 1] = 0;
+			}
+			WriteString(ppos, Items::InstrumentID, ReqSubscribeMd->InstrumentID);
+			WriteHexString(ppos, Items::FieldEnd, ReqSubscribeMdField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqSubscribeMdPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqSubscribeMdField::FieldID:
+				{
+					ReqSubscribeMd = ::Allocate<ReqSubscribeMdField>();
+					memset(ReqSubscribeMd, 0, sizeof(*ReqSubscribeMd));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(ReqSubscribeMd->ExchangeID) ? sizeof(ReqSubscribeMd->ExchangeID) - 1 : value.length();
+								memcpy(ReqSubscribeMd->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::InstrumentID:
+							{
+								size_t len = value.length() >= sizeof(ReqSubscribeMd->InstrumentID) ? sizeof(ReqSubscribeMd->InstrumentID) - 1 : value.length();
+								memcpy(ReqSubscribeMd->InstrumentID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqSubscribeMdField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqSubscribeMdPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqSubscribeMdPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqSubscribeMdPackage::GetDebugString() const
+	{
+		if (ReqSubscribeMd == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqSubscribeMd != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqSubscribeMdPackage:ExchangeID:[%s], InstrumentID:[%s]", 
+				ReqSubscribeMd->ExchangeID, ReqSubscribeMd->InstrumentID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspSubscribeMdPackage::StepRspSubscribeMdPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspSubscribeMdPackage* StepRspSubscribeMdPackage::Allocate()
+	{
+		return ::Allocate<StepRspSubscribeMdPackage>();
+	}
+	void StepRspSubscribeMdPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (RspSubscribeMd != nullptr)
+		{
+			::Free<RspSubscribeMdField>(RspSubscribeMd);
+			RspSubscribeMd = nullptr;
+		}
+		if (RspInfo != nullptr)
+		{
+			::Free<RspInfoField>(RspInfo);
+			RspInfo = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspSubscribeMdPackage>::GetInstance().Free(this);
+	}
+	void StepRspSubscribeMdPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspSubscribeMdPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (RspSubscribeMd != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspSubscribeMdField::FieldID);
+			if (strlen(RspSubscribeMd->ExchangeID) >= sizeof(RspSubscribeMd->ExchangeID))
+			{
+				RspSubscribeMd->ExchangeID[sizeof(RspSubscribeMd->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, RspSubscribeMd->ExchangeID);
+			if (strlen(RspSubscribeMd->InstrumentID) >= sizeof(RspSubscribeMd->InstrumentID))
+			{
+				RspSubscribeMd->InstrumentID[sizeof(RspSubscribeMd->InstrumentID) - 1] = 0;
+			}
+			WriteString(ppos, Items::InstrumentID, RspSubscribeMd->InstrumentID);
+			WriteHexString(ppos, Items::FieldEnd, RspSubscribeMdField::FieldID);
+		}
+		if (RspInfo != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
+			{
+				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspSubscribeMdPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case RspSubscribeMdField::FieldID:
+				{
+					RspSubscribeMd = ::Allocate<RspSubscribeMdField>();
+					memset(RspSubscribeMd, 0, sizeof(*RspSubscribeMd));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(RspSubscribeMd->ExchangeID) ? sizeof(RspSubscribeMd->ExchangeID) - 1 : value.length();
+								memcpy(RspSubscribeMd->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::InstrumentID:
+							{
+								size_t len = value.length() >= sizeof(RspSubscribeMd->InstrumentID) ? sizeof(RspSubscribeMd->InstrumentID) - 1 : value.length();
+								memcpy(RspSubscribeMd->InstrumentID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspSubscribeMdField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspSubscribeMdPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				case RspInfoField::FieldID:
+				{
+					RspInfo = ::Allocate<RspInfoField>();
+					memset(RspInfo, 0, sizeof(*RspInfo));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ErrorID:
+							{
+								RspInfo->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
+								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspSubscribeMdPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspSubscribeMdPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRspSubscribeMdPackage::GetDebugString() const
+	{
+		if (RspSubscribeMd == nullptr && RspInfo == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (RspSubscribeMd != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspSubscribeMdPackage:ExchangeID:[%s], InstrumentID:[%s]", 
+				RspSubscribeMd->ExchangeID, RspSubscribeMd->InstrumentID);
+		}
+		if (RspInfo != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspSubscribeMdPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnShortMdPackage::StepRtnShortMdPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnShortMdPackage* StepRtnShortMdPackage::Allocate()
+	{
+		return ::Allocate<StepRtnShortMdPackage>();
+	}
+	void StepRtnShortMdPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ShortMd != nullptr)
+		{
+			::Free<ShortMdField>(ShortMd);
+			ShortMd = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnShortMdPackage>::GetInstance().Free(this);
+	}
+	void StepRtnShortMdPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnShortMdPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ShortMd != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ShortMdField::FieldID);
+			if (strlen(ShortMd->TradingDay) >= sizeof(ShortMd->TradingDay))
+			{
+				ShortMd->TradingDay[sizeof(ShortMd->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, ShortMd->TradingDay);
+			if (strlen(ShortMd->ExchangeID) >= sizeof(ShortMd->ExchangeID))
+			{
+				ShortMd->ExchangeID[sizeof(ShortMd->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, ShortMd->ExchangeID);
+			if (strlen(ShortMd->InstrumentID) >= sizeof(ShortMd->InstrumentID))
+			{
+				ShortMd->InstrumentID[sizeof(ShortMd->InstrumentID) - 1] = 0;
+			}
+			WriteString(ppos, Items::InstrumentID, ShortMd->InstrumentID);
+			WriteString(ppos, Items::LastPrice, ShortMd->LastPrice);
+			WriteString(ppos, Items::ClosePrice, ShortMd->ClosePrice);
+			WriteString(ppos, Items::PreClosePrice, ShortMd->PreClosePrice);
+			WriteString(ppos, Items::SettlementPrice, ShortMd->SettlementPrice);
+			WriteString(ppos, Items::PreSettlementPrice, ShortMd->PreSettlementPrice);
+			WriteString(ppos, Items::UpperLimitPrice, ShortMd->UpperLimitPrice);
+			WriteString(ppos, Items::LowerLimitPrice, ShortMd->LowerLimitPrice);
+			WriteHexString(ppos, Items::FieldEnd, ShortMdField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnShortMdPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ShortMdField::FieldID:
+				{
+					ShortMd = ::Allocate<ShortMdField>();
+					memset(ShortMd, 0, sizeof(*ShortMd));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(ShortMd->TradingDay) ? sizeof(ShortMd->TradingDay) - 1 : value.length();
+								memcpy(ShortMd->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(ShortMd->ExchangeID) ? sizeof(ShortMd->ExchangeID) - 1 : value.length();
+								memcpy(ShortMd->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::InstrumentID:
+							{
+								size_t len = value.length() >= sizeof(ShortMd->InstrumentID) ? sizeof(ShortMd->InstrumentID) - 1 : value.length();
+								memcpy(ShortMd->InstrumentID, value.c_str(), len);
+								break;
+							}
+							case Items::LastPrice:
+							{
+								ShortMd->LastPrice = atof(value.c_str());
+								break;
+							}
+							case Items::ClosePrice:
+							{
+								ShortMd->ClosePrice = atof(value.c_str());
+								break;
+							}
+							case Items::PreClosePrice:
+							{
+								ShortMd->PreClosePrice = atof(value.c_str());
+								break;
+							}
+							case Items::SettlementPrice:
+							{
+								ShortMd->SettlementPrice = atof(value.c_str());
+								break;
+							}
+							case Items::PreSettlementPrice:
+							{
+								ShortMd->PreSettlementPrice = atof(value.c_str());
+								break;
+							}
+							case Items::UpperLimitPrice:
+							{
+								ShortMd->UpperLimitPrice = atof(value.c_str());
+								break;
+							}
+							case Items::LowerLimitPrice:
+							{
+								ShortMd->LowerLimitPrice = atof(value.c_str());
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ShortMdField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnShortMdPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnShortMdPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnShortMdPackage::GetDebugString() const
+	{
+		if (ShortMd == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ShortMd != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnShortMdPackage:TradingDay:[%s], ExchangeID:[%s], InstrumentID:[%s], LastPrice:[%f], ClosePrice:[%f], PreClosePrice:[%f], SettlementPrice:[%f], PreSettlementPrice:[%f], UpperLimitPrice:[%f], LowerLimitPrice:[%f]", 
+				ShortMd->TradingDay, ShortMd->ExchangeID, ShortMd->InstrumentID, ShortMd->LastPrice, ShortMd->ClosePrice, ShortMd->PreClosePrice, ShortMd->SettlementPrice, ShortMd->PreSettlementPrice, ShortMd->UpperLimitPrice, ShortMd->LowerLimitPrice);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnExchangeStatusPackage::StepRtnExchangeStatusPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnExchangeStatusPackage* StepRtnExchangeStatusPackage::Allocate()
+	{
+		return ::Allocate<StepRtnExchangeStatusPackage>();
+	}
+	void StepRtnExchangeStatusPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (RtnExchangeStatus != nullptr)
+		{
+			::Free<RtnExchangeStatusField>(RtnExchangeStatus);
+			RtnExchangeStatus = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnExchangeStatusPackage>::GetInstance().Free(this);
+	}
+	void StepRtnExchangeStatusPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnExchangeStatusPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (RtnExchangeStatus != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RtnExchangeStatusField::FieldID);
+			if (strlen(RtnExchangeStatus->ExchangeID) >= sizeof(RtnExchangeStatus->ExchangeID))
+			{
+				RtnExchangeStatus->ExchangeID[sizeof(RtnExchangeStatus->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, RtnExchangeStatus->ExchangeID);
+			if (strlen(RtnExchangeStatus->ExchangeDate) >= sizeof(RtnExchangeStatus->ExchangeDate))
+			{
+				RtnExchangeStatus->ExchangeDate[sizeof(RtnExchangeStatus->ExchangeDate) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeDate, RtnExchangeStatus->ExchangeDate);
+			WriteString(ppos, Items::ExchangeStatus, (int)RtnExchangeStatus->ExchangeStatus);
+			WriteHexString(ppos, Items::FieldEnd, RtnExchangeStatusField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnExchangeStatusPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case RtnExchangeStatusField::FieldID:
+				{
+					RtnExchangeStatus = ::Allocate<RtnExchangeStatusField>();
+					memset(RtnExchangeStatus, 0, sizeof(*RtnExchangeStatus));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(RtnExchangeStatus->ExchangeID) ? sizeof(RtnExchangeStatus->ExchangeID) - 1 : value.length();
+								memcpy(RtnExchangeStatus->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::ExchangeDate:
+							{
+								size_t len = value.length() >= sizeof(RtnExchangeStatus->ExchangeDate) ? sizeof(RtnExchangeStatus->ExchangeDate) - 1 : value.length();
+								memcpy(RtnExchangeStatus->ExchangeDate, value.c_str(), len);
+								break;
+							}
+							case Items::ExchangeStatus:
+							{
+								RtnExchangeStatus->ExchangeStatus = (ExchangeStatusType)(atoi(value.c_str()));
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RtnExchangeStatusField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnExchangeStatusPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnExchangeStatusPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnExchangeStatusPackage::GetDebugString() const
+	{
+		if (RtnExchangeStatus == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (RtnExchangeStatus != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnExchangeStatusPackage:ExchangeID:[%s], ExchangeDate:[%s], ExchangeStatus:[%d]", 
+				RtnExchangeStatus->ExchangeID, RtnExchangeStatus->ExchangeDate, (int)RtnExchangeStatus->ExchangeStatus);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnMdInitCompletedPackage::StepRtnMdInitCompletedPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnMdInitCompletedPackage* StepRtnMdInitCompletedPackage::Allocate()
+	{
+		return ::Allocate<StepRtnMdInitCompletedPackage>();
+	}
+	void StepRtnMdInitCompletedPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (MdInitCompleted != nullptr)
+		{
+			::Free<MdInitCompletedField>(MdInitCompleted);
+			MdInitCompleted = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnMdInitCompletedPackage>::GetInstance().Free(this);
+	}
+	void StepRtnMdInitCompletedPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnMdInitCompletedPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (MdInitCompleted != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, MdInitCompletedField::FieldID);
+			if (strlen(MdInitCompleted->ExchangeID) >= sizeof(MdInitCompleted->ExchangeID))
+			{
+				MdInitCompleted->ExchangeID[sizeof(MdInitCompleted->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, MdInitCompleted->ExchangeID);
+			if (strlen(MdInitCompleted->TradingDay) >= sizeof(MdInitCompleted->TradingDay))
+			{
+				MdInitCompleted->TradingDay[sizeof(MdInitCompleted->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, MdInitCompleted->TradingDay);
+			WriteHexString(ppos, Items::FieldEnd, MdInitCompletedField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnMdInitCompletedPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case MdInitCompletedField::FieldID:
+				{
+					MdInitCompleted = ::Allocate<MdInitCompletedField>();
+					memset(MdInitCompleted, 0, sizeof(*MdInitCompleted));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(MdInitCompleted->ExchangeID) ? sizeof(MdInitCompleted->ExchangeID) - 1 : value.length();
+								memcpy(MdInitCompleted->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(MdInitCompleted->TradingDay) ? sizeof(MdInitCompleted->TradingDay) - 1 : value.length();
+								memcpy(MdInitCompleted->TradingDay, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for MdInitCompletedField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnMdInitCompletedPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnMdInitCompletedPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnMdInitCompletedPackage::GetDebugString() const
+	{
+		if (MdInitCompleted == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (MdInitCompleted != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnMdInitCompletedPackage:ExchangeID:[%s], TradingDay:[%s]", 
+				MdInitCompleted->ExchangeID, MdInitCompleted->TradingDay);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqAdminUserLoginPackage::StepReqAdminUserLoginPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqAdminUserLoginPackage* StepReqAdminUserLoginPackage::Allocate()
+	{
+		return ::Allocate<StepReqAdminUserLoginPackage>();
+	}
+	void StepReqAdminUserLoginPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqAdminUserLogin != nullptr)
+		{
+			::Free<ReqAdminUserLoginField>(ReqAdminUserLogin);
+			ReqAdminUserLogin = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqAdminUserLoginPackage>::GetInstance().Free(this);
+	}
+	void StepReqAdminUserLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqAdminUserLoginPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqAdminUserLogin != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqAdminUserLoginField::FieldID);
+			if (strlen(ReqAdminUserLogin->AdminUserID) >= sizeof(ReqAdminUserLogin->AdminUserID))
+			{
+				ReqAdminUserLogin->AdminUserID[sizeof(ReqAdminUserLogin->AdminUserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AdminUserID, ReqAdminUserLogin->AdminUserID);
+			if (strlen(ReqAdminUserLogin->Password) >= sizeof(ReqAdminUserLogin->Password))
+			{
+				ReqAdminUserLogin->Password[sizeof(ReqAdminUserLogin->Password) - 1] = 0;
+			}
+			WriteString(ppos, Items::Password, ReqAdminUserLogin->Password);
+			WriteHexString(ppos, Items::FieldEnd, ReqAdminUserLoginField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqAdminUserLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqAdminUserLoginField::FieldID:
+				{
+					ReqAdminUserLogin = ::Allocate<ReqAdminUserLoginField>();
+					memset(ReqAdminUserLogin, 0, sizeof(*ReqAdminUserLogin));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::AdminUserID:
+							{
+								size_t len = value.length() >= sizeof(ReqAdminUserLogin->AdminUserID) ? sizeof(ReqAdminUserLogin->AdminUserID) - 1 : value.length();
+								memcpy(ReqAdminUserLogin->AdminUserID, value.c_str(), len);
+								break;
+							}
+							case Items::Password:
+							{
+								size_t len = value.length() >= sizeof(ReqAdminUserLogin->Password) ? sizeof(ReqAdminUserLogin->Password) - 1 : value.length();
+								memcpy(ReqAdminUserLogin->Password, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAdminUserLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqAdminUserLoginPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqAdminUserLoginPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqAdminUserLoginPackage::GetDebugString() const
+	{
+		if (ReqAdminUserLogin == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqAdminUserLogin != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAdminUserLoginPackage:AdminUserID:[%s], Password:[%s]", 
+				ReqAdminUserLogin->AdminUserID, ReqAdminUserLogin->Password);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspAdminUserLoginPackage::StepRspAdminUserLoginPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspAdminUserLoginPackage* StepRspAdminUserLoginPackage::Allocate()
+	{
+		return ::Allocate<StepRspAdminUserLoginPackage>();
+	}
+	void StepRspAdminUserLoginPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (RspAdminUserLogin != nullptr)
+		{
+			::Free<RspAdminUserLoginField>(RspAdminUserLogin);
+			RspAdminUserLogin = nullptr;
+		}
+		if (RspInfo != nullptr)
+		{
+			::Free<RspInfoField>(RspInfo);
+			RspInfo = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspAdminUserLoginPackage>::GetInstance().Free(this);
+	}
+	void StepRspAdminUserLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspAdminUserLoginPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (RspAdminUserLogin != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspAdminUserLoginField::FieldID);
+			if (strlen(RspAdminUserLogin->AdminUserID) >= sizeof(RspAdminUserLogin->AdminUserID))
+			{
+				RspAdminUserLogin->AdminUserID[sizeof(RspAdminUserLogin->AdminUserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AdminUserID, RspAdminUserLogin->AdminUserID);
+			if (strlen(RspAdminUserLogin->LoginDate) >= sizeof(RspAdminUserLogin->LoginDate))
+			{
+				RspAdminUserLogin->LoginDate[sizeof(RspAdminUserLogin->LoginDate) - 1] = 0;
+			}
+			WriteString(ppos, Items::LoginDate, RspAdminUserLogin->LoginDate);
+			if (strlen(RspAdminUserLogin->LoginTime) >= sizeof(RspAdminUserLogin->LoginTime))
+			{
+				RspAdminUserLogin->LoginTime[sizeof(RspAdminUserLogin->LoginTime) - 1] = 0;
+			}
+			WriteString(ppos, Items::LoginTime, RspAdminUserLogin->LoginTime);
+			WriteString(ppos, Items::SessionID, RspAdminUserLogin->SessionID);
+			WriteHexString(ppos, Items::FieldEnd, RspAdminUserLoginField::FieldID);
+		}
+		if (RspInfo != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
+			{
+				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspAdminUserLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case RspAdminUserLoginField::FieldID:
+				{
+					RspAdminUserLogin = ::Allocate<RspAdminUserLoginField>();
+					memset(RspAdminUserLogin, 0, sizeof(*RspAdminUserLogin));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::AdminUserID:
+							{
+								size_t len = value.length() >= sizeof(RspAdminUserLogin->AdminUserID) ? sizeof(RspAdminUserLogin->AdminUserID) - 1 : value.length();
+								memcpy(RspAdminUserLogin->AdminUserID, value.c_str(), len);
+								break;
+							}
+							case Items::LoginDate:
+							{
+								size_t len = value.length() >= sizeof(RspAdminUserLogin->LoginDate) ? sizeof(RspAdminUserLogin->LoginDate) - 1 : value.length();
+								memcpy(RspAdminUserLogin->LoginDate, value.c_str(), len);
+								break;
+							}
+							case Items::LoginTime:
+							{
+								size_t len = value.length() >= sizeof(RspAdminUserLogin->LoginTime) ? sizeof(RspAdminUserLogin->LoginTime) - 1 : value.length();
+								memcpy(RspAdminUserLogin->LoginTime, value.c_str(), len);
+								break;
+							}
+							case Items::SessionID:
+							{
+								RspAdminUserLogin->SessionID = atoll(value.c_str());
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAdminUserLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspAdminUserLoginPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				case RspInfoField::FieldID:
+				{
+					RspInfo = ::Allocate<RspInfoField>();
+					memset(RspInfo, 0, sizeof(*RspInfo));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ErrorID:
+							{
+								RspInfo->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
+								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspAdminUserLoginPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspAdminUserLoginPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRspAdminUserLoginPackage::GetDebugString() const
+	{
+		if (RspAdminUserLogin == nullptr && RspInfo == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (RspAdminUserLogin != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLoginPackage:AdminUserID:[%s], LoginDate:[%s], LoginTime:[%s], SessionID:[%lld]", 
+				RspAdminUserLogin->AdminUserID, RspAdminUserLogin->LoginDate, RspAdminUserLogin->LoginTime, RspAdminUserLogin->SessionID);
+		}
+		if (RspInfo != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLoginPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqAdminUserLogoutPackage::StepReqAdminUserLogoutPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqAdminUserLogoutPackage* StepReqAdminUserLogoutPackage::Allocate()
+	{
+		return ::Allocate<StepReqAdminUserLogoutPackage>();
+	}
+	void StepReqAdminUserLogoutPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqAdminUserLogout != nullptr)
+		{
+			::Free<ReqAdminUserLogoutField>(ReqAdminUserLogout);
+			ReqAdminUserLogout = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqAdminUserLogoutPackage>::GetInstance().Free(this);
+	}
+	void StepReqAdminUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqAdminUserLogoutPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqAdminUserLogout != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqAdminUserLogoutField::FieldID);
+			if (strlen(ReqAdminUserLogout->AdminUserID) >= sizeof(ReqAdminUserLogout->AdminUserID))
+			{
+				ReqAdminUserLogout->AdminUserID[sizeof(ReqAdminUserLogout->AdminUserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AdminUserID, ReqAdminUserLogout->AdminUserID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAdminUserLogoutField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqAdminUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqAdminUserLogoutField::FieldID:
+				{
+					ReqAdminUserLogout = ::Allocate<ReqAdminUserLogoutField>();
+					memset(ReqAdminUserLogout, 0, sizeof(*ReqAdminUserLogout));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::AdminUserID:
+							{
+								size_t len = value.length() >= sizeof(ReqAdminUserLogout->AdminUserID) ? sizeof(ReqAdminUserLogout->AdminUserID) - 1 : value.length();
+								memcpy(ReqAdminUserLogout->AdminUserID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAdminUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqAdminUserLogoutPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqAdminUserLogoutPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqAdminUserLogoutPackage::GetDebugString() const
+	{
+		if (ReqAdminUserLogout == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqAdminUserLogout != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqAdminUserLogoutPackage:AdminUserID:[%s]", 
+				ReqAdminUserLogout->AdminUserID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspAdminUserLogoutPackage::StepRspAdminUserLogoutPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspAdminUserLogoutPackage* StepRspAdminUserLogoutPackage::Allocate()
+	{
+		return ::Allocate<StepRspAdminUserLogoutPackage>();
+	}
+	void StepRspAdminUserLogoutPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (RspAdminUserLogout != nullptr)
+		{
+			::Free<RspAdminUserLogoutField>(RspAdminUserLogout);
+			RspAdminUserLogout = nullptr;
+		}
+		if (RspInfo != nullptr)
+		{
+			::Free<RspInfoField>(RspInfo);
+			RspInfo = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspAdminUserLogoutPackage>::GetInstance().Free(this);
+	}
+	void StepRspAdminUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspAdminUserLogoutPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (RspAdminUserLogout != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspAdminUserLogoutField::FieldID);
+			if (strlen(RspAdminUserLogout->AdminUserID) >= sizeof(RspAdminUserLogout->AdminUserID))
+			{
+				RspAdminUserLogout->AdminUserID[sizeof(RspAdminUserLogout->AdminUserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::AdminUserID, RspAdminUserLogout->AdminUserID);
+			WriteHexString(ppos, Items::FieldEnd, RspAdminUserLogoutField::FieldID);
+		}
+		if (RspInfo != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
+			{
+				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspAdminUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case RspAdminUserLogoutField::FieldID:
+				{
+					RspAdminUserLogout = ::Allocate<RspAdminUserLogoutField>();
+					memset(RspAdminUserLogout, 0, sizeof(*RspAdminUserLogout));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::AdminUserID:
+							{
+								size_t len = value.length() >= sizeof(RspAdminUserLogout->AdminUserID) ? sizeof(RspAdminUserLogout->AdminUserID) - 1 : value.length();
+								memcpy(RspAdminUserLogout->AdminUserID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAdminUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspAdminUserLogoutPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				case RspInfoField::FieldID:
+				{
+					RspInfo = ::Allocate<RspInfoField>();
+					memset(RspInfo, 0, sizeof(*RspInfo));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ErrorID:
+							{
+								RspInfo->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
+								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspAdminUserLogoutPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspAdminUserLogoutPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRspAdminUserLogoutPackage::GetDebugString() const
+	{
+		if (RspAdminUserLogout == nullptr && RspInfo == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (RspAdminUserLogout != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLogoutPackage:AdminUserID:[%s]", 
+				RspAdminUserLogout->AdminUserID);
+		}
+		if (RspInfo != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAdminUserLogoutPackage:ErrorID:[%d], ErrorMsg:[%s]", 
+				RspInfo->ErrorID, RspInfo->ErrorMsg);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnAdminUserLogoutPackage::StepRtnAdminUserLogoutPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnAdminUserLogoutPackage* StepRtnAdminUserLogoutPackage::Allocate()
+	{
+		return ::Allocate<StepRtnAdminUserLogoutPackage>();
+	}
+	void StepRtnAdminUserLogoutPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (AdminUserLogout != nullptr)
+		{
+			::Free<AdminUserLogoutField>(AdminUserLogout);
+			AdminUserLogout = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnAdminUserLogoutPackage>::GetInstance().Free(this);
+	}
+	void StepRtnAdminUserLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnAdminUserLogoutPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (AdminUserLogout != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, AdminUserLogoutField::FieldID);
+			if (strlen(AdminUserLogout->UserID) >= sizeof(AdminUserLogout->UserID))
+			{
+				AdminUserLogout->UserID[sizeof(AdminUserLogout->UserID) - 1] = 0;
+			}
+			WriteString(ppos, Items::UserID, AdminUserLogout->UserID);
+			WriteString(ppos, Items::ErrorID, AdminUserLogout->ErrorID);
+			if (strlen(AdminUserLogout->ErrorMsg) >= sizeof(AdminUserLogout->ErrorMsg))
+			{
+				AdminUserLogout->ErrorMsg[sizeof(AdminUserLogout->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, AdminUserLogout->ErrorMsg);
+			WriteHexString(ppos, Items::FieldEnd, AdminUserLogoutField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnAdminUserLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case AdminUserLogoutField::FieldID:
+				{
+					AdminUserLogout = ::Allocate<AdminUserLogoutField>();
+					memset(AdminUserLogout, 0, sizeof(*AdminUserLogout));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::UserID:
+							{
+								size_t len = value.length() >= sizeof(AdminUserLogout->UserID) ? sizeof(AdminUserLogout->UserID) - 1 : value.length();
+								memcpy(AdminUserLogout->UserID, value.c_str(), len);
+								break;
+							}
+							case Items::ErrorID:
+							{
+								AdminUserLogout->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(AdminUserLogout->ErrorMsg) ? sizeof(AdminUserLogout->ErrorMsg) - 1 : value.length();
+								memcpy(AdminUserLogout->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for AdminUserLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnAdminUserLogoutPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnAdminUserLogoutPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnAdminUserLogoutPackage::GetDebugString() const
+	{
+		if (AdminUserLogout == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (AdminUserLogout != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnAdminUserLogoutPackage:UserID:[%s], ErrorID:[%d], ErrorMsg:[%s]", 
+				AdminUserLogout->UserID, AdminUserLogout->ErrorID, AdminUserLogout->ErrorMsg);
+		}
+		return t_StepPackageStringBuffer;
+	}
 	StepReqAddRiskUserPackage::StepReqAddRiskUserPackage()
 	{
 		Head.PackageID = PackageID;
@@ -14228,7 +14931,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddRiskUser != nullptr)
 		{
-			::Free<StepReqAddRiskUserField>(ReqAddRiskUser);
+			::Free<ReqAddRiskUserField>(ReqAddRiskUser);
 			ReqAddRiskUser = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddRiskUserPackage>::GetInstance().Free(this);
@@ -14244,7 +14947,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddRiskUser != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddRiskUserField::FieldID);
 			if (strlen(ReqAddRiskUser->AdminUserID) >= sizeof(ReqAddRiskUser->AdminUserID))
 			{
 				ReqAddRiskUser->AdminUserID[sizeof(ReqAddRiskUser->AdminUserID) - 1] = 0;
@@ -14266,7 +14969,7 @@ namespace step
 			}
 			WriteString(ppos, Items::Password, ReqAddRiskUser->Password);
 			WriteString(ppos, Items::RiskGroupID, ReqAddRiskUser->RiskGroupID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddRiskUserField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -14282,9 +14985,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddRiskUserField::FieldID:
+				case ReqAddRiskUserField::FieldID:
 				{
-					ReqAddRiskUser = ::Allocate<StepReqAddRiskUserField>();
+					ReqAddRiskUser = ::Allocate<ReqAddRiskUserField>();
 					memset(ReqAddRiskUser, 0, sizeof(*ReqAddRiskUser));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -14328,7 +15031,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddRiskUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddRiskUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -14386,12 +15089,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddRiskUser != nullptr)
 		{
-			::Free<StepRspAddRiskUserField>(RspAddRiskUser);
+			::Free<RspAddRiskUserField>(RspAddRiskUser);
 			RspAddRiskUser = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddRiskUserPackage>::GetInstance().Free(this);
@@ -14407,7 +15110,7 @@ namespace step
 		char* ppos = buff;
 		if (RspAddRiskUser != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddRiskUserField::FieldID);
 			if (strlen(RspAddRiskUser->AdminUserID) >= sizeof(RspAddRiskUser->AdminUserID))
 			{
 				RspAddRiskUser->AdminUserID[sizeof(RspAddRiskUser->AdminUserID) - 1] = 0;
@@ -14418,18 +15121,18 @@ namespace step
 				RspAddRiskUser->UserID[sizeof(RspAddRiskUser->UserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::UserID, RspAddRiskUser->UserID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddRiskUserField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -14445,9 +15148,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddRiskUserField::FieldID:
+				case RspAddRiskUserField::FieldID:
 				{
-					RspAddRiskUser = ::Allocate<StepRspAddRiskUserField>();
+					RspAddRiskUser = ::Allocate<RspAddRiskUserField>();
 					memset(RspAddRiskUser, 0, sizeof(*RspAddRiskUser));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -14474,7 +15177,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddRiskUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddRiskUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -14487,9 +15190,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -14515,7 +15218,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -14578,7 +15281,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqUpdateRiskUser != nullptr)
 		{
-			::Free<StepReqUpdateRiskUserField>(ReqUpdateRiskUser);
+			::Free<ReqUpdateRiskUserField>(ReqUpdateRiskUser);
 			ReqUpdateRiskUser = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqUpdateRiskUserPackage>::GetInstance().Free(this);
@@ -14594,7 +15297,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateRiskUser != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqUpdateRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqUpdateRiskUserField::FieldID);
 			if (strlen(ReqUpdateRiskUser->AdminUserID) >= sizeof(ReqUpdateRiskUser->AdminUserID))
 			{
 				ReqUpdateRiskUser->AdminUserID[sizeof(ReqUpdateRiskUser->AdminUserID) - 1] = 0;
@@ -14616,7 +15319,7 @@ namespace step
 			}
 			WriteString(ppos, Items::Password, ReqUpdateRiskUser->Password);
 			WriteString(ppos, Items::RiskGroupID, ReqUpdateRiskUser->RiskGroupID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqUpdateRiskUserField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -14632,9 +15335,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqUpdateRiskUserField::FieldID:
+				case ReqUpdateRiskUserField::FieldID:
 				{
-					ReqUpdateRiskUser = ::Allocate<StepReqUpdateRiskUserField>();
+					ReqUpdateRiskUser = ::Allocate<ReqUpdateRiskUserField>();
 					memset(ReqUpdateRiskUser, 0, sizeof(*ReqUpdateRiskUser));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -14678,7 +15381,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqUpdateRiskUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqUpdateRiskUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -14736,12 +15439,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspUpdateRiskUser != nullptr)
 		{
-			::Free<StepRspUpdateRiskUserField>(RspUpdateRiskUser);
+			::Free<RspUpdateRiskUserField>(RspUpdateRiskUser);
 			RspUpdateRiskUser = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspUpdateRiskUserPackage>::GetInstance().Free(this);
@@ -14757,7 +15460,7 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateRiskUser != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspUpdateRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspUpdateRiskUserField::FieldID);
 			if (strlen(RspUpdateRiskUser->AdminUserID) >= sizeof(RspUpdateRiskUser->AdminUserID))
 			{
 				RspUpdateRiskUser->AdminUserID[sizeof(RspUpdateRiskUser->AdminUserID) - 1] = 0;
@@ -14768,18 +15471,18 @@ namespace step
 				RspUpdateRiskUser->UserID[sizeof(RspUpdateRiskUser->UserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::UserID, RspUpdateRiskUser->UserID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspUpdateRiskUserField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -14795,9 +15498,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspUpdateRiskUserField::FieldID:
+				case RspUpdateRiskUserField::FieldID:
 				{
-					RspUpdateRiskUser = ::Allocate<StepRspUpdateRiskUserField>();
+					RspUpdateRiskUser = ::Allocate<RspUpdateRiskUserField>();
 					memset(RspUpdateRiskUser, 0, sizeof(*RspUpdateRiskUser));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -14824,7 +15527,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspUpdateRiskUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspUpdateRiskUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -14837,9 +15540,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -14865,7 +15568,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -14928,7 +15631,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRemoveRiskUser != nullptr)
 		{
-			::Free<StepReqRemoveRiskUserField>(ReqRemoveRiskUser);
+			::Free<ReqRemoveRiskUserField>(ReqRemoveRiskUser);
 			ReqRemoveRiskUser = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRemoveRiskUserPackage>::GetInstance().Free(this);
@@ -14944,7 +15647,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveRiskUser != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRemoveRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRemoveRiskUserField::FieldID);
 			if (strlen(ReqRemoveRiskUser->AdminUserID) >= sizeof(ReqRemoveRiskUser->AdminUserID))
 			{
 				ReqRemoveRiskUser->AdminUserID[sizeof(ReqRemoveRiskUser->AdminUserID) - 1] = 0;
@@ -14955,7 +15658,7 @@ namespace step
 				ReqRemoveRiskUser->UserID[sizeof(ReqRemoveRiskUser->UserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::UserID, ReqRemoveRiskUser->UserID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRemoveRiskUserField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -14971,9 +15674,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRemoveRiskUserField::FieldID:
+				case ReqRemoveRiskUserField::FieldID:
 				{
-					ReqRemoveRiskUser = ::Allocate<StepReqRemoveRiskUserField>();
+					ReqRemoveRiskUser = ::Allocate<ReqRemoveRiskUserField>();
 					memset(ReqRemoveRiskUser, 0, sizeof(*ReqRemoveRiskUser));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -15000,7 +15703,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRemoveRiskUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRemoveRiskUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -15058,12 +15761,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspRemoveRiskUser != nullptr)
 		{
-			::Free<StepRspRemoveRiskUserField>(RspRemoveRiskUser);
+			::Free<RspRemoveRiskUserField>(RspRemoveRiskUser);
 			RspRemoveRiskUser = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRemoveRiskUserPackage>::GetInstance().Free(this);
@@ -15079,7 +15782,7 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveRiskUser != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRemoveRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspRemoveRiskUserField::FieldID);
 			if (strlen(RspRemoveRiskUser->AdminUserID) >= sizeof(RspRemoveRiskUser->AdminUserID))
 			{
 				RspRemoveRiskUser->AdminUserID[sizeof(RspRemoveRiskUser->AdminUserID) - 1] = 0;
@@ -15090,18 +15793,18 @@ namespace step
 				RspRemoveRiskUser->UserID[sizeof(RspRemoveRiskUser->UserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::UserID, RspRemoveRiskUser->UserID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveRiskUserField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspRemoveRiskUserField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -15117,9 +15820,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspRemoveRiskUserField::FieldID:
+				case RspRemoveRiskUserField::FieldID:
 				{
-					RspRemoveRiskUser = ::Allocate<StepRspRemoveRiskUserField>();
+					RspRemoveRiskUser = ::Allocate<RspRemoveRiskUserField>();
 					memset(RspRemoveRiskUser, 0, sizeof(*RspRemoveRiskUser));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -15146,7 +15849,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRemoveRiskUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRemoveRiskUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -15159,9 +15862,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -15187,7 +15890,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -15250,7 +15953,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddAdminUser != nullptr)
 		{
-			::Free<StepReqAddAdminUserField>(ReqAddAdminUser);
+			::Free<ReqAddAdminUserField>(ReqAddAdminUser);
 			ReqAddAdminUser = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddAdminUserPackage>::GetInstance().Free(this);
@@ -15266,7 +15969,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddAdminUser != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddAdminUserField::FieldID);
 			if (strlen(ReqAddAdminUser->AdminUserID) >= sizeof(ReqAddAdminUser->AdminUserID))
 			{
 				ReqAddAdminUser->AdminUserID[sizeof(ReqAddAdminUser->AdminUserID) - 1] = 0;
@@ -15287,7 +15990,7 @@ namespace step
 				ReqAddAdminUser->Password[sizeof(ReqAddAdminUser->Password) - 1] = 0;
 			}
 			WriteString(ppos, Items::Password, ReqAddAdminUser->Password);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddAdminUserField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -15303,9 +16006,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddAdminUserField::FieldID:
+				case ReqAddAdminUserField::FieldID:
 				{
-					ReqAddAdminUser = ::Allocate<StepReqAddAdminUserField>();
+					ReqAddAdminUser = ::Allocate<ReqAddAdminUserField>();
 					memset(ReqAddAdminUser, 0, sizeof(*ReqAddAdminUser));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -15344,7 +16047,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddAdminUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddAdminUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -15402,12 +16105,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddAdminUser != nullptr)
 		{
-			::Free<StepRspAddAdminUserField>(RspAddAdminUser);
+			::Free<RspAddAdminUserField>(RspAddAdminUser);
 			RspAddAdminUser = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddAdminUserPackage>::GetInstance().Free(this);
@@ -15423,7 +16126,7 @@ namespace step
 		char* ppos = buff;
 		if (RspAddAdminUser != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddAdminUserField::FieldID);
 			if (strlen(RspAddAdminUser->AdminUserID) >= sizeof(RspAddAdminUser->AdminUserID))
 			{
 				RspAddAdminUser->AdminUserID[sizeof(RspAddAdminUser->AdminUserID) - 1] = 0;
@@ -15434,18 +16137,18 @@ namespace step
 				RspAddAdminUser->UserID[sizeof(RspAddAdminUser->UserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::UserID, RspAddAdminUser->UserID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddAdminUserField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -15461,9 +16164,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddAdminUserField::FieldID:
+				case RspAddAdminUserField::FieldID:
 				{
-					RspAddAdminUser = ::Allocate<StepRspAddAdminUserField>();
+					RspAddAdminUser = ::Allocate<RspAddAdminUserField>();
 					memset(RspAddAdminUser, 0, sizeof(*RspAddAdminUser));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -15490,7 +16193,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddAdminUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddAdminUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -15503,9 +16206,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -15531,7 +16234,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -15594,7 +16297,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqUpdateAdminUser != nullptr)
 		{
-			::Free<StepReqUpdateAdminUserField>(ReqUpdateAdminUser);
+			::Free<ReqUpdateAdminUserField>(ReqUpdateAdminUser);
 			ReqUpdateAdminUser = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqUpdateAdminUserPackage>::GetInstance().Free(this);
@@ -15610,7 +16313,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateAdminUser != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqUpdateAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqUpdateAdminUserField::FieldID);
 			if (strlen(ReqUpdateAdminUser->AdminUserID) >= sizeof(ReqUpdateAdminUser->AdminUserID))
 			{
 				ReqUpdateAdminUser->AdminUserID[sizeof(ReqUpdateAdminUser->AdminUserID) - 1] = 0;
@@ -15631,7 +16334,7 @@ namespace step
 				ReqUpdateAdminUser->Password[sizeof(ReqUpdateAdminUser->Password) - 1] = 0;
 			}
 			WriteString(ppos, Items::Password, ReqUpdateAdminUser->Password);
-			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqUpdateAdminUserField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -15647,9 +16350,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqUpdateAdminUserField::FieldID:
+				case ReqUpdateAdminUserField::FieldID:
 				{
-					ReqUpdateAdminUser = ::Allocate<StepReqUpdateAdminUserField>();
+					ReqUpdateAdminUser = ::Allocate<ReqUpdateAdminUserField>();
 					memset(ReqUpdateAdminUser, 0, sizeof(*ReqUpdateAdminUser));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -15688,7 +16391,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqUpdateAdminUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqUpdateAdminUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -15746,12 +16449,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspUpdateAdminUser != nullptr)
 		{
-			::Free<StepRspUpdateAdminUserField>(RspUpdateAdminUser);
+			::Free<RspUpdateAdminUserField>(RspUpdateAdminUser);
 			RspUpdateAdminUser = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspUpdateAdminUserPackage>::GetInstance().Free(this);
@@ -15767,7 +16470,7 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateAdminUser != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspUpdateAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspUpdateAdminUserField::FieldID);
 			if (strlen(RspUpdateAdminUser->AdminUserID) >= sizeof(RspUpdateAdminUser->AdminUserID))
 			{
 				RspUpdateAdminUser->AdminUserID[sizeof(RspUpdateAdminUser->AdminUserID) - 1] = 0;
@@ -15778,18 +16481,18 @@ namespace step
 				RspUpdateAdminUser->UserID[sizeof(RspUpdateAdminUser->UserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::UserID, RspUpdateAdminUser->UserID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspUpdateAdminUserField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -15805,9 +16508,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspUpdateAdminUserField::FieldID:
+				case RspUpdateAdminUserField::FieldID:
 				{
-					RspUpdateAdminUser = ::Allocate<StepRspUpdateAdminUserField>();
+					RspUpdateAdminUser = ::Allocate<RspUpdateAdminUserField>();
 					memset(RspUpdateAdminUser, 0, sizeof(*RspUpdateAdminUser));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -15834,7 +16537,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspUpdateAdminUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspUpdateAdminUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -15847,9 +16550,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -15875,7 +16578,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -15938,7 +16641,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRemoveAdminUser != nullptr)
 		{
-			::Free<StepReqRemoveAdminUserField>(ReqRemoveAdminUser);
+			::Free<ReqRemoveAdminUserField>(ReqRemoveAdminUser);
 			ReqRemoveAdminUser = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRemoveAdminUserPackage>::GetInstance().Free(this);
@@ -15954,7 +16657,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveAdminUser != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRemoveAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRemoveAdminUserField::FieldID);
 			if (strlen(ReqRemoveAdminUser->AdminUserID) >= sizeof(ReqRemoveAdminUser->AdminUserID))
 			{
 				ReqRemoveAdminUser->AdminUserID[sizeof(ReqRemoveAdminUser->AdminUserID) - 1] = 0;
@@ -15965,7 +16668,7 @@ namespace step
 				ReqRemoveAdminUser->UserID[sizeof(ReqRemoveAdminUser->UserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::UserID, ReqRemoveAdminUser->UserID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRemoveAdminUserField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -15981,9 +16684,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRemoveAdminUserField::FieldID:
+				case ReqRemoveAdminUserField::FieldID:
 				{
-					ReqRemoveAdminUser = ::Allocate<StepReqRemoveAdminUserField>();
+					ReqRemoveAdminUser = ::Allocate<ReqRemoveAdminUserField>();
 					memset(ReqRemoveAdminUser, 0, sizeof(*ReqRemoveAdminUser));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -16010,7 +16713,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRemoveAdminUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRemoveAdminUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -16068,12 +16771,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspRemoveAdminUser != nullptr)
 		{
-			::Free<StepRspRemoveAdminUserField>(RspRemoveAdminUser);
+			::Free<RspRemoveAdminUserField>(RspRemoveAdminUser);
 			RspRemoveAdminUser = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRemoveAdminUserPackage>::GetInstance().Free(this);
@@ -16089,7 +16792,7 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveAdminUser != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRemoveAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspRemoveAdminUserField::FieldID);
 			if (strlen(RspRemoveAdminUser->AdminUserID) >= sizeof(RspRemoveAdminUser->AdminUserID))
 			{
 				RspRemoveAdminUser->AdminUserID[sizeof(RspRemoveAdminUser->AdminUserID) - 1] = 0;
@@ -16100,18 +16803,18 @@ namespace step
 				RspRemoveAdminUser->UserID[sizeof(RspRemoveAdminUser->UserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::UserID, RspRemoveAdminUser->UserID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveAdminUserField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspRemoveAdminUserField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -16127,9 +16830,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspRemoveAdminUserField::FieldID:
+				case RspRemoveAdminUserField::FieldID:
 				{
-					RspRemoveAdminUser = ::Allocate<StepRspRemoveAdminUserField>();
+					RspRemoveAdminUser = ::Allocate<RspRemoveAdminUserField>();
 					memset(RspRemoveAdminUser, 0, sizeof(*RspRemoveAdminUser));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -16156,7 +16859,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRemoveAdminUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRemoveAdminUserField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -16169,9 +16872,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -16197,7 +16900,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -16260,7 +16963,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddPrimaryAccount != nullptr)
 		{
-			::Free<StepReqAddPrimaryAccountField>(ReqAddPrimaryAccount);
+			::Free<ReqAddPrimaryAccountField>(ReqAddPrimaryAccount);
 			ReqAddPrimaryAccount = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddPrimaryAccountPackage>::GetInstance().Free(this);
@@ -16276,7 +16979,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddPrimaryAccount != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddPrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddPrimaryAccountField::FieldID);
 			if (strlen(ReqAddPrimaryAccount->AdminUserID) >= sizeof(ReqAddPrimaryAccount->AdminUserID))
 			{
 				ReqAddPrimaryAccount->AdminUserID[sizeof(ReqAddPrimaryAccount->AdminUserID) - 1] = 0;
@@ -16315,7 +17018,7 @@ namespace step
 			WriteString(ppos, Items::RiskGroupID, ReqAddPrimaryAccount->RiskGroupID);
 			WriteString(ppos, Items::CommissionGroupID, ReqAddPrimaryAccount->CommissionGroupID);
 			WriteString(ppos, Items::IsAutoAudit, ReqAddPrimaryAccount->IsAutoAudit);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddPrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddPrimaryAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -16331,9 +17034,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddPrimaryAccountField::FieldID:
+				case ReqAddPrimaryAccountField::FieldID:
 				{
-					ReqAddPrimaryAccount = ::Allocate<StepReqAddPrimaryAccountField>();
+					ReqAddPrimaryAccount = ::Allocate<ReqAddPrimaryAccountField>();
 					memset(ReqAddPrimaryAccount, 0, sizeof(*ReqAddPrimaryAccount));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -16424,7 +17127,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddPrimaryAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddPrimaryAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -16482,12 +17185,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddPrimaryAccount != nullptr)
 		{
-			::Free<StepRspAddPrimaryAccountField>(RspAddPrimaryAccount);
+			::Free<RspAddPrimaryAccountField>(RspAddPrimaryAccount);
 			RspAddPrimaryAccount = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddPrimaryAccountPackage>::GetInstance().Free(this);
@@ -16503,7 +17206,7 @@ namespace step
 		char* ppos = buff;
 		if (RspAddPrimaryAccount != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddPrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddPrimaryAccountField::FieldID);
 			if (strlen(RspAddPrimaryAccount->AdminUserID) >= sizeof(RspAddPrimaryAccount->AdminUserID))
 			{
 				RspAddPrimaryAccount->AdminUserID[sizeof(RspAddPrimaryAccount->AdminUserID) - 1] = 0;
@@ -16514,18 +17217,18 @@ namespace step
 				RspAddPrimaryAccount->PrimaryAccountID[sizeof(RspAddPrimaryAccount->PrimaryAccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::PrimaryAccountID, RspAddPrimaryAccount->PrimaryAccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddPrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddPrimaryAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -16541,9 +17244,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddPrimaryAccountField::FieldID:
+				case RspAddPrimaryAccountField::FieldID:
 				{
-					RspAddPrimaryAccount = ::Allocate<StepRspAddPrimaryAccountField>();
+					RspAddPrimaryAccount = ::Allocate<RspAddPrimaryAccountField>();
 					memset(RspAddPrimaryAccount, 0, sizeof(*RspAddPrimaryAccount));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -16570,7 +17273,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddPrimaryAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddPrimaryAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -16583,9 +17286,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -16611,7 +17314,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -16674,7 +17377,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqUpdatePrimaryAccount != nullptr)
 		{
-			::Free<StepReqUpdatePrimaryAccountField>(ReqUpdatePrimaryAccount);
+			::Free<ReqUpdatePrimaryAccountField>(ReqUpdatePrimaryAccount);
 			ReqUpdatePrimaryAccount = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqUpdatePrimaryAccountPackage>::GetInstance().Free(this);
@@ -16690,7 +17393,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdatePrimaryAccount != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqUpdatePrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqUpdatePrimaryAccountField::FieldID);
 			if (strlen(ReqUpdatePrimaryAccount->AdminUserID) >= sizeof(ReqUpdatePrimaryAccount->AdminUserID))
 			{
 				ReqUpdatePrimaryAccount->AdminUserID[sizeof(ReqUpdatePrimaryAccount->AdminUserID) - 1] = 0;
@@ -16729,7 +17432,7 @@ namespace step
 			WriteString(ppos, Items::RiskGroupID, ReqUpdatePrimaryAccount->RiskGroupID);
 			WriteString(ppos, Items::CommissionGroupID, ReqUpdatePrimaryAccount->CommissionGroupID);
 			WriteString(ppos, Items::IsAutoAudit, ReqUpdatePrimaryAccount->IsAutoAudit);
-			WriteHexString(ppos, Items::FieldEnd, StepReqUpdatePrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqUpdatePrimaryAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -16745,9 +17448,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqUpdatePrimaryAccountField::FieldID:
+				case ReqUpdatePrimaryAccountField::FieldID:
 				{
-					ReqUpdatePrimaryAccount = ::Allocate<StepReqUpdatePrimaryAccountField>();
+					ReqUpdatePrimaryAccount = ::Allocate<ReqUpdatePrimaryAccountField>();
 					memset(ReqUpdatePrimaryAccount, 0, sizeof(*ReqUpdatePrimaryAccount));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -16838,7 +17541,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqUpdatePrimaryAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqUpdatePrimaryAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -16896,12 +17599,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspUpdatePrimaryAccount != nullptr)
 		{
-			::Free<StepRspUpdatePrimaryAccountField>(RspUpdatePrimaryAccount);
+			::Free<RspUpdatePrimaryAccountField>(RspUpdatePrimaryAccount);
 			RspUpdatePrimaryAccount = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspUpdatePrimaryAccountPackage>::GetInstance().Free(this);
@@ -16917,7 +17620,7 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdatePrimaryAccount != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspUpdatePrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspUpdatePrimaryAccountField::FieldID);
 			if (strlen(RspUpdatePrimaryAccount->AdminUserID) >= sizeof(RspUpdatePrimaryAccount->AdminUserID))
 			{
 				RspUpdatePrimaryAccount->AdminUserID[sizeof(RspUpdatePrimaryAccount->AdminUserID) - 1] = 0;
@@ -16928,18 +17631,18 @@ namespace step
 				RspUpdatePrimaryAccount->PrimaryAccountID[sizeof(RspUpdatePrimaryAccount->PrimaryAccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::PrimaryAccountID, RspUpdatePrimaryAccount->PrimaryAccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspUpdatePrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspUpdatePrimaryAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -16955,9 +17658,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspUpdatePrimaryAccountField::FieldID:
+				case RspUpdatePrimaryAccountField::FieldID:
 				{
-					RspUpdatePrimaryAccount = ::Allocate<StepRspUpdatePrimaryAccountField>();
+					RspUpdatePrimaryAccount = ::Allocate<RspUpdatePrimaryAccountField>();
 					memset(RspUpdatePrimaryAccount, 0, sizeof(*RspUpdatePrimaryAccount));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -16984,7 +17687,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspUpdatePrimaryAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspUpdatePrimaryAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -16997,9 +17700,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -17025,7 +17728,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -17088,7 +17791,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRemovePrimaryAccount != nullptr)
 		{
-			::Free<StepReqRemovePrimaryAccountField>(ReqRemovePrimaryAccount);
+			::Free<ReqRemovePrimaryAccountField>(ReqRemovePrimaryAccount);
 			ReqRemovePrimaryAccount = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRemovePrimaryAccountPackage>::GetInstance().Free(this);
@@ -17104,7 +17807,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemovePrimaryAccount != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRemovePrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRemovePrimaryAccountField::FieldID);
 			if (strlen(ReqRemovePrimaryAccount->AdminUserID) >= sizeof(ReqRemovePrimaryAccount->AdminUserID))
 			{
 				ReqRemovePrimaryAccount->AdminUserID[sizeof(ReqRemovePrimaryAccount->AdminUserID) - 1] = 0;
@@ -17115,7 +17818,7 @@ namespace step
 				ReqRemovePrimaryAccount->PrimaryAccountID[sizeof(ReqRemovePrimaryAccount->PrimaryAccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::PrimaryAccountID, ReqRemovePrimaryAccount->PrimaryAccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRemovePrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRemovePrimaryAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -17131,9 +17834,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRemovePrimaryAccountField::FieldID:
+				case ReqRemovePrimaryAccountField::FieldID:
 				{
-					ReqRemovePrimaryAccount = ::Allocate<StepReqRemovePrimaryAccountField>();
+					ReqRemovePrimaryAccount = ::Allocate<ReqRemovePrimaryAccountField>();
 					memset(ReqRemovePrimaryAccount, 0, sizeof(*ReqRemovePrimaryAccount));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -17160,7 +17863,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRemovePrimaryAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRemovePrimaryAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -17218,12 +17921,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspRemovePrimaryAccount != nullptr)
 		{
-			::Free<StepRspRemovePrimaryAccountField>(RspRemovePrimaryAccount);
+			::Free<RspRemovePrimaryAccountField>(RspRemovePrimaryAccount);
 			RspRemovePrimaryAccount = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRemovePrimaryAccountPackage>::GetInstance().Free(this);
@@ -17239,7 +17942,7 @@ namespace step
 		char* ppos = buff;
 		if (RspRemovePrimaryAccount != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRemovePrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspRemovePrimaryAccountField::FieldID);
 			if (strlen(RspRemovePrimaryAccount->AdminUserID) >= sizeof(RspRemovePrimaryAccount->AdminUserID))
 			{
 				RspRemovePrimaryAccount->AdminUserID[sizeof(RspRemovePrimaryAccount->AdminUserID) - 1] = 0;
@@ -17250,18 +17953,18 @@ namespace step
 				RspRemovePrimaryAccount->PrimaryAccountID[sizeof(RspRemovePrimaryAccount->PrimaryAccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::PrimaryAccountID, RspRemovePrimaryAccount->PrimaryAccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRemovePrimaryAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspRemovePrimaryAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -17277,9 +17980,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspRemovePrimaryAccountField::FieldID:
+				case RspRemovePrimaryAccountField::FieldID:
 				{
-					RspRemovePrimaryAccount = ::Allocate<StepRspRemovePrimaryAccountField>();
+					RspRemovePrimaryAccount = ::Allocate<RspRemovePrimaryAccountField>();
 					memset(RspRemovePrimaryAccount, 0, sizeof(*RspRemovePrimaryAccount));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -17306,7 +18009,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRemovePrimaryAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRemovePrimaryAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -17319,9 +18022,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -17347,7 +18050,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -17410,7 +18113,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddAccount != nullptr)
 		{
-			::Free<StepReqAddAccountField>(ReqAddAccount);
+			::Free<ReqAddAccountField>(ReqAddAccount);
 			ReqAddAccount = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddAccountPackage>::GetInstance().Free(this);
@@ -17426,7 +18129,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddAccount != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddAccountField::FieldID);
 			if (strlen(ReqAddAccount->AdminUserID) >= sizeof(ReqAddAccount->AdminUserID))
 			{
 				ReqAddAccount->AdminUserID[sizeof(ReqAddAccount->AdminUserID) - 1] = 0;
@@ -17457,7 +18160,7 @@ namespace step
 			WriteString(ppos, Items::RiskGroupID, ReqAddAccount->RiskGroupID);
 			WriteString(ppos, Items::CommissionGroupID, ReqAddAccount->CommissionGroupID);
 			WriteString(ppos, Items::IsAutoAudit, ReqAddAccount->IsAutoAudit);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -17473,9 +18176,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddAccountField::FieldID:
+				case ReqAddAccountField::FieldID:
 				{
-					ReqAddAccount = ::Allocate<StepReqAddAccountField>();
+					ReqAddAccount = ::Allocate<ReqAddAccountField>();
 					memset(ReqAddAccount, 0, sizeof(*ReqAddAccount));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -17545,7 +18248,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -17603,12 +18306,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddAccount != nullptr)
 		{
-			::Free<StepRspAddAccountField>(RspAddAccount);
+			::Free<RspAddAccountField>(RspAddAccount);
 			RspAddAccount = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddAccountPackage>::GetInstance().Free(this);
@@ -17624,7 +18327,7 @@ namespace step
 		char* ppos = buff;
 		if (RspAddAccount != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddAccountField::FieldID);
 			if (strlen(RspAddAccount->AdminUserID) >= sizeof(RspAddAccount->AdminUserID))
 			{
 				RspAddAccount->AdminUserID[sizeof(RspAddAccount->AdminUserID) - 1] = 0;
@@ -17635,18 +18338,18 @@ namespace step
 				RspAddAccount->AccountID[sizeof(RspAddAccount->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, RspAddAccount->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -17662,9 +18365,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddAccountField::FieldID:
+				case RspAddAccountField::FieldID:
 				{
-					RspAddAccount = ::Allocate<StepRspAddAccountField>();
+					RspAddAccount = ::Allocate<RspAddAccountField>();
 					memset(RspAddAccount, 0, sizeof(*RspAddAccount));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -17691,7 +18394,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -17704,9 +18407,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -17732,7 +18435,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -17795,7 +18498,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqUpdateAccount != nullptr)
 		{
-			::Free<StepReqUpdateAccountField>(ReqUpdateAccount);
+			::Free<ReqUpdateAccountField>(ReqUpdateAccount);
 			ReqUpdateAccount = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqUpdateAccountPackage>::GetInstance().Free(this);
@@ -17811,7 +18514,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateAccount != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqUpdateAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqUpdateAccountField::FieldID);
 			if (strlen(ReqUpdateAccount->AdminUserID) >= sizeof(ReqUpdateAccount->AdminUserID))
 			{
 				ReqUpdateAccount->AdminUserID[sizeof(ReqUpdateAccount->AdminUserID) - 1] = 0;
@@ -17842,7 +18545,7 @@ namespace step
 			WriteString(ppos, Items::RiskGroupID, ReqUpdateAccount->RiskGroupID);
 			WriteString(ppos, Items::CommissionGroupID, ReqUpdateAccount->CommissionGroupID);
 			WriteString(ppos, Items::IsAutoAudit, ReqUpdateAccount->IsAutoAudit);
-			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqUpdateAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -17858,9 +18561,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqUpdateAccountField::FieldID:
+				case ReqUpdateAccountField::FieldID:
 				{
-					ReqUpdateAccount = ::Allocate<StepReqUpdateAccountField>();
+					ReqUpdateAccount = ::Allocate<ReqUpdateAccountField>();
 					memset(ReqUpdateAccount, 0, sizeof(*ReqUpdateAccount));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -17930,7 +18633,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqUpdateAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqUpdateAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -17988,12 +18691,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspUpdateAccount != nullptr)
 		{
-			::Free<StepRspUpdateAccountField>(RspUpdateAccount);
+			::Free<RspUpdateAccountField>(RspUpdateAccount);
 			RspUpdateAccount = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspUpdateAccountPackage>::GetInstance().Free(this);
@@ -18009,7 +18712,7 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateAccount != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspUpdateAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspUpdateAccountField::FieldID);
 			if (strlen(RspUpdateAccount->AdminUserID) >= sizeof(RspUpdateAccount->AdminUserID))
 			{
 				RspUpdateAccount->AdminUserID[sizeof(RspUpdateAccount->AdminUserID) - 1] = 0;
@@ -18020,18 +18723,18 @@ namespace step
 				RspUpdateAccount->AccountID[sizeof(RspUpdateAccount->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, RspUpdateAccount->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspUpdateAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -18047,9 +18750,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspUpdateAccountField::FieldID:
+				case RspUpdateAccountField::FieldID:
 				{
-					RspUpdateAccount = ::Allocate<StepRspUpdateAccountField>();
+					RspUpdateAccount = ::Allocate<RspUpdateAccountField>();
 					memset(RspUpdateAccount, 0, sizeof(*RspUpdateAccount));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -18076,7 +18779,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspUpdateAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspUpdateAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -18089,9 +18792,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -18117,7 +18820,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -18180,7 +18883,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRemoveAccount != nullptr)
 		{
-			::Free<StepReqRemoveAccountField>(ReqRemoveAccount);
+			::Free<ReqRemoveAccountField>(ReqRemoveAccount);
 			ReqRemoveAccount = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRemoveAccountPackage>::GetInstance().Free(this);
@@ -18196,7 +18899,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveAccount != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRemoveAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRemoveAccountField::FieldID);
 			if (strlen(ReqRemoveAccount->AdminUserID) >= sizeof(ReqRemoveAccount->AdminUserID))
 			{
 				ReqRemoveAccount->AdminUserID[sizeof(ReqRemoveAccount->AdminUserID) - 1] = 0;
@@ -18207,7 +18910,7 @@ namespace step
 				ReqRemoveAccount->AccountID[sizeof(ReqRemoveAccount->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, ReqRemoveAccount->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRemoveAccountField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -18223,9 +18926,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRemoveAccountField::FieldID:
+				case ReqRemoveAccountField::FieldID:
 				{
-					ReqRemoveAccount = ::Allocate<StepReqRemoveAccountField>();
+					ReqRemoveAccount = ::Allocate<ReqRemoveAccountField>();
 					memset(ReqRemoveAccount, 0, sizeof(*ReqRemoveAccount));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -18252,7 +18955,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRemoveAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRemoveAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -18310,12 +19013,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspRemoveAccount != nullptr)
 		{
-			::Free<StepRspRemoveAccountField>(RspRemoveAccount);
+			::Free<RspRemoveAccountField>(RspRemoveAccount);
 			RspRemoveAccount = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRemoveAccountPackage>::GetInstance().Free(this);
@@ -18331,7 +19034,7 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveAccount != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRemoveAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspRemoveAccountField::FieldID);
 			if (strlen(RspRemoveAccount->AdminUserID) >= sizeof(RspRemoveAccount->AdminUserID))
 			{
 				RspRemoveAccount->AdminUserID[sizeof(RspRemoveAccount->AdminUserID) - 1] = 0;
@@ -18342,18 +19045,18 @@ namespace step
 				RspRemoveAccount->AccountID[sizeof(RspRemoveAccount->AccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AccountID, RspRemoveAccount->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveAccountField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspRemoveAccountField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -18369,9 +19072,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspRemoveAccountField::FieldID:
+				case RspRemoveAccountField::FieldID:
 				{
-					RspRemoveAccount = ::Allocate<StepRspRemoveAccountField>();
+					RspRemoveAccount = ::Allocate<RspRemoveAccountField>();
 					memset(RspRemoveAccount, 0, sizeof(*RspRemoveAccount));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -18398,7 +19101,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRemoveAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRemoveAccountField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -18411,9 +19114,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -18439,7 +19142,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -18502,7 +19205,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddBaseCommission != nullptr)
 		{
-			::Free<StepReqAddBaseCommissionField>(ReqAddBaseCommission);
+			::Free<ReqAddBaseCommissionField>(ReqAddBaseCommission);
 			ReqAddBaseCommission = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddBaseCommissionPackage>::GetInstance().Free(this);
@@ -18518,7 +19221,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddBaseCommission != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddBaseCommissionField::FieldID);
 			if (strlen(ReqAddBaseCommission->AdminUserID) >= sizeof(ReqAddBaseCommission->AdminUserID))
 			{
 				ReqAddBaseCommission->AdminUserID[sizeof(ReqAddBaseCommission->AdminUserID) - 1] = 0;
@@ -18539,7 +19242,7 @@ namespace step
 			WriteString(ppos, Items::CloseStampTaxByMoney, ReqAddBaseCommission->CloseStampTaxByMoney);
 			WriteString(ppos, Items::OpenTransferFeeByMoney, ReqAddBaseCommission->OpenTransferFeeByMoney);
 			WriteString(ppos, Items::CloseTransferFeeByMoney, ReqAddBaseCommission->CloseTransferFeeByMoney);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddBaseCommissionField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -18555,9 +19258,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddBaseCommissionField::FieldID:
+				case ReqAddBaseCommissionField::FieldID:
 				{
-					ReqAddBaseCommission = ::Allocate<StepReqAddBaseCommissionField>();
+					ReqAddBaseCommission = ::Allocate<ReqAddBaseCommissionField>();
 					memset(ReqAddBaseCommission, 0, sizeof(*ReqAddBaseCommission));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -18615,7 +19318,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddBaseCommissionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddBaseCommissionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -18673,12 +19376,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddBaseCommission != nullptr)
 		{
-			::Free<StepRspAddBaseCommissionField>(RspAddBaseCommission);
+			::Free<RspAddBaseCommissionField>(RspAddBaseCommission);
 			RspAddBaseCommission = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddBaseCommissionPackage>::GetInstance().Free(this);
@@ -18694,7 +19397,7 @@ namespace step
 		char* ppos = buff;
 		if (RspAddBaseCommission != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddBaseCommissionField::FieldID);
 			if (strlen(RspAddBaseCommission->AdminUserID) >= sizeof(RspAddBaseCommission->AdminUserID))
 			{
 				RspAddBaseCommission->AdminUserID[sizeof(RspAddBaseCommission->AdminUserID) - 1] = 0;
@@ -18711,18 +19414,18 @@ namespace step
 			}
 			WriteString(ppos, Items::ExchangeID, RspAddBaseCommission->ExchangeID);
 			WriteString(ppos, Items::SecurityType, (int)RspAddBaseCommission->SecurityType);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddBaseCommissionField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -18738,9 +19441,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddBaseCommissionField::FieldID:
+				case RspAddBaseCommissionField::FieldID:
 				{
-					RspAddBaseCommission = ::Allocate<StepRspAddBaseCommissionField>();
+					RspAddBaseCommission = ::Allocate<RspAddBaseCommissionField>();
 					memset(RspAddBaseCommission, 0, sizeof(*RspAddBaseCommission));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -18778,7 +19481,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddBaseCommissionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddBaseCommissionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -18791,9 +19494,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -18819,7 +19522,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -18882,7 +19585,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqUpdateBaseCommission != nullptr)
 		{
-			::Free<StepReqUpdateBaseCommissionField>(ReqUpdateBaseCommission);
+			::Free<ReqUpdateBaseCommissionField>(ReqUpdateBaseCommission);
 			ReqUpdateBaseCommission = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqUpdateBaseCommissionPackage>::GetInstance().Free(this);
@@ -18898,7 +19601,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateBaseCommission != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqUpdateBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqUpdateBaseCommissionField::FieldID);
 			if (strlen(ReqUpdateBaseCommission->AdminUserID) >= sizeof(ReqUpdateBaseCommission->AdminUserID))
 			{
 				ReqUpdateBaseCommission->AdminUserID[sizeof(ReqUpdateBaseCommission->AdminUserID) - 1] = 0;
@@ -18919,7 +19622,7 @@ namespace step
 			WriteString(ppos, Items::CloseStampTaxByMoney, ReqUpdateBaseCommission->CloseStampTaxByMoney);
 			WriteString(ppos, Items::OpenTransferFeeByMoney, ReqUpdateBaseCommission->OpenTransferFeeByMoney);
 			WriteString(ppos, Items::CloseTransferFeeByMoney, ReqUpdateBaseCommission->CloseTransferFeeByMoney);
-			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqUpdateBaseCommissionField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -18935,9 +19638,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqUpdateBaseCommissionField::FieldID:
+				case ReqUpdateBaseCommissionField::FieldID:
 				{
-					ReqUpdateBaseCommission = ::Allocate<StepReqUpdateBaseCommissionField>();
+					ReqUpdateBaseCommission = ::Allocate<ReqUpdateBaseCommissionField>();
 					memset(ReqUpdateBaseCommission, 0, sizeof(*ReqUpdateBaseCommission));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -18995,7 +19698,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqUpdateBaseCommissionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqUpdateBaseCommissionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -19053,12 +19756,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspUpdateBaseCommission != nullptr)
 		{
-			::Free<StepRspUpdateBaseCommissionField>(RspUpdateBaseCommission);
+			::Free<RspUpdateBaseCommissionField>(RspUpdateBaseCommission);
 			RspUpdateBaseCommission = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspUpdateBaseCommissionPackage>::GetInstance().Free(this);
@@ -19074,7 +19777,7 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateBaseCommission != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspUpdateBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspUpdateBaseCommissionField::FieldID);
 			if (strlen(RspUpdateBaseCommission->AdminUserID) >= sizeof(RspUpdateBaseCommission->AdminUserID))
 			{
 				RspUpdateBaseCommission->AdminUserID[sizeof(RspUpdateBaseCommission->AdminUserID) - 1] = 0;
@@ -19091,18 +19794,18 @@ namespace step
 			}
 			WriteString(ppos, Items::ExchangeID, RspUpdateBaseCommission->ExchangeID);
 			WriteString(ppos, Items::SecurityType, (int)RspUpdateBaseCommission->SecurityType);
-			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspUpdateBaseCommissionField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -19118,9 +19821,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspUpdateBaseCommissionField::FieldID:
+				case RspUpdateBaseCommissionField::FieldID:
 				{
-					RspUpdateBaseCommission = ::Allocate<StepRspUpdateBaseCommissionField>();
+					RspUpdateBaseCommission = ::Allocate<RspUpdateBaseCommissionField>();
 					memset(RspUpdateBaseCommission, 0, sizeof(*RspUpdateBaseCommission));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -19158,7 +19861,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspUpdateBaseCommissionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspUpdateBaseCommissionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -19171,9 +19874,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -19199,7 +19902,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -19262,7 +19965,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRemoveBaseCommission != nullptr)
 		{
-			::Free<StepReqRemoveBaseCommissionField>(ReqRemoveBaseCommission);
+			::Free<ReqRemoveBaseCommissionField>(ReqRemoveBaseCommission);
 			ReqRemoveBaseCommission = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRemoveBaseCommissionPackage>::GetInstance().Free(this);
@@ -19278,7 +19981,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveBaseCommission != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRemoveBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRemoveBaseCommissionField::FieldID);
 			if (strlen(ReqRemoveBaseCommission->AdminUserID) >= sizeof(ReqRemoveBaseCommission->AdminUserID))
 			{
 				ReqRemoveBaseCommission->AdminUserID[sizeof(ReqRemoveBaseCommission->AdminUserID) - 1] = 0;
@@ -19295,7 +19998,7 @@ namespace step
 			}
 			WriteString(ppos, Items::ExchangeID, ReqRemoveBaseCommission->ExchangeID);
 			WriteString(ppos, Items::SecurityType, (int)ReqRemoveBaseCommission->SecurityType);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRemoveBaseCommissionField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -19311,9 +20014,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRemoveBaseCommissionField::FieldID:
+				case ReqRemoveBaseCommissionField::FieldID:
 				{
-					ReqRemoveBaseCommission = ::Allocate<StepReqRemoveBaseCommissionField>();
+					ReqRemoveBaseCommission = ::Allocate<ReqRemoveBaseCommissionField>();
 					memset(ReqRemoveBaseCommission, 0, sizeof(*ReqRemoveBaseCommission));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -19351,7 +20054,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRemoveBaseCommissionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRemoveBaseCommissionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -19409,12 +20112,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		if (RspRemoveBaseCommission != nullptr)
 		{
-			::Free<StepRspRemoveBaseCommissionField>(RspRemoveBaseCommission);
+			::Free<RspRemoveBaseCommissionField>(RspRemoveBaseCommission);
 			RspRemoveBaseCommission = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRemoveBaseCommissionPackage>::GetInstance().Free(this);
@@ -19430,18 +20133,18 @@ namespace step
 		char* ppos = buff;
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		if (RspRemoveBaseCommission != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRemoveBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspRemoveBaseCommissionField::FieldID);
 			if (strlen(RspRemoveBaseCommission->AdminUserID) >= sizeof(RspRemoveBaseCommission->AdminUserID))
 			{
 				RspRemoveBaseCommission->AdminUserID[sizeof(RspRemoveBaseCommission->AdminUserID) - 1] = 0;
@@ -19458,7 +20161,7 @@ namespace step
 			}
 			WriteString(ppos, Items::ExchangeID, RspRemoveBaseCommission->ExchangeID);
 			WriteString(ppos, Items::SecurityType, (int)RspRemoveBaseCommission->SecurityType);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveBaseCommissionField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspRemoveBaseCommissionField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -19474,9 +20177,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -19502,7 +20205,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -19515,9 +20218,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspRemoveBaseCommissionField::FieldID:
+				case RspRemoveBaseCommissionField::FieldID:
 				{
-					RspRemoveBaseCommission = ::Allocate<StepRspRemoveBaseCommissionField>();
+					RspRemoveBaseCommission = ::Allocate<RspRemoveBaseCommissionField>();
 					memset(RspRemoveBaseCommission, 0, sizeof(*RspRemoveBaseCommission));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -19555,7 +20258,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRemoveBaseCommissionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRemoveBaseCommissionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -19618,7 +20321,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddCommissionGroup != nullptr)
 		{
-			::Free<StepReqAddCommissionGroupField>(ReqAddCommissionGroup);
+			::Free<ReqAddCommissionGroupField>(ReqAddCommissionGroup);
 			ReqAddCommissionGroup = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddCommissionGroupPackage>::GetInstance().Free(this);
@@ -19634,7 +20337,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddCommissionGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddCommissionGroupField::FieldID);
 			if (strlen(ReqAddCommissionGroup->AdminUserID) >= sizeof(ReqAddCommissionGroup->AdminUserID))
 			{
 				ReqAddCommissionGroup->AdminUserID[sizeof(ReqAddCommissionGroup->AdminUserID) - 1] = 0;
@@ -19667,7 +20370,7 @@ namespace step
 			WriteString(ppos, Items::CloseSellByVolume, ReqAddCommissionGroup->CloseSellByVolume);
 			WriteString(ppos, Items::MinCommission, ReqAddCommissionGroup->MinCommission);
 			WriteString(ppos, Items::MaxCommission, ReqAddCommissionGroup->MaxCommission);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddCommissionGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -19683,9 +20386,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddCommissionGroupField::FieldID:
+				case ReqAddCommissionGroupField::FieldID:
 				{
-					ReqAddCommissionGroup = ::Allocate<StepReqAddCommissionGroupField>();
+					ReqAddCommissionGroup = ::Allocate<ReqAddCommissionGroupField>();
 					memset(ReqAddCommissionGroup, 0, sizeof(*ReqAddCommissionGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -19784,7 +20487,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddCommissionGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddCommissionGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -19842,12 +20545,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddCommissionGroup != nullptr)
 		{
-			::Free<StepRspAddCommissionGroupField>(RspAddCommissionGroup);
+			::Free<RspAddCommissionGroupField>(RspAddCommissionGroup);
 			RspAddCommissionGroup = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddCommissionGroupPackage>::GetInstance().Free(this);
@@ -19863,7 +20566,7 @@ namespace step
 		char* ppos = buff;
 		if (RspAddCommissionGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddCommissionGroupField::FieldID);
 			if (strlen(RspAddCommissionGroup->AdminUserID) >= sizeof(RspAddCommissionGroup->AdminUserID))
 			{
 				RspAddCommissionGroup->AdminUserID[sizeof(RspAddCommissionGroup->AdminUserID) - 1] = 0;
@@ -19881,18 +20584,18 @@ namespace step
 			}
 			WriteString(ppos, Items::ExchangeID, RspAddCommissionGroup->ExchangeID);
 			WriteString(ppos, Items::SecurityType, (int)RspAddCommissionGroup->SecurityType);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddCommissionGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -19908,9 +20611,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddCommissionGroupField::FieldID:
+				case RspAddCommissionGroupField::FieldID:
 				{
-					RspAddCommissionGroup = ::Allocate<StepRspAddCommissionGroupField>();
+					RspAddCommissionGroup = ::Allocate<RspAddCommissionGroupField>();
 					memset(RspAddCommissionGroup, 0, sizeof(*RspAddCommissionGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -19953,7 +20656,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddCommissionGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddCommissionGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -19966,9 +20669,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -19994,7 +20697,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -20057,7 +20760,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqUpdateCommissionGroup != nullptr)
 		{
-			::Free<StepReqUpdateCommissionGroupField>(ReqUpdateCommissionGroup);
+			::Free<ReqUpdateCommissionGroupField>(ReqUpdateCommissionGroup);
 			ReqUpdateCommissionGroup = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqUpdateCommissionGroupPackage>::GetInstance().Free(this);
@@ -20073,7 +20776,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateCommissionGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqUpdateCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqUpdateCommissionGroupField::FieldID);
 			if (strlen(ReqUpdateCommissionGroup->AdminUserID) >= sizeof(ReqUpdateCommissionGroup->AdminUserID))
 			{
 				ReqUpdateCommissionGroup->AdminUserID[sizeof(ReqUpdateCommissionGroup->AdminUserID) - 1] = 0;
@@ -20106,7 +20809,7 @@ namespace step
 			WriteString(ppos, Items::CloseSellByVolume, ReqUpdateCommissionGroup->CloseSellByVolume);
 			WriteString(ppos, Items::MinCommission, ReqUpdateCommissionGroup->MinCommission);
 			WriteString(ppos, Items::MaxCommission, ReqUpdateCommissionGroup->MaxCommission);
-			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqUpdateCommissionGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -20122,9 +20825,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqUpdateCommissionGroupField::FieldID:
+				case ReqUpdateCommissionGroupField::FieldID:
 				{
-					ReqUpdateCommissionGroup = ::Allocate<StepReqUpdateCommissionGroupField>();
+					ReqUpdateCommissionGroup = ::Allocate<ReqUpdateCommissionGroupField>();
 					memset(ReqUpdateCommissionGroup, 0, sizeof(*ReqUpdateCommissionGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -20223,7 +20926,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqUpdateCommissionGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqUpdateCommissionGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -20281,12 +20984,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspUpdateCommissionGroup != nullptr)
 		{
-			::Free<StepRspUpdateCommissionGroupField>(RspUpdateCommissionGroup);
+			::Free<RspUpdateCommissionGroupField>(RspUpdateCommissionGroup);
 			RspUpdateCommissionGroup = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspUpdateCommissionGroupPackage>::GetInstance().Free(this);
@@ -20302,7 +21005,7 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateCommissionGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspUpdateCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspUpdateCommissionGroupField::FieldID);
 			if (strlen(RspUpdateCommissionGroup->AdminUserID) >= sizeof(RspUpdateCommissionGroup->AdminUserID))
 			{
 				RspUpdateCommissionGroup->AdminUserID[sizeof(RspUpdateCommissionGroup->AdminUserID) - 1] = 0;
@@ -20320,18 +21023,18 @@ namespace step
 			}
 			WriteString(ppos, Items::ExchangeID, RspUpdateCommissionGroup->ExchangeID);
 			WriteString(ppos, Items::SecurityType, (int)RspUpdateCommissionGroup->SecurityType);
-			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspUpdateCommissionGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -20347,9 +21050,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspUpdateCommissionGroupField::FieldID:
+				case RspUpdateCommissionGroupField::FieldID:
 				{
-					RspUpdateCommissionGroup = ::Allocate<StepRspUpdateCommissionGroupField>();
+					RspUpdateCommissionGroup = ::Allocate<RspUpdateCommissionGroupField>();
 					memset(RspUpdateCommissionGroup, 0, sizeof(*RspUpdateCommissionGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -20392,7 +21095,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspUpdateCommissionGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspUpdateCommissionGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -20405,9 +21108,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -20433,7 +21136,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -20496,7 +21199,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRemoveCommissionGroup != nullptr)
 		{
-			::Free<StepReqRemoveCommissionGroupField>(ReqRemoveCommissionGroup);
+			::Free<ReqRemoveCommissionGroupField>(ReqRemoveCommissionGroup);
 			ReqRemoveCommissionGroup = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRemoveCommissionGroupPackage>::GetInstance().Free(this);
@@ -20512,7 +21215,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveCommissionGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRemoveCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRemoveCommissionGroupField::FieldID);
 			if (strlen(ReqRemoveCommissionGroup->AdminUserID) >= sizeof(ReqRemoveCommissionGroup->AdminUserID))
 			{
 				ReqRemoveCommissionGroup->AdminUserID[sizeof(ReqRemoveCommissionGroup->AdminUserID) - 1] = 0;
@@ -20530,7 +21233,7 @@ namespace step
 			}
 			WriteString(ppos, Items::ExchangeID, ReqRemoveCommissionGroup->ExchangeID);
 			WriteString(ppos, Items::SecurityType, (int)ReqRemoveCommissionGroup->SecurityType);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRemoveCommissionGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -20546,9 +21249,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRemoveCommissionGroupField::FieldID:
+				case ReqRemoveCommissionGroupField::FieldID:
 				{
-					ReqRemoveCommissionGroup = ::Allocate<StepReqRemoveCommissionGroupField>();
+					ReqRemoveCommissionGroup = ::Allocate<ReqRemoveCommissionGroupField>();
 					memset(ReqRemoveCommissionGroup, 0, sizeof(*ReqRemoveCommissionGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -20591,7 +21294,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRemoveCommissionGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRemoveCommissionGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -20649,12 +21352,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspRemoveCommissionGroup != nullptr)
 		{
-			::Free<StepRspRemoveCommissionGroupField>(RspRemoveCommissionGroup);
+			::Free<RspRemoveCommissionGroupField>(RspRemoveCommissionGroup);
 			RspRemoveCommissionGroup = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRemoveCommissionGroupPackage>::GetInstance().Free(this);
@@ -20670,7 +21373,7 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveCommissionGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRemoveCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspRemoveCommissionGroupField::FieldID);
 			if (strlen(RspRemoveCommissionGroup->AdminUserID) >= sizeof(RspRemoveCommissionGroup->AdminUserID))
 			{
 				RspRemoveCommissionGroup->AdminUserID[sizeof(RspRemoveCommissionGroup->AdminUserID) - 1] = 0;
@@ -20688,18 +21391,18 @@ namespace step
 			}
 			WriteString(ppos, Items::ExchangeID, RspRemoveCommissionGroup->ExchangeID);
 			WriteString(ppos, Items::SecurityType, (int)RspRemoveCommissionGroup->SecurityType);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveCommissionGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspRemoveCommissionGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -20715,9 +21418,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspRemoveCommissionGroupField::FieldID:
+				case RspRemoveCommissionGroupField::FieldID:
 				{
-					RspRemoveCommissionGroup = ::Allocate<StepRspRemoveCommissionGroupField>();
+					RspRemoveCommissionGroup = ::Allocate<RspRemoveCommissionGroupField>();
 					memset(RspRemoveCommissionGroup, 0, sizeof(*RspRemoveCommissionGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -20760,7 +21463,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRemoveCommissionGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRemoveCommissionGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -20773,9 +21476,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -20801,7 +21504,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -20864,7 +21567,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddOptionMarginParam != nullptr)
 		{
-			::Free<StepReqAddOptionMarginParamField>(ReqAddOptionMarginParam);
+			::Free<ReqAddOptionMarginParamField>(ReqAddOptionMarginParam);
 			ReqAddOptionMarginParam = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddOptionMarginParamPackage>::GetInstance().Free(this);
@@ -20880,7 +21583,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddOptionMarginParam != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddOptionMarginParamField::FieldID);
 			if (strlen(ReqAddOptionMarginParam->AdminUserID) >= sizeof(ReqAddOptionMarginParam->AdminUserID))
 			{
 				ReqAddOptionMarginParam->AdminUserID[sizeof(ReqAddOptionMarginParam->AdminUserID) - 1] = 0;
@@ -20898,7 +21601,7 @@ namespace step
 			WriteString(ppos, Items::ExchangeID, ReqAddOptionMarginParam->ExchangeID);
 			WriteString(ppos, Items::Param1, ReqAddOptionMarginParam->Param1);
 			WriteString(ppos, Items::Param2, ReqAddOptionMarginParam->Param2);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddOptionMarginParamField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -20914,9 +21617,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddOptionMarginParamField::FieldID:
+				case ReqAddOptionMarginParamField::FieldID:
 				{
-					ReqAddOptionMarginParam = ::Allocate<StepReqAddOptionMarginParamField>();
+					ReqAddOptionMarginParam = ::Allocate<ReqAddOptionMarginParamField>();
 					memset(ReqAddOptionMarginParam, 0, sizeof(*ReqAddOptionMarginParam));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -20959,7 +21662,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddOptionMarginParamField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddOptionMarginParamField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -21017,12 +21720,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddOptionMarginParam != nullptr)
 		{
-			::Free<StepRspAddOptionMarginParamField>(RspAddOptionMarginParam);
+			::Free<RspAddOptionMarginParamField>(RspAddOptionMarginParam);
 			RspAddOptionMarginParam = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddOptionMarginParamPackage>::GetInstance().Free(this);
@@ -21038,7 +21741,7 @@ namespace step
 		char* ppos = buff;
 		if (RspAddOptionMarginParam != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddOptionMarginParamField::FieldID);
 			if (strlen(RspAddOptionMarginParam->AdminUserID) >= sizeof(RspAddOptionMarginParam->AdminUserID))
 			{
 				RspAddOptionMarginParam->AdminUserID[sizeof(RspAddOptionMarginParam->AdminUserID) - 1] = 0;
@@ -21049,18 +21752,18 @@ namespace step
 				RspAddOptionMarginParam->ExchangeID[sizeof(RspAddOptionMarginParam->ExchangeID) - 1] = 0;
 			}
 			WriteString(ppos, Items::ExchangeID, RspAddOptionMarginParam->ExchangeID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddOptionMarginParamField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -21076,9 +21779,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddOptionMarginParamField::FieldID:
+				case RspAddOptionMarginParamField::FieldID:
 				{
-					RspAddOptionMarginParam = ::Allocate<StepRspAddOptionMarginParamField>();
+					RspAddOptionMarginParam = ::Allocate<RspAddOptionMarginParamField>();
 					memset(RspAddOptionMarginParam, 0, sizeof(*RspAddOptionMarginParam));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -21105,7 +21808,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddOptionMarginParamField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddOptionMarginParamField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -21118,9 +21821,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -21146,7 +21849,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -21209,7 +21912,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqUpdateOptionMarginParam != nullptr)
 		{
-			::Free<StepReqUpdateOptionMarginParamField>(ReqUpdateOptionMarginParam);
+			::Free<ReqUpdateOptionMarginParamField>(ReqUpdateOptionMarginParam);
 			ReqUpdateOptionMarginParam = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqUpdateOptionMarginParamPackage>::GetInstance().Free(this);
@@ -21225,7 +21928,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateOptionMarginParam != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqUpdateOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqUpdateOptionMarginParamField::FieldID);
 			if (strlen(ReqUpdateOptionMarginParam->AdminUserID) >= sizeof(ReqUpdateOptionMarginParam->AdminUserID))
 			{
 				ReqUpdateOptionMarginParam->AdminUserID[sizeof(ReqUpdateOptionMarginParam->AdminUserID) - 1] = 0;
@@ -21243,7 +21946,7 @@ namespace step
 			WriteString(ppos, Items::ExchangeID, ReqUpdateOptionMarginParam->ExchangeID);
 			WriteString(ppos, Items::Param1, ReqUpdateOptionMarginParam->Param1);
 			WriteString(ppos, Items::Param2, ReqUpdateOptionMarginParam->Param2);
-			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqUpdateOptionMarginParamField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -21259,9 +21962,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqUpdateOptionMarginParamField::FieldID:
+				case ReqUpdateOptionMarginParamField::FieldID:
 				{
-					ReqUpdateOptionMarginParam = ::Allocate<StepReqUpdateOptionMarginParamField>();
+					ReqUpdateOptionMarginParam = ::Allocate<ReqUpdateOptionMarginParamField>();
 					memset(ReqUpdateOptionMarginParam, 0, sizeof(*ReqUpdateOptionMarginParam));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -21304,7 +22007,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqUpdateOptionMarginParamField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqUpdateOptionMarginParamField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -21362,12 +22065,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspUpdateOptionMarginParam != nullptr)
 		{
-			::Free<StepRspUpdateOptionMarginParamField>(RspUpdateOptionMarginParam);
+			::Free<RspUpdateOptionMarginParamField>(RspUpdateOptionMarginParam);
 			RspUpdateOptionMarginParam = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspUpdateOptionMarginParamPackage>::GetInstance().Free(this);
@@ -21383,7 +22086,7 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateOptionMarginParam != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspUpdateOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspUpdateOptionMarginParamField::FieldID);
 			if (strlen(RspUpdateOptionMarginParam->AdminUserID) >= sizeof(RspUpdateOptionMarginParam->AdminUserID))
 			{
 				RspUpdateOptionMarginParam->AdminUserID[sizeof(RspUpdateOptionMarginParam->AdminUserID) - 1] = 0;
@@ -21394,18 +22097,18 @@ namespace step
 				RspUpdateOptionMarginParam->ExchangeID[sizeof(RspUpdateOptionMarginParam->ExchangeID) - 1] = 0;
 			}
 			WriteString(ppos, Items::ExchangeID, RspUpdateOptionMarginParam->ExchangeID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspUpdateOptionMarginParamField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -21421,9 +22124,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspUpdateOptionMarginParamField::FieldID:
+				case RspUpdateOptionMarginParamField::FieldID:
 				{
-					RspUpdateOptionMarginParam = ::Allocate<StepRspUpdateOptionMarginParamField>();
+					RspUpdateOptionMarginParam = ::Allocate<RspUpdateOptionMarginParamField>();
 					memset(RspUpdateOptionMarginParam, 0, sizeof(*RspUpdateOptionMarginParam));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -21450,7 +22153,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspUpdateOptionMarginParamField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspUpdateOptionMarginParamField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -21463,9 +22166,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -21491,7 +22194,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -21554,7 +22257,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRemoveOptionMarginParam != nullptr)
 		{
-			::Free<StepReqRemoveOptionMarginParamField>(ReqRemoveOptionMarginParam);
+			::Free<ReqRemoveOptionMarginParamField>(ReqRemoveOptionMarginParam);
 			ReqRemoveOptionMarginParam = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRemoveOptionMarginParamPackage>::GetInstance().Free(this);
@@ -21570,7 +22273,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveOptionMarginParam != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRemoveOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRemoveOptionMarginParamField::FieldID);
 			if (strlen(ReqRemoveOptionMarginParam->AdminUserID) >= sizeof(ReqRemoveOptionMarginParam->AdminUserID))
 			{
 				ReqRemoveOptionMarginParam->AdminUserID[sizeof(ReqRemoveOptionMarginParam->AdminUserID) - 1] = 0;
@@ -21581,7 +22284,7 @@ namespace step
 				ReqRemoveOptionMarginParam->ExchangeID[sizeof(ReqRemoveOptionMarginParam->ExchangeID) - 1] = 0;
 			}
 			WriteString(ppos, Items::ExchangeID, ReqRemoveOptionMarginParam->ExchangeID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRemoveOptionMarginParamField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -21597,9 +22300,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRemoveOptionMarginParamField::FieldID:
+				case ReqRemoveOptionMarginParamField::FieldID:
 				{
-					ReqRemoveOptionMarginParam = ::Allocate<StepReqRemoveOptionMarginParamField>();
+					ReqRemoveOptionMarginParam = ::Allocate<ReqRemoveOptionMarginParamField>();
 					memset(ReqRemoveOptionMarginParam, 0, sizeof(*ReqRemoveOptionMarginParam));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -21626,7 +22329,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRemoveOptionMarginParamField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRemoveOptionMarginParamField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -21684,12 +22387,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspRemoveOptionMarginParam != nullptr)
 		{
-			::Free<StepRspRemoveOptionMarginParamField>(RspRemoveOptionMarginParam);
+			::Free<RspRemoveOptionMarginParamField>(RspRemoveOptionMarginParam);
 			RspRemoveOptionMarginParam = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRemoveOptionMarginParamPackage>::GetInstance().Free(this);
@@ -21705,7 +22408,7 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveOptionMarginParam != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRemoveOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspRemoveOptionMarginParamField::FieldID);
 			if (strlen(RspRemoveOptionMarginParam->AdminUserID) >= sizeof(RspRemoveOptionMarginParam->AdminUserID))
 			{
 				RspRemoveOptionMarginParam->AdminUserID[sizeof(RspRemoveOptionMarginParam->AdminUserID) - 1] = 0;
@@ -21716,18 +22419,18 @@ namespace step
 				RspRemoveOptionMarginParam->ExchangeID[sizeof(RspRemoveOptionMarginParam->ExchangeID) - 1] = 0;
 			}
 			WriteString(ppos, Items::ExchangeID, RspRemoveOptionMarginParam->ExchangeID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveOptionMarginParamField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspRemoveOptionMarginParamField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -21743,9 +22446,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspRemoveOptionMarginParamField::FieldID:
+				case RspRemoveOptionMarginParamField::FieldID:
 				{
-					RspRemoveOptionMarginParam = ::Allocate<StepRspRemoveOptionMarginParamField>();
+					RspRemoveOptionMarginParam = ::Allocate<RspRemoveOptionMarginParamField>();
 					memset(RspRemoveOptionMarginParam, 0, sizeof(*RspRemoveOptionMarginParam));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -21772,7 +22475,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRemoveOptionMarginParamField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRemoveOptionMarginParamField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -21785,9 +22488,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -21813,7 +22516,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -21876,7 +22579,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddTradeOffer != nullptr)
 		{
-			::Free<StepReqAddTradeOfferField>(ReqAddTradeOffer);
+			::Free<ReqAddTradeOfferField>(ReqAddTradeOffer);
 			ReqAddTradeOffer = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddTradeOfferPackage>::GetInstance().Free(this);
@@ -21892,7 +22595,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddTradeOffer != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddTradeOfferField::FieldID);
 			if (strlen(ReqAddTradeOffer->AdminUserID) >= sizeof(ReqAddTradeOffer->AdminUserID))
 			{
 				ReqAddTradeOffer->AdminUserID[sizeof(ReqAddTradeOffer->AdminUserID) - 1] = 0;
@@ -21910,7 +22613,7 @@ namespace step
 				ReqAddTradeOffer->OfferPassword[sizeof(ReqAddTradeOffer->OfferPassword) - 1] = 0;
 			}
 			WriteString(ppos, Items::OfferPassword, ReqAddTradeOffer->OfferPassword);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddTradeOfferField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -21926,9 +22629,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddTradeOfferField::FieldID:
+				case ReqAddTradeOfferField::FieldID:
 				{
-					ReqAddTradeOffer = ::Allocate<StepReqAddTradeOfferField>();
+					ReqAddTradeOffer = ::Allocate<ReqAddTradeOfferField>();
 					memset(ReqAddTradeOffer, 0, sizeof(*ReqAddTradeOffer));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -21971,7 +22674,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddTradeOfferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddTradeOfferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -22029,12 +22732,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddTradeOffer != nullptr)
 		{
-			::Free<StepRspAddTradeOfferField>(RspAddTradeOffer);
+			::Free<RspAddTradeOfferField>(RspAddTradeOffer);
 			RspAddTradeOffer = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddTradeOfferPackage>::GetInstance().Free(this);
@@ -22050,25 +22753,25 @@ namespace step
 		char* ppos = buff;
 		if (RspAddTradeOffer != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddTradeOfferField::FieldID);
 			if (strlen(RspAddTradeOffer->AdminUserID) >= sizeof(RspAddTradeOffer->AdminUserID))
 			{
 				RspAddTradeOffer->AdminUserID[sizeof(RspAddTradeOffer->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, RspAddTradeOffer->AdminUserID);
 			WriteString(ppos, Items::OfferID, RspAddTradeOffer->OfferID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddTradeOfferField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -22084,9 +22787,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddTradeOfferField::FieldID:
+				case RspAddTradeOfferField::FieldID:
 				{
-					RspAddTradeOffer = ::Allocate<StepRspAddTradeOfferField>();
+					RspAddTradeOffer = ::Allocate<RspAddTradeOfferField>();
 					memset(RspAddTradeOffer, 0, sizeof(*RspAddTradeOffer));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -22112,7 +22815,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddTradeOfferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddTradeOfferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -22125,9 +22828,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -22153,7 +22856,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -22216,7 +22919,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqUpdateTradeOffer != nullptr)
 		{
-			::Free<StepReqUpdateTradeOfferField>(ReqUpdateTradeOffer);
+			::Free<ReqUpdateTradeOfferField>(ReqUpdateTradeOffer);
 			ReqUpdateTradeOffer = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqUpdateTradeOfferPackage>::GetInstance().Free(this);
@@ -22232,7 +22935,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateTradeOffer != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqUpdateTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqUpdateTradeOfferField::FieldID);
 			if (strlen(ReqUpdateTradeOffer->AdminUserID) >= sizeof(ReqUpdateTradeOffer->AdminUserID))
 			{
 				ReqUpdateTradeOffer->AdminUserID[sizeof(ReqUpdateTradeOffer->AdminUserID) - 1] = 0;
@@ -22250,7 +22953,7 @@ namespace step
 				ReqUpdateTradeOffer->OfferPassword[sizeof(ReqUpdateTradeOffer->OfferPassword) - 1] = 0;
 			}
 			WriteString(ppos, Items::OfferPassword, ReqUpdateTradeOffer->OfferPassword);
-			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqUpdateTradeOfferField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -22266,9 +22969,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqUpdateTradeOfferField::FieldID:
+				case ReqUpdateTradeOfferField::FieldID:
 				{
-					ReqUpdateTradeOffer = ::Allocate<StepReqUpdateTradeOfferField>();
+					ReqUpdateTradeOffer = ::Allocate<ReqUpdateTradeOfferField>();
 					memset(ReqUpdateTradeOffer, 0, sizeof(*ReqUpdateTradeOffer));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -22311,7 +23014,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqUpdateTradeOfferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqUpdateTradeOfferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -22369,12 +23072,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspUpdateTradeOffer != nullptr)
 		{
-			::Free<StepRspUpdateTradeOfferField>(RspUpdateTradeOffer);
+			::Free<RspUpdateTradeOfferField>(RspUpdateTradeOffer);
 			RspUpdateTradeOffer = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspUpdateTradeOfferPackage>::GetInstance().Free(this);
@@ -22390,25 +23093,25 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateTradeOffer != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspUpdateTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspUpdateTradeOfferField::FieldID);
 			if (strlen(RspUpdateTradeOffer->AdminUserID) >= sizeof(RspUpdateTradeOffer->AdminUserID))
 			{
 				RspUpdateTradeOffer->AdminUserID[sizeof(RspUpdateTradeOffer->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, RspUpdateTradeOffer->AdminUserID);
 			WriteString(ppos, Items::OfferID, RspUpdateTradeOffer->OfferID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspUpdateTradeOfferField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -22424,9 +23127,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspUpdateTradeOfferField::FieldID:
+				case RspUpdateTradeOfferField::FieldID:
 				{
-					RspUpdateTradeOffer = ::Allocate<StepRspUpdateTradeOfferField>();
+					RspUpdateTradeOffer = ::Allocate<RspUpdateTradeOfferField>();
 					memset(RspUpdateTradeOffer, 0, sizeof(*RspUpdateTradeOffer));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -22452,7 +23155,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspUpdateTradeOfferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspUpdateTradeOfferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -22465,9 +23168,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -22493,7 +23196,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -22556,7 +23259,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRemoveTradeOffer != nullptr)
 		{
-			::Free<StepReqRemoveTradeOfferField>(ReqRemoveTradeOffer);
+			::Free<ReqRemoveTradeOfferField>(ReqRemoveTradeOffer);
 			ReqRemoveTradeOffer = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRemoveTradeOfferPackage>::GetInstance().Free(this);
@@ -22572,14 +23275,14 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveTradeOffer != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRemoveTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRemoveTradeOfferField::FieldID);
 			if (strlen(ReqRemoveTradeOffer->AdminUserID) >= sizeof(ReqRemoveTradeOffer->AdminUserID))
 			{
 				ReqRemoveTradeOffer->AdminUserID[sizeof(ReqRemoveTradeOffer->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, ReqRemoveTradeOffer->AdminUserID);
 			WriteString(ppos, Items::OfferID, ReqRemoveTradeOffer->OfferID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRemoveTradeOfferField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -22595,9 +23298,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRemoveTradeOfferField::FieldID:
+				case ReqRemoveTradeOfferField::FieldID:
 				{
-					ReqRemoveTradeOffer = ::Allocate<StepReqRemoveTradeOfferField>();
+					ReqRemoveTradeOffer = ::Allocate<ReqRemoveTradeOfferField>();
 					memset(ReqRemoveTradeOffer, 0, sizeof(*ReqRemoveTradeOffer));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -22623,7 +23326,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRemoveTradeOfferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRemoveTradeOfferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -22681,12 +23384,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspRemoveTradeOffer != nullptr)
 		{
-			::Free<StepRspRemoveTradeOfferField>(RspRemoveTradeOffer);
+			::Free<RspRemoveTradeOfferField>(RspRemoveTradeOffer);
 			RspRemoveTradeOffer = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRemoveTradeOfferPackage>::GetInstance().Free(this);
@@ -22702,25 +23405,25 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveTradeOffer != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRemoveTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspRemoveTradeOfferField::FieldID);
 			if (strlen(RspRemoveTradeOffer->AdminUserID) >= sizeof(RspRemoveTradeOffer->AdminUserID))
 			{
 				RspRemoveTradeOffer->AdminUserID[sizeof(RspRemoveTradeOffer->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, RspRemoveTradeOffer->AdminUserID);
 			WriteString(ppos, Items::OfferID, RspRemoveTradeOffer->OfferID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveTradeOfferField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspRemoveTradeOfferField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -22736,9 +23439,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspRemoveTradeOfferField::FieldID:
+				case RspRemoveTradeOfferField::FieldID:
 				{
-					RspRemoveTradeOffer = ::Allocate<StepRspRemoveTradeOfferField>();
+					RspRemoveTradeOffer = ::Allocate<RspRemoveTradeOfferField>();
 					memset(RspRemoveTradeOffer, 0, sizeof(*RspRemoveTradeOffer));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -22764,7 +23467,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRemoveTradeOfferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRemoveTradeOfferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -22777,9 +23480,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -22805,7 +23508,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -22868,7 +23571,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddTradeGroup != nullptr)
 		{
-			::Free<StepReqAddTradeGroupField>(ReqAddTradeGroup);
+			::Free<ReqAddTradeGroupField>(ReqAddTradeGroup);
 			ReqAddTradeGroup = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddTradeGroupPackage>::GetInstance().Free(this);
@@ -22884,7 +23587,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddTradeGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddTradeGroupField::FieldID);
 			if (strlen(ReqAddTradeGroup->AdminUserID) >= sizeof(ReqAddTradeGroup->AdminUserID))
 			{
 				ReqAddTradeGroup->AdminUserID[sizeof(ReqAddTradeGroup->AdminUserID) - 1] = 0;
@@ -22896,7 +23599,7 @@ namespace step
 				ReqAddTradeGroup->TradeGroupName[sizeof(ReqAddTradeGroup->TradeGroupName) - 1] = 0;
 			}
 			WriteString(ppos, Items::TradeGroupName, ReqAddTradeGroup->TradeGroupName);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddTradeGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -22912,9 +23615,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddTradeGroupField::FieldID:
+				case ReqAddTradeGroupField::FieldID:
 				{
-					ReqAddTradeGroup = ::Allocate<StepReqAddTradeGroupField>();
+					ReqAddTradeGroup = ::Allocate<ReqAddTradeGroupField>();
 					memset(ReqAddTradeGroup, 0, sizeof(*ReqAddTradeGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -22946,7 +23649,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddTradeGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddTradeGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -23004,12 +23707,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddTradeGroup != nullptr)
 		{
-			::Free<StepRspAddTradeGroupField>(RspAddTradeGroup);
+			::Free<RspAddTradeGroupField>(RspAddTradeGroup);
 			RspAddTradeGroup = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddTradeGroupPackage>::GetInstance().Free(this);
@@ -23025,25 +23728,25 @@ namespace step
 		char* ppos = buff;
 		if (RspAddTradeGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddTradeGroupField::FieldID);
 			if (strlen(RspAddTradeGroup->AdminUserID) >= sizeof(RspAddTradeGroup->AdminUserID))
 			{
 				RspAddTradeGroup->AdminUserID[sizeof(RspAddTradeGroup->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, RspAddTradeGroup->AdminUserID);
 			WriteString(ppos, Items::TradeGroupID, RspAddTradeGroup->TradeGroupID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddTradeGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -23059,9 +23762,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddTradeGroupField::FieldID:
+				case RspAddTradeGroupField::FieldID:
 				{
-					RspAddTradeGroup = ::Allocate<StepRspAddTradeGroupField>();
+					RspAddTradeGroup = ::Allocate<RspAddTradeGroupField>();
 					memset(RspAddTradeGroup, 0, sizeof(*RspAddTradeGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -23087,7 +23790,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddTradeGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddTradeGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -23100,9 +23803,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -23128,7 +23831,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -23191,7 +23894,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqUpdateTradeGroup != nullptr)
 		{
-			::Free<StepReqUpdateTradeGroupField>(ReqUpdateTradeGroup);
+			::Free<ReqUpdateTradeGroupField>(ReqUpdateTradeGroup);
 			ReqUpdateTradeGroup = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqUpdateTradeGroupPackage>::GetInstance().Free(this);
@@ -23207,7 +23910,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateTradeGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqUpdateTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqUpdateTradeGroupField::FieldID);
 			if (strlen(ReqUpdateTradeGroup->AdminUserID) >= sizeof(ReqUpdateTradeGroup->AdminUserID))
 			{
 				ReqUpdateTradeGroup->AdminUserID[sizeof(ReqUpdateTradeGroup->AdminUserID) - 1] = 0;
@@ -23219,7 +23922,7 @@ namespace step
 				ReqUpdateTradeGroup->TradeGroupName[sizeof(ReqUpdateTradeGroup->TradeGroupName) - 1] = 0;
 			}
 			WriteString(ppos, Items::TradeGroupName, ReqUpdateTradeGroup->TradeGroupName);
-			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqUpdateTradeGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -23235,9 +23938,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqUpdateTradeGroupField::FieldID:
+				case ReqUpdateTradeGroupField::FieldID:
 				{
-					ReqUpdateTradeGroup = ::Allocate<StepReqUpdateTradeGroupField>();
+					ReqUpdateTradeGroup = ::Allocate<ReqUpdateTradeGroupField>();
 					memset(ReqUpdateTradeGroup, 0, sizeof(*ReqUpdateTradeGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -23269,7 +23972,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqUpdateTradeGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqUpdateTradeGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -23327,12 +24030,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspUpdateTradeGroup != nullptr)
 		{
-			::Free<StepRspUpdateTradeGroupField>(RspUpdateTradeGroup);
+			::Free<RspUpdateTradeGroupField>(RspUpdateTradeGroup);
 			RspUpdateTradeGroup = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspUpdateTradeGroupPackage>::GetInstance().Free(this);
@@ -23348,25 +24051,25 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateTradeGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspUpdateTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspUpdateTradeGroupField::FieldID);
 			if (strlen(RspUpdateTradeGroup->AdminUserID) >= sizeof(RspUpdateTradeGroup->AdminUserID))
 			{
 				RspUpdateTradeGroup->AdminUserID[sizeof(RspUpdateTradeGroup->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, RspUpdateTradeGroup->AdminUserID);
 			WriteString(ppos, Items::TradeGroupID, RspUpdateTradeGroup->TradeGroupID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspUpdateTradeGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -23382,9 +24085,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspUpdateTradeGroupField::FieldID:
+				case RspUpdateTradeGroupField::FieldID:
 				{
-					RspUpdateTradeGroup = ::Allocate<StepRspUpdateTradeGroupField>();
+					RspUpdateTradeGroup = ::Allocate<RspUpdateTradeGroupField>();
 					memset(RspUpdateTradeGroup, 0, sizeof(*RspUpdateTradeGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -23410,7 +24113,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspUpdateTradeGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspUpdateTradeGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -23423,9 +24126,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -23451,7 +24154,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -23514,7 +24217,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRemoveTradeGroup != nullptr)
 		{
-			::Free<StepReqRemoveTradeGroupField>(ReqRemoveTradeGroup);
+			::Free<ReqRemoveTradeGroupField>(ReqRemoveTradeGroup);
 			ReqRemoveTradeGroup = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRemoveTradeGroupPackage>::GetInstance().Free(this);
@@ -23530,14 +24233,14 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveTradeGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRemoveTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRemoveTradeGroupField::FieldID);
 			if (strlen(ReqRemoveTradeGroup->AdminUserID) >= sizeof(ReqRemoveTradeGroup->AdminUserID))
 			{
 				ReqRemoveTradeGroup->AdminUserID[sizeof(ReqRemoveTradeGroup->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, ReqRemoveTradeGroup->AdminUserID);
 			WriteString(ppos, Items::TradeGroupID, ReqRemoveTradeGroup->TradeGroupID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRemoveTradeGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -23553,9 +24256,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRemoveTradeGroupField::FieldID:
+				case ReqRemoveTradeGroupField::FieldID:
 				{
-					ReqRemoveTradeGroup = ::Allocate<StepReqRemoveTradeGroupField>();
+					ReqRemoveTradeGroup = ::Allocate<ReqRemoveTradeGroupField>();
 					memset(ReqRemoveTradeGroup, 0, sizeof(*ReqRemoveTradeGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -23581,7 +24284,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRemoveTradeGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRemoveTradeGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -23639,12 +24342,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspRemoveTradeGroup != nullptr)
 		{
-			::Free<StepRspRemoveTradeGroupField>(RspRemoveTradeGroup);
+			::Free<RspRemoveTradeGroupField>(RspRemoveTradeGroup);
 			RspRemoveTradeGroup = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRemoveTradeGroupPackage>::GetInstance().Free(this);
@@ -23660,25 +24363,25 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveTradeGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRemoveTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspRemoveTradeGroupField::FieldID);
 			if (strlen(RspRemoveTradeGroup->AdminUserID) >= sizeof(RspRemoveTradeGroup->AdminUserID))
 			{
 				RspRemoveTradeGroup->AdminUserID[sizeof(RspRemoveTradeGroup->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, RspRemoveTradeGroup->AdminUserID);
 			WriteString(ppos, Items::TradeGroupID, RspRemoveTradeGroup->TradeGroupID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveTradeGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspRemoveTradeGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -23694,9 +24397,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspRemoveTradeGroupField::FieldID:
+				case RspRemoveTradeGroupField::FieldID:
 				{
-					RspRemoveTradeGroup = ::Allocate<StepRspRemoveTradeGroupField>();
+					RspRemoveTradeGroup = ::Allocate<RspRemoveTradeGroupField>();
 					memset(RspRemoveTradeGroup, 0, sizeof(*RspRemoveTradeGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -23722,7 +24425,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRemoveTradeGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRemoveTradeGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -23735,9 +24438,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -23763,7 +24466,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -23826,7 +24529,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddTradeGroupItem != nullptr)
 		{
-			::Free<StepReqAddTradeGroupItemField>(ReqAddTradeGroupItem);
+			::Free<ReqAddTradeGroupItemField>(ReqAddTradeGroupItem);
 			ReqAddTradeGroupItem = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddTradeGroupItemPackage>::GetInstance().Free(this);
@@ -23842,7 +24545,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddTradeGroupItem != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddTradeGroupItemField::FieldID);
 			if (strlen(ReqAddTradeGroupItem->AdminUserID) >= sizeof(ReqAddTradeGroupItem->AdminUserID))
 			{
 				ReqAddTradeGroupItem->AdminUserID[sizeof(ReqAddTradeGroupItem->AdminUserID) - 1] = 0;
@@ -23855,7 +24558,7 @@ namespace step
 				ReqAddTradeGroupItem->PrimaryAccountID[sizeof(ReqAddTradeGroupItem->PrimaryAccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::PrimaryAccountID, ReqAddTradeGroupItem->PrimaryAccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddTradeGroupItemField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -23871,9 +24574,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddTradeGroupItemField::FieldID:
+				case ReqAddTradeGroupItemField::FieldID:
 				{
-					ReqAddTradeGroupItem = ::Allocate<StepReqAddTradeGroupItemField>();
+					ReqAddTradeGroupItem = ::Allocate<ReqAddTradeGroupItemField>();
 					memset(ReqAddTradeGroupItem, 0, sizeof(*ReqAddTradeGroupItem));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -23910,7 +24613,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddTradeGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddTradeGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -23968,12 +24671,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddTradeGroupItem != nullptr)
 		{
-			::Free<StepRspAddTradeGroupItemField>(RspAddTradeGroupItem);
+			::Free<RspAddTradeGroupItemField>(RspAddTradeGroupItem);
 			RspAddTradeGroupItem = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddTradeGroupItemPackage>::GetInstance().Free(this);
@@ -23989,7 +24692,7 @@ namespace step
 		char* ppos = buff;
 		if (RspAddTradeGroupItem != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddTradeGroupItemField::FieldID);
 			if (strlen(RspAddTradeGroupItem->AdminUserID) >= sizeof(RspAddTradeGroupItem->AdminUserID))
 			{
 				RspAddTradeGroupItem->AdminUserID[sizeof(RspAddTradeGroupItem->AdminUserID) - 1] = 0;
@@ -23997,18 +24700,18 @@ namespace step
 			WriteString(ppos, Items::AdminUserID, RspAddTradeGroupItem->AdminUserID);
 			WriteString(ppos, Items::TradeGroupID, RspAddTradeGroupItem->TradeGroupID);
 			WriteString(ppos, Items::AccountClass, (int)RspAddTradeGroupItem->AccountClass);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddTradeGroupItemField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -24024,9 +24727,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddTradeGroupItemField::FieldID:
+				case RspAddTradeGroupItemField::FieldID:
 				{
-					RspAddTradeGroupItem = ::Allocate<StepRspAddTradeGroupItemField>();
+					RspAddTradeGroupItem = ::Allocate<RspAddTradeGroupItemField>();
 					memset(RspAddTradeGroupItem, 0, sizeof(*RspAddTradeGroupItem));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -24057,7 +24760,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddTradeGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddTradeGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -24070,9 +24773,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -24098,7 +24801,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -24161,7 +24864,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqUpdateTradeGroupItem != nullptr)
 		{
-			::Free<StepReqUpdateTradeGroupItemField>(ReqUpdateTradeGroupItem);
+			::Free<ReqUpdateTradeGroupItemField>(ReqUpdateTradeGroupItem);
 			ReqUpdateTradeGroupItem = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqUpdateTradeGroupItemPackage>::GetInstance().Free(this);
@@ -24177,7 +24880,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateTradeGroupItem != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqUpdateTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqUpdateTradeGroupItemField::FieldID);
 			if (strlen(ReqUpdateTradeGroupItem->AdminUserID) >= sizeof(ReqUpdateTradeGroupItem->AdminUserID))
 			{
 				ReqUpdateTradeGroupItem->AdminUserID[sizeof(ReqUpdateTradeGroupItem->AdminUserID) - 1] = 0;
@@ -24190,7 +24893,7 @@ namespace step
 				ReqUpdateTradeGroupItem->PrimaryAccountID[sizeof(ReqUpdateTradeGroupItem->PrimaryAccountID) - 1] = 0;
 			}
 			WriteString(ppos, Items::PrimaryAccountID, ReqUpdateTradeGroupItem->PrimaryAccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqUpdateTradeGroupItemField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -24206,9 +24909,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqUpdateTradeGroupItemField::FieldID:
+				case ReqUpdateTradeGroupItemField::FieldID:
 				{
-					ReqUpdateTradeGroupItem = ::Allocate<StepReqUpdateTradeGroupItemField>();
+					ReqUpdateTradeGroupItem = ::Allocate<ReqUpdateTradeGroupItemField>();
 					memset(ReqUpdateTradeGroupItem, 0, sizeof(*ReqUpdateTradeGroupItem));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -24245,7 +24948,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqUpdateTradeGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqUpdateTradeGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -24303,12 +25006,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspUpdateTradeGroupItem != nullptr)
 		{
-			::Free<StepRspUpdateTradeGroupItemField>(RspUpdateTradeGroupItem);
+			::Free<RspUpdateTradeGroupItemField>(RspUpdateTradeGroupItem);
 			RspUpdateTradeGroupItem = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspUpdateTradeGroupItemPackage>::GetInstance().Free(this);
@@ -24324,7 +25027,7 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateTradeGroupItem != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspUpdateTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspUpdateTradeGroupItemField::FieldID);
 			if (strlen(RspUpdateTradeGroupItem->AdminUserID) >= sizeof(RspUpdateTradeGroupItem->AdminUserID))
 			{
 				RspUpdateTradeGroupItem->AdminUserID[sizeof(RspUpdateTradeGroupItem->AdminUserID) - 1] = 0;
@@ -24332,18 +25035,18 @@ namespace step
 			WriteString(ppos, Items::AdminUserID, RspUpdateTradeGroupItem->AdminUserID);
 			WriteString(ppos, Items::TradeGroupID, RspUpdateTradeGroupItem->TradeGroupID);
 			WriteString(ppos, Items::AccountClass, (int)RspUpdateTradeGroupItem->AccountClass);
-			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspUpdateTradeGroupItemField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -24359,9 +25062,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspUpdateTradeGroupItemField::FieldID:
+				case RspUpdateTradeGroupItemField::FieldID:
 				{
-					RspUpdateTradeGroupItem = ::Allocate<StepRspUpdateTradeGroupItemField>();
+					RspUpdateTradeGroupItem = ::Allocate<RspUpdateTradeGroupItemField>();
 					memset(RspUpdateTradeGroupItem, 0, sizeof(*RspUpdateTradeGroupItem));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -24392,7 +25095,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspUpdateTradeGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspUpdateTradeGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -24405,9 +25108,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -24433,7 +25136,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -24496,7 +25199,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRemoveTradeGroupItem != nullptr)
 		{
-			::Free<StepReqRemoveTradeGroupItemField>(ReqRemoveTradeGroupItem);
+			::Free<ReqRemoveTradeGroupItemField>(ReqRemoveTradeGroupItem);
 			ReqRemoveTradeGroupItem = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRemoveTradeGroupItemPackage>::GetInstance().Free(this);
@@ -24512,7 +25215,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveTradeGroupItem != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRemoveTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRemoveTradeGroupItemField::FieldID);
 			if (strlen(ReqRemoveTradeGroupItem->AdminUserID) >= sizeof(ReqRemoveTradeGroupItem->AdminUserID))
 			{
 				ReqRemoveTradeGroupItem->AdminUserID[sizeof(ReqRemoveTradeGroupItem->AdminUserID) - 1] = 0;
@@ -24520,7 +25223,7 @@ namespace step
 			WriteString(ppos, Items::AdminUserID, ReqRemoveTradeGroupItem->AdminUserID);
 			WriteString(ppos, Items::TradeGroupID, ReqRemoveTradeGroupItem->TradeGroupID);
 			WriteString(ppos, Items::AccountClass, (int)ReqRemoveTradeGroupItem->AccountClass);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRemoveTradeGroupItemField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -24536,9 +25239,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRemoveTradeGroupItemField::FieldID:
+				case ReqRemoveTradeGroupItemField::FieldID:
 				{
-					ReqRemoveTradeGroupItem = ::Allocate<StepReqRemoveTradeGroupItemField>();
+					ReqRemoveTradeGroupItem = ::Allocate<ReqRemoveTradeGroupItemField>();
 					memset(ReqRemoveTradeGroupItem, 0, sizeof(*ReqRemoveTradeGroupItem));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -24569,7 +25272,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRemoveTradeGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRemoveTradeGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -24627,12 +25330,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspRemoveTradeGroupItem != nullptr)
 		{
-			::Free<StepRspRemoveTradeGroupItemField>(RspRemoveTradeGroupItem);
+			::Free<RspRemoveTradeGroupItemField>(RspRemoveTradeGroupItem);
 			RspRemoveTradeGroupItem = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRemoveTradeGroupItemPackage>::GetInstance().Free(this);
@@ -24648,7 +25351,7 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveTradeGroupItem != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRemoveTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspRemoveTradeGroupItemField::FieldID);
 			if (strlen(RspRemoveTradeGroupItem->AdminUserID) >= sizeof(RspRemoveTradeGroupItem->AdminUserID))
 			{
 				RspRemoveTradeGroupItem->AdminUserID[sizeof(RspRemoveTradeGroupItem->AdminUserID) - 1] = 0;
@@ -24656,18 +25359,18 @@ namespace step
 			WriteString(ppos, Items::AdminUserID, RspRemoveTradeGroupItem->AdminUserID);
 			WriteString(ppos, Items::TradeGroupID, RspRemoveTradeGroupItem->TradeGroupID);
 			WriteString(ppos, Items::AccountClass, (int)RspRemoveTradeGroupItem->AccountClass);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveTradeGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspRemoveTradeGroupItemField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -24683,9 +25386,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspRemoveTradeGroupItemField::FieldID:
+				case RspRemoveTradeGroupItemField::FieldID:
 				{
-					RspRemoveTradeGroupItem = ::Allocate<StepRspRemoveTradeGroupItemField>();
+					RspRemoveTradeGroupItem = ::Allocate<RspRemoveTradeGroupItemField>();
 					memset(RspRemoveTradeGroupItem, 0, sizeof(*RspRemoveTradeGroupItem));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -24716,7 +25419,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRemoveTradeGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRemoveTradeGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -24729,9 +25432,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -24757,7 +25460,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -24820,7 +25523,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddRiskGroup != nullptr)
 		{
-			::Free<StepReqAddRiskGroupField>(ReqAddRiskGroup);
+			::Free<ReqAddRiskGroupField>(ReqAddRiskGroup);
 			ReqAddRiskGroup = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddRiskGroupPackage>::GetInstance().Free(this);
@@ -24836,7 +25539,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddRiskGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddRiskGroupField::FieldID);
 			if (strlen(ReqAddRiskGroup->AdminUserID) >= sizeof(ReqAddRiskGroup->AdminUserID))
 			{
 				ReqAddRiskGroup->AdminUserID[sizeof(ReqAddRiskGroup->AdminUserID) - 1] = 0;
@@ -24848,7 +25551,7 @@ namespace step
 				ReqAddRiskGroup->RiskGroupName[sizeof(ReqAddRiskGroup->RiskGroupName) - 1] = 0;
 			}
 			WriteString(ppos, Items::RiskGroupName, ReqAddRiskGroup->RiskGroupName);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddRiskGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -24864,9 +25567,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddRiskGroupField::FieldID:
+				case ReqAddRiskGroupField::FieldID:
 				{
-					ReqAddRiskGroup = ::Allocate<StepReqAddRiskGroupField>();
+					ReqAddRiskGroup = ::Allocate<ReqAddRiskGroupField>();
 					memset(ReqAddRiskGroup, 0, sizeof(*ReqAddRiskGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -24898,7 +25601,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddRiskGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddRiskGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -24956,12 +25659,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddRiskGroup != nullptr)
 		{
-			::Free<StepRspAddRiskGroupField>(RspAddRiskGroup);
+			::Free<RspAddRiskGroupField>(RspAddRiskGroup);
 			RspAddRiskGroup = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddRiskGroupPackage>::GetInstance().Free(this);
@@ -24977,25 +25680,25 @@ namespace step
 		char* ppos = buff;
 		if (RspAddRiskGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddRiskGroupField::FieldID);
 			if (strlen(RspAddRiskGroup->AdminUserID) >= sizeof(RspAddRiskGroup->AdminUserID))
 			{
 				RspAddRiskGroup->AdminUserID[sizeof(RspAddRiskGroup->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, RspAddRiskGroup->AdminUserID);
 			WriteString(ppos, Items::RiskGroupID, RspAddRiskGroup->RiskGroupID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddRiskGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -25011,9 +25714,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddRiskGroupField::FieldID:
+				case RspAddRiskGroupField::FieldID:
 				{
-					RspAddRiskGroup = ::Allocate<StepRspAddRiskGroupField>();
+					RspAddRiskGroup = ::Allocate<RspAddRiskGroupField>();
 					memset(RspAddRiskGroup, 0, sizeof(*RspAddRiskGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -25039,7 +25742,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddRiskGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddRiskGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -25052,9 +25755,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -25080,7 +25783,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -25143,7 +25846,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqUpdateRiskGroup != nullptr)
 		{
-			::Free<StepReqUpdateRiskGroupField>(ReqUpdateRiskGroup);
+			::Free<ReqUpdateRiskGroupField>(ReqUpdateRiskGroup);
 			ReqUpdateRiskGroup = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqUpdateRiskGroupPackage>::GetInstance().Free(this);
@@ -25159,7 +25862,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateRiskGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqUpdateRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqUpdateRiskGroupField::FieldID);
 			if (strlen(ReqUpdateRiskGroup->AdminUserID) >= sizeof(ReqUpdateRiskGroup->AdminUserID))
 			{
 				ReqUpdateRiskGroup->AdminUserID[sizeof(ReqUpdateRiskGroup->AdminUserID) - 1] = 0;
@@ -25171,7 +25874,7 @@ namespace step
 				ReqUpdateRiskGroup->RiskGroupName[sizeof(ReqUpdateRiskGroup->RiskGroupName) - 1] = 0;
 			}
 			WriteString(ppos, Items::RiskGroupName, ReqUpdateRiskGroup->RiskGroupName);
-			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqUpdateRiskGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -25187,9 +25890,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqUpdateRiskGroupField::FieldID:
+				case ReqUpdateRiskGroupField::FieldID:
 				{
-					ReqUpdateRiskGroup = ::Allocate<StepReqUpdateRiskGroupField>();
+					ReqUpdateRiskGroup = ::Allocate<ReqUpdateRiskGroupField>();
 					memset(ReqUpdateRiskGroup, 0, sizeof(*ReqUpdateRiskGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -25221,7 +25924,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqUpdateRiskGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqUpdateRiskGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -25279,12 +25982,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspUpdateRiskGroup != nullptr)
 		{
-			::Free<StepRspUpdateRiskGroupField>(RspUpdateRiskGroup);
+			::Free<RspUpdateRiskGroupField>(RspUpdateRiskGroup);
 			RspUpdateRiskGroup = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspUpdateRiskGroupPackage>::GetInstance().Free(this);
@@ -25300,25 +26003,25 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateRiskGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspUpdateRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspUpdateRiskGroupField::FieldID);
 			if (strlen(RspUpdateRiskGroup->AdminUserID) >= sizeof(RspUpdateRiskGroup->AdminUserID))
 			{
 				RspUpdateRiskGroup->AdminUserID[sizeof(RspUpdateRiskGroup->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, RspUpdateRiskGroup->AdminUserID);
 			WriteString(ppos, Items::RiskGroupID, RspUpdateRiskGroup->RiskGroupID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspUpdateRiskGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -25334,9 +26037,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspUpdateRiskGroupField::FieldID:
+				case RspUpdateRiskGroupField::FieldID:
 				{
-					RspUpdateRiskGroup = ::Allocate<StepRspUpdateRiskGroupField>();
+					RspUpdateRiskGroup = ::Allocate<RspUpdateRiskGroupField>();
 					memset(RspUpdateRiskGroup, 0, sizeof(*RspUpdateRiskGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -25362,7 +26065,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspUpdateRiskGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspUpdateRiskGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -25375,9 +26078,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -25403,7 +26106,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -25466,7 +26169,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRemoveRiskGroup != nullptr)
 		{
-			::Free<StepReqRemoveRiskGroupField>(ReqRemoveRiskGroup);
+			::Free<ReqRemoveRiskGroupField>(ReqRemoveRiskGroup);
 			ReqRemoveRiskGroup = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRemoveRiskGroupPackage>::GetInstance().Free(this);
@@ -25482,14 +26185,14 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveRiskGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRemoveRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRemoveRiskGroupField::FieldID);
 			if (strlen(ReqRemoveRiskGroup->AdminUserID) >= sizeof(ReqRemoveRiskGroup->AdminUserID))
 			{
 				ReqRemoveRiskGroup->AdminUserID[sizeof(ReqRemoveRiskGroup->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, ReqRemoveRiskGroup->AdminUserID);
 			WriteString(ppos, Items::RiskGroupID, ReqRemoveRiskGroup->RiskGroupID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRemoveRiskGroupField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -25505,9 +26208,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRemoveRiskGroupField::FieldID:
+				case ReqRemoveRiskGroupField::FieldID:
 				{
-					ReqRemoveRiskGroup = ::Allocate<StepReqRemoveRiskGroupField>();
+					ReqRemoveRiskGroup = ::Allocate<ReqRemoveRiskGroupField>();
 					memset(ReqRemoveRiskGroup, 0, sizeof(*ReqRemoveRiskGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -25533,7 +26236,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRemoveRiskGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRemoveRiskGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -25591,12 +26294,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspRemoveRiskGroup != nullptr)
 		{
-			::Free<StepRspRemoveRiskGroupField>(RspRemoveRiskGroup);
+			::Free<RspRemoveRiskGroupField>(RspRemoveRiskGroup);
 			RspRemoveRiskGroup = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRemoveRiskGroupPackage>::GetInstance().Free(this);
@@ -25612,25 +26315,25 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveRiskGroup != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRemoveRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspRemoveRiskGroupField::FieldID);
 			if (strlen(RspRemoveRiskGroup->AdminUserID) >= sizeof(RspRemoveRiskGroup->AdminUserID))
 			{
 				RspRemoveRiskGroup->AdminUserID[sizeof(RspRemoveRiskGroup->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, RspRemoveRiskGroup->AdminUserID);
 			WriteString(ppos, Items::RiskGroupID, RspRemoveRiskGroup->RiskGroupID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveRiskGroupField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspRemoveRiskGroupField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -25646,9 +26349,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspRemoveRiskGroupField::FieldID:
+				case RspRemoveRiskGroupField::FieldID:
 				{
-					RspRemoveRiskGroup = ::Allocate<StepRspRemoveRiskGroupField>();
+					RspRemoveRiskGroup = ::Allocate<RspRemoveRiskGroupField>();
 					memset(RspRemoveRiskGroup, 0, sizeof(*RspRemoveRiskGroup));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -25674,7 +26377,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRemoveRiskGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRemoveRiskGroupField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -25687,9 +26390,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -25715,7 +26418,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -25778,7 +26481,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddRiskGroupItem != nullptr)
 		{
-			::Free<StepReqAddRiskGroupItemField>(ReqAddRiskGroupItem);
+			::Free<ReqAddRiskGroupItemField>(ReqAddRiskGroupItem);
 			ReqAddRiskGroupItem = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddRiskGroupItemPackage>::GetInstance().Free(this);
@@ -25794,7 +26497,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddRiskGroupItem != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddRiskGroupItemField::FieldID);
 			if (strlen(ReqAddRiskGroupItem->AdminUserID) >= sizeof(ReqAddRiskGroupItem->AdminUserID))
 			{
 				ReqAddRiskGroupItem->AdminUserID[sizeof(ReqAddRiskGroupItem->AdminUserID) - 1] = 0;
@@ -25802,7 +26505,7 @@ namespace step
 			WriteString(ppos, Items::AdminUserID, ReqAddRiskGroupItem->AdminUserID);
 			WriteString(ppos, Items::RiskGroupID, ReqAddRiskGroupItem->RiskGroupID);
 			WriteString(ppos, Items::RiskID, ReqAddRiskGroupItem->RiskID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddRiskGroupItemField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -25818,9 +26521,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddRiskGroupItemField::FieldID:
+				case ReqAddRiskGroupItemField::FieldID:
 				{
-					ReqAddRiskGroupItem = ::Allocate<StepReqAddRiskGroupItemField>();
+					ReqAddRiskGroupItem = ::Allocate<ReqAddRiskGroupItemField>();
 					memset(ReqAddRiskGroupItem, 0, sizeof(*ReqAddRiskGroupItem));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -25851,7 +26554,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddRiskGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddRiskGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -25909,12 +26612,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddRiskGroupItem != nullptr)
 		{
-			::Free<StepRspAddRiskGroupItemField>(RspAddRiskGroupItem);
+			::Free<RspAddRiskGroupItemField>(RspAddRiskGroupItem);
 			RspAddRiskGroupItem = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddRiskGroupItemPackage>::GetInstance().Free(this);
@@ -25930,7 +26633,7 @@ namespace step
 		char* ppos = buff;
 		if (RspAddRiskGroupItem != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddRiskGroupItemField::FieldID);
 			if (strlen(RspAddRiskGroupItem->AdminUserID) >= sizeof(RspAddRiskGroupItem->AdminUserID))
 			{
 				RspAddRiskGroupItem->AdminUserID[sizeof(RspAddRiskGroupItem->AdminUserID) - 1] = 0;
@@ -25938,18 +26641,18 @@ namespace step
 			WriteString(ppos, Items::AdminUserID, RspAddRiskGroupItem->AdminUserID);
 			WriteString(ppos, Items::RiskGroupID, RspAddRiskGroupItem->RiskGroupID);
 			WriteString(ppos, Items::RiskID, RspAddRiskGroupItem->RiskID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddRiskGroupItemField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -25965,9 +26668,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddRiskGroupItemField::FieldID:
+				case RspAddRiskGroupItemField::FieldID:
 				{
-					RspAddRiskGroupItem = ::Allocate<StepRspAddRiskGroupItemField>();
+					RspAddRiskGroupItem = ::Allocate<RspAddRiskGroupItemField>();
 					memset(RspAddRiskGroupItem, 0, sizeof(*RspAddRiskGroupItem));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -25998,7 +26701,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddRiskGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddRiskGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -26011,9 +26714,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -26039,7 +26742,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -26102,7 +26805,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqUpdateRiskGroupItem != nullptr)
 		{
-			::Free<StepReqUpdateRiskGroupItemField>(ReqUpdateRiskGroupItem);
+			::Free<ReqUpdateRiskGroupItemField>(ReqUpdateRiskGroupItem);
 			ReqUpdateRiskGroupItem = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqUpdateRiskGroupItemPackage>::GetInstance().Free(this);
@@ -26118,7 +26821,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqUpdateRiskGroupItem != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqUpdateRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqUpdateRiskGroupItemField::FieldID);
 			if (strlen(ReqUpdateRiskGroupItem->AdminUserID) >= sizeof(ReqUpdateRiskGroupItem->AdminUserID))
 			{
 				ReqUpdateRiskGroupItem->AdminUserID[sizeof(ReqUpdateRiskGroupItem->AdminUserID) - 1] = 0;
@@ -26126,7 +26829,7 @@ namespace step
 			WriteString(ppos, Items::AdminUserID, ReqUpdateRiskGroupItem->AdminUserID);
 			WriteString(ppos, Items::RiskGroupID, ReqUpdateRiskGroupItem->RiskGroupID);
 			WriteString(ppos, Items::RiskID, ReqUpdateRiskGroupItem->RiskID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqUpdateRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqUpdateRiskGroupItemField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -26142,9 +26845,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqUpdateRiskGroupItemField::FieldID:
+				case ReqUpdateRiskGroupItemField::FieldID:
 				{
-					ReqUpdateRiskGroupItem = ::Allocate<StepReqUpdateRiskGroupItemField>();
+					ReqUpdateRiskGroupItem = ::Allocate<ReqUpdateRiskGroupItemField>();
 					memset(ReqUpdateRiskGroupItem, 0, sizeof(*ReqUpdateRiskGroupItem));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -26175,7 +26878,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqUpdateRiskGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqUpdateRiskGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -26233,12 +26936,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspUpdateRiskGroupItem != nullptr)
 		{
-			::Free<StepRspUpdateRiskGroupItemField>(RspUpdateRiskGroupItem);
+			::Free<RspUpdateRiskGroupItemField>(RspUpdateRiskGroupItem);
 			RspUpdateRiskGroupItem = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspUpdateRiskGroupItemPackage>::GetInstance().Free(this);
@@ -26254,7 +26957,7 @@ namespace step
 		char* ppos = buff;
 		if (RspUpdateRiskGroupItem != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspUpdateRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspUpdateRiskGroupItemField::FieldID);
 			if (strlen(RspUpdateRiskGroupItem->AdminUserID) >= sizeof(RspUpdateRiskGroupItem->AdminUserID))
 			{
 				RspUpdateRiskGroupItem->AdminUserID[sizeof(RspUpdateRiskGroupItem->AdminUserID) - 1] = 0;
@@ -26262,18 +26965,18 @@ namespace step
 			WriteString(ppos, Items::AdminUserID, RspUpdateRiskGroupItem->AdminUserID);
 			WriteString(ppos, Items::RiskGroupID, RspUpdateRiskGroupItem->RiskGroupID);
 			WriteString(ppos, Items::RiskID, RspUpdateRiskGroupItem->RiskID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspUpdateRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspUpdateRiskGroupItemField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -26289,9 +26992,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspUpdateRiskGroupItemField::FieldID:
+				case RspUpdateRiskGroupItemField::FieldID:
 				{
-					RspUpdateRiskGroupItem = ::Allocate<StepRspUpdateRiskGroupItemField>();
+					RspUpdateRiskGroupItem = ::Allocate<RspUpdateRiskGroupItemField>();
 					memset(RspUpdateRiskGroupItem, 0, sizeof(*RspUpdateRiskGroupItem));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -26322,7 +27025,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspUpdateRiskGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspUpdateRiskGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -26335,9 +27038,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -26363,7 +27066,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -26426,7 +27129,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRemoveRiskGroupItem != nullptr)
 		{
-			::Free<StepReqRemoveRiskGroupItemField>(ReqRemoveRiskGroupItem);
+			::Free<ReqRemoveRiskGroupItemField>(ReqRemoveRiskGroupItem);
 			ReqRemoveRiskGroupItem = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRemoveRiskGroupItemPackage>::GetInstance().Free(this);
@@ -26442,7 +27145,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveRiskGroupItem != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRemoveRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRemoveRiskGroupItemField::FieldID);
 			if (strlen(ReqRemoveRiskGroupItem->AdminUserID) >= sizeof(ReqRemoveRiskGroupItem->AdminUserID))
 			{
 				ReqRemoveRiskGroupItem->AdminUserID[sizeof(ReqRemoveRiskGroupItem->AdminUserID) - 1] = 0;
@@ -26450,7 +27153,7 @@ namespace step
 			WriteString(ppos, Items::AdminUserID, ReqRemoveRiskGroupItem->AdminUserID);
 			WriteString(ppos, Items::RiskGroupID, ReqRemoveRiskGroupItem->RiskGroupID);
 			WriteString(ppos, Items::RiskID, ReqRemoveRiskGroupItem->RiskID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRemoveRiskGroupItemField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -26466,9 +27169,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRemoveRiskGroupItemField::FieldID:
+				case ReqRemoveRiskGroupItemField::FieldID:
 				{
-					ReqRemoveRiskGroupItem = ::Allocate<StepReqRemoveRiskGroupItemField>();
+					ReqRemoveRiskGroupItem = ::Allocate<ReqRemoveRiskGroupItemField>();
 					memset(ReqRemoveRiskGroupItem, 0, sizeof(*ReqRemoveRiskGroupItem));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -26499,7 +27202,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRemoveRiskGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRemoveRiskGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -26557,12 +27260,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspRemoveRiskGroupItem != nullptr)
 		{
-			::Free<StepRspRemoveRiskGroupItemField>(RspRemoveRiskGroupItem);
+			::Free<RspRemoveRiskGroupItemField>(RspRemoveRiskGroupItem);
 			RspRemoveRiskGroupItem = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRemoveRiskGroupItemPackage>::GetInstance().Free(this);
@@ -26578,7 +27281,7 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveRiskGroupItem != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRemoveRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspRemoveRiskGroupItemField::FieldID);
 			if (strlen(RspRemoveRiskGroupItem->AdminUserID) >= sizeof(RspRemoveRiskGroupItem->AdminUserID))
 			{
 				RspRemoveRiskGroupItem->AdminUserID[sizeof(RspRemoveRiskGroupItem->AdminUserID) - 1] = 0;
@@ -26586,18 +27289,18 @@ namespace step
 			WriteString(ppos, Items::AdminUserID, RspRemoveRiskGroupItem->AdminUserID);
 			WriteString(ppos, Items::RiskGroupID, RspRemoveRiskGroupItem->RiskGroupID);
 			WriteString(ppos, Items::RiskID, RspRemoveRiskGroupItem->RiskID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveRiskGroupItemField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspRemoveRiskGroupItemField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -26613,9 +27316,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspRemoveRiskGroupItemField::FieldID:
+				case RspRemoveRiskGroupItemField::FieldID:
 				{
-					RspRemoveRiskGroupItem = ::Allocate<StepRspRemoveRiskGroupItemField>();
+					RspRemoveRiskGroupItem = ::Allocate<RspRemoveRiskGroupItemField>();
 					memset(RspRemoveRiskGroupItem, 0, sizeof(*RspRemoveRiskGroupItem));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -26646,7 +27349,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRemoveRiskGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRemoveRiskGroupItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -26659,9 +27362,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -26687,7 +27390,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -26750,7 +27453,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddOrUpdateRisk != nullptr)
 		{
-			::Free<StepReqAddOrUpdateRiskField>(ReqAddOrUpdateRisk);
+			::Free<ReqAddOrUpdateRiskField>(ReqAddOrUpdateRisk);
 			ReqAddOrUpdateRisk = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddOrUpdateRiskPackage>::GetInstance().Free(this);
@@ -26766,7 +27469,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddOrUpdateRisk != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddOrUpdateRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddOrUpdateRiskField::FieldID);
 			if (strlen(ReqAddOrUpdateRisk->AdminUserID) >= sizeof(ReqAddOrUpdateRisk->AdminUserID))
 			{
 				ReqAddOrUpdateRisk->AdminUserID[sizeof(ReqAddOrUpdateRisk->AdminUserID) - 1] = 0;
@@ -26779,7 +27482,7 @@ namespace step
 			}
 			WriteString(ppos, Items::RiskName, ReqAddOrUpdateRisk->RiskName);
 			WriteString(ppos, Items::RiskClassID, (int)ReqAddOrUpdateRisk->RiskClassID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddOrUpdateRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddOrUpdateRiskField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -26795,9 +27498,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddOrUpdateRiskField::FieldID:
+				case ReqAddOrUpdateRiskField::FieldID:
 				{
-					ReqAddOrUpdateRisk = ::Allocate<StepReqAddOrUpdateRiskField>();
+					ReqAddOrUpdateRisk = ::Allocate<ReqAddOrUpdateRiskField>();
 					memset(ReqAddOrUpdateRisk, 0, sizeof(*ReqAddOrUpdateRisk));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -26834,7 +27537,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddOrUpdateRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddOrUpdateRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -26892,12 +27595,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddOrUpdateRisk != nullptr)
 		{
-			::Free<StepRspAddOrUpdateRiskField>(RspAddOrUpdateRisk);
+			::Free<RspAddOrUpdateRiskField>(RspAddOrUpdateRisk);
 			RspAddOrUpdateRisk = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddOrUpdateRiskPackage>::GetInstance().Free(this);
@@ -26913,25 +27616,25 @@ namespace step
 		char* ppos = buff;
 		if (RspAddOrUpdateRisk != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddOrUpdateRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddOrUpdateRiskField::FieldID);
 			if (strlen(RspAddOrUpdateRisk->AdminUserID) >= sizeof(RspAddOrUpdateRisk->AdminUserID))
 			{
 				RspAddOrUpdateRisk->AdminUserID[sizeof(RspAddOrUpdateRisk->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, RspAddOrUpdateRisk->AdminUserID);
 			WriteString(ppos, Items::RiskID, RspAddOrUpdateRisk->RiskID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddOrUpdateRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddOrUpdateRiskField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -26947,9 +27650,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddOrUpdateRiskField::FieldID:
+				case RspAddOrUpdateRiskField::FieldID:
 				{
-					RspAddOrUpdateRisk = ::Allocate<StepRspAddOrUpdateRiskField>();
+					RspAddOrUpdateRisk = ::Allocate<RspAddOrUpdateRiskField>();
 					memset(RspAddOrUpdateRisk, 0, sizeof(*RspAddOrUpdateRisk));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -26975,7 +27678,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddOrUpdateRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddOrUpdateRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -26988,9 +27691,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -27016,7 +27719,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -27079,7 +27782,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRemoveRisk != nullptr)
 		{
-			::Free<StepReqRemoveRiskField>(ReqRemoveRisk);
+			::Free<ReqRemoveRiskField>(ReqRemoveRisk);
 			ReqRemoveRisk = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRemoveRiskPackage>::GetInstance().Free(this);
@@ -27095,14 +27798,14 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveRisk != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRemoveRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRemoveRiskField::FieldID);
 			if (strlen(ReqRemoveRisk->AdminUserID) >= sizeof(ReqRemoveRisk->AdminUserID))
 			{
 				ReqRemoveRisk->AdminUserID[sizeof(ReqRemoveRisk->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, ReqRemoveRisk->AdminUserID);
 			WriteString(ppos, Items::RiskID, ReqRemoveRisk->RiskID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRemoveRiskField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -27118,9 +27821,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRemoveRiskField::FieldID:
+				case ReqRemoveRiskField::FieldID:
 				{
-					ReqRemoveRisk = ::Allocate<StepReqRemoveRiskField>();
+					ReqRemoveRisk = ::Allocate<ReqRemoveRiskField>();
 					memset(ReqRemoveRisk, 0, sizeof(*ReqRemoveRisk));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -27146,7 +27849,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRemoveRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRemoveRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -27204,12 +27907,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspRemoveRisk != nullptr)
 		{
-			::Free<StepRspRemoveRiskField>(RspRemoveRisk);
+			::Free<RspRemoveRiskField>(RspRemoveRisk);
 			RspRemoveRisk = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRemoveRiskPackage>::GetInstance().Free(this);
@@ -27225,25 +27928,25 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveRisk != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRemoveRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspRemoveRiskField::FieldID);
 			if (strlen(RspRemoveRisk->AdminUserID) >= sizeof(RspRemoveRisk->AdminUserID))
 			{
 				RspRemoveRisk->AdminUserID[sizeof(RspRemoveRisk->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, RspRemoveRisk->AdminUserID);
 			WriteString(ppos, Items::RiskID, RspRemoveRisk->RiskID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspRemoveRiskField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -27259,9 +27962,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspRemoveRiskField::FieldID:
+				case RspRemoveRiskField::FieldID:
 				{
-					RspRemoveRisk = ::Allocate<StepRspRemoveRiskField>();
+					RspRemoveRisk = ::Allocate<RspRemoveRiskField>();
 					memset(RspRemoveRisk, 0, sizeof(*RspRemoveRisk));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -27287,7 +27990,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRemoveRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRemoveRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -27300,9 +28003,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -27328,7 +28031,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -27391,7 +28094,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddRiskRule != nullptr)
 		{
-			::Free<StepReqAddRiskRuleField>(ReqAddRiskRule);
+			::Free<ReqAddRiskRuleField>(ReqAddRiskRule);
 			ReqAddRiskRule = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddRiskRulePackage>::GetInstance().Free(this);
@@ -27407,7 +28110,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddRiskRule != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddRiskRuleField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddRiskRuleField::FieldID);
 			if (strlen(ReqAddRiskRule->AdminUserID) >= sizeof(ReqAddRiskRule->AdminUserID))
 			{
 				ReqAddRiskRule->AdminUserID[sizeof(ReqAddRiskRule->AdminUserID) - 1] = 0;
@@ -27421,7 +28124,7 @@ namespace step
 				ReqAddRiskRule->FormatRiskMessage[sizeof(ReqAddRiskRule->FormatRiskMessage) - 1] = 0;
 			}
 			WriteString(ppos, Items::FormatRiskMessage, ReqAddRiskRule->FormatRiskMessage);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddRiskRuleField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddRiskRuleField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -27437,9 +28140,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddRiskRuleField::FieldID:
+				case ReqAddRiskRuleField::FieldID:
 				{
-					ReqAddRiskRule = ::Allocate<StepReqAddRiskRuleField>();
+					ReqAddRiskRule = ::Allocate<ReqAddRiskRuleField>();
 					memset(ReqAddRiskRule, 0, sizeof(*ReqAddRiskRule));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -27481,7 +28184,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddRiskRuleField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddRiskRuleField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -27539,12 +28242,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddRiskRule != nullptr)
 		{
-			::Free<StepRspAddRiskRuleField>(RspAddRiskRule);
+			::Free<RspAddRiskRuleField>(RspAddRiskRule);
 			RspAddRiskRule = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddRiskRulePackage>::GetInstance().Free(this);
@@ -27560,7 +28263,7 @@ namespace step
 		char* ppos = buff;
 		if (RspAddRiskRule != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddRiskRuleField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddRiskRuleField::FieldID);
 			if (strlen(RspAddRiskRule->AdminUserID) >= sizeof(RspAddRiskRule->AdminUserID))
 			{
 				RspAddRiskRule->AdminUserID[sizeof(RspAddRiskRule->AdminUserID) - 1] = 0;
@@ -27568,18 +28271,18 @@ namespace step
 			WriteString(ppos, Items::AdminUserID, RspAddRiskRule->AdminUserID);
 			WriteString(ppos, Items::RiskID, RspAddRiskRule->RiskID);
 			WriteString(ppos, Items::RiskRuleID, RspAddRiskRule->RiskRuleID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddRiskRuleField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddRiskRuleField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -27595,9 +28298,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddRiskRuleField::FieldID:
+				case RspAddRiskRuleField::FieldID:
 				{
-					RspAddRiskRule = ::Allocate<StepRspAddRiskRuleField>();
+					RspAddRiskRule = ::Allocate<RspAddRiskRuleField>();
 					memset(RspAddRiskRule, 0, sizeof(*RspAddRiskRule));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -27628,7 +28331,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddRiskRuleField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddRiskRuleField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -27641,9 +28344,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -27669,7 +28372,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -27732,7 +28435,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddRiskRuleItem != nullptr)
 		{
-			::Free<StepReqAddRiskRuleItemField>(ReqAddRiskRuleItem);
+			::Free<ReqAddRiskRuleItemField>(ReqAddRiskRuleItem);
 			ReqAddRiskRuleItem = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddRiskRuleItemPackage>::GetInstance().Free(this);
@@ -27748,7 +28451,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddRiskRuleItem != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddRiskRuleItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddRiskRuleItemField::FieldID);
 			if (strlen(ReqAddRiskRuleItem->AdminUserID) >= sizeof(ReqAddRiskRuleItem->AdminUserID))
 			{
 				ReqAddRiskRuleItem->AdminUserID[sizeof(ReqAddRiskRuleItem->AdminUserID) - 1] = 0;
@@ -27805,7 +28508,7 @@ namespace step
 			}
 			WriteString(ppos, Items::LogicParam2, ReqAddRiskRuleItem->LogicParam2);
 			WriteString(ppos, Items::LogicParam2TextRef, ReqAddRiskRuleItem->LogicParam2TextRef);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddRiskRuleItemField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddRiskRuleItemField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -27821,9 +28524,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddRiskRuleItemField::FieldID:
+				case ReqAddRiskRuleItemField::FieldID:
 				{
-					ReqAddRiskRuleItem = ::Allocate<StepReqAddRiskRuleItemField>();
+					ReqAddRiskRuleItem = ::Allocate<ReqAddRiskRuleItemField>();
 					memset(ReqAddRiskRuleItem, 0, sizeof(*ReqAddRiskRuleItem));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -27947,7 +28650,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddRiskRuleItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddRiskRuleItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -28005,12 +28708,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddRiskRuleItem != nullptr)
 		{
-			::Free<StepRspAddRiskRuleItemField>(RspAddRiskRuleItem);
+			::Free<RspAddRiskRuleItemField>(RspAddRiskRuleItem);
 			RspAddRiskRuleItem = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddRiskRuleItemPackage>::GetInstance().Free(this);
@@ -28026,7 +28729,7 @@ namespace step
 		char* ppos = buff;
 		if (RspAddRiskRuleItem != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddRiskRuleItemField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddRiskRuleItemField::FieldID);
 			if (strlen(RspAddRiskRuleItem->AdminUserID) >= sizeof(RspAddRiskRuleItem->AdminUserID))
 			{
 				RspAddRiskRuleItem->AdminUserID[sizeof(RspAddRiskRuleItem->AdminUserID) - 1] = 0;
@@ -28035,18 +28738,18 @@ namespace step
 			WriteString(ppos, Items::RiskID, RspAddRiskRuleItem->RiskID);
 			WriteString(ppos, Items::RiskRuleID, RspAddRiskRuleItem->RiskRuleID);
 			WriteString(ppos, Items::RiskRuleItemID, RspAddRiskRuleItem->RiskRuleItemID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddRiskRuleItemField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddRiskRuleItemField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -28062,9 +28765,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddRiskRuleItemField::FieldID:
+				case RspAddRiskRuleItemField::FieldID:
 				{
-					RspAddRiskRuleItem = ::Allocate<StepRspAddRiskRuleItemField>();
+					RspAddRiskRuleItem = ::Allocate<RspAddRiskRuleItemField>();
 					memset(RspAddRiskRuleItem, 0, sizeof(*RspAddRiskRuleItem));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -28100,7 +28803,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddRiskRuleItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddRiskRuleItemField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -28113,9 +28816,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -28141,7 +28844,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -28204,7 +28907,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddRiskTradeScope != nullptr)
 		{
-			::Free<StepReqAddRiskTradeScopeField>(ReqAddRiskTradeScope);
+			::Free<ReqAddRiskTradeScopeField>(ReqAddRiskTradeScope);
 			ReqAddRiskTradeScope = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddRiskTradeScopePackage>::GetInstance().Free(this);
@@ -28220,7 +28923,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddRiskTradeScope != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddRiskTradeScopeField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddRiskTradeScopeField::FieldID);
 			if (strlen(ReqAddRiskTradeScope->AdminUserID) >= sizeof(ReqAddRiskTradeScope->AdminUserID))
 			{
 				ReqAddRiskTradeScope->AdminUserID[sizeof(ReqAddRiskTradeScope->AdminUserID) - 1] = 0;
@@ -28234,7 +28937,7 @@ namespace step
 				ReqAddRiskTradeScope->FormatRiskMessage[sizeof(ReqAddRiskTradeScope->FormatRiskMessage) - 1] = 0;
 			}
 			WriteString(ppos, Items::FormatRiskMessage, ReqAddRiskTradeScope->FormatRiskMessage);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddRiskTradeScopeField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddRiskTradeScopeField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -28250,9 +28953,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddRiskTradeScopeField::FieldID:
+				case ReqAddRiskTradeScopeField::FieldID:
 				{
-					ReqAddRiskTradeScope = ::Allocate<StepReqAddRiskTradeScopeField>();
+					ReqAddRiskTradeScope = ::Allocate<ReqAddRiskTradeScopeField>();
 					memset(ReqAddRiskTradeScope, 0, sizeof(*ReqAddRiskTradeScope));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -28294,7 +28997,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddRiskTradeScopeField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddRiskTradeScopeField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -28352,12 +29055,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddRiskTradeScope != nullptr)
 		{
-			::Free<StepRspAddRiskTradeScopeField>(RspAddRiskTradeScope);
+			::Free<RspAddRiskTradeScopeField>(RspAddRiskTradeScope);
 			RspAddRiskTradeScope = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddRiskTradeScopePackage>::GetInstance().Free(this);
@@ -28373,25 +29076,25 @@ namespace step
 		char* ppos = buff;
 		if (RspAddRiskTradeScope != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddRiskTradeScopeField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddRiskTradeScopeField::FieldID);
 			if (strlen(RspAddRiskTradeScope->AdminUserID) >= sizeof(RspAddRiskTradeScope->AdminUserID))
 			{
 				RspAddRiskTradeScope->AdminUserID[sizeof(RspAddRiskTradeScope->AdminUserID) - 1] = 0;
 			}
 			WriteString(ppos, Items::AdminUserID, RspAddRiskTradeScope->AdminUserID);
 			WriteString(ppos, Items::RiskID, RspAddRiskTradeScope->RiskID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddRiskTradeScopeField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddRiskTradeScopeField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -28407,9 +29110,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddRiskTradeScopeField::FieldID:
+				case RspAddRiskTradeScopeField::FieldID:
 				{
-					RspAddRiskTradeScope = ::Allocate<StepRspAddRiskTradeScopeField>();
+					RspAddRiskTradeScope = ::Allocate<RspAddRiskTradeScopeField>();
 					memset(RspAddRiskTradeScope, 0, sizeof(*RspAddRiskTradeScope));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -28435,7 +29138,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddRiskTradeScopeField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddRiskTradeScopeField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -28448,9 +29151,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -28476,7 +29179,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -28539,7 +29242,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAddAccountRisk != nullptr)
 		{
-			::Free<StepReqAddAccountRiskField>(ReqAddAccountRisk);
+			::Free<ReqAddAccountRiskField>(ReqAddAccountRisk);
 			ReqAddAccountRisk = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAddAccountRiskPackage>::GetInstance().Free(this);
@@ -28555,7 +29258,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAddAccountRisk != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAddAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAddAccountRiskField::FieldID);
 			if (strlen(ReqAddAccountRisk->AdminUserID) >= sizeof(ReqAddAccountRisk->AdminUserID))
 			{
 				ReqAddAccountRisk->AdminUserID[sizeof(ReqAddAccountRisk->AdminUserID) - 1] = 0;
@@ -28567,7 +29270,7 @@ namespace step
 			}
 			WriteString(ppos, Items::AccountID, ReqAddAccountRisk->AccountID);
 			WriteString(ppos, Items::RiskID, ReqAddAccountRisk->RiskID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAddAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAddAccountRiskField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -28583,9 +29286,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAddAccountRiskField::FieldID:
+				case ReqAddAccountRiskField::FieldID:
 				{
-					ReqAddAccountRisk = ::Allocate<StepReqAddAccountRiskField>();
+					ReqAddAccountRisk = ::Allocate<ReqAddAccountRiskField>();
 					memset(ReqAddAccountRisk, 0, sizeof(*ReqAddAccountRisk));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -28617,7 +29320,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAddAccountRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAddAccountRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -28675,12 +29378,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAddAccountRisk != nullptr)
 		{
-			::Free<StepRspAddAccountRiskField>(RspAddAccountRisk);
+			::Free<RspAddAccountRiskField>(RspAddAccountRisk);
 			RspAddAccountRisk = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAddAccountRiskPackage>::GetInstance().Free(this);
@@ -28696,7 +29399,7 @@ namespace step
 		char* ppos = buff;
 		if (RspAddAccountRisk != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAddAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAddAccountRiskField::FieldID);
 			if (strlen(RspAddAccountRisk->AdminUserID) >= sizeof(RspAddAccountRisk->AdminUserID))
 			{
 				RspAddAccountRisk->AdminUserID[sizeof(RspAddAccountRisk->AdminUserID) - 1] = 0;
@@ -28708,18 +29411,18 @@ namespace step
 			}
 			WriteString(ppos, Items::AccountID, RspAddAccountRisk->AccountID);
 			WriteString(ppos, Items::RiskID, RspAddAccountRisk->RiskID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAddAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAddAccountRiskField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -28735,9 +29438,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAddAccountRiskField::FieldID:
+				case RspAddAccountRiskField::FieldID:
 				{
-					RspAddAccountRisk = ::Allocate<StepRspAddAccountRiskField>();
+					RspAddAccountRisk = ::Allocate<RspAddAccountRiskField>();
 					memset(RspAddAccountRisk, 0, sizeof(*RspAddAccountRisk));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -28769,7 +29472,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAddAccountRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAddAccountRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -28782,9 +29485,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -28810,7 +29513,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -28873,7 +29576,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqRemoveAccountRisk != nullptr)
 		{
-			::Free<StepReqRemoveAccountRiskField>(ReqRemoveAccountRisk);
+			::Free<ReqRemoveAccountRiskField>(ReqRemoveAccountRisk);
 			ReqRemoveAccountRisk = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqRemoveAccountRiskPackage>::GetInstance().Free(this);
@@ -28889,7 +29592,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqRemoveAccountRisk != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqRemoveAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqRemoveAccountRiskField::FieldID);
 			if (strlen(ReqRemoveAccountRisk->AdminUserID) >= sizeof(ReqRemoveAccountRisk->AdminUserID))
 			{
 				ReqRemoveAccountRisk->AdminUserID[sizeof(ReqRemoveAccountRisk->AdminUserID) - 1] = 0;
@@ -28901,7 +29604,7 @@ namespace step
 			}
 			WriteString(ppos, Items::AccountID, ReqRemoveAccountRisk->AccountID);
 			WriteString(ppos, Items::RiskID, ReqRemoveAccountRisk->RiskID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqRemoveAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqRemoveAccountRiskField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -28917,9 +29620,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqRemoveAccountRiskField::FieldID:
+				case ReqRemoveAccountRiskField::FieldID:
 				{
-					ReqRemoveAccountRisk = ::Allocate<StepReqRemoveAccountRiskField>();
+					ReqRemoveAccountRisk = ::Allocate<ReqRemoveAccountRiskField>();
 					memset(ReqRemoveAccountRisk, 0, sizeof(*ReqRemoveAccountRisk));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -28951,7 +29654,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqRemoveAccountRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqRemoveAccountRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -29009,12 +29712,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspRemoveAccountRisk != nullptr)
 		{
-			::Free<StepRspRemoveAccountRiskField>(RspRemoveAccountRisk);
+			::Free<RspRemoveAccountRiskField>(RspRemoveAccountRisk);
 			RspRemoveAccountRisk = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspRemoveAccountRiskPackage>::GetInstance().Free(this);
@@ -29030,7 +29733,7 @@ namespace step
 		char* ppos = buff;
 		if (RspRemoveAccountRisk != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspRemoveAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspRemoveAccountRiskField::FieldID);
 			if (strlen(RspRemoveAccountRisk->AdminUserID) >= sizeof(RspRemoveAccountRisk->AdminUserID))
 			{
 				RspRemoveAccountRisk->AdminUserID[sizeof(RspRemoveAccountRisk->AdminUserID) - 1] = 0;
@@ -29042,18 +29745,18 @@ namespace step
 			}
 			WriteString(ppos, Items::AccountID, RspRemoveAccountRisk->AccountID);
 			WriteString(ppos, Items::RiskID, RspRemoveAccountRisk->RiskID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspRemoveAccountRiskField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspRemoveAccountRiskField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -29069,9 +29772,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspRemoveAccountRiskField::FieldID:
+				case RspRemoveAccountRiskField::FieldID:
 				{
-					RspRemoveAccountRisk = ::Allocate<StepRspRemoveAccountRiskField>();
+					RspRemoveAccountRisk = ::Allocate<RspRemoveAccountRiskField>();
 					memset(RspRemoveAccountRisk, 0, sizeof(*RspRemoveAccountRisk));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -29103,7 +29806,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspRemoveAccountRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspRemoveAccountRiskField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -29116,9 +29819,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -29144,7 +29847,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -29207,7 +29910,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqMoneyTransfer != nullptr)
 		{
-			::Free<StepReqMoneyTransferField>(ReqMoneyTransfer);
+			::Free<ReqMoneyTransferField>(ReqMoneyTransfer);
 			ReqMoneyTransfer = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqMoneyTransferPackage>::GetInstance().Free(this);
@@ -29223,7 +29926,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqMoneyTransfer != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqMoneyTransferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqMoneyTransferField::FieldID);
 			if (strlen(ReqMoneyTransfer->AdminUserID) >= sizeof(ReqMoneyTransfer->AdminUserID))
 			{
 				ReqMoneyTransfer->AdminUserID[sizeof(ReqMoneyTransfer->AdminUserID) - 1] = 0;
@@ -29263,7 +29966,7 @@ namespace step
 				ReqMoneyTransfer->TransferTime[sizeof(ReqMoneyTransfer->TransferTime) - 1] = 0;
 			}
 			WriteString(ppos, Items::TransferTime, ReqMoneyTransfer->TransferTime);
-			WriteHexString(ppos, Items::FieldEnd, StepReqMoneyTransferField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqMoneyTransferField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -29279,9 +29982,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqMoneyTransferField::FieldID:
+				case ReqMoneyTransferField::FieldID:
 				{
-					ReqMoneyTransfer = ::Allocate<StepReqMoneyTransferField>();
+					ReqMoneyTransfer = ::Allocate<ReqMoneyTransferField>();
 					memset(ReqMoneyTransfer, 0, sizeof(*ReqMoneyTransfer));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -29358,7 +30061,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqMoneyTransferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqMoneyTransferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -29416,12 +30119,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspMoneyTransfer != nullptr)
 		{
-			::Free<StepRspMoneyTransferField>(RspMoneyTransfer);
+			::Free<RspMoneyTransferField>(RspMoneyTransfer);
 			RspMoneyTransfer = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspMoneyTransferPackage>::GetInstance().Free(this);
@@ -29437,7 +30140,7 @@ namespace step
 		char* ppos = buff;
 		if (RspMoneyTransfer != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspMoneyTransferField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspMoneyTransferField::FieldID);
 			if (strlen(RspMoneyTransfer->AdminUserID) >= sizeof(RspMoneyTransfer->AdminUserID))
 			{
 				RspMoneyTransfer->AdminUserID[sizeof(RspMoneyTransfer->AdminUserID) - 1] = 0;
@@ -29454,18 +30157,18 @@ namespace step
 			}
 			WriteString(ppos, Items::AccountID, RspMoneyTransfer->AccountID);
 			WriteString(ppos, Items::MoneyTransferID, RspMoneyTransfer->MoneyTransferID);
-			WriteHexString(ppos, Items::FieldEnd, StepRspMoneyTransferField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspMoneyTransferField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -29481,9 +30184,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspMoneyTransferField::FieldID:
+				case RspMoneyTransferField::FieldID:
 				{
-					RspMoneyTransfer = ::Allocate<StepRspMoneyTransferField>();
+					RspMoneyTransfer = ::Allocate<RspMoneyTransferField>();
 					memset(RspMoneyTransfer, 0, sizeof(*RspMoneyTransfer));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -29521,7 +30224,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspMoneyTransferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspMoneyTransferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -29534,9 +30237,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -29562,7 +30265,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -29608,583 +30311,6 @@ namespace step
 		}
 		return t_StepPackageStringBuffer;
 	}
-	StepReqQryMoneyTransferPackage::StepReqQryMoneyTransferPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepReqQryMoneyTransferPackage* StepReqQryMoneyTransferPackage::Allocate()
-	{
-		return ::Allocate<StepReqQryMoneyTransferPackage>();
-	}
-	void StepReqQryMoneyTransferPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (ReqQryMoneyTransfer != nullptr)
-		{
-			::Free<StepReqQryMoneyTransferField>(ReqQryMoneyTransfer);
-			ReqQryMoneyTransfer = nullptr;
-		}
-		MemCacheTemplateSingleton<StepReqQryMoneyTransferPackage>::GetInstance().Free(this);
-	}
-	void StepReqQryMoneyTransferPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepReqQryMoneyTransferPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (ReqQryMoneyTransfer != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepReqQryMoneyTransferField::FieldID);
-			if (strlen(ReqQryMoneyTransfer->AccountID) >= sizeof(ReqQryMoneyTransfer->AccountID))
-			{
-				ReqQryMoneyTransfer->AccountID[sizeof(ReqQryMoneyTransfer->AccountID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AccountID, ReqQryMoneyTransfer->AccountID);
-			WriteHexString(ppos, Items::FieldEnd, StepReqQryMoneyTransferField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepReqQryMoneyTransferPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepReqQryMoneyTransferField::FieldID:
-				{
-					ReqQryMoneyTransfer = ::Allocate<StepReqQryMoneyTransferField>();
-					memset(ReqQryMoneyTransfer, 0, sizeof(*ReqQryMoneyTransfer));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::AccountID:
-							{
-								size_t len = value.length() >= sizeof(ReqQryMoneyTransfer->AccountID) ? sizeof(ReqQryMoneyTransfer->AccountID) - 1 : value.length();
-								memcpy(ReqQryMoneyTransfer->AccountID, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqQryMoneyTransferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqQryMoneyTransferPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqQryMoneyTransferPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepReqQryMoneyTransferPackage::GetDebugString() const
-	{
-		if (ReqQryMoneyTransfer == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (ReqQryMoneyTransfer != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryMoneyTransferPackage:AccountID:[%s]", 
-				ReqQryMoneyTransfer->AccountID);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRspQryMoneyTransferPackage::StepRspQryMoneyTransferPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRspQryMoneyTransferPackage* StepRspQryMoneyTransferPackage::Allocate()
-	{
-		return ::Allocate<StepRspQryMoneyTransferPackage>();
-	}
-	void StepRspQryMoneyTransferPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (MoneyTransfer != nullptr)
-		{
-			::Free<StepMoneyTransferField>(MoneyTransfer);
-			MoneyTransfer = nullptr;
-		}
-		if (RspInfo != nullptr)
-		{
-			::Free<StepRspInfoField>(RspInfo);
-			RspInfo = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRspQryMoneyTransferPackage>::GetInstance().Free(this);
-	}
-	void StepRspQryMoneyTransferPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRspQryMoneyTransferPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (MoneyTransfer != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepMoneyTransferField::FieldID);
-			if (strlen(MoneyTransfer->TradingDay) >= sizeof(MoneyTransfer->TradingDay))
-			{
-				MoneyTransfer->TradingDay[sizeof(MoneyTransfer->TradingDay) - 1] = 0;
-			}
-			WriteString(ppos, Items::TradingDay, MoneyTransfer->TradingDay);
-			if (strlen(MoneyTransfer->AccountID) >= sizeof(MoneyTransfer->AccountID))
-			{
-				MoneyTransfer->AccountID[sizeof(MoneyTransfer->AccountID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AccountID, MoneyTransfer->AccountID);
-			WriteString(ppos, Items::MoneyTransferID, MoneyTransfer->MoneyTransferID);
-			WriteString(ppos, Items::AccountType, (int)MoneyTransfer->AccountType);
-			WriteString(ppos, Items::TransferDirection, (int)MoneyTransfer->TransferDirection);
-			WriteString(ppos, Items::TransferAmount, MoneyTransfer->TransferAmount);
-			if (strlen(MoneyTransfer->InfoMessage) >= sizeof(MoneyTransfer->InfoMessage))
-			{
-				MoneyTransfer->InfoMessage[sizeof(MoneyTransfer->InfoMessage) - 1] = 0;
-			}
-			WriteString(ppos, Items::InfoMessage, MoneyTransfer->InfoMessage);
-			if (strlen(MoneyTransfer->UserID) >= sizeof(MoneyTransfer->UserID))
-			{
-				MoneyTransfer->UserID[sizeof(MoneyTransfer->UserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::UserID, MoneyTransfer->UserID);
-			if (strlen(MoneyTransfer->TransferDate) >= sizeof(MoneyTransfer->TransferDate))
-			{
-				MoneyTransfer->TransferDate[sizeof(MoneyTransfer->TransferDate) - 1] = 0;
-			}
-			WriteString(ppos, Items::TransferDate, MoneyTransfer->TransferDate);
-			if (strlen(MoneyTransfer->TransferTime) >= sizeof(MoneyTransfer->TransferTime))
-			{
-				MoneyTransfer->TransferTime[sizeof(MoneyTransfer->TransferTime) - 1] = 0;
-			}
-			WriteString(ppos, Items::TransferTime, MoneyTransfer->TransferTime);
-			WriteHexString(ppos, Items::FieldEnd, StepMoneyTransferField::FieldID);
-		}
-		if (RspInfo != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
-			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
-			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
-			{
-				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
-			}
-			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRspQryMoneyTransferPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepMoneyTransferField::FieldID:
-				{
-					MoneyTransfer = ::Allocate<StepMoneyTransferField>();
-					memset(MoneyTransfer, 0, sizeof(*MoneyTransfer));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::TradingDay:
-							{
-								size_t len = value.length() >= sizeof(MoneyTransfer->TradingDay) ? sizeof(MoneyTransfer->TradingDay) - 1 : value.length();
-								memcpy(MoneyTransfer->TradingDay, value.c_str(), len);
-								break;
-							}
-							case Items::AccountID:
-							{
-								size_t len = value.length() >= sizeof(MoneyTransfer->AccountID) ? sizeof(MoneyTransfer->AccountID) - 1 : value.length();
-								memcpy(MoneyTransfer->AccountID, value.c_str(), len);
-								break;
-							}
-							case Items::MoneyTransferID:
-							{
-								MoneyTransfer->MoneyTransferID = atoi(value.c_str());
-								break;
-							}
-							case Items::AccountType:
-							{
-								MoneyTransfer->AccountType = (AccountTypeType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::TransferDirection:
-							{
-								MoneyTransfer->TransferDirection = (TransferDirectionType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::TransferAmount:
-							{
-								MoneyTransfer->TransferAmount = atof(value.c_str());
-								break;
-							}
-							case Items::InfoMessage:
-							{
-								size_t len = value.length() >= sizeof(MoneyTransfer->InfoMessage) ? sizeof(MoneyTransfer->InfoMessage) - 1 : value.length();
-								memcpy(MoneyTransfer->InfoMessage, value.c_str(), len);
-								break;
-							}
-							case Items::UserID:
-							{
-								size_t len = value.length() >= sizeof(MoneyTransfer->UserID) ? sizeof(MoneyTransfer->UserID) - 1 : value.length();
-								memcpy(MoneyTransfer->UserID, value.c_str(), len);
-								break;
-							}
-							case Items::TransferDate:
-							{
-								size_t len = value.length() >= sizeof(MoneyTransfer->TransferDate) ? sizeof(MoneyTransfer->TransferDate) - 1 : value.length();
-								memcpy(MoneyTransfer->TransferDate, value.c_str(), len);
-								break;
-							}
-							case Items::TransferTime:
-							{
-								size_t len = value.length() >= sizeof(MoneyTransfer->TransferTime) ? sizeof(MoneyTransfer->TransferTime) - 1 : value.length();
-								memcpy(MoneyTransfer->TransferTime, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepMoneyTransferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspQryMoneyTransferPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				case StepRspInfoField::FieldID:
-				{
-					RspInfo = ::Allocate<StepRspInfoField>();
-					memset(RspInfo, 0, sizeof(*RspInfo));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::ErrorID:
-							{
-								RspInfo->ErrorID = atoi(value.c_str());
-								break;
-							}
-							case Items::ErrorMsg:
-							{
-								size_t len = value.length() >= sizeof(RspInfo->ErrorMsg) ? sizeof(RspInfo->ErrorMsg) - 1 : value.length();
-								memcpy(RspInfo->ErrorMsg, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspQryMoneyTransferPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspQryMoneyTransferPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRspQryMoneyTransferPackage::GetDebugString() const
-	{
-		if (MoneyTransfer == nullptr && RspInfo == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (MoneyTransfer != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryMoneyTransferPackage:TradingDay:[%s], AccountID:[%s], MoneyTransferID:[%d], AccountType:[%d], TransferDirection:[%d], TransferAmount:[%f], InfoMessage:[%s], UserID:[%s], TransferDate:[%s], TransferTime:[%s]", 
-				MoneyTransfer->TradingDay, MoneyTransfer->AccountID, MoneyTransfer->MoneyTransferID, (int)MoneyTransfer->AccountType, (int)MoneyTransfer->TransferDirection, MoneyTransfer->TransferAmount, MoneyTransfer->InfoMessage, MoneyTransfer->UserID, MoneyTransfer->TransferDate, MoneyTransfer->TransferTime);
-		}
-		if (RspInfo != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryMoneyTransferPackage:ErrorID:[%d], ErrorMsg:[%s]", 
-				RspInfo->ErrorID, RspInfo->ErrorMsg);
-		}
-		return t_StepPackageStringBuffer;
-	}
-	StepRtnMoneyTransferPackage::StepRtnMoneyTransferPackage()
-	{
-		Head.PackageID = PackageID;
-	}
-	StepRtnMoneyTransferPackage* StepRtnMoneyTransferPackage::Allocate()
-	{
-		return ::Allocate<StepRtnMoneyTransferPackage>();
-	}
-	void StepRtnMoneyTransferPackage::Free()
-	{
-		SessionID = 0;
-		memset(IPAddress, 0, sizeof(IPAddressType));
-		memset(&Head, 0, sizeof(Head));
-		memset(&Tail, 0, sizeof(Tail));
-		Head.PackageID = PackageID;
-		if (MoneyTransfer != nullptr)
-		{
-			::Free<StepMoneyTransferField>(MoneyTransfer);
-			MoneyTransfer = nullptr;
-		}
-		MemCacheTemplateSingleton<StepRtnMoneyTransferPackage>::GetInstance().Free(this);
-	}
-	void StepRtnMoneyTransferPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
-	{
-		SessionID = sessionID;
-		Head.MessageChain = messageChain;
-		Head.MsgSeqNum = msgSeqNum;
-	}
-	int StepRtnMoneyTransferPackage::ToProtocolStream(char* buff, int size) const
-	{
-		char* ppos = buff;
-		if (MoneyTransfer != nullptr)
-		{
-			WriteHexString(ppos, Items::FieldStart, StepMoneyTransferField::FieldID);
-			if (strlen(MoneyTransfer->TradingDay) >= sizeof(MoneyTransfer->TradingDay))
-			{
-				MoneyTransfer->TradingDay[sizeof(MoneyTransfer->TradingDay) - 1] = 0;
-			}
-			WriteString(ppos, Items::TradingDay, MoneyTransfer->TradingDay);
-			if (strlen(MoneyTransfer->AccountID) >= sizeof(MoneyTransfer->AccountID))
-			{
-				MoneyTransfer->AccountID[sizeof(MoneyTransfer->AccountID) - 1] = 0;
-			}
-			WriteString(ppos, Items::AccountID, MoneyTransfer->AccountID);
-			WriteString(ppos, Items::MoneyTransferID, MoneyTransfer->MoneyTransferID);
-			WriteString(ppos, Items::AccountType, (int)MoneyTransfer->AccountType);
-			WriteString(ppos, Items::TransferDirection, (int)MoneyTransfer->TransferDirection);
-			WriteString(ppos, Items::TransferAmount, MoneyTransfer->TransferAmount);
-			if (strlen(MoneyTransfer->InfoMessage) >= sizeof(MoneyTransfer->InfoMessage))
-			{
-				MoneyTransfer->InfoMessage[sizeof(MoneyTransfer->InfoMessage) - 1] = 0;
-			}
-			WriteString(ppos, Items::InfoMessage, MoneyTransfer->InfoMessage);
-			if (strlen(MoneyTransfer->UserID) >= sizeof(MoneyTransfer->UserID))
-			{
-				MoneyTransfer->UserID[sizeof(MoneyTransfer->UserID) - 1] = 0;
-			}
-			WriteString(ppos, Items::UserID, MoneyTransfer->UserID);
-			if (strlen(MoneyTransfer->TransferDate) >= sizeof(MoneyTransfer->TransferDate))
-			{
-				MoneyTransfer->TransferDate[sizeof(MoneyTransfer->TransferDate) - 1] = 0;
-			}
-			WriteString(ppos, Items::TransferDate, MoneyTransfer->TransferDate);
-			if (strlen(MoneyTransfer->TransferTime) >= sizeof(MoneyTransfer->TransferTime))
-			{
-				MoneyTransfer->TransferTime[sizeof(MoneyTransfer->TransferTime) - 1] = 0;
-			}
-			WriteString(ppos, Items::TransferTime, MoneyTransfer->TransferTime);
-			WriteHexString(ppos, Items::FieldEnd, StepMoneyTransferField::FieldID);
-		}
-		return int(ppos - buff);
-	}
-	bool StepRtnMoneyTransferPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
-	{
-		while (startIndex < endIndex)
-		{
-			unsigned short fieldID;
-			int fieldStartIndex;
-			int fieldEndIndex;
-			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
-			{
-				int itemStartIndex = fieldStartIndex;
-				switch (fieldID)
-				{
-				case StepMoneyTransferField::FieldID:
-				{
-					MoneyTransfer = ::Allocate<StepMoneyTransferField>();
-					memset(MoneyTransfer, 0, sizeof(*MoneyTransfer));
-					while (itemStartIndex < fieldEndIndex)
-					{
-						unsigned short  itemID;
-						std::string value;
-						int sohIndex;
-						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
-						{
-							switch (itemID)
-							{
-							case Items::FieldStart:
-							case Items::FieldEnd:
-								break;
-							case Items::TradingDay:
-							{
-								size_t len = value.length() >= sizeof(MoneyTransfer->TradingDay) ? sizeof(MoneyTransfer->TradingDay) - 1 : value.length();
-								memcpy(MoneyTransfer->TradingDay, value.c_str(), len);
-								break;
-							}
-							case Items::AccountID:
-							{
-								size_t len = value.length() >= sizeof(MoneyTransfer->AccountID) ? sizeof(MoneyTransfer->AccountID) - 1 : value.length();
-								memcpy(MoneyTransfer->AccountID, value.c_str(), len);
-								break;
-							}
-							case Items::MoneyTransferID:
-							{
-								MoneyTransfer->MoneyTransferID = atoi(value.c_str());
-								break;
-							}
-							case Items::AccountType:
-							{
-								MoneyTransfer->AccountType = (AccountTypeType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::TransferDirection:
-							{
-								MoneyTransfer->TransferDirection = (TransferDirectionType)(atoi(value.c_str()));
-								break;
-							}
-							case Items::TransferAmount:
-							{
-								MoneyTransfer->TransferAmount = atof(value.c_str());
-								break;
-							}
-							case Items::InfoMessage:
-							{
-								size_t len = value.length() >= sizeof(MoneyTransfer->InfoMessage) ? sizeof(MoneyTransfer->InfoMessage) - 1 : value.length();
-								memcpy(MoneyTransfer->InfoMessage, value.c_str(), len);
-								break;
-							}
-							case Items::UserID:
-							{
-								size_t len = value.length() >= sizeof(MoneyTransfer->UserID) ? sizeof(MoneyTransfer->UserID) - 1 : value.length();
-								memcpy(MoneyTransfer->UserID, value.c_str(), len);
-								break;
-							}
-							case Items::TransferDate:
-							{
-								size_t len = value.length() >= sizeof(MoneyTransfer->TransferDate) ? sizeof(MoneyTransfer->TransferDate) - 1 : value.length();
-								memcpy(MoneyTransfer->TransferDate, value.c_str(), len);
-								break;
-							}
-							case Items::TransferTime:
-							{
-								size_t len = value.length() >= sizeof(MoneyTransfer->TransferTime) ? sizeof(MoneyTransfer->TransferTime) - 1 : value.length();
-								memcpy(MoneyTransfer->TransferTime, value.c_str(), len);
-								break;
-							}
-							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepMoneyTransferField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
-								return false;
-							}
-							itemStartIndex = sohIndex + 1;
-						}
-						else
-						{
-							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnMoneyTransferPackage FieldID:0x%X", fieldID);
-							return false;
-						}
-					}
-					break;
-				}
-				default:
-					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
-					return false;
-				}
-				startIndex = fieldEndIndex;
-			}
-			else
-			{
-				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnMoneyTransferPackage");
-				return false;
-			}
-		}
-		return true;
-	}
-	const char* StepRtnMoneyTransferPackage::GetDebugString() const
-	{
-		if (MoneyTransfer == nullptr)
-		{
-			return "";
-		}
-		int index = 0;
-		if (MoneyTransfer != nullptr)
-		{
-			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnMoneyTransferPackage:TradingDay:[%s], AccountID:[%s], MoneyTransferID:[%d], AccountType:[%d], TransferDirection:[%d], TransferAmount:[%f], InfoMessage:[%s], UserID:[%s], TransferDate:[%s], TransferTime:[%s]", 
-				MoneyTransfer->TradingDay, MoneyTransfer->AccountID, MoneyTransfer->MoneyTransferID, (int)MoneyTransfer->AccountType, (int)MoneyTransfer->TransferDirection, MoneyTransfer->TransferAmount, MoneyTransfer->InfoMessage, MoneyTransfer->UserID, MoneyTransfer->TransferDate, MoneyTransfer->TransferTime);
-		}
-		return t_StepPackageStringBuffer;
-	}
 	StepReqAuditOrderPackage::StepReqAuditOrderPackage()
 	{
 		Head.PackageID = PackageID;
@@ -30202,7 +30328,7 @@ namespace step
 		Head.PackageID = PackageID;
 		if (ReqAuditOrder != nullptr)
 		{
-			::Free<StepReqAuditOrderField>(ReqAuditOrder);
+			::Free<ReqAuditOrderField>(ReqAuditOrder);
 			ReqAuditOrder = nullptr;
 		}
 		MemCacheTemplateSingleton<StepReqAuditOrderPackage>::GetInstance().Free(this);
@@ -30218,7 +30344,7 @@ namespace step
 		char* ppos = buff;
 		if (ReqAuditOrder != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepReqAuditOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, ReqAuditOrderField::FieldID);
 			if (strlen(ReqAuditOrder->AdminUserID) >= sizeof(ReqAuditOrder->AdminUserID))
 			{
 				ReqAuditOrder->AdminUserID[sizeof(ReqAuditOrder->AdminUserID) - 1] = 0;
@@ -30246,7 +30372,7 @@ namespace step
 			WriteString(ppos, Items::InstrumentID, ReqAuditOrder->InstrumentID);
 			WriteString(ppos, Items::OrderID, ReqAuditOrder->OrderID);
 			WriteString(ppos, Items::AuditStatus, (int)ReqAuditOrder->AuditStatus);
-			WriteHexString(ppos, Items::FieldEnd, StepReqAuditOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, ReqAuditOrderField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -30262,9 +30388,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepReqAuditOrderField::FieldID:
+				case ReqAuditOrderField::FieldID:
 				{
-					ReqAuditOrder = ::Allocate<StepReqAuditOrderField>();
+					ReqAuditOrder = ::Allocate<ReqAuditOrderField>();
 					memset(ReqAuditOrder, 0, sizeof(*ReqAuditOrder));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -30319,7 +30445,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepReqAuditOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqAuditOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -30377,12 +30503,12 @@ namespace step
 		Head.PackageID = PackageID;
 		if (RspAuditOrder != nullptr)
 		{
-			::Free<StepRspAuditOrderField>(RspAuditOrder);
+			::Free<RspAuditOrderField>(RspAuditOrder);
 			RspAuditOrder = nullptr;
 		}
 		if (RspInfo != nullptr)
 		{
-			::Free<StepRspInfoField>(RspInfo);
+			::Free<RspInfoField>(RspInfo);
 			RspInfo = nullptr;
 		}
 		MemCacheTemplateSingleton<StepRspAuditOrderPackage>::GetInstance().Free(this);
@@ -30398,7 +30524,7 @@ namespace step
 		char* ppos = buff;
 		if (RspAuditOrder != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspAuditOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspAuditOrderField::FieldID);
 			if (strlen(RspAuditOrder->AdminUserID) >= sizeof(RspAuditOrder->AdminUserID))
 			{
 				RspAuditOrder->AdminUserID[sizeof(RspAuditOrder->AdminUserID) - 1] = 0;
@@ -30426,18 +30552,18 @@ namespace step
 			WriteString(ppos, Items::InstrumentID, RspAuditOrder->InstrumentID);
 			WriteString(ppos, Items::OrderID, RspAuditOrder->OrderID);
 			WriteString(ppos, Items::AuditStatus, (int)RspAuditOrder->AuditStatus);
-			WriteHexString(ppos, Items::FieldEnd, StepRspAuditOrderField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspAuditOrderField::FieldID);
 		}
 		if (RspInfo != nullptr)
 		{
-			WriteHexString(ppos, Items::FieldStart, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
 			WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 			if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 			{
 				RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 			}
 			WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-			WriteHexString(ppos, Items::FieldEnd, StepRspInfoField::FieldID);
+			WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 		}
 		return int(ppos - buff);
 	}
@@ -30453,9 +30579,9 @@ namespace step
 				int itemStartIndex = fieldStartIndex;
 				switch (fieldID)
 				{
-				case StepRspAuditOrderField::FieldID:
+				case RspAuditOrderField::FieldID:
 				{
-					RspAuditOrder = ::Allocate<StepRspAuditOrderField>();
+					RspAuditOrder = ::Allocate<RspAuditOrderField>();
 					memset(RspAuditOrder, 0, sizeof(*RspAuditOrder));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -30510,7 +30636,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspAuditOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspAuditOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -30523,9 +30649,9 @@ namespace step
 					}
 					break;
 				}
-				case StepRspInfoField::FieldID:
+				case RspInfoField::FieldID:
 				{
-					RspInfo = ::Allocate<StepRspInfoField>();
+					RspInfo = ::Allocate<RspInfoField>();
 					memset(RspInfo, 0, sizeof(*RspInfo));
 					while (itemStartIndex < fieldEndIndex)
 					{
@@ -30551,7 +30677,7 @@ namespace step
 								break;
 							}
 							default:
-								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for StepRspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspInfoField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
 								return false;
 							}
 							itemStartIndex = sohIndex + 1;
@@ -30594,6 +30720,3209 @@ namespace step
 		{
 			index += sprintf(t_StepPackageStringBuffer + index, "StepRspAuditOrderPackage:ErrorID:[%d], ErrorMsg:[%s]", 
 				RspInfo->ErrorID, RspInfo->ErrorMsg);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqOfferLoginPackage::StepReqOfferLoginPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqOfferLoginPackage* StepReqOfferLoginPackage::Allocate()
+	{
+		return ::Allocate<StepReqOfferLoginPackage>();
+	}
+	void StepReqOfferLoginPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqOfferLogin != nullptr)
+		{
+			::Free<ReqOfferLoginField>(ReqOfferLogin);
+			ReqOfferLogin = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqOfferLoginPackage>::GetInstance().Free(this);
+	}
+	void StepReqOfferLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqOfferLoginPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqOfferLogin != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqOfferLoginField::FieldID);
+			WriteString(ppos, Items::OfferID, ReqOfferLogin->OfferID);
+			if (strlen(ReqOfferLogin->OfferPassword) >= sizeof(ReqOfferLogin->OfferPassword))
+			{
+				ReqOfferLogin->OfferPassword[sizeof(ReqOfferLogin->OfferPassword) - 1] = 0;
+			}
+			WriteString(ppos, Items::OfferPassword, ReqOfferLogin->OfferPassword);
+			WriteHexString(ppos, Items::FieldEnd, ReqOfferLoginField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqOfferLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqOfferLoginField::FieldID:
+				{
+					ReqOfferLogin = ::Allocate<ReqOfferLoginField>();
+					memset(ReqOfferLogin, 0, sizeof(*ReqOfferLogin));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::OfferID:
+							{
+								ReqOfferLogin->OfferID = atoi(value.c_str());
+								break;
+							}
+							case Items::OfferPassword:
+							{
+								size_t len = value.length() >= sizeof(ReqOfferLogin->OfferPassword) ? sizeof(ReqOfferLogin->OfferPassword) - 1 : value.length();
+								memcpy(ReqOfferLogin->OfferPassword, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqOfferLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqOfferLoginPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqOfferLoginPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqOfferLoginPackage::GetDebugString() const
+	{
+		if (ReqOfferLogin == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqOfferLogin != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqOfferLoginPackage:OfferID:[%d], OfferPassword:[%s]", 
+				ReqOfferLogin->OfferID, ReqOfferLogin->OfferPassword);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspOfferLoginPackage::StepRspOfferLoginPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspOfferLoginPackage* StepRspOfferLoginPackage::Allocate()
+	{
+		return ::Allocate<StepRspOfferLoginPackage>();
+	}
+	void StepRspOfferLoginPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (RspOfferLogin != nullptr)
+		{
+			::Free<RspOfferLoginField>(RspOfferLogin);
+			RspOfferLogin = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspOfferLoginPackage>::GetInstance().Free(this);
+	}
+	void StepRspOfferLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspOfferLoginPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (RspOfferLogin != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspOfferLoginField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspOfferLogin->ErrorID);
+			if (strlen(RspOfferLogin->ErrorMsg) >= sizeof(RspOfferLogin->ErrorMsg))
+			{
+				RspOfferLogin->ErrorMsg[sizeof(RspOfferLogin->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspOfferLogin->ErrorMsg);
+			WriteString(ppos, Items::OfferID, RspOfferLogin->OfferID);
+			if (strlen(RspOfferLogin->TradingDay) >= sizeof(RspOfferLogin->TradingDay))
+			{
+				RspOfferLogin->TradingDay[sizeof(RspOfferLogin->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, RspOfferLogin->TradingDay);
+			WriteHexString(ppos, Items::FieldEnd, RspOfferLoginField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspOfferLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case RspOfferLoginField::FieldID:
+				{
+					RspOfferLogin = ::Allocate<RspOfferLoginField>();
+					memset(RspOfferLogin, 0, sizeof(*RspOfferLogin));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ErrorID:
+							{
+								RspOfferLogin->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(RspOfferLogin->ErrorMsg) ? sizeof(RspOfferLogin->ErrorMsg) - 1 : value.length();
+								memcpy(RspOfferLogin->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							case Items::OfferID:
+							{
+								RspOfferLogin->OfferID = atoi(value.c_str());
+								break;
+							}
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(RspOfferLogin->TradingDay) ? sizeof(RspOfferLogin->TradingDay) - 1 : value.length();
+								memcpy(RspOfferLogin->TradingDay, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspOfferLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspOfferLoginPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspOfferLoginPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRspOfferLoginPackage::GetDebugString() const
+	{
+		if (RspOfferLogin == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (RspOfferLogin != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspOfferLoginPackage:ErrorID:[%d], ErrorMsg:[%s], OfferID:[%d], TradingDay:[%s]", 
+				RspOfferLogin->ErrorID, RspOfferLogin->ErrorMsg, RspOfferLogin->OfferID, RspOfferLogin->TradingDay);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqPrimaryAccountLoginPackage::StepReqPrimaryAccountLoginPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqPrimaryAccountLoginPackage* StepReqPrimaryAccountLoginPackage::Allocate()
+	{
+		return ::Allocate<StepReqPrimaryAccountLoginPackage>();
+	}
+	void StepReqPrimaryAccountLoginPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqPrimaryAccountLogin != nullptr)
+		{
+			::Free<ReqPrimaryAccountLoginField>(ReqPrimaryAccountLogin);
+			ReqPrimaryAccountLogin = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqPrimaryAccountLoginPackage>::GetInstance().Free(this);
+	}
+	void StepReqPrimaryAccountLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqPrimaryAccountLoginPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqPrimaryAccountLogin != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqPrimaryAccountLoginField::FieldID);
+			if (strlen(ReqPrimaryAccountLogin->PrimaryAccountID) >= sizeof(ReqPrimaryAccountLogin->PrimaryAccountID))
+			{
+				ReqPrimaryAccountLogin->PrimaryAccountID[sizeof(ReqPrimaryAccountLogin->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, ReqPrimaryAccountLogin->PrimaryAccountID);
+			if (strlen(ReqPrimaryAccountLogin->Password) >= sizeof(ReqPrimaryAccountLogin->Password))
+			{
+				ReqPrimaryAccountLogin->Password[sizeof(ReqPrimaryAccountLogin->Password) - 1] = 0;
+			}
+			WriteString(ppos, Items::Password, ReqPrimaryAccountLogin->Password);
+			WriteHexString(ppos, Items::FieldEnd, ReqPrimaryAccountLoginField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqPrimaryAccountLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqPrimaryAccountLoginField::FieldID:
+				{
+					ReqPrimaryAccountLogin = ::Allocate<ReqPrimaryAccountLoginField>();
+					memset(ReqPrimaryAccountLogin, 0, sizeof(*ReqPrimaryAccountLogin));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(ReqPrimaryAccountLogin->PrimaryAccountID) ? sizeof(ReqPrimaryAccountLogin->PrimaryAccountID) - 1 : value.length();
+								memcpy(ReqPrimaryAccountLogin->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							case Items::Password:
+							{
+								size_t len = value.length() >= sizeof(ReqPrimaryAccountLogin->Password) ? sizeof(ReqPrimaryAccountLogin->Password) - 1 : value.length();
+								memcpy(ReqPrimaryAccountLogin->Password, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqPrimaryAccountLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqPrimaryAccountLoginPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqPrimaryAccountLoginPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqPrimaryAccountLoginPackage::GetDebugString() const
+	{
+		if (ReqPrimaryAccountLogin == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqPrimaryAccountLogin != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqPrimaryAccountLoginPackage:PrimaryAccountID:[%s], Password:[%s]", 
+				ReqPrimaryAccountLogin->PrimaryAccountID, ReqPrimaryAccountLogin->Password);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspPrimaryAccountLoginPackage::StepRspPrimaryAccountLoginPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspPrimaryAccountLoginPackage* StepRspPrimaryAccountLoginPackage::Allocate()
+	{
+		return ::Allocate<StepRspPrimaryAccountLoginPackage>();
+	}
+	void StepRspPrimaryAccountLoginPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (RspPrimaryAccountLogin != nullptr)
+		{
+			::Free<RspPrimaryAccountLoginField>(RspPrimaryAccountLogin);
+			RspPrimaryAccountLogin = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspPrimaryAccountLoginPackage>::GetInstance().Free(this);
+	}
+	void StepRspPrimaryAccountLoginPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspPrimaryAccountLoginPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (RspPrimaryAccountLogin != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspPrimaryAccountLoginField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspPrimaryAccountLogin->ErrorID);
+			if (strlen(RspPrimaryAccountLogin->ErrorMsg) >= sizeof(RspPrimaryAccountLogin->ErrorMsg))
+			{
+				RspPrimaryAccountLogin->ErrorMsg[sizeof(RspPrimaryAccountLogin->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspPrimaryAccountLogin->ErrorMsg);
+			if (strlen(RspPrimaryAccountLogin->TradingDay) >= sizeof(RspPrimaryAccountLogin->TradingDay))
+			{
+				RspPrimaryAccountLogin->TradingDay[sizeof(RspPrimaryAccountLogin->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, RspPrimaryAccountLogin->TradingDay);
+			if (strlen(RspPrimaryAccountLogin->PrimaryAccountID) >= sizeof(RspPrimaryAccountLogin->PrimaryAccountID))
+			{
+				RspPrimaryAccountLogin->PrimaryAccountID[sizeof(RspPrimaryAccountLogin->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, RspPrimaryAccountLogin->PrimaryAccountID);
+			WriteHexString(ppos, Items::FieldEnd, RspPrimaryAccountLoginField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspPrimaryAccountLoginPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case RspPrimaryAccountLoginField::FieldID:
+				{
+					RspPrimaryAccountLogin = ::Allocate<RspPrimaryAccountLoginField>();
+					memset(RspPrimaryAccountLogin, 0, sizeof(*RspPrimaryAccountLogin));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ErrorID:
+							{
+								RspPrimaryAccountLogin->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(RspPrimaryAccountLogin->ErrorMsg) ? sizeof(RspPrimaryAccountLogin->ErrorMsg) - 1 : value.length();
+								memcpy(RspPrimaryAccountLogin->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(RspPrimaryAccountLogin->TradingDay) ? sizeof(RspPrimaryAccountLogin->TradingDay) - 1 : value.length();
+								memcpy(RspPrimaryAccountLogin->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(RspPrimaryAccountLogin->PrimaryAccountID) ? sizeof(RspPrimaryAccountLogin->PrimaryAccountID) - 1 : value.length();
+								memcpy(RspPrimaryAccountLogin->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspPrimaryAccountLoginField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspPrimaryAccountLoginPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspPrimaryAccountLoginPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRspPrimaryAccountLoginPackage::GetDebugString() const
+	{
+		if (RspPrimaryAccountLogin == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (RspPrimaryAccountLogin != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspPrimaryAccountLoginPackage:ErrorID:[%d], ErrorMsg:[%s], TradingDay:[%s], PrimaryAccountID:[%s]", 
+				RspPrimaryAccountLogin->ErrorID, RspPrimaryAccountLogin->ErrorMsg, RspPrimaryAccountLogin->TradingDay, RspPrimaryAccountLogin->PrimaryAccountID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqPrimaryAccountLogoutPackage::StepReqPrimaryAccountLogoutPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqPrimaryAccountLogoutPackage* StepReqPrimaryAccountLogoutPackage::Allocate()
+	{
+		return ::Allocate<StepReqPrimaryAccountLogoutPackage>();
+	}
+	void StepReqPrimaryAccountLogoutPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqPrimaryAccountLogout != nullptr)
+		{
+			::Free<ReqPrimaryAccountLogoutField>(ReqPrimaryAccountLogout);
+			ReqPrimaryAccountLogout = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqPrimaryAccountLogoutPackage>::GetInstance().Free(this);
+	}
+	void StepReqPrimaryAccountLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqPrimaryAccountLogoutPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqPrimaryAccountLogout != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqPrimaryAccountLogoutField::FieldID);
+			if (strlen(ReqPrimaryAccountLogout->TradingDay) >= sizeof(ReqPrimaryAccountLogout->TradingDay))
+			{
+				ReqPrimaryAccountLogout->TradingDay[sizeof(ReqPrimaryAccountLogout->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, ReqPrimaryAccountLogout->TradingDay);
+			if (strlen(ReqPrimaryAccountLogout->PrimaryAccountID) >= sizeof(ReqPrimaryAccountLogout->PrimaryAccountID))
+			{
+				ReqPrimaryAccountLogout->PrimaryAccountID[sizeof(ReqPrimaryAccountLogout->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, ReqPrimaryAccountLogout->PrimaryAccountID);
+			WriteHexString(ppos, Items::FieldEnd, ReqPrimaryAccountLogoutField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqPrimaryAccountLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqPrimaryAccountLogoutField::FieldID:
+				{
+					ReqPrimaryAccountLogout = ::Allocate<ReqPrimaryAccountLogoutField>();
+					memset(ReqPrimaryAccountLogout, 0, sizeof(*ReqPrimaryAccountLogout));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(ReqPrimaryAccountLogout->TradingDay) ? sizeof(ReqPrimaryAccountLogout->TradingDay) - 1 : value.length();
+								memcpy(ReqPrimaryAccountLogout->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(ReqPrimaryAccountLogout->PrimaryAccountID) ? sizeof(ReqPrimaryAccountLogout->PrimaryAccountID) - 1 : value.length();
+								memcpy(ReqPrimaryAccountLogout->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqPrimaryAccountLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqPrimaryAccountLogoutPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqPrimaryAccountLogoutPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqPrimaryAccountLogoutPackage::GetDebugString() const
+	{
+		if (ReqPrimaryAccountLogout == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqPrimaryAccountLogout != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqPrimaryAccountLogoutPackage:TradingDay:[%s], PrimaryAccountID:[%s]", 
+				ReqPrimaryAccountLogout->TradingDay, ReqPrimaryAccountLogout->PrimaryAccountID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnPrimaryAccountLogoutPackage::StepRtnPrimaryAccountLogoutPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnPrimaryAccountLogoutPackage* StepRtnPrimaryAccountLogoutPackage::Allocate()
+	{
+		return ::Allocate<StepRtnPrimaryAccountLogoutPackage>();
+	}
+	void StepRtnPrimaryAccountLogoutPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (RtnPrimaryAccountLogout != nullptr)
+		{
+			::Free<RtnPrimaryAccountLogoutField>(RtnPrimaryAccountLogout);
+			RtnPrimaryAccountLogout = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnPrimaryAccountLogoutPackage>::GetInstance().Free(this);
+	}
+	void StepRtnPrimaryAccountLogoutPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnPrimaryAccountLogoutPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (RtnPrimaryAccountLogout != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RtnPrimaryAccountLogoutField::FieldID);
+			if (strlen(RtnPrimaryAccountLogout->TradingDay) >= sizeof(RtnPrimaryAccountLogout->TradingDay))
+			{
+				RtnPrimaryAccountLogout->TradingDay[sizeof(RtnPrimaryAccountLogout->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, RtnPrimaryAccountLogout->TradingDay);
+			if (strlen(RtnPrimaryAccountLogout->PrimaryAccountID) >= sizeof(RtnPrimaryAccountLogout->PrimaryAccountID))
+			{
+				RtnPrimaryAccountLogout->PrimaryAccountID[sizeof(RtnPrimaryAccountLogout->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, RtnPrimaryAccountLogout->PrimaryAccountID);
+			WriteHexString(ppos, Items::FieldEnd, RtnPrimaryAccountLogoutField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnPrimaryAccountLogoutPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case RtnPrimaryAccountLogoutField::FieldID:
+				{
+					RtnPrimaryAccountLogout = ::Allocate<RtnPrimaryAccountLogoutField>();
+					memset(RtnPrimaryAccountLogout, 0, sizeof(*RtnPrimaryAccountLogout));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(RtnPrimaryAccountLogout->TradingDay) ? sizeof(RtnPrimaryAccountLogout->TradingDay) - 1 : value.length();
+								memcpy(RtnPrimaryAccountLogout->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(RtnPrimaryAccountLogout->PrimaryAccountID) ? sizeof(RtnPrimaryAccountLogout->PrimaryAccountID) - 1 : value.length();
+								memcpy(RtnPrimaryAccountLogout->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RtnPrimaryAccountLogoutField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnPrimaryAccountLogoutPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnPrimaryAccountLogoutPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnPrimaryAccountLogoutPackage::GetDebugString() const
+	{
+		if (RtnPrimaryAccountLogout == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (RtnPrimaryAccountLogout != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnPrimaryAccountLogoutPackage:TradingDay:[%s], PrimaryAccountID:[%s]", 
+				RtnPrimaryAccountLogout->TradingDay, RtnPrimaryAccountLogout->PrimaryAccountID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqPrimaryAccountInitPackage::StepReqPrimaryAccountInitPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqPrimaryAccountInitPackage* StepReqPrimaryAccountInitPackage::Allocate()
+	{
+		return ::Allocate<StepReqPrimaryAccountInitPackage>();
+	}
+	void StepReqPrimaryAccountInitPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqPrimaryAccountInit != nullptr)
+		{
+			::Free<ReqPrimaryAccountInitField>(ReqPrimaryAccountInit);
+			ReqPrimaryAccountInit = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqPrimaryAccountInitPackage>::GetInstance().Free(this);
+	}
+	void StepReqPrimaryAccountInitPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqPrimaryAccountInitPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqPrimaryAccountInit != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqPrimaryAccountInitField::FieldID);
+			if (strlen(ReqPrimaryAccountInit->PrimaryAccountID) >= sizeof(ReqPrimaryAccountInit->PrimaryAccountID))
+			{
+				ReqPrimaryAccountInit->PrimaryAccountID[sizeof(ReqPrimaryAccountInit->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, ReqPrimaryAccountInit->PrimaryAccountID);
+			WriteHexString(ppos, Items::FieldEnd, ReqPrimaryAccountInitField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqPrimaryAccountInitPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqPrimaryAccountInitField::FieldID:
+				{
+					ReqPrimaryAccountInit = ::Allocate<ReqPrimaryAccountInitField>();
+					memset(ReqPrimaryAccountInit, 0, sizeof(*ReqPrimaryAccountInit));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(ReqPrimaryAccountInit->PrimaryAccountID) ? sizeof(ReqPrimaryAccountInit->PrimaryAccountID) - 1 : value.length();
+								memcpy(ReqPrimaryAccountInit->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqPrimaryAccountInitField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqPrimaryAccountInitPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqPrimaryAccountInitPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqPrimaryAccountInitPackage::GetDebugString() const
+	{
+		if (ReqPrimaryAccountInit == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqPrimaryAccountInit != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqPrimaryAccountInitPackage:PrimaryAccountID:[%s]", 
+				ReqPrimaryAccountInit->PrimaryAccountID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspPrimaryAccountInitPackage::StepRspPrimaryAccountInitPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspPrimaryAccountInitPackage* StepRspPrimaryAccountInitPackage::Allocate()
+	{
+		return ::Allocate<StepRspPrimaryAccountInitPackage>();
+	}
+	void StepRspPrimaryAccountInitPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (RspPrimaryAccountInit != nullptr)
+		{
+			::Free<RspPrimaryAccountInitField>(RspPrimaryAccountInit);
+			RspPrimaryAccountInit = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspPrimaryAccountInitPackage>::GetInstance().Free(this);
+	}
+	void StepRspPrimaryAccountInitPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspPrimaryAccountInitPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (RspPrimaryAccountInit != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspPrimaryAccountInitField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspPrimaryAccountInit->ErrorID);
+			if (strlen(RspPrimaryAccountInit->ErrorMsg) >= sizeof(RspPrimaryAccountInit->ErrorMsg))
+			{
+				RspPrimaryAccountInit->ErrorMsg[sizeof(RspPrimaryAccountInit->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspPrimaryAccountInit->ErrorMsg);
+			if (strlen(RspPrimaryAccountInit->PrimaryAccountID) >= sizeof(RspPrimaryAccountInit->PrimaryAccountID))
+			{
+				RspPrimaryAccountInit->PrimaryAccountID[sizeof(RspPrimaryAccountInit->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, RspPrimaryAccountInit->PrimaryAccountID);
+			WriteHexString(ppos, Items::FieldEnd, RspPrimaryAccountInitField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspPrimaryAccountInitPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case RspPrimaryAccountInitField::FieldID:
+				{
+					RspPrimaryAccountInit = ::Allocate<RspPrimaryAccountInitField>();
+					memset(RspPrimaryAccountInit, 0, sizeof(*RspPrimaryAccountInit));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ErrorID:
+							{
+								RspPrimaryAccountInit->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(RspPrimaryAccountInit->ErrorMsg) ? sizeof(RspPrimaryAccountInit->ErrorMsg) - 1 : value.length();
+								memcpy(RspPrimaryAccountInit->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(RspPrimaryAccountInit->PrimaryAccountID) ? sizeof(RspPrimaryAccountInit->PrimaryAccountID) - 1 : value.length();
+								memcpy(RspPrimaryAccountInit->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspPrimaryAccountInitField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspPrimaryAccountInitPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspPrimaryAccountInitPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRspPrimaryAccountInitPackage::GetDebugString() const
+	{
+		if (RspPrimaryAccountInit == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (RspPrimaryAccountInit != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspPrimaryAccountInitPackage:ErrorID:[%d], ErrorMsg:[%s], PrimaryAccountID:[%s]", 
+				RspPrimaryAccountInit->ErrorID, RspPrimaryAccountInit->ErrorMsg, RspPrimaryAccountInit->PrimaryAccountID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqPrimaryAccountQueryPackage::StepReqPrimaryAccountQueryPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqPrimaryAccountQueryPackage* StepReqPrimaryAccountQueryPackage::Allocate()
+	{
+		return ::Allocate<StepReqPrimaryAccountQueryPackage>();
+	}
+	void StepReqPrimaryAccountQueryPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqPrimaryAccountQuery != nullptr)
+		{
+			::Free<ReqPrimaryAccountQueryField>(ReqPrimaryAccountQuery);
+			ReqPrimaryAccountQuery = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqPrimaryAccountQueryPackage>::GetInstance().Free(this);
+	}
+	void StepReqPrimaryAccountQueryPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqPrimaryAccountQueryPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqPrimaryAccountQuery != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqPrimaryAccountQueryField::FieldID);
+			if (strlen(ReqPrimaryAccountQuery->PrimaryAccountID) >= sizeof(ReqPrimaryAccountQuery->PrimaryAccountID))
+			{
+				ReqPrimaryAccountQuery->PrimaryAccountID[sizeof(ReqPrimaryAccountQuery->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, ReqPrimaryAccountQuery->PrimaryAccountID);
+			WriteHexString(ppos, Items::FieldEnd, ReqPrimaryAccountQueryField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqPrimaryAccountQueryPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqPrimaryAccountQueryField::FieldID:
+				{
+					ReqPrimaryAccountQuery = ::Allocate<ReqPrimaryAccountQueryField>();
+					memset(ReqPrimaryAccountQuery, 0, sizeof(*ReqPrimaryAccountQuery));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(ReqPrimaryAccountQuery->PrimaryAccountID) ? sizeof(ReqPrimaryAccountQuery->PrimaryAccountID) - 1 : value.length();
+								memcpy(ReqPrimaryAccountQuery->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqPrimaryAccountQueryField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqPrimaryAccountQueryPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqPrimaryAccountQueryPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqPrimaryAccountQueryPackage::GetDebugString() const
+	{
+		if (ReqPrimaryAccountQuery == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqPrimaryAccountQuery != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqPrimaryAccountQueryPackage:PrimaryAccountID:[%s]", 
+				ReqPrimaryAccountQuery->PrimaryAccountID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspPrimaryAccountQueryPackage::StepRspPrimaryAccountQueryPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspPrimaryAccountQueryPackage* StepRspPrimaryAccountQueryPackage::Allocate()
+	{
+		return ::Allocate<StepRspPrimaryAccountQueryPackage>();
+	}
+	void StepRspPrimaryAccountQueryPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (RspPrimaryAccountQuery != nullptr)
+		{
+			::Free<RspPrimaryAccountQueryField>(RspPrimaryAccountQuery);
+			RspPrimaryAccountQuery = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspPrimaryAccountQueryPackage>::GetInstance().Free(this);
+	}
+	void StepRspPrimaryAccountQueryPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspPrimaryAccountQueryPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (RspPrimaryAccountQuery != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspPrimaryAccountQueryField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspPrimaryAccountQuery->ErrorID);
+			if (strlen(RspPrimaryAccountQuery->ErrorMsg) >= sizeof(RspPrimaryAccountQuery->ErrorMsg))
+			{
+				RspPrimaryAccountQuery->ErrorMsg[sizeof(RspPrimaryAccountQuery->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspPrimaryAccountQuery->ErrorMsg);
+			if (strlen(RspPrimaryAccountQuery->PrimaryAccountID) >= sizeof(RspPrimaryAccountQuery->PrimaryAccountID))
+			{
+				RspPrimaryAccountQuery->PrimaryAccountID[sizeof(RspPrimaryAccountQuery->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, RspPrimaryAccountQuery->PrimaryAccountID);
+			WriteHexString(ppos, Items::FieldEnd, RspPrimaryAccountQueryField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspPrimaryAccountQueryPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case RspPrimaryAccountQueryField::FieldID:
+				{
+					RspPrimaryAccountQuery = ::Allocate<RspPrimaryAccountQueryField>();
+					memset(RspPrimaryAccountQuery, 0, sizeof(*RspPrimaryAccountQuery));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ErrorID:
+							{
+								RspPrimaryAccountQuery->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(RspPrimaryAccountQuery->ErrorMsg) ? sizeof(RspPrimaryAccountQuery->ErrorMsg) - 1 : value.length();
+								memcpy(RspPrimaryAccountQuery->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(RspPrimaryAccountQuery->PrimaryAccountID) ? sizeof(RspPrimaryAccountQuery->PrimaryAccountID) - 1 : value.length();
+								memcpy(RspPrimaryAccountQuery->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspPrimaryAccountQueryField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspPrimaryAccountQueryPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspPrimaryAccountQueryPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRspPrimaryAccountQueryPackage::GetDebugString() const
+	{
+		if (RspPrimaryAccountQuery == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (RspPrimaryAccountQuery != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspPrimaryAccountQueryPackage:ErrorID:[%d], ErrorMsg:[%s], PrimaryAccountID:[%s]", 
+				RspPrimaryAccountQuery->ErrorID, RspPrimaryAccountQuery->ErrorMsg, RspPrimaryAccountQuery->PrimaryAccountID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqQryOfferOptionInstrumentPackage::StepReqQryOfferOptionInstrumentPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqQryOfferOptionInstrumentPackage* StepReqQryOfferOptionInstrumentPackage::Allocate()
+	{
+		return ::Allocate<StepReqQryOfferOptionInstrumentPackage>();
+	}
+	void StepReqQryOfferOptionInstrumentPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqQryOfferOptionInstrument != nullptr)
+		{
+			::Free<ReqQryOfferOptionInstrumentField>(ReqQryOfferOptionInstrument);
+			ReqQryOfferOptionInstrument = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqQryOfferOptionInstrumentPackage>::GetInstance().Free(this);
+	}
+	void StepReqQryOfferOptionInstrumentPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqQryOfferOptionInstrumentPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqQryOfferOptionInstrument != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqQryOfferOptionInstrumentField::FieldID);
+			if (strlen(ReqQryOfferOptionInstrument->PrimaryAccountID) >= sizeof(ReqQryOfferOptionInstrument->PrimaryAccountID))
+			{
+				ReqQryOfferOptionInstrument->PrimaryAccountID[sizeof(ReqQryOfferOptionInstrument->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, ReqQryOfferOptionInstrument->PrimaryAccountID);
+			WriteHexString(ppos, Items::FieldEnd, ReqQryOfferOptionInstrumentField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqQryOfferOptionInstrumentPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqQryOfferOptionInstrumentField::FieldID:
+				{
+					ReqQryOfferOptionInstrument = ::Allocate<ReqQryOfferOptionInstrumentField>();
+					memset(ReqQryOfferOptionInstrument, 0, sizeof(*ReqQryOfferOptionInstrument));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(ReqQryOfferOptionInstrument->PrimaryAccountID) ? sizeof(ReqQryOfferOptionInstrument->PrimaryAccountID) - 1 : value.length();
+								memcpy(ReqQryOfferOptionInstrument->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqQryOfferOptionInstrumentField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqQryOfferOptionInstrumentPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqQryOfferOptionInstrumentPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqQryOfferOptionInstrumentPackage::GetDebugString() const
+	{
+		if (ReqQryOfferOptionInstrument == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqQryOfferOptionInstrument != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqQryOfferOptionInstrumentPackage:PrimaryAccountID:[%s]", 
+				ReqQryOfferOptionInstrument->PrimaryAccountID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRspQryOfferOptionInstrumentPackage::StepRspQryOfferOptionInstrumentPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRspQryOfferOptionInstrumentPackage* StepRspQryOfferOptionInstrumentPackage::Allocate()
+	{
+		return ::Allocate<StepRspQryOfferOptionInstrumentPackage>();
+	}
+	void StepRspQryOfferOptionInstrumentPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (RspQryOfferOptionInstrument != nullptr)
+		{
+			::Free<RspQryOfferOptionInstrumentField>(RspQryOfferOptionInstrument);
+			RspQryOfferOptionInstrument = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRspQryOfferOptionInstrumentPackage>::GetInstance().Free(this);
+	}
+	void StepRspQryOfferOptionInstrumentPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRspQryOfferOptionInstrumentPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (RspQryOfferOptionInstrument != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, RspQryOfferOptionInstrumentField::FieldID);
+			WriteString(ppos, Items::ErrorID, RspQryOfferOptionInstrument->ErrorID);
+			if (strlen(RspQryOfferOptionInstrument->ErrorMsg) >= sizeof(RspQryOfferOptionInstrument->ErrorMsg))
+			{
+				RspQryOfferOptionInstrument->ErrorMsg[sizeof(RspQryOfferOptionInstrument->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, RspQryOfferOptionInstrument->ErrorMsg);
+			if (strlen(RspQryOfferOptionInstrument->PrimaryAccountID) >= sizeof(RspQryOfferOptionInstrument->PrimaryAccountID))
+			{
+				RspQryOfferOptionInstrument->PrimaryAccountID[sizeof(RspQryOfferOptionInstrument->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, RspQryOfferOptionInstrument->PrimaryAccountID);
+			WriteHexString(ppos, Items::FieldEnd, RspQryOfferOptionInstrumentField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRspQryOfferOptionInstrumentPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case RspQryOfferOptionInstrumentField::FieldID:
+				{
+					RspQryOfferOptionInstrument = ::Allocate<RspQryOfferOptionInstrumentField>();
+					memset(RspQryOfferOptionInstrument, 0, sizeof(*RspQryOfferOptionInstrument));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ErrorID:
+							{
+								RspQryOfferOptionInstrument->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(RspQryOfferOptionInstrument->ErrorMsg) ? sizeof(RspQryOfferOptionInstrument->ErrorMsg) - 1 : value.length();
+								memcpy(RspQryOfferOptionInstrument->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(RspQryOfferOptionInstrument->PrimaryAccountID) ? sizeof(RspQryOfferOptionInstrument->PrimaryAccountID) - 1 : value.length();
+								memcpy(RspQryOfferOptionInstrument->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for RspQryOfferOptionInstrumentField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRspQryOfferOptionInstrumentPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRspQryOfferOptionInstrumentPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRspQryOfferOptionInstrumentPackage::GetDebugString() const
+	{
+		if (RspQryOfferOptionInstrument == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (RspQryOfferOptionInstrument != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRspQryOfferOptionInstrumentPackage:ErrorID:[%d], ErrorMsg:[%s], PrimaryAccountID:[%s]", 
+				RspQryOfferOptionInstrument->ErrorID, RspQryOfferOptionInstrument->ErrorMsg, RspQryOfferOptionInstrument->PrimaryAccountID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnOfferOptionInstrumentPackage::StepRtnOfferOptionInstrumentPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnOfferOptionInstrumentPackage* StepRtnOfferOptionInstrumentPackage::Allocate()
+	{
+		return ::Allocate<StepRtnOfferOptionInstrumentPackage>();
+	}
+	void StepRtnOfferOptionInstrumentPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (OfferOptionInstrument != nullptr)
+		{
+			::Free<OfferOptionInstrumentField>(OfferOptionInstrument);
+			OfferOptionInstrument = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnOfferOptionInstrumentPackage>::GetInstance().Free(this);
+	}
+	void StepRtnOfferOptionInstrumentPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnOfferOptionInstrumentPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (OfferOptionInstrument != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, OfferOptionInstrumentField::FieldID);
+			if (strlen(OfferOptionInstrument->TradingDay) >= sizeof(OfferOptionInstrument->TradingDay))
+			{
+				OfferOptionInstrument->TradingDay[sizeof(OfferOptionInstrument->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, OfferOptionInstrument->TradingDay);
+			if (strlen(OfferOptionInstrument->ExchangeID) >= sizeof(OfferOptionInstrument->ExchangeID))
+			{
+				OfferOptionInstrument->ExchangeID[sizeof(OfferOptionInstrument->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, OfferOptionInstrument->ExchangeID);
+			if (strlen(OfferOptionInstrument->InstrumentID) >= sizeof(OfferOptionInstrument->InstrumentID))
+			{
+				OfferOptionInstrument->InstrumentID[sizeof(OfferOptionInstrument->InstrumentID) - 1] = 0;
+			}
+			WriteString(ppos, Items::InstrumentID, OfferOptionInstrument->InstrumentID);
+			if (strlen(OfferOptionInstrument->ExchangeInstID) >= sizeof(OfferOptionInstrument->ExchangeInstID))
+			{
+				OfferOptionInstrument->ExchangeInstID[sizeof(OfferOptionInstrument->ExchangeInstID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeInstID, OfferOptionInstrument->ExchangeInstID);
+			if (strlen(OfferOptionInstrument->InstrumentName) >= sizeof(OfferOptionInstrument->InstrumentName))
+			{
+				OfferOptionInstrument->InstrumentName[sizeof(OfferOptionInstrument->InstrumentName) - 1] = 0;
+			}
+			WriteString(ppos, Items::InstrumentName, OfferOptionInstrument->InstrumentName);
+			WriteString(ppos, Items::VolumeMultiple, OfferOptionInstrument->VolumeMultiple);
+			WriteString(ppos, Items::OptionType, (int)OfferOptionInstrument->OptionType);
+			if (strlen(OfferOptionInstrument->UnderlyingInstrumentID) >= sizeof(OfferOptionInstrument->UnderlyingInstrumentID))
+			{
+				OfferOptionInstrument->UnderlyingInstrumentID[sizeof(OfferOptionInstrument->UnderlyingInstrumentID) - 1] = 0;
+			}
+			WriteString(ppos, Items::UnderlyingInstrumentID, OfferOptionInstrument->UnderlyingInstrumentID);
+			WriteString(ppos, Items::ExecutePrice, OfferOptionInstrument->ExecutePrice);
+			WriteString(ppos, Items::UnitMargin, OfferOptionInstrument->UnitMargin);
+			WriteString(ppos, Items::PriceTick, OfferOptionInstrument->PriceTick);
+			WriteString(ppos, Items::MaxLimitOrderVolume, OfferOptionInstrument->MaxLimitOrderVolume);
+			WriteString(ppos, Items::MaxMarketOrderVolume, OfferOptionInstrument->MaxMarketOrderVolume);
+			if (strlen(OfferOptionInstrument->ExpiringDate) >= sizeof(OfferOptionInstrument->ExpiringDate))
+			{
+				OfferOptionInstrument->ExpiringDate[sizeof(OfferOptionInstrument->ExpiringDate) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExpiringDate, OfferOptionInstrument->ExpiringDate);
+			WriteHexString(ppos, Items::FieldEnd, OfferOptionInstrumentField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnOfferOptionInstrumentPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case OfferOptionInstrumentField::FieldID:
+				{
+					OfferOptionInstrument = ::Allocate<OfferOptionInstrumentField>();
+					memset(OfferOptionInstrument, 0, sizeof(*OfferOptionInstrument));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(OfferOptionInstrument->TradingDay) ? sizeof(OfferOptionInstrument->TradingDay) - 1 : value.length();
+								memcpy(OfferOptionInstrument->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(OfferOptionInstrument->ExchangeID) ? sizeof(OfferOptionInstrument->ExchangeID) - 1 : value.length();
+								memcpy(OfferOptionInstrument->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::InstrumentID:
+							{
+								size_t len = value.length() >= sizeof(OfferOptionInstrument->InstrumentID) ? sizeof(OfferOptionInstrument->InstrumentID) - 1 : value.length();
+								memcpy(OfferOptionInstrument->InstrumentID, value.c_str(), len);
+								break;
+							}
+							case Items::ExchangeInstID:
+							{
+								size_t len = value.length() >= sizeof(OfferOptionInstrument->ExchangeInstID) ? sizeof(OfferOptionInstrument->ExchangeInstID) - 1 : value.length();
+								memcpy(OfferOptionInstrument->ExchangeInstID, value.c_str(), len);
+								break;
+							}
+							case Items::InstrumentName:
+							{
+								size_t len = value.length() >= sizeof(OfferOptionInstrument->InstrumentName) ? sizeof(OfferOptionInstrument->InstrumentName) - 1 : value.length();
+								memcpy(OfferOptionInstrument->InstrumentName, value.c_str(), len);
+								break;
+							}
+							case Items::VolumeMultiple:
+							{
+								OfferOptionInstrument->VolumeMultiple = atoi(value.c_str());
+								break;
+							}
+							case Items::OptionType:
+							{
+								OfferOptionInstrument->OptionType = (OptionTypeType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::UnderlyingInstrumentID:
+							{
+								size_t len = value.length() >= sizeof(OfferOptionInstrument->UnderlyingInstrumentID) ? sizeof(OfferOptionInstrument->UnderlyingInstrumentID) - 1 : value.length();
+								memcpy(OfferOptionInstrument->UnderlyingInstrumentID, value.c_str(), len);
+								break;
+							}
+							case Items::ExecutePrice:
+							{
+								OfferOptionInstrument->ExecutePrice = atof(value.c_str());
+								break;
+							}
+							case Items::UnitMargin:
+							{
+								OfferOptionInstrument->UnitMargin = atof(value.c_str());
+								break;
+							}
+							case Items::PriceTick:
+							{
+								OfferOptionInstrument->PriceTick = atof(value.c_str());
+								break;
+							}
+							case Items::MaxLimitOrderVolume:
+							{
+								OfferOptionInstrument->MaxLimitOrderVolume = atoi(value.c_str());
+								break;
+							}
+							case Items::MaxMarketOrderVolume:
+							{
+								OfferOptionInstrument->MaxMarketOrderVolume = atoi(value.c_str());
+								break;
+							}
+							case Items::ExpiringDate:
+							{
+								size_t len = value.length() >= sizeof(OfferOptionInstrument->ExpiringDate) ? sizeof(OfferOptionInstrument->ExpiringDate) - 1 : value.length();
+								memcpy(OfferOptionInstrument->ExpiringDate, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for OfferOptionInstrumentField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnOfferOptionInstrumentPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnOfferOptionInstrumentPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnOfferOptionInstrumentPackage::GetDebugString() const
+	{
+		if (OfferOptionInstrument == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (OfferOptionInstrument != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnOfferOptionInstrumentPackage:TradingDay:[%s], ExchangeID:[%s], InstrumentID:[%s], ExchangeInstID:[%s], InstrumentName:[%s], VolumeMultiple:[%d], OptionType:[%d], UnderlyingInstrumentID:[%s], ExecutePrice:[%f], UnitMargin:[%f], PriceTick:[%f], MaxLimitOrderVolume:[%d], MaxMarketOrderVolume:[%d], ExpiringDate:[%s]", 
+				OfferOptionInstrument->TradingDay, OfferOptionInstrument->ExchangeID, OfferOptionInstrument->InstrumentID, OfferOptionInstrument->ExchangeInstID, OfferOptionInstrument->InstrumentName, OfferOptionInstrument->VolumeMultiple, (int)OfferOptionInstrument->OptionType, OfferOptionInstrument->UnderlyingInstrumentID, OfferOptionInstrument->ExecutePrice, OfferOptionInstrument->UnitMargin, OfferOptionInstrument->PriceTick, OfferOptionInstrument->MaxLimitOrderVolume, OfferOptionInstrument->MaxMarketOrderVolume, OfferOptionInstrument->ExpiringDate);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqOfferOrderPackage::StepReqOfferOrderPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqOfferOrderPackage* StepReqOfferOrderPackage::Allocate()
+	{
+		return ::Allocate<StepReqOfferOrderPackage>();
+	}
+	void StepReqOfferOrderPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqOfferOrder != nullptr)
+		{
+			::Free<ReqOfferOrderField>(ReqOfferOrder);
+			ReqOfferOrder = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqOfferOrderPackage>::GetInstance().Free(this);
+	}
+	void StepReqOfferOrderPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqOfferOrderPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqOfferOrder != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqOfferOrderField::FieldID);
+			if (strlen(ReqOfferOrder->TradingDay) >= sizeof(ReqOfferOrder->TradingDay))
+			{
+				ReqOfferOrder->TradingDay[sizeof(ReqOfferOrder->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, ReqOfferOrder->TradingDay);
+			if (strlen(ReqOfferOrder->PrimaryAccountID) >= sizeof(ReqOfferOrder->PrimaryAccountID))
+			{
+				ReqOfferOrder->PrimaryAccountID[sizeof(ReqOfferOrder->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, ReqOfferOrder->PrimaryAccountID);
+			if (strlen(ReqOfferOrder->ExchangeID) >= sizeof(ReqOfferOrder->ExchangeID))
+			{
+				ReqOfferOrder->ExchangeID[sizeof(ReqOfferOrder->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, ReqOfferOrder->ExchangeID);
+			if (strlen(ReqOfferOrder->InstrumentID) >= sizeof(ReqOfferOrder->InstrumentID))
+			{
+				ReqOfferOrder->InstrumentID[sizeof(ReqOfferOrder->InstrumentID) - 1] = 0;
+			}
+			WriteString(ppos, Items::InstrumentID, ReqOfferOrder->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)ReqOfferOrder->SecurityType);
+			WriteString(ppos, Items::OrderID, ReqOfferOrder->OrderID);
+			WriteString(ppos, Items::Direction, (int)ReqOfferOrder->Direction);
+			WriteString(ppos, Items::OffsetFlag, (int)ReqOfferOrder->OffsetFlag);
+			WriteString(ppos, Items::OrderPriceType, (int)ReqOfferOrder->OrderPriceType);
+			WriteString(ppos, Items::Price, ReqOfferOrder->Price);
+			WriteString(ppos, Items::Volume, ReqOfferOrder->Volume);
+			WriteHexString(ppos, Items::FieldEnd, ReqOfferOrderField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqOfferOrderPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqOfferOrderField::FieldID:
+				{
+					ReqOfferOrder = ::Allocate<ReqOfferOrderField>();
+					memset(ReqOfferOrder, 0, sizeof(*ReqOfferOrder));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(ReqOfferOrder->TradingDay) ? sizeof(ReqOfferOrder->TradingDay) - 1 : value.length();
+								memcpy(ReqOfferOrder->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(ReqOfferOrder->PrimaryAccountID) ? sizeof(ReqOfferOrder->PrimaryAccountID) - 1 : value.length();
+								memcpy(ReqOfferOrder->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(ReqOfferOrder->ExchangeID) ? sizeof(ReqOfferOrder->ExchangeID) - 1 : value.length();
+								memcpy(ReqOfferOrder->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::InstrumentID:
+							{
+								size_t len = value.length() >= sizeof(ReqOfferOrder->InstrumentID) ? sizeof(ReqOfferOrder->InstrumentID) - 1 : value.length();
+								memcpy(ReqOfferOrder->InstrumentID, value.c_str(), len);
+								break;
+							}
+							case Items::SecurityType:
+							{
+								ReqOfferOrder->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::OrderID:
+							{
+								ReqOfferOrder->OrderID = atoi(value.c_str());
+								break;
+							}
+							case Items::Direction:
+							{
+								ReqOfferOrder->Direction = (DirectionType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::OffsetFlag:
+							{
+								ReqOfferOrder->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::OrderPriceType:
+							{
+								ReqOfferOrder->OrderPriceType = (OrderPriceTypeType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::Price:
+							{
+								ReqOfferOrder->Price = atof(value.c_str());
+								break;
+							}
+							case Items::Volume:
+							{
+								ReqOfferOrder->Volume = atoi(value.c_str());
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqOfferOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqOfferOrderPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqOfferOrderPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqOfferOrderPackage::GetDebugString() const
+	{
+		if (ReqOfferOrder == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqOfferOrder != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqOfferOrderPackage:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d]", 
+				ReqOfferOrder->TradingDay, ReqOfferOrder->PrimaryAccountID, ReqOfferOrder->ExchangeID, ReqOfferOrder->InstrumentID, (int)ReqOfferOrder->SecurityType, ReqOfferOrder->OrderID, (int)ReqOfferOrder->Direction, (int)ReqOfferOrder->OffsetFlag, (int)ReqOfferOrder->OrderPriceType, ReqOfferOrder->Price, ReqOfferOrder->Volume);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepReqOfferCancelOrderPackage::StepReqOfferCancelOrderPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepReqOfferCancelOrderPackage* StepReqOfferCancelOrderPackage::Allocate()
+	{
+		return ::Allocate<StepReqOfferCancelOrderPackage>();
+	}
+	void StepReqOfferCancelOrderPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (ReqOfferCancelOrder != nullptr)
+		{
+			::Free<ReqOfferCancelOrderField>(ReqOfferCancelOrder);
+			ReqOfferCancelOrder = nullptr;
+		}
+		MemCacheTemplateSingleton<StepReqOfferCancelOrderPackage>::GetInstance().Free(this);
+	}
+	void StepReqOfferCancelOrderPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepReqOfferCancelOrderPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (ReqOfferCancelOrder != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, ReqOfferCancelOrderField::FieldID);
+			if (strlen(ReqOfferCancelOrder->TradingDay) >= sizeof(ReqOfferCancelOrder->TradingDay))
+			{
+				ReqOfferCancelOrder->TradingDay[sizeof(ReqOfferCancelOrder->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, ReqOfferCancelOrder->TradingDay);
+			if (strlen(ReqOfferCancelOrder->PrimaryAccountID) >= sizeof(ReqOfferCancelOrder->PrimaryAccountID))
+			{
+				ReqOfferCancelOrder->PrimaryAccountID[sizeof(ReqOfferCancelOrder->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, ReqOfferCancelOrder->PrimaryAccountID);
+			if (strlen(ReqOfferCancelOrder->ExchangeID) >= sizeof(ReqOfferCancelOrder->ExchangeID))
+			{
+				ReqOfferCancelOrder->ExchangeID[sizeof(ReqOfferCancelOrder->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, ReqOfferCancelOrder->ExchangeID);
+			if (strlen(ReqOfferCancelOrder->InstrumentID) >= sizeof(ReqOfferCancelOrder->InstrumentID))
+			{
+				ReqOfferCancelOrder->InstrumentID[sizeof(ReqOfferCancelOrder->InstrumentID) - 1] = 0;
+			}
+			WriteString(ppos, Items::InstrumentID, ReqOfferCancelOrder->InstrumentID);
+			WriteString(ppos, Items::SecurityType, (int)ReqOfferCancelOrder->SecurityType);
+			WriteString(ppos, Items::Direction, (int)ReqOfferCancelOrder->Direction);
+			WriteString(ppos, Items::CancelOrderID, ReqOfferCancelOrder->CancelOrderID);
+			WriteString(ppos, Items::OrderID, ReqOfferCancelOrder->OrderID);
+			if (strlen(ReqOfferCancelOrder->OrderSysID) >= sizeof(ReqOfferCancelOrder->OrderSysID))
+			{
+				ReqOfferCancelOrder->OrderSysID[sizeof(ReqOfferCancelOrder->OrderSysID) - 1] = 0;
+			}
+			WriteString(ppos, Items::OrderSysID, ReqOfferCancelOrder->OrderSysID);
+			WriteHexString(ppos, Items::FieldEnd, ReqOfferCancelOrderField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepReqOfferCancelOrderPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case ReqOfferCancelOrderField::FieldID:
+				{
+					ReqOfferCancelOrder = ::Allocate<ReqOfferCancelOrderField>();
+					memset(ReqOfferCancelOrder, 0, sizeof(*ReqOfferCancelOrder));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(ReqOfferCancelOrder->TradingDay) ? sizeof(ReqOfferCancelOrder->TradingDay) - 1 : value.length();
+								memcpy(ReqOfferCancelOrder->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(ReqOfferCancelOrder->PrimaryAccountID) ? sizeof(ReqOfferCancelOrder->PrimaryAccountID) - 1 : value.length();
+								memcpy(ReqOfferCancelOrder->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(ReqOfferCancelOrder->ExchangeID) ? sizeof(ReqOfferCancelOrder->ExchangeID) - 1 : value.length();
+								memcpy(ReqOfferCancelOrder->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::InstrumentID:
+							{
+								size_t len = value.length() >= sizeof(ReqOfferCancelOrder->InstrumentID) ? sizeof(ReqOfferCancelOrder->InstrumentID) - 1 : value.length();
+								memcpy(ReqOfferCancelOrder->InstrumentID, value.c_str(), len);
+								break;
+							}
+							case Items::SecurityType:
+							{
+								ReqOfferCancelOrder->SecurityType = (SecurityTypeType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::Direction:
+							{
+								ReqOfferCancelOrder->Direction = (DirectionType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::CancelOrderID:
+							{
+								ReqOfferCancelOrder->CancelOrderID = atoi(value.c_str());
+								break;
+							}
+							case Items::OrderID:
+							{
+								ReqOfferCancelOrder->OrderID = atoi(value.c_str());
+								break;
+							}
+							case Items::OrderSysID:
+							{
+								size_t len = value.length() >= sizeof(ReqOfferCancelOrder->OrderSysID) ? sizeof(ReqOfferCancelOrder->OrderSysID) - 1 : value.length();
+								memcpy(ReqOfferCancelOrder->OrderSysID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for ReqOfferCancelOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepReqOfferCancelOrderPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepReqOfferCancelOrderPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepReqOfferCancelOrderPackage::GetDebugString() const
+	{
+		if (ReqOfferCancelOrder == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (ReqOfferCancelOrder != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepReqOfferCancelOrderPackage:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], Direction:[%d], CancelOrderID:[%d], OrderID:[%d], OrderSysID:[%s]", 
+				ReqOfferCancelOrder->TradingDay, ReqOfferCancelOrder->PrimaryAccountID, ReqOfferCancelOrder->ExchangeID, ReqOfferCancelOrder->InstrumentID, (int)ReqOfferCancelOrder->SecurityType, (int)ReqOfferCancelOrder->Direction, ReqOfferCancelOrder->CancelOrderID, ReqOfferCancelOrder->OrderID, ReqOfferCancelOrder->OrderSysID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnOfferOrderPackage::StepRtnOfferOrderPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnOfferOrderPackage* StepRtnOfferOrderPackage::Allocate()
+	{
+		return ::Allocate<StepRtnOfferOrderPackage>();
+	}
+	void StepRtnOfferOrderPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (OfferOrder != nullptr)
+		{
+			::Free<OfferOrderField>(OfferOrder);
+			OfferOrder = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnOfferOrderPackage>::GetInstance().Free(this);
+	}
+	void StepRtnOfferOrderPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnOfferOrderPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (OfferOrder != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, OfferOrderField::FieldID);
+			if (strlen(OfferOrder->TradingDay) >= sizeof(OfferOrder->TradingDay))
+			{
+				OfferOrder->TradingDay[sizeof(OfferOrder->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, OfferOrder->TradingDay);
+			if (strlen(OfferOrder->PrimaryAccountID) >= sizeof(OfferOrder->PrimaryAccountID))
+			{
+				OfferOrder->PrimaryAccountID[sizeof(OfferOrder->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, OfferOrder->PrimaryAccountID);
+			if (strlen(OfferOrder->ExchangeID) >= sizeof(OfferOrder->ExchangeID))
+			{
+				OfferOrder->ExchangeID[sizeof(OfferOrder->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, OfferOrder->ExchangeID);
+			if (strlen(OfferOrder->InstrumentID) >= sizeof(OfferOrder->InstrumentID))
+			{
+				OfferOrder->InstrumentID[sizeof(OfferOrder->InstrumentID) - 1] = 0;
+			}
+			WriteString(ppos, Items::InstrumentID, OfferOrder->InstrumentID);
+			WriteString(ppos, Items::OrderID, OfferOrder->OrderID);
+			if (strlen(OfferOrder->OrderSysID) >= sizeof(OfferOrder->OrderSysID))
+			{
+				OfferOrder->OrderSysID[sizeof(OfferOrder->OrderSysID) - 1] = 0;
+			}
+			WriteString(ppos, Items::OrderSysID, OfferOrder->OrderSysID);
+			WriteString(ppos, Items::Direction, (int)OfferOrder->Direction);
+			WriteString(ppos, Items::OffsetFlag, (int)OfferOrder->OffsetFlag);
+			WriteString(ppos, Items::OrderPriceType, (int)OfferOrder->OrderPriceType);
+			WriteString(ppos, Items::Price, OfferOrder->Price);
+			WriteString(ppos, Items::Volume, OfferOrder->Volume);
+			WriteString(ppos, Items::VolumeTotal, OfferOrder->VolumeTotal);
+			WriteString(ppos, Items::VolumeTraded, OfferOrder->VolumeTraded);
+			WriteString(ppos, Items::OrderStatus, (int)OfferOrder->OrderStatus);
+			if (strlen(OfferOrder->StatusMsg) >= sizeof(OfferOrder->StatusMsg))
+			{
+				OfferOrder->StatusMsg[sizeof(OfferOrder->StatusMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::StatusMsg, OfferOrder->StatusMsg);
+			if (strlen(OfferOrder->OrderDate) >= sizeof(OfferOrder->OrderDate))
+			{
+				OfferOrder->OrderDate[sizeof(OfferOrder->OrderDate) - 1] = 0;
+			}
+			WriteString(ppos, Items::OrderDate, OfferOrder->OrderDate);
+			if (strlen(OfferOrder->OrderTime) >= sizeof(OfferOrder->OrderTime))
+			{
+				OfferOrder->OrderTime[sizeof(OfferOrder->OrderTime) - 1] = 0;
+			}
+			WriteString(ppos, Items::OrderTime, OfferOrder->OrderTime);
+			if (strlen(OfferOrder->CancelDate) >= sizeof(OfferOrder->CancelDate))
+			{
+				OfferOrder->CancelDate[sizeof(OfferOrder->CancelDate) - 1] = 0;
+			}
+			WriteString(ppos, Items::CancelDate, OfferOrder->CancelDate);
+			if (strlen(OfferOrder->CancelTime) >= sizeof(OfferOrder->CancelTime))
+			{
+				OfferOrder->CancelTime[sizeof(OfferOrder->CancelTime) - 1] = 0;
+			}
+			WriteString(ppos, Items::CancelTime, OfferOrder->CancelTime);
+			WriteString(ppos, Items::IsNewOrder, OfferOrder->IsNewOrder);
+			WriteHexString(ppos, Items::FieldEnd, OfferOrderField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnOfferOrderPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case OfferOrderField::FieldID:
+				{
+					OfferOrder = ::Allocate<OfferOrderField>();
+					memset(OfferOrder, 0, sizeof(*OfferOrder));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(OfferOrder->TradingDay) ? sizeof(OfferOrder->TradingDay) - 1 : value.length();
+								memcpy(OfferOrder->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(OfferOrder->PrimaryAccountID) ? sizeof(OfferOrder->PrimaryAccountID) - 1 : value.length();
+								memcpy(OfferOrder->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(OfferOrder->ExchangeID) ? sizeof(OfferOrder->ExchangeID) - 1 : value.length();
+								memcpy(OfferOrder->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::InstrumentID:
+							{
+								size_t len = value.length() >= sizeof(OfferOrder->InstrumentID) ? sizeof(OfferOrder->InstrumentID) - 1 : value.length();
+								memcpy(OfferOrder->InstrumentID, value.c_str(), len);
+								break;
+							}
+							case Items::OrderID:
+							{
+								OfferOrder->OrderID = atoi(value.c_str());
+								break;
+							}
+							case Items::OrderSysID:
+							{
+								size_t len = value.length() >= sizeof(OfferOrder->OrderSysID) ? sizeof(OfferOrder->OrderSysID) - 1 : value.length();
+								memcpy(OfferOrder->OrderSysID, value.c_str(), len);
+								break;
+							}
+							case Items::Direction:
+							{
+								OfferOrder->Direction = (DirectionType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::OffsetFlag:
+							{
+								OfferOrder->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::OrderPriceType:
+							{
+								OfferOrder->OrderPriceType = (OrderPriceTypeType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::Price:
+							{
+								OfferOrder->Price = atof(value.c_str());
+								break;
+							}
+							case Items::Volume:
+							{
+								OfferOrder->Volume = atoi(value.c_str());
+								break;
+							}
+							case Items::VolumeTotal:
+							{
+								OfferOrder->VolumeTotal = atoi(value.c_str());
+								break;
+							}
+							case Items::VolumeTraded:
+							{
+								OfferOrder->VolumeTraded = atoi(value.c_str());
+								break;
+							}
+							case Items::OrderStatus:
+							{
+								OfferOrder->OrderStatus = (OrderStatusType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::StatusMsg:
+							{
+								size_t len = value.length() >= sizeof(OfferOrder->StatusMsg) ? sizeof(OfferOrder->StatusMsg) - 1 : value.length();
+								memcpy(OfferOrder->StatusMsg, value.c_str(), len);
+								break;
+							}
+							case Items::OrderDate:
+							{
+								size_t len = value.length() >= sizeof(OfferOrder->OrderDate) ? sizeof(OfferOrder->OrderDate) - 1 : value.length();
+								memcpy(OfferOrder->OrderDate, value.c_str(), len);
+								break;
+							}
+							case Items::OrderTime:
+							{
+								size_t len = value.length() >= sizeof(OfferOrder->OrderTime) ? sizeof(OfferOrder->OrderTime) - 1 : value.length();
+								memcpy(OfferOrder->OrderTime, value.c_str(), len);
+								break;
+							}
+							case Items::CancelDate:
+							{
+								size_t len = value.length() >= sizeof(OfferOrder->CancelDate) ? sizeof(OfferOrder->CancelDate) - 1 : value.length();
+								memcpy(OfferOrder->CancelDate, value.c_str(), len);
+								break;
+							}
+							case Items::CancelTime:
+							{
+								size_t len = value.length() >= sizeof(OfferOrder->CancelTime) ? sizeof(OfferOrder->CancelTime) - 1 : value.length();
+								memcpy(OfferOrder->CancelTime, value.c_str(), len);
+								break;
+							}
+							case Items::IsNewOrder:
+							{
+								OfferOrder->IsNewOrder = atoi(value.c_str());
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for OfferOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnOfferOrderPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnOfferOrderPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnOfferOrderPackage::GetDebugString() const
+	{
+		if (OfferOrder == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (OfferOrder != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnOfferOrderPackage:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], IsNewOrder:[%d]", 
+				OfferOrder->TradingDay, OfferOrder->PrimaryAccountID, OfferOrder->ExchangeID, OfferOrder->InstrumentID, OfferOrder->OrderID, OfferOrder->OrderSysID, (int)OfferOrder->Direction, (int)OfferOrder->OffsetFlag, (int)OfferOrder->OrderPriceType, OfferOrder->Price, OfferOrder->Volume, OfferOrder->VolumeTotal, OfferOrder->VolumeTraded, (int)OfferOrder->OrderStatus, OfferOrder->StatusMsg, OfferOrder->OrderDate, OfferOrder->OrderTime, OfferOrder->CancelDate, OfferOrder->CancelTime, OfferOrder->IsNewOrder);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnOfferTradePackage::StepRtnOfferTradePackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnOfferTradePackage* StepRtnOfferTradePackage::Allocate()
+	{
+		return ::Allocate<StepRtnOfferTradePackage>();
+	}
+	void StepRtnOfferTradePackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (OfferTrade != nullptr)
+		{
+			::Free<OfferTradeField>(OfferTrade);
+			OfferTrade = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnOfferTradePackage>::GetInstance().Free(this);
+	}
+	void StepRtnOfferTradePackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnOfferTradePackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (OfferTrade != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, OfferTradeField::FieldID);
+			if (strlen(OfferTrade->TradingDay) >= sizeof(OfferTrade->TradingDay))
+			{
+				OfferTrade->TradingDay[sizeof(OfferTrade->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, OfferTrade->TradingDay);
+			if (strlen(OfferTrade->PrimaryAccountID) >= sizeof(OfferTrade->PrimaryAccountID))
+			{
+				OfferTrade->PrimaryAccountID[sizeof(OfferTrade->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, OfferTrade->PrimaryAccountID);
+			if (strlen(OfferTrade->ExchangeID) >= sizeof(OfferTrade->ExchangeID))
+			{
+				OfferTrade->ExchangeID[sizeof(OfferTrade->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, OfferTrade->ExchangeID);
+			if (strlen(OfferTrade->InstrumentID) >= sizeof(OfferTrade->InstrumentID))
+			{
+				OfferTrade->InstrumentID[sizeof(OfferTrade->InstrumentID) - 1] = 0;
+			}
+			WriteString(ppos, Items::InstrumentID, OfferTrade->InstrumentID);
+			WriteString(ppos, Items::OrderID, OfferTrade->OrderID);
+			if (strlen(OfferTrade->OrderSysID) >= sizeof(OfferTrade->OrderSysID))
+			{
+				OfferTrade->OrderSysID[sizeof(OfferTrade->OrderSysID) - 1] = 0;
+			}
+			WriteString(ppos, Items::OrderSysID, OfferTrade->OrderSysID);
+			if (strlen(OfferTrade->TradeID) >= sizeof(OfferTrade->TradeID))
+			{
+				OfferTrade->TradeID[sizeof(OfferTrade->TradeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradeID, OfferTrade->TradeID);
+			WriteString(ppos, Items::Direction, (int)OfferTrade->Direction);
+			WriteString(ppos, Items::OffsetFlag, (int)OfferTrade->OffsetFlag);
+			WriteString(ppos, Items::Price, OfferTrade->Price);
+			WriteString(ppos, Items::Volume, OfferTrade->Volume);
+			if (strlen(OfferTrade->TradeDate) >= sizeof(OfferTrade->TradeDate))
+			{
+				OfferTrade->TradeDate[sizeof(OfferTrade->TradeDate) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradeDate, OfferTrade->TradeDate);
+			if (strlen(OfferTrade->TradeTime) >= sizeof(OfferTrade->TradeTime))
+			{
+				OfferTrade->TradeTime[sizeof(OfferTrade->TradeTime) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradeTime, OfferTrade->TradeTime);
+			WriteHexString(ppos, Items::FieldEnd, OfferTradeField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnOfferTradePackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case OfferTradeField::FieldID:
+				{
+					OfferTrade = ::Allocate<OfferTradeField>();
+					memset(OfferTrade, 0, sizeof(*OfferTrade));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(OfferTrade->TradingDay) ? sizeof(OfferTrade->TradingDay) - 1 : value.length();
+								memcpy(OfferTrade->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(OfferTrade->PrimaryAccountID) ? sizeof(OfferTrade->PrimaryAccountID) - 1 : value.length();
+								memcpy(OfferTrade->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(OfferTrade->ExchangeID) ? sizeof(OfferTrade->ExchangeID) - 1 : value.length();
+								memcpy(OfferTrade->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::InstrumentID:
+							{
+								size_t len = value.length() >= sizeof(OfferTrade->InstrumentID) ? sizeof(OfferTrade->InstrumentID) - 1 : value.length();
+								memcpy(OfferTrade->InstrumentID, value.c_str(), len);
+								break;
+							}
+							case Items::OrderID:
+							{
+								OfferTrade->OrderID = atoi(value.c_str());
+								break;
+							}
+							case Items::OrderSysID:
+							{
+								size_t len = value.length() >= sizeof(OfferTrade->OrderSysID) ? sizeof(OfferTrade->OrderSysID) - 1 : value.length();
+								memcpy(OfferTrade->OrderSysID, value.c_str(), len);
+								break;
+							}
+							case Items::TradeID:
+							{
+								size_t len = value.length() >= sizeof(OfferTrade->TradeID) ? sizeof(OfferTrade->TradeID) - 1 : value.length();
+								memcpy(OfferTrade->TradeID, value.c_str(), len);
+								break;
+							}
+							case Items::Direction:
+							{
+								OfferTrade->Direction = (DirectionType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::OffsetFlag:
+							{
+								OfferTrade->OffsetFlag = (OffsetFlagType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::Price:
+							{
+								OfferTrade->Price = atof(value.c_str());
+								break;
+							}
+							case Items::Volume:
+							{
+								OfferTrade->Volume = atoi(value.c_str());
+								break;
+							}
+							case Items::TradeDate:
+							{
+								size_t len = value.length() >= sizeof(OfferTrade->TradeDate) ? sizeof(OfferTrade->TradeDate) - 1 : value.length();
+								memcpy(OfferTrade->TradeDate, value.c_str(), len);
+								break;
+							}
+							case Items::TradeTime:
+							{
+								size_t len = value.length() >= sizeof(OfferTrade->TradeTime) ? sizeof(OfferTrade->TradeTime) - 1 : value.length();
+								memcpy(OfferTrade->TradeTime, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for OfferTradeField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnOfferTradePackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnOfferTradePackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnOfferTradePackage::GetDebugString() const
+	{
+		if (OfferTrade == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (OfferTrade != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnOfferTradePackage:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%d], TradeDate:[%s], TradeTime:[%s]", 
+				OfferTrade->TradingDay, OfferTrade->PrimaryAccountID, OfferTrade->ExchangeID, OfferTrade->InstrumentID, OfferTrade->OrderID, OfferTrade->OrderSysID, OfferTrade->TradeID, (int)OfferTrade->Direction, (int)OfferTrade->OffsetFlag, OfferTrade->Price, OfferTrade->Volume, OfferTrade->TradeDate, OfferTrade->TradeTime);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnOfferErrorCancelOrderPackage::StepRtnOfferErrorCancelOrderPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnOfferErrorCancelOrderPackage* StepRtnOfferErrorCancelOrderPackage::Allocate()
+	{
+		return ::Allocate<StepRtnOfferErrorCancelOrderPackage>();
+	}
+	void StepRtnOfferErrorCancelOrderPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (OfferErrorCancelOrder != nullptr)
+		{
+			::Free<OfferErrorCancelOrderField>(OfferErrorCancelOrder);
+			OfferErrorCancelOrder = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnOfferErrorCancelOrderPackage>::GetInstance().Free(this);
+	}
+	void StepRtnOfferErrorCancelOrderPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnOfferErrorCancelOrderPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (OfferErrorCancelOrder != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, OfferErrorCancelOrderField::FieldID);
+			WriteString(ppos, Items::ErrorID, OfferErrorCancelOrder->ErrorID);
+			if (strlen(OfferErrorCancelOrder->ErrorMsg) >= sizeof(OfferErrorCancelOrder->ErrorMsg))
+			{
+				OfferErrorCancelOrder->ErrorMsg[sizeof(OfferErrorCancelOrder->ErrorMsg) - 1] = 0;
+			}
+			WriteString(ppos, Items::ErrorMsg, OfferErrorCancelOrder->ErrorMsg);
+			if (strlen(OfferErrorCancelOrder->TradingDay) >= sizeof(OfferErrorCancelOrder->TradingDay))
+			{
+				OfferErrorCancelOrder->TradingDay[sizeof(OfferErrorCancelOrder->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, OfferErrorCancelOrder->TradingDay);
+			if (strlen(OfferErrorCancelOrder->PrimaryAccountID) >= sizeof(OfferErrorCancelOrder->PrimaryAccountID))
+			{
+				OfferErrorCancelOrder->PrimaryAccountID[sizeof(OfferErrorCancelOrder->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, OfferErrorCancelOrder->PrimaryAccountID);
+			if (strlen(OfferErrorCancelOrder->ExchangeID) >= sizeof(OfferErrorCancelOrder->ExchangeID))
+			{
+				OfferErrorCancelOrder->ExchangeID[sizeof(OfferErrorCancelOrder->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, OfferErrorCancelOrder->ExchangeID);
+			if (strlen(OfferErrorCancelOrder->InstrumentID) >= sizeof(OfferErrorCancelOrder->InstrumentID))
+			{
+				OfferErrorCancelOrder->InstrumentID[sizeof(OfferErrorCancelOrder->InstrumentID) - 1] = 0;
+			}
+			WriteString(ppos, Items::InstrumentID, OfferErrorCancelOrder->InstrumentID);
+			WriteString(ppos, Items::Direction, (int)OfferErrorCancelOrder->Direction);
+			WriteString(ppos, Items::CancelOrderID, OfferErrorCancelOrder->CancelOrderID);
+			WriteString(ppos, Items::OrderID, OfferErrorCancelOrder->OrderID);
+			if (strlen(OfferErrorCancelOrder->OrderSysID) >= sizeof(OfferErrorCancelOrder->OrderSysID))
+			{
+				OfferErrorCancelOrder->OrderSysID[sizeof(OfferErrorCancelOrder->OrderSysID) - 1] = 0;
+			}
+			WriteString(ppos, Items::OrderSysID, OfferErrorCancelOrder->OrderSysID);
+			WriteHexString(ppos, Items::FieldEnd, OfferErrorCancelOrderField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnOfferErrorCancelOrderPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case OfferErrorCancelOrderField::FieldID:
+				{
+					OfferErrorCancelOrder = ::Allocate<OfferErrorCancelOrderField>();
+					memset(OfferErrorCancelOrder, 0, sizeof(*OfferErrorCancelOrder));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::ErrorID:
+							{
+								OfferErrorCancelOrder->ErrorID = atoi(value.c_str());
+								break;
+							}
+							case Items::ErrorMsg:
+							{
+								size_t len = value.length() >= sizeof(OfferErrorCancelOrder->ErrorMsg) ? sizeof(OfferErrorCancelOrder->ErrorMsg) - 1 : value.length();
+								memcpy(OfferErrorCancelOrder->ErrorMsg, value.c_str(), len);
+								break;
+							}
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(OfferErrorCancelOrder->TradingDay) ? sizeof(OfferErrorCancelOrder->TradingDay) - 1 : value.length();
+								memcpy(OfferErrorCancelOrder->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(OfferErrorCancelOrder->PrimaryAccountID) ? sizeof(OfferErrorCancelOrder->PrimaryAccountID) - 1 : value.length();
+								memcpy(OfferErrorCancelOrder->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(OfferErrorCancelOrder->ExchangeID) ? sizeof(OfferErrorCancelOrder->ExchangeID) - 1 : value.length();
+								memcpy(OfferErrorCancelOrder->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::InstrumentID:
+							{
+								size_t len = value.length() >= sizeof(OfferErrorCancelOrder->InstrumentID) ? sizeof(OfferErrorCancelOrder->InstrumentID) - 1 : value.length();
+								memcpy(OfferErrorCancelOrder->InstrumentID, value.c_str(), len);
+								break;
+							}
+							case Items::Direction:
+							{
+								OfferErrorCancelOrder->Direction = (DirectionType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::CancelOrderID:
+							{
+								OfferErrorCancelOrder->CancelOrderID = atoi(value.c_str());
+								break;
+							}
+							case Items::OrderID:
+							{
+								OfferErrorCancelOrder->OrderID = atoi(value.c_str());
+								break;
+							}
+							case Items::OrderSysID:
+							{
+								size_t len = value.length() >= sizeof(OfferErrorCancelOrder->OrderSysID) ? sizeof(OfferErrorCancelOrder->OrderSysID) - 1 : value.length();
+								memcpy(OfferErrorCancelOrder->OrderSysID, value.c_str(), len);
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for OfferErrorCancelOrderField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnOfferErrorCancelOrderPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnOfferErrorCancelOrderPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnOfferErrorCancelOrderPackage::GetDebugString() const
+	{
+		if (OfferErrorCancelOrder == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (OfferErrorCancelOrder != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnOfferErrorCancelOrderPackage:ErrorID:[%d], ErrorMsg:[%s], TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], Direction:[%d], CancelOrderID:[%d], OrderID:[%d], OrderSysID:[%s]", 
+				OfferErrorCancelOrder->ErrorID, OfferErrorCancelOrder->ErrorMsg, OfferErrorCancelOrder->TradingDay, OfferErrorCancelOrder->PrimaryAccountID, OfferErrorCancelOrder->ExchangeID, OfferErrorCancelOrder->InstrumentID, (int)OfferErrorCancelOrder->Direction, OfferErrorCancelOrder->CancelOrderID, OfferErrorCancelOrder->OrderID, OfferErrorCancelOrder->OrderSysID);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnOfferCapitalPackage::StepRtnOfferCapitalPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnOfferCapitalPackage* StepRtnOfferCapitalPackage::Allocate()
+	{
+		return ::Allocate<StepRtnOfferCapitalPackage>();
+	}
+	void StepRtnOfferCapitalPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (OfferCapital != nullptr)
+		{
+			::Free<OfferCapitalField>(OfferCapital);
+			OfferCapital = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnOfferCapitalPackage>::GetInstance().Free(this);
+	}
+	void StepRtnOfferCapitalPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnOfferCapitalPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (OfferCapital != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, OfferCapitalField::FieldID);
+			if (strlen(OfferCapital->TradingDay) >= sizeof(OfferCapital->TradingDay))
+			{
+				OfferCapital->TradingDay[sizeof(OfferCapital->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, OfferCapital->TradingDay);
+			if (strlen(OfferCapital->PrimaryAccountID) >= sizeof(OfferCapital->PrimaryAccountID))
+			{
+				OfferCapital->PrimaryAccountID[sizeof(OfferCapital->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, OfferCapital->PrimaryAccountID);
+			WriteString(ppos, Items::PreCashAsset, OfferCapital->PreCashAsset);
+			WriteHexString(ppos, Items::FieldEnd, OfferCapitalField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnOfferCapitalPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case OfferCapitalField::FieldID:
+				{
+					OfferCapital = ::Allocate<OfferCapitalField>();
+					memset(OfferCapital, 0, sizeof(*OfferCapital));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(OfferCapital->TradingDay) ? sizeof(OfferCapital->TradingDay) - 1 : value.length();
+								memcpy(OfferCapital->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(OfferCapital->PrimaryAccountID) ? sizeof(OfferCapital->PrimaryAccountID) - 1 : value.length();
+								memcpy(OfferCapital->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							case Items::PreCashAsset:
+							{
+								OfferCapital->PreCashAsset = atof(value.c_str());
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for OfferCapitalField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnOfferCapitalPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnOfferCapitalPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnOfferCapitalPackage::GetDebugString() const
+	{
+		if (OfferCapital == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (OfferCapital != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnOfferCapitalPackage:TradingDay:[%s], PrimaryAccountID:[%s], PreCashAsset:[%f]", 
+				OfferCapital->TradingDay, OfferCapital->PrimaryAccountID, OfferCapital->PreCashAsset);
+		}
+		return t_StepPackageStringBuffer;
+	}
+	StepRtnOfferPositionPackage::StepRtnOfferPositionPackage()
+	{
+		Head.PackageID = PackageID;
+	}
+	StepRtnOfferPositionPackage* StepRtnOfferPositionPackage::Allocate()
+	{
+		return ::Allocate<StepRtnOfferPositionPackage>();
+	}
+	void StepRtnOfferPositionPackage::Free()
+	{
+		SessionID = 0;
+		memset(IPAddress, 0, sizeof(IPAddressType));
+		memset(&Head, 0, sizeof(Head));
+		memset(&Tail, 0, sizeof(Tail));
+		Head.PackageID = PackageID;
+		if (OfferPosition != nullptr)
+		{
+			::Free<OfferPositionField>(OfferPosition);
+			OfferPosition = nullptr;
+		}
+		MemCacheTemplateSingleton<StepRtnOfferPositionPackage>::GetInstance().Free(this);
+	}
+	void StepRtnOfferPositionPackage::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+	{
+		SessionID = sessionID;
+		Head.MessageChain = messageChain;
+		Head.MsgSeqNum = msgSeqNum;
+	}
+	int StepRtnOfferPositionPackage::ToProtocolStream(char* buff, int size) const
+	{
+		char* ppos = buff;
+		if (OfferPosition != nullptr)
+		{
+			WriteHexString(ppos, Items::FieldStart, OfferPositionField::FieldID);
+			if (strlen(OfferPosition->TradingDay) >= sizeof(OfferPosition->TradingDay))
+			{
+				OfferPosition->TradingDay[sizeof(OfferPosition->TradingDay) - 1] = 0;
+			}
+			WriteString(ppos, Items::TradingDay, OfferPosition->TradingDay);
+			if (strlen(OfferPosition->PrimaryAccountID) >= sizeof(OfferPosition->PrimaryAccountID))
+			{
+				OfferPosition->PrimaryAccountID[sizeof(OfferPosition->PrimaryAccountID) - 1] = 0;
+			}
+			WriteString(ppos, Items::PrimaryAccountID, OfferPosition->PrimaryAccountID);
+			if (strlen(OfferPosition->ExchangeID) >= sizeof(OfferPosition->ExchangeID))
+			{
+				OfferPosition->ExchangeID[sizeof(OfferPosition->ExchangeID) - 1] = 0;
+			}
+			WriteString(ppos, Items::ExchangeID, OfferPosition->ExchangeID);
+			if (strlen(OfferPosition->InstrumentID) >= sizeof(OfferPosition->InstrumentID))
+			{
+				OfferPosition->InstrumentID[sizeof(OfferPosition->InstrumentID) - 1] = 0;
+			}
+			WriteString(ppos, Items::InstrumentID, OfferPosition->InstrumentID);
+			WriteString(ppos, Items::PosiDirection, (int)OfferPosition->PosiDirection);
+			WriteString(ppos, Items::TotalPosition, OfferPosition->TotalPosition);
+			WriteString(ppos, Items::PositionFrozen, OfferPosition->PositionFrozen);
+			WriteString(ppos, Items::TotalCostPrice, OfferPosition->TotalCostPrice);
+			WriteString(ppos, Items::Margin, OfferPosition->Margin);
+			WriteString(ppos, Items::MarketValue, OfferPosition->MarketValue);
+			WriteHexString(ppos, Items::FieldEnd, OfferPositionField::FieldID);
+		}
+		return int(ppos - buff);
+	}
+	bool StepRtnOfferPositionPackage::FromProtocolStream(char* buff, int startIndex, int endIndex)
+	{
+		while (startIndex < endIndex)
+		{
+			unsigned short fieldID;
+			int fieldStartIndex;
+			int fieldEndIndex;
+			if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+			{
+				int itemStartIndex = fieldStartIndex;
+				switch (fieldID)
+				{
+				case OfferPositionField::FieldID:
+				{
+					OfferPosition = ::Allocate<OfferPositionField>();
+					memset(OfferPosition, 0, sizeof(*OfferPosition));
+					while (itemStartIndex < fieldEndIndex)
+					{
+						unsigned short  itemID;
+						std::string value;
+						int sohIndex;
+						if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+						{
+							switch (itemID)
+							{
+							case Items::FieldStart:
+							case Items::FieldEnd:
+								break;
+							case Items::TradingDay:
+							{
+								size_t len = value.length() >= sizeof(OfferPosition->TradingDay) ? sizeof(OfferPosition->TradingDay) - 1 : value.length();
+								memcpy(OfferPosition->TradingDay, value.c_str(), len);
+								break;
+							}
+							case Items::PrimaryAccountID:
+							{
+								size_t len = value.length() >= sizeof(OfferPosition->PrimaryAccountID) ? sizeof(OfferPosition->PrimaryAccountID) - 1 : value.length();
+								memcpy(OfferPosition->PrimaryAccountID, value.c_str(), len);
+								break;
+							}
+							case Items::ExchangeID:
+							{
+								size_t len = value.length() >= sizeof(OfferPosition->ExchangeID) ? sizeof(OfferPosition->ExchangeID) - 1 : value.length();
+								memcpy(OfferPosition->ExchangeID, value.c_str(), len);
+								break;
+							}
+							case Items::InstrumentID:
+							{
+								size_t len = value.length() >= sizeof(OfferPosition->InstrumentID) ? sizeof(OfferPosition->InstrumentID) - 1 : value.length();
+								memcpy(OfferPosition->InstrumentID, value.c_str(), len);
+								break;
+							}
+							case Items::PosiDirection:
+							{
+								OfferPosition->PosiDirection = (PosiDirectionType)(atoi(value.c_str()));
+								break;
+							}
+							case Items::TotalPosition:
+							{
+								OfferPosition->TotalPosition = atoi(value.c_str());
+								break;
+							}
+							case Items::PositionFrozen:
+							{
+								OfferPosition->PositionFrozen = atoi(value.c_str());
+								break;
+							}
+							case Items::TotalCostPrice:
+							{
+								OfferPosition->TotalCostPrice = atof(value.c_str());
+								break;
+							}
+							case Items::Margin:
+							{
+								OfferPosition->Margin = atof(value.c_str());
+								break;
+							}
+							case Items::MarketValue:
+							{
+								OfferPosition->MarketValue = atof(value.c_str());
+								break;
+							}
+							default:
+								WriteLog(LogLevel::Warning, "Unexpected ItemID:0x%X for OfferPositionField FieldID:0x%X, Please Check ApiVersion.", itemID, fieldID);
+								return false;
+							}
+							itemStartIndex = sohIndex + 1;
+						}
+						else
+						{
+							WriteLog(LogLevel::Warning, "GetNext Failed For StepRtnOfferPositionPackage FieldID:0x%X", fieldID);
+							return false;
+						}
+					}
+					break;
+				}
+				default:
+					WriteLog(LogLevel::Warning, "Unexpected FieldID:0x%X, Please Check Api Version.", fieldID);
+					return false;
+				}
+				startIndex = fieldEndIndex;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "GetNextFieldZone Failed For StepRtnOfferPositionPackage");
+				return false;
+			}
+		}
+		return true;
+	}
+	const char* StepRtnOfferPositionPackage::GetDebugString() const
+	{
+		if (OfferPosition == nullptr)
+		{
+			return "";
+		}
+		int index = 0;
+		if (OfferPosition != nullptr)
+		{
+			index += sprintf(t_StepPackageStringBuffer + index, "StepRtnOfferPositionPackage:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], PosiDirection:[%d], TotalPosition:[%d], PositionFrozen:[%d], TotalCostPrice:[%f], Margin:[%f], MarketValue:[%f]", 
+				OfferPosition->TradingDay, OfferPosition->PrimaryAccountID, OfferPosition->ExchangeID, OfferPosition->InstrumentID, (int)OfferPosition->PosiDirection, OfferPosition->TotalPosition, OfferPosition->PositionFrozen, OfferPosition->TotalCostPrice, OfferPosition->Margin, OfferPosition->MarketValue);
 		}
 		return t_StepPackageStringBuffer;
 	}

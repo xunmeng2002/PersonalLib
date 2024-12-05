@@ -1,160 +1,67 @@
 ﻿#pragma once
 #include "Types.h"
 
-class StepRspInfoField
+class RspInfoField
 {
 public:
-	static constexpr UShortType FieldID = 0x1003;
+	static constexpr UShortType FieldID = 0x0003;
 	ErrorIDType ErrorID;		//错误代码
 	MessageType ErrorMsg;		//错误信息
 };
-class StepReqAccountLoginField
+class NotifyComponentConnectStatusField
 {
 public:
-	static constexpr UShortType FieldID = 0x1004;
+	static constexpr UShortType FieldID = 0x0004;
+	SessionIDType SessionID;		//会话编号
+	ComponentType Component;		//组件类型
+	BoolType IsConnected;		//是否链接
+};
+class ReqAccountLoginField
+{
+public:
+	static constexpr UShortType FieldID = 0x1001;
 	AccountIDType AccountID;		//账户代码
 	PasswordType Password;		//密码
 };
-class StepRspAccountLoginField
+class RspAccountLoginField
 {
 public:
-	static constexpr UShortType FieldID = 0x1005;
+	static constexpr UShortType FieldID = 0x1002;
 	AccountIDType AccountID;		//账户代码
 	DateType LoginDate;		//登录日期
 	TimeType LoginTime;		//登录时间
 	SessionIDType SessionID;		//会话编号
 };
-class StepReqAccountLogoutField
+class ReqAccountLogoutField
+{
+public:
+	static constexpr UShortType FieldID = 0x1003;
+	AccountIDType AccountID;		//账户代码
+};
+class RspAccountLogoutField
+{
+public:
+	static constexpr UShortType FieldID = 0x1004;
+	AccountIDType AccountID;		//账户代码
+};
+class AccountLogoutField
+{
+public:
+	static constexpr UShortType FieldID = 0x1005;
+	AccountIDType AccountID;		//账户代码
+	ErrorIDType ErrorID;		//错误代码
+	MessageType ErrorMsg;		//错误信息
+};
+class ReqQryAccountField
 {
 public:
 	static constexpr UShortType FieldID = 0x1006;
 	AccountIDType AccountID;		//账户代码
 };
-class StepRspAccountLogoutField
+class AccountField
 {
 public:
 	static constexpr UShortType FieldID = 0x1007;
-	AccountIDType AccountID;		//账户代码
-};
-class StepAccountLogoutField
-{
-public:
-	static constexpr UShortType FieldID = 0x1008;
-	AccountIDType AccountID;		//账户代码
-	ErrorIDType ErrorID;		//错误代码
-	MessageType ErrorMsg;		//错误信息
-};
-class StepReqRiskUserLoginField
-{
-public:
-	static constexpr UShortType FieldID = 0x1009;
-	UserIDType UserID;		//用户代码
-	PasswordType Password;		//密码
-};
-class StepRspRiskUserLoginField
-{
-public:
-	static constexpr UShortType FieldID = 0x100A;
-	UserIDType UserID;		//用户代码
-	GroupIDType RiskGroupID;		//交易组代码
-	DateType LoginDate;		//登录日期
-	TimeType LoginTime;		//登录时间
-	SessionIDType SessionID;		//会话编号
-};
-class StepReqRiskUserLogoutField
-{
-public:
-	static constexpr UShortType FieldID = 0x100B;
-	UserIDType UserID;		//用户代码
-};
-class StepRspRiskUserLogoutField
-{
-public:
-	static constexpr UShortType FieldID = 0x100C;
-	UserIDType UserID;		//用户代码
-};
-class StepRiskUserLogoutField
-{
-public:
-	static constexpr UShortType FieldID = 0x100D;
-	UserIDType UserID;		//用户代码
-	ErrorIDType ErrorID;		//错误代码
-	MessageType ErrorMsg;		//错误信息
-};
-class StepReqAdminUserLoginField
-{
-public:
-	static constexpr UShortType FieldID = 0x100E;
-	UserIDType AdminUserID;		//管理用户代码
-	PasswordType Password;		//密码
-};
-class StepRspAdminUserLoginField
-{
-public:
-	static constexpr UShortType FieldID = 0x100F;
-	UserIDType AdminUserID;		//管理用户代码
-	DateType LoginDate;		//登录日期
-	TimeType LoginTime;		//登录时间
-	SessionIDType SessionID;		//会话编号
-};
-class StepReqAdminUserLogoutField
-{
-public:
-	static constexpr UShortType FieldID = 0x1010;
-	UserIDType AdminUserID;		//管理用户代码
-};
-class StepRspAdminUserLogoutField
-{
-public:
-	static constexpr UShortType FieldID = 0x1011;
-	UserIDType AdminUserID;		//管理用户代码
-};
-class StepAdminUserLogoutField
-{
-public:
-	static constexpr UShortType FieldID = 0x1012;
-	UserIDType UserID;		//用户代码
-	ErrorIDType ErrorID;		//错误代码
-	MessageType ErrorMsg;		//错误信息
-};
-class StepReqMdUserLoginField
-{
-public:
-	static constexpr UShortType FieldID = 0x1013;
-	UserIDType MdUserID;		//行情用户代码
-	PasswordType Password;		//密码
-};
-class StepRspMdUserLoginField
-{
-public:
-	static constexpr UShortType FieldID = 0x1014;
-	UserIDType MdUserID;		//行情用户代码
-	DateType LoginDate;		//登录日期
-	TimeType LoginTime;		//登录时间
-	SessionIDType SessionID;		//会话编号
-};
-class StepReqMdUserLogoutField
-{
-public:
-	static constexpr UShortType FieldID = 0x1015;
-	UserIDType MdUserID;		//行情用户代码
-};
-class StepRspMdUserLogoutField
-{
-public:
-	static constexpr UShortType FieldID = 0x1016;
-	UserIDType MdUserID;		//行情用户代码
-};
-class StepReqQryAccountField
-{
-public:
-	static constexpr UShortType FieldID = 0x2001;
-	AccountIDType AccountID;		//账户代码
-};
-class StepAccountField
-{
-public:
-	static constexpr UShortType FieldID = 0x2002;
 	AccountIDType AccountID;		//账户代码
 	AccountTypeType AccountType;		//账户类型
 	AccountStatusType AccountStatus;		//账户状态
@@ -162,36 +69,30 @@ public:
 	GroupIDType RiskGroupID;		//交易组代码
 	GroupIDType CommissionGroupID;		//交易组代码
 };
-class StepReqQryHolderAccountField
+class ReqQryHolderAccountField
 {
 public:
-	static constexpr UShortType FieldID = 0x2003;
+	static constexpr UShortType FieldID = 0x1008;
 	AccountIDType AccountID;		//账户代码
 };
-class StepHolderAccountField
+class HolderAccountField
 {
 public:
-	static constexpr UShortType FieldID = 0x2004;
+	static constexpr UShortType FieldID = 0x1009;
 	ExchangeIDType ExchangeID;		//交易所代码
 	AccountIDType HolderAccountID;		//股东账户代码
 	BoolType PrimaryFlag;		//主账号标志
 };
-class StepAccountDeleteField
+class ReqQryCapitalField
 {
 public:
-	static constexpr UShortType FieldID = 0x2005;
+	static constexpr UShortType FieldID = 0x100A;
 	AccountIDType AccountID;		//账户代码
 };
-class StepReqQryCapitalField
+class CapitalField
 {
 public:
-	static constexpr UShortType FieldID = 0x2006;
-	AccountIDType AccountID;		//账户代码
-};
-class StepCapitalField
-{
-public:
-	static constexpr UShortType FieldID = 0x2007;
+	static constexpr UShortType FieldID = 0x100B;
 	DateType TradingDay;		//交易日
 	AccountIDType AccountID;		//账户代码
 	AccountTypeType AccountType;		//账户类型
@@ -217,16 +118,16 @@ public:
 	MoneyType Deposit;		//入金
 	MoneyType Withdraw;		//出金
 };
-class StepReqQryPositionField
+class ReqQryPositionField
 {
 public:
-	static constexpr UShortType FieldID = 0x2008;
+	static constexpr UShortType FieldID = 0x100C;
 	AccountIDType AccountID;		//账户代码
 };
-class StepPositionField
+class PositionField
 {
 public:
-	static constexpr UShortType FieldID = 0x2009;
+	static constexpr UShortType FieldID = 0x100D;
 	DateType TradingDay;		//交易日
 	AccountIDType AccountID;		//账户代码
 	AccountTypeType AccountType;		//账户类型
@@ -254,16 +155,16 @@ public:
 	PriceType LastPrice;		//最新价
 	PriceType PrePrice;		//昨收盘价或昨结算价
 };
-class StepReqQryOrderField
+class ReqQryOrderField
 {
 public:
-	static constexpr UShortType FieldID = 0x200A;
+	static constexpr UShortType FieldID = 0x100E;
 	AccountIDType AccountID;		//账户代码
 };
-class StepOrderField
+class OrderField
 {
 public:
-	static constexpr UShortType FieldID = 0x200B;
+	static constexpr UShortType FieldID = 0x100F;
 	DateType TradingDay;		//交易日
 	AccountIDType AccountID;		//账户代码
 	ExchangeIDType ExchangeID;		//交易所代码
@@ -294,16 +195,16 @@ public:
 	MoneyType FrozenStampTax;		//冻结印花税
 	MoneyType FrozenTransferFee;		//冻结过户费
 };
-class StepReqQryTradeField
+class ReqQryTradeField
 {
 public:
-	static constexpr UShortType FieldID = 0x200C;
+	static constexpr UShortType FieldID = 0x1010;
 	AccountIDType AccountID;		//账户代码
 };
-class StepTradeField
+class TradeField
 {
 public:
-	static constexpr UShortType FieldID = 0x200D;
+	static constexpr UShortType FieldID = 0x1011;
 	DateType TradingDay;		//交易日
 	AccountIDType AccountID;		//账户代码
 	ExchangeIDType ExchangeID;		//交易所代码
@@ -324,17 +225,17 @@ public:
 	DateType TradeDate;		//成交日期
 	TimeType TradeTime;		//成交时间
 };
-class StepReqQryInstrumentField
+class ReqQryInstrumentField
 {
 public:
-	static constexpr UShortType FieldID = 0x200E;
+	static constexpr UShortType FieldID = 0x1012;
 	ExchangeIDType ExchangeID;		//交易所代码
 	InstrumentIDType InstrumentID;		//合约代码
 };
-class StepInstrumentField
+class InstrumentField
 {
 public:
-	static constexpr UShortType FieldID = 0x200F;
+	static constexpr UShortType FieldID = 0x1013;
 	ExchangeIDType ExchangeID;		//交易所代码
 	InstrumentIDType InstrumentID;		//合约代码
 	InstrumentIDType ExchangeInstID;		//交易所合约代码
@@ -342,17 +243,17 @@ public:
 	VolumeMultipleType VolumeMultiple;		//合约乘数
 	SecurityTypeType SecurityType;		//证券类别
 };
-class StepReqQryOptionInstrumentField
+class ReqQryOptionInstrumentField
 {
 public:
-	static constexpr UShortType FieldID = 0x2010;
+	static constexpr UShortType FieldID = 0x1014;
 	ExchangeIDType ExchangeID;		//交易所代码
 	InstrumentIDType InstrumentID;		//合约代码
 };
-class StepOptionInstrumentField
+class OptionInstrumentField
 {
 public:
-	static constexpr UShortType FieldID = 0x2011;
+	static constexpr UShortType FieldID = 0x1015;
 	ExchangeIDType ExchangeID;		//交易所代码
 	InstrumentIDType InstrumentID;		//合约代码
 	InstrumentIDType ExchangeInstID;		//交易所合约代码
@@ -367,18 +268,18 @@ public:
 	VolumeType MaxMarketOrderVolume;		//市价最大下单数量
 	DateType ExpiringDate;		//到期日
 };
-class StepReqQryCommissionRateField
+class ReqQryCommissionRateField
 {
 public:
-	static constexpr UShortType FieldID = 0x2012;
+	static constexpr UShortType FieldID = 0x1016;
 	AccountIDType AccountID;		//账户代码
 	ExchangeIDType ExchangeID;		//交易所代码
 	SecurityTypeType SecurityType;		//证券类别
 };
-class StepCommissionRateField
+class CommissionRateField
 {
 public:
-	static constexpr UShortType FieldID = 0x2013;
+	static constexpr UShortType FieldID = 0x1017;
 	AccountIDType AccountID;		//账户代码
 	ExchangeIDType ExchangeID;		//交易所代码
 	SecurityTypeType SecurityType;		//证券类别
@@ -393,10 +294,31 @@ public:
 	MoneyType MinCommission;		//最低手续费
 	MoneyType MaxCommission;		//最高手续费
 };
-class StepReqInsertOrderField
+class ReqQryMoneyTransferField
 {
 public:
-	static constexpr UShortType FieldID = 0x3001;
+	static constexpr UShortType FieldID = 0x1018;
+	AccountIDType AccountID;		//账户代码
+};
+class MoneyTransferField
+{
+public:
+	static constexpr UShortType FieldID = 0x1019;
+	DateType TradingDay;		//交易日
+	AccountIDType AccountID;		//账户代码
+	SequenceNoType MoneyTransferID;		//出入金编号
+	AccountTypeType AccountType;		//账户类型
+	TransferDirectionType TransferDirection;		//转移方向
+	MoneyType TransferAmount;		//转移金额
+	MessageType InfoMessage;		//备注信息
+	UserIDType UserID;		//用户代码
+	DateType TransferDate;		//操作日期
+	TimeType TransferTime;		//操作时间
+};
+class ReqInsertOrderField
+{
+public:
+	static constexpr UShortType FieldID = 0x101A;
 	AccountIDType AccountID;		//账户代码
 	ExchangeIDType ExchangeID;		//交易所代码
 	InstrumentIDType InstrumentID;		//合约代码
@@ -407,10 +329,10 @@ public:
 	VolumeType Volume;		//委托数量
 	ClientOrderIDType ClientOrderID;		//客户端委托编号
 };
-class StepReqCancelOrderField
+class ReqCancelOrderField
 {
 public:
-	static constexpr UShortType FieldID = 0x3002;
+	static constexpr UShortType FieldID = 0x101B;
 	AccountIDType AccountID;		//账户代码
 	ExchangeIDType ExchangeID;		//交易所代码
 	InstrumentIDType InstrumentID;		//合约代码
@@ -419,10 +341,10 @@ public:
 	OrderSysIDType OrderSysID;		//系统委托编号
 	ClientOrderIDType ClientOrderID;		//客户端委托编号
 };
-class StepCancelOrderField
+class CancelOrderField
 {
 public:
-	static constexpr UShortType FieldID = 0x3003;
+	static constexpr UShortType FieldID = 0x101C;
 	AccountIDType AccountID;		//账户代码
 	ExchangeIDType ExchangeID;		//交易所代码
 	InstrumentIDType InstrumentID;		//合约代码
@@ -431,53 +353,68 @@ public:
 	OrderSysIDType OrderSysID;		//系统委托编号
 	ClientOrderIDType ClientOrderID;		//客户端委托编号
 };
-class StepReqMdInitField
+class ReqRiskUserLoginField
 {
 public:
-	static constexpr UShortType FieldID = 0x3101;
-	ExchangeIDType ExchangeID;		//交易所代码
-	DateType TradingDay;		//交易日
+	static constexpr UShortType FieldID = 0x2001;
+	UserIDType UserID;		//用户代码
+	PasswordType Password;		//密码
 };
-class StepRspMdInitField
+class RspRiskUserLoginField
 {
 public:
-	static constexpr UShortType FieldID = 0x3102;
-	ExchangeIDType ExchangeID;		//交易所代码
-	DateType TradingDay;		//交易日
+	static constexpr UShortType FieldID = 0x2002;
+	UserIDType UserID;		//用户代码
+	GroupIDType RiskGroupID;		//交易组代码
+	DateType LoginDate;		//登录日期
+	TimeType LoginTime;		//登录时间
+	SessionIDType SessionID;		//会话编号
 };
-class StepReqSubscribeMdField
+class ReqRiskUserLogoutField
 {
 public:
-	static constexpr UShortType FieldID = 0x3103;
-	ExchangeIDType ExchangeID;		//交易所代码
-	InstrumentIDType InstrumentID;		//合约代码
+	static constexpr UShortType FieldID = 0x2003;
+	UserIDType UserID;		//用户代码
 };
-class StepRspSubscribeMdField
+class RspRiskUserLogoutField
 {
 public:
-	static constexpr UShortType FieldID = 0x3104;
-	ExchangeIDType ExchangeID;		//交易所代码
-	InstrumentIDType InstrumentID;		//合约代码
+	static constexpr UShortType FieldID = 0x2004;
+	UserIDType UserID;		//用户代码
 };
-class StepAccountRiskField
+class RiskUserLogoutField
 {
 public:
-	static constexpr UShortType FieldID = 0x3201;
+	static constexpr UShortType FieldID = 0x2005;
+	UserIDType UserID;		//用户代码
+	ErrorIDType ErrorID;		//错误代码
+	MessageType ErrorMsg;		//错误信息
+};
+class AccountDeleteField
+{
+public:
+	static constexpr UShortType FieldID = 0x2006;
+	AccountIDType AccountID;		//账户代码
+};
+class AccountRiskField
+{
+public:
+	static constexpr UShortType FieldID = 0x2007;
 	AccountIDType AccountID;		//账户代码
 	RiskIDType RiskID;		//风控代码
 	RiskStatusType RiskStatus;		//风控状态
 };
-class StepAccountRiskDeleteField
+class AccountRiskDeleteField
 {
 public:
-	static constexpr UShortType FieldID = 0x3202;
+	static constexpr UShortType FieldID = 0x2008;
 	AccountIDType AccountID;		//账户代码
 	RiskIDType RiskID;		//风控代码
 };
-class StepAccountRiskNotifyField
+class AccountRiskNotifyField
 {
 public:
-	static constexpr UShortType FieldID = 0x3203;
+	static constexpr UShortType FieldID = 0x2009;
 	DateType NotifyDate;		//通知日期
 	TimeType NotifyTime;		//通知时间
 	AccountIDType AccountID;		//账户代码
@@ -486,88 +423,58 @@ public:
 	RiskStatusType RiskStatus;		//风控状态
 	MessageType RiskMessage;		//风控信息
 };
-class StepShortMdField
+class ReqQryRiskGroupAccountField
 {
 public:
-	static constexpr UShortType FieldID = 0x3301;
-	DateType TradingDay;		//交易日
-	ExchangeIDType ExchangeID;		//交易所代码
-	InstrumentIDType InstrumentID;		//合约代码
-	PriceType LastPrice;		//最新价
-	PriceType ClosePrice;		//收盘价
-	PriceType PreClosePrice;		//昨收盘价
-	PriceType SettlementPrice;		//结算价
-	PriceType PreSettlementPrice;		//昨结算价
-	PriceType UpperLimitPrice;		//涨停板价
-	PriceType LowerLimitPrice;		//跌停板价
-};
-class StepRtnExchangeStatusField
-{
-public:
-	static constexpr UShortType FieldID = 0x3302;
-	ExchangeIDType ExchangeID;		//交易所代码
-	DateType ExchangeDate;		//交易所日期
-	ExchangeStatusType ExchangeStatus;		//交易所状态
-};
-class StepMdInitCompletedField
-{
-public:
-	static constexpr UShortType FieldID = 0x3303;
-	ExchangeIDType ExchangeID;		//交易所代码
-	DateType TradingDay;		//交易日
-};
-class StepReqQryRiskGroupAccountField
-{
-public:
-	static constexpr UShortType FieldID = 0x4001;
+	static constexpr UShortType FieldID = 0x200A;
 	UserIDType UserID;		//用户代码
 };
-class StepReqQryRiskGroupCapitalField
+class ReqQryRiskGroupCapitalField
 {
 public:
-	static constexpr UShortType FieldID = 0x4002;
+	static constexpr UShortType FieldID = 0x200B;
 	UserIDType UserID;		//用户代码
 	AccountIDType AccountID;		//账户代码
 };
-class StepReqQryRiskGroupPositionField
+class ReqQryRiskGroupPositionField
 {
 public:
-	static constexpr UShortType FieldID = 0x4003;
+	static constexpr UShortType FieldID = 0x200C;
 	UserIDType UserID;		//用户代码
 	AccountIDType AccountID;		//账户代码
 };
-class StepReqQryRiskGroupOrderField
+class ReqQryRiskGroupOrderField
 {
 public:
-	static constexpr UShortType FieldID = 0x4004;
+	static constexpr UShortType FieldID = 0x200D;
 	UserIDType UserID;		//用户代码
 	AccountIDType AccountID;		//账户代码
 };
-class StepReqQryRiskGroupTradeField
+class ReqQryRiskGroupTradeField
 {
 public:
-	static constexpr UShortType FieldID = 0x4005;
+	static constexpr UShortType FieldID = 0x200E;
 	UserIDType UserID;		//用户代码
 	AccountIDType AccountID;		//账户代码
 };
-class StepReqQryRiskGroupAccountRiskField
+class ReqQryRiskGroupAccountRiskField
 {
 public:
-	static constexpr UShortType FieldID = 0x4006;
+	static constexpr UShortType FieldID = 0x200F;
 	UserIDType UserID;		//用户代码
 	AccountIDType AccountID;		//账户代码
 };
-class StepReqQryRiskGroupAccountRiskNotifyField
+class ReqQryRiskGroupAccountRiskNotifyField
 {
 public:
-	static constexpr UShortType FieldID = 0x4007;
+	static constexpr UShortType FieldID = 0x2010;
 	UserIDType UserID;		//用户代码
 	AccountIDType AccountID;		//账户代码
 };
-class StepReqRiskInsertOrderField
+class ReqRiskInsertOrderField
 {
 public:
-	static constexpr UShortType FieldID = 0x4008;
+	static constexpr UShortType FieldID = 0x2011;
 	UserIDType UserID;		//用户代码
 	AccountIDType AccountID;		//账户代码
 	ExchangeIDType ExchangeID;		//交易所代码
@@ -580,10 +487,10 @@ public:
 	ClientOrderIDType ClientOrderID;		//客户端委托编号
 	BoolType IsForceClose;		//是否强平单
 };
-class StepReqRiskCancelOrderField
+class ReqRiskCancelOrderField
 {
 public:
-	static constexpr UShortType FieldID = 0x4009;
+	static constexpr UShortType FieldID = 0x2012;
 	UserIDType UserID;		//用户代码
 	AccountIDType AccountID;		//账户代码
 	ExchangeIDType ExchangeID;		//交易所代码
@@ -593,104 +500,226 @@ public:
 	OrderSysIDType OrderSysID;		//系统委托编号
 	ClientOrderIDType ClientOrderID;		//客户端委托编号
 };
-class StepReqAddRiskUserField
+class ReqMdUserLoginField
 {
 public:
-	static constexpr UShortType FieldID = 0x5001;
+	static constexpr UShortType FieldID = 0x3001;
+	UserIDType MdUserID;		//行情用户代码
+	PasswordType Password;		//密码
+};
+class RspMdUserLoginField
+{
+public:
+	static constexpr UShortType FieldID = 0x3002;
+	UserIDType MdUserID;		//行情用户代码
+	DateType LoginDate;		//登录日期
+	TimeType LoginTime;		//登录时间
+	SessionIDType SessionID;		//会话编号
+};
+class ReqMdUserLogoutField
+{
+public:
+	static constexpr UShortType FieldID = 0x3003;
+	UserIDType MdUserID;		//行情用户代码
+};
+class RspMdUserLogoutField
+{
+public:
+	static constexpr UShortType FieldID = 0x3004;
+	UserIDType MdUserID;		//行情用户代码
+};
+class ReqMdInitField
+{
+public:
+	static constexpr UShortType FieldID = 0x3005;
+	ExchangeIDType ExchangeID;		//交易所代码
+	DateType TradingDay;		//交易日
+};
+class RspMdInitField
+{
+public:
+	static constexpr UShortType FieldID = 0x3006;
+	ExchangeIDType ExchangeID;		//交易所代码
+	DateType TradingDay;		//交易日
+};
+class ReqSubscribeMdField
+{
+public:
+	static constexpr UShortType FieldID = 0x3007;
+	ExchangeIDType ExchangeID;		//交易所代码
+	InstrumentIDType InstrumentID;		//合约代码
+};
+class RspSubscribeMdField
+{
+public:
+	static constexpr UShortType FieldID = 0x3008;
+	ExchangeIDType ExchangeID;		//交易所代码
+	InstrumentIDType InstrumentID;		//合约代码
+};
+class ShortMdField
+{
+public:
+	static constexpr UShortType FieldID = 0x3009;
+	DateType TradingDay;		//交易日
+	ExchangeIDType ExchangeID;		//交易所代码
+	InstrumentIDType InstrumentID;		//合约代码
+	PriceType LastPrice;		//最新价
+	PriceType ClosePrice;		//收盘价
+	PriceType PreClosePrice;		//昨收盘价
+	PriceType SettlementPrice;		//结算价
+	PriceType PreSettlementPrice;		//昨结算价
+	PriceType UpperLimitPrice;		//涨停板价
+	PriceType LowerLimitPrice;		//跌停板价
+};
+class RtnExchangeStatusField
+{
+public:
+	static constexpr UShortType FieldID = 0x300A;
+	ExchangeIDType ExchangeID;		//交易所代码
+	DateType ExchangeDate;		//交易所日期
+	ExchangeStatusType ExchangeStatus;		//交易所状态
+};
+class MdInitCompletedField
+{
+public:
+	static constexpr UShortType FieldID = 0x300B;
+	ExchangeIDType ExchangeID;		//交易所代码
+	DateType TradingDay;		//交易日
+};
+class ReqAdminUserLoginField
+{
+public:
+	static constexpr UShortType FieldID = 0x4001;
+	UserIDType AdminUserID;		//管理用户代码
+	PasswordType Password;		//密码
+};
+class RspAdminUserLoginField
+{
+public:
+	static constexpr UShortType FieldID = 0x4002;
+	UserIDType AdminUserID;		//管理用户代码
+	DateType LoginDate;		//登录日期
+	TimeType LoginTime;		//登录时间
+	SessionIDType SessionID;		//会话编号
+};
+class ReqAdminUserLogoutField
+{
+public:
+	static constexpr UShortType FieldID = 0x4003;
+	UserIDType AdminUserID;		//管理用户代码
+};
+class RspAdminUserLogoutField
+{
+public:
+	static constexpr UShortType FieldID = 0x4004;
+	UserIDType AdminUserID;		//管理用户代码
+};
+class AdminUserLogoutField
+{
+public:
+	static constexpr UShortType FieldID = 0x4005;
+	UserIDType UserID;		//用户代码
+	ErrorIDType ErrorID;		//错误代码
+	MessageType ErrorMsg;		//错误信息
+};
+class ReqAddRiskUserField
+{
+public:
+	static constexpr UShortType FieldID = 0x4006;
 	UserIDType AdminUserID;		//管理用户代码
 	UserIDType UserID;		//用户代码
 	UserNameType UserName;		//用户名称
 	PasswordType Password;		//密码
 	GroupIDType RiskGroupID;		//交易组代码
 };
-class StepRspAddRiskUserField
+class RspAddRiskUserField
 {
 public:
-	static constexpr UShortType FieldID = 0x5002;
+	static constexpr UShortType FieldID = 0x4007;
 	UserIDType AdminUserID;		//管理用户代码
 	UserIDType UserID;		//用户代码
 };
-class StepReqUpdateRiskUserField
+class ReqUpdateRiskUserField
 {
 public:
-	static constexpr UShortType FieldID = 0x5003;
+	static constexpr UShortType FieldID = 0x4008;
 	UserIDType AdminUserID;		//管理用户代码
 	UserIDType UserID;		//用户代码
 	UserNameType UserName;		//用户名称
 	PasswordType Password;		//密码
 	GroupIDType RiskGroupID;		//交易组代码
 };
-class StepRspUpdateRiskUserField
+class RspUpdateRiskUserField
 {
 public:
-	static constexpr UShortType FieldID = 0x5004;
+	static constexpr UShortType FieldID = 0x4009;
 	UserIDType AdminUserID;		//管理用户代码
 	UserIDType UserID;		//用户代码
 };
-class StepReqRemoveRiskUserField
+class ReqRemoveRiskUserField
 {
 public:
-	static constexpr UShortType FieldID = 0x5005;
+	static constexpr UShortType FieldID = 0x400A;
 	UserIDType AdminUserID;		//管理用户代码
 	UserIDType UserID;		//用户代码
 };
-class StepRspRemoveRiskUserField
+class RspRemoveRiskUserField
 {
 public:
-	static constexpr UShortType FieldID = 0x5006;
+	static constexpr UShortType FieldID = 0x400B;
 	UserIDType AdminUserID;		//管理用户代码
 	UserIDType UserID;		//用户代码
 };
-class StepReqAddAdminUserField
+class ReqAddAdminUserField
 {
 public:
-	static constexpr UShortType FieldID = 0x5007;
-	UserIDType AdminUserID;		//管理用户代码
-	UserIDType UserID;		//用户代码
-	UserNameType UserName;		//用户名称
-	PasswordType Password;		//密码
-};
-class StepRspAddAdminUserField
-{
-public:
-	static constexpr UShortType FieldID = 0x5008;
-	UserIDType AdminUserID;		//管理用户代码
-	UserIDType UserID;		//用户代码
-};
-class StepReqUpdateAdminUserField
-{
-public:
-	static constexpr UShortType FieldID = 0x5009;
+	static constexpr UShortType FieldID = 0x400C;
 	UserIDType AdminUserID;		//管理用户代码
 	UserIDType UserID;		//用户代码
 	UserNameType UserName;		//用户名称
 	PasswordType Password;		//密码
 };
-class StepRspUpdateAdminUserField
+class RspAddAdminUserField
 {
 public:
-	static constexpr UShortType FieldID = 0x500A;
+	static constexpr UShortType FieldID = 0x400D;
 	UserIDType AdminUserID;		//管理用户代码
 	UserIDType UserID;		//用户代码
 };
-class StepReqRemoveAdminUserField
+class ReqUpdateAdminUserField
 {
 public:
-	static constexpr UShortType FieldID = 0x500B;
+	static constexpr UShortType FieldID = 0x400E;
+	UserIDType AdminUserID;		//管理用户代码
+	UserIDType UserID;		//用户代码
+	UserNameType UserName;		//用户名称
+	PasswordType Password;		//密码
+};
+class RspUpdateAdminUserField
+{
+public:
+	static constexpr UShortType FieldID = 0x400F;
 	UserIDType AdminUserID;		//管理用户代码
 	UserIDType UserID;		//用户代码
 };
-class StepRspRemoveAdminUserField
+class ReqRemoveAdminUserField
 {
 public:
-	static constexpr UShortType FieldID = 0x500C;
+	static constexpr UShortType FieldID = 0x4010;
 	UserIDType AdminUserID;		//管理用户代码
 	UserIDType UserID;		//用户代码
 };
-class StepReqAddPrimaryAccountField
+class RspRemoveAdminUserField
 {
 public:
-	static constexpr UShortType FieldID = 0x6001;
+	static constexpr UShortType FieldID = 0x4011;
+	UserIDType AdminUserID;		//管理用户代码
+	UserIDType UserID;		//用户代码
+};
+class ReqAddPrimaryAccountField
+{
+public:
+	static constexpr UShortType FieldID = 0x4012;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	AccountIDType PrimaryAccountID;		//主账户代码
@@ -706,17 +735,17 @@ public:
 	GroupIDType CommissionGroupID;		//交易组代码
 	BoolType IsAutoAudit;		//是否自动审核
 };
-class StepRspAddPrimaryAccountField
+class RspAddPrimaryAccountField
 {
 public:
-	static constexpr UShortType FieldID = 0x6002;
+	static constexpr UShortType FieldID = 0x4013;
 	UserIDType AdminUserID;		//管理用户代码
 	AccountIDType PrimaryAccountID;		//主账户代码
 };
-class StepReqUpdatePrimaryAccountField
+class ReqUpdatePrimaryAccountField
 {
 public:
-	static constexpr UShortType FieldID = 0x6003;
+	static constexpr UShortType FieldID = 0x4014;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	AccountIDType PrimaryAccountID;		//主账户代码
@@ -732,31 +761,31 @@ public:
 	GroupIDType CommissionGroupID;		//交易组代码
 	BoolType IsAutoAudit;		//是否自动审核
 };
-class StepRspUpdatePrimaryAccountField
+class RspUpdatePrimaryAccountField
 {
 public:
-	static constexpr UShortType FieldID = 0x6004;
+	static constexpr UShortType FieldID = 0x4015;
 	UserIDType AdminUserID;		//管理用户代码
 	AccountIDType PrimaryAccountID;		//主账户代码
 };
-class StepReqRemovePrimaryAccountField
+class ReqRemovePrimaryAccountField
 {
 public:
-	static constexpr UShortType FieldID = 0x6005;
+	static constexpr UShortType FieldID = 0x4016;
 	UserIDType AdminUserID;		//管理用户代码
 	AccountIDType PrimaryAccountID;		//主账户代码
 };
-class StepRspRemovePrimaryAccountField
+class RspRemovePrimaryAccountField
 {
 public:
-	static constexpr UShortType FieldID = 0x6006;
+	static constexpr UShortType FieldID = 0x4017;
 	UserIDType AdminUserID;		//管理用户代码
 	AccountIDType PrimaryAccountID;		//主账户代码
 };
-class StepReqAddAccountField
+class ReqAddAccountField
 {
 public:
-	static constexpr UShortType FieldID = 0x6007;
+	static constexpr UShortType FieldID = 0x4018;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	AccountIDType AccountID;		//账户代码
@@ -768,17 +797,17 @@ public:
 	GroupIDType CommissionGroupID;		//交易组代码
 	BoolType IsAutoAudit;		//是否自动审核
 };
-class StepRspAddAccountField
+class RspAddAccountField
 {
 public:
-	static constexpr UShortType FieldID = 0x6008;
+	static constexpr UShortType FieldID = 0x4019;
 	UserIDType AdminUserID;		//管理用户代码
 	AccountIDType AccountID;		//账户代码
 };
-class StepReqUpdateAccountField
+class ReqUpdateAccountField
 {
 public:
-	static constexpr UShortType FieldID = 0x6009;
+	static constexpr UShortType FieldID = 0x401A;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	AccountIDType AccountID;		//账户代码
@@ -790,31 +819,31 @@ public:
 	GroupIDType CommissionGroupID;		//交易组代码
 	BoolType IsAutoAudit;		//是否自动审核
 };
-class StepRspUpdateAccountField
+class RspUpdateAccountField
 {
 public:
-	static constexpr UShortType FieldID = 0x600A;
+	static constexpr UShortType FieldID = 0x401B;
 	UserIDType AdminUserID;		//管理用户代码
 	AccountIDType AccountID;		//账户代码
 };
-class StepReqRemoveAccountField
+class ReqRemoveAccountField
 {
 public:
-	static constexpr UShortType FieldID = 0x600B;
+	static constexpr UShortType FieldID = 0x401C;
 	UserIDType AdminUserID;		//管理用户代码
 	AccountIDType AccountID;		//账户代码
 };
-class StepRspRemoveAccountField
+class RspRemoveAccountField
 {
 public:
-	static constexpr UShortType FieldID = 0x600C;
+	static constexpr UShortType FieldID = 0x401D;
 	UserIDType AdminUserID;		//管理用户代码
 	AccountIDType AccountID;		//账户代码
 };
-class StepReqAddBaseCommissionField
+class ReqAddBaseCommissionField
 {
 public:
-	static constexpr UShortType FieldID = 0x7001;
+	static constexpr UShortType FieldID = 0x401E;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	ExchangeIDType ExchangeID;		//交易所代码
@@ -824,19 +853,19 @@ public:
 	RateType OpenTransferFeeByMoney;		//开仓过户费率
 	RateType CloseTransferFeeByMoney;		//平仓过户费率
 };
-class StepRspAddBaseCommissionField
+class RspAddBaseCommissionField
 {
 public:
-	static constexpr UShortType FieldID = 0x7002;
+	static constexpr UShortType FieldID = 0x401F;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	ExchangeIDType ExchangeID;		//交易所代码
 	SecurityTypeType SecurityType;		//证券类别
 };
-class StepReqUpdateBaseCommissionField
+class ReqUpdateBaseCommissionField
 {
 public:
-	static constexpr UShortType FieldID = 0x7003;
+	static constexpr UShortType FieldID = 0x4020;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	ExchangeIDType ExchangeID;		//交易所代码
@@ -846,37 +875,37 @@ public:
 	RateType OpenTransferFeeByMoney;		//开仓过户费率
 	RateType CloseTransferFeeByMoney;		//平仓过户费率
 };
-class StepRspUpdateBaseCommissionField
+class RspUpdateBaseCommissionField
 {
 public:
-	static constexpr UShortType FieldID = 0x7004;
+	static constexpr UShortType FieldID = 0x4021;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	ExchangeIDType ExchangeID;		//交易所代码
 	SecurityTypeType SecurityType;		//证券类别
 };
-class StepReqRemoveBaseCommissionField
+class ReqRemoveBaseCommissionField
 {
 public:
-	static constexpr UShortType FieldID = 0x7005;
+	static constexpr UShortType FieldID = 0x4022;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	ExchangeIDType ExchangeID;		//交易所代码
 	SecurityTypeType SecurityType;		//证券类别
 };
-class StepRspRemoveBaseCommissionField
+class RspRemoveBaseCommissionField
 {
 public:
-	static constexpr UShortType FieldID = 0x7006;
+	static constexpr UShortType FieldID = 0x4023;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	ExchangeIDType ExchangeID;		//交易所代码
 	SecurityTypeType SecurityType;		//证券类别
 };
-class StepReqAddCommissionGroupField
+class ReqAddCommissionGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x7007;
+	static constexpr UShortType FieldID = 0x4024;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	GroupIDType CommissionGroupID;		//交易组代码
@@ -894,20 +923,20 @@ public:
 	MoneyType MinCommission;		//最低手续费
 	MoneyType MaxCommission;		//最高手续费
 };
-class StepRspAddCommissionGroupField
+class RspAddCommissionGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x7008;
+	static constexpr UShortType FieldID = 0x4025;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	GroupIDType CommissionGroupID;		//交易组代码
 	ExchangeIDType ExchangeID;		//交易所代码
 	SecurityTypeType SecurityType;		//证券类别
 };
-class StepReqUpdateCommissionGroupField
+class ReqUpdateCommissionGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x7009;
+	static constexpr UShortType FieldID = 0x4026;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	GroupIDType CommissionGroupID;		//交易组代码
@@ -925,370 +954,370 @@ public:
 	MoneyType MinCommission;		//最低手续费
 	MoneyType MaxCommission;		//最高手续费
 };
-class StepRspUpdateCommissionGroupField
+class RspUpdateCommissionGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x700A;
+	static constexpr UShortType FieldID = 0x4027;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	GroupIDType CommissionGroupID;		//交易组代码
 	ExchangeIDType ExchangeID;		//交易所代码
 	SecurityTypeType SecurityType;		//证券类别
 };
-class StepReqRemoveCommissionGroupField
+class ReqRemoveCommissionGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x700B;
+	static constexpr UShortType FieldID = 0x4028;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	GroupIDType CommissionGroupID;		//交易组代码
 	ExchangeIDType ExchangeID;		//交易所代码
 	SecurityTypeType SecurityType;		//证券类别
 };
-class StepRspRemoveCommissionGroupField
+class RspRemoveCommissionGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x700C;
+	static constexpr UShortType FieldID = 0x4029;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	GroupIDType CommissionGroupID;		//交易组代码
 	ExchangeIDType ExchangeID;		//交易所代码
 	SecurityTypeType SecurityType;		//证券类别
 };
-class StepReqAddOptionMarginParamField
+class ReqAddOptionMarginParamField
 {
 public:
-	static constexpr UShortType FieldID = 0x700D;
+	static constexpr UShortType FieldID = 0x402A;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	ExchangeIDType ExchangeID;		//交易所代码
 	RateType Param1;		//参数1
 	RateType Param2;		//参数2
 };
-class StepRspAddOptionMarginParamField
+class RspAddOptionMarginParamField
 {
 public:
-	static constexpr UShortType FieldID = 0x700E;
+	static constexpr UShortType FieldID = 0x402B;
 	UserIDType AdminUserID;		//管理用户代码
 	ExchangeIDType ExchangeID;		//交易所代码
 };
-class StepReqUpdateOptionMarginParamField
+class ReqUpdateOptionMarginParamField
 {
 public:
-	static constexpr UShortType FieldID = 0x700F;
+	static constexpr UShortType FieldID = 0x402C;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	ExchangeIDType ExchangeID;		//交易所代码
 	RateType Param1;		//参数1
 	RateType Param2;		//参数2
 };
-class StepRspUpdateOptionMarginParamField
+class RspUpdateOptionMarginParamField
 {
 public:
-	static constexpr UShortType FieldID = 0x7010;
+	static constexpr UShortType FieldID = 0x402D;
 	UserIDType AdminUserID;		//管理用户代码
 	ExchangeIDType ExchangeID;		//交易所代码
 };
-class StepReqRemoveOptionMarginParamField
+class ReqRemoveOptionMarginParamField
 {
 public:
-	static constexpr UShortType FieldID = 0x7011;
+	static constexpr UShortType FieldID = 0x402E;
 	UserIDType AdminUserID;		//管理用户代码
 	ExchangeIDType ExchangeID;		//交易所代码
 };
-class StepRspRemoveOptionMarginParamField
+class RspRemoveOptionMarginParamField
 {
 public:
-	static constexpr UShortType FieldID = 0x7012;
+	static constexpr UShortType FieldID = 0x402F;
 	UserIDType AdminUserID;		//管理用户代码
 	ExchangeIDType ExchangeID;		//交易所代码
 };
-class StepReqAddTradeOfferField
+class ReqAddTradeOfferField
 {
 public:
-	static constexpr UShortType FieldID = 0x8001;
+	static constexpr UShortType FieldID = 0x4030;
 	UserIDType AdminUserID;		//管理用户代码
 	OfferIDType OfferID;		//报盘代码
 	OfferNameType OfferName;		//报盘名称
 	OfferTypeType OfferType;		//报盘类型
 	PasswordType OfferPassword;		//报盘密码
 };
-class StepRspAddTradeOfferField
+class RspAddTradeOfferField
 {
 public:
-	static constexpr UShortType FieldID = 0x8002;
+	static constexpr UShortType FieldID = 0x4031;
 	UserIDType AdminUserID;		//管理用户代码
 	OfferIDType OfferID;		//报盘代码
 };
-class StepReqUpdateTradeOfferField
+class ReqUpdateTradeOfferField
 {
 public:
-	static constexpr UShortType FieldID = 0x8003;
+	static constexpr UShortType FieldID = 0x4032;
 	UserIDType AdminUserID;		//管理用户代码
 	OfferIDType OfferID;		//报盘代码
 	OfferNameType OfferName;		//报盘名称
 	OfferTypeType OfferType;		//报盘类型
 	PasswordType OfferPassword;		//报盘密码
 };
-class StepRspUpdateTradeOfferField
+class RspUpdateTradeOfferField
 {
 public:
-	static constexpr UShortType FieldID = 0x8004;
+	static constexpr UShortType FieldID = 0x4033;
 	UserIDType AdminUserID;		//管理用户代码
 	OfferIDType OfferID;		//报盘代码
 };
-class StepReqRemoveTradeOfferField
+class ReqRemoveTradeOfferField
 {
 public:
-	static constexpr UShortType FieldID = 0x8005;
+	static constexpr UShortType FieldID = 0x4034;
 	UserIDType AdminUserID;		//管理用户代码
 	OfferIDType OfferID;		//报盘代码
 };
-class StepRspRemoveTradeOfferField
+class RspRemoveTradeOfferField
 {
 public:
-	static constexpr UShortType FieldID = 0x8006;
+	static constexpr UShortType FieldID = 0x4035;
 	UserIDType AdminUserID;		//管理用户代码
 	OfferIDType OfferID;		//报盘代码
 };
-class StepReqAddTradeGroupField
+class ReqAddTradeGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x8007;
+	static constexpr UShortType FieldID = 0x4036;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType TradeGroupID;		//交易组代码
 	GroupNameType TradeGroupName;		//交易组名称
 };
-class StepRspAddTradeGroupField
+class RspAddTradeGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x8008;
+	static constexpr UShortType FieldID = 0x4037;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType TradeGroupID;		//交易组代码
 };
-class StepReqUpdateTradeGroupField
+class ReqUpdateTradeGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x8009;
+	static constexpr UShortType FieldID = 0x4038;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType TradeGroupID;		//交易组代码
 	GroupNameType TradeGroupName;		//交易组名称
 };
-class StepRspUpdateTradeGroupField
+class RspUpdateTradeGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x800A;
+	static constexpr UShortType FieldID = 0x4039;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType TradeGroupID;		//交易组代码
 };
-class StepReqRemoveTradeGroupField
+class ReqRemoveTradeGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x800B;
+	static constexpr UShortType FieldID = 0x403A;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType TradeGroupID;		//交易组代码
 };
-class StepRspRemoveTradeGroupField
+class RspRemoveTradeGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x800C;
+	static constexpr UShortType FieldID = 0x403B;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType TradeGroupID;		//交易组代码
 };
-class StepReqAddTradeGroupItemField
+class ReqAddTradeGroupItemField
 {
 public:
-	static constexpr UShortType FieldID = 0x800D;
+	static constexpr UShortType FieldID = 0x403C;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType TradeGroupID;		//交易组代码
 	AccountClassType AccountClass;		//账户类别
 	AccountIDType PrimaryAccountID;		//主账户代码
 };
-class StepRspAddTradeGroupItemField
+class RspAddTradeGroupItemField
 {
 public:
-	static constexpr UShortType FieldID = 0x800E;
+	static constexpr UShortType FieldID = 0x403D;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType TradeGroupID;		//交易组代码
 	AccountClassType AccountClass;		//账户类别
 };
-class StepReqUpdateTradeGroupItemField
+class ReqUpdateTradeGroupItemField
 {
 public:
-	static constexpr UShortType FieldID = 0x800F;
+	static constexpr UShortType FieldID = 0x403E;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType TradeGroupID;		//交易组代码
 	AccountClassType AccountClass;		//账户类别
 	AccountIDType PrimaryAccountID;		//主账户代码
 };
-class StepRspUpdateTradeGroupItemField
+class RspUpdateTradeGroupItemField
 {
 public:
-	static constexpr UShortType FieldID = 0x8010;
+	static constexpr UShortType FieldID = 0x403F;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType TradeGroupID;		//交易组代码
 	AccountClassType AccountClass;		//账户类别
 };
-class StepReqRemoveTradeGroupItemField
+class ReqRemoveTradeGroupItemField
 {
 public:
-	static constexpr UShortType FieldID = 0x8011;
+	static constexpr UShortType FieldID = 0x4040;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType TradeGroupID;		//交易组代码
 	AccountClassType AccountClass;		//账户类别
 };
-class StepRspRemoveTradeGroupItemField
+class RspRemoveTradeGroupItemField
 {
 public:
-	static constexpr UShortType FieldID = 0x8012;
+	static constexpr UShortType FieldID = 0x4041;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType TradeGroupID;		//交易组代码
 	AccountClassType AccountClass;		//账户类别
 };
-class StepReqAddRiskGroupField
+class ReqAddRiskGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x9001;
+	static constexpr UShortType FieldID = 0x4042;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType RiskGroupID;		//交易组代码
 	GroupNameType RiskGroupName;		//风控组名称
 };
-class StepRspAddRiskGroupField
+class RspAddRiskGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x9002;
+	static constexpr UShortType FieldID = 0x4043;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType RiskGroupID;		//交易组代码
 };
-class StepReqUpdateRiskGroupField
+class ReqUpdateRiskGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x9003;
+	static constexpr UShortType FieldID = 0x4044;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType RiskGroupID;		//交易组代码
 	GroupNameType RiskGroupName;		//风控组名称
 };
-class StepRspUpdateRiskGroupField
+class RspUpdateRiskGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x9004;
+	static constexpr UShortType FieldID = 0x4045;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType RiskGroupID;		//交易组代码
 };
-class StepReqRemoveRiskGroupField
+class ReqRemoveRiskGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x9005;
+	static constexpr UShortType FieldID = 0x4046;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType RiskGroupID;		//交易组代码
 };
-class StepRspRemoveRiskGroupField
+class RspRemoveRiskGroupField
 {
 public:
-	static constexpr UShortType FieldID = 0x9006;
+	static constexpr UShortType FieldID = 0x4047;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType RiskGroupID;		//交易组代码
 };
-class StepReqAddRiskGroupItemField
+class ReqAddRiskGroupItemField
 {
 public:
-	static constexpr UShortType FieldID = 0x9007;
-	UserIDType AdminUserID;		//管理用户代码
-	GroupIDType RiskGroupID;		//交易组代码
-	RiskIDType RiskID;		//风控代码
-};
-class StepRspAddRiskGroupItemField
-{
-public:
-	static constexpr UShortType FieldID = 0x9008;
+	static constexpr UShortType FieldID = 0x4048;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType RiskGroupID;		//交易组代码
 	RiskIDType RiskID;		//风控代码
 };
-class StepReqUpdateRiskGroupItemField
+class RspAddRiskGroupItemField
 {
 public:
-	static constexpr UShortType FieldID = 0x9009;
+	static constexpr UShortType FieldID = 0x4049;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType RiskGroupID;		//交易组代码
 	RiskIDType RiskID;		//风控代码
 };
-class StepRspUpdateRiskGroupItemField
+class ReqUpdateRiskGroupItemField
 {
 public:
-	static constexpr UShortType FieldID = 0x900A;
+	static constexpr UShortType FieldID = 0x404A;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType RiskGroupID;		//交易组代码
 	RiskIDType RiskID;		//风控代码
 };
-class StepReqRemoveRiskGroupItemField
+class RspUpdateRiskGroupItemField
 {
 public:
-	static constexpr UShortType FieldID = 0x900B;
+	static constexpr UShortType FieldID = 0x404B;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType RiskGroupID;		//交易组代码
 	RiskIDType RiskID;		//风控代码
 };
-class StepRspRemoveRiskGroupItemField
+class ReqRemoveRiskGroupItemField
 {
 public:
-	static constexpr UShortType FieldID = 0x900C;
+	static constexpr UShortType FieldID = 0x404C;
 	UserIDType AdminUserID;		//管理用户代码
 	GroupIDType RiskGroupID;		//交易组代码
 	RiskIDType RiskID;		//风控代码
 };
-class StepReqAddOrUpdateRiskField
+class RspRemoveRiskGroupItemField
 {
 public:
-	static constexpr UShortType FieldID = 0xA001;
+	static constexpr UShortType FieldID = 0x404D;
+	UserIDType AdminUserID;		//管理用户代码
+	GroupIDType RiskGroupID;		//交易组代码
+	RiskIDType RiskID;		//风控代码
+};
+class ReqAddOrUpdateRiskField
+{
+public:
+	static constexpr UShortType FieldID = 0x404E;
 	UserIDType AdminUserID;		//管理用户代码
 	RiskIDType RiskID;		//风控代码
 	RiskNameType RiskName;		//风控名称
 	RiskClassIDType RiskClassID;		//风控类别代码
 };
-class StepRspAddOrUpdateRiskField
+class RspAddOrUpdateRiskField
 {
 public:
-	static constexpr UShortType FieldID = 0xA002;
+	static constexpr UShortType FieldID = 0x404F;
 	UserIDType AdminUserID;		//管理用户代码
 	RiskIDType RiskID;		//风控代码
 };
-class StepReqRemoveRiskField
+class ReqRemoveRiskField
 {
 public:
-	static constexpr UShortType FieldID = 0xA003;
+	static constexpr UShortType FieldID = 0x4050;
 	UserIDType AdminUserID;		//管理用户代码
 	RiskIDType RiskID;		//风控代码
 };
-class StepRspRemoveRiskField
+class RspRemoveRiskField
 {
 public:
-	static constexpr UShortType FieldID = 0xA004;
+	static constexpr UShortType FieldID = 0x4051;
 	UserIDType AdminUserID;		//管理用户代码
 	RiskIDType RiskID;		//风控代码
 };
-class StepReqAddRiskRuleField
+class ReqAddRiskRuleField
 {
 public:
-	static constexpr UShortType FieldID = 0xA005;
+	static constexpr UShortType FieldID = 0x4052;
 	UserIDType AdminUserID;		//管理用户代码
 	RiskIDType RiskID;		//风控代码
 	RiskRuleIDType RiskRuleID;		//风控规则代码
 	RiskRuleStyleType RiskRuleStyle;		//风控类型
 	MessageType FormatRiskMessage;		//带格式的风控信息
 };
-class StepRspAddRiskRuleField
+class RspAddRiskRuleField
 {
 public:
-	static constexpr UShortType FieldID = 0xA006;
+	static constexpr UShortType FieldID = 0x4053;
 	UserIDType AdminUserID;		//管理用户代码
 	RiskIDType RiskID;		//风控代码
 	RiskRuleIDType RiskRuleID;		//风控规则代码
 };
-class StepReqAddRiskRuleItemField
+class ReqAddRiskRuleItemField
 {
 public:
-	static constexpr UShortType FieldID = 0xA007;
+	static constexpr UShortType FieldID = 0x4054;
 	UserIDType AdminUserID;		//管理用户代码
 	RiskIDType RiskID;		//风控代码
 	RiskRuleIDType RiskRuleID;		//风控规则代码
@@ -1310,68 +1339,68 @@ public:
 	ParamValueType LogicParam2;		//逻辑函数参数2
 	RiskTextRefType LogicParam2TextRef;		//逻辑参数2文本引用序号
 };
-class StepRspAddRiskRuleItemField
+class RspAddRiskRuleItemField
 {
 public:
-	static constexpr UShortType FieldID = 0xA008;
+	static constexpr UShortType FieldID = 0x4055;
 	UserIDType AdminUserID;		//管理用户代码
 	RiskIDType RiskID;		//风控代码
 	RiskRuleIDType RiskRuleID;		//风控规则代码
 	RiskRuleItemIDType RiskRuleItemID;		//风控规则分项编号
 };
-class StepReqAddRiskTradeScopeField
+class ReqAddRiskTradeScopeField
 {
 public:
-	static constexpr UShortType FieldID = 0xA009;
+	static constexpr UShortType FieldID = 0x4056;
 	UserIDType AdminUserID;		//管理用户代码
 	RiskIDType RiskID;		//风控代码
 	TradeScopeTypeType TradeScopeType;		//交易范围类别
 	GroupIDType InstrumentGroupID;		//合约组代码
 	MessageType FormatRiskMessage;		//带格式的风控信息
 };
-class StepRspAddRiskTradeScopeField
+class RspAddRiskTradeScopeField
 {
 public:
-	static constexpr UShortType FieldID = 0xA00A;
+	static constexpr UShortType FieldID = 0x4057;
 	UserIDType AdminUserID;		//管理用户代码
 	RiskIDType RiskID;		//风控代码
 };
-class StepReqAddAccountRiskField
+class ReqAddAccountRiskField
 {
 public:
-	static constexpr UShortType FieldID = 0xA00B;
-	UserIDType AdminUserID;		//管理用户代码
-	AccountIDType AccountID;		//账户代码
-	RiskIDType RiskID;		//风控代码
-};
-class StepRspAddAccountRiskField
-{
-public:
-	static constexpr UShortType FieldID = 0xA00C;
+	static constexpr UShortType FieldID = 0x4058;
 	UserIDType AdminUserID;		//管理用户代码
 	AccountIDType AccountID;		//账户代码
 	RiskIDType RiskID;		//风控代码
 };
-class StepReqRemoveAccountRiskField
+class RspAddAccountRiskField
 {
 public:
-	static constexpr UShortType FieldID = 0xA00D;
+	static constexpr UShortType FieldID = 0x4059;
 	UserIDType AdminUserID;		//管理用户代码
 	AccountIDType AccountID;		//账户代码
 	RiskIDType RiskID;		//风控代码
 };
-class StepRspRemoveAccountRiskField
+class ReqRemoveAccountRiskField
 {
 public:
-	static constexpr UShortType FieldID = 0xA00E;
+	static constexpr UShortType FieldID = 0x405A;
 	UserIDType AdminUserID;		//管理用户代码
 	AccountIDType AccountID;		//账户代码
 	RiskIDType RiskID;		//风控代码
 };
-class StepReqMoneyTransferField
+class RspRemoveAccountRiskField
 {
 public:
-	static constexpr UShortType FieldID = 0xB001;
+	static constexpr UShortType FieldID = 0x405B;
+	UserIDType AdminUserID;		//管理用户代码
+	AccountIDType AccountID;		//账户代码
+	RiskIDType RiskID;		//风控代码
+};
+class ReqMoneyTransferField
+{
+public:
+	static constexpr UShortType FieldID = 0x405C;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	AccountIDType AccountID;		//账户代码
@@ -1384,40 +1413,19 @@ public:
 	DateType TransferDate;		//操作日期
 	TimeType TransferTime;		//操作时间
 };
-class StepRspMoneyTransferField
+class RspMoneyTransferField
 {
 public:
-	static constexpr UShortType FieldID = 0xB002;
+	static constexpr UShortType FieldID = 0x405D;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	AccountIDType AccountID;		//账户代码
 	SequenceNoType MoneyTransferID;		//出入金编号
 };
-class StepReqQryMoneyTransferField
+class ReqAuditOrderField
 {
 public:
-	static constexpr UShortType FieldID = 0xB003;
-	AccountIDType AccountID;		//账户代码
-};
-class StepMoneyTransferField
-{
-public:
-	static constexpr UShortType FieldID = 0xB004;
-	DateType TradingDay;		//交易日
-	AccountIDType AccountID;		//账户代码
-	SequenceNoType MoneyTransferID;		//出入金编号
-	AccountTypeType AccountType;		//账户类型
-	TransferDirectionType TransferDirection;		//转移方向
-	MoneyType TransferAmount;		//转移金额
-	MessageType InfoMessage;		//备注信息
-	UserIDType UserID;		//用户代码
-	DateType TransferDate;		//操作日期
-	TimeType TransferTime;		//操作时间
-};
-class StepReqAuditOrderField
-{
-public:
-	static constexpr UShortType FieldID = 0xB005;
+	static constexpr UShortType FieldID = 0x405E;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	AccountIDType AccountID;		//账户代码
@@ -1426,10 +1434,10 @@ public:
 	OrderIDType OrderID;		//委托编号
 	AuditStatusType AuditStatus;		//审核状态
 };
-class StepRspAuditOrderField
+class RspAuditOrderField
 {
 public:
-	static constexpr UShortType FieldID = 0xB006;
+	static constexpr UShortType FieldID = 0x405F;
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	AccountIDType AccountID;		//账户代码
@@ -1437,4 +1445,222 @@ public:
 	InstrumentIDType InstrumentID;		//合约代码
 	OrderIDType OrderID;		//委托编号
 	AuditStatusType AuditStatus;		//审核状态
+};
+class ReqOfferLoginField
+{
+public:
+	static constexpr UShortType FieldID = 0x5001;
+	OfferIDType OfferID;		//报盘代码
+	PasswordType OfferPassword;		//报盘密码
+};
+class RspOfferLoginField
+{
+public:
+	static constexpr UShortType FieldID = 0x5002;
+	ErrorIDType ErrorID;		//错误代码
+	MessageType ErrorMsg;		//错误信息
+	OfferIDType OfferID;		//报盘代码
+	DateType TradingDay;		//交易日
+};
+class ReqPrimaryAccountLoginField
+{
+public:
+	static constexpr UShortType FieldID = 0x5003;
+	AccountIDType PrimaryAccountID;		//主账户代码
+	PasswordType Password;		//密码
+};
+class RspPrimaryAccountLoginField
+{
+public:
+	static constexpr UShortType FieldID = 0x5004;
+	ErrorIDType ErrorID;		//错误代码
+	MessageType ErrorMsg;		//错误信息
+	DateType TradingDay;		//交易日
+	AccountIDType PrimaryAccountID;		//主账户代码
+};
+class ReqPrimaryAccountLogoutField
+{
+public:
+	static constexpr UShortType FieldID = 0x5005;
+	DateType TradingDay;		//交易日
+	AccountIDType PrimaryAccountID;		//主账户代码
+};
+class RtnPrimaryAccountLogoutField
+{
+public:
+	static constexpr UShortType FieldID = 0x5006;
+	DateType TradingDay;		//交易日
+	AccountIDType PrimaryAccountID;		//主账户代码
+};
+class ReqPrimaryAccountInitField
+{
+public:
+	static constexpr UShortType FieldID = 0x5007;
+	AccountIDType PrimaryAccountID;		//主账户代码
+};
+class RspPrimaryAccountInitField
+{
+public:
+	static constexpr UShortType FieldID = 0x5008;
+	ErrorIDType ErrorID;		//错误代码
+	MessageType ErrorMsg;		//错误信息
+	AccountIDType PrimaryAccountID;		//主账户代码
+};
+class ReqPrimaryAccountQueryField
+{
+public:
+	static constexpr UShortType FieldID = 0x5009;
+	AccountIDType PrimaryAccountID;		//主账户代码
+};
+class RspPrimaryAccountQueryField
+{
+public:
+	static constexpr UShortType FieldID = 0x500A;
+	ErrorIDType ErrorID;		//错误代码
+	MessageType ErrorMsg;		//错误信息
+	AccountIDType PrimaryAccountID;		//主账户代码
+};
+class ReqQryOfferOptionInstrumentField
+{
+public:
+	static constexpr UShortType FieldID = 0x500B;
+	AccountIDType PrimaryAccountID;		//主账户代码
+};
+class RspQryOfferOptionInstrumentField
+{
+public:
+	static constexpr UShortType FieldID = 0x500C;
+	ErrorIDType ErrorID;		//错误代码
+	MessageType ErrorMsg;		//错误信息
+	AccountIDType PrimaryAccountID;		//主账户代码
+};
+class OfferOptionInstrumentField
+{
+public:
+	static constexpr UShortType FieldID = 0x500D;
+	DateType TradingDay;		//交易日
+	ExchangeIDType ExchangeID;		//交易所代码
+	InstrumentIDType InstrumentID;		//合约代码
+	InstrumentIDType ExchangeInstID;		//交易所合约代码
+	InstrumentNameType InstrumentName;		//合约名称
+	VolumeMultipleType VolumeMultiple;		//合约乘数
+	OptionTypeType OptionType;		//期权类型
+	InstrumentIDType UnderlyingInstrumentID;		//标的合约代码
+	PriceType ExecutePrice;		//行权价
+	MoneyType UnitMargin;		//单位保证金
+	PriceType PriceTick;		//最小变动价位
+	VolumeType MaxLimitOrderVolume;		//限价最大下单数量
+	VolumeType MaxMarketOrderVolume;		//市价最大下单数量
+	DateType ExpiringDate;		//到期日
+};
+class ReqOfferOrderField
+{
+public:
+	static constexpr UShortType FieldID = 0x500E;
+	DateType TradingDay;		//交易日
+	AccountIDType PrimaryAccountID;		//主账户代码
+	ExchangeIDType ExchangeID;		//交易所代码
+	InstrumentIDType InstrumentID;		//合约代码
+	SecurityTypeType SecurityType;		//证券类别
+	OrderIDType OrderID;		//委托编号
+	DirectionType Direction;		//买卖方向
+	OffsetFlagType OffsetFlag;		//开平标志
+	OrderPriceTypeType OrderPriceType;		//委托价格类型
+	PriceType Price;		//委托价格
+	VolumeType Volume;		//委托数量
+};
+class ReqOfferCancelOrderField
+{
+public:
+	static constexpr UShortType FieldID = 0x500F;
+	DateType TradingDay;		//交易日
+	AccountIDType PrimaryAccountID;		//主账户代码
+	ExchangeIDType ExchangeID;		//交易所代码
+	InstrumentIDType InstrumentID;		//合约代码
+	SecurityTypeType SecurityType;		//证券类别
+	DirectionType Direction;		//买卖方向
+	OrderIDType CancelOrderID;		//本地撤单编号
+	OrderIDType OrderID;		//委托编号
+	OrderSysIDType OrderSysID;		//系统委托编号
+};
+class OfferOrderField
+{
+public:
+	static constexpr UShortType FieldID = 0x5010;
+	DateType TradingDay;		//交易日
+	AccountIDType PrimaryAccountID;		//主账户代码
+	ExchangeIDType ExchangeID;		//交易所代码
+	InstrumentIDType InstrumentID;		//合约代码
+	OrderIDType OrderID;		//委托编号
+	OrderSysIDType OrderSysID;		//系统委托编号
+	DirectionType Direction;		//买卖方向
+	OffsetFlagType OffsetFlag;		//开平标志
+	OrderPriceTypeType OrderPriceType;		//委托价格类型
+	PriceType Price;		//委托价格
+	VolumeType Volume;		//委托数量
+	VolumeType VolumeTotal;		//剩余数量
+	VolumeType VolumeTraded;		//成交数量
+	OrderStatusType OrderStatus;		//委托状态
+	MessageType StatusMsg;		//状态信息
+	DateType OrderDate;		//委托日期
+	TimeType OrderTime;		//委托时间
+	DateType CancelDate;		//撤单日期
+	TimeType CancelTime;		//撤单时间
+	BoolType IsNewOrder;		//是否新委托
+};
+class OfferTradeField
+{
+public:
+	static constexpr UShortType FieldID = 0x5011;
+	DateType TradingDay;		//交易日
+	AccountIDType PrimaryAccountID;		//主账户代码
+	ExchangeIDType ExchangeID;		//交易所代码
+	InstrumentIDType InstrumentID;		//合约代码
+	OrderIDType OrderID;		//委托编号
+	OrderSysIDType OrderSysID;		//系统委托编号
+	TradeIDType TradeID;		//成交编号
+	DirectionType Direction;		//买卖方向
+	OffsetFlagType OffsetFlag;		//开平标志
+	PriceType Price;		//委托价格
+	VolumeType Volume;		//委托数量
+	DateType TradeDate;		//成交日期
+	TimeType TradeTime;		//成交时间
+};
+class OfferErrorCancelOrderField
+{
+public:
+	static constexpr UShortType FieldID = 0x5012;
+	ErrorIDType ErrorID;		//错误代码
+	MessageType ErrorMsg;		//错误信息
+	DateType TradingDay;		//交易日
+	AccountIDType PrimaryAccountID;		//主账户代码
+	ExchangeIDType ExchangeID;		//交易所代码
+	InstrumentIDType InstrumentID;		//合约代码
+	DirectionType Direction;		//买卖方向
+	OrderIDType CancelOrderID;		//本地撤单编号
+	OrderIDType OrderID;		//委托编号
+	OrderSysIDType OrderSysID;		//系统委托编号
+};
+class OfferCapitalField
+{
+public:
+	static constexpr UShortType FieldID = 0x5013;
+	DateType TradingDay;		//交易日
+	AccountIDType PrimaryAccountID;		//主账户代码
+	MoneyType PreCashAsset;		//上日现金资产
+};
+class OfferPositionField
+{
+public:
+	static constexpr UShortType FieldID = 0x5014;
+	DateType TradingDay;		//交易日
+	AccountIDType PrimaryAccountID;		//主账户代码
+	ExchangeIDType ExchangeID;		//交易所代码
+	InstrumentIDType InstrumentID;		//合约代码
+	PosiDirectionType PosiDirection;		//持仓方向
+	VolumeType TotalPosition;		//持仓数量
+	VolumeType PositionFrozen;		//冻结持仓
+	PriceType TotalCostPrice;		//总成本价
+	MoneyType Margin;		//保证金
+	MoneyType MarketValue;		//市值
 };

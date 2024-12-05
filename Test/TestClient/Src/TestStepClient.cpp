@@ -52,8 +52,8 @@ void TestStepClient()
 	{
 		StepReqInsertOrderPackage reqInsertOrder;
 		reqInsertOrder.Prepare(stepClient.m_SessionID, false, i);
-		reqInsertOrder.ReqInsertOrder = Allocate<StepReqInsertOrderField>();
-		memset(reqInsertOrder.ReqInsertOrder, 0, sizeof(StepReqInsertOrderField));
+		reqInsertOrder.ReqInsertOrder = Allocate<ReqInsertOrderField>();
+		memset(reqInsertOrder.ReqInsertOrder, 0, sizeof(ReqInsertOrderField));
 		Strcpy(reqInsertOrder.ReqInsertOrder->AccountID, "Xunmeng001");
 		Strcpy(reqInsertOrder.ReqInsertOrder->ExchangeID, "SHSE");
 		Strcpy(reqInsertOrder.ReqInsertOrder->InstrumentID, "600036");

@@ -3,7 +3,7 @@
 #include "Logger.h"
 #include "Utility.h"
 #include "StepPackages.h"
-#include "StepGetStructString.h"
+#include "GetString.h"
 #include "XtpPackages.h"
 #include <cstring>
 
@@ -57,7 +57,7 @@ void TcpClientSubscriberImpl::Send(SessionIDType sessionID)
     ++m_MessageCounts[sessionID];
 
     StepReqInsertOrderPackage reqInsertOrder;
-    reqInsertOrder.ReqInsertOrder = new StepReqInsertOrderField();
+    reqInsertOrder.ReqInsertOrder = new ReqInsertOrderField();
     Strcpy(reqInsertOrder.ReqInsertOrder->AccountID, "Xunmeng001");
     Strcpy(reqInsertOrder.ReqInsertOrder->ExchangeID, "SHSE");
     Strcpy(reqInsertOrder.ReqInsertOrder->InstrumentID, "600036");

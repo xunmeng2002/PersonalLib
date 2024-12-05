@@ -52,8 +52,8 @@ void TestXtpClient()
 	{
 		XtpReqInsertOrderPackage reqInsertOrder;
 		reqInsertOrder.Prepare(xtpClient.m_SessionID, false, 0);
-		Strcpy(reqInsertOrder.ReqInsertOrder->TradingDay, GetLocalDate().c_str());
-		Strcpy(reqInsertOrder.ReqInsertOrder->PrimaryAccountID, "Xunmeng001");
+		reqInsertOrder.ReqInsertOrder = Allocate<ReqInsertOrderField>();
+		Strcpy(reqInsertOrder.ReqInsertOrder->AccountID, "Xunmeng001");
 		Strcpy(reqInsertOrder.ReqInsertOrder->ExchangeID, "SHSE");
 		Strcpy(reqInsertOrder.ReqInsertOrder->InstrumentID, "600036");
 		reqInsertOrder.ReqInsertOrder->Direction = DirectionType::Buy;
@@ -61,7 +61,7 @@ void TestXtpClient()
 		reqInsertOrder.ReqInsertOrder->OrderPriceType = OrderPriceTypeType::LimitPrice;
 		reqInsertOrder.ReqInsertOrder->Price = 100 + i;
 		reqInsertOrder.ReqInsertOrder->Volume = i;
-		reqInsertOrder.ReqInsertOrder->OrderID = i;
+		reqInsertOrder.ReqInsertOrder->ClientOrderID = i;
 
 		xtpClient.Send(&reqInsertOrder);
 	}
