@@ -11,7 +11,8 @@
 	<file name="Buffer.h" dest="../Libs/PersonalLib/include/" src="./Source/Buffer/"/>
 	<file name="RingBuffer.h" dest="../Libs/PersonalLib/include/" src="./Source/Buffer/"/>
 	<file name="ShmBuffer.h" dest="../Libs/PersonalLib/include/" src="./Source/Buffer/"/>
-	
+
+	<file name="ConfigStructs.h" dest="../Libs/PersonalLib/include/" src="./Source/ConfigStructs/"/>
 	<file name="Connect.h" dest="../Libs/PersonalLib/include/" src="./Source/Connect/"/>
 	<file name="Constant.h" dest="../Libs/PersonalLib/include/" src="./Source/Constant/"/>
 	<file name="CsvParser.h" dest="../Libs/PersonalLib/include/" src="./Source/Csv/"/>
