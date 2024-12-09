@@ -198,9 +198,6 @@ typedef char ProductInfoType[32];
 //品种名称类型
 typedef char ProductNameType[32];
 
-//协议类别类型
-typedef char ProtocolType[2];
-
 //协议地址类型
 typedef char ProtocolAddressType[32];
 
@@ -708,6 +705,15 @@ enum class ProductClassType : int
 	EFP = '4',
 	//现货期权
 	SpotOption = '5',
+};
+
+//协议类型
+enum class ProtocolTypeType : int
+{
+	//Xtp协议
+	Xtp = '0',
+	//Step协议
+	Step = '1',
 };
 
 //查询状态

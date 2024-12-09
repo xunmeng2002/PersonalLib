@@ -2,7 +2,6 @@
 #include "XtpPackages.h"
 
 
-
 namespace xtp
 {
 	XtpPackageBase* XtpPackageFactory::CreateXtpPackage(UShortType packageID)

@@ -107,6 +107,18 @@ def WritePackagesFile(destPackageFile, packages):
     dom.writexml(f, indent="", addindent='\t', newl='\n', encoding="UTF-8")
     f.close()
     
+def WriteFullApiPackagesFile(fullApiPackageFile, packages):
+    impl = xml.dom.minidom.getDOMImplementation()
+    dom = impl.createDocument(None, 'apipackages', None)
+    root = dom.documentElement
+    for package in packages:
+        packageNode = dom.createElement('package')
+        packageNode.setAttribute("name", package.Name)
+        root.appendChild(packageNode)
+    f = open(fullApiPackageFile, 'w', encoding="UTF-8")
+    dom.writexml(f, indent="", addindent='\t', newl='\n', encoding="UTF-8")
+    f.close()
+    
 def WriteFieldsFile(destFieldFile, fields):
     sortedFields = sorted(fields.values(), key=lambda field : field.ID)
     impl = xml.dom.minidom.getDOMImplementation()
@@ -120,14 +132,16 @@ def WriteFieldsFile(destFieldFile, fields):
 	
 if __name__ == "__main__":
     if len(sys.argv) < 5:
-        print("Usage: ParseModel.py destPackage.xml srcPackage.xml srcField.xml srcItem.xml")
+        print("Usage: ParseModel.py destPackage.xml fullApiPackage.xml destField.xml srcPackage.xml srcField.xml srcItem.xml")
         exit(-1) 
     destPackageFile = sys.argv[1]
-    destFieldFile = sys.argv[2]
-    srcPackageFile = sys.argv[3]
-    srcFieldFile = sys.argv[4]
-    srcItemFile = sys.argv[5]
+    fullApiPackageFile = sys.argv[2]
+    destFieldFile = sys.argv[3]
+    srcPackageFile = sys.argv[4]
+    srcFieldFile = sys.argv[5]
+    srcItemFile = sys.argv[6]
 
     packages, fields = ReadXml(srcPackageFile, srcFieldFile, srcItemFile)
     WritePackagesFile(destPackageFile, packages)
+    WriteFullApiPackagesFile(fullApiPackageFile, packages)
     WriteFieldsFile(destFieldFile, fields)

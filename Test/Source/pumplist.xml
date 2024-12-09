@@ -1,16 +1,13 @@
 <pumplist>
-	<pump dest="./Test/Source/Fields/GetString.h" tpl="../Templates/Cpp/Fields/GetString.h.tpl" model="./Test/Model/Protocol/Fields.xml"/>
-	<pump dest="./Test/Source/Fields/GetString.cpp" tpl="../Templates/Cpp/Fields/GetString.cpp.tpl" model="./Test/Model/Protocol/Fields.xml ../Model/Types.xml"/>
-	
 	<pump dest="./Test/Source/Fields/Fields.h" tpl="../Templates/Cpp/Fields/Fields.h.tpl" model="./Test/Model/Protocol/Fields.xml"/>
 	
-	<pump dest="./Test/Source/Step/StepPackages.h" tpl="../Templates/Cpp/Step/StepPackages.h.tpl" model="./Test/Model/Protocol/Packages.xml"/>
-	<pump dest="./Test/Source/Step/StepPackages.cpp" tpl="../Templates/Cpp/Step/StepPackages.cpp.tpl" model="./Test/Model/Protocol/Packages.xml ../Model/Types.xml"/>
-	<pump dest="./Test/Source/Step/StepPackageFactory.cpp" tpl="../Templates/Cpp/Step/StepPackageFactory.cpp.tpl" model="./Test/Model/Protocol/Packages.xml"/>
+	<pump dest="./Test/Source/Step/StepPackages.h" tpl="../Templates/Cpp/Step/StepPackages.h.tpl" model="./Test/Model/Protocol/Packages.xml ./Test/Model/Protocol/FullApiPackages.xml"/>
+	<pump dest="./Test/Source/Step/StepPackages.cpp" tpl="../Templates/Cpp/Step/StepPackages.cpp.tpl" model="./Test/Model/Protocol/Packages.xml ./Test/Model/Protocol/FullApiPackages.xml ../Model/Types.xml"/>
+	<pump dest="./Test/Source/Step/StepPackageFactory.cpp" tpl="../Templates/Cpp/Step/StepPackageFactory.cpp.tpl" model="./Test/Model/Protocol/Packages.xml ./Test/Model/Protocol/FullApiPackages.xml"/>
 	
-	<pump dest="./Test/Source/Xtp/XtpPackages.h" tpl="../Templates/Cpp/Xtp/XtpPackages.h.tpl" model="./Test/Model/Protocol/Packages.xml"/>
-	<pump dest="./Test/Source/Xtp/XtpPackages.cpp" tpl="../Templates/Cpp/Xtp/XtpPackages.cpp.tpl" model="./Test/Model/Protocol/Packages.xml ../Model/Types.xml"/>
-	<pump dest="./Test/Source/Xtp/XtpPackageFactory.cpp" tpl="../Templates/Cpp/Xtp/XtpPackageFactory.cpp.tpl" model="./Test/Model/Protocol/Packages.xml"/>
+	<pump dest="./Test/Source/Xtp/XtpPackages.h" tpl="../Templates/Cpp/Xtp/XtpPackages.h.tpl" model="./Test/Model/Protocol/Packages.xml ./Test/Model/Protocol/FullApiPackages.xml"/>
+	<pump dest="./Test/Source/Xtp/XtpPackages.cpp" tpl="../Templates/Cpp/Xtp/XtpPackages.cpp.tpl" model="./Test/Model/Protocol/Packages.xml ./Test/Model/Protocol/FullApiPackages.xml ../Model/Types.xml"/>
+	<pump dest="./Test/Source/Xtp/XtpPackageFactory.cpp" tpl="../Templates/Cpp/Xtp/XtpPackageFactory.cpp.tpl" model="./Test/Model/Protocol/Packages.xml ./Test/Model/Protocol/FullApiPackages.xml"/>
 	
 	<pump dest="./Test/Source/Ctp/6.7.2/StructLogFunc/StructLogFunc.h" tpl="../Templates/Cpp/Libs/CTP/StructLogFunc.h.tpl" model="../Libs/CTP/6.7.2/CtpModel.xml"/>
 	<pump dest="./Test/Source/Ctp/6.7.2/StructLogFunc/StructLogFunc.cpp" tpl="../Templates/Cpp/Libs/CTP/StructLogFunc.cpp.tpl" model="../Libs/CTP/6.7.2/CtpModel.xml"/>

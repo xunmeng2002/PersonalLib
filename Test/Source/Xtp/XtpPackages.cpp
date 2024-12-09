@@ -62,7 +62,6 @@ namespace xtp
 			NotifyComponentConnectStatus->SessionID, (int)NotifyComponentConnectStatus->Component, NotifyComponentConnectStatus->IsConnected);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAccountLoginPackage::XtpReqAccountLoginPackage()
 	{
@@ -118,7 +117,6 @@ namespace xtp
 			ReqAccountLogin->AccountID, ReqAccountLogin->Password);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAccountLoginPackage::XtpRspAccountLoginPackage()
 	{
@@ -186,7 +184,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAccountLogoutPackage::XtpReqAccountLogoutPackage()
 	{
@@ -242,7 +239,6 @@ namespace xtp
 			ReqAccountLogout->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAccountLogoutPackage::XtpRspAccountLogoutPackage()
 	{
@@ -310,7 +306,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryAccountPackage::XtpReqQryAccountPackage()
 	{
@@ -366,7 +361,6 @@ namespace xtp
 			ReqQryAccount->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryAccountPackage::XtpRspQryAccountPackage()
 	{
@@ -434,7 +428,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryHolderAccountPackage::XtpReqQryHolderAccountPackage()
 	{
@@ -490,7 +483,6 @@ namespace xtp
 			ReqQryHolderAccount->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryHolderAccountPackage::XtpRspQryHolderAccountPackage()
 	{
@@ -558,7 +550,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryCapitalPackage::XtpReqQryCapitalPackage()
 	{
@@ -614,7 +605,6 @@ namespace xtp
 			ReqQryCapital->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryCapitalPackage::XtpRspQryCapitalPackage()
 	{
@@ -682,7 +672,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryPositionPackage::XtpReqQryPositionPackage()
 	{
@@ -738,7 +727,6 @@ namespace xtp
 			ReqQryPosition->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryPositionPackage::XtpRspQryPositionPackage()
 	{
@@ -806,7 +794,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryOrderPackage::XtpReqQryOrderPackage()
 	{
@@ -862,7 +849,6 @@ namespace xtp
 			ReqQryOrder->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryOrderPackage::XtpRspQryOrderPackage()
 	{
@@ -930,7 +916,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryTradePackage::XtpReqQryTradePackage()
 	{
@@ -986,7 +971,6 @@ namespace xtp
 			ReqQryTrade->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryTradePackage::XtpRspQryTradePackage()
 	{
@@ -1054,7 +1038,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryInstrumentPackage::XtpReqQryInstrumentPackage()
 	{
@@ -1110,7 +1093,6 @@ namespace xtp
 			ReqQryInstrument->ExchangeID, ReqQryInstrument->InstrumentID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryInstrumentPackage::XtpRspQryInstrumentPackage()
 	{
@@ -1178,7 +1160,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryOptionInstrumentPackage::XtpReqQryOptionInstrumentPackage()
 	{
@@ -1234,7 +1215,6 @@ namespace xtp
 			ReqQryOptionInstrument->ExchangeID, ReqQryOptionInstrument->InstrumentID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryOptionInstrumentPackage::XtpRspQryOptionInstrumentPackage()
 	{
@@ -1302,7 +1282,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryCommissionRatePackage::XtpReqQryCommissionRatePackage()
 	{
@@ -1358,7 +1337,6 @@ namespace xtp
 			ReqQryCommissionRate->AccountID, ReqQryCommissionRate->ExchangeID, (int)ReqQryCommissionRate->SecurityType);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryCommissionRatePackage::XtpRspQryCommissionRatePackage()
 	{
@@ -1426,7 +1404,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryMoneyTransferPackage::XtpReqQryMoneyTransferPackage()
 	{
@@ -1482,7 +1459,6 @@ namespace xtp
 			ReqQryMoneyTransfer->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryMoneyTransferPackage::XtpRspQryMoneyTransferPackage()
 	{
@@ -1550,7 +1526,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqInsertOrderPackage::XtpReqInsertOrderPackage()
 	{
@@ -1606,7 +1581,6 @@ namespace xtp
 			ReqInsertOrder->AccountID, ReqInsertOrder->ExchangeID, ReqInsertOrder->InstrumentID, (int)ReqInsertOrder->Direction, (int)ReqInsertOrder->OffsetFlag, (int)ReqInsertOrder->OrderPriceType, ReqInsertOrder->Price, ReqInsertOrder->Volume, ReqInsertOrder->ClientOrderID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspInsertOrderPackage::XtpRspInsertOrderPackage()
 	{
@@ -1674,7 +1648,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqCancelOrderPackage::XtpReqCancelOrderPackage()
 	{
@@ -1730,7 +1703,6 @@ namespace xtp
 			ReqCancelOrder->AccountID, ReqCancelOrder->ExchangeID, ReqCancelOrder->InstrumentID, ReqCancelOrder->ClientCancelOrderID, ReqCancelOrder->OrderID, ReqCancelOrder->OrderSysID, ReqCancelOrder->ClientOrderID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspCancelOrderPackage::XtpRspCancelOrderPackage()
 	{
@@ -1798,7 +1770,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnOrderPackage::XtpRtnOrderPackage()
 	{
@@ -1854,7 +1825,6 @@ namespace xtp
 			Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnTradePackage::XtpRtnTradePackage()
 	{
@@ -1910,7 +1880,6 @@ namespace xtp
 			Trade->TradingDay, Trade->AccountID, Trade->ExchangeID, Trade->InstrumentID, (int)Trade->SecurityType, Trade->OrderID, Trade->OrderSysID, Trade->TradeID, (int)Trade->Direction, (int)Trade->OffsetFlag, Trade->Price, Trade->Volume, Trade->VolumeMultiple, Trade->TradeAmount, Trade->Commission, Trade->StampTax, Trade->TransferFee, Trade->TradeDate, Trade->TradeTime);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnMoneyTransferPackage::XtpRtnMoneyTransferPackage()
 	{
@@ -1966,7 +1935,6 @@ namespace xtp
 			MoneyTransfer->TradingDay, MoneyTransfer->AccountID, MoneyTransfer->MoneyTransferID, (int)MoneyTransfer->AccountType, (int)MoneyTransfer->TransferDirection, MoneyTransfer->TransferAmount, MoneyTransfer->InfoMessage, MoneyTransfer->UserID, MoneyTransfer->TransferDate, MoneyTransfer->TransferTime);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnAccountLogoutPackage::XtpRtnAccountLogoutPackage()
 	{
@@ -2022,7 +1990,6 @@ namespace xtp
 			AccountLogout->AccountID, AccountLogout->ErrorID, AccountLogout->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRiskUserLoginPackage::XtpReqRiskUserLoginPackage()
 	{
@@ -2078,7 +2045,6 @@ namespace xtp
 			ReqRiskUserLogin->UserID, ReqRiskUserLogin->Password);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRiskUserLoginPackage::XtpRspRiskUserLoginPackage()
 	{
@@ -2146,7 +2112,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRiskUserLogoutPackage::XtpReqRiskUserLogoutPackage()
 	{
@@ -2202,7 +2167,6 @@ namespace xtp
 			ReqRiskUserLogout->UserID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRiskUserLogoutPackage::XtpRspRiskUserLogoutPackage()
 	{
@@ -2270,7 +2234,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnRiskUserLogoutPackage::XtpRtnRiskUserLogoutPackage()
 	{
@@ -2326,7 +2289,6 @@ namespace xtp
 			RiskUserLogout->UserID, RiskUserLogout->ErrorID, RiskUserLogout->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnAccountPackage::XtpRtnAccountPackage()
 	{
@@ -2382,7 +2344,6 @@ namespace xtp
 			Account->AccountID, (int)Account->AccountType, (int)Account->AccountStatus, Account->TradeGroupID, Account->RiskGroupID, Account->CommissionGroupID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnAccountDeletePackage::XtpRtnAccountDeletePackage()
 	{
@@ -2438,7 +2399,6 @@ namespace xtp
 			AccountDelete->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnPositionPackage::XtpRtnPositionPackage()
 	{
@@ -2494,7 +2454,6 @@ namespace xtp
 			Position->TradingDay, Position->AccountID, (int)Position->AccountType, Position->ExchangeID, Position->InstrumentID, (int)Position->SecurityType, (int)Position->PosiDirection, Position->TotalPosition, Position->PositionFrozen, Position->TodayPosition, Position->TotalCostPrice, Position->TodayCostPrice, Position->CashIn, Position->CashOut, Position->Margin, Position->Commission, Position->StampTax, Position->TransferFee, Position->MarketValue, Position->VolumeMultiple, Position->TotalCost, Position->TodayCost, Position->TotalProfit, Position->TodayProfit, Position->LastPrice, Position->PrePrice);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnAccountRiskPackage::XtpRtnAccountRiskPackage()
 	{
@@ -2550,7 +2509,6 @@ namespace xtp
 			AccountRisk->AccountID, AccountRisk->RiskID, (int)AccountRisk->RiskStatus);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnAccountRiskDeletePackage::XtpRtnAccountRiskDeletePackage()
 	{
@@ -2606,7 +2564,6 @@ namespace xtp
 			AccountRiskDelete->AccountID, AccountRiskDelete->RiskID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnAccountRiskNotifyPackage::XtpRtnAccountRiskNotifyPackage()
 	{
@@ -2662,7 +2619,6 @@ namespace xtp
 			AccountRiskNotify->NotifyDate, AccountRiskNotify->NotifyTime, AccountRiskNotify->AccountID, AccountRiskNotify->RiskID, AccountRiskNotify->RiskRuleID, (int)AccountRiskNotify->RiskStatus, AccountRiskNotify->RiskMessage);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryRiskGroupAccountPackage::XtpReqQryRiskGroupAccountPackage()
 	{
@@ -2718,7 +2674,6 @@ namespace xtp
 			ReqQryRiskGroupAccount->UserID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryRiskGroupAccountPackage::XtpRspQryRiskGroupAccountPackage()
 	{
@@ -2786,7 +2741,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryRiskGroupCapitalPackage::XtpReqQryRiskGroupCapitalPackage()
 	{
@@ -2842,7 +2796,6 @@ namespace xtp
 			ReqQryRiskGroupCapital->UserID, ReqQryRiskGroupCapital->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryRiskGroupCapitalPackage::XtpRspQryRiskGroupCapitalPackage()
 	{
@@ -2910,7 +2863,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryRiskGroupPositionPackage::XtpReqQryRiskGroupPositionPackage()
 	{
@@ -2966,7 +2918,6 @@ namespace xtp
 			ReqQryRiskGroupPosition->UserID, ReqQryRiskGroupPosition->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryRiskGroupPositionPackage::XtpRspQryRiskGroupPositionPackage()
 	{
@@ -3034,7 +2985,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryRiskGroupOrderPackage::XtpReqQryRiskGroupOrderPackage()
 	{
@@ -3090,7 +3040,6 @@ namespace xtp
 			ReqQryRiskGroupOrder->UserID, ReqQryRiskGroupOrder->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryRiskGroupOrderPackage::XtpRspQryRiskGroupOrderPackage()
 	{
@@ -3158,7 +3107,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryRiskGroupTradePackage::XtpReqQryRiskGroupTradePackage()
 	{
@@ -3214,7 +3162,6 @@ namespace xtp
 			ReqQryRiskGroupTrade->UserID, ReqQryRiskGroupTrade->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryRiskGroupTradePackage::XtpRspQryRiskGroupTradePackage()
 	{
@@ -3282,7 +3229,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryRiskGroupAccountRiskPackage::XtpReqQryRiskGroupAccountRiskPackage()
 	{
@@ -3338,7 +3284,6 @@ namespace xtp
 			ReqQryRiskGroupAccountRisk->UserID, ReqQryRiskGroupAccountRisk->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryRiskGroupAccountRiskPackage::XtpRspQryRiskGroupAccountRiskPackage()
 	{
@@ -3406,7 +3351,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryRiskGroupAccountRiskNotifyPackage::XtpReqQryRiskGroupAccountRiskNotifyPackage()
 	{
@@ -3462,7 +3406,6 @@ namespace xtp
 			ReqQryRiskGroupAccountRiskNotify->UserID, ReqQryRiskGroupAccountRiskNotify->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryRiskGroupAccountRiskNotifyPackage::XtpRspQryRiskGroupAccountRiskNotifyPackage()
 	{
@@ -3530,7 +3473,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRiskInsertOrderPackage::XtpReqRiskInsertOrderPackage()
 	{
@@ -3586,7 +3528,6 @@ namespace xtp
 			ReqRiskInsertOrder->UserID, ReqRiskInsertOrder->AccountID, ReqRiskInsertOrder->ExchangeID, ReqRiskInsertOrder->InstrumentID, (int)ReqRiskInsertOrder->Direction, (int)ReqRiskInsertOrder->OffsetFlag, (int)ReqRiskInsertOrder->OrderPriceType, ReqRiskInsertOrder->Price, ReqRiskInsertOrder->Volume, ReqRiskInsertOrder->ClientOrderID, ReqRiskInsertOrder->IsForceClose);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRiskInsertOrderPackage::XtpRspRiskInsertOrderPackage()
 	{
@@ -3654,7 +3595,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRiskCancelOrderPackage::XtpReqRiskCancelOrderPackage()
 	{
@@ -3710,7 +3650,6 @@ namespace xtp
 			ReqRiskCancelOrder->UserID, ReqRiskCancelOrder->AccountID, ReqRiskCancelOrder->ExchangeID, ReqRiskCancelOrder->InstrumentID, ReqRiskCancelOrder->ClientCancelOrderID, ReqRiskCancelOrder->OrderID, ReqRiskCancelOrder->OrderSysID, ReqRiskCancelOrder->ClientOrderID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRiskCancelOrderPackage::XtpRspRiskCancelOrderPackage()
 	{
@@ -3778,7 +3717,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqMdUserLoginPackage::XtpReqMdUserLoginPackage()
 	{
@@ -3834,7 +3772,6 @@ namespace xtp
 			ReqMdUserLogin->MdUserID, ReqMdUserLogin->Password);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspMdUserLoginPackage::XtpRspMdUserLoginPackage()
 	{
@@ -3902,7 +3839,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqMdUserLogoutPackage::XtpReqMdUserLogoutPackage()
 	{
@@ -3958,7 +3894,6 @@ namespace xtp
 			ReqMdUserLogout->MdUserID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspMdUserLogoutPackage::XtpRspMdUserLogoutPackage()
 	{
@@ -4026,7 +3961,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqMdInitPackage::XtpReqMdInitPackage()
 	{
@@ -4082,7 +4016,6 @@ namespace xtp
 			ReqMdInit->ExchangeID, ReqMdInit->TradingDay);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspMdInitPackage::XtpRspMdInitPackage()
 	{
@@ -4150,7 +4083,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqSubscribeMdPackage::XtpReqSubscribeMdPackage()
 	{
@@ -4206,7 +4138,6 @@ namespace xtp
 			ReqSubscribeMd->ExchangeID, ReqSubscribeMd->InstrumentID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspSubscribeMdPackage::XtpRspSubscribeMdPackage()
 	{
@@ -4274,7 +4205,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnShortMdPackage::XtpRtnShortMdPackage()
 	{
@@ -4330,7 +4260,6 @@ namespace xtp
 			ShortMd->TradingDay, ShortMd->ExchangeID, ShortMd->InstrumentID, ShortMd->LastPrice, ShortMd->ClosePrice, ShortMd->PreClosePrice, ShortMd->SettlementPrice, ShortMd->PreSettlementPrice, ShortMd->UpperLimitPrice, ShortMd->LowerLimitPrice);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnExchangeStatusPackage::XtpRtnExchangeStatusPackage()
 	{
@@ -4386,7 +4315,6 @@ namespace xtp
 			RtnExchangeStatus->ExchangeID, RtnExchangeStatus->ExchangeDate, (int)RtnExchangeStatus->ExchangeStatus);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnMdInitCompletedPackage::XtpRtnMdInitCompletedPackage()
 	{
@@ -4442,7 +4370,6 @@ namespace xtp
 			MdInitCompleted->ExchangeID, MdInitCompleted->TradingDay);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAdminUserLoginPackage::XtpReqAdminUserLoginPackage()
 	{
@@ -4498,7 +4425,6 @@ namespace xtp
 			ReqAdminUserLogin->AdminUserID, ReqAdminUserLogin->Password);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAdminUserLoginPackage::XtpRspAdminUserLoginPackage()
 	{
@@ -4566,7 +4492,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAdminUserLogoutPackage::XtpReqAdminUserLogoutPackage()
 	{
@@ -4622,7 +4547,6 @@ namespace xtp
 			ReqAdminUserLogout->AdminUserID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAdminUserLogoutPackage::XtpRspAdminUserLogoutPackage()
 	{
@@ -4690,7 +4614,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnAdminUserLogoutPackage::XtpRtnAdminUserLogoutPackage()
 	{
@@ -4746,7 +4669,6 @@ namespace xtp
 			AdminUserLogout->UserID, AdminUserLogout->ErrorID, AdminUserLogout->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddRiskUserPackage::XtpReqAddRiskUserPackage()
 	{
@@ -4802,7 +4724,6 @@ namespace xtp
 			ReqAddRiskUser->AdminUserID, ReqAddRiskUser->UserID, ReqAddRiskUser->UserName, ReqAddRiskUser->Password, ReqAddRiskUser->RiskGroupID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddRiskUserPackage::XtpRspAddRiskUserPackage()
 	{
@@ -4870,7 +4791,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqUpdateRiskUserPackage::XtpReqUpdateRiskUserPackage()
 	{
@@ -4926,7 +4846,6 @@ namespace xtp
 			ReqUpdateRiskUser->AdminUserID, ReqUpdateRiskUser->UserID, ReqUpdateRiskUser->UserName, ReqUpdateRiskUser->Password, ReqUpdateRiskUser->RiskGroupID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspUpdateRiskUserPackage::XtpRspUpdateRiskUserPackage()
 	{
@@ -4994,7 +4913,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRemoveRiskUserPackage::XtpReqRemoveRiskUserPackage()
 	{
@@ -5050,7 +4968,6 @@ namespace xtp
 			ReqRemoveRiskUser->AdminUserID, ReqRemoveRiskUser->UserID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRemoveRiskUserPackage::XtpRspRemoveRiskUserPackage()
 	{
@@ -5118,7 +5035,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddAdminUserPackage::XtpReqAddAdminUserPackage()
 	{
@@ -5174,7 +5090,6 @@ namespace xtp
 			ReqAddAdminUser->AdminUserID, ReqAddAdminUser->UserID, ReqAddAdminUser->UserName, ReqAddAdminUser->Password);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddAdminUserPackage::XtpRspAddAdminUserPackage()
 	{
@@ -5242,7 +5157,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqUpdateAdminUserPackage::XtpReqUpdateAdminUserPackage()
 	{
@@ -5298,7 +5212,6 @@ namespace xtp
 			ReqUpdateAdminUser->AdminUserID, ReqUpdateAdminUser->UserID, ReqUpdateAdminUser->UserName, ReqUpdateAdminUser->Password);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspUpdateAdminUserPackage::XtpRspUpdateAdminUserPackage()
 	{
@@ -5366,7 +5279,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRemoveAdminUserPackage::XtpReqRemoveAdminUserPackage()
 	{
@@ -5422,7 +5334,6 @@ namespace xtp
 			ReqRemoveAdminUser->AdminUserID, ReqRemoveAdminUser->UserID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRemoveAdminUserPackage::XtpRspRemoveAdminUserPackage()
 	{
@@ -5490,7 +5401,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddPrimaryAccountPackage::XtpReqAddPrimaryAccountPackage()
 	{
@@ -5546,7 +5456,6 @@ namespace xtp
 			ReqAddPrimaryAccount->AdminUserID, ReqAddPrimaryAccount->TradingDay, ReqAddPrimaryAccount->PrimaryAccountID, ReqAddPrimaryAccount->PrimaryAccountName, (int)ReqAddPrimaryAccount->AccountClass, ReqAddPrimaryAccount->BrokerPassword, ReqAddPrimaryAccount->OfferID, ReqAddPrimaryAccount->IsAllowLogin, ReqAddPrimaryAccount->IsSimulateAccount, (int)ReqAddPrimaryAccount->AccountStatus, ReqAddPrimaryAccount->Password, ReqAddPrimaryAccount->RiskGroupID, ReqAddPrimaryAccount->CommissionGroupID, ReqAddPrimaryAccount->IsAutoAudit);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddPrimaryAccountPackage::XtpRspAddPrimaryAccountPackage()
 	{
@@ -5614,7 +5523,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqUpdatePrimaryAccountPackage::XtpReqUpdatePrimaryAccountPackage()
 	{
@@ -5670,7 +5578,6 @@ namespace xtp
 			ReqUpdatePrimaryAccount->AdminUserID, ReqUpdatePrimaryAccount->TradingDay, ReqUpdatePrimaryAccount->PrimaryAccountID, ReqUpdatePrimaryAccount->PrimaryAccountName, (int)ReqUpdatePrimaryAccount->AccountClass, ReqUpdatePrimaryAccount->BrokerPassword, ReqUpdatePrimaryAccount->OfferID, ReqUpdatePrimaryAccount->IsAllowLogin, ReqUpdatePrimaryAccount->IsSimulateAccount, (int)ReqUpdatePrimaryAccount->AccountStatus, ReqUpdatePrimaryAccount->Password, ReqUpdatePrimaryAccount->RiskGroupID, ReqUpdatePrimaryAccount->CommissionGroupID, ReqUpdatePrimaryAccount->IsAutoAudit);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspUpdatePrimaryAccountPackage::XtpRspUpdatePrimaryAccountPackage()
 	{
@@ -5738,7 +5645,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRemovePrimaryAccountPackage::XtpReqRemovePrimaryAccountPackage()
 	{
@@ -5794,7 +5700,6 @@ namespace xtp
 			ReqRemovePrimaryAccount->AdminUserID, ReqRemovePrimaryAccount->PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRemovePrimaryAccountPackage::XtpRspRemovePrimaryAccountPackage()
 	{
@@ -5862,7 +5767,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddAccountPackage::XtpReqAddAccountPackage()
 	{
@@ -5918,7 +5822,6 @@ namespace xtp
 			ReqAddAccount->AdminUserID, ReqAddAccount->TradingDay, ReqAddAccount->AccountID, ReqAddAccount->AccountName, (int)ReqAddAccount->AccountStatus, ReqAddAccount->Password, ReqAddAccount->TradeGroupID, ReqAddAccount->RiskGroupID, ReqAddAccount->CommissionGroupID, ReqAddAccount->IsAutoAudit);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddAccountPackage::XtpRspAddAccountPackage()
 	{
@@ -5986,7 +5889,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqUpdateAccountPackage::XtpReqUpdateAccountPackage()
 	{
@@ -6042,7 +5944,6 @@ namespace xtp
 			ReqUpdateAccount->AdminUserID, ReqUpdateAccount->TradingDay, ReqUpdateAccount->AccountID, ReqUpdateAccount->AccountName, (int)ReqUpdateAccount->AccountStatus, ReqUpdateAccount->Password, ReqUpdateAccount->TradeGroupID, ReqUpdateAccount->RiskGroupID, ReqUpdateAccount->CommissionGroupID, ReqUpdateAccount->IsAutoAudit);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspUpdateAccountPackage::XtpRspUpdateAccountPackage()
 	{
@@ -6110,7 +6011,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRemoveAccountPackage::XtpReqRemoveAccountPackage()
 	{
@@ -6166,7 +6066,6 @@ namespace xtp
 			ReqRemoveAccount->AdminUserID, ReqRemoveAccount->AccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRemoveAccountPackage::XtpRspRemoveAccountPackage()
 	{
@@ -6234,7 +6133,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddBaseCommissionPackage::XtpReqAddBaseCommissionPackage()
 	{
@@ -6290,7 +6188,6 @@ namespace xtp
 			ReqAddBaseCommission->AdminUserID, ReqAddBaseCommission->TradingDay, ReqAddBaseCommission->ExchangeID, (int)ReqAddBaseCommission->SecurityType, ReqAddBaseCommission->OpenStampTaxByMoney, ReqAddBaseCommission->CloseStampTaxByMoney, ReqAddBaseCommission->OpenTransferFeeByMoney, ReqAddBaseCommission->CloseTransferFeeByMoney);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddBaseCommissionPackage::XtpRspAddBaseCommissionPackage()
 	{
@@ -6358,7 +6255,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqUpdateBaseCommissionPackage::XtpReqUpdateBaseCommissionPackage()
 	{
@@ -6414,7 +6310,6 @@ namespace xtp
 			ReqUpdateBaseCommission->AdminUserID, ReqUpdateBaseCommission->TradingDay, ReqUpdateBaseCommission->ExchangeID, (int)ReqUpdateBaseCommission->SecurityType, ReqUpdateBaseCommission->OpenStampTaxByMoney, ReqUpdateBaseCommission->CloseStampTaxByMoney, ReqUpdateBaseCommission->OpenTransferFeeByMoney, ReqUpdateBaseCommission->CloseTransferFeeByMoney);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspUpdateBaseCommissionPackage::XtpRspUpdateBaseCommissionPackage()
 	{
@@ -6482,7 +6377,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRemoveBaseCommissionPackage::XtpReqRemoveBaseCommissionPackage()
 	{
@@ -6538,7 +6432,6 @@ namespace xtp
 			ReqRemoveBaseCommission->AdminUserID, ReqRemoveBaseCommission->TradingDay, ReqRemoveBaseCommission->ExchangeID, (int)ReqRemoveBaseCommission->SecurityType);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRemoveBaseCommissionPackage::XtpRspRemoveBaseCommissionPackage()
 	{
@@ -6606,7 +6499,6 @@ namespace xtp
 			RspRemoveBaseCommission->AdminUserID, RspRemoveBaseCommission->TradingDay, RspRemoveBaseCommission->ExchangeID, (int)RspRemoveBaseCommission->SecurityType);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddCommissionGroupPackage::XtpReqAddCommissionGroupPackage()
 	{
@@ -6662,7 +6554,6 @@ namespace xtp
 			ReqAddCommissionGroup->AdminUserID, ReqAddCommissionGroup->TradingDay, ReqAddCommissionGroup->CommissionGroupID, ReqAddCommissionGroup->CommissionGroupName, ReqAddCommissionGroup->ExchangeID, (int)ReqAddCommissionGroup->SecurityType, ReqAddCommissionGroup->OpenBuyByMoney, ReqAddCommissionGroup->OpenSellByMoney, ReqAddCommissionGroup->CloseBuyByMoney, ReqAddCommissionGroup->CloseSellByMoney, ReqAddCommissionGroup->OpenBuyByVolume, ReqAddCommissionGroup->OpenSellByVolume, ReqAddCommissionGroup->CloseBuyByVolume, ReqAddCommissionGroup->CloseSellByVolume, ReqAddCommissionGroup->MinCommission, ReqAddCommissionGroup->MaxCommission);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddCommissionGroupPackage::XtpRspAddCommissionGroupPackage()
 	{
@@ -6730,7 +6621,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqUpdateCommissionGroupPackage::XtpReqUpdateCommissionGroupPackage()
 	{
@@ -6786,7 +6676,6 @@ namespace xtp
 			ReqUpdateCommissionGroup->AdminUserID, ReqUpdateCommissionGroup->TradingDay, ReqUpdateCommissionGroup->CommissionGroupID, ReqUpdateCommissionGroup->CommissionGroupName, ReqUpdateCommissionGroup->ExchangeID, (int)ReqUpdateCommissionGroup->SecurityType, ReqUpdateCommissionGroup->OpenBuyByMoney, ReqUpdateCommissionGroup->OpenSellByMoney, ReqUpdateCommissionGroup->CloseBuyByMoney, ReqUpdateCommissionGroup->CloseSellByMoney, ReqUpdateCommissionGroup->OpenBuyByVolume, ReqUpdateCommissionGroup->OpenSellByVolume, ReqUpdateCommissionGroup->CloseBuyByVolume, ReqUpdateCommissionGroup->CloseSellByVolume, ReqUpdateCommissionGroup->MinCommission, ReqUpdateCommissionGroup->MaxCommission);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspUpdateCommissionGroupPackage::XtpRspUpdateCommissionGroupPackage()
 	{
@@ -6854,7 +6743,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRemoveCommissionGroupPackage::XtpReqRemoveCommissionGroupPackage()
 	{
@@ -6910,7 +6798,6 @@ namespace xtp
 			ReqRemoveCommissionGroup->AdminUserID, ReqRemoveCommissionGroup->TradingDay, ReqRemoveCommissionGroup->CommissionGroupID, ReqRemoveCommissionGroup->ExchangeID, (int)ReqRemoveCommissionGroup->SecurityType);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRemoveCommissionGroupPackage::XtpRspRemoveCommissionGroupPackage()
 	{
@@ -6978,7 +6865,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddOptionMarginParamPackage::XtpReqAddOptionMarginParamPackage()
 	{
@@ -7034,7 +6920,6 @@ namespace xtp
 			ReqAddOptionMarginParam->AdminUserID, ReqAddOptionMarginParam->TradingDay, ReqAddOptionMarginParam->ExchangeID, ReqAddOptionMarginParam->Param1, ReqAddOptionMarginParam->Param2);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddOptionMarginParamPackage::XtpRspAddOptionMarginParamPackage()
 	{
@@ -7102,7 +6987,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqUpdateOptionMarginParamPackage::XtpReqUpdateOptionMarginParamPackage()
 	{
@@ -7158,7 +7042,6 @@ namespace xtp
 			ReqUpdateOptionMarginParam->AdminUserID, ReqUpdateOptionMarginParam->TradingDay, ReqUpdateOptionMarginParam->ExchangeID, ReqUpdateOptionMarginParam->Param1, ReqUpdateOptionMarginParam->Param2);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspUpdateOptionMarginParamPackage::XtpRspUpdateOptionMarginParamPackage()
 	{
@@ -7226,7 +7109,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRemoveOptionMarginParamPackage::XtpReqRemoveOptionMarginParamPackage()
 	{
@@ -7282,7 +7164,6 @@ namespace xtp
 			ReqRemoveOptionMarginParam->AdminUserID, ReqRemoveOptionMarginParam->ExchangeID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRemoveOptionMarginParamPackage::XtpRspRemoveOptionMarginParamPackage()
 	{
@@ -7350,7 +7231,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddTradeOfferPackage::XtpReqAddTradeOfferPackage()
 	{
@@ -7406,7 +7286,6 @@ namespace xtp
 			ReqAddTradeOffer->AdminUserID, ReqAddTradeOffer->OfferID, ReqAddTradeOffer->OfferName, (int)ReqAddTradeOffer->OfferType, ReqAddTradeOffer->OfferPassword);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddTradeOfferPackage::XtpRspAddTradeOfferPackage()
 	{
@@ -7474,7 +7353,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqUpdateTradeOfferPackage::XtpReqUpdateTradeOfferPackage()
 	{
@@ -7530,7 +7408,6 @@ namespace xtp
 			ReqUpdateTradeOffer->AdminUserID, ReqUpdateTradeOffer->OfferID, ReqUpdateTradeOffer->OfferName, (int)ReqUpdateTradeOffer->OfferType, ReqUpdateTradeOffer->OfferPassword);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspUpdateTradeOfferPackage::XtpRspUpdateTradeOfferPackage()
 	{
@@ -7598,7 +7475,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRemoveTradeOfferPackage::XtpReqRemoveTradeOfferPackage()
 	{
@@ -7654,7 +7530,6 @@ namespace xtp
 			ReqRemoveTradeOffer->AdminUserID, ReqRemoveTradeOffer->OfferID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRemoveTradeOfferPackage::XtpRspRemoveTradeOfferPackage()
 	{
@@ -7722,7 +7597,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddTradeGroupPackage::XtpReqAddTradeGroupPackage()
 	{
@@ -7778,7 +7652,6 @@ namespace xtp
 			ReqAddTradeGroup->AdminUserID, ReqAddTradeGroup->TradeGroupID, ReqAddTradeGroup->TradeGroupName);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddTradeGroupPackage::XtpRspAddTradeGroupPackage()
 	{
@@ -7846,7 +7719,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqUpdateTradeGroupPackage::XtpReqUpdateTradeGroupPackage()
 	{
@@ -7902,7 +7774,6 @@ namespace xtp
 			ReqUpdateTradeGroup->AdminUserID, ReqUpdateTradeGroup->TradeGroupID, ReqUpdateTradeGroup->TradeGroupName);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspUpdateTradeGroupPackage::XtpRspUpdateTradeGroupPackage()
 	{
@@ -7970,7 +7841,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRemoveTradeGroupPackage::XtpReqRemoveTradeGroupPackage()
 	{
@@ -8026,7 +7896,6 @@ namespace xtp
 			ReqRemoveTradeGroup->AdminUserID, ReqRemoveTradeGroup->TradeGroupID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRemoveTradeGroupPackage::XtpRspRemoveTradeGroupPackage()
 	{
@@ -8094,7 +7963,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddTradeGroupItemPackage::XtpReqAddTradeGroupItemPackage()
 	{
@@ -8150,7 +8018,6 @@ namespace xtp
 			ReqAddTradeGroupItem->AdminUserID, ReqAddTradeGroupItem->TradeGroupID, (int)ReqAddTradeGroupItem->AccountClass, ReqAddTradeGroupItem->PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddTradeGroupItemPackage::XtpRspAddTradeGroupItemPackage()
 	{
@@ -8218,7 +8085,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqUpdateTradeGroupItemPackage::XtpReqUpdateTradeGroupItemPackage()
 	{
@@ -8274,7 +8140,6 @@ namespace xtp
 			ReqUpdateTradeGroupItem->AdminUserID, ReqUpdateTradeGroupItem->TradeGroupID, (int)ReqUpdateTradeGroupItem->AccountClass, ReqUpdateTradeGroupItem->PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspUpdateTradeGroupItemPackage::XtpRspUpdateTradeGroupItemPackage()
 	{
@@ -8342,7 +8207,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRemoveTradeGroupItemPackage::XtpReqRemoveTradeGroupItemPackage()
 	{
@@ -8398,7 +8262,6 @@ namespace xtp
 			ReqRemoveTradeGroupItem->AdminUserID, ReqRemoveTradeGroupItem->TradeGroupID, (int)ReqRemoveTradeGroupItem->AccountClass);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRemoveTradeGroupItemPackage::XtpRspRemoveTradeGroupItemPackage()
 	{
@@ -8466,7 +8329,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddRiskGroupPackage::XtpReqAddRiskGroupPackage()
 	{
@@ -8522,7 +8384,6 @@ namespace xtp
 			ReqAddRiskGroup->AdminUserID, ReqAddRiskGroup->RiskGroupID, ReqAddRiskGroup->RiskGroupName);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddRiskGroupPackage::XtpRspAddRiskGroupPackage()
 	{
@@ -8590,7 +8451,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqUpdateRiskGroupPackage::XtpReqUpdateRiskGroupPackage()
 	{
@@ -8646,7 +8506,6 @@ namespace xtp
 			ReqUpdateRiskGroup->AdminUserID, ReqUpdateRiskGroup->RiskGroupID, ReqUpdateRiskGroup->RiskGroupName);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspUpdateRiskGroupPackage::XtpRspUpdateRiskGroupPackage()
 	{
@@ -8714,7 +8573,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRemoveRiskGroupPackage::XtpReqRemoveRiskGroupPackage()
 	{
@@ -8770,7 +8628,6 @@ namespace xtp
 			ReqRemoveRiskGroup->AdminUserID, ReqRemoveRiskGroup->RiskGroupID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRemoveRiskGroupPackage::XtpRspRemoveRiskGroupPackage()
 	{
@@ -8838,7 +8695,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddRiskGroupItemPackage::XtpReqAddRiskGroupItemPackage()
 	{
@@ -8894,7 +8750,6 @@ namespace xtp
 			ReqAddRiskGroupItem->AdminUserID, ReqAddRiskGroupItem->RiskGroupID, ReqAddRiskGroupItem->RiskID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddRiskGroupItemPackage::XtpRspAddRiskGroupItemPackage()
 	{
@@ -8962,7 +8817,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqUpdateRiskGroupItemPackage::XtpReqUpdateRiskGroupItemPackage()
 	{
@@ -9018,7 +8872,6 @@ namespace xtp
 			ReqUpdateRiskGroupItem->AdminUserID, ReqUpdateRiskGroupItem->RiskGroupID, ReqUpdateRiskGroupItem->RiskID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspUpdateRiskGroupItemPackage::XtpRspUpdateRiskGroupItemPackage()
 	{
@@ -9086,7 +8939,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRemoveRiskGroupItemPackage::XtpReqRemoveRiskGroupItemPackage()
 	{
@@ -9142,7 +8994,6 @@ namespace xtp
 			ReqRemoveRiskGroupItem->AdminUserID, ReqRemoveRiskGroupItem->RiskGroupID, ReqRemoveRiskGroupItem->RiskID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRemoveRiskGroupItemPackage::XtpRspRemoveRiskGroupItemPackage()
 	{
@@ -9210,7 +9061,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddOrUpdateRiskPackage::XtpReqAddOrUpdateRiskPackage()
 	{
@@ -9266,7 +9116,6 @@ namespace xtp
 			ReqAddOrUpdateRisk->AdminUserID, ReqAddOrUpdateRisk->RiskID, ReqAddOrUpdateRisk->RiskName, (int)ReqAddOrUpdateRisk->RiskClassID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddOrUpdateRiskPackage::XtpRspAddOrUpdateRiskPackage()
 	{
@@ -9334,7 +9183,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRemoveRiskPackage::XtpReqRemoveRiskPackage()
 	{
@@ -9390,7 +9238,6 @@ namespace xtp
 			ReqRemoveRisk->AdminUserID, ReqRemoveRisk->RiskID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRemoveRiskPackage::XtpRspRemoveRiskPackage()
 	{
@@ -9458,7 +9305,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddRiskRulePackage::XtpReqAddRiskRulePackage()
 	{
@@ -9514,7 +9360,6 @@ namespace xtp
 			ReqAddRiskRule->AdminUserID, ReqAddRiskRule->RiskID, ReqAddRiskRule->RiskRuleID, (int)ReqAddRiskRule->RiskRuleStyle, ReqAddRiskRule->FormatRiskMessage);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddRiskRulePackage::XtpRspAddRiskRulePackage()
 	{
@@ -9582,7 +9427,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddRiskRuleItemPackage::XtpReqAddRiskRuleItemPackage()
 	{
@@ -9638,7 +9482,6 @@ namespace xtp
 			ReqAddRiskRuleItem->AdminUserID, ReqAddRiskRuleItem->RiskID, ReqAddRiskRuleItem->RiskRuleID, ReqAddRiskRuleItem->RiskRuleItemID, (int)ReqAddRiskRuleItem->RiskIndexType, ReqAddRiskRuleItem->RiskIndexID, ReqAddRiskRuleItem->RiskIndexTextRef, ReqAddRiskRuleItem->IndexParam1, ReqAddRiskRuleItem->IndexParam2, ReqAddRiskRuleItem->IndexParam3, ReqAddRiskRuleItem->IndexParam4, ReqAddRiskRuleItem->IndexParam5, ReqAddRiskRuleItem->IndexParam6, (int)ReqAddRiskRuleItem->LogicFunc, (int)ReqAddRiskRuleItem->LogicParamType1, ReqAddRiskRuleItem->LogicParam1, ReqAddRiskRuleItem->LogicParam1TextRef, (int)ReqAddRiskRuleItem->LogicParamType2, ReqAddRiskRuleItem->LogicParam2, ReqAddRiskRuleItem->LogicParam2TextRef);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddRiskRuleItemPackage::XtpRspAddRiskRuleItemPackage()
 	{
@@ -9706,7 +9549,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddRiskTradeScopePackage::XtpReqAddRiskTradeScopePackage()
 	{
@@ -9762,7 +9604,6 @@ namespace xtp
 			ReqAddRiskTradeScope->AdminUserID, ReqAddRiskTradeScope->RiskID, (int)ReqAddRiskTradeScope->TradeScopeType, ReqAddRiskTradeScope->InstrumentGroupID, ReqAddRiskTradeScope->FormatRiskMessage);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddRiskTradeScopePackage::XtpRspAddRiskTradeScopePackage()
 	{
@@ -9830,7 +9671,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAddAccountRiskPackage::XtpReqAddAccountRiskPackage()
 	{
@@ -9886,7 +9726,6 @@ namespace xtp
 			ReqAddAccountRisk->AdminUserID, ReqAddAccountRisk->AccountID, ReqAddAccountRisk->RiskID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAddAccountRiskPackage::XtpRspAddAccountRiskPackage()
 	{
@@ -9954,7 +9793,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqRemoveAccountRiskPackage::XtpReqRemoveAccountRiskPackage()
 	{
@@ -10010,7 +9848,6 @@ namespace xtp
 			ReqRemoveAccountRisk->AdminUserID, ReqRemoveAccountRisk->AccountID, ReqRemoveAccountRisk->RiskID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspRemoveAccountRiskPackage::XtpRspRemoveAccountRiskPackage()
 	{
@@ -10078,7 +9915,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqMoneyTransferPackage::XtpReqMoneyTransferPackage()
 	{
@@ -10134,7 +9970,6 @@ namespace xtp
 			ReqMoneyTransfer->AdminUserID, ReqMoneyTransfer->TradingDay, ReqMoneyTransfer->AccountID, ReqMoneyTransfer->MoneyTransferID, (int)ReqMoneyTransfer->AccountType, (int)ReqMoneyTransfer->TransferDirection, ReqMoneyTransfer->TransferAmount, ReqMoneyTransfer->InfoMessage, ReqMoneyTransfer->UserID, ReqMoneyTransfer->TransferDate, ReqMoneyTransfer->TransferTime);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspMoneyTransferPackage::XtpRspMoneyTransferPackage()
 	{
@@ -10202,7 +10037,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqAuditOrderPackage::XtpReqAuditOrderPackage()
 	{
@@ -10258,7 +10092,6 @@ namespace xtp
 			ReqAuditOrder->AdminUserID, ReqAuditOrder->TradingDay, ReqAuditOrder->AccountID, ReqAuditOrder->ExchangeID, ReqAuditOrder->InstrumentID, ReqAuditOrder->OrderID, (int)ReqAuditOrder->AuditStatus);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspAuditOrderPackage::XtpRspAuditOrderPackage()
 	{
@@ -10326,7 +10159,6 @@ namespace xtp
 			RspInfo->ErrorID, RspInfo->ErrorMsg);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqOfferLoginPackage::XtpReqOfferLoginPackage()
 	{
@@ -10382,7 +10214,6 @@ namespace xtp
 			ReqOfferLogin->OfferID, ReqOfferLogin->OfferPassword);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspOfferLoginPackage::XtpRspOfferLoginPackage()
 	{
@@ -10438,7 +10269,6 @@ namespace xtp
 			RspOfferLogin->ErrorID, RspOfferLogin->ErrorMsg, RspOfferLogin->OfferID, RspOfferLogin->TradingDay);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqPrimaryAccountLoginPackage::XtpReqPrimaryAccountLoginPackage()
 	{
@@ -10494,7 +10324,6 @@ namespace xtp
 			ReqPrimaryAccountLogin->PrimaryAccountID, ReqPrimaryAccountLogin->Password);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspPrimaryAccountLoginPackage::XtpRspPrimaryAccountLoginPackage()
 	{
@@ -10550,7 +10379,6 @@ namespace xtp
 			RspPrimaryAccountLogin->ErrorID, RspPrimaryAccountLogin->ErrorMsg, RspPrimaryAccountLogin->TradingDay, RspPrimaryAccountLogin->PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqPrimaryAccountLogoutPackage::XtpReqPrimaryAccountLogoutPackage()
 	{
@@ -10606,7 +10434,6 @@ namespace xtp
 			ReqPrimaryAccountLogout->TradingDay, ReqPrimaryAccountLogout->PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnPrimaryAccountLogoutPackage::XtpRtnPrimaryAccountLogoutPackage()
 	{
@@ -10662,7 +10489,6 @@ namespace xtp
 			RtnPrimaryAccountLogout->TradingDay, RtnPrimaryAccountLogout->PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqPrimaryAccountInitPackage::XtpReqPrimaryAccountInitPackage()
 	{
@@ -10718,7 +10544,6 @@ namespace xtp
 			ReqPrimaryAccountInit->PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspPrimaryAccountInitPackage::XtpRspPrimaryAccountInitPackage()
 	{
@@ -10774,7 +10599,6 @@ namespace xtp
 			RspPrimaryAccountInit->ErrorID, RspPrimaryAccountInit->ErrorMsg, RspPrimaryAccountInit->PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqPrimaryAccountQueryPackage::XtpReqPrimaryAccountQueryPackage()
 	{
@@ -10830,7 +10654,6 @@ namespace xtp
 			ReqPrimaryAccountQuery->PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspPrimaryAccountQueryPackage::XtpRspPrimaryAccountQueryPackage()
 	{
@@ -10886,7 +10709,6 @@ namespace xtp
 			RspPrimaryAccountQuery->ErrorID, RspPrimaryAccountQuery->ErrorMsg, RspPrimaryAccountQuery->PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqQryOfferOptionInstrumentPackage::XtpReqQryOfferOptionInstrumentPackage()
 	{
@@ -10942,7 +10764,6 @@ namespace xtp
 			ReqQryOfferOptionInstrument->PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRspQryOfferOptionInstrumentPackage::XtpRspQryOfferOptionInstrumentPackage()
 	{
@@ -10998,7 +10819,6 @@ namespace xtp
 			RspQryOfferOptionInstrument->ErrorID, RspQryOfferOptionInstrument->ErrorMsg, RspQryOfferOptionInstrument->PrimaryAccountID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnOfferOptionInstrumentPackage::XtpRtnOfferOptionInstrumentPackage()
 	{
@@ -11054,7 +10874,6 @@ namespace xtp
 			OfferOptionInstrument->TradingDay, OfferOptionInstrument->ExchangeID, OfferOptionInstrument->InstrumentID, OfferOptionInstrument->ExchangeInstID, OfferOptionInstrument->InstrumentName, OfferOptionInstrument->VolumeMultiple, (int)OfferOptionInstrument->OptionType, OfferOptionInstrument->UnderlyingInstrumentID, OfferOptionInstrument->ExecutePrice, OfferOptionInstrument->UnitMargin, OfferOptionInstrument->PriceTick, OfferOptionInstrument->MaxLimitOrderVolume, OfferOptionInstrument->MaxMarketOrderVolume, OfferOptionInstrument->ExpiringDate);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqOfferOrderPackage::XtpReqOfferOrderPackage()
 	{
@@ -11110,7 +10929,6 @@ namespace xtp
 			ReqOfferOrder->TradingDay, ReqOfferOrder->PrimaryAccountID, ReqOfferOrder->ExchangeID, ReqOfferOrder->InstrumentID, (int)ReqOfferOrder->SecurityType, ReqOfferOrder->OrderID, (int)ReqOfferOrder->Direction, (int)ReqOfferOrder->OffsetFlag, (int)ReqOfferOrder->OrderPriceType, ReqOfferOrder->Price, ReqOfferOrder->Volume);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpReqOfferCancelOrderPackage::XtpReqOfferCancelOrderPackage()
 	{
@@ -11166,7 +10984,6 @@ namespace xtp
 			ReqOfferCancelOrder->TradingDay, ReqOfferCancelOrder->PrimaryAccountID, ReqOfferCancelOrder->ExchangeID, ReqOfferCancelOrder->InstrumentID, (int)ReqOfferCancelOrder->SecurityType, (int)ReqOfferCancelOrder->Direction, ReqOfferCancelOrder->CancelOrderID, ReqOfferCancelOrder->OrderID, ReqOfferCancelOrder->OrderSysID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnOfferOrderPackage::XtpRtnOfferOrderPackage()
 	{
@@ -11222,7 +11039,6 @@ namespace xtp
 			OfferOrder->TradingDay, OfferOrder->PrimaryAccountID, OfferOrder->ExchangeID, OfferOrder->InstrumentID, OfferOrder->OrderID, OfferOrder->OrderSysID, (int)OfferOrder->Direction, (int)OfferOrder->OffsetFlag, (int)OfferOrder->OrderPriceType, OfferOrder->Price, OfferOrder->Volume, OfferOrder->VolumeTotal, OfferOrder->VolumeTraded, (int)OfferOrder->OrderStatus, OfferOrder->StatusMsg, OfferOrder->OrderDate, OfferOrder->OrderTime, OfferOrder->CancelDate, OfferOrder->CancelTime, OfferOrder->IsNewOrder);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnOfferTradePackage::XtpRtnOfferTradePackage()
 	{
@@ -11278,7 +11094,6 @@ namespace xtp
 			OfferTrade->TradingDay, OfferTrade->PrimaryAccountID, OfferTrade->ExchangeID, OfferTrade->InstrumentID, OfferTrade->OrderID, OfferTrade->OrderSysID, OfferTrade->TradeID, (int)OfferTrade->Direction, (int)OfferTrade->OffsetFlag, OfferTrade->Price, OfferTrade->Volume, OfferTrade->TradeDate, OfferTrade->TradeTime);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnOfferErrorCancelOrderPackage::XtpRtnOfferErrorCancelOrderPackage()
 	{
@@ -11334,7 +11149,6 @@ namespace xtp
 			OfferErrorCancelOrder->ErrorID, OfferErrorCancelOrder->ErrorMsg, OfferErrorCancelOrder->TradingDay, OfferErrorCancelOrder->PrimaryAccountID, OfferErrorCancelOrder->ExchangeID, OfferErrorCancelOrder->InstrumentID, (int)OfferErrorCancelOrder->Direction, OfferErrorCancelOrder->CancelOrderID, OfferErrorCancelOrder->OrderID, OfferErrorCancelOrder->OrderSysID);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnOfferCapitalPackage::XtpRtnOfferCapitalPackage()
 	{
@@ -11390,7 +11204,6 @@ namespace xtp
 			OfferCapital->TradingDay, OfferCapital->PrimaryAccountID, OfferCapital->PreCashAsset);
 		return t_XtpDataStringBuffer;
 	}
-	
  
 	XtpRtnOfferPositionPackage::XtpRtnOfferPositionPackage()
 	{
@@ -11446,5 +11259,4 @@ namespace xtp
 			OfferPosition->TradingDay, OfferPosition->PrimaryAccountID, OfferPosition->ExchangeID, OfferPosition->InstrumentID, (int)OfferPosition->PosiDirection, OfferPosition->TotalPosition, OfferPosition->PositionFrozen, OfferPosition->TotalCostPrice, OfferPosition->Margin, OfferPosition->MarketValue);
 		return t_XtpDataStringBuffer;
 	}
-	
 }

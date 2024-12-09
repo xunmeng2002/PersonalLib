@@ -19,8 +19,6 @@ add_package(IOThread ${CMAKE_SOURCE_DIR}/Source/IOThread)
 add_package(Buffer ${CMAKE_SOURCE_DIR}/Source/Buffer)
 add_package(Logger ${CMAKE_SOURCE_DIR}/Source/Logger)
 add_package(Encode ${CMAKE_SOURCE_DIR}/Source/Encode)
-add_package(Jsoncpp ${CMAKE_SOURCE_DIR}/Source/Jsoncpp)
-
 add_package(SocketInit ${CMAKE_SOURCE_DIR}/Source/SocketInit)
 add_package(Timer ${CMAKE_SOURCE_DIR}/Source/Timer)
 add_package(TcpBase ${CMAKE_SOURCE_DIR}/Source/Tcp/TcpBase)

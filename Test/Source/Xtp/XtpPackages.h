@@ -18,7 +18,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x0001;
 		NotifyComponentConnectStatusField* NotifyComponentConnectStatus = nullptr;
 	};
-
 	class XtpReqAccountLoginPackage : public XtpPackageBase
 	{
 	public:
@@ -33,7 +32,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x1001;
 		ReqAccountLoginField* ReqAccountLogin = nullptr;
 	};
-
 	class XtpRspAccountLoginPackage : public XtpPackageBase
 	{
 	public:
@@ -49,7 +47,6 @@ namespace xtp
 		RspAccountLoginField* RspAccountLogin = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAccountLogoutPackage : public XtpPackageBase
 	{
 	public:
@@ -64,7 +61,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x1003;
 		ReqAccountLogoutField* ReqAccountLogout = nullptr;
 	};
-
 	class XtpRspAccountLogoutPackage : public XtpPackageBase
 	{
 	public:
@@ -80,7 +76,6 @@ namespace xtp
 		RspAccountLogoutField* RspAccountLogout = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -95,7 +90,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x1005;
 		ReqQryAccountField* ReqQryAccount = nullptr;
 	};
-
 	class XtpRspQryAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -111,7 +105,6 @@ namespace xtp
 		AccountField* Account = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryHolderAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -126,7 +119,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x1007;
 		ReqQryHolderAccountField* ReqQryHolderAccount = nullptr;
 	};
-
 	class XtpRspQryHolderAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -142,7 +134,6 @@ namespace xtp
 		HolderAccountField* HolderAccount = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryCapitalPackage : public XtpPackageBase
 	{
 	public:
@@ -157,7 +148,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x1009;
 		ReqQryCapitalField* ReqQryCapital = nullptr;
 	};
-
 	class XtpRspQryCapitalPackage : public XtpPackageBase
 	{
 	public:
@@ -173,7 +163,6 @@ namespace xtp
 		CapitalField* Capital = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryPositionPackage : public XtpPackageBase
 	{
 	public:
@@ -188,7 +177,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x100B;
 		ReqQryPositionField* ReqQryPosition = nullptr;
 	};
-
 	class XtpRspQryPositionPackage : public XtpPackageBase
 	{
 	public:
@@ -204,7 +192,6 @@ namespace xtp
 		PositionField* Position = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -219,7 +206,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x100D;
 		ReqQryOrderField* ReqQryOrder = nullptr;
 	};
-
 	class XtpRspQryOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -235,7 +221,6 @@ namespace xtp
 		OrderField* Order = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryTradePackage : public XtpPackageBase
 	{
 	public:
@@ -250,7 +235,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x100F;
 		ReqQryTradeField* ReqQryTrade = nullptr;
 	};
-
 	class XtpRspQryTradePackage : public XtpPackageBase
 	{
 	public:
@@ -266,7 +250,6 @@ namespace xtp
 		TradeField* Trade = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryInstrumentPackage : public XtpPackageBase
 	{
 	public:
@@ -281,7 +264,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x1011;
 		ReqQryInstrumentField* ReqQryInstrument = nullptr;
 	};
-
 	class XtpRspQryInstrumentPackage : public XtpPackageBase
 	{
 	public:
@@ -297,7 +279,6 @@ namespace xtp
 		InstrumentField* Instrument = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryOptionInstrumentPackage : public XtpPackageBase
 	{
 	public:
@@ -312,7 +293,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x1013;
 		ReqQryOptionInstrumentField* ReqQryOptionInstrument = nullptr;
 	};
-
 	class XtpRspQryOptionInstrumentPackage : public XtpPackageBase
 	{
 	public:
@@ -328,7 +308,6 @@ namespace xtp
 		OptionInstrumentField* OptionInstrument = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryCommissionRatePackage : public XtpPackageBase
 	{
 	public:
@@ -343,7 +322,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x1015;
 		ReqQryCommissionRateField* ReqQryCommissionRate = nullptr;
 	};
-
 	class XtpRspQryCommissionRatePackage : public XtpPackageBase
 	{
 	public:
@@ -359,7 +337,6 @@ namespace xtp
 		CommissionRateField* CommissionRate = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryMoneyTransferPackage : public XtpPackageBase
 	{
 	public:
@@ -374,7 +351,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x1017;
 		ReqQryMoneyTransferField* ReqQryMoneyTransfer = nullptr;
 	};
-
 	class XtpRspQryMoneyTransferPackage : public XtpPackageBase
 	{
 	public:
@@ -390,7 +366,6 @@ namespace xtp
 		MoneyTransferField* MoneyTransfer = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqInsertOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -405,7 +380,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x1019;
 		ReqInsertOrderField* ReqInsertOrder = nullptr;
 	};
-
 	class XtpRspInsertOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -421,7 +395,6 @@ namespace xtp
 		OrderField* Order = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqCancelOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -436,7 +409,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x101B;
 		ReqCancelOrderField* ReqCancelOrder = nullptr;
 	};
-
 	class XtpRspCancelOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -452,7 +424,6 @@ namespace xtp
 		CancelOrderField* CancelOrder = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpRtnOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -467,7 +438,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x101D;
 		OrderField* Order = nullptr;
 	};
-
 	class XtpRtnTradePackage : public XtpPackageBase
 	{
 	public:
@@ -482,7 +452,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x101E;
 		TradeField* Trade = nullptr;
 	};
-
 	class XtpRtnMoneyTransferPackage : public XtpPackageBase
 	{
 	public:
@@ -497,7 +466,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x101F;
 		MoneyTransferField* MoneyTransfer = nullptr;
 	};
-
 	class XtpRtnAccountLogoutPackage : public XtpPackageBase
 	{
 	public:
@@ -512,7 +480,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x1020;
 		AccountLogoutField* AccountLogout = nullptr;
 	};
-
 	class XtpReqRiskUserLoginPackage : public XtpPackageBase
 	{
 	public:
@@ -527,7 +494,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x2001;
 		ReqRiskUserLoginField* ReqRiskUserLogin = nullptr;
 	};
-
 	class XtpRspRiskUserLoginPackage : public XtpPackageBase
 	{
 	public:
@@ -543,7 +509,6 @@ namespace xtp
 		RspRiskUserLoginField* RspRiskUserLogin = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRiskUserLogoutPackage : public XtpPackageBase
 	{
 	public:
@@ -558,7 +523,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x2003;
 		ReqRiskUserLogoutField* ReqRiskUserLogout = nullptr;
 	};
-
 	class XtpRspRiskUserLogoutPackage : public XtpPackageBase
 	{
 	public:
@@ -574,7 +538,6 @@ namespace xtp
 		RspRiskUserLogoutField* RspRiskUserLogout = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpRtnRiskUserLogoutPackage : public XtpPackageBase
 	{
 	public:
@@ -589,7 +552,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x2005;
 		RiskUserLogoutField* RiskUserLogout = nullptr;
 	};
-
 	class XtpRtnAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -604,7 +566,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x2006;
 		AccountField* Account = nullptr;
 	};
-
 	class XtpRtnAccountDeletePackage : public XtpPackageBase
 	{
 	public:
@@ -619,7 +580,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x2007;
 		AccountDeleteField* AccountDelete = nullptr;
 	};
-
 	class XtpRtnPositionPackage : public XtpPackageBase
 	{
 	public:
@@ -634,7 +594,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x2008;
 		PositionField* Position = nullptr;
 	};
-
 	class XtpRtnAccountRiskPackage : public XtpPackageBase
 	{
 	public:
@@ -649,7 +608,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x2009;
 		AccountRiskField* AccountRisk = nullptr;
 	};
-
 	class XtpRtnAccountRiskDeletePackage : public XtpPackageBase
 	{
 	public:
@@ -664,7 +622,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x200A;
 		AccountRiskDeleteField* AccountRiskDelete = nullptr;
 	};
-
 	class XtpRtnAccountRiskNotifyPackage : public XtpPackageBase
 	{
 	public:
@@ -679,7 +636,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x200B;
 		AccountRiskNotifyField* AccountRiskNotify = nullptr;
 	};
-
 	class XtpReqQryRiskGroupAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -694,7 +650,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x200C;
 		ReqQryRiskGroupAccountField* ReqQryRiskGroupAccount = nullptr;
 	};
-
 	class XtpRspQryRiskGroupAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -710,7 +665,6 @@ namespace xtp
 		AccountField* Account = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryRiskGroupCapitalPackage : public XtpPackageBase
 	{
 	public:
@@ -725,7 +679,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x200E;
 		ReqQryRiskGroupCapitalField* ReqQryRiskGroupCapital = nullptr;
 	};
-
 	class XtpRspQryRiskGroupCapitalPackage : public XtpPackageBase
 	{
 	public:
@@ -741,7 +694,6 @@ namespace xtp
 		CapitalField* Capital = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryRiskGroupPositionPackage : public XtpPackageBase
 	{
 	public:
@@ -756,7 +708,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x2010;
 		ReqQryRiskGroupPositionField* ReqQryRiskGroupPosition = nullptr;
 	};
-
 	class XtpRspQryRiskGroupPositionPackage : public XtpPackageBase
 	{
 	public:
@@ -772,7 +723,6 @@ namespace xtp
 		PositionField* Position = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryRiskGroupOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -787,7 +737,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x2012;
 		ReqQryRiskGroupOrderField* ReqQryRiskGroupOrder = nullptr;
 	};
-
 	class XtpRspQryRiskGroupOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -803,7 +752,6 @@ namespace xtp
 		OrderField* Order = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryRiskGroupTradePackage : public XtpPackageBase
 	{
 	public:
@@ -818,7 +766,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x2014;
 		ReqQryRiskGroupTradeField* ReqQryRiskGroupTrade = nullptr;
 	};
-
 	class XtpRspQryRiskGroupTradePackage : public XtpPackageBase
 	{
 	public:
@@ -834,7 +781,6 @@ namespace xtp
 		TradeField* Trade = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryRiskGroupAccountRiskPackage : public XtpPackageBase
 	{
 	public:
@@ -849,7 +795,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x2016;
 		ReqQryRiskGroupAccountRiskField* ReqQryRiskGroupAccountRisk = nullptr;
 	};
-
 	class XtpRspQryRiskGroupAccountRiskPackage : public XtpPackageBase
 	{
 	public:
@@ -865,7 +810,6 @@ namespace xtp
 		AccountRiskField* AccountRisk = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqQryRiskGroupAccountRiskNotifyPackage : public XtpPackageBase
 	{
 	public:
@@ -880,7 +824,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x2018;
 		ReqQryRiskGroupAccountRiskNotifyField* ReqQryRiskGroupAccountRiskNotify = nullptr;
 	};
-
 	class XtpRspQryRiskGroupAccountRiskNotifyPackage : public XtpPackageBase
 	{
 	public:
@@ -896,7 +839,6 @@ namespace xtp
 		AccountRiskNotifyField* AccountRiskNotify = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRiskInsertOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -911,7 +853,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x201A;
 		ReqRiskInsertOrderField* ReqRiskInsertOrder = nullptr;
 	};
-
 	class XtpRspRiskInsertOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -927,7 +868,6 @@ namespace xtp
 		OrderField* Order = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRiskCancelOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -942,7 +882,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x201C;
 		ReqRiskCancelOrderField* ReqRiskCancelOrder = nullptr;
 	};
-
 	class XtpRspRiskCancelOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -958,7 +897,6 @@ namespace xtp
 		CancelOrderField* CancelOrder = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqMdUserLoginPackage : public XtpPackageBase
 	{
 	public:
@@ -973,7 +911,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x3001;
 		ReqMdUserLoginField* ReqMdUserLogin = nullptr;
 	};
-
 	class XtpRspMdUserLoginPackage : public XtpPackageBase
 	{
 	public:
@@ -989,7 +926,6 @@ namespace xtp
 		RspMdUserLoginField* RspMdUserLogin = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqMdUserLogoutPackage : public XtpPackageBase
 	{
 	public:
@@ -1004,7 +940,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x3003;
 		ReqMdUserLogoutField* ReqMdUserLogout = nullptr;
 	};
-
 	class XtpRspMdUserLogoutPackage : public XtpPackageBase
 	{
 	public:
@@ -1020,7 +955,6 @@ namespace xtp
 		RspMdUserLogoutField* RspMdUserLogout = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqMdInitPackage : public XtpPackageBase
 	{
 	public:
@@ -1035,7 +969,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x3005;
 		ReqMdInitField* ReqMdInit = nullptr;
 	};
-
 	class XtpRspMdInitPackage : public XtpPackageBase
 	{
 	public:
@@ -1051,7 +984,6 @@ namespace xtp
 		RspMdInitField* RspMdInit = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqSubscribeMdPackage : public XtpPackageBase
 	{
 	public:
@@ -1066,7 +998,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x3007;
 		ReqSubscribeMdField* ReqSubscribeMd = nullptr;
 	};
-
 	class XtpRspSubscribeMdPackage : public XtpPackageBase
 	{
 	public:
@@ -1082,7 +1013,6 @@ namespace xtp
 		RspSubscribeMdField* RspSubscribeMd = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpRtnShortMdPackage : public XtpPackageBase
 	{
 	public:
@@ -1097,7 +1027,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x3009;
 		ShortMdField* ShortMd = nullptr;
 	};
-
 	class XtpRtnExchangeStatusPackage : public XtpPackageBase
 	{
 	public:
@@ -1112,7 +1041,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x300A;
 		RtnExchangeStatusField* RtnExchangeStatus = nullptr;
 	};
-
 	class XtpRtnMdInitCompletedPackage : public XtpPackageBase
 	{
 	public:
@@ -1127,7 +1055,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x300B;
 		MdInitCompletedField* MdInitCompleted = nullptr;
 	};
-
 	class XtpReqAdminUserLoginPackage : public XtpPackageBase
 	{
 	public:
@@ -1142,7 +1069,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4001;
 		ReqAdminUserLoginField* ReqAdminUserLogin = nullptr;
 	};
-
 	class XtpRspAdminUserLoginPackage : public XtpPackageBase
 	{
 	public:
@@ -1158,7 +1084,6 @@ namespace xtp
 		RspAdminUserLoginField* RspAdminUserLogin = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAdminUserLogoutPackage : public XtpPackageBase
 	{
 	public:
@@ -1173,7 +1098,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4003;
 		ReqAdminUserLogoutField* ReqAdminUserLogout = nullptr;
 	};
-
 	class XtpRspAdminUserLogoutPackage : public XtpPackageBase
 	{
 	public:
@@ -1189,7 +1113,6 @@ namespace xtp
 		RspAdminUserLogoutField* RspAdminUserLogout = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpRtnAdminUserLogoutPackage : public XtpPackageBase
 	{
 	public:
@@ -1204,7 +1127,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4005;
 		AdminUserLogoutField* AdminUserLogout = nullptr;
 	};
-
 	class XtpReqAddRiskUserPackage : public XtpPackageBase
 	{
 	public:
@@ -1219,7 +1141,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4006;
 		ReqAddRiskUserField* ReqAddRiskUser = nullptr;
 	};
-
 	class XtpRspAddRiskUserPackage : public XtpPackageBase
 	{
 	public:
@@ -1235,7 +1156,6 @@ namespace xtp
 		RspAddRiskUserField* RspAddRiskUser = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqUpdateRiskUserPackage : public XtpPackageBase
 	{
 	public:
@@ -1250,7 +1170,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4008;
 		ReqUpdateRiskUserField* ReqUpdateRiskUser = nullptr;
 	};
-
 	class XtpRspUpdateRiskUserPackage : public XtpPackageBase
 	{
 	public:
@@ -1266,7 +1185,6 @@ namespace xtp
 		RspUpdateRiskUserField* RspUpdateRiskUser = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRemoveRiskUserPackage : public XtpPackageBase
 	{
 	public:
@@ -1281,7 +1199,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x400A;
 		ReqRemoveRiskUserField* ReqRemoveRiskUser = nullptr;
 	};
-
 	class XtpRspRemoveRiskUserPackage : public XtpPackageBase
 	{
 	public:
@@ -1297,7 +1214,6 @@ namespace xtp
 		RspRemoveRiskUserField* RspRemoveRiskUser = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAddAdminUserPackage : public XtpPackageBase
 	{
 	public:
@@ -1312,7 +1228,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x400C;
 		ReqAddAdminUserField* ReqAddAdminUser = nullptr;
 	};
-
 	class XtpRspAddAdminUserPackage : public XtpPackageBase
 	{
 	public:
@@ -1328,7 +1243,6 @@ namespace xtp
 		RspAddAdminUserField* RspAddAdminUser = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqUpdateAdminUserPackage : public XtpPackageBase
 	{
 	public:
@@ -1343,7 +1257,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x400E;
 		ReqUpdateAdminUserField* ReqUpdateAdminUser = nullptr;
 	};
-
 	class XtpRspUpdateAdminUserPackage : public XtpPackageBase
 	{
 	public:
@@ -1359,7 +1272,6 @@ namespace xtp
 		RspUpdateAdminUserField* RspUpdateAdminUser = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRemoveAdminUserPackage : public XtpPackageBase
 	{
 	public:
@@ -1374,7 +1286,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4010;
 		ReqRemoveAdminUserField* ReqRemoveAdminUser = nullptr;
 	};
-
 	class XtpRspRemoveAdminUserPackage : public XtpPackageBase
 	{
 	public:
@@ -1390,7 +1301,6 @@ namespace xtp
 		RspRemoveAdminUserField* RspRemoveAdminUser = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAddPrimaryAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -1405,7 +1315,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4012;
 		ReqAddPrimaryAccountField* ReqAddPrimaryAccount = nullptr;
 	};
-
 	class XtpRspAddPrimaryAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -1421,7 +1330,6 @@ namespace xtp
 		RspAddPrimaryAccountField* RspAddPrimaryAccount = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqUpdatePrimaryAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -1436,7 +1344,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4014;
 		ReqUpdatePrimaryAccountField* ReqUpdatePrimaryAccount = nullptr;
 	};
-
 	class XtpRspUpdatePrimaryAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -1452,7 +1359,6 @@ namespace xtp
 		RspUpdatePrimaryAccountField* RspUpdatePrimaryAccount = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRemovePrimaryAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -1467,7 +1373,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4016;
 		ReqRemovePrimaryAccountField* ReqRemovePrimaryAccount = nullptr;
 	};
-
 	class XtpRspRemovePrimaryAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -1483,7 +1388,6 @@ namespace xtp
 		RspRemovePrimaryAccountField* RspRemovePrimaryAccount = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAddAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -1498,7 +1402,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4018;
 		ReqAddAccountField* ReqAddAccount = nullptr;
 	};
-
 	class XtpRspAddAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -1514,7 +1417,6 @@ namespace xtp
 		RspAddAccountField* RspAddAccount = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqUpdateAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -1529,7 +1431,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x401A;
 		ReqUpdateAccountField* ReqUpdateAccount = nullptr;
 	};
-
 	class XtpRspUpdateAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -1545,7 +1446,6 @@ namespace xtp
 		RspUpdateAccountField* RspUpdateAccount = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRemoveAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -1560,7 +1460,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x401C;
 		ReqRemoveAccountField* ReqRemoveAccount = nullptr;
 	};
-
 	class XtpRspRemoveAccountPackage : public XtpPackageBase
 	{
 	public:
@@ -1576,7 +1475,6 @@ namespace xtp
 		RspRemoveAccountField* RspRemoveAccount = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAddBaseCommissionPackage : public XtpPackageBase
 	{
 	public:
@@ -1591,7 +1489,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x401E;
 		ReqAddBaseCommissionField* ReqAddBaseCommission = nullptr;
 	};
-
 	class XtpRspAddBaseCommissionPackage : public XtpPackageBase
 	{
 	public:
@@ -1607,7 +1504,6 @@ namespace xtp
 		RspAddBaseCommissionField* RspAddBaseCommission = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqUpdateBaseCommissionPackage : public XtpPackageBase
 	{
 	public:
@@ -1622,7 +1518,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4020;
 		ReqUpdateBaseCommissionField* ReqUpdateBaseCommission = nullptr;
 	};
-
 	class XtpRspUpdateBaseCommissionPackage : public XtpPackageBase
 	{
 	public:
@@ -1638,7 +1533,6 @@ namespace xtp
 		RspUpdateBaseCommissionField* RspUpdateBaseCommission = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRemoveBaseCommissionPackage : public XtpPackageBase
 	{
 	public:
@@ -1653,7 +1547,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4022;
 		ReqRemoveBaseCommissionField* ReqRemoveBaseCommission = nullptr;
 	};
-
 	class XtpRspRemoveBaseCommissionPackage : public XtpPackageBase
 	{
 	public:
@@ -1669,7 +1562,6 @@ namespace xtp
 		RspInfoField* RspInfo = nullptr;
 		RspRemoveBaseCommissionField* RspRemoveBaseCommission = nullptr;
 	};
-
 	class XtpReqAddCommissionGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -1684,7 +1576,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4024;
 		ReqAddCommissionGroupField* ReqAddCommissionGroup = nullptr;
 	};
-
 	class XtpRspAddCommissionGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -1700,7 +1591,6 @@ namespace xtp
 		RspAddCommissionGroupField* RspAddCommissionGroup = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqUpdateCommissionGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -1715,7 +1605,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4026;
 		ReqUpdateCommissionGroupField* ReqUpdateCommissionGroup = nullptr;
 	};
-
 	class XtpRspUpdateCommissionGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -1731,7 +1620,6 @@ namespace xtp
 		RspUpdateCommissionGroupField* RspUpdateCommissionGroup = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRemoveCommissionGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -1746,7 +1634,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4028;
 		ReqRemoveCommissionGroupField* ReqRemoveCommissionGroup = nullptr;
 	};
-
 	class XtpRspRemoveCommissionGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -1762,7 +1649,6 @@ namespace xtp
 		RspRemoveCommissionGroupField* RspRemoveCommissionGroup = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAddOptionMarginParamPackage : public XtpPackageBase
 	{
 	public:
@@ -1777,7 +1663,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x402A;
 		ReqAddOptionMarginParamField* ReqAddOptionMarginParam = nullptr;
 	};
-
 	class XtpRspAddOptionMarginParamPackage : public XtpPackageBase
 	{
 	public:
@@ -1793,7 +1678,6 @@ namespace xtp
 		RspAddOptionMarginParamField* RspAddOptionMarginParam = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqUpdateOptionMarginParamPackage : public XtpPackageBase
 	{
 	public:
@@ -1808,7 +1692,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x402C;
 		ReqUpdateOptionMarginParamField* ReqUpdateOptionMarginParam = nullptr;
 	};
-
 	class XtpRspUpdateOptionMarginParamPackage : public XtpPackageBase
 	{
 	public:
@@ -1824,7 +1707,6 @@ namespace xtp
 		RspUpdateOptionMarginParamField* RspUpdateOptionMarginParam = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRemoveOptionMarginParamPackage : public XtpPackageBase
 	{
 	public:
@@ -1839,7 +1721,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x402E;
 		ReqRemoveOptionMarginParamField* ReqRemoveOptionMarginParam = nullptr;
 	};
-
 	class XtpRspRemoveOptionMarginParamPackage : public XtpPackageBase
 	{
 	public:
@@ -1855,7 +1736,6 @@ namespace xtp
 		RspRemoveOptionMarginParamField* RspRemoveOptionMarginParam = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAddTradeOfferPackage : public XtpPackageBase
 	{
 	public:
@@ -1870,7 +1750,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4030;
 		ReqAddTradeOfferField* ReqAddTradeOffer = nullptr;
 	};
-
 	class XtpRspAddTradeOfferPackage : public XtpPackageBase
 	{
 	public:
@@ -1886,7 +1765,6 @@ namespace xtp
 		RspAddTradeOfferField* RspAddTradeOffer = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqUpdateTradeOfferPackage : public XtpPackageBase
 	{
 	public:
@@ -1901,7 +1779,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4032;
 		ReqUpdateTradeOfferField* ReqUpdateTradeOffer = nullptr;
 	};
-
 	class XtpRspUpdateTradeOfferPackage : public XtpPackageBase
 	{
 	public:
@@ -1917,7 +1794,6 @@ namespace xtp
 		RspUpdateTradeOfferField* RspUpdateTradeOffer = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRemoveTradeOfferPackage : public XtpPackageBase
 	{
 	public:
@@ -1932,7 +1808,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4034;
 		ReqRemoveTradeOfferField* ReqRemoveTradeOffer = nullptr;
 	};
-
 	class XtpRspRemoveTradeOfferPackage : public XtpPackageBase
 	{
 	public:
@@ -1948,7 +1823,6 @@ namespace xtp
 		RspRemoveTradeOfferField* RspRemoveTradeOffer = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAddTradeGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -1963,7 +1837,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4036;
 		ReqAddTradeGroupField* ReqAddTradeGroup = nullptr;
 	};
-
 	class XtpRspAddTradeGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -1979,7 +1852,6 @@ namespace xtp
 		RspAddTradeGroupField* RspAddTradeGroup = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqUpdateTradeGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -1994,7 +1866,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4038;
 		ReqUpdateTradeGroupField* ReqUpdateTradeGroup = nullptr;
 	};
-
 	class XtpRspUpdateTradeGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -2010,7 +1881,6 @@ namespace xtp
 		RspUpdateTradeGroupField* RspUpdateTradeGroup = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRemoveTradeGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -2025,7 +1895,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x403A;
 		ReqRemoveTradeGroupField* ReqRemoveTradeGroup = nullptr;
 	};
-
 	class XtpRspRemoveTradeGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -2041,7 +1910,6 @@ namespace xtp
 		RspRemoveTradeGroupField* RspRemoveTradeGroup = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAddTradeGroupItemPackage : public XtpPackageBase
 	{
 	public:
@@ -2056,7 +1924,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x403C;
 		ReqAddTradeGroupItemField* ReqAddTradeGroupItem = nullptr;
 	};
-
 	class XtpRspAddTradeGroupItemPackage : public XtpPackageBase
 	{
 	public:
@@ -2072,7 +1939,6 @@ namespace xtp
 		RspAddTradeGroupItemField* RspAddTradeGroupItem = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqUpdateTradeGroupItemPackage : public XtpPackageBase
 	{
 	public:
@@ -2087,7 +1953,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x403E;
 		ReqUpdateTradeGroupItemField* ReqUpdateTradeGroupItem = nullptr;
 	};
-
 	class XtpRspUpdateTradeGroupItemPackage : public XtpPackageBase
 	{
 	public:
@@ -2103,7 +1968,6 @@ namespace xtp
 		RspUpdateTradeGroupItemField* RspUpdateTradeGroupItem = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRemoveTradeGroupItemPackage : public XtpPackageBase
 	{
 	public:
@@ -2118,7 +1982,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4040;
 		ReqRemoveTradeGroupItemField* ReqRemoveTradeGroupItem = nullptr;
 	};
-
 	class XtpRspRemoveTradeGroupItemPackage : public XtpPackageBase
 	{
 	public:
@@ -2134,7 +1997,6 @@ namespace xtp
 		RspRemoveTradeGroupItemField* RspRemoveTradeGroupItem = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAddRiskGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -2149,7 +2011,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4042;
 		ReqAddRiskGroupField* ReqAddRiskGroup = nullptr;
 	};
-
 	class XtpRspAddRiskGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -2165,7 +2026,6 @@ namespace xtp
 		RspAddRiskGroupField* RspAddRiskGroup = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqUpdateRiskGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -2180,7 +2040,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4044;
 		ReqUpdateRiskGroupField* ReqUpdateRiskGroup = nullptr;
 	};
-
 	class XtpRspUpdateRiskGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -2196,7 +2055,6 @@ namespace xtp
 		RspUpdateRiskGroupField* RspUpdateRiskGroup = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRemoveRiskGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -2211,7 +2069,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4046;
 		ReqRemoveRiskGroupField* ReqRemoveRiskGroup = nullptr;
 	};
-
 	class XtpRspRemoveRiskGroupPackage : public XtpPackageBase
 	{
 	public:
@@ -2227,7 +2084,6 @@ namespace xtp
 		RspRemoveRiskGroupField* RspRemoveRiskGroup = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAddRiskGroupItemPackage : public XtpPackageBase
 	{
 	public:
@@ -2242,7 +2098,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4048;
 		ReqAddRiskGroupItemField* ReqAddRiskGroupItem = nullptr;
 	};
-
 	class XtpRspAddRiskGroupItemPackage : public XtpPackageBase
 	{
 	public:
@@ -2258,7 +2113,6 @@ namespace xtp
 		RspAddRiskGroupItemField* RspAddRiskGroupItem = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqUpdateRiskGroupItemPackage : public XtpPackageBase
 	{
 	public:
@@ -2273,7 +2127,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x404A;
 		ReqUpdateRiskGroupItemField* ReqUpdateRiskGroupItem = nullptr;
 	};
-
 	class XtpRspUpdateRiskGroupItemPackage : public XtpPackageBase
 	{
 	public:
@@ -2289,7 +2142,6 @@ namespace xtp
 		RspUpdateRiskGroupItemField* RspUpdateRiskGroupItem = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRemoveRiskGroupItemPackage : public XtpPackageBase
 	{
 	public:
@@ -2304,7 +2156,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x404C;
 		ReqRemoveRiskGroupItemField* ReqRemoveRiskGroupItem = nullptr;
 	};
-
 	class XtpRspRemoveRiskGroupItemPackage : public XtpPackageBase
 	{
 	public:
@@ -2320,7 +2171,6 @@ namespace xtp
 		RspRemoveRiskGroupItemField* RspRemoveRiskGroupItem = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAddOrUpdateRiskPackage : public XtpPackageBase
 	{
 	public:
@@ -2335,7 +2185,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x404E;
 		ReqAddOrUpdateRiskField* ReqAddOrUpdateRisk = nullptr;
 	};
-
 	class XtpRspAddOrUpdateRiskPackage : public XtpPackageBase
 	{
 	public:
@@ -2351,7 +2200,6 @@ namespace xtp
 		RspAddOrUpdateRiskField* RspAddOrUpdateRisk = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRemoveRiskPackage : public XtpPackageBase
 	{
 	public:
@@ -2366,7 +2214,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4050;
 		ReqRemoveRiskField* ReqRemoveRisk = nullptr;
 	};
-
 	class XtpRspRemoveRiskPackage : public XtpPackageBase
 	{
 	public:
@@ -2382,7 +2229,6 @@ namespace xtp
 		RspRemoveRiskField* RspRemoveRisk = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAddRiskRulePackage : public XtpPackageBase
 	{
 	public:
@@ -2397,7 +2243,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4052;
 		ReqAddRiskRuleField* ReqAddRiskRule = nullptr;
 	};
-
 	class XtpRspAddRiskRulePackage : public XtpPackageBase
 	{
 	public:
@@ -2413,7 +2258,6 @@ namespace xtp
 		RspAddRiskRuleField* RspAddRiskRule = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAddRiskRuleItemPackage : public XtpPackageBase
 	{
 	public:
@@ -2428,7 +2272,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4054;
 		ReqAddRiskRuleItemField* ReqAddRiskRuleItem = nullptr;
 	};
-
 	class XtpRspAddRiskRuleItemPackage : public XtpPackageBase
 	{
 	public:
@@ -2444,7 +2287,6 @@ namespace xtp
 		RspAddRiskRuleItemField* RspAddRiskRuleItem = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAddRiskTradeScopePackage : public XtpPackageBase
 	{
 	public:
@@ -2459,7 +2301,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4056;
 		ReqAddRiskTradeScopeField* ReqAddRiskTradeScope = nullptr;
 	};
-
 	class XtpRspAddRiskTradeScopePackage : public XtpPackageBase
 	{
 	public:
@@ -2475,7 +2316,6 @@ namespace xtp
 		RspAddRiskTradeScopeField* RspAddRiskTradeScope = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAddAccountRiskPackage : public XtpPackageBase
 	{
 	public:
@@ -2490,7 +2330,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x4058;
 		ReqAddAccountRiskField* ReqAddAccountRisk = nullptr;
 	};
-
 	class XtpRspAddAccountRiskPackage : public XtpPackageBase
 	{
 	public:
@@ -2506,7 +2345,6 @@ namespace xtp
 		RspAddAccountRiskField* RspAddAccountRisk = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqRemoveAccountRiskPackage : public XtpPackageBase
 	{
 	public:
@@ -2521,7 +2359,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x405A;
 		ReqRemoveAccountRiskField* ReqRemoveAccountRisk = nullptr;
 	};
-
 	class XtpRspRemoveAccountRiskPackage : public XtpPackageBase
 	{
 	public:
@@ -2537,7 +2374,6 @@ namespace xtp
 		RspRemoveAccountRiskField* RspRemoveAccountRisk = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqMoneyTransferPackage : public XtpPackageBase
 	{
 	public:
@@ -2552,7 +2388,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x405C;
 		ReqMoneyTransferField* ReqMoneyTransfer = nullptr;
 	};
-
 	class XtpRspMoneyTransferPackage : public XtpPackageBase
 	{
 	public:
@@ -2568,7 +2403,6 @@ namespace xtp
 		RspMoneyTransferField* RspMoneyTransfer = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqAuditOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -2583,7 +2417,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x405E;
 		ReqAuditOrderField* ReqAuditOrder = nullptr;
 	};
-
 	class XtpRspAuditOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -2599,7 +2432,6 @@ namespace xtp
 		RspAuditOrderField* RspAuditOrder = nullptr;
 		RspInfoField* RspInfo = nullptr;
 	};
-
 	class XtpReqOfferLoginPackage : public XtpPackageBase
 	{
 	public:
@@ -2614,7 +2446,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x5001;
 		ReqOfferLoginField* ReqOfferLogin = nullptr;
 	};
-
 	class XtpRspOfferLoginPackage : public XtpPackageBase
 	{
 	public:
@@ -2629,7 +2460,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x5002;
 		RspOfferLoginField* RspOfferLogin = nullptr;
 	};
-
 	class XtpReqPrimaryAccountLoginPackage : public XtpPackageBase
 	{
 	public:
@@ -2644,7 +2474,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x5003;
 		ReqPrimaryAccountLoginField* ReqPrimaryAccountLogin = nullptr;
 	};
-
 	class XtpRspPrimaryAccountLoginPackage : public XtpPackageBase
 	{
 	public:
@@ -2659,7 +2488,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x5004;
 		RspPrimaryAccountLoginField* RspPrimaryAccountLogin = nullptr;
 	};
-
 	class XtpReqPrimaryAccountLogoutPackage : public XtpPackageBase
 	{
 	public:
@@ -2674,7 +2502,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x5005;
 		ReqPrimaryAccountLogoutField* ReqPrimaryAccountLogout = nullptr;
 	};
-
 	class XtpRtnPrimaryAccountLogoutPackage : public XtpPackageBase
 	{
 	public:
@@ -2689,7 +2516,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x5006;
 		RtnPrimaryAccountLogoutField* RtnPrimaryAccountLogout = nullptr;
 	};
-
 	class XtpReqPrimaryAccountInitPackage : public XtpPackageBase
 	{
 	public:
@@ -2704,7 +2530,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x5007;
 		ReqPrimaryAccountInitField* ReqPrimaryAccountInit = nullptr;
 	};
-
 	class XtpRspPrimaryAccountInitPackage : public XtpPackageBase
 	{
 	public:
@@ -2719,7 +2544,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x5008;
 		RspPrimaryAccountInitField* RspPrimaryAccountInit = nullptr;
 	};
-
 	class XtpReqPrimaryAccountQueryPackage : public XtpPackageBase
 	{
 	public:
@@ -2734,7 +2558,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x5009;
 		ReqPrimaryAccountQueryField* ReqPrimaryAccountQuery = nullptr;
 	};
-
 	class XtpRspPrimaryAccountQueryPackage : public XtpPackageBase
 	{
 	public:
@@ -2749,7 +2572,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x500A;
 		RspPrimaryAccountQueryField* RspPrimaryAccountQuery = nullptr;
 	};
-
 	class XtpReqQryOfferOptionInstrumentPackage : public XtpPackageBase
 	{
 	public:
@@ -2764,7 +2586,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x500B;
 		ReqQryOfferOptionInstrumentField* ReqQryOfferOptionInstrument = nullptr;
 	};
-
 	class XtpRspQryOfferOptionInstrumentPackage : public XtpPackageBase
 	{
 	public:
@@ -2779,7 +2600,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x500C;
 		RspQryOfferOptionInstrumentField* RspQryOfferOptionInstrument = nullptr;
 	};
-
 	class XtpRtnOfferOptionInstrumentPackage : public XtpPackageBase
 	{
 	public:
@@ -2794,7 +2614,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x500D;
 		OfferOptionInstrumentField* OfferOptionInstrument = nullptr;
 	};
-
 	class XtpReqOfferOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -2809,7 +2628,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x500E;
 		ReqOfferOrderField* ReqOfferOrder = nullptr;
 	};
-
 	class XtpReqOfferCancelOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -2824,7 +2642,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x500F;
 		ReqOfferCancelOrderField* ReqOfferCancelOrder = nullptr;
 	};
-
 	class XtpRtnOfferOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -2839,7 +2656,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x5010;
 		OfferOrderField* OfferOrder = nullptr;
 	};
-
 	class XtpRtnOfferTradePackage : public XtpPackageBase
 	{
 	public:
@@ -2854,7 +2670,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x5011;
 		OfferTradeField* OfferTrade = nullptr;
 	};
-
 	class XtpRtnOfferErrorCancelOrderPackage : public XtpPackageBase
 	{
 	public:
@@ -2869,7 +2684,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x5012;
 		OfferErrorCancelOrderField* OfferErrorCancelOrder = nullptr;
 	};
-
 	class XtpRtnOfferCapitalPackage : public XtpPackageBase
 	{
 	public:
@@ -2884,7 +2698,6 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x5013;
 		OfferCapitalField* OfferCapital = nullptr;
 	};
-
 	class XtpRtnOfferPositionPackage : public XtpPackageBase
 	{
 	public:
@@ -2899,5 +2712,4 @@ namespace xtp
 		static constexpr UShortType PackageID = 0x5014;
 		OfferPositionField* OfferPosition = nullptr;
 	};
-
 }

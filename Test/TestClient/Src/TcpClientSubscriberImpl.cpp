@@ -3,7 +3,6 @@
 #include "Logger.h"
 #include "Utility.h"
 #include "StepPackages.h"
-#include "GetString.h"
 #include "XtpPackages.h"
 #include <cstring>
 
@@ -67,16 +66,16 @@ void TcpClientSubscriberImpl::Send(SessionIDType sessionID)
     reqInsertOrder.ReqInsertOrder->Price = 88.88;
     reqInsertOrder.ReqInsertOrder->Volume = 1000;
     reqInsertOrder.ReqInsertOrder->ClientOrderID = 1;
-    auto message = GetDebugString(reqInsertOrder.ReqInsertOrder);
+    auto message = reqInsertOrder.GetDebugString();
 
     Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
     auto data = buffer->GetData();
-    int len = (int)message.size();
+    auto len = strlen(message);
     for (auto i = 0; i < 5; ++i)
     {
-        memcpy(data + i * len, message.data(), len);
+        memcpy(data + i * len, message, len);
     }
-    buffer->SetLength(len * 5);
+    buffer->SetLength((unsigned)len * 5);
 
     m_LastSendTime = high_resolution_clock::now();
     m_IOThread->Send(sessionID, buffer);
