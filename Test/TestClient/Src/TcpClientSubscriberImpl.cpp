@@ -2,15 +2,12 @@
 #include "TcpSelectClient.h"
 #include "Logger.h"
 #include "Utility.h"
-#include "StepPackages.h"
-#include "XtpPackages.h"
+#include "Packages.h"
 #include <cstring>
 
 
 using namespace std;
 using namespace std::chrono;
-using namespace step;
-using namespace xtp;
 
 TcpClientSubscriberImpl::TcpClientSubscriberImpl(TcpBase* tcp)
     :m_IOThread(tcp)
@@ -55,7 +52,7 @@ void TcpClientSubscriberImpl::Send(SessionIDType sessionID)
 {
     ++m_MessageCounts[sessionID];
 
-    StepReqInsertOrderPackage reqInsertOrder;
+    ReqInsertOrderPackage reqInsertOrder;
     reqInsertOrder.ReqInsertOrder = new ReqInsertOrderField();
     Strcpy(reqInsertOrder.ReqInsertOrder->AccountID, "Xunmeng001");
     Strcpy(reqInsertOrder.ReqInsertOrder->ExchangeID, "SHSE");

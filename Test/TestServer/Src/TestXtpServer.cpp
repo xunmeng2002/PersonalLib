@@ -2,37 +2,36 @@
 #include "Utility.h"
 #include "Logger.h"
 #include "TestUtility.h"
-#include "XtpPackageFactory.h"
+#include "PackageFactory.h"
 
-using namespace xtp;
 using namespace std;
 
 
 XtpServer::XtpServer()
-	:xtp::XtpProtocol(ServerTypeType::Server, g_IOType, "XtpServer", g_Address, new XtpPackageFactory()), m_Connected(false), m_SessionID(0LL)
+	:Protocol(ProtocolTypeType::Xtp, ServerTypeType::Server, g_IOType, "XtpServer", g_Address, new PackageFactory()), m_Connected(false), m_SessionID(0LL)
 {
-	SubscribeXtp(this);
+	Subscribe(this);
 }
 XtpServer::~XtpServer()
 {
 }
 
-void XtpServer::OnXtpConnect(SessionIDType sessionID, const char* ip, int port)
+void XtpServer::OnConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "XtpServer::OnXtpConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "XtpServer::OnConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
 	m_SessionID = sessionID;
 	m_Connected = true;
 }
-void XtpServer::OnXtpDisConnect(SessionIDType sessionID, const char* ip, int port)
+void XtpServer::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "XtpServer::OnXtpDisConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "XtpServer::OnDisConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
 	m_Connected = false;
 }
-void XtpServer::OnXtpMessage(xtp::XtpPackageBase* xtpPackage)
+void XtpServer::OnMessage(Package* xtpPackage)
 {
-	WriteLog(LogLevel::Info, "OnXtpMessage SessionID:[%lld], %s", xtpPackage->SessionID, xtpPackage->GetDebugString());
+	WriteLog(LogLevel::Info, "OnMessage SessionID:[%lld], %s", xtpPackage->SessionID, xtpPackage->GetDebugString());
 
 	Send(xtpPackage);
 }

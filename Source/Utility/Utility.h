@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <cstring>
+#include "Types.h"
 
 void ParseProcessName(const char* fullProcessName, char* processName, int len);
 
@@ -18,3 +19,4 @@ char* Strcpy(char(&dest)[N], const char* src)
 void PrintBytes(const char* name, char* src, int len);
 void RemoveCharacter(char* src, int size, char c = ' ');
 
+ProtocolTypeType GetConfigProtocolType(const std::string& configProtocolType);

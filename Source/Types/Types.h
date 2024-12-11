@@ -670,17 +670,6 @@ enum class OrderTypeType : int
 	Combination = '2',
 };
 
-//报文类型
-enum class PackageTypeType : int
-{
-	//Step
-	Step = '0',
-	//Xtp
-	Xtp = '1',
-	//Its
-	Its = '2',
-};
-
 //参数类型
 enum class ParamTypeType : int
 {

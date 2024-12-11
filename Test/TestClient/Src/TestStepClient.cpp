@@ -2,37 +2,37 @@
 #include "Utility.h"
 #include "Logger.h"
 #include "TestUtility.h"
-#include "StepPackageFactory.h"
+#include "PackageFactory.h"
+#include "Packages.h"
 
-using namespace step;
 using namespace std;
 
 
 StepClient::StepClient()
-	:step::StepProtocol(ServerTypeType::Client, g_IOType, "StepClient", g_Address, new StepPackageFactory()), m_Connected(false), m_SessionID(0LL)
+	:Protocol(ProtocolTypeType::Step, ServerTypeType::Client, g_IOType, "StepClient", g_Address, new PackageFactory()), m_Connected(false), m_SessionID(0LL)
 {
-	SubscribeStep(this);
+	Subscribe(this);
 }
 StepClient::~StepClient()
 {
 }
 
-void StepClient::OnStepConnect(SessionIDType sessionID, const char* ip, int port)
+void StepClient::OnConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "StepClient::OnStepConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "StepClient::OnConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
 	m_SessionID = sessionID;
 	m_Connected = true;
 }
-void StepClient::OnStepDisConnect(SessionIDType sessionID, const char* ip, int port)
+void StepClient::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "StepClient::OnStepDisConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "StepClient::OnDisConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
 	m_Connected = false;
 }
-void StepClient::OnStepMessage(step::StepPackageBase* stepPackage)
+void StepClient::OnMessage(Package* package)
 {
-	WriteLog(LogLevel::Info, "OnStepMessage: %s", stepPackage->GetDebugString());
+	WriteLog(LogLevel::Info, "OnMessage: %s", package->GetDebugString());
 }
 
 
@@ -50,7 +50,7 @@ void TestStepClient()
 	}
 	for (auto i = 0; i < 5; ++i)
 	{
-		StepReqInsertOrderPackage reqInsertOrder;
+		ReqInsertOrderPackage reqInsertOrder;
 		reqInsertOrder.Prepare(stepClient.m_SessionID, false, i);
 		reqInsertOrder.ReqInsertOrder = Allocate<ReqInsertOrderField>();
 		memset(reqInsertOrder.ReqInsertOrder, 0, sizeof(ReqInsertOrderField));

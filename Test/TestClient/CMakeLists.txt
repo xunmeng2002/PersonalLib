@@ -5,6 +5,7 @@ message("PROJECT_NAME:" ${PROJECT_NAME})
 
 add_package(Src ./Src)
 add_package(TestUtility ${CMAKE_SOURCE_DIR}/Test/Source/TestUtility)
+add_package(Packages ${CMAKE_SOURCE_DIR}/Test/Source/Packages)
 add_package(Fields ${CMAKE_SOURCE_DIR}/Test/Source/Fields)
 add_package(Step ${CMAKE_SOURCE_DIR}/Test/Source/Step)
 add_package(Xtp ${CMAKE_SOURCE_DIR}/Test/Source/Xtp)
@@ -26,9 +27,8 @@ add_package(TcpSelect ${CMAKE_SOURCE_DIR}/Source/Tcp/TcpSelect)
 add_package(TcpEpoll ${CMAKE_SOURCE_DIR}/Source/Tcp/TcpEpoll)
 add_package(Shm ${CMAKE_SOURCE_DIR}/Source/Shm)
 add_package(Package ${CMAKE_SOURCE_DIR}/Source/Package)
-add_package(ProtocolBase ${CMAKE_SOURCE_DIR}/Source/ProtocolBase)
-add_package(StepProtocol ${CMAKE_SOURCE_DIR}/Source/StepProtocol)
-add_package(XtpProtocol ${CMAKE_SOURCE_DIR}/Source/XtpProtocol)
+add_package(Protocol ${CMAKE_SOURCE_DIR}/Source/Protocol)
+
 
 
 add_executable(${PROJECT_NAME} ${all_file})

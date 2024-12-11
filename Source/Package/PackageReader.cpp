@@ -1,4 +1,8 @@
 #include "PackageReader.h"
+#include "ProtocolUtility.h"
+#include "StepUtility.h"
+#include "Logger.h"
+#include "MemCacheTemplateSingleton.h"
 #include <stdio.h>
 #include <cstring>
 #include <algorithm>
@@ -14,6 +18,22 @@ PackageReader::~PackageReader()
 {
 	m_Data = nullptr;
 	m_Length = 0;
+}
+PackageReader* PackageReader::Allocate(ProtocolTypeType protocolType, PackageFactory* packageFactory, SessionIDType sessionID, const char* ipAddress)
+{
+	auto record = ::Allocate<PackageReader>();
+	record->m_ProtocolType = protocolType;
+	record->m_PackageFactory = packageFactory;
+	record->m_SessionID = sessionID;
+	strcpy(record->m_IPAddress, ipAddress);
+	memset(&(record->m_Head), 0, sizeof(HeadField));
+	memset(&(record->m_Tail), 0, sizeof(TailField));
+	return record;
+}
+void PackageReader::Free()
+{
+	Reset();
+	MemCacheTemplateSingleton<PackageReader>::GetInstance().Free(this);
 }
 void PackageReader::Reset()
 {
@@ -57,4 +77,101 @@ unsigned int PackageReader::Append(char* data, unsigned int len)
 	memcpy(Tail(), data, len);
 	m_Length += len;
 	return len;
+}
+bool PackageReader::ParsePackage(Package*& package)
+{
+	if (m_ProtocolType == ProtocolTypeType::Xtp)
+	{
+		return ParseXtpPackage(package);
+	}
+	else if (m_ProtocolType == ProtocolTypeType::Step)
+	{
+		return ParseStepPackage(package);
+	}
+	return false;
+}
+bool PackageReader::ParseXtpPackage(Package*& package)
+{
+	if (m_Length < sizeof(HeadField))
+		return true;
+	memcpy(&m_Head, m_Data, sizeof(HeadField));
+	if (m_Length < (m_Head.BodyLen + sizeof(HeadField) + sizeof(TailField)))
+	{
+		return true;
+	}
+	memcpy(&m_Tail, m_Data + sizeof(HeadField) + m_Head.BodyLen, sizeof(m_Tail));
+	auto checkSum = CalculateSum((unsigned char*)m_Data, m_Head.BodyLen + sizeof(HeadField));
+	if (checkSum != m_Tail.CheckSum)
+	{
+		WriteLog(LogLevel::Error, "CheckSum not Match. Tail.CheckSum:%d, CalculateSum:%d", m_Tail.CheckSum, checkSum);
+		Reset();
+		return false;
+	}
+	package = m_PackageFactory->CreatePackage(m_Head.PackageID);
+	if (package == nullptr)
+	{
+		WriteLog(LogLevel::Warning, "CreatePackage Failed. ProtocolType:%d, PackageID:%d", m_ProtocolType, m_Head.PackageID);
+		return false;
+	}
+
+	package->SessionID = m_SessionID;
+	strcpy(package->IPAddress, m_IPAddress);
+	package->Head = m_Head;
+	package->Tail = m_Tail;
+	auto ret = package->FromXtpStream(m_Data, sizeof(HeadField), sizeof(HeadField) + m_Head.BodyLen);
+	PopFront(sizeof(HeadField) + m_Head.BodyLen + sizeof(TailField));
+	return ret;
+}
+bool PackageReader::ParseStepPackage(Package*& package)
+{
+	if (m_Length < StepHeaderLen)
+	{
+		return true;
+	}
+	int packageStartIndex = 0;
+	if (!GetPackageStart(m_Data, 0, m_Length, packageStartIndex))
+	{
+		WriteLog(LogLevel::Warning, "Cannot Find PackageStart Mark.");
+		return false;
+	}
+	if (m_Length - packageStartIndex < StepHeaderLen)
+	{
+		return true;
+	}
+	::memset(&m_Head, 0, sizeof(m_Head));
+	if (!HeadFromStream(m_Data, packageStartIndex, packageStartIndex + StepHeaderLen, &m_Head))
+	{
+		WriteLog(LogLevel::Warning, "Parse Head Failed.");
+		return false;
+	}
+	if ((m_Length - packageStartIndex) < (StepHeaderLen + m_Head.BodyLen + StepTailLen))
+	{
+		return true;
+	}
+	if (!TailFromStream(m_Data, packageStartIndex + StepHeaderLen + m_Head.BodyLen, packageStartIndex + StepHeaderLen + m_Head.BodyLen + StepTailLen, &m_Tail))
+	{
+		WriteLog(LogLevel::Warning, "Parse Tail Failed.");
+		return false;
+	}
+	auto checkSum = CalculateSum((unsigned char*)m_Data + packageStartIndex, StepHeaderLen + m_Head.BodyLen);
+	if (checkSum != m_Tail.CheckSum)
+	{
+		WriteLog(LogLevel::Warning, "CheckSum not Match. Tail.CheckSum:%d, CalculateSum:%d", m_Tail.CheckSum, checkSum);
+		Reset();
+		return false;
+	}
+	package = m_PackageFactory->CreatePackage(m_Head.PackageID);
+	if (package == nullptr)
+	{
+		WriteLog(LogLevel::Warning, "CreatePackage Failed. ProtocolType:%d, PackageID:%d", m_ProtocolType, m_Head.PackageID);
+		return false;
+	}
+
+	package->SessionID = m_SessionID;
+	strcpy(package->IPAddress, m_IPAddress);
+	memcpy(&package->Head, &m_Head, sizeof(HeadField));
+	memcpy(&package->Tail, &m_Tail, sizeof(TailField));
+	auto ret = package->FromStepStream(m_Data, packageStartIndex + StepHeaderLen, packageStartIndex + StepHeaderLen + m_Head.BodyLen);
+	PopFront(packageStartIndex + StepHeaderLen + m_Head.BodyLen + StepTailLen);
+	return ret;
 }

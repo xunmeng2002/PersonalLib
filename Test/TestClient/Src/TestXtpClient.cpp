@@ -2,37 +2,37 @@
 #include "Utility.h"
 #include "Logger.h"
 #include "TestUtility.h"
-#include "XtpPackageFactory.h"
+#include "PackageFactory.h"
 #include "TimeUtility.h"
+#include "Packages.h"
 
-using namespace xtp;
 using namespace std;
 
 
 XtpClient::XtpClient()
-	:xtp::XtpProtocol(ServerTypeType::Client, g_IOType, "XtpClient", g_Address, new XtpPackageFactory()), m_Connected(false), m_SessionID(0LL)
+	:Protocol(ProtocolTypeType::Xtp, ServerTypeType::Client, g_IOType, "XtpClient", g_Address, new PackageFactory()), m_Connected(false), m_SessionID(0LL)
 {
-	SubscribeXtp(this);
+	Subscribe(this);
 }
 XtpClient::~XtpClient()
 {
 }
-void XtpClient::OnXtpConnect(SessionIDType sessionID, const char* ip, int port)
+void XtpClient::OnConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "XtpClient::OnXtpConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "XtpClient::OnConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
 	m_SessionID = sessionID;
 	m_Connected = true;
 }
-void XtpClient::OnXtpDisConnect(SessionIDType sessionID, const char* ip, int port)
+void XtpClient::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "XtpClient::OnXtpDisConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "XtpClient::OnDisConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
 	m_Connected = false;
 }
-void XtpClient::OnXtpMessage(xtp::XtpPackageBase* xtpPackage)
+void XtpClient::OnMessage(Package* package)
 {
-	WriteLog(LogLevel::Info, "OnXtpMessage: %s", xtpPackage->GetDebugString());
+	WriteLog(LogLevel::Info, "OnMessage: %s", package->GetDebugString());
 }
 
 
@@ -50,7 +50,7 @@ void TestXtpClient()
 	}
 	for (auto i = 0; i < 5; ++i)
 	{
-		XtpReqInsertOrderPackage reqInsertOrder;
+		ReqInsertOrderPackage reqInsertOrder;
 		reqInsertOrder.Prepare(xtpClient.m_SessionID, false, 0);
 		reqInsertOrder.ReqInsertOrder = Allocate<ReqInsertOrderField>();
 		Strcpy(reqInsertOrder.ReqInsertOrder->AccountID, "Xunmeng001");
@@ -70,6 +70,4 @@ void TestXtpClient()
 	xtpClient.Stop();
 	xtpClient.Join();
 }
-
-
 

@@ -65,3 +65,17 @@ void RemoveCharacter(char* src, int size, char c)
 	}
 	*write = '\0';
 }
+
+ProtocolTypeType GetConfigProtocolType(const std::string& configProtocolType)
+{
+	if (configProtocolType == "step")
+	{
+		return ProtocolTypeType::Step;
+	}
+	else if (configProtocolType == "xtp")
+	{
+		return ProtocolTypeType::Xtp;
+	}
+	return ProtocolTypeType::Xtp;
+}
+

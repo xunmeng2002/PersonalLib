@@ -1,5 +1,5 @@
 <pumplist>
 	<pump dest="./Source/Types/Types.h" tpl="../Templates/Cpp/Types/Types.h.tpl" model="../Model/Types.xml"/>
-	<pump dest="./Source/ProtocolBase/Items.h" tpl="../Templates/Cpp/ProtocolBase/Items.h.tpl" model="../Model/Items.xml"/>
-	<pump dest="./Source/ProtocolBase/Head.h" tpl="../Templates/Cpp/ProtocolBase/Head.h.tpl" model="./Model/Head.xml"/>
+	<pump dest="./Source/Protocol/Items.h" tpl="../Templates/Cpp/Protocol/Items.h.tpl" model="../Model/Items.xml"/>
+	<pump dest="./Source/Protocol/Head.h" tpl="../Templates/Cpp/Protocol/Head.h.tpl" model="./Model/Head.xml"/>
 </pumplist>

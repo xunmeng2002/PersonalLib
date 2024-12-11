@@ -1,17 +1,17 @@
 #pragma once
 #include "TcpBase.h"
-#include "StepProtocol.h"
+#include "Protocol.h"
 
 
-class StepClient : public step::StepProtocol, public step::StepSubscriber
+class StepClient : public Protocol, public ProtocolSubscriber
 {
 public:
 	StepClient();
 	virtual ~StepClient();
 
-	virtual void OnStepConnect(SessionIDType sessionID, const char* ip, int port) override;
-	virtual void OnStepDisConnect(SessionIDType sessionID, const char* ip, int port) override;
-	virtual void OnStepMessage(step::StepPackageBase* stepPackage) override;
+	virtual void OnConnect(SessionIDType sessionID, const char* ip, int port) override;
+	virtual void OnDisConnect(SessionIDType sessionID, const char* ip, int port) override;
+	virtual void OnMessage(Package* package) override;
 
 	bool m_Connected;
 	SessionIDType m_SessionID;

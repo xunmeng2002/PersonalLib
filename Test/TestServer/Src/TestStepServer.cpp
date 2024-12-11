@@ -2,38 +2,36 @@
 #include "Utility.h"
 #include "Logger.h"
 #include "TestUtility.h"
-#include "StepPackageFactory.h"
+#include "PackageFactory.h"
 
-
-using namespace step;
 using namespace std;
 
 
 StepServer::StepServer()
-	:step::StepProtocol(ServerTypeType::Server, g_IOType, "StepServer", g_Address, new StepPackageFactory()), m_Connected(false), m_SessionID(0LL)
+	:Protocol(ProtocolTypeType::Step, ServerTypeType::Server, g_IOType, "StepServer", g_Address, new PackageFactory()), m_Connected(false), m_SessionID(0LL)
 {
-	SubscribeStep(this);
+	Subscribe(this);
 }
 StepServer::~StepServer()
 {
 }
 
-void StepServer::OnStepConnect(SessionIDType sessionID, const char* ip, int port)
+void StepServer::OnConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "StepServer::OnStepConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "StepServer::OnConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
 	m_SessionID = sessionID;
 	m_Connected = true;
 }
-void StepServer::OnStepDisConnect(SessionIDType sessionID, const char* ip, int port)
+void StepServer::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
 {
-	WriteLog(LogLevel::Info, "StepServer::OnStepDisConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
+	WriteLog(LogLevel::Info, "StepServer::OnDisConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
 	m_Connected = false;
 }
-void StepServer::OnStepMessage(step::StepPackageBase* stepPackage)
+void StepServer::OnMessage(Package* stepPackage)
 {
-	WriteLog(LogLevel::Info, "OnStepMessage SessionID:[%lld], %s", stepPackage->SessionID, stepPackage->GetDebugString());
+	WriteLog(LogLevel::Info, "OnMessage SessionID:[%lld], %s", stepPackage->SessionID, stepPackage->GetDebugString());
 
 	Send(stepPackage);
 }
