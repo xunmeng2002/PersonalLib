@@ -9,6 +9,7 @@ class MemCacheTemplateSingleton
 {
 private:
 	MemCacheTemplateSingleton()
+		:m_BlockUnitNum(64)
 	{
 	}
 	~MemCacheTemplateSingleton()
@@ -28,13 +29,17 @@ public:
 	{
 		return m_Instance;
 	}
+	void SetBlockUnitNum(int blockUnitNum)
+	{
+		m_BlockUnitNum = blockUnitNum;
+	}
 
-	T* Allocate(int blockUnitNum = 64)
+	T* Allocate()
 	{
 		std::lock_guard<std::mutex> guard(m_Mutex);
 		if (m_Items.empty())
 		{
-			AllocateBlock(blockUnitNum);
+			AllocateBlock();
 		}
 		auto item = m_Items.front();
 		m_Items.pop_front();
@@ -47,19 +52,19 @@ public:
 	}
 
 private:
-	void AllocateBlock(int blockUnitNum)
+	void AllocateBlock()
 	{
-		char* newBlock = new char[sizeof(T) * blockUnitNum];
-		for (auto i = 0; i < blockUnitNum; ++i)
+		char* newBlock = new char[sizeof(T) * m_BlockUnitNum];
+		for (auto i = 0; i < m_BlockUnitNum; ++i)
 		{
-			m_Items.push_back(new(newBlock + i * sizeof(T)) T());
-			//m_Items.push_back(reinterpret_cast<T*>(newBlock + i * sizeof(T)));
+			m_Items.push_back(reinterpret_cast<T*>(newBlock + i * sizeof(T)));
 		}
 		m_Pools.push_back(newBlock);
 	}
 
 private:
 	static MemCacheTemplateSingleton m_Instance;
+	int m_BlockUnitNum;
 	std::list<T*> m_Items;
 	std::mutex m_Mutex;
 	std::list<char*> m_Pools;
@@ -77,6 +82,7 @@ T* Allocate()
 template<typename T>
 void Free(T* item)
 {
+	memset(item, 0, sizeof(T));
 	MemCacheTemplateSingleton<T>::GetInstance().Free(item);
 }
 
