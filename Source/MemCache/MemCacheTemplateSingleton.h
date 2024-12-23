@@ -3,7 +3,6 @@
 #include <mutex>
 #include <cstring>
 
-extern int g_MemCacheBlockUnitNum;
 
 template <typename T>
 class MemCacheTemplateSingleton
@@ -30,12 +29,12 @@ public:
 		return m_Instance;
 	}
 
-	T* Allocate()
+	T* Allocate(int blockUnitNum = 64)
 	{
 		std::lock_guard<std::mutex> guard(m_Mutex);
 		if (m_Items.empty())
 		{
-			AllocateBlock();
+			AllocateBlock(blockUnitNum);
 		}
 		auto item = m_Items.front();
 		m_Items.pop_front();
@@ -48,10 +47,10 @@ public:
 	}
 
 private:
-	void AllocateBlock()
+	void AllocateBlock(int blockUnitNum)
 	{
-		char* newBlock = new char[sizeof(T) * g_MemCacheBlockUnitNum];
-		for (auto i = 0; i < g_MemCacheBlockUnitNum; ++i)
+		char* newBlock = new char[sizeof(T) * blockUnitNum];
+		for (auto i = 0; i < blockUnitNum; ++i)
 		{
 			m_Items.push_back(new(newBlock + i * sizeof(T)) T());
 			//m_Items.push_back(reinterpret_cast<T*>(newBlock + i * sizeof(T)));
