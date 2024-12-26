@@ -213,6 +213,9 @@ typedef char RoleNameType[32];
 //席位号
 typedef char SeatNoType[20];
 
+//交易节名称
+typedef char SessionNameType[32];
+
 //时间类型
 typedef char TimeType[9];
 
