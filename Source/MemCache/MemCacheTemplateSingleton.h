@@ -57,7 +57,7 @@ private:
 		char* newBlock = new char[sizeof(T) * m_BlockUnitNum];
 		for (auto i = 0; i < m_BlockUnitNum; ++i)
 		{
-			m_Items.push_back(reinterpret_cast<T*>(newBlock + i * sizeof(T)));
+			m_Items.push_back(new(newBlock + i * sizeof(T)) T());
 		}
 		m_Pools.push_back(newBlock);
 	}
