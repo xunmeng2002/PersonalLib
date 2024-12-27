@@ -17,7 +17,9 @@
 	<file name="Constant.h" dest="../Libs/PersonalLib/include/" src="./Source/Constant/"/>
 	<file name="CsvParser.h" dest="../Libs/PersonalLib/include/" src="./Source/Csv/"/>
 	<file name="CsvRecord.h" dest="../Libs/PersonalLib/include/" src="./Source/Csv/"/>
-	
+
+	<file name="DBSubscriber.h" dest="../Libs/PersonalLib/include/" src="./Source/DB/"/>
+	<file name="DBOperate.h" dest="../Libs/PersonalLib/include/" src="./Source/DB/"/>
 	<file name="Dir.h" dest="../Libs/PersonalLib/include/" src="./Source/Dir/"/>
 	
 	<file name="Encode.h" dest="../Libs/PersonalLib/include/" src="./Source/Encode/"/>
