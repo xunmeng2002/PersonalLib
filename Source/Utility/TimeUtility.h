@@ -1,7 +1,7 @@
 #pragma once
-
 #include <chrono>
 #include <string>
+#include "Types.h"
 
 
 time_t GetTime(const char* date);
@@ -10,6 +10,9 @@ void GetPreYearDay(const char* tradingDay, char* preYearDay);
 void GetNextTradingDay(const char* tradingDay, char* nextTradingDay);
 
 time_t GetTime();
+time_t GetTime(int date);
+tm* GetTm(int date);
+int GetNextDate(int date);
 tm* GetUtcTm();
 tm* GetLocalTm();
 std::string GetUtcDateTime();
@@ -34,6 +37,16 @@ std::string ToLocalDateTime(time_t* time);
 std::string ToLocalDate(time_t* time);
 std::string ToLocalTime(time_t* time);
 
+
+void GetDateTimeFromUpdateTs(long long updateTs, int& date, int& hour, int& minute, int& second, int& milliSecond);
+int CalculateNextBarFromDayBar(int tradingDay, int barPeriod);
+int CalculateMinutes(int hour, int minute);
+int CalculateMinutesTimeStamp(int minutes);
+int CalculateSeconds(int hour, int minute, int second);
+int CalculateSecondsTimeStamp(int seconds);
+
+long long CalculateNextBarTime(BarPrecesType barPreces, int barPeriod, long long updateTs);
+int CalculateNextBarDate(int barPeriod, int date);
 
 template<typename T>
 long long GetDuration(std::chrono::steady_clock::time_point& start)

@@ -287,6 +287,17 @@ enum class AuditStatusType : int
 	Reject = '1',
 };
 
+//Bar精度
+enum class BarPrecesType : int
+{
+	//秒
+	Second = '0',
+	//分
+	Minute = '1',
+	//日
+	Day = '2',
+};
+
 //组件类型
 enum class ComponentType : int
 {
