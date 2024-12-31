@@ -12,6 +12,8 @@ void Erase(std::string& str, char a);
 template<int N>
 char* Strcpy(char(&dest)[N], const char* src)
 {
+    if (src == nullptr)
+        return nullptr;
     return strncpy(dest, src, sizeof(dest) - 1);
 }
 
