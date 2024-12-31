@@ -339,14 +339,6 @@ long long CalculateNextMinuteBarTime(int barPeriod, int date, int hour, int minu
 	long long nextBarTimeStamp = CalculateMinutesTimeStamp(nextBarTimeMinutes);
 	return date * 1000000000LL + nextBarTimeStamp * 100000LL;
 }
-int CalculateNextBarDate(int barPeriod, int date)
-{
-	if (barPeriod == 1)
-	{
-		return date;
-	}
-	return CalculateNextBarFromDayBar(date, barPeriod);
-}
 long long CalculateNextBarTime(BarPrecesType barPreces, int barPeriod, long long updateTs)
 {
 	int date, hour, minute, second, milliSecond;
@@ -360,4 +352,12 @@ long long CalculateNextBarTime(BarPrecesType barPreces, int barPeriod, long long
 		return CalculateNextSecondBarTime(barPeriod, date, hour, minute, second, milliSecond);
 	}
 	return 0LL;
+}
+int CalculateNextBarDate(int barPeriod, int date)
+{
+	if (barPeriod == 1)
+	{
+		return date;
+	}
+	return CalculateNextBarFromDayBar(date, barPeriod);
 }
