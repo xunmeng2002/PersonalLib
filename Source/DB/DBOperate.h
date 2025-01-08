@@ -7,7 +7,6 @@ public:
 	static DBOperate* Allocate();
 	virtual void Free() = 0;
 	virtual void FreeRecord() = 0;
-	virtual void FreeRecords() = 0;
 	virtual const char* GetDebugString() const = 0;
 
 

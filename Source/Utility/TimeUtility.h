@@ -45,8 +45,9 @@ int CalculateMinutesTimeStamp(int minutes);
 int CalculateSeconds(int hour, int minute, int second);
 int CalculateSecondsTimeStamp(int seconds);
 
-long long CalculateNextBarTime(BarPrecesType barPreces, int barPeriod, long long updateTs);
 int CalculateNextBarDate(int barPeriod, int date);
+long long CalculateNextMinuteBarTime(int barPeriod, long long updateTs);
+long long CalculateNextSecondBarTime(int barPeriod, long long updateTs);
 
 template<typename T>
 long long GetDuration(std::chrono::steady_clock::time_point& start)

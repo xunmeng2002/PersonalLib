@@ -354,12 +354,10 @@ enum class DBOperateType : int
 	DeleteByIndex = '2',
 	//更新
 	Update = '3',
-	//替换
-	Replace = '4',
-	//批量更新
-	BatchUpdate = '5',
+	//批量插入
+	BatchInsert = '4',
 	//清空
-	Truncate = '6',
+	Truncate = '5',
 };
 
 //交割方式

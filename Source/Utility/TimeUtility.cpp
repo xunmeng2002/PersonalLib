@@ -305,25 +305,19 @@ int CalculateSecondsTimeStamp(int seconds)
 	return hour * 10000 + minute * 100 + second;
 }
 
-long long CalculateNextSecondBarTime(int barPeriod, int date, int hour, int minute, int second, int milliSecond)
+
+int CalculateNextBarDate(int barPeriod, int date)
 {
-	auto seconds = CalculateSeconds(hour, minute, second);
-	if (milliSecond > 0)
+	if (barPeriod == 1)
 	{
-		seconds += 1;
+		return date;
 	}
-	auto flag = (seconds % barPeriod == 0) ? 0 : 1;
-	int nextBarTimeSeconds = ((seconds / barPeriod) + flag) * barPeriod;
-	if (nextBarTimeSeconds >= 86400)
-	{
-		date = GetNextDate(date);
-		nextBarTimeSeconds -= 86400;
-	}
-	long long nextBarTimeStamp = CalculateSecondsTimeStamp(nextBarTimeSeconds);
-	return date * 1000000000LL + nextBarTimeStamp * 1000LL;
+	return CalculateNextBarFromDayBar(date, barPeriod);
 }
-long long CalculateNextMinuteBarTime(int barPeriod, int date, int hour, int minute, int second, int milliSecond)
+long long CalculateNextMinuteBarTime(int barPeriod, long long updateTs)
 {
+	int date, hour, minute, second, milliSecond;
+	GetDateTimeFromUpdateTs(updateTs, date, hour, minute, second, milliSecond);
 	auto minutes = CalculateMinutes(hour, minute);
 	if (second > 0 || milliSecond > 0)
 	{
@@ -339,25 +333,23 @@ long long CalculateNextMinuteBarTime(int barPeriod, int date, int hour, int minu
 	long long nextBarTimeStamp = CalculateMinutesTimeStamp(nextBarTimeMinutes);
 	return date * 1000000000LL + nextBarTimeStamp * 100000LL;
 }
-long long CalculateNextBarTime(BarPrecesType barPreces, int barPeriod, long long updateTs)
+long long CalculateNextSecondBarTime(int barPeriod, long long updateTs)
 {
 	int date, hour, minute, second, milliSecond;
 	GetDateTimeFromUpdateTs(updateTs, date, hour, minute, second, milliSecond);
-	if (barPreces == BarPrecesType::Minute)
+	auto seconds = CalculateSeconds(hour, minute, second);
+	if (milliSecond > 0)
 	{
-		return CalculateNextMinuteBarTime(barPeriod, date, hour, minute, second, milliSecond);
+		seconds += 1;
 	}
-	else if (barPreces == BarPrecesType::Second)
+	auto flag = (seconds % barPeriod == 0) ? 0 : 1;
+	int nextBarTimeSeconds = ((seconds / barPeriod) + flag) * barPeriod;
+	if (nextBarTimeSeconds >= 86400)
 	{
-		return CalculateNextSecondBarTime(barPeriod, date, hour, minute, second, milliSecond);
+		date = GetNextDate(date);
+		nextBarTimeSeconds -= 86400;
 	}
-	return 0LL;
+	long long nextBarTimeStamp = CalculateSecondsTimeStamp(nextBarTimeSeconds);
+	return date * 1000000000LL + nextBarTimeStamp * 1000LL;
 }
-int CalculateNextBarDate(int barPeriod, int date)
-{
-	if (barPeriod == 1)
-	{
-		return date;
-	}
-	return CalculateNextBarFromDayBar(date, barPeriod);
-}
+
