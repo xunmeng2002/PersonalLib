@@ -40,7 +40,7 @@ add_library(${PROJECT_NAME} STATIC ${all_file})
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 	# 设置运行时库为多线程静态链接版本
-	target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Release>:/MT> $<$<CONFIG:Debug>:/MTd>)
+	#target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Release>:/MT> $<$<CONFIG:Debug>:/MTd>)
 	#target_link_libraries(${PROJECT_NAME} libcrypto_static.lib libssl_static.lib WS2_32.LIB)
 elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
 	#target_link_libraries(${PROJECT_NAME} pthread dl)
