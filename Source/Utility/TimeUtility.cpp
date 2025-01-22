@@ -73,6 +73,13 @@ tm* GetTm(int date)
 	auto t = GetTime(date);
 	return localtime(&t);
 }
+int GetPreDate(int date)
+{
+	auto dateTime = GetTime(date);
+	time_t nextDateTime = dateTime - 86400LL;
+	tm* nextTm = localtime(&nextDateTime);
+	return (nextTm->tm_year + 1900) * 10000 + (nextTm->tm_mon + 1) * 100 + nextTm->tm_mday;
+}
 int GetNextDate(int date)
 {
 	auto dateTime = GetTime(date);
@@ -80,6 +87,27 @@ int GetNextDate(int date)
 	tm* nextTm = localtime(&nextDateTime);
 	return (nextTm->tm_year + 1900) * 10000 + (nextTm->tm_mon + 1) * 100 + nextTm->tm_mday;
 }
+
+int GetDateWithDayCount(int dayCount)
+{
+	std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+	auto nowTime = std::chrono::system_clock::to_time_t(now);
+
+	auto targetTime = nowTime + 86400LL * dayCount;
+
+	tm* targetTm = localtime(&targetTime);
+	return (targetTm->tm_year + 1900) * 10000 + (targetTm->tm_mon + 1) * 100 + targetTm->tm_mday;
+}
+int GetDateWithDayCountFromDate(int date, int dayCount)
+{
+	auto dateTime = GetTime(date);
+
+	auto targetTime = dateTime + 86400LL * dayCount;
+
+	tm* targetTm = localtime(&targetTime);
+	return (targetTm->tm_year + 1900) * 10000 + (targetTm->tm_mon + 1) * 100 + targetTm->tm_mday;
+}
+
 tm* GetUtcTm()
 {
 	time_t t = GetTime();
@@ -183,6 +211,14 @@ std::string GetLocalTimeFromUnixTimeStamp(long long timeStamp)
 	return std::string(t_DateTimeBuff);
 }
 
+int GetTimeFromTimeString(const char* time)
+{
+	std::istringstream iss(time);
+	int hour, minute, second;
+	char sep;
+	iss >> hour >> sep >> minute >> sep >> second;
+	return hour * 10000 + minute * 100 + second;
+}
 time_t GetTimeFromString(std::string dateTime, std::string format)
 {
 	tm t;
@@ -314,23 +350,18 @@ int CalculateNextBarDate(int barPeriod, int date)
 	}
 	return CalculateNextBarFromDayBar(date, barPeriod);
 }
-long long CalculateNextMinuteBarTime(int barPeriod, long long updateTs)
+long long CalculateNextMinuteBarTime(long long updateTs)
 {
 	int date, hour, minute, second, milliSecond;
 	GetDateTimeFromUpdateTs(updateTs, date, hour, minute, second, milliSecond);
 	auto minutes = CalculateMinutes(hour, minute);
-	if (second > 0 || milliSecond > 0)
-	{
-		minutes += 1;
-	}
-	auto flag = (minutes % barPeriod == 0) ? 0 : 1;
-	int nextBarTimeMinutes = ((minutes / barPeriod) + flag) * barPeriod;
-	if (nextBarTimeMinutes >= 1440)
+	minutes += 1;
+	if (minutes >= 1440)
 	{
 		date = GetNextDate(date);
-		nextBarTimeMinutes -= 1440;
+		minutes -= 1440;
 	}
-	long long nextBarTimeStamp = CalculateMinutesTimeStamp(nextBarTimeMinutes);
+	long long nextBarTimeStamp = CalculateMinutesTimeStamp(minutes);
 	return date * 1000000000LL + nextBarTimeStamp * 100000LL;
 }
 long long CalculateNextSecondBarTime(int barPeriod, long long updateTs)
@@ -353,3 +384,87 @@ long long CalculateNextSecondBarTime(int barPeriod, long long updateTs)
 	return date * 1000000000LL + nextBarTimeStamp * 1000LL;
 }
 
+void CalculateRealMinuteBarTime(const char* exchangeID, const char* instrumentID, int calculateBarTime, int& realBarTime, int& realUpdateTs)
+{
+	if (strcmp(exchangeID, "SSE") == 0 || strcmp(exchangeID, "CFFEX") == 0)
+	{
+		if (calculateBarTime <= 93000)
+		{
+			realBarTime = 93100;
+			realUpdateTs = 93100;
+		}
+		else if (calculateBarTime == 113000)
+		{
+			realBarTime = 113000;
+			realUpdateTs = 113100;
+		}
+		else if (calculateBarTime > 120000 && calculateBarTime <= 130000)
+		{
+			realBarTime = 130100;
+			realUpdateTs = 130100;
+		}
+		else if (calculateBarTime == 150000 && instrumentID[0] != 'T')
+		{
+			realBarTime = 150000;
+			realUpdateTs = 160000;
+		}
+		else if (calculateBarTime == 151500 && instrumentID[0] == 'T')
+		{
+			realBarTime = 151500;
+			realUpdateTs = 160000;
+		}
+		else
+		{
+			realBarTime = calculateBarTime;
+			realUpdateTs = calculateBarTime;
+		}
+	}
+	else
+	{
+		if (calculateBarTime > 83000 && calculateBarTime <= 90000)
+		{
+			realBarTime = 90100;
+			realUpdateTs = 90100;
+		}
+		else if (calculateBarTime == 101500)
+		{
+			realBarTime = 101500;
+			realUpdateTs = 101600;
+		}
+		else if (calculateBarTime > 102000 && calculateBarTime < 103000)
+		{
+			realBarTime = 103100;
+			realUpdateTs = 103100;
+		}
+		else if (calculateBarTime == 113000)
+		{
+			realBarTime = 113000;
+			realUpdateTs = 113100;
+		}
+		else if (calculateBarTime > 130000 && calculateBarTime <= 133000)
+		{
+			realBarTime = 133100;
+			realUpdateTs = 133100;
+		}
+		else if (calculateBarTime == 150000)
+		{
+			realBarTime = 150000;
+			realUpdateTs = 160000;
+		}
+		else if (calculateBarTime > 203000 && calculateBarTime <= 210000)
+		{
+			realBarTime = 210100;
+			realUpdateTs = 210100;
+		}
+		else if (calculateBarTime == 23000)
+		{
+			realBarTime = 23000;
+			realUpdateTs = 23100;
+		}
+		else
+		{
+			realBarTime = calculateBarTime;
+			realUpdateTs = calculateBarTime;
+		}
+	}
+}

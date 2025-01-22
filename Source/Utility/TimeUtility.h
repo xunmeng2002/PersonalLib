@@ -1,7 +1,6 @@
 #pragma once
 #include <chrono>
 #include <string>
-#include "Types.h"
 
 
 time_t GetTime(const char* date);
@@ -12,7 +11,10 @@ void GetNextTradingDay(const char* tradingDay, char* nextTradingDay);
 time_t GetTime();
 time_t GetTime(int date);
 tm* GetTm(int date);
+int GetPreDate(int date);
 int GetNextDate(int date);
+int GetDateWithDayCount(int dayCount);
+int GetDateWithDayCountFromDate(int date, int dayCount);
 tm* GetUtcTm();
 tm* GetLocalTm();
 std::string GetUtcDateTime();
@@ -29,6 +31,7 @@ long long GetMilliSecondTimeStamp();
 std::string GetLocalDateFromUnixTimeStamp(long long timeStamp);
 std::string GetLocalTimeFromUnixTimeStamp(long long timeStamp);
 
+int GetTimeFromTimeString(const char* time);
 time_t GetTimeFromString(std::string dateTime, std::string format = "%04d%02d%02d-%02d:%02d:%02d");
 std::string ToUtcDateTime(time_t* time);
 std::string ToUtcDate(time_t* time);
@@ -46,8 +49,10 @@ int CalculateSeconds(int hour, int minute, int second);
 int CalculateSecondsTimeStamp(int seconds);
 
 int CalculateNextBarDate(int barPeriod, int date);
-long long CalculateNextMinuteBarTime(int barPeriod, long long updateTs);
+long long CalculateNextMinuteBarTime(long long updateTs);
 long long CalculateNextSecondBarTime(int barPeriod, long long updateTs);
+
+void CalculateRealMinuteBarTime(const char* exchangeID, const char* instrumentID, int calculateBarTime, int& realBarTime, int& realUpdateTs);
 
 template<typename T>
 long long GetDuration(std::chrono::steady_clock::time_point& start)
