@@ -369,12 +369,7 @@ long long CalculateNextSecondBarTime(int barPeriod, long long updateTs)
 	int date, hour, minute, second, milliSecond;
 	GetDateTimeFromUpdateTs(updateTs, date, hour, minute, second, milliSecond);
 	auto seconds = CalculateSeconds(hour, minute, second);
-	if (milliSecond > 0)
-	{
-		seconds += 1;
-	}
-	auto flag = (seconds % barPeriod == 0) ? 0 : 1;
-	int nextBarTimeSeconds = ((seconds / barPeriod) + flag) * barPeriod;
+	auto nextBarTimeSeconds = ((seconds + barPeriod) / barPeriod) * barPeriod;
 	if (nextBarTimeSeconds >= 86400)
 	{
 		date = GetNextDate(date);
