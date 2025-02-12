@@ -93,7 +93,7 @@ int GetDateWithDayCount(int dayCount)
 	std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
 	auto nowTime = std::chrono::system_clock::to_time_t(now);
 
-	auto targetTime = nowTime + 86400LL * dayCount;
+	time_t targetTime = nowTime + 86400LL * dayCount;
 
 	tm* targetTm = localtime(&targetTime);
 	return (targetTm->tm_year + 1900) * 10000 + (targetTm->tm_mon + 1) * 100 + targetTm->tm_mday;
@@ -102,7 +102,7 @@ int GetDateWithDayCountFromDate(int date, int dayCount)
 {
 	auto dateTime = GetTime(date);
 
-	auto targetTime = dateTime + 86400LL * dayCount;
+	time_t targetTime = dateTime + 86400LL * dayCount;
 
 	tm* targetTm = localtime(&targetTime);
 	return (targetTm->tm_year + 1900) * 10000 + (targetTm->tm_mon + 1) * 100 + targetTm->tm_mday;
@@ -381,7 +381,7 @@ long long CalculateNextSecondBarTime(int barPeriod, long long updateTs)
 
 void CalculateRealMinuteBarTime(const char* exchangeID, const char* instrumentID, int calculateBarTime, int& realBarTime, int& realUpdateTs)
 {
-	if (strcmp(exchangeID, "SSE") == 0 || strcmp(exchangeID, "CFFEX") == 0)
+	if (strcmp(exchangeID, "SSE") == 0 || strcmp(exchangeID, "SZSE") == 0 || strcmp(exchangeID, "CFFEX") == 0)
 	{
 		if (calculateBarTime <= 93000)
 		{
