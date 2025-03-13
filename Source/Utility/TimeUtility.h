@@ -3,42 +3,45 @@
 #include <string>
 
 
-time_t GetTime(const char* date);
-void GetPreTradingDay(const char* tradingDay, char* preTradingDay);
-void GetPreYearDay(const char* tradingDay, char* preYearDay);
-void GetNextTradingDay(const char* tradingDay, char* nextTradingDay);
-
 time_t GetTime();
+time_t GetTime(const char* date);
 time_t GetTime(int date);
 tm* GetTm(int date);
-int GetPreDate(int date);
-int GetNextDate(int date);
-int GetDateWithDayCount(int dayCount);
-int GetDateWithDayCountFromDate(int date, int dayCount);
 tm* GetUtcTm();
 tm* GetLocalTm();
-std::string GetUtcDateTime();
+
+void GetPreTradingDay(const char* tradingDay, char* preTradingDay);
+int GetPreTradingDay(int tradingDay);
+int GetPreDate(int date);
+void GetNextTradingDay(const char* tradingDay, char* nextTradingDay);
+int GetNextTradingDay(int tradingDay);
+int GetNextDate(int date);
+
+int DateAdd(int date, int count);
+int HourAdd(int hourTime, int count);
+long long MinuteAdd(long long minuteTime, int count);
+
+void GetPreYearDay(const char* tradingDay, char* preYearDay);
+
 std::string GetUtcDate();
 std::string GetUtcTime();
+std::string GetUtcDateTime();
 std::string GetUtcDateTimeWithMilliSecond();
-std::string GetLocalDateTime();
-void GetLocalDateTime(char* date, char* time);
+
 std::string GetLocalDate();
 std::string GetLocalTime();
+std::string GetLocalDateTime();
+void GetLocalDateTime(char* date, char* time);
 std::string GetLocalDateTimeWithMilliSecond();
 long long GetMilliSecondTimeStamp();
 
-std::string GetLocalDateFromUnixTimeStamp(long long timeStamp);
-std::string GetLocalTimeFromUnixTimeStamp(long long timeStamp);
 
-int GetTimeFromTimeString(const char* time);
-time_t GetTimeFromString(std::string dateTime, std::string format = "%04d%02d%02d-%02d:%02d:%02d");
-std::string ToUtcDateTime(time_t* time);
 std::string ToUtcDate(time_t* time);
 std::string ToUtcTime(time_t* time);
-std::string ToLocalDateTime(time_t* time);
+std::string ToUtcDateTime(time_t* time);
 std::string ToLocalDate(time_t* time);
 std::string ToLocalTime(time_t* time);
+std::string ToLocalDateTime(time_t* time);
 
 
 void GetDateTimeFromUpdateTs(long long updateTs, int& date, int& hour, int& minute, int& second, int& milliSecond);
