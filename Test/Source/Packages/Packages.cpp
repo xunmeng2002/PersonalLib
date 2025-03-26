@@ -2198,17 +2198,17 @@ bool RspQryPositionPackage::FromStepStream(char* buff, int startIndex, int endIn
 						}
 						case Items::TotalPosition:
 						{
-							Position->TotalPosition = atoi(value.c_str());
+							Position->TotalPosition = atoll(value.c_str());
 							break;
 						}
 						case Items::PositionFrozen:
 						{
-							Position->PositionFrozen = atoi(value.c_str());
+							Position->PositionFrozen = atoll(value.c_str());
 							break;
 						}
 						case Items::TodayPosition:
 						{
-							Position->TodayPosition = atoi(value.c_str());
+							Position->TodayPosition = atoll(value.c_str());
 							break;
 						}
 						case Items::TotalCostPrice:
@@ -2387,7 +2387,7 @@ bool RspQryPositionPackage::FromXtpStream(char* buff, int startIndex, int endInd
 const char* RspQryPositionPackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "Position:TradingDay:[%s], AccountID:[%s], AccountType:[%d], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], PosiDirection:[%d], TotalPosition:[%d], PositionFrozen:[%d], TodayPosition:[%d], TotalCostPrice:[%f], TodayCostPrice:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], MarketValue:[%f], VolumeMultiple:[%d], TotalCost:[%f], TodayCost:[%f], TotalProfit:[%f], TodayProfit:[%f], LastPrice:[%f], PrePrice:[%f]",
+	offset += sprintf(t_DataStringBuffer + offset, "Position:TradingDay:[%s], AccountID:[%s], AccountType:[%d], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], PosiDirection:[%d], TotalPosition:[%lld], PositionFrozen:[%lld], TodayPosition:[%lld], TotalCostPrice:[%f], TodayCostPrice:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], MarketValue:[%f], VolumeMultiple:[%d], TotalCost:[%f], TodayCost:[%f], TotalProfit:[%f], TodayProfit:[%f], LastPrice:[%f], PrePrice:[%f]",
 		Position->TradingDay, Position->AccountID, (int)Position->AccountType, Position->ExchangeID, Position->InstrumentID, (int)Position->SecurityType, (int)Position->PosiDirection, Position->TotalPosition, Position->PositionFrozen, Position->TodayPosition, Position->TotalCostPrice, Position->TodayCostPrice, Position->CashIn, Position->CashOut, Position->Margin, Position->Commission, Position->StampTax, Position->TransferFee, Position->MarketValue, Position->VolumeMultiple, Position->TotalCost, Position->TodayCost, Position->TotalProfit, Position->TodayProfit, Position->LastPrice, Position->PrePrice);
 	offset += sprintf(t_DataStringBuffer + offset, "RspInfo:ErrorID:[%d], ErrorMsg:[%s]",
 		RspInfo->ErrorID, RspInfo->ErrorMsg);
@@ -2721,17 +2721,17 @@ bool RspQryOrderPackage::FromStepStream(char* buff, int startIndex, int endIndex
 						}
 						case Items::Volume:
 						{
-							Order->Volume = atoi(value.c_str());
+							Order->Volume = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeTotal:
 						{
-							Order->VolumeTotal = atoi(value.c_str());
+							Order->VolumeTotal = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeTraded:
 						{
-							Order->VolumeTraded = atoi(value.c_str());
+							Order->VolumeTraded = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeMultiple:
@@ -2910,7 +2910,7 @@ bool RspQryOrderPackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 const char* RspQryOrderPackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "Order:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]",
+	offset += sprintf(t_DataStringBuffer + offset, "Order:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%lld], VolumeTotal:[%lld], VolumeTraded:[%lld], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]",
 		Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
 	offset += sprintf(t_DataStringBuffer + offset, "RspInfo:ErrorID:[%d], ErrorMsg:[%s]",
 		RspInfo->ErrorID, RspInfo->ErrorMsg);
@@ -3227,7 +3227,7 @@ bool RspQryTradePackage::FromStepStream(char* buff, int startIndex, int endIndex
 						}
 						case Items::Volume:
 						{
-							Trade->Volume = atoi(value.c_str());
+							Trade->Volume = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeMultiple:
@@ -3363,7 +3363,7 @@ bool RspQryTradePackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 const char* RspQryTradePackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "Trade:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%d], VolumeMultiple:[%d], TradeAmount:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], TradeDate:[%s], TradeTime:[%s]",
+	offset += sprintf(t_DataStringBuffer + offset, "Trade:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%lld], VolumeMultiple:[%d], TradeAmount:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], TradeDate:[%s], TradeTime:[%s]",
 		Trade->TradingDay, Trade->AccountID, Trade->ExchangeID, Trade->InstrumentID, (int)Trade->SecurityType, Trade->OrderID, Trade->OrderSysID, Trade->TradeID, (int)Trade->Direction, (int)Trade->OffsetFlag, Trade->Price, Trade->Volume, Trade->VolumeMultiple, Trade->TradeAmount, Trade->Commission, Trade->StampTax, Trade->TransferFee, Trade->TradeDate, Trade->TradeTime);
 	offset += sprintf(t_DataStringBuffer + offset, "RspInfo:ErrorID:[%d], ErrorMsg:[%s]",
 		RspInfo->ErrorID, RspInfo->ErrorMsg);
@@ -4037,12 +4037,12 @@ bool RspQryOptionInstrumentPackage::FromStepStream(char* buff, int startIndex, i
 						}
 						case Items::MaxLimitOrderVolume:
 						{
-							OptionInstrument->MaxLimitOrderVolume = atoi(value.c_str());
+							OptionInstrument->MaxLimitOrderVolume = atoll(value.c_str());
 							break;
 						}
 						case Items::MaxMarketOrderVolume:
 						{
-							OptionInstrument->MaxMarketOrderVolume = atoi(value.c_str());
+							OptionInstrument->MaxMarketOrderVolume = atoll(value.c_str());
 							break;
 						}
 						case Items::ExpiringDate:
@@ -4147,7 +4147,7 @@ bool RspQryOptionInstrumentPackage::FromXtpStream(char* buff, int startIndex, in
 const char* RspQryOptionInstrumentPackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "OptionInstrument:ExchangeID:[%s], InstrumentID:[%s], ExchangeInstID:[%s], InstrumentName:[%s], VolumeMultiple:[%d], OptionType:[%d], UnderlyingInstrumentID:[%s], ExecutePrice:[%f], UnitMargin:[%f], PriceTick:[%f], MaxLimitOrderVolume:[%d], MaxMarketOrderVolume:[%d], ExpiringDate:[%s]",
+	offset += sprintf(t_DataStringBuffer + offset, "OptionInstrument:ExchangeID:[%s], InstrumentID:[%s], ExchangeInstID:[%s], InstrumentName:[%s], VolumeMultiple:[%d], OptionType:[%d], UnderlyingInstrumentID:[%s], ExecutePrice:[%f], UnitMargin:[%f], PriceTick:[%f], MaxLimitOrderVolume:[%lld], MaxMarketOrderVolume:[%lld], ExpiringDate:[%s]",
 		OptionInstrument->ExchangeID, OptionInstrument->InstrumentID, OptionInstrument->ExchangeInstID, OptionInstrument->InstrumentName, OptionInstrument->VolumeMultiple, (int)OptionInstrument->OptionType, OptionInstrument->UnderlyingInstrumentID, OptionInstrument->ExecutePrice, OptionInstrument->UnitMargin, OptionInstrument->PriceTick, OptionInstrument->MaxLimitOrderVolume, OptionInstrument->MaxMarketOrderVolume, OptionInstrument->ExpiringDate);
 	offset += sprintf(t_DataStringBuffer + offset, "RspInfo:ErrorID:[%d], ErrorMsg:[%s]",
 		RspInfo->ErrorID, RspInfo->ErrorMsg);
@@ -5065,7 +5065,7 @@ bool ReqInsertOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 						}
 						case Items::Volume:
 						{
-							ReqInsertOrder->Volume = atoi(value.c_str());
+							ReqInsertOrder->Volume = atoll(value.c_str());
 							break;
 						}
 						case Items::ClientOrderID:
@@ -5123,7 +5123,7 @@ bool ReqInsertOrderPackage::FromXtpStream(char* buff, int startIndex, int endInd
 const char* ReqInsertOrderPackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "ReqInsertOrder:AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], ClientOrderID:[%d]",
+	offset += sprintf(t_DataStringBuffer + offset, "ReqInsertOrder:AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%lld], ClientOrderID:[%d]",
 		ReqInsertOrder->AccountID, ReqInsertOrder->ExchangeID, ReqInsertOrder->InstrumentID, (int)ReqInsertOrder->Direction, (int)ReqInsertOrder->OffsetFlag, (int)ReqInsertOrder->OrderPriceType, ReqInsertOrder->Price, ReqInsertOrder->Volume, ReqInsertOrder->ClientOrderID);
 	return t_DataStringBuffer;
 }
@@ -5332,17 +5332,17 @@ bool RspInsertOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 						}
 						case Items::Volume:
 						{
-							Order->Volume = atoi(value.c_str());
+							Order->Volume = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeTotal:
 						{
-							Order->VolumeTotal = atoi(value.c_str());
+							Order->VolumeTotal = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeTraded:
 						{
-							Order->VolumeTraded = atoi(value.c_str());
+							Order->VolumeTraded = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeMultiple:
@@ -5521,7 +5521,7 @@ bool RspInsertOrderPackage::FromXtpStream(char* buff, int startIndex, int endInd
 const char* RspInsertOrderPackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "Order:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]",
+	offset += sprintf(t_DataStringBuffer + offset, "Order:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%lld], VolumeTotal:[%lld], VolumeTraded:[%lld], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]",
 		Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
 	offset += sprintf(t_DataStringBuffer + offset, "RspInfo:ErrorID:[%d], ErrorMsg:[%s]",
 		RspInfo->ErrorID, RspInfo->ErrorMsg);
@@ -6128,17 +6128,17 @@ bool RtnOrderPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 						}
 						case Items::Volume:
 						{
-							Order->Volume = atoi(value.c_str());
+							Order->Volume = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeTotal:
 						{
-							Order->VolumeTotal = atoi(value.c_str());
+							Order->VolumeTotal = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeTraded:
 						{
-							Order->VolumeTraded = atoi(value.c_str());
+							Order->VolumeTraded = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeMultiple:
@@ -6271,7 +6271,7 @@ bool RtnOrderPackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 const char* RtnOrderPackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "Order:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]",
+	offset += sprintf(t_DataStringBuffer + offset, "Order:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%lld], VolumeTotal:[%lld], VolumeTraded:[%lld], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]",
 		Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
 	return t_DataStringBuffer;
 }
@@ -6447,7 +6447,7 @@ bool RtnTradePackage::FromStepStream(char* buff, int startIndex, int endIndex)
 						}
 						case Items::Volume:
 						{
-							Trade->Volume = atoi(value.c_str());
+							Trade->Volume = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeMultiple:
@@ -6537,7 +6537,7 @@ bool RtnTradePackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 const char* RtnTradePackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "Trade:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%d], VolumeMultiple:[%d], TradeAmount:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], TradeDate:[%s], TradeTime:[%s]",
+	offset += sprintf(t_DataStringBuffer + offset, "Trade:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%lld], VolumeMultiple:[%d], TradeAmount:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], TradeDate:[%s], TradeTime:[%s]",
 		Trade->TradingDay, Trade->AccountID, Trade->ExchangeID, Trade->InstrumentID, (int)Trade->SecurityType, Trade->OrderID, Trade->OrderSysID, Trade->TradeID, (int)Trade->Direction, (int)Trade->OffsetFlag, Trade->Price, Trade->Volume, Trade->VolumeMultiple, Trade->TradeAmount, Trade->Commission, Trade->StampTax, Trade->TransferFee, Trade->TradeDate, Trade->TradeTime);
 	return t_DataStringBuffer;
 }
@@ -8105,17 +8105,17 @@ bool RtnPositionPackage::FromStepStream(char* buff, int startIndex, int endIndex
 						}
 						case Items::TotalPosition:
 						{
-							Position->TotalPosition = atoi(value.c_str());
+							Position->TotalPosition = atoll(value.c_str());
 							break;
 						}
 						case Items::PositionFrozen:
 						{
-							Position->PositionFrozen = atoi(value.c_str());
+							Position->PositionFrozen = atoll(value.c_str());
 							break;
 						}
 						case Items::TodayPosition:
 						{
-							Position->TodayPosition = atoi(value.c_str());
+							Position->TodayPosition = atoll(value.c_str());
 							break;
 						}
 						case Items::TotalCostPrice:
@@ -8248,7 +8248,7 @@ bool RtnPositionPackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 const char* RtnPositionPackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "Position:TradingDay:[%s], AccountID:[%s], AccountType:[%d], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], PosiDirection:[%d], TotalPosition:[%d], PositionFrozen:[%d], TodayPosition:[%d], TotalCostPrice:[%f], TodayCostPrice:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], MarketValue:[%f], VolumeMultiple:[%d], TotalCost:[%f], TodayCost:[%f], TotalProfit:[%f], TodayProfit:[%f], LastPrice:[%f], PrePrice:[%f]",
+	offset += sprintf(t_DataStringBuffer + offset, "Position:TradingDay:[%s], AccountID:[%s], AccountType:[%d], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], PosiDirection:[%d], TotalPosition:[%lld], PositionFrozen:[%lld], TodayPosition:[%lld], TotalCostPrice:[%f], TodayCostPrice:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], MarketValue:[%f], VolumeMultiple:[%d], TotalCost:[%f], TodayCost:[%f], TotalProfit:[%f], TodayProfit:[%f], LastPrice:[%f], PrePrice:[%f]",
 		Position->TradingDay, Position->AccountID, (int)Position->AccountType, Position->ExchangeID, Position->InstrumentID, (int)Position->SecurityType, (int)Position->PosiDirection, Position->TotalPosition, Position->PositionFrozen, Position->TodayPosition, Position->TotalCostPrice, Position->TodayCostPrice, Position->CashIn, Position->CashOut, Position->Margin, Position->Commission, Position->StampTax, Position->TransferFee, Position->MarketValue, Position->VolumeMultiple, Position->TotalCost, Position->TodayCost, Position->TotalProfit, Position->TodayProfit, Position->LastPrice, Position->PrePrice);
 	return t_DataStringBuffer;
 }
@@ -9785,17 +9785,17 @@ bool RspQryRiskGroupPositionPackage::FromStepStream(char* buff, int startIndex, 
 						}
 						case Items::TotalPosition:
 						{
-							Position->TotalPosition = atoi(value.c_str());
+							Position->TotalPosition = atoll(value.c_str());
 							break;
 						}
 						case Items::PositionFrozen:
 						{
-							Position->PositionFrozen = atoi(value.c_str());
+							Position->PositionFrozen = atoll(value.c_str());
 							break;
 						}
 						case Items::TodayPosition:
 						{
-							Position->TodayPosition = atoi(value.c_str());
+							Position->TodayPosition = atoll(value.c_str());
 							break;
 						}
 						case Items::TotalCostPrice:
@@ -9974,7 +9974,7 @@ bool RspQryRiskGroupPositionPackage::FromXtpStream(char* buff, int startIndex, i
 const char* RspQryRiskGroupPositionPackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "Position:TradingDay:[%s], AccountID:[%s], AccountType:[%d], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], PosiDirection:[%d], TotalPosition:[%d], PositionFrozen:[%d], TodayPosition:[%d], TotalCostPrice:[%f], TodayCostPrice:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], MarketValue:[%f], VolumeMultiple:[%d], TotalCost:[%f], TodayCost:[%f], TotalProfit:[%f], TodayProfit:[%f], LastPrice:[%f], PrePrice:[%f]",
+	offset += sprintf(t_DataStringBuffer + offset, "Position:TradingDay:[%s], AccountID:[%s], AccountType:[%d], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], PosiDirection:[%d], TotalPosition:[%lld], PositionFrozen:[%lld], TodayPosition:[%lld], TotalCostPrice:[%f], TodayCostPrice:[%f], CashIn:[%f], CashOut:[%f], Margin:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], MarketValue:[%f], VolumeMultiple:[%d], TotalCost:[%f], TodayCost:[%f], TotalProfit:[%f], TodayProfit:[%f], LastPrice:[%f], PrePrice:[%f]",
 		Position->TradingDay, Position->AccountID, (int)Position->AccountType, Position->ExchangeID, Position->InstrumentID, (int)Position->SecurityType, (int)Position->PosiDirection, Position->TotalPosition, Position->PositionFrozen, Position->TodayPosition, Position->TotalCostPrice, Position->TodayCostPrice, Position->CashIn, Position->CashOut, Position->Margin, Position->Commission, Position->StampTax, Position->TransferFee, Position->MarketValue, Position->VolumeMultiple, Position->TotalCost, Position->TodayCost, Position->TotalProfit, Position->TodayProfit, Position->LastPrice, Position->PrePrice);
 	offset += sprintf(t_DataStringBuffer + offset, "RspInfo:ErrorID:[%d], ErrorMsg:[%s]",
 		RspInfo->ErrorID, RspInfo->ErrorMsg);
@@ -10319,17 +10319,17 @@ bool RspQryRiskGroupOrderPackage::FromStepStream(char* buff, int startIndex, int
 						}
 						case Items::Volume:
 						{
-							Order->Volume = atoi(value.c_str());
+							Order->Volume = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeTotal:
 						{
-							Order->VolumeTotal = atoi(value.c_str());
+							Order->VolumeTotal = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeTraded:
 						{
-							Order->VolumeTraded = atoi(value.c_str());
+							Order->VolumeTraded = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeMultiple:
@@ -10508,7 +10508,7 @@ bool RspQryRiskGroupOrderPackage::FromXtpStream(char* buff, int startIndex, int 
 const char* RspQryRiskGroupOrderPackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "Order:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]",
+	offset += sprintf(t_DataStringBuffer + offset, "Order:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%lld], VolumeTotal:[%lld], VolumeTraded:[%lld], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]",
 		Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
 	offset += sprintf(t_DataStringBuffer + offset, "RspInfo:ErrorID:[%d], ErrorMsg:[%s]",
 		RspInfo->ErrorID, RspInfo->ErrorMsg);
@@ -10836,7 +10836,7 @@ bool RspQryRiskGroupTradePackage::FromStepStream(char* buff, int startIndex, int
 						}
 						case Items::Volume:
 						{
-							Trade->Volume = atoi(value.c_str());
+							Trade->Volume = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeMultiple:
@@ -10972,7 +10972,7 @@ bool RspQryRiskGroupTradePackage::FromXtpStream(char* buff, int startIndex, int 
 const char* RspQryRiskGroupTradePackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "Trade:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%d], VolumeMultiple:[%d], TradeAmount:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], TradeDate:[%s], TradeTime:[%s]",
+	offset += sprintf(t_DataStringBuffer + offset, "Trade:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%lld], VolumeMultiple:[%d], TradeAmount:[%f], Commission:[%f], StampTax:[%f], TransferFee:[%f], TradeDate:[%s], TradeTime:[%s]",
 		Trade->TradingDay, Trade->AccountID, Trade->ExchangeID, Trade->InstrumentID, (int)Trade->SecurityType, Trade->OrderID, Trade->OrderSysID, Trade->TradeID, (int)Trade->Direction, (int)Trade->OffsetFlag, Trade->Price, Trade->Volume, Trade->VolumeMultiple, Trade->TradeAmount, Trade->Commission, Trade->StampTax, Trade->TransferFee, Trade->TradeDate, Trade->TradeTime);
 	offset += sprintf(t_DataStringBuffer + offset, "RspInfo:ErrorID:[%d], ErrorMsg:[%s]",
 		RspInfo->ErrorID, RspInfo->ErrorMsg);
@@ -11814,7 +11814,7 @@ bool ReqRiskInsertOrderPackage::FromStepStream(char* buff, int startIndex, int e
 						}
 						case Items::Volume:
 						{
-							ReqRiskInsertOrder->Volume = atoi(value.c_str());
+							ReqRiskInsertOrder->Volume = atoll(value.c_str());
 							break;
 						}
 						case Items::ClientOrderID:
@@ -11877,7 +11877,7 @@ bool ReqRiskInsertOrderPackage::FromXtpStream(char* buff, int startIndex, int en
 const char* ReqRiskInsertOrderPackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "ReqRiskInsertOrder:UserID:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], ClientOrderID:[%d], IsForceClose:[%d]",
+	offset += sprintf(t_DataStringBuffer + offset, "ReqRiskInsertOrder:UserID:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%lld], ClientOrderID:[%d], IsForceClose:[%d]",
 		ReqRiskInsertOrder->UserID, ReqRiskInsertOrder->AccountID, ReqRiskInsertOrder->ExchangeID, ReqRiskInsertOrder->InstrumentID, (int)ReqRiskInsertOrder->Direction, (int)ReqRiskInsertOrder->OffsetFlag, (int)ReqRiskInsertOrder->OrderPriceType, ReqRiskInsertOrder->Price, ReqRiskInsertOrder->Volume, ReqRiskInsertOrder->ClientOrderID, ReqRiskInsertOrder->IsForceClose);
 	return t_DataStringBuffer;
 }
@@ -12086,17 +12086,17 @@ bool RspRiskInsertOrderPackage::FromStepStream(char* buff, int startIndex, int e
 						}
 						case Items::Volume:
 						{
-							Order->Volume = atoi(value.c_str());
+							Order->Volume = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeTotal:
 						{
-							Order->VolumeTotal = atoi(value.c_str());
+							Order->VolumeTotal = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeTraded:
 						{
-							Order->VolumeTraded = atoi(value.c_str());
+							Order->VolumeTraded = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeMultiple:
@@ -12275,7 +12275,7 @@ bool RspRiskInsertOrderPackage::FromXtpStream(char* buff, int startIndex, int en
 const char* RspRiskInsertOrderPackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "Order:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]",
+	offset += sprintf(t_DataStringBuffer + offset, "Order:TradingDay:[%s], AccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%lld], VolumeTotal:[%lld], VolumeTraded:[%lld], VolumeMultiple:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], SessionID:[%lld], ClientOrderID:[%d], RequestID:[%d], FrozenCash:[%f], FrozenMargin:[%f], FrozenCommission:[%f], FrozenStampTax:[%f], FrozenTransferFee:[%f]",
 		Order->TradingDay, Order->AccountID, Order->ExchangeID, Order->InstrumentID, (int)Order->SecurityType, Order->OrderID, Order->OrderSysID, (int)Order->Direction, (int)Order->OffsetFlag, (int)Order->OrderPriceType, Order->Price, Order->Volume, Order->VolumeTotal, Order->VolumeTraded, Order->VolumeMultiple, (int)Order->OrderStatus, Order->StatusMsg, Order->OrderDate, Order->OrderTime, Order->CancelDate, Order->CancelTime, Order->SessionID, Order->ClientOrderID, Order->RequestID, Order->FrozenCash, Order->FrozenMargin, Order->FrozenCommission, Order->FrozenStampTax, Order->FrozenTransferFee);
 	offset += sprintf(t_DataStringBuffer + offset, "RspInfo:ErrorID:[%d], ErrorMsg:[%s]",
 		RspInfo->ErrorID, RspInfo->ErrorMsg);
@@ -33326,12 +33326,12 @@ bool RtnOfferOptionInstrumentPackage::FromStepStream(char* buff, int startIndex,
 						}
 						case Items::MaxLimitOrderVolume:
 						{
-							OfferOptionInstrument->MaxLimitOrderVolume = atoi(value.c_str());
+							OfferOptionInstrument->MaxLimitOrderVolume = atoll(value.c_str());
 							break;
 						}
 						case Items::MaxMarketOrderVolume:
 						{
-							OfferOptionInstrument->MaxMarketOrderVolume = atoi(value.c_str());
+							OfferOptionInstrument->MaxMarketOrderVolume = atoll(value.c_str());
 							break;
 						}
 						case Items::ExpiringDate:
@@ -33390,7 +33390,7 @@ bool RtnOfferOptionInstrumentPackage::FromXtpStream(char* buff, int startIndex, 
 const char* RtnOfferOptionInstrumentPackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "OfferOptionInstrument:TradingDay:[%s], ExchangeID:[%s], InstrumentID:[%s], ExchangeInstID:[%s], InstrumentName:[%s], VolumeMultiple:[%d], OptionType:[%d], UnderlyingInstrumentID:[%s], ExecutePrice:[%f], UnitMargin:[%f], PriceTick:[%f], MaxLimitOrderVolume:[%d], MaxMarketOrderVolume:[%d], ExpiringDate:[%s]",
+	offset += sprintf(t_DataStringBuffer + offset, "OfferOptionInstrument:TradingDay:[%s], ExchangeID:[%s], InstrumentID:[%s], ExchangeInstID:[%s], InstrumentName:[%s], VolumeMultiple:[%d], OptionType:[%d], UnderlyingInstrumentID:[%s], ExecutePrice:[%f], UnitMargin:[%f], PriceTick:[%f], MaxLimitOrderVolume:[%lld], MaxMarketOrderVolume:[%lld], ExpiringDate:[%s]",
 		OfferOptionInstrument->TradingDay, OfferOptionInstrument->ExchangeID, OfferOptionInstrument->InstrumentID, OfferOptionInstrument->ExchangeInstID, OfferOptionInstrument->InstrumentName, OfferOptionInstrument->VolumeMultiple, (int)OfferOptionInstrument->OptionType, OfferOptionInstrument->UnderlyingInstrumentID, OfferOptionInstrument->ExecutePrice, OfferOptionInstrument->UnitMargin, OfferOptionInstrument->PriceTick, OfferOptionInstrument->MaxLimitOrderVolume, OfferOptionInstrument->MaxMarketOrderVolume, OfferOptionInstrument->ExpiringDate);
 	return t_DataStringBuffer;
 }
@@ -33535,7 +33535,7 @@ bool ReqOfferOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 						}
 						case Items::Volume:
 						{
-							ReqOfferOrder->Volume = atoi(value.c_str());
+							ReqOfferOrder->Volume = atoll(value.c_str());
 							break;
 						}
 						default:
@@ -33588,7 +33588,7 @@ bool ReqOfferOrderPackage::FromXtpStream(char* buff, int startIndex, int endInde
 const char* ReqOfferOrderPackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "ReqOfferOrder:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d]",
+	offset += sprintf(t_DataStringBuffer + offset, "ReqOfferOrder:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], SecurityType:[%d], OrderID:[%d], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%lld]",
 		ReqOfferOrder->TradingDay, ReqOfferOrder->PrimaryAccountID, ReqOfferOrder->ExchangeID, ReqOfferOrder->InstrumentID, (int)ReqOfferOrder->SecurityType, ReqOfferOrder->OrderID, (int)ReqOfferOrder->Direction, (int)ReqOfferOrder->OffsetFlag, (int)ReqOfferOrder->OrderPriceType, ReqOfferOrder->Price, ReqOfferOrder->Volume);
 	return t_DataStringBuffer;
 }
@@ -33958,17 +33958,17 @@ bool RtnOfferOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 						}
 						case Items::Volume:
 						{
-							OfferOrder->Volume = atoi(value.c_str());
+							OfferOrder->Volume = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeTotal:
 						{
-							OfferOrder->VolumeTotal = atoi(value.c_str());
+							OfferOrder->VolumeTotal = atoll(value.c_str());
 							break;
 						}
 						case Items::VolumeTraded:
 						{
-							OfferOrder->VolumeTraded = atoi(value.c_str());
+							OfferOrder->VolumeTraded = atoll(value.c_str());
 							break;
 						}
 						case Items::OrderStatus:
@@ -34061,7 +34061,7 @@ bool RtnOfferOrderPackage::FromXtpStream(char* buff, int startIndex, int endInde
 const char* RtnOfferOrderPackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "OfferOrder:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%d], VolumeTotal:[%d], VolumeTraded:[%d], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], IsNewOrder:[%d]",
+	offset += sprintf(t_DataStringBuffer + offset, "OfferOrder:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], OrderSysID:[%s], Direction:[%d], OffsetFlag:[%d], OrderPriceType:[%d], Price:[%f], Volume:[%lld], VolumeTotal:[%lld], VolumeTraded:[%lld], OrderStatus:[%d], StatusMsg:[%s], OrderDate:[%s], OrderTime:[%s], CancelDate:[%s], CancelTime:[%s], IsNewOrder:[%d]",
 		OfferOrder->TradingDay, OfferOrder->PrimaryAccountID, OfferOrder->ExchangeID, OfferOrder->InstrumentID, OfferOrder->OrderID, OfferOrder->OrderSysID, (int)OfferOrder->Direction, (int)OfferOrder->OffsetFlag, (int)OfferOrder->OrderPriceType, OfferOrder->Price, OfferOrder->Volume, OfferOrder->VolumeTotal, OfferOrder->VolumeTraded, (int)OfferOrder->OrderStatus, OfferOrder->StatusMsg, OfferOrder->OrderDate, OfferOrder->OrderTime, OfferOrder->CancelDate, OfferOrder->CancelTime, OfferOrder->IsNewOrder);
 	return t_DataStringBuffer;
 }
@@ -34226,7 +34226,7 @@ bool RtnOfferTradePackage::FromStepStream(char* buff, int startIndex, int endInd
 						}
 						case Items::Volume:
 						{
-							OfferTrade->Volume = atoi(value.c_str());
+							OfferTrade->Volume = atoll(value.c_str());
 							break;
 						}
 						case Items::TradeDate:
@@ -34291,7 +34291,7 @@ bool RtnOfferTradePackage::FromXtpStream(char* buff, int startIndex, int endInde
 const char* RtnOfferTradePackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "OfferTrade:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%d], TradeDate:[%s], TradeTime:[%s]",
+	offset += sprintf(t_DataStringBuffer + offset, "OfferTrade:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], OrderID:[%d], OrderSysID:[%s], TradeID:[%s], Direction:[%d], OffsetFlag:[%d], Price:[%f], Volume:[%lld], TradeDate:[%s], TradeTime:[%s]",
 		OfferTrade->TradingDay, OfferTrade->PrimaryAccountID, OfferTrade->ExchangeID, OfferTrade->InstrumentID, OfferTrade->OrderID, OfferTrade->OrderSysID, OfferTrade->TradeID, (int)OfferTrade->Direction, (int)OfferTrade->OffsetFlag, OfferTrade->Price, OfferTrade->Volume, OfferTrade->TradeDate, OfferTrade->TradeTime);
 	return t_DataStringBuffer;
 }
@@ -34752,12 +34752,12 @@ bool RtnOfferPositionPackage::FromStepStream(char* buff, int startIndex, int end
 						}
 						case Items::TotalPosition:
 						{
-							OfferPosition->TotalPosition = atoi(value.c_str());
+							OfferPosition->TotalPosition = atoll(value.c_str());
 							break;
 						}
 						case Items::PositionFrozen:
 						{
-							OfferPosition->PositionFrozen = atoi(value.c_str());
+							OfferPosition->PositionFrozen = atoll(value.c_str());
 							break;
 						}
 						case Items::TotalCostPrice:
@@ -34825,7 +34825,7 @@ bool RtnOfferPositionPackage::FromXtpStream(char* buff, int startIndex, int endI
 const char* RtnOfferPositionPackage::GetDebugString() const
 {
 	int offset = 0;
-	offset += sprintf(t_DataStringBuffer + offset, "OfferPosition:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], PosiDirection:[%d], TotalPosition:[%d], PositionFrozen:[%d], TotalCostPrice:[%f], Margin:[%f], MarketValue:[%f]",
+	offset += sprintf(t_DataStringBuffer + offset, "OfferPosition:TradingDay:[%s], PrimaryAccountID:[%s], ExchangeID:[%s], InstrumentID:[%s], PosiDirection:[%d], TotalPosition:[%lld], PositionFrozen:[%lld], TotalCostPrice:[%f], Margin:[%f], MarketValue:[%f]",
 		OfferPosition->TradingDay, OfferPosition->PrimaryAccountID, OfferPosition->ExchangeID, OfferPosition->InstrumentID, (int)OfferPosition->PosiDirection, OfferPosition->TotalPosition, OfferPosition->PositionFrozen, OfferPosition->TotalCostPrice, OfferPosition->Margin, OfferPosition->MarketValue);
 	return t_DataStringBuffer;
 }

@@ -1,6 +1,7 @@
 #include "Package.h"
 #include "StepUtility.h"
 #include "ProtocolUtility.h"
+#include <string.h>
 
 
 void Package::Free()

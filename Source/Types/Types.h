@@ -72,9 +72,6 @@ typedef int SecondType;
 //序号类型
 typedef int SequenceNoType;
 
-//数量类型
-typedef int VolumeType;
-
 //合约乘数类型
 typedef int VolumeMultipleType;
 
@@ -84,6 +81,9 @@ typedef long long Int64Type;
 
 	//会话代码类型
 typedef long long SessionIDType;
+
+	//数量类型
+typedef long long VolumeType;
 
 
 //双精度浮点类型
@@ -215,6 +215,9 @@ typedef char SeatNoType[20];
 
 //交易节名称
 typedef char SessionNameType[32];
+
+//Tick买卖标志
+typedef char TickBSFlagType[8];
 
 //时间类型
 typedef char TimeType[9];
@@ -920,6 +923,19 @@ enum class StockOrderPriceTypeType : int
 	DBestPrice = '5',
 	//本方最优价
 	WBestPrice = '6',
+};
+
+//Tick类型
+enum class TickTypeType : int
+{
+	//新增委托
+	Add = 'A',
+	//删除委托
+	Delete = 'D',
+	//产品状态
+	Status = 'S',
+	//成交
+	Trade = 'T',
 };
 
 //有效期类型
