@@ -9,9 +9,10 @@ using namespace std;
 
 
 StepClient::StepClient()
-	:Protocol(ProtocolTypeType::Step, ServerTypeType::Client, g_IOType, "StepClient", g_Address, new PackageFactory()), m_Connected(false), m_SessionID(0LL)
+	:Protocol(ProtocolTypeType::Step, ServerTypeType::Client, "StepClient", new PackageFactory()), m_Connected(false), m_SessionID(0LL)
 {
 	Subscribe(this);
+	RegisterFront(g_Address);
 }
 StepClient::~StepClient()
 {

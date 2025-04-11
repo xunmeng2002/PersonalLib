@@ -26,6 +26,10 @@ public:
 protected:
 	void DoRecv(ShmConnect<ShmBuffSize>* shmConnect);
 
+private:
+	bool WindowsInit();
+	bool LinuxInit();
+
 protected:
 	std::string m_ShmName;
 	unsigned m_MaxConnectSize;

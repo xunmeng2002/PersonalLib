@@ -19,7 +19,6 @@ struct ShmPackage
     char Data[16];
 };
 
-extern IOTypeType g_IOType;
 extern TcpProtocolType g_ProtocolType;
 extern const char* g_Address;
 extern const char* g_ShmName;

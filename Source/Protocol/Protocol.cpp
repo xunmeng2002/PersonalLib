@@ -1,16 +1,11 @@
 #include "Protocol.h"
 #include "Logger.h"
 #include "IOThreadFactory.h"
+#include <stdexcept>
 
-
-Protocol::Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, IOTypeType ioType, const char* threadName, const char* addressName, PackageFactory* packageFactory)
-	:m_ProtocolType(protocolType), m_Subscriber(nullptr), m_PackageFactory(packageFactory)
+Protocol::Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, const char* threadName, PackageFactory* packageFactory)
+	:m_ProtocolType(protocolType), m_ServerType(serverType), m_ThreadName(threadName), m_Subscriber(nullptr), m_PackageFactory(packageFactory), m_IOThread(nullptr)
 {
-	m_IOThread = IOThreadFactory::CreateIOThread(serverType, ioType, threadName, addressName);
-	if (m_IOThread != nullptr)
-	{
-		m_IOThread->Subscribe(this);
-	}
 }
 Protocol::~Protocol()
 {
@@ -32,8 +27,10 @@ void Protocol::RegisterFront(const char* address)
 {
 	if (m_IOThread != nullptr)
 	{
-		m_IOThread->RegisterFront(address);
+		delete m_IOThread;
 	}
+	m_IOThread = IOThreadFactory::CreateIOThread(m_ServerType, m_ThreadName.c_str(), address);
+	m_IOThread->Subscribe(this);
 }
 bool Protocol::Init()
 {

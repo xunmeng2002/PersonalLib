@@ -13,8 +13,29 @@
 
 
 
-IOThread* IOThreadFactory::CreateIOThread(ServerTypeType serverType, IOTypeType ioType, const char* threadName, const char* addressName)
+IOThread* IOThreadFactory::CreateIOThread(ServerTypeType serverType, const char* threadName, const char* address)
 {
+	IOTypeType ioType;
+	if (strncmp(address, "tcp", 3) == 0)
+	{
+		ioType = IOTypeType::Tcp;
+	}
+	else if (strncmp(address, "udp", 3) == 0)
+	{
+		ioType = IOTypeType::Udp;
+	}
+	else if (strncmp(address, "shm", 3) == 0)
+	{
+		ioType = IOTypeType::Shm;
+	}
+	else
+	{
+		char errorMsg[256]{ 0 };
+		sprintf(errorMsg, "Invalid Address:%s", address);
+		throw std::logic_error(errorMsg);
+	}
+	auto addressName = address + 6;
+
 	if (serverType == ServerTypeType::Client)
 	{
 		switch (ioType)

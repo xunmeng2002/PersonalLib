@@ -72,58 +72,12 @@ bool ShmBase::Init()
 	if (!m_Sem->Init())
 		return false;
 #ifdef WINDOWS
-	if (m_ServerType == ServerTypeType::Server)
-	{
-		m_File = CreateFileA(m_ShmName.c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
-		if (m_File == INVALID_HANDLE_VALUE)
-		{
-			WriteLog(LogLevel::Warning, "CreateFileA Failed. ErrNo:%d", GetLastError());
-			return false;
-		}
-		m_FileMap = CreateFileMappingA(m_File, NULL, PAGE_READWRITE, 0, ShmBuffSize * m_MaxConnectSize * 2, m_ShmName.c_str());
-	}
-	else
-	{
-		m_FileMap = OpenFileMappingA(FILE_MAP_ALL_ACCESS, FALSE, m_ShmName.c_str());
-	}
-	if (m_FileMap == NULL)
-	{
-		WriteLog(LogLevel::Warning, "Create Or Open FileMapping Failed. ErrNo:%d", GetLastError());
+	if (!WindowsInit())
 		return false;
-	}
-	m_ShmAddr = (char*)MapViewOfFile(m_FileMap, FILE_MAP_ALL_ACCESS, 0, 0, ShmBuffSize * m_MaxConnectSize  *  2);
-	if (m_ShmAddr == NULL)
-	{
-		WriteLog(LogLevel::Warning, "MapViewOfFile Failed. ErrNo:%d", GetLastError());
-		return false;
-	}
 #endif
 #ifdef LINUX
-	int fd;
-	if (m_ServerType == ServerTypeType::Server)
-	{
-		fd = shm_open(m_ShmName.c_str(), O_CREAT | O_EXCL | O_RDWR, 0666);
-	}
-	else
-	{
-		fd = shm_open(m_ShmName.c_str(), O_EXCL | O_RDWR, 0666);
-	}
-	if (fd < 0)
-	{
-		WriteLog(LogLevel::Warning, "shm_open Failed. ErrNo:%d", errno);
+	if (!LinuxInit())
 		return false;
-	}
-	if (ftruncate(fd, ShmBuffSize * m_MaxConnectSize * 2) == -1)
-	{
-		WriteLog(LogLevel::Warning, "ftruncate Failed. ErrNo:%d", errno);
-		return false;
-	}
-	m_ShmAddr = (char*)mmap(nullptr, ShmBuffSize * m_MaxConnectSize * 2, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-	if (m_ShmAddr == MAP_FAILED)
-	{
-		WriteLog(LogLevel::Warning, "mmap Failed. ErrNo:%d", errno);
-		return false;
-	}
 #endif
 	m_CommonShmHeader = (SingleShmHeader*)m_ShmAddr;
 	if (m_ServerType == ServerTypeType::Server)
@@ -167,5 +121,66 @@ void ShmBase::DoRecv(ShmConnect<ShmBuffSize>* shmConnect)
 	else
 		buffer->Free();
 }
-
+bool ShmBase::WindowsInit()
+{
+#ifdef WINDOWS
+	if (m_ServerType == ServerTypeType::Server)
+	{
+		m_File = CreateFileA(m_ShmName.c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
+		if (m_File == INVALID_HANDLE_VALUE)
+		{
+			WriteLog(LogLevel::Warning, "CreateFileA Failed. ErrNo:%d", GetLastError());
+			return false;
+		}
+		m_FileMap = CreateFileMappingA(m_File, NULL, PAGE_READWRITE, 0, ShmBuffSize * m_MaxConnectSize * 2, m_ShmName.c_str());
+	}
+	else
+	{
+		m_FileMap = OpenFileMappingA(FILE_MAP_ALL_ACCESS, FALSE, m_ShmName.c_str());
+	}
+	if (m_FileMap == NULL)
+	{
+		WriteLog(LogLevel::Warning, "Create Or Open FileMapping Failed. ErrNo:%d", GetLastError());
+		return false;
+	}
+	m_ShmAddr = (char*)MapViewOfFile(m_FileMap, FILE_MAP_ALL_ACCESS, 0, 0, ShmBuffSize * m_MaxConnectSize * 2);
+	if (m_ShmAddr == NULL)
+	{
+		WriteLog(LogLevel::Warning, "MapViewOfFile Failed. ErrNo:%d", GetLastError());
+		return false;
+	}
+#endif
+	return true;
+}
+bool ShmBase::LinuxInit()
+{
+#ifdef LINUX
+	int fd;
+	if (m_ServerType == ServerTypeType::Server)
+	{
+		fd = shm_open(m_ShmName.c_str(), O_CREAT | O_EXCL | O_RDWR, 0666);
+	}
+	else
+	{
+		fd = shm_open(m_ShmName.c_str(), O_EXCL | O_RDWR, 0666);
+	}
+	if (fd < 0)
+	{
+		WriteLog(LogLevel::Warning, "shm_open Failed. ErrNo:%d", errno);
+		return false;
+	}
+	if (ftruncate(fd, ShmBuffSize * m_MaxConnectSize * 2) == -1)
+	{
+		WriteLog(LogLevel::Warning, "ftruncate Failed. ErrNo:%d", errno);
+		return false;
+	}
+	m_ShmAddr = (char*)mmap(nullptr, ShmBuffSize * m_MaxConnectSize * 2, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+	if (m_ShmAddr == MAP_FAILED)
+	{
+		WriteLog(LogLevel::Warning, "mmap Failed. ErrNo:%d", errno);
+		return false;
+	}
+#endif
+	return true;
+}
 

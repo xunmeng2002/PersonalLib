@@ -8,7 +8,7 @@
 class Protocol : public IOSubscriber
 {
 public:
-	Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, IOTypeType ioType, const char* threadName, const char* addressName, PackageFactory* packageFactory);
+	Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, const char* threadName, PackageFactory* packageFactory);
 	~Protocol();
 	void Subscribe(ProtocolSubscriber* subscriber);
 	void UnSubscribe();
@@ -28,6 +28,8 @@ public:
 
 protected:
 	ProtocolTypeType m_ProtocolType;
+	ServerTypeType m_ServerType;
+	std::string m_ThreadName;
 	IOThread* m_IOThread;
 	PackageFactory* m_PackageFactory;
 	ProtocolSubscriber* m_Subscriber;

@@ -8,9 +8,10 @@ using namespace std;
 
 
 XtpServer::XtpServer()
-	:Protocol(ProtocolTypeType::Xtp, ServerTypeType::Server, g_IOType, "XtpServer", g_Address, new PackageFactory()), m_Connected(false), m_SessionID(0LL)
+	:Protocol(ProtocolTypeType::Xtp, ServerTypeType::Server, "XtpServer", new PackageFactory()), m_Connected(false), m_SessionID(0LL)
 {
 	Subscribe(this);
+	RegisterFront(g_Address);
 }
 XtpServer::~XtpServer()
 {

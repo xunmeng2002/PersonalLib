@@ -25,7 +25,7 @@ void IOThread::UnSubscribe()
 
 void IOThread::RegisterFront(const char* address)
 {
-	ParseAddress(m_AddressName, m_Address, m_Port);
+	ParseAddress(address, m_Address, m_Port);
 }
 void IOThread::DisConnect(SessionIDType sessionID)
 {

@@ -10,9 +10,10 @@ using namespace std;
 
 
 XtpClient::XtpClient()
-	:Protocol(ProtocolTypeType::Xtp, ServerTypeType::Client, g_IOType, "XtpClient", g_Address, new PackageFactory()), m_Connected(false), m_SessionID(0LL)
+	:Protocol(ProtocolTypeType::Xtp, ServerTypeType::Client, "XtpClient", new PackageFactory()), m_Connected(false), m_SessionID(0LL)
 {
 	Subscribe(this);
+	RegisterFront(g_Address);
 }
 XtpClient::~XtpClient()
 {

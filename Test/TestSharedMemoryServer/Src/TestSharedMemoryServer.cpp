@@ -16,7 +16,7 @@ using namespace std;
 
 static void TestShm()
 {
-	auto shmServer = IOThreadFactory::CreateIOThread(ServerTypeType::Server, IOTypeType::Shm, "ShmServer", g_Address);
+	auto shmServer = IOThreadFactory::CreateIOThread(ServerTypeType::Server, "ShmServer", g_Address);
 	ShmSubscriberImpl* shmSubscriberImpl = new ShmSubscriberImpl(shmServer, ServerTypeType::Server);
 
 	if (!shmServer->Init())

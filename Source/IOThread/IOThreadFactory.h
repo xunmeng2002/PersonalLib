@@ -5,7 +5,7 @@
 class IOThreadFactory
 {
 public:
-	static IOThread* CreateIOThread(ServerTypeType serverType, IOTypeType ioType, const char* threadName, const char* addressName);
+	static IOThread* CreateIOThread(ServerTypeType serverType, const char* threadName, const char* address);
 };
 
 
