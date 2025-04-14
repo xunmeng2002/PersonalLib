@@ -14,7 +14,7 @@
 class ShmBase : public IOThread
 {
 public:
-	ShmBase(ServerTypeType shmType, const char* threadName, const char* shmName);
+	ShmBase(ServerTypeType shmType, const char* threadName, const char* shmName, int milliSeconds);
 	virtual ~ShmBase();
 
 	virtual void RegisterFront(const char* address) override;

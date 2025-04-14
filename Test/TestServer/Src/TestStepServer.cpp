@@ -8,7 +8,7 @@ using namespace std;
 
 
 StepServer::StepServer()
-	:Protocol(ProtocolTypeType::Step, ServerTypeType::Server, "StepServer", new PackageFactory()), m_Connected(false), m_SessionID(0LL)
+	:Protocol(ProtocolTypeType::Step, ServerTypeType::Server, "StepServer", 0, new PackageFactory()), m_Connected(false), m_SessionID(0LL), m_RecvCount(0)
 {
 	Subscribe(this);
 	RegisterFront(g_Address);
@@ -17,14 +17,14 @@ StepServer::~StepServer()
 {
 }
 
-void StepServer::OnConnect(SessionIDType sessionID, const char* ip, int port)
+void StepServer::OnProtocolConnect(SessionIDType sessionID, const char* ip, int port)
 {
 	WriteLog(LogLevel::Info, "StepServer::OnConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
 	m_SessionID = sessionID;
 	m_Connected = true;
 }
-void StepServer::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
+void StepServer::OnProtocolDisConnect(SessionIDType sessionID, const char* ip, int port)
 {
 	WriteLog(LogLevel::Info, "StepServer::OnDisConnect SessionID:[%lld], IP:[%s], port:[%d]", sessionID, ip, port);
 
@@ -32,7 +32,10 @@ void StepServer::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
 }
 void StepServer::OnMessage(Package* stepPackage)
 {
-	WriteLog(LogLevel::Info, "OnMessage SessionID:[%lld], %s", stepPackage->SessionID, stepPackage->GetDebugString());
+	if ((++m_RecvCount) % 1000 == 0)
+	{
+		WriteLog(LogLevel::Info, "OnMessage SessionID:[%lld], %s", stepPackage->SessionID, stepPackage->GetDebugString());
+	}
 
 	Send(stepPackage);
 }
@@ -43,33 +46,16 @@ void TestStepServer()
 	WriteLog(LogLevel::Info, "TestStepServer");
 
 	StepServer StepServer;
-	StepServer.Init();
+	if (!StepServer.Init())
+		return;
 	StepServer.Start();
 
 	while (!StepServer.m_Connected)
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
-	//for (auto i = 0; i < 5; ++i)
-	//{
-	//	StepReqInsertOrderPackage reqInsertOrder;
-	//	reqInsertOrder.Prepare(StepServer.m_SessionID, false, i);
-	//	reqInsertOrder.ReqInsertOrder = Allocate<StepReqInsertOrder>();
-	//	memset(reqInsertOrder.ReqInsertOrder, 0, sizeof(StepReqInsertOrder));
-	//	Strcpy(reqInsertOrder.ReqInsertOrder->AccountID, "Xunmeng001");
-	//	Strcpy(reqInsertOrder.ReqInsertOrder->ExchangeID, "SHSE");
-	//	Strcpy(reqInsertOrder.ReqInsertOrder->InstrumentID, "600036");
-	//	reqInsertOrder.ReqInsertOrder->Direction = DirectionType::Buy;
-	//	reqInsertOrder.ReqInsertOrder->OffsetFlag = OffsetFlagType::Open;
-	//	reqInsertOrder.ReqInsertOrder->OrderPriceType = OrderPriceTypeType::LimitPrice;
-	//	reqInsertOrder.ReqInsertOrder->Price = 100 + i;
-	//	reqInsertOrder.ReqInsertOrder->Volume = i;
-	//	reqInsertOrder.ReqInsertOrder->ClientOrderID = i;
 
-	//	StepServer.Send(&reqInsertOrder);
-	//}
-
-	std::this_thread::sleep_for(std::chrono::seconds(60));
+	std::this_thread::sleep_for(std::chrono::seconds(90));
 	StepServer.Stop();
 	StepServer.Join();
 }

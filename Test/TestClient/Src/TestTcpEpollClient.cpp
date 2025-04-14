@@ -14,7 +14,7 @@ void TestTcpEpollClient()
     //auto IP4 = "fe80::59d8:5d6d:25cc:42cf%14";
     //auto IP = "114.80.171.123";
 
-    TcpEpollClient tcpEpollClient("TcpEpollClient", g_Address);
+    TcpEpollClient tcpEpollClient("TcpEpollClient", g_Address, 100);
     TcpClientSubscriberImpl tcpClientSubscriberImpl(&tcpEpollClient);
 
     if (!tcpEpollClient.Init())

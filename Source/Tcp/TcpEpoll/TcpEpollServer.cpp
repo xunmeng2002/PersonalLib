@@ -4,8 +4,8 @@
 #include <string.h>
 
 
-TcpEpollServer::TcpEpollServer(const char* threadName, const char* addressName)
-	:TcpEpollBase(ServerTypeType::Server, threadName, addressName)
+TcpEpollServer::TcpEpollServer(const char* threadName, const char* addressName, int milliSeconds)
+	:TcpEpollBase(ServerTypeType::Server, threadName, addressName, milliSeconds)
 {
 }
 TcpEpollServer::~TcpEpollServer()

@@ -3,8 +3,8 @@
 
 using namespace std;
 
-ShmServer::ShmServer(const char* threadName, const char* shmName)
-	:ShmBase(ServerTypeType::Server, threadName, shmName), m_ConnectCount(0)
+ShmServer::ShmServer(const char* threadName, const char* shmName, int milliSeconds)
+	:ShmBase(ServerTypeType::Server, threadName, shmName, milliSeconds), m_ConnectCount(0)
 {
 }
 ShmServer::~ShmServer()

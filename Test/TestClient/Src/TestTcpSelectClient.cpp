@@ -14,7 +14,7 @@ void TestTcpSelectClient()
     //auto IP4 = "fe80::59d8:5d6d:25cc:42cf%14";
     //auto IP = "114.80.171.123";
 
-    TcpSelectClient tcpSelectClient("TcpSelectClient", g_Address);
+    TcpSelectClient tcpSelectClient("TcpSelectClient", g_Address, 100);
     TcpClientSubscriberImpl tcpClientSubscriberImpl(&tcpSelectClient);
 
     if (!tcpSelectClient.Init())

@@ -13,7 +13,7 @@
 
 
 
-IOThread* IOThreadFactory::CreateIOThread(ServerTypeType serverType, const char* threadName, const char* address)
+IOThread* IOThreadFactory::CreateIOThread(ServerTypeType serverType, const char* threadName, const char* address, int milliSeconds)
 {
 	IOTypeType ioType;
 	if (strncmp(address, "tcp", 3) == 0)
@@ -42,14 +42,14 @@ IOThread* IOThreadFactory::CreateIOThread(ServerTypeType serverType, const char*
 		{
 		case IOTypeType::Tcp:
 #ifdef LINUX
-			return new TcpEpollClient(threadName, addressName);
+			return new TcpEpollClient(threadName, addressName, milliSeconds);
 #elif defined WINDOWS
-			return new TcpSelectClient(threadName, addressName);
+			return new TcpSelectClient(threadName, addressName, milliSeconds);
 #endif
 		case IOTypeType::Udp:
 			break;
 		case IOTypeType::Shm:
-			return new ShmClient(threadName, addressName);
+			return new ShmClient(threadName, addressName, milliSeconds);
 		default:
 			break;
 		}
@@ -60,14 +60,14 @@ IOThread* IOThreadFactory::CreateIOThread(ServerTypeType serverType, const char*
 		{
 		case IOTypeType::Tcp:
 #ifdef LINUX
-			return new TcpEpollServer(threadName, addressName);
+			return new TcpEpollServer(threadName, addressName, milliSeconds);
 #elif defined WINDOWS
-			return new TcpSelectServer(threadName, addressName);
+			return new TcpSelectServer(threadName, addressName, milliSeconds);
 #endif
 		case IOTypeType::Udp:
 			break;
 		case IOTypeType::Shm:
-			return new ShmServer(threadName, addressName);
+			return new ShmServer(threadName, addressName, milliSeconds);
 		default:
 			break;
 		}

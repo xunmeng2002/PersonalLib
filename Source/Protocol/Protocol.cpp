@@ -3,8 +3,8 @@
 #include "IOThreadFactory.h"
 #include <stdexcept>
 
-Protocol::Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, const char* threadName, PackageFactory* packageFactory)
-	:m_ProtocolType(protocolType), m_ServerType(serverType), m_ThreadName(threadName), m_Subscriber(nullptr), m_PackageFactory(packageFactory), m_IOThread(nullptr)
+Protocol::Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, const char* threadName, int milliSeconds, PackageFactory* packageFactory)
+	:m_ProtocolType(protocolType), m_ServerType(serverType), m_ThreadName(threadName), m_MilliSeconds(milliSeconds), m_Subscriber(nullptr), m_PackageFactory(packageFactory), m_IOThread(nullptr)
 {
 }
 Protocol::~Protocol()
@@ -29,8 +29,16 @@ void Protocol::RegisterFront(const char* address)
 	{
 		delete m_IOThread;
 	}
-	m_IOThread = IOThreadFactory::CreateIOThread(m_ServerType, m_ThreadName.c_str(), address);
+	m_IOThread = IOThreadFactory::CreateIOThread(m_ServerType, m_ThreadName.c_str(), address, m_MilliSeconds);
 	m_IOThread->Subscribe(this);
+}
+void Protocol::SetTimeOut(int milliSeconds)
+{
+	m_MilliSeconds = milliSeconds;
+	if (m_IOThread != nullptr)
+	{
+		m_IOThread->SetTimeOut(milliSeconds);
+	}
 }
 bool Protocol::Init()
 {
@@ -90,7 +98,7 @@ void Protocol::OnConnect(SessionIDType sessionID, const char* ip, int port)
 	m_SessionPackageReaders.insert(std::make_pair(sessionID, PackageReader::Allocate(m_ProtocolType, m_PackageFactory, sessionID, ip)));
 	if (m_Subscriber)
 	{
-		m_Subscriber->OnConnect(sessionID, ip, port);
+		m_Subscriber->OnProtocolConnect(sessionID, ip, port);
 	}
 }
 void Protocol::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
@@ -103,7 +111,7 @@ void Protocol::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
 	}
 	if (m_Subscriber)
 	{
-		m_Subscriber->OnDisConnect(sessionID, ip, port);
+		m_Subscriber->OnProtocolDisConnect(sessionID, ip, port);
 	}
 }
 void Protocol::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer)

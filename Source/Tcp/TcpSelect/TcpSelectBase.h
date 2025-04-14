@@ -8,8 +8,8 @@
 class TcpSelectBase : public TcpBase
 {
 public:
-	TcpSelectBase(ServerTypeType serverType, const char* threadName, const char* addressName);
-	void SetSelectTimeOut(int milliSeconds);
+	TcpSelectBase(ServerTypeType serverType, const char* threadName, const char* addressName, int milliSeconds);
+	void SetTimeOut(int milliSeconds);
 protected:
 	virtual void PrepareFds();
 	virtual void HandleTcpEvent() override;

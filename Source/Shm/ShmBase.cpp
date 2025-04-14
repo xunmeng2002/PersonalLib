@@ -12,8 +12,8 @@
 
 using namespace std;
 
-ShmBase::ShmBase(ServerTypeType serverType, const char* threadName, const char* shmName)
-	:IOThread(serverType, threadName, shmName), m_CommonShmHeader(nullptr), m_ShmAddr(nullptr)
+ShmBase::ShmBase(ServerTypeType serverType, const char* threadName, const char* shmName, int milliSeconds)
+	:IOThread(serverType, threadName, shmName, milliSeconds), m_CommonShmHeader(nullptr), m_ShmAddr(nullptr)
 {
 #ifdef WINDOWS
 	m_File = nullptr;

@@ -13,7 +13,7 @@
 class TcpBase : public IOThread
 {
 public:
-	TcpBase(ServerTypeType serverType, const char* threadName, const char* addressName);
+	TcpBase(ServerTypeType serverType, const char* threadName, const char* addressName, int milliSeconds);
 	virtual ~TcpBase();
 	
 	virtual bool Init() override;

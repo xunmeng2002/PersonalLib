@@ -4,8 +4,8 @@
 
 using namespace std;
 
-ShmClient::ShmClient(const char* threadName, const char* shmName)
-	:ShmBase(ServerTypeType::Client, threadName, shmName), m_HasSendConnected(false), m_ShmConnect(nullptr)
+ShmClient::ShmClient(const char* threadName, const char* shmName, int milliSeconds)
+	:ShmBase(ServerTypeType::Client, threadName, shmName, milliSeconds), m_HasSendConnected(false), m_ShmConnect(nullptr)
 {
 }
 ShmClient::~ShmClient()

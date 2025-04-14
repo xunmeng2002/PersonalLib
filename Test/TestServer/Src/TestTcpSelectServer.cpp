@@ -9,7 +9,7 @@ void TestTcpSelectServer()
 {
     WriteLog(LogLevel::Info, "TestTcpSelectServer");
 
-    TcpSelectServer tcpSelectServer("TcpSelectServer", g_Address);
+    TcpSelectServer tcpSelectServer("TcpSelectServer", g_Address, 100);
     TcpServerSubscriberImpl tcpServerSubscriberImpl(&tcpSelectServer);
     
     if (!tcpSelectServer.Init())

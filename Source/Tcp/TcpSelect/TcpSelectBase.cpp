@@ -4,18 +4,18 @@
 #include <string.h>
 
 
-TcpSelectBase::TcpSelectBase(ServerTypeType serverType, const char* threadName, const char* addressName)
-	:TcpBase(serverType, threadName, addressName)
+TcpSelectBase::TcpSelectBase(ServerTypeType serverType, const char* threadName, const char* addressName, int milliSeconds)
+	:TcpBase(serverType, threadName, addressName, milliSeconds)
 {
 	FD_ZERO(&m_RecvFds);
 	m_MaxID = 0;
-	m_SelectSocketTimeOut.tv_sec = 0;
-	m_SelectSocketTimeOut.tv_usec = 100 * 1000;
-	m_SelectSocketTimeOutTemp.tv_sec = 0;
-	m_SelectSocketTimeOutTemp.tv_usec = 100 * 1000;
+	m_SelectSocketTimeOut.tv_sec = milliSeconds / 1000;
+	m_SelectSocketTimeOut.tv_usec = (milliSeconds % 1000) * 1000;
+	memcpy(&m_SelectSocketTimeOutTemp, &m_SelectSocketTimeOut, sizeof(timeval));
 }
-void TcpSelectBase::SetSelectTimeOut(int milliSeconds)
+void TcpSelectBase::SetTimeOut(int milliSeconds)
 {
+	m_TimeOut = std::chrono::milliseconds(milliSeconds);
 	m_SelectSocketTimeOut.tv_sec = milliSeconds / 1000;
 	m_SelectSocketTimeOut.tv_usec = (milliSeconds % 1000) * 1000;
 	memcpy(&m_SelectSocketTimeOutTemp, &m_SelectSocketTimeOut, sizeof(timeval));

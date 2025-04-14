@@ -5,6 +5,6 @@
 class TcpSelectClient : public TcpSelectBase
 {
 public:
-	TcpSelectClient(const char* threadName, const char* addressName = "");
+	TcpSelectClient(const char* threadName, const char* addressName, int milliSeconds);
 };
 

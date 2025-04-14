@@ -2,8 +2,8 @@
 #include "Logger.h"
 
 
-TcpEpollClient::TcpEpollClient(const char* threadName, const char* addressName)
-	:TcpEpollBase(ServerTypeType::Client, threadName, addressName)
+TcpEpollClient::TcpEpollClient(const char* threadName, const char* addressName, int milliSeconds)
+	:TcpEpollBase(ServerTypeType::Client, threadName, addressName, milliSeconds)
 {
 }
 TcpEpollClient::~TcpEpollClient()

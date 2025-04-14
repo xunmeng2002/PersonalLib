@@ -6,7 +6,7 @@
 class ShmServer : public ShmBase
 {
 public:
-	ShmServer(const char* threadName, const char* shmName);
+	ShmServer(const char* threadName, const char* shmName, int milliSeconds);
 	~ShmServer();
 
 	virtual void Run() override;

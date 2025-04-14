@@ -6,7 +6,7 @@
 class ShmClient : public ShmBase
 {
 public:
-	ShmClient(const char* threadName, const char* shmName);
+	ShmClient(const char* threadName, const char* shmName, int milliSeconds);
 	virtual ~ShmClient();
 
 protected:

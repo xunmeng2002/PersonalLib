@@ -13,7 +13,7 @@ void TestTcpEpollServer()
     WriteLog(LogLevel::Info, "TestTcpEpollServer");
 
 #ifdef LINUX
-    TcpEpollServer tcpEpollServer("TcpEpollServer", g_Address);
+    TcpEpollServer tcpEpollServer("TcpEpollServer", g_Address, 100);
     TcpServerSubscriberImpl tcpServerSubscriberImpl(&tcpEpollServer);
 
     if (!tcpEpollServer.Init())
