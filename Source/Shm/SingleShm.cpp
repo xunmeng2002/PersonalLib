@@ -142,6 +142,17 @@ int SingleShm::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
 	return m_ShmBuffer->Write(buffer->GetReadPos(), buffer->GetLength());
 }
+void SingleShm::DoRecv(SessionIDType sessionID)
+{
+	Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
+	auto len = m_ShmBuffer->Read(buffer->GetData(), BuffSize);
+	buffer->SetLength(len);
+
+	if (m_IOSubscriber != nullptr)
+		m_IOSubscriber->OnRecv(m_SessionID, buffer);
+	else
+		buffer->Free();
+}
 
 
 void SingleShm::Run()
@@ -186,19 +197,8 @@ void SingleShm::HandleEvent()
 	{
 		while (m_ShmBuffer->GetReadBufferSize() > 0)
 		{
-			DoRecv();
+			DoRecv(m_SessionID);
 		}
 	}
 }
 
-void SingleShm::DoRecv()
-{
-	Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
-	auto len = m_ShmBuffer->Read(buffer->GetData(), BuffSize);
-	buffer->SetLength(len);
-
-	if (m_IOSubscriber != nullptr)
-		m_IOSubscriber->OnRecv(m_SessionID, buffer);
-	else
-		buffer->Free();
-}

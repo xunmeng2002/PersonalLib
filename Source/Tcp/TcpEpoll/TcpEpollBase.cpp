@@ -37,7 +37,7 @@ void TcpEpollBase::HandleTcpEvent()
 		}
 		else if (epollEvent.events & EPOLLIN)
 		{
-			DoRecv(tcpConnect);
+			DoRecv(tcpConnect->SessionID);
 		}
 	}
 #endif

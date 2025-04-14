@@ -22,9 +22,8 @@ public:
 
 	virtual int Send(SessionIDType sessionID, const char* data, unsigned len) override;
 	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
+	virtual void DoRecv(SessionIDType sessionID) override;
 
-protected:
-	void DoRecv(ShmConnect<ShmBuffSize>* shmConnect);
 
 private:
 	bool WindowsInit();

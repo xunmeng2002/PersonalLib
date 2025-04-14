@@ -30,6 +30,7 @@ public:
 	virtual void DisConnect(SessionIDType sessionID);
 	virtual int Send(SessionIDType sessionID, const char* data, unsigned len) = 0;
 	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) = 0;
+	virtual void DoRecv(SessionIDType sessionID) = 0;
 
 protected:
 	virtual void ThreadExit() override;

@@ -20,10 +20,10 @@ public:
 
 	virtual int Send(SessionIDType sessionID, const char* data, unsigned len) override;
 	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
+	virtual void DoRecv(SessionIDType sessionID) override;
 protected:
 	virtual void Run() override;
 	virtual void HandleTcpEvent() = 0;
-	virtual void DoRecv(TcpConnect* tcpConnect);
 	virtual void CheckConnect();
 	virtual void DoAccept();
 

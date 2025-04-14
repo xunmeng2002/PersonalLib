@@ -23,7 +23,7 @@ void ShmClient::Run()
 	{
 		unique_lock guard(m_Mutex);
 		m_ThreadConditionVariable.wait_for(guard, m_TimeOut, [&]() {return m_ShmConnect->m_ShmBuffer->GetReadBufferSize() > 0; });
-		DoRecv(m_ShmConnect);
+		DoRecv(m_ShmConnect->SessionID);
 	}
 	else
 	{

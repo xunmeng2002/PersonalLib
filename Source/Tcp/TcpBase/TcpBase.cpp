@@ -68,16 +68,9 @@ int TcpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 	}
 	return send(tcpConnect->SocketID, buffer->GetReadPos(), buffer->GetLength(), 0);
 }
-
-void TcpBase::Run()
+void TcpBase::DoRecv(SessionIDType sessionID)
 {
-	if (m_ServerType == ServerTypeType::Client)
-		CheckConnect();
-	DoDisConnect();
-	HandleTcpEvent();
-}
-void TcpBase::DoRecv(TcpConnect* tcpConnect)
-{
+	auto tcpConnect = (TcpConnect*)GetConnect(sessionID);
 	Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
 	auto data = buffer->GetData();
 	int len = recv(tcpConnect->SocketID, data, BuffSize - 1, 0);
@@ -92,9 +85,17 @@ void TcpBase::DoRecv(TcpConnect* tcpConnect)
 		data[len] = '\0';
 		WriteLog(LogLevel::Ignore, "OnRecv: SessionID[%lld], RecvLen[%d]", tcpConnect->SessionID, len);
 		buffer->SetLength(len);
-		
+
 		m_IOSubscriber->OnRecv(tcpConnect->SessionID, buffer);
 	}
+}
+
+void TcpBase::Run()
+{
+	if (m_ServerType == ServerTypeType::Client)
+		CheckConnect();
+	DoDisConnect();
+	HandleTcpEvent();
 }
 void TcpBase::CheckConnect()
 {
