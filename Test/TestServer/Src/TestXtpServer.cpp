@@ -8,7 +8,7 @@ using namespace std;
 
 
 XtpServer::XtpServer()
-	:Protocol(ProtocolTypeType::Xtp, ServerTypeType::Server, "XtpServer", 0, new PackageFactory()), m_Connected(false), m_SessionID(0LL)
+	:Protocol(ProtocolTypeType::Xtp, ServerTypeType::Server, "XtpServer", 0, new PackageFactory()), m_Connected(false), m_SessionID(0LL), m_RecvCount(0)
 {
 	Subscribe(this);
 	RegisterFront(g_Address);
