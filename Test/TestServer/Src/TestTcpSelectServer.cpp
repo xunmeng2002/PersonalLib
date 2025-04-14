@@ -3,23 +3,26 @@
 #include "TcpServerSubscriberImpl.h"
 #include "Logger.h"
 #include "TestUtility.h"
+#include "IOThread.h"
 
 
 void TestTcpSelectServer()
 {
     WriteLog(LogLevel::Info, "TestTcpSelectServer");
 
-    TcpSelectServer tcpSelectServer("TcpSelectServer", g_Address, 100);
+    IOThread* ioThread = new IOThread("TcpSelectServer");
+    TcpSelectServer tcpSelectServer(g_Address, 100);
     TcpServerSubscriberImpl tcpServerSubscriberImpl(&tcpSelectServer);
+    ioThread->SetIO(&tcpSelectServer);
     
     if (!tcpSelectServer.Init())
     {
         WriteLog(LogLevel::Error, "TcpSelectServer Init Failed.");
         return;
     }
-    tcpSelectServer.Start();
+    ioThread->Start();
 
     std::this_thread::sleep_for(std::chrono::seconds(60));
-    tcpSelectServer.Stop();
-    tcpSelectServer.Join();
+    ioThread->Stop();
+    ioThread->Join();
 }

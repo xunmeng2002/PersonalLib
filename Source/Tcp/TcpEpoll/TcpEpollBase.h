@@ -13,7 +13,7 @@
 class TcpEpollBase : public TcpBase
 {
 public:
-	TcpEpollBase(ServerTypeType serverType, const char* threadName, const char* addressName, int milliSeconds);
+	TcpEpollBase(ServerTypeType serverType, const char* addressName, int milliSeconds);
 	~TcpEpollBase();
 	
 protected:

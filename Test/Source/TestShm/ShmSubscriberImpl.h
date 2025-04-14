@@ -1,11 +1,12 @@
 #pragma once
+#include "IOBase.h"
 #include "IOThread.h"
 
 
 class ShmSubscriberImpl : public IOSubscriber
 {
 public:
-	ShmSubscriberImpl(IOThread* ioThread, ServerTypeType serverType);
+	ShmSubscriberImpl(IOBase* ioBase, ServerTypeType serverType);
 
 	virtual void OnConnect(SessionIDType sessionID, const char* ip, int port) override;
 	virtual void OnDisConnect(SessionIDType sessionID, const char* ip, int port) override;
@@ -16,7 +17,7 @@ public:
 	bool m_Connected;
 	SessionIDType m_SessionID;
 private:
-	IOThread* m_IOThread;
+	IOBase* m_IOBase;
 	ServerTypeType m_ServerType;
 
 	char* m_Buff;

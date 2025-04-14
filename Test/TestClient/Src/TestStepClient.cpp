@@ -5,12 +5,13 @@
 #include "TestUtility.h"
 #include "PackageFactory.h"
 #include "Packages.h"
+#include "IOThread.h"
 
 using namespace std;
 
 
 StepClient::StepClient()
-	:Protocol(ProtocolTypeType::Step, ServerTypeType::Client, "StepClient", 0, new PackageFactory()), m_Connected(false), m_SessionID(0LL), m_RecvCount(0)
+	:Protocol(ProtocolTypeType::Step, ServerTypeType::Client, 0, new PackageFactory()), m_Connected(false), m_SessionID(0LL), m_RecvCount(0)
 {
 	m_ReqInsertOrder = new ReqInsertOrderPackage();
 	Subscribe(this);
@@ -50,7 +51,7 @@ void StepClient::OnMessage(Package* package)
 	{
 		WriteLog(LogLevel::Info, "OnMessage: %s", package->GetDebugString());
 		WriteLog(LogLevel::Info, "Total Cost: %lld ms", GetDuration<chrono::milliseconds>(m_StartTime));
-		Stop();
+		m_IOThread->Stop();
 	}
 }
 void StepClient::SendReqInsertOrder(int index)
@@ -74,37 +75,13 @@ void TestStepClient()
 {
 	WriteLog(LogLevel::Info, "TestStepClient");
 
+	IOThread* ioThread = new IOThread("StepClient");
 	StepClient stepClient;
+	stepClient.SetIOThread(ioThread);
 	if (!stepClient.Init())
 		return;
-	stepClient.Start();
-
-	//while (!stepClient.m_Connected)
-	//{
-	//	std::this_thread::sleep_for(std::chrono::seconds(1));
-	//}
-	//for (auto i = 0; i < 5; ++i)
-	//{
-	//	ReqInsertOrderPackage reqInsertOrder;
-	//	reqInsertOrder.Prepare(stepClient.m_SessionID, false, i);
-	//	reqInsertOrder.ReqInsertOrder = Allocate<ReqInsertOrderField>();
-	//	memset(reqInsertOrder.ReqInsertOrder, 0, sizeof(ReqInsertOrderField));
-	//	Strcpy(reqInsertOrder.ReqInsertOrder->AccountID, "Xunmeng001");
-	//	Strcpy(reqInsertOrder.ReqInsertOrder->ExchangeID, "SHSE");
-	//	Strcpy(reqInsertOrder.ReqInsertOrder->InstrumentID, "600036");
-	//	reqInsertOrder.ReqInsertOrder->Direction = DirectionType::Buy;
-	//	reqInsertOrder.ReqInsertOrder->OffsetFlag = OffsetFlagType::Open;
-	//	reqInsertOrder.ReqInsertOrder->OrderPriceType = OrderPriceTypeType::LimitPrice;
-	//	reqInsertOrder.ReqInsertOrder->Price = 100 + i;
-	//	reqInsertOrder.ReqInsertOrder->Volume = i;
-	//	reqInsertOrder.ReqInsertOrder->ClientOrderID = i;
-
-	//	stepClient.Send(&reqInsertOrder);
-	//}
-
-	//std::this_thread::sleep_for(std::chrono::seconds(5));
-	//stepClient.Stop();
-	stepClient.Join();
+	ioThread->Start();
+	ioThread->Join();
 }
 
 

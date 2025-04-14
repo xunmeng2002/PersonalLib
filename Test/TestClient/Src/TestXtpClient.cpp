@@ -5,12 +5,13 @@
 #include "PackageFactory.h"
 #include "TimeUtility.h"
 #include "Packages.h"
+#include "IOThread.h"
 
 using namespace std;
 
 
 XtpClient::XtpClient()
-	:Protocol(ProtocolTypeType::Xtp, ServerTypeType::Client, "XtpClient", 0, new PackageFactory()), m_Connected(false), m_SessionID(0LL), m_RecvCount(0)
+	:Protocol(ProtocolTypeType::Xtp, ServerTypeType::Client, 0, new PackageFactory()), m_Connected(false), m_SessionID(0LL), m_RecvCount(0)
 {
 	m_ReqInsertOrder = new ReqInsertOrderPackage();
 	Subscribe(this);
@@ -49,7 +50,7 @@ void XtpClient::OnMessage(Package* package)
 	{
 		WriteLog(LogLevel::Info, "OnMessage: %s", package->GetDebugString());
 		WriteLog(LogLevel::Info, "Total Cost: %lld ms", GetDuration<chrono::milliseconds>(m_StartTime));
-		Stop();
+		m_IOThread->Stop();
 	}
 }
 
@@ -75,35 +76,12 @@ void TestXtpClient()
 {
 	WriteLog(LogLevel::Info, "TestXtpClient");
 
+	IOThread* ioThread = new IOThread("XtpClient");
 	XtpClient xtpClient;
+	xtpClient.SetIOThread(ioThread);
 	if (!xtpClient.Init())
 		return;
-	xtpClient.Start();
-
-	//while (!xtpClient.m_Connected)
-	//{
-	//	std::this_thread::sleep_for(std::chrono::seconds(1));
-	//}
-	//for (auto i = 0; i < 5; ++i)
-	//{
-	//	ReqInsertOrderPackage reqInsertOrder;
-	//	reqInsertOrder.Prepare(xtpClient.m_SessionID, false, 0);
-	//	reqInsertOrder.ReqInsertOrder = Allocate<ReqInsertOrderField>();
-	//	Strcpy(reqInsertOrder.ReqInsertOrder->AccountID, "Xunmeng001");
-	//	Strcpy(reqInsertOrder.ReqInsertOrder->ExchangeID, "SHSE");
-	//	Strcpy(reqInsertOrder.ReqInsertOrder->InstrumentID, "600036");
-	//	reqInsertOrder.ReqInsertOrder->Direction = DirectionType::Buy;
-	//	reqInsertOrder.ReqInsertOrder->OffsetFlag = OffsetFlagType::Open;
-	//	reqInsertOrder.ReqInsertOrder->OrderPriceType = OrderPriceTypeType::LimitPrice;
-	//	reqInsertOrder.ReqInsertOrder->Price = 100 + i;
-	//	reqInsertOrder.ReqInsertOrder->Volume = i;
-	//	reqInsertOrder.ReqInsertOrder->ClientOrderID = i;
-
-	//	xtpClient.Send(&reqInsertOrder);
-	//}
-
-	//std::this_thread::sleep_for(std::chrono::seconds(5));
-	//xtpClient.Stop();
-	xtpClient.Join();
+	ioThread->Start();
+	ioThread->Join();
 }
 

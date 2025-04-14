@@ -8,7 +8,7 @@ using namespace std;
 
 
 XtpServer::XtpServer()
-	:Protocol(ProtocolTypeType::Xtp, ServerTypeType::Server, "XtpServer", 0, new PackageFactory()), m_Connected(false), m_SessionID(0LL), m_RecvCount(0)
+	:Protocol(ProtocolTypeType::Xtp, ServerTypeType::Server, 0, new PackageFactory()), m_Connected(false), m_SessionID(0LL), m_RecvCount(0)
 {
 	Subscribe(this);
 	RegisterFront(g_Address);
@@ -45,10 +45,12 @@ void TestXtpServer()
 {
 	WriteLog(LogLevel::Info, "TestXtpServer");
 
+	IOThread* ioThread = new IOThread("XtpServer");
 	XtpServer xtpServer;
+	xtpServer.SetIOThread(ioThread);
 	if (!xtpServer.Init())
 		return;
-	xtpServer.Start();
+	ioThread->Start();
 
 	while (!xtpServer.m_Connected)
 	{
@@ -56,8 +58,8 @@ void TestXtpServer()
 	}
 
 	std::this_thread::sleep_for(std::chrono::seconds(60));
-	xtpServer.Stop();
-	xtpServer.Join();
+	ioThread->Stop();
+	ioThread->Join();
 }
 
 

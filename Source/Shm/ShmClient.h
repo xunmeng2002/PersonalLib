@@ -6,11 +6,11 @@
 class ShmClient : public ShmBase
 {
 public:
-	ShmClient(const char* threadName, const char* shmName, int milliSeconds);
+	ShmClient(const char* shmName, int milliSeconds);
 	virtual ~ShmClient();
 
 protected:
-	virtual void Run() override;
+	virtual void HandleIOEvent() override;
 
 	void Connect();
 	void CheckConnect();

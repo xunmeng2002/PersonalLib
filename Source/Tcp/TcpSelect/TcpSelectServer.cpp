@@ -4,8 +4,8 @@
 #include <string.h>
 
 
-TcpSelectServer::TcpSelectServer(const char* threadName, const char* addressName, int milliSeconds)
-	:TcpSelectBase(ServerTypeType::Server, threadName, addressName, milliSeconds)
+TcpSelectServer::TcpSelectServer(const char* addressName, int milliSeconds)
+	:TcpSelectBase(ServerTypeType::Server, addressName, milliSeconds)
 {
 }
 

@@ -4,8 +4,8 @@
 #include <cstring>
 
 
-TcpSelectClient::TcpSelectClient(const char* threadName, const char* addressName, int milliSeconds)
-	:TcpSelectBase(ServerTypeType::Client, threadName, addressName, milliSeconds)
+TcpSelectClient::TcpSelectClient(const char* addressName, int milliSeconds)
+	:TcpSelectBase(ServerTypeType::Client, addressName, milliSeconds)
 {
 }
 

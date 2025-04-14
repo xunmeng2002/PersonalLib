@@ -5,16 +5,16 @@
 #include <mutex>
 #include "Types.h"
 #include "Buffer.h"
-#include "IOThread.h"
+#include "IOBase.h"
 #include "Sem.h"
 #include "ShmConnect.h"
 
 
 
-class ShmBase : public IOThread
+class ShmBase : public IOBase
 {
 public:
-	ShmBase(ServerTypeType shmType, const char* threadName, const char* shmName, int milliSeconds);
+	ShmBase(ServerTypeType shmType, const char* shmName, int milliSeconds);
 	virtual ~ShmBase();
 
 	virtual void RegisterFront(const char* address) override;

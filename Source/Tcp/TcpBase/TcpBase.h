@@ -1,7 +1,7 @@
 #pragma once
 #include "SocketInit.h"
 #include "TcpConnect.h"
-#include "IOThread.h"
+#include "IOBase.h"
 #include "Buffer.h"
 #include "Constant.h"
 #include <list>
@@ -10,10 +10,10 @@
 #include <string>
 
 
-class TcpBase : public IOThread
+class TcpBase : public IOBase
 {
 public:
-	TcpBase(ServerTypeType serverType, const char* threadName, const char* addressName, int milliSeconds);
+	TcpBase(ServerTypeType serverType, const char* addressName, int milliSeconds);
 	virtual ~TcpBase();
 	
 	virtual bool Init() override;
@@ -21,8 +21,8 @@ public:
 	virtual int Send(SessionIDType sessionID, const char* data, unsigned len) override;
 	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 	virtual void DoRecv(SessionIDType sessionID) override;
+	virtual void HandleIOEvent() override;
 protected:
-	virtual void Run() override;
 	virtual void HandleTcpEvent() = 0;
 	virtual void CheckConnect();
 	virtual void DoAccept();

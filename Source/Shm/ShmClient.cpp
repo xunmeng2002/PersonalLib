@@ -4,8 +4,8 @@
 
 using namespace std;
 
-ShmClient::ShmClient(const char* threadName, const char* shmName, int milliSeconds)
-	:ShmBase(ServerTypeType::Client, threadName, shmName, milliSeconds), m_HasSendConnected(false), m_ShmConnect(nullptr)
+ShmClient::ShmClient(const char* shmName, int milliSeconds)
+	:ShmBase(ServerTypeType::Client, shmName, milliSeconds), m_HasSendConnected(false), m_ShmConnect(nullptr)
 {
 }
 ShmClient::~ShmClient()
@@ -13,8 +13,7 @@ ShmClient::~ShmClient()
 	m_ShmConnect = nullptr;
 }
 
-
-void ShmClient::Run()
+void ShmClient::HandleIOEvent()
 {
 	Connect();
 	CheckConnect();
@@ -30,6 +29,7 @@ void ShmClient::Run()
 		std::this_thread::sleep_for(std::chrono::milliseconds(m_TimeOut));
 	}
 }
+
 
 void ShmClient::Connect()
 {

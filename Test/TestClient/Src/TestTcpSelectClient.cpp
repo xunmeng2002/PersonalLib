@@ -2,6 +2,7 @@
 #include "TcpClientSubscriberImpl.h"
 #include "Logger.h"
 #include "TestUtility.h"
+#include "IOThread.h"
 
 
 void TestTcpSelectClient()
@@ -14,17 +15,19 @@ void TestTcpSelectClient()
     //auto IP4 = "fe80::59d8:5d6d:25cc:42cf%14";
     //auto IP = "114.80.171.123";
 
-    TcpSelectClient tcpSelectClient("TcpSelectClient", g_Address, 100);
+    IOThread* ioThread = new IOThread("TcpSelectClient");
+    TcpSelectClient tcpSelectClient(g_Address, 100);
     TcpClientSubscriberImpl tcpClientSubscriberImpl(&tcpSelectClient);
+    ioThread->SetIO(&tcpSelectClient);
 
     if (!tcpSelectClient.Init())
     {
         WriteLog(LogLevel::Error, "TcpSelectClient Init Failed.");
         return;
     }
-    tcpSelectClient.Start();
+    ioThread->Start();
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
-    tcpSelectClient.Stop();
-    tcpSelectClient.Join();
+    ioThread->Stop();
+    ioThread->Join();
 }

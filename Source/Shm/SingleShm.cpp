@@ -14,8 +14,8 @@
 
 using namespace std;
 
-SingleShm::SingleShm(ServerTypeType shmType, const char* threadName, const char* shmName)
-	:IOThread(shmType, threadName, shmName), m_ShmName(shmName), m_SessionID(0LL),
+SingleShm::SingleShm(ServerTypeType shmType, const char* shmName)
+	:IOBase(shmType, shmName, 0), m_ShmName(shmName), m_SessionID(0LL),
 	m_ShmAddr(nullptr)
 {
 	m_ShmBuffer = new ShmBuffer<ShmBuffSize>();
@@ -153,13 +153,12 @@ void SingleShm::DoRecv(SessionIDType sessionID)
 	else
 		buffer->Free();
 }
-
-
-void SingleShm::Run()
+void SingleShm::HandleIOEvent()
 {
 	CheckEvent();
 	HandleEvent();
 }
+
 void SingleShm::CheckEvent()
 {
 	if (!m_Connected && m_ShmBuffer->m_ShmHeader->Status == ConnectStatusType::Connected && m_IOSubscriber != nullptr)

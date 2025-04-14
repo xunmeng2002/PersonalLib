@@ -3,8 +3,8 @@
 #include "TcpUtility.h"
 #include <string.h>
 
-TcpEpollBase::TcpEpollBase(ServerTypeType serverType, const char* threadName, const char* addressName, int milliSeconds)
-	:TcpBase(serverType, threadName, addressName, milliSeconds), m_EpollFd(0)
+TcpEpollBase::TcpEpollBase(ServerTypeType serverType, const char* addressName, int milliSeconds)
+	:TcpBase(serverType, addressName, milliSeconds), m_EpollFd(0)
 {
 #ifdef LINUX
 	m_EpollFd = epoll_create(5);

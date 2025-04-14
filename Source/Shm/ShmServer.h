@@ -6,13 +6,12 @@
 class ShmServer : public ShmBase
 {
 public:
-	ShmServer(const char* threadName, const char* shmName, int milliSeconds);
+	ShmServer(const char* shmName, int milliSeconds);
 	~ShmServer();
 
-	virtual void Run() override;
+	virtual void HandleIOEvent() override;
 	void Accept();
 	void CheckConnect();
-	void HandleEvent();
 
 	virtual void RemoveConnect(Connect* connect) override;
 protected:

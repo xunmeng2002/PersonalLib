@@ -2,24 +2,24 @@
 #include <string>
 #include "Types.h"
 #include "Buffer.h"
-#include "IOThread.h"
+#include "IOBase.h"
 #include "ShmConnect.h"
 
 
 
-class SingleShm : public IOThread
+class SingleShm : public IOBase
 {
 public:
-	SingleShm(ServerTypeType shmType, const char* threadName, const char* shmName);
+	SingleShm(ServerTypeType shmType, const char* shmName);
 	virtual ~SingleShm();
 	virtual bool Init() override;
 
 	virtual int Send(SessionIDType sessionID, const char* data, unsigned len) override;
 	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 	virtual void DoRecv(SessionIDType sessionID) override;
+	virtual void HandleIOEvent() override;
 
 protected:
-	virtual void Run() override;
 	virtual void CheckEvent();
 	virtual void HandleEvent();
 

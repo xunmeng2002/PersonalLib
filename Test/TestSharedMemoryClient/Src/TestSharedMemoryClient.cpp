@@ -3,7 +3,7 @@
 #include <chrono>
 #include <string.h>
 #include "Logger.h"
-#include "IOThreadFactory.h"
+#include "IOFactory.h"
 #include "TestUtility.h"
 #include "SystemVIPC.h"
 #include "PosixIPC.h"
@@ -17,7 +17,9 @@ using namespace std;
 
 static void TestShm()
 {
-	auto shmClient = IOThreadFactory::CreateIOThread(ServerTypeType::Client, "ShmClient", g_Address);
+	IOThread* ioThread = new IOThread("ShmClient");
+	auto shmClient = IOFactory::CreateIO(ServerTypeType::Client, g_Address);
+	ioThread->SetIO(shmClient);
 	ShmSubscriberImpl* shmSubscriberImpl = new ShmSubscriberImpl(shmClient, ServerTypeType::Client);
 
 	if (!shmClient->Init())
@@ -25,7 +27,7 @@ static void TestShm()
 		WriteLog(LogLevel::Error, "ShmClient Init Failed.");
 		return;
 	}
-	shmClient->Start();
+	ioThread->Start();
 
 	while (!shmSubscriberImpl->m_Connected)
 	{
@@ -51,13 +53,15 @@ static void TestShm()
 	}
 
 	std::this_thread::sleep_for(chrono::seconds(10));
-	shmClient->Stop();
-	shmClient->Join();
+	ioThread->Stop();
+	ioThread->Join();
 	delete shmClient;
 }
 static void TestSingleShm()
 {
-	SingleShm* singleShm = new SingleShm(ServerTypeType::Client, "SingleShm", g_ShmName);
+	IOThread* ioThread = new IOThread("SingleShm");
+	SingleShm* singleShm = new SingleShm(ServerTypeType::Client, g_ShmName);
+	ioThread->SetIO(singleShm);
 	ShmSubscriberImpl* shmSubscriberImpl = new ShmSubscriberImpl(singleShm, ServerTypeType::Client);
 
 	if (!singleShm->Init())
@@ -65,7 +69,7 @@ static void TestSingleShm()
 		WriteLog(LogLevel::Error, "SingleShm Init Failed.");
 		return;
 	}
-	singleShm->Start();
+	ioThread->Start();
 
 	while (!shmSubscriberImpl->m_Connected)
 	{
@@ -91,8 +95,8 @@ static void TestSingleShm()
 	}
 
 	std::this_thread::sleep_for(chrono::seconds(10));
-	singleShm->Stop();
-	singleShm->Join();
+	ioThread->Stop();
+	ioThread->Join();
 	delete singleShm;
 	delete shmSubscriberImpl;
 }

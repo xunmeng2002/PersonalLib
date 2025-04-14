@@ -5,7 +5,7 @@
 #include "TcpServerSubscriberImpl.h"
 #include "Logger.h"
 #include "TestUtility.h"
-
+#include "IOThread.h"
 
 
 void TestTcpEpollServer()
@@ -13,19 +13,21 @@ void TestTcpEpollServer()
     WriteLog(LogLevel::Info, "TestTcpEpollServer");
 
 #ifdef LINUX
-    TcpEpollServer tcpEpollServer("TcpEpollServer", g_Address, 100);
+    IOThread* ioThread = new IOThread("TcpEpollServer");
+    TcpEpollServer tcpEpollServer(g_Address, 100);
     TcpServerSubscriberImpl tcpServerSubscriberImpl(&tcpEpollServer);
+    ioThread->SetIO(&tcpEpollServer);
 
     if (!tcpEpollServer.Init())
     {
         WriteLog(LogLevel::Error, "TcpEpollServer Init Failed.");
         return;
     }
-    tcpEpollServer.Start();
+    ioThread->Start();
 
     std::this_thread::sleep_for(std::chrono::seconds(60));
-    tcpEpollServer.Stop();
-    tcpEpollServer.Join();
+    ioThread->Stop();
+    ioThread->Join();
 #endif
 }
 

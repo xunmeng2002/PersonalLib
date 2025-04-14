@@ -1,18 +1,18 @@
 #include "Protocol.h"
 #include "Logger.h"
-#include "IOThreadFactory.h"
+#include "IOFactory.h"
 #include <stdexcept>
 
-Protocol::Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, const char* threadName, int milliSeconds, PackageFactory* packageFactory)
-	:m_ProtocolType(protocolType), m_ServerType(serverType), m_ThreadName(threadName), m_MilliSeconds(milliSeconds), m_Subscriber(nullptr), m_PackageFactory(packageFactory), m_IOThread(nullptr)
+Protocol::Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, int milliSeconds, PackageFactory* packageFactory)
+	:m_ProtocolType(protocolType), m_ServerType(serverType), m_MilliSeconds(milliSeconds), m_Subscriber(nullptr), m_PackageFactory(packageFactory), m_IOBase(nullptr), m_IOThread(nullptr)
 {
 }
 Protocol::~Protocol()
 {
-	if (m_IOThread != nullptr)
+	if (m_IOBase != nullptr)
 	{
-		delete m_IOThread;
-		m_IOThread = nullptr;
+		delete m_IOBase;
+		m_IOBase = nullptr;
 	}
 }
 void Protocol::Subscribe(ProtocolSubscriber* subscriber)
@@ -25,62 +25,63 @@ void Protocol::UnSubscribe()
 }
 void Protocol::RegisterFront(const char* address)
 {
+	if (m_IOBase != nullptr)
+	{
+		delete m_IOBase;
+	}
+	m_IOBase = IOFactory::CreateIO(m_ServerType, address, m_MilliSeconds);
+	m_IOBase->Subscribe(this);
 	if (m_IOThread != nullptr)
 	{
-		delete m_IOThread;
+		m_IOThread->SetIO(m_IOBase);
 	}
-	m_IOThread = IOThreadFactory::CreateIOThread(m_ServerType, m_ThreadName.c_str(), address, m_MilliSeconds);
-	m_IOThread->Subscribe(this);
 }
 void Protocol::SetTimeOut(int milliSeconds)
 {
 	m_MilliSeconds = milliSeconds;
-	if (m_IOThread != nullptr)
+	if (m_IOBase != nullptr)
 	{
-		m_IOThread->SetTimeOut(milliSeconds);
+		m_IOBase->SetTimeOut(milliSeconds);
+	}
+}
+void Protocol::SetIOThread(IOThread* ioThread)
+{
+	m_IOThread = ioThread;
+	if (m_IOBase != nullptr)
+	{
+		m_IOThread->SetIO(m_IOBase);
 	}
 }
 bool Protocol::Init()
 {
-	if (m_IOThread == nullptr)
+	if (m_IOBase == nullptr)
 		return false;
-	return m_IOThread->Init();
+	return m_IOBase->Init();
 }
-	
-bool Protocol::Start()
+IOBase* Protocol::GetIO()
 {
-	if (m_IOThread == nullptr)
-		return false;
-	return m_IOThread->Start();
+	return m_IOBase;
 }
-void Protocol::Stop()
+IOThread* Protocol::GetIOThread()
 {
-	if (m_IOThread == nullptr)
-		return;
-	m_IOThread->Stop();
-}
-void Protocol::Join()
-{
-	if (m_IOThread == nullptr)
-		return;
-	m_IOThread->Join();
+	return m_IOThread;
 }
 
 void Protocol::DisConnect(SessionIDType sessionID)
 {
-	if (m_IOThread == nullptr)
+	if (m_IOBase == nullptr)
 		return;
-	m_IOThread->DisConnect(sessionID);
+	m_IOBase->DisConnect(sessionID);
 }
 bool Protocol::Send(Package* package)
 {
-	if (m_IOThread == nullptr)
+	if (m_IOBase == nullptr)
 		return false;
 	Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
 	buffer->SetLength(package->MakePackage(m_ProtocolType, buffer->GetData(), BuffSize));
 	while (buffer->GetLength() > 0)
 	{
-		auto sendLen = m_IOThread->Send(package->SessionID, buffer);
+		auto sendLen = m_IOBase->Send(package->SessionID, buffer);
 		if (sendLen < 0)
 		{
 			WriteLog(LogLevel::Warning, "Protocol::Send Failed. sendLen:%d", sendLen);
@@ -116,13 +117,13 @@ void Protocol::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
 }
 void Protocol::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
-	if (m_IOThread == nullptr)
+	if (m_IOBase == nullptr)
 		return;
 	auto packageReader = m_SessionPackageReaders[sessionID];
 	if (packageReader == nullptr)
 	{
 		WriteLog(LogLevel::Error, "Cannot Find PackageReader for SessionID:%lld", sessionID);
-		m_IOThread->DisConnect(sessionID);
+		m_IOBase->DisConnect(sessionID);
 		return;
 	}
 	packageReader->Append(buffer->GetData(), buffer->GetLength());
@@ -132,7 +133,7 @@ void Protocol::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 		Package* package = nullptr;
 		if (!packageReader->ParsePackage(package))
 		{
-			m_IOThread->DisConnect(sessionID);
+			m_IOBase->DisConnect(sessionID);
 			break;
 		}
 		else if (package == nullptr)

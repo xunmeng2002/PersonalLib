@@ -3,19 +3,36 @@
 
 using namespace std;
 
-ShmServer::ShmServer(const char* threadName, const char* shmName, int milliSeconds)
-	:ShmBase(ServerTypeType::Server, threadName, shmName, milliSeconds), m_ConnectCount(0)
+ShmServer::ShmServer(const char* shmName, int milliSeconds)
+	:ShmBase(ServerTypeType::Server, shmName, milliSeconds), m_ConnectCount(0)
 {
 }
 ShmServer::~ShmServer()
 {
 }
-void ShmServer::Run()
+void ShmServer::HandleIOEvent()
 {
 	Accept();
 	CheckConnect();
 	DoDisConnect();
-	HandleEvent();
+	unique_lock guard(m_Mutex);
+	m_ThreadConditionVariable.wait_for(guard, m_TimeOut, [&]() {
+		for (auto& it : m_Connects)
+		{
+			auto shmConnect = (ShmConnect<ShmBuffSize>*)it.second;
+			if (shmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
+				return true;
+		}
+		return false;
+		});
+	for (auto& it : m_Connects)
+	{
+		auto shmConnect = (ShmConnect<ShmBuffSize>*)it.second;
+		if (shmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
+		{
+			DoRecv(shmConnect->SessionID);
+		}
+	}
 }
 void ShmServer::Accept()
 {
@@ -102,28 +119,6 @@ void ShmServer::CheckConnect()
 		{
 			lock_guard<mutex> guard(m_DisConnectSessionIDsMutex);
 			m_DisConnectSessionIDs.push_back(shmConnect->SessionID);
-		}
-	}
-}
-
-void ShmServer::HandleEvent()
-{
-	unique_lock guard(m_Mutex);
-	m_ThreadConditionVariable.wait_for(guard, m_TimeOut, [&]() {
-		for (auto& it : m_Connects)
-		{
-			auto shmConnect = (ShmConnect<ShmBuffSize>*)it.second;
-			if (shmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
-				return true;
-		}
-		return false;
-		});
-	for (auto& it : m_Connects)
-	{
-		auto shmConnect = (ShmConnect<ShmBuffSize>*)it.second;
-		if (shmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
-		{
-			DoRecv(shmConnect->SessionID);
 		}
 	}
 }

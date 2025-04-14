@@ -9,14 +9,16 @@
 #include "ShmSubscriberImpl.h"
 #include "SingleShm.h"
 #include "Sem.h"
-#include "IOThreadFactory.h"
+#include "IOFactory.h"
 
 using namespace std;
 
 
 static void TestShm()
 {
-	auto shmServer = IOThreadFactory::CreateIOThread(ServerTypeType::Server, "ShmServer", g_Address);
+	IOThread* ioThread = new IOThread("ShmServer");
+	auto shmServer = IOFactory::CreateIO(ServerTypeType::Server, g_Address);
+	ioThread->SetIO(shmServer);
 	ShmSubscriberImpl* shmSubscriberImpl = new ShmSubscriberImpl(shmServer, ServerTypeType::Server);
 
 	if (!shmServer->Init())
@@ -24,7 +26,7 @@ static void TestShm()
 		WriteLog(LogLevel::Error, "ShmServer Init Failed.");
 		return;
 	}
-	shmServer->Start();
+	ioThread->Start();
 
 	while (!shmSubscriberImpl->m_Connected)
 	{
@@ -32,14 +34,16 @@ static void TestShm()
 	}
 
 	std::this_thread::sleep_for(chrono::seconds(300));
-	shmServer->Stop();
-	shmServer->Join();
+	ioThread->Stop();
+	ioThread->Join();
 	delete shmServer;
 	delete shmSubscriberImpl;
 }
 static void TestSingleShm()
 {
-	SingleShm* singleShm = new SingleShm(ServerTypeType::Server, "SingleShm", g_ShmName);
+	IOThread* ioThread = new IOThread("SingleShm");
+	SingleShm* singleShm = new SingleShm(ServerTypeType::Server, g_ShmName);
+	ioThread->SetIO(singleShm);
 	ShmSubscriberImpl* shmSubscriberImpl = new ShmSubscriberImpl(singleShm, ServerTypeType::Server);
 
 	if (!singleShm->Init())
@@ -47,7 +51,7 @@ static void TestSingleShm()
 		WriteLog(LogLevel::Error, "SingleShm Init Failed.");
 		return;
 	}
-	singleShm->Start();
+	ioThread->Start();
 
 	while (!shmSubscriberImpl->m_Connected)
 	{
@@ -55,8 +59,8 @@ static void TestSingleShm()
 	}
 
 	std::this_thread::sleep_for(chrono::seconds(30));
-	singleShm->Stop();
-	singleShm->Join();
+	ioThread->Stop();
+	ioThread->Join();
 	delete singleShm;
 	delete shmSubscriberImpl;
 }

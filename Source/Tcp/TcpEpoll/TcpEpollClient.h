@@ -5,6 +5,6 @@
 class TcpEpollClient : public TcpEpollBase
 {
 public:
-	TcpEpollClient(const char* threadName, const char* addressName, int milliSeconds);
+	TcpEpollClient(const char* addressName, int milliSeconds);
 	~TcpEpollClient();
 };

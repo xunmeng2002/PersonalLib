@@ -12,8 +12,8 @@
 
 using namespace std;
 
-ShmBase::ShmBase(ServerTypeType serverType, const char* threadName, const char* shmName, int milliSeconds)
-	:IOThread(serverType, threadName, shmName, milliSeconds), m_CommonShmHeader(nullptr), m_ShmAddr(nullptr)
+ShmBase::ShmBase(ServerTypeType serverType, const char* shmName, int milliSeconds)
+	:IOBase(serverType, shmName, milliSeconds), m_CommonShmHeader(nullptr), m_ShmAddr(nullptr)
 {
 #ifdef WINDOWS
 	m_File = nullptr;
@@ -61,7 +61,7 @@ ShmBase::~ShmBase()
 }
 void ShmBase::RegisterFront(const char* address)
 {
-	IOThread::RegisterFront(address);
+	IOBase::RegisterFront(address);
 	m_ShmName = m_Address;
 	m_MaxConnectSize = atoi(m_Port.c_str());
 

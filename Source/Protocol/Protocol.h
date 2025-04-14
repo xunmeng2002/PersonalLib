@@ -2,23 +2,23 @@
 #include "PackageReader.h"
 #include "PackageFactory.h"
 #include "ProtocolSubscriber.h"
+#include "IOBase.h"
 #include "IOThread.h"
 #include <map>
 
 class Protocol : public IOSubscriber
 {
 public:
-	Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, const char* threadName, int milliSeconds, PackageFactory* packageFactory);
+	Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, int milliSeconds, PackageFactory* packageFactory);
 	~Protocol();
 	void Subscribe(ProtocolSubscriber* subscriber);
 	void UnSubscribe();
 	void RegisterFront(const char* address);
 	void SetTimeOut(int milliSeconds);
+	void SetIOThread(IOThread* ioThread);
 	virtual bool Init();
-
-	bool Start();
-	void Stop();
-	void Join();
+	IOBase* GetIO();
+	IOThread* GetIOThread();
 
 	void DisConnect(SessionIDType sessionID);
 	virtual bool Send(Package* package);
@@ -30,8 +30,8 @@ public:
 protected:
 	ProtocolTypeType m_ProtocolType;
 	ServerTypeType m_ServerType;
-	std::string m_ThreadName;
 	int m_MilliSeconds;
+	IOBase* m_IOBase;
 	IOThread* m_IOThread;
 	PackageFactory* m_PackageFactory;
 	ProtocolSubscriber* m_Subscriber;

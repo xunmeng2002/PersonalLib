@@ -8,7 +8,7 @@ using namespace std;
 
 
 StepServer::StepServer()
-	:Protocol(ProtocolTypeType::Step, ServerTypeType::Server, "StepServer", 0, new PackageFactory()), m_Connected(false), m_SessionID(0LL), m_RecvCount(0)
+	:Protocol(ProtocolTypeType::Step, ServerTypeType::Server, 0, new PackageFactory()), m_Connected(false), m_SessionID(0LL), m_RecvCount(0)
 {
 	Subscribe(this);
 	RegisterFront(g_Address);
@@ -45,10 +45,12 @@ void TestStepServer()
 {
 	WriteLog(LogLevel::Info, "TestStepServer");
 
+	IOThread* ioThread = new IOThread("StepServer");
 	StepServer StepServer;
+	StepServer.SetIOThread(ioThread);
 	if (!StepServer.Init())
 		return;
-	StepServer.Start();
+	ioThread->Start();
 
 	while (!StepServer.m_Connected)
 	{
@@ -56,8 +58,8 @@ void TestStepServer()
 	}
 
 	std::this_thread::sleep_for(std::chrono::seconds(90));
-	StepServer.Stop();
-	StepServer.Join();
+	ioThread->Stop();
+	ioThread->Join();
 }
 
 

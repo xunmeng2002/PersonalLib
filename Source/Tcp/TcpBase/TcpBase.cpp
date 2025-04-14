@@ -7,8 +7,8 @@
 #include <assert.h>
 
 
-TcpBase::TcpBase(ServerTypeType serverType, const char* threadName, const char* addressName, int milliSeconds)
-	:IOThread(serverType, threadName, addressName, milliSeconds), m_AddressInfo(nullptr), m_Socket(INVALID_SOCKET), m_RemoteAddressLen(sizeof(m_RemoteAddress))
+TcpBase::TcpBase(ServerTypeType serverType, const char* addressName, int milliSeconds)
+	:IOBase(serverType, addressName, milliSeconds), m_AddressInfo(nullptr), m_Socket(INVALID_SOCKET), m_RemoteAddressLen(sizeof(m_RemoteAddress))
 {
 	memset(&m_RemoteAddress, 0, sizeof(m_RemoteAddress));
 }
@@ -90,7 +90,7 @@ void TcpBase::DoRecv(SessionIDType sessionID)
 	}
 }
 
-void TcpBase::Run()
+void TcpBase::HandleIOEvent()
 {
 	if (m_ServerType == ServerTypeType::Client)
 		CheckConnect();
