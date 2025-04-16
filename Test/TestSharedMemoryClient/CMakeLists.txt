@@ -14,7 +14,7 @@ add_package(Utility ${CMAKE_SOURCE_DIR}/Source/Utility)
 add_package(Buffer ${CMAKE_SOURCE_DIR}/Source/Buffer)
 add_package(Logger ${CMAKE_SOURCE_DIR}/Source/Logger)
 add_package(ThreadBase ${CMAKE_SOURCE_DIR}/Source/ThreadBase)
-add_package(IOThread ${CMAKE_SOURCE_DIR}/Source/IOThread)
+add_package(IO ${CMAKE_SOURCE_DIR}/Source/IO)
 
 
 add_package(SocketInit ${CMAKE_SOURCE_DIR}/Source/SocketInit)
