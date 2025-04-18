@@ -142,7 +142,7 @@ int SingleShm::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
 	return m_ShmBuffer->Write(buffer->GetReadPos(), buffer->GetLength());
 }
-void SingleShm::DoRecv(SessionIDType sessionID)
+void SingleShm::DoRecv(Connect* connect)
 {
 	Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
 	auto len = m_ShmBuffer->Read(buffer->GetData(), BuffSize);
@@ -196,7 +196,7 @@ void SingleShm::HandleEvent()
 	{
 		while (m_ShmBuffer->GetReadBufferSize() > 0)
 		{
-			DoRecv(m_SessionID);
+			DoRecv(nullptr);
 		}
 	}
 }

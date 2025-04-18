@@ -16,7 +16,7 @@ public:
 
 	virtual int Send(SessionIDType sessionID, const char* data, unsigned len) override;
 	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
-	virtual void DoRecv(SessionIDType sessionID) override;
+	virtual void DoRecv(Connect* connect) override;
 	virtual void HandleIOEvent() override;
 
 protected:

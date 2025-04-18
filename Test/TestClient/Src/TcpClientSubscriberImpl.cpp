@@ -35,7 +35,7 @@ void TcpClientSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* 
 {
     auto recvTime = high_resolution_clock::now();
     auto t = duration_cast<microseconds>(recvTime - m_LastSendTime);
-    WriteLog(LogLevel::Info, "TimeCost From Send to Recv:%lld us", t.count());
+    //WriteLog(LogLevel::Info, "TimeCost From Send to Recv:%lld us", t.count());
 
     WriteLog(LogLevel::Info, "TcpClientSubscriberImpl::OnRecv SessionID:[%lld], Length:[%d], Data:[%s]", sessionID, buffer->GetLength(), buffer->GetData());
     if (m_MessageCounts[sessionID] < 5)
@@ -68,14 +68,15 @@ void TcpClientSubscriberImpl::Send(SessionIDType sessionID)
     Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
     auto data = buffer->GetData();
     auto len = strlen(message);
-    for (auto i = 0; i < 5; ++i)
-    {
-        memcpy(data + i * len, message, len);
-    }
-    buffer->SetLength((unsigned)len * 5);
+    memcpy(data, message, len);
+    buffer->SetLength((unsigned)len);
 
     m_LastSendTime = high_resolution_clock::now();
-    m_IOThread->Send(sessionID, buffer);
+    auto sendLen = m_IOThread->Send(sessionID, buffer);
+    if (sendLen <= 0)
+    {
+        WriteLog(LogLevel::Error, "m_IOThread->Send sendLen:%d, ErrorNo:%d, buffer Len:%d, Data:%s", sendLen, GetLastError(), buffer->GetLength(), buffer->GetData());
+    }
 }
 void TcpClientSubscriberImpl::SendCommand(SessionIDType sessionID, const char* cmd)
 {

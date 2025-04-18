@@ -108,14 +108,9 @@ int ShmBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 		return -1;
 	return shmConnect->m_ShmBuffer->Write(buffer->GetReadPos(), buffer->GetLength());
 }
-void ShmBase::DoRecv(SessionIDType sessionID)
+void ShmBase::DoRecv(Connect* connect)
 {
-	auto shmConnect = (ShmConnect<ShmBuffSize>*)GetConnect(sessionID);
-	if (shmConnect == nullptr)
-	{
-		WriteLog(LogLevel::Error, "ShmBase::DoRecv shmConnect is null. SessionID:%lld", sessionID);
-		return;
-	}
+	auto shmConnect = (ShmConnect<ShmBuffSize>*)connect;
 
 	Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
 	auto len = shmConnect->m_ShmBuffer->Read(buffer->GetData(), BuffSize);

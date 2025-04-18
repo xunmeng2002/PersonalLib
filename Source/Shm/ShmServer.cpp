@@ -30,7 +30,7 @@ void ShmServer::HandleIOEvent()
 		auto shmConnect = (ShmConnect<ShmBuffSize>*)it.second;
 		if (shmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
 		{
-			DoRecv(shmConnect->SessionID);
+			DoRecv(shmConnect);
 		}
 	}
 }

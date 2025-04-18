@@ -29,14 +29,13 @@ bool TcpBase::Init()
 		WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:[%s] Port[%s] ret[%d] Errno[%d]", m_Address.c_str(), m_Port.c_str(), ret, errno);
 		return false;
 	}
-		
-	m_Socket = socket(m_AddressInfo->ai_family, SOCK_STREAM, IPPROTO_TCP);
-	if (m_Socket == INVALID_SOCKET)
-	{
-		return false;
-	}
 	if (m_ServerType == ServerTypeType::Server)
 	{
+		m_Socket = socket(m_AddressInfo->ai_family, SOCK_STREAM, IPPROTO_TCP);
+		if (m_Socket == INVALID_SOCKET)
+		{
+			return false;
+		}
 		if (!InitSocket(m_Socket))
 		{
 			closesocket(m_Socket);
@@ -68,9 +67,9 @@ int TcpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 	}
 	return send(tcpConnect->SocketID, buffer->GetReadPos(), buffer->GetLength(), 0);
 }
-void TcpBase::DoRecv(SessionIDType sessionID)
+void TcpBase::DoRecv(Connect* connect)
 {
-	auto tcpConnect = (TcpConnect*)GetConnect(sessionID);
+	auto tcpConnect = (TcpConnect*)connect;
 	Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
 	auto data = buffer->GetData();
 	int len = recv(tcpConnect->SocketID, data, BuffSize - 1, 0);
@@ -92,21 +91,24 @@ void TcpBase::DoRecv(SessionIDType sessionID)
 
 void TcpBase::HandleIOEvent()
 {
-	if (m_ServerType == ServerTypeType::Client)
+	if (m_ServerType == ServerTypeType::Client && !m_Connected)
 		CheckConnect();
 	DoDisConnect();
 	HandleTcpEvent();
 }
 void TcpBase::CheckConnect()
 {
-	if (m_Connected)
+	m_Socket = socket(m_AddressInfo->ai_family, SOCK_STREAM, IPPROTO_TCP);
+	if (m_Socket == INVALID_SOCKET)
+	{
+		WriteLog(LogLevel::Info, "Create Socket Failed. ErrorNo:%d", GetLastError());
 		return;
+	}
 	auto ret = connect(m_Socket, m_AddressInfo->ai_addr, int(m_AddressInfo->ai_addrlen));
-	WriteLog(LogLevel::Info, "Connect Server: Address:[%s] Port[%s] ret[%d]", m_Address.c_str(), m_Port.c_str(), ret);
+	WriteLog(LogLevel::Info, "Connect Server: Address:%s, Port:%s, ret:%d", m_Address.c_str(), m_Port.c_str(), ret);
 	if (ret < 0)
 	{
-		WriteLog(LogLevel::Info, "Connect Server Failed. Address:[%s] Port[%s] ret[%d] Errno[%d]", m_Address.c_str(), m_Port.c_str(), ret, errno);
-		closesocket(m_Socket);
+		WriteLog(LogLevel::Info, "Connect Server Failed. Address:%s, Port:%s, ret:%d, Errno:%d", m_Address.c_str(), m_Port.c_str(), ret, GetLastError());
 		return;
 	}
 	InitSocket(m_Socket);

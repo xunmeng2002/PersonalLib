@@ -5,6 +5,7 @@
 #include "Logger.h"
 #include "TestTcpSelectClient.h"
 #include "TestTcpEpollClient.h"
+#include "TestTcpIocpClient.h"
 #include "TestXtpClient.h"
 #include "TestStepClient.h"
 #include "TestUtility.h"
@@ -17,7 +18,7 @@ int main(int argc, const char* argv[])
     Logger::GetInstance().SetLogLevel(LogLevel::Info, LogLevel::Info);
     Logger::GetInstance().Start();
 
-    switch (g_ProtocolType)
+    switch (g_ClientProtocolType)
     {
     case TcpProtocolType::Udp:
         //TestUdpClient();
@@ -29,7 +30,7 @@ int main(int argc, const char* argv[])
         TestTcpEpollClient();
         break;
     case TcpProtocolType::TcpIocp:
-        //TestIOCPClient();
+        TestTcpIocpClient();
         break;
     case TcpProtocolType::Xtp:
         TestXtpClient();

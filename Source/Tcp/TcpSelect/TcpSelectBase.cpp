@@ -54,7 +54,7 @@ void TcpSelectBase::HandleTcpEvent()
 		auto connect = (TcpConnect*)it.second;
 		if (FD_ISSET(connect->SocketID, &m_RecvFds))
 		{
-			DoRecv(connect->SessionID);
+			DoRecv(connect);
 		}
 	}
 	if (m_ServerType == ServerTypeType::Server)

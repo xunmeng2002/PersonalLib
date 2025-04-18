@@ -11,11 +11,12 @@ void TestTcpSelectServer()
     WriteLog(LogLevel::Info, "TestTcpSelectServer");
 
     IOThread* ioThread = new IOThread("TcpSelectServer");
-    TcpSelectServer tcpSelectServer(g_Address, 100);
-    TcpServerSubscriberImpl tcpServerSubscriberImpl(&tcpSelectServer);
-    ioThread->SetIO(&tcpSelectServer);
+    auto tcpAddress = g_Address + 6;
+    TcpSelectServer* tcpSelectServer = new TcpSelectServer(tcpAddress, 1000);
+    TcpServerSubscriberImpl tcpServerSubscriberImpl(tcpSelectServer);
+    ioThread->SetIO(tcpSelectServer);
     
-    if (!tcpSelectServer.Init())
+    if (!tcpSelectServer->Init())
     {
         WriteLog(LogLevel::Error, "TcpSelectServer Init Failed.");
         return;
