@@ -11,6 +11,7 @@ public:
 	virtual bool PostConnect() override;
 	virtual void DoConnect(MyOverlapped* overlapped) override;
 protected:
+	virtual void RemoveConnect(Connect* connect) override;
 	SOCKET PrepareConnectSocket();
 
 private:

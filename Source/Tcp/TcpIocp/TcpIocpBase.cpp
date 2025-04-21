@@ -5,6 +5,7 @@
 #include "TcpUtility.h"
 #include "Logger.h"
 
+using namespace std;
 
 TcpIocpBase::TcpIocpBase(ServerTypeType serverType, const char* addressName, int milliSeconds, int backlog)
 	:TcpBase(serverType, addressName, milliSeconds), m_BackLog(backlog), m_HasSendConnect(false)
@@ -73,11 +74,6 @@ bool TcpIocpBase::Init()
 
     return true;
 }
-void TcpIocpBase::DisConnect(SessionIDType sessionID)
-{
-    auto connect = GetConnect(sessionID);
-    PostDisConnect(connect);
-}
 void TcpIocpBase::DoRecv(MyOverlapped* overlapped)
 {
     auto tcpConnect = (TcpConnect*)overlapped->Connect;
@@ -125,12 +121,11 @@ void TcpIocpBase::HandleTcpEvent()
     auto tcpConnect = overlapped->Connect;
     if (!bOK)
     {
-        WriteLog(LogLevel::Warning, "GetQueuedCompletionStatus Failed. ErrorID:%d, SessionID:%lld, Socket:%lld.", 
+        WriteLog(LogLevel::Warning, "GetQueuedCompletionStatus Failed. Errno:%d, SessionID:%lld, Socket:%lld.", 
             GetLastError(), tcpConnect->SessionID, tcpConnect->SocketID);
         if (tcpConnect != nullptr && tcpConnect->SocketID != INVALID_SOCKET)
         {
             DoDisConnect(overlapped);
-            tcpConnect->Free();
         }
         MemCacheTemplateSingleton<MyOverlapped>::GetInstance().Free(overlapped);
         return;
@@ -166,12 +161,16 @@ void TcpIocpBase::CheckConnect()
         return;
     m_HasSendConnect = PostConnect();
 }
-void TcpIocpBase::RemoveConnect(Connect* connect)
+void TcpIocpBase::DoDisConnect()
 {
-    IOBase::RemoveConnect(connect);
-    m_HasSendConnect = false;
+    lock_guard<mutex> guard(m_DisConnectSessionIDsMutex);
+    for (auto sessionID : m_DisConnectSessionIDs)
+    {
+        auto connect = (TcpConnect*)m_Connects[sessionID];
+        if (connect != nullptr)
+            PostDisConnect(connect);
+    }
 }
-
 
 bool TcpIocpBase::PostDisConnect(Connect* connect)
 {

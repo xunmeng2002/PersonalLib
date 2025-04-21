@@ -17,6 +17,6 @@ protected:
 
 	virtual void RemoveConnect(::Connect* connect) override;
 protected:
-	bool m_HasSendConnected;
+	bool m_HasSendConnect;
 	ShmConnect<ShmBuffSize>* m_ShmConnect;
 };

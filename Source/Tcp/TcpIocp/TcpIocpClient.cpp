@@ -54,7 +54,11 @@ void TcpIocpClient::DoConnect(MyOverlapped* overlapped)
     PostRecv(overlapped);
     AddConnect(overlapped->Connect);
 }
-
+void TcpIocpClient::RemoveConnect(Connect* connect)
+{
+    IOBase::RemoveConnect(connect);
+    m_HasSendConnect = false;
+}
 SOCKET TcpIocpClient::PrepareConnectSocket()
 {
     SOCKET socketID = WSASocket(m_AddressInfo->ai_family, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);

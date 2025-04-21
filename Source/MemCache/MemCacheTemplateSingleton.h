@@ -47,6 +47,8 @@ public:
 	}
 	void Free(T* item)
 	{
+		if (item == nullptr)
+			return;
 		std::lock_guard<std::mutex> guard(m_Mutex);
 		m_Items.push_back(item);
 	}

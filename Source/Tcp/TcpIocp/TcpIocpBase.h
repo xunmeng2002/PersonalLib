@@ -10,7 +10,6 @@ public:
 	~TcpIocpBase();
 	
 	virtual bool Init() override;
-	virtual void DisConnect(SessionIDType sessionID) override;
 	void DoRecv(MyOverlapped* overlapped);
 	virtual void DoAccept(MyOverlapped* overlapped);
 	virtual void DoConnect(MyOverlapped* overlapped) {}
@@ -19,7 +18,7 @@ public:
 protected:
 	virtual void HandleTcpEvent() override;
 	virtual void CheckConnect() override;
-	virtual void RemoveConnect(Connect* connect) override;
+	virtual void DoDisConnect() override;
 
 	virtual bool PostConnect() { return false; }
 	virtual bool PostDisConnect(Connect* connect);

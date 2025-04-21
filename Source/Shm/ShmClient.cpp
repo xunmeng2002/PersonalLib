@@ -5,7 +5,7 @@
 using namespace std;
 
 ShmClient::ShmClient(const char* shmName, int milliSeconds)
-	:ShmBase(ServerTypeType::Client, shmName, milliSeconds), m_HasSendConnected(false), m_ShmConnect(nullptr)
+	:ShmBase(ServerTypeType::Client, shmName, milliSeconds), m_HasSendConnect(false), m_ShmConnect(nullptr)
 {
 }
 ShmClient::~ShmClient()
@@ -35,14 +35,14 @@ void ShmClient::Connect()
 {
 	if (m_Connected)
 		return;
-	if (!m_HasSendConnected && m_CommonShmHeader->Status == ConnectStatusType::UnConnected)
+	if (!m_HasSendConnect && m_CommonShmHeader->Status == ConnectStatusType::UnConnected)
 	{
 		if (m_Sem->Lock())
 		{
 			if (m_CommonShmHeader->Status == ConnectStatusType::UnConnected)
 			{
 				m_CommonShmHeader->Status = ConnectStatusType::Connecting;
-				m_HasSendConnected = true;
+				m_HasSendConnect = true;
 			}
 			m_Sem->UnLock();
 		}
@@ -52,11 +52,11 @@ void ShmClient::Connect()
 			std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		}
 	}
-	else if (m_HasSendConnected && m_CommonShmHeader->Status != ConnectStatusType::Connecting)
+	else if (m_HasSendConnect && m_CommonShmHeader->Status != ConnectStatusType::Connecting)
 	{
 		if (m_Sem->Lock())
 		{
-			m_HasSendConnected = false;
+			m_HasSendConnect = false;
 			if (m_CommonShmHeader->Status == ConnectStatusType::Accepted)
 			{
 				auto index = m_CommonShmHeader->DownWriteCount;
@@ -101,6 +101,6 @@ void ShmClient::RemoveConnect(::Connect* connect)
 {
 	ShmBase::RemoveConnect(connect);
 	m_Connected = false;
-	m_HasSendConnected = false;
+	m_HasSendConnect = false;
 	m_ShmConnect = nullptr;
 }
