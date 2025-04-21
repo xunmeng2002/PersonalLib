@@ -18,7 +18,7 @@ bool TcpIocpClient::Init()
 	auto ret = GetAddrinfo(m_RemoteAddress.c_str(), m_RemotePort.c_str(), m_RemoteAddressInfo);
 	if (ret < 0)
 	{
-		WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:[%s] Port[%s] ret[%d] Errno[%d]", m_RemoteAddress.c_str(), m_RemotePort.c_str(), ret, errno);
+		WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:%s, Port:%s, ret:%d, Errno:%d", m_RemoteAddress.c_str(), m_RemotePort.c_str(), ret, errno);
 		return false;
 	}
 	TcpIocpBase::Init();
@@ -38,7 +38,7 @@ bool TcpIocpClient::PostConnect()
     overlapped->EventID = IocpEvent::EventAccept;
     overlapped->Connect = tcpConnect;
 
-    WriteLog(LogLevel::Info, "PostConnect For SessionID:%lld, SOCKET:%lld, TcpConnect:%p", tcpConnect->SessionID, tcpConnect->SocketID, tcpConnect);
+    WriteLog(LogLevel::Info, "PostConnect For SessionID:%lld, Socket:%lld", tcpConnect->SessionID, tcpConnect->SocketID);
     DWORD transBytes = 0;
     auto ret = SocketApi::GetInstance().ConnectEx(tcpConnect->SocketID, (const sockaddr*)m_RemoteAddressInfo->ai_addr, sizeof(SOCKADDR_IN),
         NULL, 0, &transBytes, overlapped);
@@ -67,7 +67,7 @@ SOCKET TcpIocpClient::PrepareConnectSocket()
     int on = 1;
     if (setsockopt(socketID, SOL_SOCKET, SO_REUSEADDR, (const char*)&on, sizeof(on)) != 0)
     {
-        WriteErrorLog(GetLastError(), "setsockopt Failed. ErrorID:[%d], result:[%d]");
+        WriteErrorLog(GetLastError(), "setsockopt Failed. ErrorID:%d, result:%d");
         closesocket(socketID);
         return INVALID_SOCKET;
     }

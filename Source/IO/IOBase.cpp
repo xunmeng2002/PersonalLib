@@ -58,7 +58,7 @@ void IOBase::DoDisConnect()
 }
 void IOBase::AddConnect(Connect* connect)
 {
-	WriteLog(LogLevel::Info, "New Connection. SessionID[%lld], RemoteAddress[%s], RemotePort[%d]",
+	WriteLog(LogLevel::Info, "New Connection. SessionID:%lld, RemoteAddress:%s, RemotePort:%d",
 		connect->SessionID, connect->RemoteAddress, connect->RemotePort);
 	if (m_ServerType == ServerTypeType::Client)
 	{
@@ -75,7 +75,7 @@ void IOBase::AddConnect(Connect* connect)
 }
 void IOBase::RemoveConnect(Connect* connect)
 {
-	WriteLog(LogLevel::Info, "RemoveConnect. SessionID[%lld],  RemoteAddress[%s], RemotePort[%d]",
+	WriteLog(LogLevel::Info, "RemoveConnect. SessionID:%lld,  RemoteAddress:%s, RemotePort:%d",
 		connect->SessionID, connect->RemoteAddress, connect->RemotePort);
 	if (m_ServerType == ServerTypeType::Client)
 	{
@@ -94,7 +94,7 @@ Connect* IOBase::GetConnect(SessionIDType sessionID)
 	std::lock_guard<std::mutex> guard(m_ConnectsMutex);
 	if (m_Connects.find(sessionID) == m_Connects.end())
 	{
-		WriteLog(LogLevel::Warning, "Connect not Exist For SessionID[%lld]", sessionID);
+		WriteLog(LogLevel::Warning, "Connect not Exist For SessionID:%lld", sessionID);
 		return nullptr;
 	}
 	return m_Connects[sessionID];

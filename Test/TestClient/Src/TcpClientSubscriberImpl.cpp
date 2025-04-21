@@ -75,7 +75,7 @@ void TcpClientSubscriberImpl::Send(SessionIDType sessionID)
     auto sendLen = m_IOThread->Send(sessionID, buffer);
     if (sendLen <= 0)
     {
-        WriteLog(LogLevel::Error, "m_IOThread->Send sendLen:%d, ErrorNo:%d, buffer Len:%d, Data:%s", sendLen, GetLastError(), buffer->GetLength(), buffer->GetData());
+        WriteLog(LogLevel::Error, "m_IOThread->Send sendLen:%d, Errno:%d, buffer Len:%d, Data:%s", sendLen, GetLastError(), buffer->GetLength(), buffer->GetData());
     }
 }
 void TcpClientSubscriberImpl::SendCommand(SessionIDType sessionID, const char* cmd)

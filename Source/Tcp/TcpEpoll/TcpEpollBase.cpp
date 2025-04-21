@@ -24,7 +24,7 @@ void TcpEpollBase::HandleTcpEvent()
 	int number = epoll_wait(m_EpollFd, m_EpollEvents, eventNum, m_TimeOut.count());
 	if (number < 0 && errno != EINTR)
 	{
-		WriteLog(LogLevel::Info, "epoll wait failed. number:[%d], errno:[%d]\n", number, errno);
+		WriteLog(LogLevel::Info, "epoll wait failed. number:%d, errno:%d\n", number, errno);
 		return;
 	}
 	for (int i = 0; i < number; i++)

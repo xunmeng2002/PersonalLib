@@ -20,7 +20,7 @@ bool TcpIocpBase::Init()
     auto ret = GetAddrinfo(m_Address.c_str(), m_Port.c_str(), m_AddressInfo);
     if (ret < 0)
     {
-        WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:[%s] Port[%s] ret[%d] Errno[%d]", m_Address.c_str(), m_Port.c_str(), ret, errno);
+        WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:%s, Port%s, ret:%d Errno:%d", m_Address.c_str(), m_Port.c_str(), ret, errno);
         return false;
     }
     m_Socket = WSASocket(m_AddressInfo->ai_family, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
@@ -32,7 +32,7 @@ bool TcpIocpBase::Init()
     int on = 1;
     if (setsockopt(m_Socket, SOL_SOCKET, SO_REUSEADDR, (const char*)&on, sizeof(on)) != 0)
     {
-        WriteErrorLog(GetLastError(), "setsockopt Failed. ErrorID:[%d], result:[%d]");
+        WriteErrorLog(GetLastError(), "setsockopt Failed. ErrorID:%d, result:%d");
         return false;
     }
     if (!SocketApi::GetInstance().Init(m_Socket))
@@ -98,8 +98,7 @@ void TcpIocpBase::DoAccept(MyOverlapped* overlapped)
     strcpy(tcpConnect->RemoteAddress, inet_ntoa(remoteAddr->sin_addr));
     tcpConnect->RemotePort = ntohs(remoteAddr->sin_port);
 
-    WriteLog(LogLevel::Info, "AcceptComplete: From <%s:%d> SOCKET:%lld, WSALen:%d.",
-        tcpConnect->RemoteAddress, tcpConnect->RemotePort, tcpConnect->SocketID, overlapped->WsaBuffer.len);
+    WriteLog(LogLevel::Info, "AcceptComplete: From <%s:%d>, SessionID:%lld, Socket:%lld", tcpConnect->RemoteAddress, tcpConnect->RemotePort, tcpConnect->SessionID, tcpConnect->SocketID);
 
     AddConnect(tcpConnect);
     PostRecv(overlapped);
@@ -126,7 +125,7 @@ void TcpIocpBase::HandleTcpEvent()
     auto tcpConnect = overlapped->Connect;
     if (!bOK)
     {
-        WriteLog(LogLevel::Warning, "GetQueuedCompletionStatus Failed. ErrorID:%d, SessionID:%lld, SOCKET:%lld.", 
+        WriteLog(LogLevel::Warning, "GetQueuedCompletionStatus Failed. ErrorID:%d, SessionID:%lld, Socket:%lld.", 
             GetLastError(), tcpConnect->SessionID, tcpConnect->SocketID);
         if (tcpConnect != nullptr && tcpConnect->SocketID != INVALID_SOCKET)
         {
@@ -157,7 +156,7 @@ void TcpIocpBase::HandleTcpEvent()
         DoRecv(overlapped);
         break;
     default:
-        WriteLog(LogLevel::Error, "INVALID EventID:%d, SessionID:%lld, SOCKET:%lld.", overlapped->EventID, tcpConnect->SessionID, tcpConnect->SocketID);
+        WriteLog(LogLevel::Error, "INVALID EventID:%d, SessionID:%lld, Socket:%lld.", overlapped->EventID, tcpConnect->SessionID, tcpConnect->SocketID);
         break;
     }
 }
@@ -182,14 +181,14 @@ bool TcpIocpBase::PostDisConnect(Connect* connect)
     overlapped->EventID = IocpEvent::EventDisConnect;
     overlapped->Connect = tcpConnect;
 
-    WriteLog(LogLevel::Info, "PostDisConnect SessionID:%lld, SOCKET:%lld, TcpConnect:%p", tcpConnect->SessionID, tcpConnect->SocketID, tcpConnect);
+    WriteLog(LogLevel::Info, "PostDisConnect SessionID:%lld, Socket:%lld", tcpConnect->SessionID, tcpConnect->SocketID);
     DWORD transBytes = 0, flag = 0;
     auto ret = SocketApi::GetInstance().DisconnectEx(tcpConnect->SocketID, overlapped, TF_REUSE_SOCKET, 0);
     auto lastError = WSAGetLastError();
     if (ret != 0 && lastError != ERROR_IO_PENDING)
     {
-        WriteErrorLog(WSAGetLastError(), "PostDisConnect: DisconnectEx failed.");
-        DisConnect(connect->SessionID);
+        WriteLog(LogLevel::Error, "Call DisConnectEx Failed. SessionID:%lld, Socket:%lld, Errno:%d", tcpConnect->SessionID, tcpConnect->SocketID, lastError);
+        DoDisConnect(overlapped);
         return false;
     }
     return true;
@@ -213,13 +212,13 @@ bool TcpIocpBase::PostAccept()
     overlapped->EventID = IocpEvent::EventAccept;
     overlapped->Connect = tcpConnect;
 
-    WriteLog(LogLevel::Info, "PostAccept SessionID:%lld, SOCKET:%lld, TcpConnect:%p", tcpConnect->SessionID, tcpConnect->SocketID, tcpConnect);
+    WriteLog(LogLevel::Info, "PostAccept SessionID:%lld, Socket:%lld", tcpConnect->SessionID, tcpConnect->SocketID);
     DWORD transBytes = 0;
-    if (!SocketApi::GetInstance().AcceptEx(m_Socket, tcpConnect->SocketID, overlapped->WsaBuffer.buf, 0,
-        (sizeof(SOCKADDR_IN) + 16), (sizeof(SOCKADDR_IN) + 16), &transBytes, overlapped) && WSAGetLastError() != ERROR_IO_PENDING)
+    auto ret = SocketApi::GetInstance().AcceptEx(m_Socket, tcpConnect->SocketID, overlapped->WsaBuffer.buf, 0, (sizeof(SOCKADDR_IN) + 16), (sizeof(SOCKADDR_IN) + 16), &transBytes, overlapped);
+    auto lastError = WSAGetLastError();
+    if (ret != 0 && lastError != ERROR_IO_PENDING)
     {
-        WriteLog(LogLevel::Error, "Call AcceptEx Failed. Socket:%lld", tcpConnect->SocketID);
-        WriteErrorLog(WSAGetLastError(), "Call AcceptEx Failed.");
+        WriteLog(LogLevel::Error, "Call AcceptEx Failed. SessionID:%lld, Socket:%lld, Errno:%d", tcpConnect->SessionID, tcpConnect->SocketID, lastError);
         return false;
     }
     return true;
@@ -231,13 +230,13 @@ bool TcpIocpBase::PostRecv(MyOverlapped* overlapped)
     overlapped->EventID = IocpEvent::EventRecv;
     overlapped->Connect = tcpConnect;
 
-    WriteLog(LogLevel::Info, "PostRecv SessionID:%lld, SOCKET:%lld, TcpConnect:%p", tcpConnect->SessionID, tcpConnect->SocketID, tcpConnect);
+    WriteLog(LogLevel::Info, "PostRecv SessionID:%lld, Socket:%lld", tcpConnect->SessionID, tcpConnect->SocketID);
     DWORD transBytes = 0, flag = 0;
     auto ret = WSARecv(tcpConnect->SocketID, &overlapped->WsaBuffer, 1, nullptr, &flag, overlapped, NULL);
     auto lastError = WSAGetLastError();
     if (ret != 0 && lastError != ERROR_IO_PENDING)
     {
-        WriteLog(LogLevel::Error, "PostRecv: WSARecv failed. SessionID:%lld, SocketID:%lld, ErrorNo:%d", tcpConnect->SessionID, tcpConnect->SocketID, WSAGetLastError());
+        WriteLog(LogLevel::Error, "PostRecv: WSARecv failed. SessionID:%lld, Socket:%lld, Errno:%d", tcpConnect->SessionID, tcpConnect->SocketID, lastError);
         DoDisConnect(overlapped);
         return false;
     }

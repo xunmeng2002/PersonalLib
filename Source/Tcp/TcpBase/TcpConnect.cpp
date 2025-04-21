@@ -13,6 +13,7 @@ TcpConnect* TcpConnect::Allocate(SessionIDType sessionID, const SOCKET& socketID
 }
 void TcpConnect::Free()
 {
+	WriteLog(LogLevel::Info, "TcpConnect::Free SessionID:%lld, Socket:%lld", SessionID, SocketID);
 #ifdef WINDOWS
 	shutdown(SocketID, SD_BOTH);
 #endif
