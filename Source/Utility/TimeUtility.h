@@ -35,7 +35,8 @@ void GetLocalDateTime(char* date, char* time);
 std::string GetLocalDateTimeWithMilliSecond();
 long long GetMilliSecondTimeStamp();
 
-
+int GetTimeFromTimeString(const char* time);
+time_t GetTimeFromString(std::string dateTime, std::string format = "%04d%02d%02d-%02d:%02d:%02d");
 std::string ToUtcDate(time_t* time);
 std::string ToUtcTime(time_t* time);
 std::string ToUtcDateTime(time_t* time);

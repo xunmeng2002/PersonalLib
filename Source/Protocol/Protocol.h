@@ -14,8 +14,11 @@ public:
 	void Subscribe(ProtocolSubscriber* subscriber);
 	void UnSubscribe();
 	void RegisterFront(const char* address);
-	void SetTimeOut(int milliSeconds);
 	void SetIOThread(IOThread* ioThread);
+	void SetTimeOut(int milliSeconds);
+	bool Start();
+	void Stop();
+	void Join();
 	virtual bool Init();
 	IOBase* GetIO();
 	IOThread* GetIOThread();

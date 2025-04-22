@@ -253,6 +253,23 @@ long long GetMilliSecondTimeStamp()
 }
 
 
+int GetTimeFromTimeString(const char* time)
+{
+	std::istringstream iss(time);
+	int hour, minute, second;
+	char sep;
+	iss >> hour >> sep >> minute >> sep >> second;
+	return hour * 10000 + minute * 100 + second;
+}
+time_t GetTimeFromString(std::string dateTime, std::string format)
+{
+	tm t;
+	int len = sscanf(dateTime.c_str(), format.c_str(), &t.tm_year, &t.tm_mon, &t.tm_mday, &t.tm_hour, &t.tm_min, &t.tm_sec);
+	t.tm_year -= 1900;
+	t.tm_mon -= 1;
+
+	return mktime(&t);
+}
 std::string ToUtcDate(time_t* time)
 {
 	strftime(t_DateTimeBuff, 32, "%Y%m%d", gmtime(time));

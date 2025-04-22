@@ -36,6 +36,14 @@ void Protocol::RegisterFront(const char* address)
 		m_IOThread->SetIO(m_IOBase);
 	}
 }
+void Protocol::SetIOThread(IOThread* ioThread)
+{
+	m_IOThread = ioThread;
+	if (m_IOBase != nullptr)
+	{
+		m_IOThread->SetIO(m_IOBase);
+	}
+}
 void Protocol::SetTimeOut(int milliSeconds)
 {
 	m_MilliSeconds = milliSeconds;
@@ -44,12 +52,26 @@ void Protocol::SetTimeOut(int milliSeconds)
 		m_IOBase->SetTimeOut(milliSeconds);
 	}
 }
-void Protocol::SetIOThread(IOThread* ioThread)
+bool Protocol::Start()
 {
-	m_IOThread = ioThread;
-	if (m_IOBase != nullptr)
+	if (m_IOThread != nullptr)
 	{
-		m_IOThread->SetIO(m_IOBase);
+		return m_IOThread->Start();
+	}
+	return false;
+}
+void Protocol::Stop()
+{
+	if (m_IOThread != nullptr)
+	{
+		m_IOThread->Stop();
+	}
+}
+void Protocol::Join()
+{
+	if (m_IOThread != nullptr)
+	{
+		m_IOThread->Stop();
 	}
 }
 bool Protocol::Init()

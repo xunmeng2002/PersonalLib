@@ -62,6 +62,8 @@ public:
 	static constexpr unsigned int Password = 0x2801;
 	static constexpr unsigned int BrokerPassword = 0x2802;
 	static constexpr unsigned int OfferPassword = 0x2803;
+	static constexpr unsigned int IPAddress = 0x2901;
+	static constexpr unsigned int Port = 0x2902;
 	static constexpr unsigned int TradingDay = 0x3001;
 	static constexpr unsigned int LoginDate = 0x3002;
 	static constexpr unsigned int OrderDate = 0x3003;
@@ -171,6 +173,10 @@ public:
 	static constexpr unsigned int StopPrice = 0x6027;
 	static constexpr unsigned int PositionPrice = 0x6028;
 	static constexpr unsigned int AveragePrice = 0x6029;
+	static constexpr unsigned int Open = 0x602A;
+	static constexpr unsigned int High = 0x602B;
+	static constexpr unsigned int Low = 0x602C;
+	static constexpr unsigned int Close = 0x602D;
 	static constexpr unsigned int Balance = 0x7001;
 	static constexpr unsigned int PreBalance = 0x7002;
 	static constexpr unsigned int Asset = 0x7003;
