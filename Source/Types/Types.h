@@ -871,6 +871,15 @@ enum class SecurityTypeType : int
 	All = '*',
 };
 
+//交易节类别
+enum class SectionClassType : int
+{
+	//集合竞价
+	Auction = '0',
+	//连续竞价
+	Section = '1',
+};
+
 //服务类别
 enum class ServerTypeType : int
 {

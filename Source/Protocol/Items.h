@@ -117,6 +117,7 @@ public:
 	static constexpr unsigned int MaxMarketOrderVolume = 0x401E;
 	static constexpr unsigned int OpenInterest = 0x4020;
 	static constexpr unsigned int PreOpenInterest = 0x4021;
+	static constexpr unsigned int CurrVolume = 0x4022;
 	static constexpr unsigned int BarTime = 0x4201;
 	static constexpr unsigned int UpdateTs = 0x4202;
 	static constexpr unsigned int CurrencyRate = 0x5001;
@@ -211,7 +212,8 @@ public:
 	static constexpr unsigned int TodayProfit = 0x7020;
 	static constexpr unsigned int UnitMargin = 0x7021;
 	static constexpr unsigned int Turnover = 0x7022;
-	static constexpr unsigned int TransferAmount = 0x7023;
+	static constexpr unsigned int CurrTurnover = 0x7023;
+	static constexpr unsigned int TransferAmount = 0x7024;
 	static constexpr unsigned int IsAllowLogin = 0x8001;
 	static constexpr unsigned int T1Valid = 0x8002;
 	static constexpr unsigned int IsAutoAudit = 0x8002;
