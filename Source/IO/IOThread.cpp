@@ -27,7 +27,6 @@ void IOThread::Run()
 void IOThread::ThreadExit()
 {
 	ThreadBase::ThreadExit();
-	if (m_IO)
-		delete m_IO;
+	m_IO->DisConnectAll();
 }
 

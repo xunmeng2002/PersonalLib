@@ -9,6 +9,11 @@ Protocol::Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, int
 }
 Protocol::~Protocol()
 {
+	if (m_IOBase != nullptr)
+	{
+		delete m_IOBase;
+		m_IOBase = nullptr;
+	}
 }
 void Protocol::Subscribe(ProtocolSubscriber* subscriber)
 {

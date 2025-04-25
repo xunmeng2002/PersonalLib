@@ -28,6 +28,7 @@ public:
 	virtual void RegisterFront(const char* address);
 	virtual bool Init() { return true; }
 	virtual void DisConnect(SessionIDType sessionID);
+	virtual void DisConnectAll();
 	virtual int Send(SessionIDType sessionID, const char* data, unsigned len) = 0;
 	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) = 0;
 	virtual void DoRecv(Connect* connect) = 0;
@@ -40,7 +41,7 @@ protected:
 	virtual Connect* GetConnect(SessionIDType sessionID);
 
 	SessionIDType GetSessionID();
-	void DisConnectAll();
+	
 
 protected:
 	ServerTypeType m_ServerType;

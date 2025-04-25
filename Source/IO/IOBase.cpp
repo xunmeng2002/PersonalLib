@@ -12,8 +12,6 @@ IOBase::IOBase(ServerTypeType serverType, const char* addressName, int milliSeco
 }
 IOBase::~IOBase()
 {
-	//m_IOSubscriber = nullptr;
-	DisConnectAll();
 }
 void IOBase::Subscribe(IOSubscriber* subscriber)
 {
@@ -37,6 +35,16 @@ void IOBase::DisConnect(SessionIDType sessionID)
 	lock_guard<mutex> guard(m_DisConnectSessionIDsMutex);
 	m_DisConnectSessionIDs.push_back(sessionID);
 }
+void IOBase::DisConnectAll()
+{
+	WriteLog(LogLevel::Info, "DisConnectAll");
+	std::map<SessionIDType, Connect*> connects(m_Connects.begin(), m_Connects.end());
+	for (auto& it : connects)
+	{
+		RemoveConnect(it.second);
+	}
+}
+
 void IOBase::DoDisConnect()
 {
 	if (m_DisConnectSessionIDs.empty())
@@ -105,15 +113,6 @@ Connect* IOBase::GetConnect(SessionIDType sessionID)
 SessionIDType IOBase::GetSessionID()
 {
 	return GetMilliSecondTimeStamp() * 100LL + (++m_LastSessionIndex) % 100LL;
-}
-void IOBase::DisConnectAll()
-{
-	WriteLog(LogLevel::Info, "DisConnectAll");
-	std::map<SessionIDType, Connect*> connects(m_Connects.begin(), m_Connects.end());
-	for (auto& it : connects)
-	{
-		RemoveConnect(it.second);
-	}
 }
 
 
