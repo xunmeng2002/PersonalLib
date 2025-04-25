@@ -12,6 +12,7 @@ IOBase::IOBase(ServerTypeType serverType, const char* addressName, int milliSeco
 }
 IOBase::~IOBase()
 {
+	//m_IOSubscriber = nullptr;
 	DisConnectAll();
 }
 void IOBase::Subscribe(IOSubscriber* subscriber)

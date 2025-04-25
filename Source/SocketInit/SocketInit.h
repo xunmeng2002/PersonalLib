@@ -1,4 +1,5 @@
 #pragma once
+#include <mutex>
 #ifdef WINDOWS
 #include <Ws2tcpip.h>
 #pragma comment(lib,"ws2_32.lib")
@@ -20,7 +21,13 @@ typedef int SOCKET;
 class SocketInit
 {
 public:
-	SocketInit();
-	virtual ~SocketInit();
+	~SocketInit();
+	static SocketInit& GetInstance();
+	void Init();
+private:
+	void WsaStart();
+private:
+	std::once_flag SocketInitFlag;
+	static SocketInit _SOCKET_INIT;
 };
 

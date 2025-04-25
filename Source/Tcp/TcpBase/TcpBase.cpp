@@ -24,6 +24,7 @@ TcpBase::~TcpBase()
 
 bool TcpBase::Init()
 {
+	SocketInit::GetInstance().Init();
 	auto ret = GetAddrinfo(m_Address.c_str(), m_Port.c_str(), m_AddressInfo);
 	if (ret < 0)
 	{

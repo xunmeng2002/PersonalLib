@@ -9,11 +9,6 @@ Protocol::Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, int
 }
 Protocol::~Protocol()
 {
-	if (m_IOBase != nullptr)
-	{
-		delete m_IOBase;
-		m_IOBase = nullptr;
-	}
 }
 void Protocol::Subscribe(ProtocolSubscriber* subscriber)
 {
@@ -71,7 +66,7 @@ void Protocol::Join()
 {
 	if (m_IOThread != nullptr)
 	{
-		m_IOThread->Stop();
+		m_IOThread->Join();
 	}
 }
 bool Protocol::Init()
