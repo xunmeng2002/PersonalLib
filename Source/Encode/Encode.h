@@ -33,7 +33,7 @@ void TrunsferUtf8ToGbk(char (&src)[N])
     memcpy(src, gbk.c_str(), gbk.length());
 }
 template <int N>
-void TrunsferGbkUtf8(char (&src)[N])
+void TrunsferGbkToUtf8(char (&src)[N])
 {
     std::string utf8 = GbkToUtf8(src);
     memset(src, 0, N);
