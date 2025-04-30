@@ -51,6 +51,10 @@ public:
 		oldTail->next = node;
 		m_Tail.store(node);
 	}
+	bool Empty()
+	{
+		return m_Head.load() == m_Tail.load();
+	}
 
 private:
 	std::atomic<Node*> m_Head;
