@@ -98,6 +98,9 @@ typedef double PriceType;
 //比率
 typedef double RateType;
 
+//大额数量
+typedef double LargeVolumeType;
+
 
 //账号类型
 typedef char AccountIDType[32];
@@ -445,6 +448,15 @@ enum class InitStatusType : int
 	Initialized = '2',
 };
 
+//合约类别
+enum class InstrumentClassType : int
+{
+	//普通合约
+	Normal = '0',
+	//主力合约
+	Main = '1',
+};
+
 //IO类型
 enum class IOTypeType : int
 {
@@ -520,6 +532,15 @@ enum class MarginTypeType : int
 	Rate = '0',
 	//固定金额
 	Fixed = '1',
+};
+
+//行情数据类型
+enum class MarketDataTypeType : int
+{
+	//快照行情
+	Tick = '0',
+	//Bar行情
+	Bar = '1',
 };
 
 //持仓方向
@@ -698,17 +719,23 @@ enum class ParamTypeType : int
 enum class ProductClassType : int
 {
 	//期货
-	Futures = '0',
+	Future = '0',
 	//期货期权
-	Options = '1',
+	FutureOption = '1',
 	//组合
 	Combination = '2',
 	//即期
 	Spot = '3',
 	//期转现
 	EFP = '4',
-	//现货期权
-	SpotOption = '5',
+	//指数
+	Index = '5',
+	//股票
+	Stock = '6',
+	//股票期权
+	StockOption = '7',
+	//ETF
+	ETF = '8',
 };
 
 //协议类型
@@ -840,35 +867,6 @@ enum class SecurityDetailTypeType : int
 	Future = 'E',
 	//期货期权
 	FutureOption = 'F',
-};
-
-//证券类别
-enum class SecurityTypeType : int
-{
-	//指数
-	Index = '0',
-	//股票
-	Stock = '1',
-	//期权
-	Option = '2',
-	//期货
-	Future = '3',
-	//期货期权
-	FutureOption = '4',
-	//B股
-	BShares = '5',
-	//债券
-	Bond = '6',
-	//逆回购
-	ReverseRepo = '7',
-	//ETF
-	ETF = '8',
-	//配股
-	AllotmentCode = '9',
-	//其他
-	Other = 'A',
-	//通配符，匹配所有类型
-	All = '*',
 };
 
 //交易节类别

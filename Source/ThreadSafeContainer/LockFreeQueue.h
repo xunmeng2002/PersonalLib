@@ -19,7 +19,7 @@ public:
 		:m_Head(new Node), m_Tail(m_Head.load())
 	{}
 	LockFreeQueue(const LockFreeQueue&) = delete;
-	LockFreeQueue& operator(const LockFreeQueue&) = delete;
+	LockFreeQueue& operator=(const LockFreeQueue&) = delete;
 	~LockFreeQueue()
 	{
 		Node* oldHead = nullptr;

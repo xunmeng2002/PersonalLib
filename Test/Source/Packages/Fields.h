@@ -133,7 +133,7 @@ public:
 	AccountTypeType AccountType;		//账户类型
 	ExchangeIDType ExchangeID;		//交易所代码
 	InstrumentIDType InstrumentID;		//合约代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 	PosiDirectionType PosiDirection;		//持仓方向
 	VolumeType TotalPosition;		//持仓数量
 	VolumeType PositionFrozen;		//冻结持仓
@@ -169,7 +169,7 @@ public:
 	AccountIDType AccountID;		//账户代码
 	ExchangeIDType ExchangeID;		//交易所代码
 	InstrumentIDType InstrumentID;		//合约代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 	OrderIDType OrderID;		//委托编号
 	OrderSysIDType OrderSysID;		//系统委托编号
 	DirectionType Direction;		//买卖方向
@@ -209,7 +209,7 @@ public:
 	AccountIDType AccountID;		//账户代码
 	ExchangeIDType ExchangeID;		//交易所代码
 	InstrumentIDType InstrumentID;		//合约代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 	OrderIDType OrderID;		//委托编号
 	OrderSysIDType OrderSysID;		//系统委托编号
 	TradeIDType TradeID;		//成交编号
@@ -241,7 +241,7 @@ public:
 	InstrumentIDType ExchangeInstID;		//交易所合约代码
 	InstrumentNameType InstrumentName;		//合约名称
 	VolumeMultipleType VolumeMultiple;		//合约乘数
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 };
 class ReqQryOptionInstrumentField
 {
@@ -264,8 +264,8 @@ public:
 	PriceType ExecutePrice;		//行权价
 	MoneyType UnitMargin;		//单位保证金
 	PriceType PriceTick;		//最小变动价位
-	VolumeType MaxLimitOrderVolume;		//限价最大下单数量
-	VolumeType MaxMarketOrderVolume;		//市价最大下单数量
+	VolumeType MaxLimitOrderVolume;		//限价最大下单量
+	VolumeType MaxMarketOrderVolume;		//市价最大下单量
 	DateType ExpiringDate;		//到期日
 };
 class ReqQryCommissionRateField
@@ -274,7 +274,7 @@ public:
 	static constexpr UShortType FieldID = 0x1016;
 	AccountIDType AccountID;		//账户代码
 	ExchangeIDType ExchangeID;		//交易所代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 };
 class CommissionRateField
 {
@@ -282,7 +282,7 @@ public:
 	static constexpr UShortType FieldID = 0x1017;
 	AccountIDType AccountID;		//账户代码
 	ExchangeIDType ExchangeID;		//交易所代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 	RateType OpenBuyByMoney;		//买开仓费率
 	RateType OpenSellByMoney;		//卖开仓费率
 	RateType CloseBuyByMoney;		//买平仓费率
@@ -847,7 +847,7 @@ public:
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	ExchangeIDType ExchangeID;		//交易所代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 	RateType OpenStampTaxByMoney;		//开仓印花税率
 	RateType CloseStampTaxByMoney;		//平仓印花税率
 	RateType OpenTransferFeeByMoney;		//开仓过户费率
@@ -860,7 +860,7 @@ public:
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	ExchangeIDType ExchangeID;		//交易所代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 };
 class ReqUpdateBaseCommissionField
 {
@@ -869,7 +869,7 @@ public:
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	ExchangeIDType ExchangeID;		//交易所代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 	RateType OpenStampTaxByMoney;		//开仓印花税率
 	RateType CloseStampTaxByMoney;		//平仓印花税率
 	RateType OpenTransferFeeByMoney;		//开仓过户费率
@@ -882,7 +882,7 @@ public:
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	ExchangeIDType ExchangeID;		//交易所代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 };
 class ReqRemoveBaseCommissionField
 {
@@ -891,7 +891,7 @@ public:
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	ExchangeIDType ExchangeID;		//交易所代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 };
 class RspRemoveBaseCommissionField
 {
@@ -900,7 +900,7 @@ public:
 	UserIDType AdminUserID;		//管理用户代码
 	DateType TradingDay;		//交易日
 	ExchangeIDType ExchangeID;		//交易所代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 };
 class ReqAddCommissionGroupField
 {
@@ -911,7 +911,7 @@ public:
 	GroupIDType CommissionGroupID;		//交易组代码
 	GroupNameType CommissionGroupName;		//手续费组名称
 	ExchangeIDType ExchangeID;		//交易所代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 	RateType OpenBuyByMoney;		//买开仓费率
 	RateType OpenSellByMoney;		//卖开仓费率
 	RateType CloseBuyByMoney;		//买平仓费率
@@ -931,7 +931,7 @@ public:
 	DateType TradingDay;		//交易日
 	GroupIDType CommissionGroupID;		//交易组代码
 	ExchangeIDType ExchangeID;		//交易所代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 };
 class ReqUpdateCommissionGroupField
 {
@@ -942,7 +942,7 @@ public:
 	GroupIDType CommissionGroupID;		//交易组代码
 	GroupNameType CommissionGroupName;		//手续费组名称
 	ExchangeIDType ExchangeID;		//交易所代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 	RateType OpenBuyByMoney;		//买开仓费率
 	RateType OpenSellByMoney;		//卖开仓费率
 	RateType CloseBuyByMoney;		//买平仓费率
@@ -962,7 +962,7 @@ public:
 	DateType TradingDay;		//交易日
 	GroupIDType CommissionGroupID;		//交易组代码
 	ExchangeIDType ExchangeID;		//交易所代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 };
 class ReqRemoveCommissionGroupField
 {
@@ -972,7 +972,7 @@ public:
 	DateType TradingDay;		//交易日
 	GroupIDType CommissionGroupID;		//交易组代码
 	ExchangeIDType ExchangeID;		//交易所代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 };
 class RspRemoveCommissionGroupField
 {
@@ -982,7 +982,7 @@ public:
 	DateType TradingDay;		//交易日
 	GroupIDType CommissionGroupID;		//交易组代码
 	ExchangeIDType ExchangeID;		//交易所代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 };
 class ReqAddOptionMarginParamField
 {
@@ -1549,8 +1549,8 @@ public:
 	PriceType ExecutePrice;		//行权价
 	MoneyType UnitMargin;		//单位保证金
 	PriceType PriceTick;		//最小变动价位
-	VolumeType MaxLimitOrderVolume;		//限价最大下单数量
-	VolumeType MaxMarketOrderVolume;		//市价最大下单数量
+	VolumeType MaxLimitOrderVolume;		//限价最大下单量
+	VolumeType MaxMarketOrderVolume;		//市价最大下单量
 	DateType ExpiringDate;		//到期日
 };
 class ReqOfferOrderField
@@ -1561,7 +1561,7 @@ public:
 	AccountIDType PrimaryAccountID;		//主账户代码
 	ExchangeIDType ExchangeID;		//交易所代码
 	InstrumentIDType InstrumentID;		//合约代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 	OrderIDType OrderID;		//委托编号
 	DirectionType Direction;		//买卖方向
 	OffsetFlagType OffsetFlag;		//开平标志
@@ -1577,7 +1577,7 @@ public:
 	AccountIDType PrimaryAccountID;		//主账户代码
 	ExchangeIDType ExchangeID;		//交易所代码
 	InstrumentIDType InstrumentID;		//合约代码
-	SecurityTypeType SecurityType;		//证券类别
+	ProductClassType ProductClass;		//品种类型
 	DirectionType Direction;		//买卖方向
 	OrderIDType CancelOrderID;		//本地撤单编号
 	OrderIDType OrderID;		//委托编号

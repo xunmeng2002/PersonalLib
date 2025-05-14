@@ -89,7 +89,7 @@
 		<item name="AccountType"/>
 		<item name="ExchangeID"/>
 		<item name="InstrumentID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 		<item name="PosiDirection"/>
 		<item name="TotalPosition"/>
 		<item name="PositionFrozen"/>
@@ -119,7 +119,7 @@
 		<item name="AccountID"/>
 		<item name="ExchangeID"/>
 		<item name="InstrumentID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 		<item name="OrderID"/>
 		<item name="OrderSysID"/>
 		<item name="Direction"/>
@@ -153,7 +153,7 @@
 		<item name="AccountID"/>
 		<item name="ExchangeID"/>
 		<item name="InstrumentID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 		<item name="OrderID"/>
 		<item name="OrderSysID"/>
 		<item name="TradeID"/>
@@ -179,7 +179,7 @@
 		<item name="ExchangeInstID"/>
 		<item name="InstrumentName"/>
 		<item name="VolumeMultiple"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 	</field>
 	<field name="ReqQryOptionInstrument" 		id="0x1014" desc="查询期权合约请求">
 		<item name="ExchangeID"/>
@@ -203,12 +203,12 @@
 	<field name="ReqQryCommissionRate" 			id="0x1016" desc="查询手续费率请求">
 		<item name="AccountID"/>
 		<item name="ExchangeID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 	</field>
 	<field name="CommissionRate" 				id="0x1017" desc="手续费率">
 		<item name="AccountID"/>
 		<item name="ExchangeID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 		<item name="OpenBuyByMoney"/>
 		<item name="OpenSellByMoney"/>
 		<item name="CloseBuyByMoney"/>
@@ -585,7 +585,7 @@
 		<item name="AdminUserID"/>
 		<item name="TradingDay"/>
 		<item name="ExchangeID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 		<item name="OpenStampTaxByMoney"/>
 		<item name="CloseStampTaxByMoney"/>
 		<item name="OpenTransferFeeByMoney"/>
@@ -595,13 +595,13 @@
 		<item name="AdminUserID"/>
 		<item name="TradingDay"/>
 		<item name="ExchangeID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 	</field>
 	<field name="ReqUpdateBaseCommission" 		id="0x4020" desc="更新基础费率请求">
 		<item name="AdminUserID"/>
 		<item name="TradingDay"/>
 		<item name="ExchangeID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 		<item name="OpenStampTaxByMoney"/>
 		<item name="CloseStampTaxByMoney"/>
 		<item name="OpenTransferFeeByMoney"/>
@@ -611,19 +611,19 @@
 		<item name="AdminUserID"/>
 		<item name="TradingDay"/>
 		<item name="ExchangeID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 	</field>
 	<field name="ReqRemoveBaseCommission" 		id="0x4022" desc="删除基础费率请求">
 		<item name="AdminUserID"/>
 		<item name="TradingDay"/>
 		<item name="ExchangeID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 	</field>
 	<field name="RspRemoveBaseCommission" 		id="0x4023" desc="删除基础费率应答">
 		<item name="AdminUserID"/>
 		<item name="TradingDay"/>
 		<item name="ExchangeID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 	</field>
 	<field name="ReqAddCommissionGroup" 		id="0x4024" desc="添加手续费组请求">
 		<item name="AdminUserID"/>
@@ -631,7 +631,7 @@
 		<item name="CommissionGroupID"/>
 		<item name="CommissionGroupName"/>
 		<item name="ExchangeID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 		<item name="OpenBuyByMoney"/>
 		<item name="OpenSellByMoney"/>
 		<item name="CloseBuyByMoney"/>
@@ -648,7 +648,7 @@
 		<item name="TradingDay"/>
 		<item name="CommissionGroupID"/>
 		<item name="ExchangeID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 	</field>
 	<field name="ReqUpdateCommissionGroup" 		id="0x4026" desc="更新手续费组请求">
 		<item name="AdminUserID"/>
@@ -656,7 +656,7 @@
 		<item name="CommissionGroupID"/>
 		<item name="CommissionGroupName"/>
 		<item name="ExchangeID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 		<item name="OpenBuyByMoney"/>
 		<item name="OpenSellByMoney"/>
 		<item name="CloseBuyByMoney"/>
@@ -673,21 +673,21 @@
 		<item name="TradingDay"/>
 		<item name="CommissionGroupID"/>
 		<item name="ExchangeID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 	</field>
 	<field name="ReqRemoveCommissionGroup" 		id="0x4028" desc="删除手续费组请求">
 		<item name="AdminUserID"/>
 		<item name="TradingDay"/>
 		<item name="CommissionGroupID"/>
 		<item name="ExchangeID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 	</field>
 	<field name="RspRemoveCommissionGroup" 		id="0x4029" desc="删除手续费组应答">
 		<item name="AdminUserID"/>
 		<item name="TradingDay"/>
 		<item name="CommissionGroupID"/>
 		<item name="ExchangeID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 	</field>
 	<field name="ReqAddOptionMarginParam" 		id="0x402A" desc="添加手续费组请求">
 		<item name="AdminUserID"/>
@@ -1063,7 +1063,7 @@
 		<item name="PrimaryAccountID"/>
 		<item name="ExchangeID"/>
 		<item name="InstrumentID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 		<item name="OrderID"/>
 		<item name="Direction"/>
 		<item name="OffsetFlag"/>
@@ -1076,7 +1076,7 @@
 		<item name="PrimaryAccountID"/>
 		<item name="ExchangeID"/>
 		<item name="InstrumentID"/>
-		<item name="SecurityType"/>
+		<item name="ProductClass"/>
 		<item name="Direction"/>
 		<item name="CancelOrderID"/>
 		<item name="OrderID"/>
