@@ -12,6 +12,6 @@ void AspectPerformance::Before(const char* funcName)
 void AspectPerformance::After(const char* funcName)
 {
 	m_EndTimePoint = time_point_cast<microseconds>(system_clock::now());
-	printf("%s: %lldus\n", funcName, (m_EndTimePoint - m_StartTimePoint).count());
+	printf("%s: %lldus\n", funcName, (long long)((m_EndTimePoint - m_StartTimePoint).count()));
 }
 

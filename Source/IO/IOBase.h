@@ -7,6 +7,7 @@
 #include <mutex>
 #include <list>
 #include <map>
+#include <condition_variable>
 
 class IOSubscriber
 {

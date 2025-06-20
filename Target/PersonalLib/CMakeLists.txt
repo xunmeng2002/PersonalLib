@@ -39,7 +39,7 @@ add_package(Types ${CMAKE_SOURCE_DIR}/Source/Types)
 add_package(Utility ${CMAKE_SOURCE_DIR}/Source/Utility)
 
 
-add_library(${PROJECT_NAME} STATIC ${all_file})
+add_library(${PROJECT_NAME} SHARED ${all_file})
 
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")

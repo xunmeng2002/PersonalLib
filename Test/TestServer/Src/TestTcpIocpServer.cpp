@@ -1,5 +1,7 @@
 #include "TestTcpIocpServer.h"
+#ifdef WINDOWS
 #include "TcpIocpServer.h"
+#endif
 #include "TcpServerSubscriberImpl.h"
 #include "Logger.h"
 #include "TestUtility.h"
@@ -9,7 +11,7 @@
 void TestTcpIocpServer()
 {
     WriteLog(LogLevel::Info, "TestTcpIocpServer");
-
+#ifdef WINDOWS
     IOThread* ioThread = new IOThread("TcpIocpServer");
     TcpIocpServer* tcpIocpServer = new TcpIocpServer(g_IocpServerAddress, 5000);
     TcpServerSubscriberImpl tcpServerSubscriberImpl(tcpIocpServer);
@@ -25,5 +27,6 @@ void TestTcpIocpServer()
     std::this_thread::sleep_for(std::chrono::seconds(60));
     ioThread->Stop();
     ioThread->Join();
+#endif
 }
 

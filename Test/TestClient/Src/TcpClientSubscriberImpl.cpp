@@ -3,6 +3,7 @@
 #include "Logger.h"
 #include "Utility.h"
 #include "Packages.h"
+#include "Platform.h"
 #include <cstring>
 
 

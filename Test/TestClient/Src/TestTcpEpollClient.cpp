@@ -2,6 +2,7 @@
 #include "TcpClientSubscriberImpl.h"
 #include "Logger.h"
 #include "TestUtility.h"
+#include "IOThread.h"
 
 
 void TestTcpEpollClient()

@@ -1,5 +1,6 @@
 #include "TcpServerSubscriberImpl.h"
 #include "Logger.h"
+#include "Platform.h"
 #include <string.h>
 #include <iostream>
 
