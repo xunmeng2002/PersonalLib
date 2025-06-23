@@ -311,7 +311,7 @@
 			<item name="MoneyTransferID" id="0x1010" type="SequenceNo" desc="出入金编号"/>
 			<item name="AccountType" id="0x9002" type="AccountType" desc="账户类型"/>
 			<item name="TransferDirection" id="0x901B" type="TransferDirection" desc="转移方向"/>
-			<item name="TransferAmount" id="0x7024" type="Money" desc="转移金额"/>
+			<item name="TransferAmount" id="0x7025" type="Money" desc="转移金额"/>
 			<item name="InfoMessage" id="0x2405" type="Message" desc="备注信息"/>
 			<item name="UserID" id="0x1022" type="UserID" desc="用户代码"/>
 			<item name="TransferDate" id="0x300C" type="Date" desc="操作日期"/>
@@ -461,7 +461,7 @@
 			<item name="MoneyTransferID" id="0x1010" type="SequenceNo" desc="出入金编号"/>
 			<item name="AccountType" id="0x9002" type="AccountType" desc="账户类型"/>
 			<item name="TransferDirection" id="0x901B" type="TransferDirection" desc="转移方向"/>
-			<item name="TransferAmount" id="0x7024" type="Money" desc="转移金额"/>
+			<item name="TransferAmount" id="0x7025" type="Money" desc="转移金额"/>
 			<item name="InfoMessage" id="0x2405" type="Message" desc="备注信息"/>
 			<item name="UserID" id="0x1022" type="UserID" desc="用户代码"/>
 			<item name="TransferDate" id="0x300C" type="Date" desc="操作日期"/>
@@ -1873,7 +1873,7 @@
 			<item name="MoneyTransferID" id="0x1010" type="SequenceNo" desc="出入金编号"/>
 			<item name="AccountType" id="0x9002" type="AccountType" desc="账户类型"/>
 			<item name="TransferDirection" id="0x901B" type="TransferDirection" desc="转移方向"/>
-			<item name="TransferAmount" id="0x7024" type="Money" desc="转移金额"/>
+			<item name="TransferAmount" id="0x7025" type="Money" desc="转移金额"/>
 			<item name="InfoMessage" id="0x2405" type="Message" desc="备注信息"/>
 			<item name="UserID" id="0x1022" type="UserID" desc="用户代码"/>
 			<item name="TransferDate" id="0x300C" type="Date" desc="操作日期"/>

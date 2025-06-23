@@ -48,6 +48,7 @@ public:
 	static constexpr unsigned int SellOrderSysID = 0x1024;
 	static constexpr unsigned int ChannelID = 0x1025;
 	static constexpr unsigned int RealInstrumentID = 0x1026;
+	static constexpr unsigned int BrokerID = 0x1027;
 	static constexpr unsigned int AccountName = 0x2001;
 	static constexpr unsigned int PrimaryAccountName = 0x2002;
 	static constexpr unsigned int UserName = 0x2003;
@@ -61,6 +62,7 @@ public:
 	static constexpr unsigned int ExchangeName = 0x200B;
 	static constexpr unsigned int ProductName = 0x200C;
 	static constexpr unsigned int SessionName = 0x200D;
+	static constexpr unsigned int BrokerName = 0x200E;
 	static constexpr unsigned int ErrorMsg = 0x2401;
 	static constexpr unsigned int StatusMsg = 0x2402;
 	static constexpr unsigned int RiskMessage = 0x2403;

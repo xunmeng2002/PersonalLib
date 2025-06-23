@@ -123,6 +123,9 @@ typedef char BankCardIDType[32];
 //主板时间类型
 typedef char BiosTimeType[16];
 
+//经纪商名称
+typedef char BrokerNameType[16];
+
 //经纪公司委托编号类型
 typedef char BrokerOrderIDType[32];
 
