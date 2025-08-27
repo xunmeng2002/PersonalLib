@@ -40,6 +40,7 @@ add_package(Utility ${CMAKE_SOURCE_DIR}/Source/Utility)
 
 
 add_library(${PROJECT_NAME} SHARED ${all_file})
+set_target_properties(${PROJECT_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
