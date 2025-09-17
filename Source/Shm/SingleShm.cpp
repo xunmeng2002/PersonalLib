@@ -15,7 +15,7 @@
 using namespace std;
 
 SingleShm::SingleShm(ServerTypeType shmType, const char* shmName)
-	:IOBase(shmType, shmName, 0), m_ShmName(shmName), m_SessionID(0LL),
+	:IOBase(shmType, shmName, 0), m_ShmName(shmName), m_Connected(false), m_SessionID(0LL),
 	m_ShmAddr(nullptr)
 {
 	m_ShmBuffer = new ShmBuffer<ShmBuffSize>();
@@ -140,12 +140,12 @@ int SingleShm::Send(SessionIDType sessionID, const char* data, unsigned len)
 }
 int SingleShm::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
-	return m_ShmBuffer->Write(buffer->GetReadPos(), buffer->GetLength());
+	return m_ShmBuffer->Write(buffer->GetData(), buffer->GetLength());
 }
 void SingleShm::DoRecv(Connect* connect)
 {
 	Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
-	auto len = m_ShmBuffer->Read(buffer->GetData(), BuffSize);
+	auto len = m_ShmBuffer->Read(buffer->GetWritePos(), BuffSize);
 	buffer->SetLength(len);
 
 	if (m_IOSubscriber != nullptr)

@@ -25,7 +25,7 @@ protected:
 
 	void AddEpollEvent(TcpConnect* connect);
 	void RemoveEpollEvent(TcpConnect* connect);
-
+	
 protected:
 	int m_EpollFd;
 #ifdef LINUX

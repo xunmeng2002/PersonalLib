@@ -26,6 +26,7 @@ protected:
 public:
 	std::string m_ShmName;
 protected:
+	bool m_Connected;
 	SessionIDType m_SessionID;
 	void* m_ShmAddr;
 	ShmBuffer<ShmBuffSize>* m_ShmBuffer;

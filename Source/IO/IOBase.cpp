@@ -6,7 +6,7 @@
 using namespace std;
 
 IOBase::IOBase(ServerTypeType serverType, const char* addressName, int milliSeconds)
-	:m_ServerType(serverType), m_AddressName(addressName), m_TimeOut(chrono::milliseconds(milliSeconds)), m_IOSubscriber(nullptr), m_LastSessionIndex(0LL), m_Connected(false)
+	:m_ServerType(serverType), m_AddressName(addressName), m_TimeOut(chrono::milliseconds(milliSeconds)), m_IOSubscriber(nullptr), m_LastSessionIndex(0LL)
 {
 	ParseAddress(m_AddressName, m_Address, m_Port);
 }
@@ -26,10 +26,6 @@ void IOBase::SetTimeOut(int milliSeconds)
 	m_TimeOut = std::chrono::milliseconds(milliSeconds);
 }
 
-void IOBase::RegisterFront(const char* address)
-{
-	ParseAddress(address, m_Address, m_Port);
-}
 void IOBase::DisConnect(SessionIDType sessionID)
 {
 	lock_guard<mutex> guard(m_DisConnectSessionIDsMutex);
@@ -69,10 +65,6 @@ void IOBase::AddConnect(Connect* connect)
 {
 	WriteLog(LogLevel::Info, "New Connection. SessionID:%lld, RemoteAddress:%s, RemotePort:%d",
 		connect->SessionID, connect->RemoteAddress, connect->RemotePort);
-	if (m_ServerType == ServerTypeType::Client)
-	{
-		m_Connected = true;
-	}
 	{
 		std::lock_guard<std::mutex> guard(m_ConnectsMutex);
 		m_Connects.insert(std::make_pair(connect->SessionID, connect));
@@ -86,10 +78,6 @@ void IOBase::RemoveConnect(Connect* connect)
 {
 	WriteLog(LogLevel::Info, "RemoveConnect. SessionID:%lld,  RemoteAddress:%s, RemotePort:%d",
 		connect->SessionID, connect->RemoteAddress, connect->RemotePort);
-	if (m_ServerType == ServerTypeType::Client)
-	{
-		m_Connected = false;
-	}
 	if (m_IOSubscriber)
 	{
 		m_IOSubscriber->OnDisConnect(connect->SessionID, connect->RemoteAddress, connect->RemotePort);

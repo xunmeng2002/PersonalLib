@@ -15,7 +15,8 @@ protected:
 	virtual void HandleTcpEvent() override;
 
 protected:
-	fd_set m_RecvFds;
+	fd_set m_ReadFds;
+	fd_set m_ErrorFds;
 	SOCKET m_MaxID;
 	timeval m_SelectSocketTimeOut;
 	timeval m_SelectSocketTimeOutTemp;

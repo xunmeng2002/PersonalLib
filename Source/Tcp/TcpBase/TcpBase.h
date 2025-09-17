@@ -22,10 +22,13 @@ public:
 	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 	virtual void DoRecv(Connect* connect) override;
 	virtual void HandleIOEvent() override;
+
+	virtual bool ConnectToServer(const char* ip, unsigned short port) { return false; }
 protected:
 	virtual void HandleTcpEvent() = 0;
-	virtual void CheckConnect();
+	virtual void CheckConnect() {}
 	virtual void DoAccept();
+	
 
 	bool InitSocket(SOCKET socketID);
 	SOCKET PrepareSocket(int family);
@@ -33,6 +36,7 @@ protected:
 protected:
 	addrinfo* m_AddressInfo;
 	SOCKET m_Socket;
+
 
 	std::mutex m_ConnectDataMutex;
 	

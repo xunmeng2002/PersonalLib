@@ -23,21 +23,21 @@ public:
 	{
 		auto size = GetWriteBufferSize();
 		len = len > size ? size : len;
-		std::memcpy(m_Buffer + m_Length, data, len);
+		std::memcpy(m_ReadPos + m_Length, data, len);
 		m_Length += len;
 		return len;
 	}
 	char* GetData()
 	{
-		return m_Buffer;
+		return m_ReadPos;
+	}
+	char* GetWritePos()
+	{
+		return m_ReadPos + m_Length;
 	}
 	void SetLength(unsigned len)
 	{
 		m_Length = len;
-	}
-	char* GetReadPos()
-	{
-		return m_ReadPos;
 	}
 	unsigned GetLength()
 	{
@@ -58,6 +58,13 @@ public:
 		memset(m_Buffer, 0, SIZE);
 		m_ReadPos = m_Buffer;
 		m_Length = 0;
+	}
+	void MemMove()
+	{
+		if (m_Length == 0)
+			return;
+		memmove(m_Buffer, m_ReadPos, m_Length);
+		m_ReadPos = m_Buffer;
 	}
 
 private:

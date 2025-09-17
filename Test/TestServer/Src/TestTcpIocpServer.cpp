@@ -6,6 +6,7 @@
 #include "Logger.h"
 #include "TestUtility.h"
 #include "IOThread.h"
+#include "IOFactory.h"
 
 
 void TestTcpIocpServer()

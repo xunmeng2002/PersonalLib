@@ -59,14 +59,6 @@ ShmBase::~ShmBase()
 	}
 #endif
 }
-void ShmBase::RegisterFront(const char* address)
-{
-	IOBase::RegisterFront(address);
-	m_ShmName = m_Address;
-	m_MaxConnectSize = atoi(m_Port.c_str());
-
-	m_Sem = new Sem((m_ShmName + "Sem").c_str());
-}
 bool ShmBase::Init()
 {
 	if (!m_Sem->Init())
@@ -106,14 +98,14 @@ int ShmBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 	auto shmConnect = (ShmConnect<ShmBuffSize>*)GetConnect(sessionID);
 	if (shmConnect == nullptr)
 		return -1;
-	return shmConnect->m_ShmBuffer->Write(buffer->GetReadPos(), buffer->GetLength());
+	return shmConnect->m_ShmBuffer->Write(buffer->GetData(), buffer->GetLength());
 }
 void ShmBase::DoRecv(Connect* connect)
 {
 	auto shmConnect = (ShmConnect<ShmBuffSize>*)connect;
 
 	Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
-	auto len = shmConnect->m_ShmBuffer->Read(buffer->GetData(), BuffSize);
+	auto len = shmConnect->m_ShmBuffer->Read(buffer->GetWritePos(), BuffSize);
 	buffer->SetLength(len);
 	if (m_IOSubscriber != nullptr)
 		m_IOSubscriber->OnRecv(shmConnect->SessionID, buffer);

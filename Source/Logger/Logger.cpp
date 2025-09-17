@@ -25,8 +25,6 @@ static std::map<LogLevel, std::string> s_LogLevelName = {
 
 thread_local char t_LogBuffer[LogLineLength];
 
-WriteLogFunc g_WriteLogFunc = nullptr;
-
 Logger Logger::m_Instance;
 LogLevel Logger::s_LogLevel = LogLevel::Info;
 LogLevel Logger::s_LogLevelConsole = LogLevel::Warning;
@@ -50,7 +48,6 @@ bool Logger::Init(const char* fullProcessName)
 	m_LogData = new LogData();
 	CreateLogDir("log");
 
-	g_WriteLogFunc = WriteLogFunc;
 	return true;
 }
 void Logger::SetLogLevel(LogLevel logLevel, LogLevel logLevelConsole)

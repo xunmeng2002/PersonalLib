@@ -10,8 +10,7 @@
 TcpIocpClient::TcpIocpClient(const char* localAddressName, const char* remoteAddressName, int milliSeconds, int backlog)
 	:TcpIocpBase(ServerTypeType::Client, localAddressName, milliSeconds, backlog), m_RemoteAddressInfo(nullptr)
 {
-	m_RemoteAddressName = std::string(remoteAddressName);
-	ParseAddress(m_RemoteAddressName, m_RemoteAddress, m_RemotePort);
+	ParseAddress(remoteAddressName, m_RemoteAddress, m_RemotePort);
 }
 bool TcpIocpClient::Init()
 {
@@ -24,18 +23,25 @@ bool TcpIocpClient::Init()
 	TcpIocpBase::Init();
 	return true;
 }
+bool TcpIocpClient::ConnectToServer(const char* ip, unsigned short port)
+{
+    m_RemoteAddress = ip;
+    m_RemotePort = std::to_string(port);
+    return PostConnect();
+}
+
 bool TcpIocpClient::PostConnect()
 {
     SOCKET socketID = PrepareConnectSocket();
     if (socketID == INVALID_SOCKET)
     {
-        WriteLog(LogLevel::Error, "PrepareSocket SOCKET Failed.");
+        WriteLog(LogLevel::Error, "PrepareConnectSocket SOCKET Failed.");
         return false;
     }
     TcpConnect* tcpConnect = TcpConnect::Allocate(GetSessionID(), socketID, m_RemoteAddress, m_RemotePort);
     MyOverlapped* overlapped = MemCacheTemplateSingleton<MyOverlapped>::GetInstance().Allocate();
     overlapped->Reset();
-    overlapped->EventID = IocpEvent::EventAccept;
+    overlapped->EventID = IocpEvent::EventConnect;
     overlapped->Connect = tcpConnect;
 
     WriteLog(LogLevel::Info, "PostConnect For SessionID:%lld, Socket:%lld", tcpConnect->SessionID, tcpConnect->SocketID);
@@ -53,11 +59,6 @@ void TcpIocpClient::DoConnect(MyOverlapped* overlapped)
 {
     PostRecv(overlapped);
     AddConnect(overlapped->Connect);
-}
-void TcpIocpClient::RemoveConnect(Connect* connect)
-{
-    IOBase::RemoveConnect(connect);
-    m_HasSendConnect = false;
 }
 SOCKET TcpIocpClient::PrepareConnectSocket()
 {

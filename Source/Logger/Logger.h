@@ -5,7 +5,17 @@
 #include <mutex>
 #include <condition_variable>
 #include "ThreadBase.h"
-#include "LoggerInterface.h"
+
+enum class LogLevel : int
+{
+	Ignore = 0,
+	Debug = 1,
+	Info = 2,
+	Warning = 3,
+	Error = 4,
+	Critical = 5,
+	Emergency = 6,
+};
 
 struct LogData;
 class Logger : public ThreadBase
@@ -46,13 +56,10 @@ private:
 	static LogLevel s_LogLevelConsole;
 };
 
-extern WriteLogFunc g_WriteLogFunc;
 
 #define WriteLog(level, formatStr, ...)\
-	if (g_WriteLogFunc != nullptr)\
-		(g_WriteLogFunc)(level, __FILE__, __LINE__, __func__, formatStr, ##__VA_ARGS__);
+	Logger::WriteLogFunc(level, __FILE__, __LINE__, __func__, formatStr, ##__VA_ARGS__);
 
 
 #define WriteErrorLog(errorID, errorMsg)\
-	if (g_WriteLogFunc != nullptr)\
-		(g_WriteLogFunc)(LogLevel::Error, __FILE__, __LINE__, __func__, "ErrorID:[%d], ErrorMsg:[%s].", errorID, errorMsg);
+	Logger::WriteLogFunc(LogLevel::Error, __FILE__, __LINE__, __func__, "ErrorID:[%d], ErrorMsg:[%s].", errorID, errorMsg);

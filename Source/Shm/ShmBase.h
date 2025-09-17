@@ -17,9 +17,7 @@ public:
 	ShmBase(ServerTypeType shmType, const char* shmName, int milliSeconds);
 	virtual ~ShmBase();
 
-	virtual void RegisterFront(const char* address) override;
 	virtual bool Init() override;
-
 	virtual int Send(SessionIDType sessionID, const char* data, unsigned len) override;
 	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 	virtual void DoRecv(Connect* connect) override;

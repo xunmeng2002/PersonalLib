@@ -20,8 +20,7 @@ TcpEpollBase::~TcpEpollBase()
 void TcpEpollBase::HandleTcpEvent()
 {
 #ifdef LINUX
-	int eventNum = sizeof(m_EpollEvents) / sizeof(epoll_event);
-	int number = epoll_wait(m_EpollFd, m_EpollEvents, eventNum, m_TimeOut.count());
+	int number = epoll_wait(m_EpollFd, m_EpollEvents, EpollEventNumber, m_TimeOut.count());
 	if (number < 0 && errno != EINTR)
 	{
 		WriteLog(LogLevel::Info, "epoll wait failed. number:%d, errno:%d\n", number, errno);
@@ -38,6 +37,29 @@ void TcpEpollBase::HandleTcpEvent()
 		else if (epollEvent.events & EPOLLIN)
 		{
 			DoRecv(tcpConnect);
+		}
+		else if (epollEvent.events & EPOLLOUT)
+		{
+			int error = 0;
+			socklen_t len = sizeof(error);
+			int ret = getsockopt(tcpConnect->SocketID, SOL_SOCKET, SO_ERROR, &error, &len);
+			if (ret == -1)
+			{
+				WriteLog(LogLevel::Warning, "getsockopt Failed. SessionID:%lld, SocketID:%lld", tcpConnect->SessionID, tcpConnect->SocketID);
+				RemoveConnect(tcpConnect);
+				continue;
+			}
+			if (errno != 0)
+			{
+				WriteLog(LogLevel::Warning, "Connect Failed. SessionID:%lld, SocketID:%lld, errno:%d", tcpConnect->SessionID, tcpConnect->SocketID, errno);
+				RemoveConnect(tcpConnect);
+				continue;
+			}
+			else
+			{
+				RemoveEpollEvent(tcpConnect);
+				AddConnect(tcpConnect);
+			}
 		}
 	}
 #endif
@@ -68,5 +90,4 @@ void TcpEpollBase::RemoveEpollEvent(TcpConnect* connect)
 	epoll_ctl(m_EpollFd, EPOLL_CTL_DEL, connect->SocketID, NULL);
 #endif
 }
-
 

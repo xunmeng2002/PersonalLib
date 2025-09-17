@@ -7,6 +7,7 @@
 #include <assert.h>
 #include <chrono>
 
+using namespace std;
 
 TcpBase::TcpBase(ServerTypeType serverType, const char* addressName, int milliSeconds)
 	:IOBase(serverType, addressName, milliSeconds), m_AddressInfo(nullptr), m_Socket(INVALID_SOCKET), m_RemoteAddressLen(sizeof(m_RemoteAddress))
@@ -31,7 +32,11 @@ bool TcpBase::Init()
 		WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:%s Port:%s ret:%d, Errno:%d", m_Address.c_str(), m_Port.c_str(), ret, errno);
 		return false;
 	}
-	if (m_ServerType == ServerTypeType::Server)
+	if (m_ServerType == ServerTypeType::Client)
+	{
+		ConnectToServer(m_Address.c_str(), atoi(m_Port.c_str()));
+	}
+	else if (m_ServerType == ServerTypeType::Server)
 	{
 		m_Socket = socket(m_AddressInfo->ai_family, SOCK_STREAM, IPPROTO_TCP);
 		if (m_Socket == INVALID_SOCKET)
@@ -67,7 +72,7 @@ int TcpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 	{
 		return -1;
 	}
-	return send(tcpConnect->SocketID, buffer->GetReadPos(), buffer->GetLength(), 0);
+	return send(tcpConnect->SocketID, buffer->GetData(), buffer->GetLength(), 0);
 }
 void TcpBase::DoRecv(Connect* connect)
 {
@@ -93,32 +98,10 @@ void TcpBase::DoRecv(Connect* connect)
 
 void TcpBase::HandleIOEvent()
 {
-	if (m_ServerType == ServerTypeType::Client && !m_Connected)
+	if (m_ServerType == ServerTypeType::Client)
 		CheckConnect();
 	DoDisConnect();
 	HandleTcpEvent();
-}
-void TcpBase::CheckConnect()
-{
-	m_Socket = socket(m_AddressInfo->ai_family, SOCK_STREAM, IPPROTO_TCP);
-	if (m_Socket == INVALID_SOCKET)
-	{
-		WriteLog(LogLevel::Info, "Create Socket Failed. Errno:%d", GetLastError());
-		return;
-	}
-	auto ret = connect(m_Socket, m_AddressInfo->ai_addr, int(m_AddressInfo->ai_addrlen));
-	WriteLog(LogLevel::Info, "Connect Server: Address:%s, Port:%s, Socket:%lld, ret:%d", m_Address.c_str(), m_Port.c_str(), m_Socket, ret);
-	if (ret < 0)
-	{
-		WriteLog(LogLevel::Info, "Connect Server Failed. Address:%s, Port:%s, Socket:%lld, ret:%d, Errno:%d", m_Address.c_str(), m_Port.c_str(), m_Socket, ret, GetLastError());
-		closesocket(m_Socket);
-		m_Socket = INVALID_SOCKET;
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-		return;
-	}
-	InitSocket(m_Socket);
-	TcpConnect* tcpConnect = TcpConnect::Allocate(GetSessionID(), m_Socket, m_Address.c_str(), m_Port.c_str());
-	AddConnect(tcpConnect);
 }
 void TcpBase::DoAccept()
 {

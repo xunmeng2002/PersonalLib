@@ -2,6 +2,7 @@
 #include "Types.h"
 #include "Buffer.h"
 #include "Connect.h"
+#include "IOUtility.h"
 #include <string>
 #include <chrono>
 #include <mutex>
@@ -26,7 +27,6 @@ public:
 	void UnSubscribe();
 	virtual void SetTimeOut(int milliSeconds);
 
-	virtual void RegisterFront(const char* address);
 	virtual bool Init() { return true; }
 	virtual void DisConnect(SessionIDType sessionID);
 	virtual void DisConnectAll();
@@ -52,8 +52,6 @@ protected:
 	std::chrono::milliseconds m_TimeOut;
 	IOSubscriber* m_IOSubscriber;
 	SessionIDType m_LastSessionIndex;
-
-	bool m_Connected;
 
 	std::map<SessionIDType, Connect*> m_Connects;
 	std::mutex m_ConnectsMutex;

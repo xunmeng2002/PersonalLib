@@ -8,13 +8,14 @@
 #include "TestXtpServer.h"
 #include "TestStepServer.h"
 #include "TestUtility.h"
-
+#include "IOFactory.h"
 
 int main(int argc, const char* argv[])
 {
     Logger::GetInstance().Init(argv[0]);
     Logger::GetInstance().SetLogLevel(LogLevel::Info, LogLevel::Info);
     Logger::GetInstance().Start();
+    SocketInit::GetInstance().Init();
 
     switch (g_ServerProtocolType)
     {

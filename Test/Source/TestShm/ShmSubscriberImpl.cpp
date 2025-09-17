@@ -34,7 +34,7 @@ void ShmSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer
 		{
 			unsigned len = sizeof(ShmPackage) - m_Length;
 			len = std::min(len, buffer->GetLength());
-			memcpy(m_Buff + m_Length, buffer->GetReadPos(), len);
+			memcpy(m_Buff + m_Length, buffer->GetData(), len);
 			m_Length += len;
 			if (m_Length == sizeof(ShmPackage))
 			{
@@ -47,12 +47,12 @@ void ShmSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer
 		{
 			if (buffer->GetLength() >= sizeof(ShmPackage))
 			{
-				shmPackage = (ShmPackage*)buffer->GetReadPos();
+				shmPackage = (ShmPackage*)buffer->GetData();
 				buffer->Shift(sizeof(ShmPackage));
 			}
 			else
 			{
-				memcpy(m_Buff, buffer->GetReadPos(), buffer->GetLength());
+				memcpy(m_Buff, buffer->GetData(), buffer->GetLength());
 				m_Length += buffer->GetLength();
 				buffer->Shift(buffer->GetLength());
 			}

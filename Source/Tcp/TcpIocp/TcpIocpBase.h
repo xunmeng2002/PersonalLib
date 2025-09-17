@@ -10,23 +10,20 @@ public:
 	~TcpIocpBase();
 	
 	virtual bool Init() override;
-	void DoRecv(MyOverlapped* overlapped);
-	virtual void DoAccept(MyOverlapped* overlapped);
-	virtual void DoConnect(MyOverlapped* overlapped) {}
-	void DoDisConnect(MyOverlapped* overlapped);
-
 protected:
 	virtual void HandleTcpEvent() override;
-	virtual void CheckConnect() override;
 	virtual void DoDisConnect() override;
 
+	virtual bool PostAccept() { return false; }
 	virtual bool PostConnect() { return false; }
 	virtual bool PostDisConnect(Connect* connect);
-	virtual bool PostAccept();
 	virtual bool PostRecv(MyOverlapped* connect);
 
+	virtual void DoAccept(MyOverlapped* overlapped) {}
+	virtual void DoConnect(MyOverlapped* overlapped) {}
+	void DoDisConnect(MyOverlapped* overlapped);
+	void DoRecv(MyOverlapped* overlapped);
 protected:
 	int m_BackLog;
-	bool m_HasSendConnect;
 };
 
