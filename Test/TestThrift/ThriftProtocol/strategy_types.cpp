@@ -1025,6 +1025,10 @@ void ListStrategyResponse::__set_unitName(const std::string& val) {
 void ListStrategyResponse::__set_strategies(const std::vector<StrategyInfo> & val) {
   this->strategies = val;
 }
+
+void ListStrategyResponse::__set_accounts(const std::vector<std::string> & val) {
+  this->accounts = val;
+}
 std::ostream& operator<<(std::ostream& out, const ListStrategyResponse& obj)
 {
   obj.printTo(out);
@@ -1097,6 +1101,26 @@ uint32_t ListStrategyResponse::read(::apache::thrift::protocol::TProtocol* iprot
           xfer += iprot->skip(ftype);
         }
         break;
+      case 5:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->accounts.clear();
+            uint32_t _size55;
+            ::apache::thrift::protocol::TType _etype58;
+            xfer += iprot->readListBegin(_etype58, _size55);
+            this->accounts.resize(_size55);
+            uint32_t _i59;
+            for (_i59 = 0; _i59 < _size55; ++_i59)
+            {
+              xfer += iprot->readString(this->accounts[_i59]);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.accounts = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -1129,10 +1153,22 @@ uint32_t ListStrategyResponse::write(::apache::thrift::protocol::TProtocol* opro
   xfer += oprot->writeFieldBegin("strategies", ::apache::thrift::protocol::T_LIST, 4);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->strategies.size()));
-    std::vector<StrategyInfo> ::const_iterator _iter55;
-    for (_iter55 = this->strategies.begin(); _iter55 != this->strategies.end(); ++_iter55)
+    std::vector<StrategyInfo> ::const_iterator _iter60;
+    for (_iter60 = this->strategies.begin(); _iter60 != this->strategies.end(); ++_iter60)
     {
-      xfer += (*_iter55).write(oprot);
+      xfer += (*_iter60).write(oprot);
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("accounts", ::apache::thrift::protocol::T_LIST, 5);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->accounts.size()));
+    std::vector<std::string> ::const_iterator _iter61;
+    for (_iter61 = this->accounts.begin(); _iter61 != this->accounts.end(); ++_iter61)
+    {
+      xfer += oprot->writeString((*_iter61));
     }
     xfer += oprot->writeListEnd();
   }
@@ -1149,6 +1185,7 @@ void swap(ListStrategyResponse &a, ListStrategyResponse &b) {
   swap(a.detail, b.detail);
   swap(a.unitName, b.unitName);
   swap(a.strategies, b.strategies);
+  swap(a.accounts, b.accounts);
   swap(a.__isset, b.__isset);
 }
 
@@ -1162,22 +1199,26 @@ bool ListStrategyResponse::operator==(const ListStrategyResponse & rhs) const
     return false;
   if (!(strategies == rhs.strategies))
     return false;
+  if (!(accounts == rhs.accounts))
+    return false;
   return true;
 }
 
-ListStrategyResponse::ListStrategyResponse(const ListStrategyResponse& other56) {
-  status = other56.status;
-  detail = other56.detail;
-  unitName = other56.unitName;
-  strategies = other56.strategies;
-  __isset = other56.__isset;
+ListStrategyResponse::ListStrategyResponse(const ListStrategyResponse& other62) {
+  status = other62.status;
+  detail = other62.detail;
+  unitName = other62.unitName;
+  strategies = other62.strategies;
+  accounts = other62.accounts;
+  __isset = other62.__isset;
 }
-ListStrategyResponse& ListStrategyResponse::operator=(const ListStrategyResponse& other57) {
-  status = other57.status;
-  detail = other57.detail;
-  unitName = other57.unitName;
-  strategies = other57.strategies;
-  __isset = other57.__isset;
+ListStrategyResponse& ListStrategyResponse::operator=(const ListStrategyResponse& other63) {
+  status = other63.status;
+  detail = other63.detail;
+  unitName = other63.unitName;
+  strategies = other63.strategies;
+  accounts = other63.accounts;
+  __isset = other63.__isset;
   return *this;
 }
 void ListStrategyResponse::printTo(std::ostream& out) const {
@@ -1187,6 +1228,7 @@ void ListStrategyResponse::printTo(std::ostream& out) const {
   out << ", " << "detail=" << to_string(detail);
   out << ", " << "unitName=" << to_string(unitName);
   out << ", " << "strategies=" << to_string(strategies);
+  out << ", " << "accounts=" << to_string(accounts);
   out << ")";
 }
 
@@ -1257,9 +1299,9 @@ uint32_t StartStrategyRequest::read(::apache::thrift::protocol::TProtocol* iprot
         break;
       case 3:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast58;
-          xfer += iprot->readI32(ecast58);
-          this->mode = static_cast<StrategyTradingMode::type>(ecast58);
+          int32_t ecast64;
+          xfer += iprot->readI32(ecast64);
+          this->mode = static_cast<StrategyTradingMode::type>(ecast64);
           this->__isset.mode = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -1318,17 +1360,17 @@ bool StartStrategyRequest::operator==(const StartStrategyRequest & rhs) const
   return true;
 }
 
-StartStrategyRequest::StartStrategyRequest(const StartStrategyRequest& other59) {
-  unitName = other59.unitName;
-  strategyName = other59.strategyName;
-  mode = other59.mode;
-  __isset = other59.__isset;
+StartStrategyRequest::StartStrategyRequest(const StartStrategyRequest& other65) {
+  unitName = other65.unitName;
+  strategyName = other65.strategyName;
+  mode = other65.mode;
+  __isset = other65.__isset;
 }
-StartStrategyRequest& StartStrategyRequest::operator=(const StartStrategyRequest& other60) {
-  unitName = other60.unitName;
-  strategyName = other60.strategyName;
-  mode = other60.mode;
-  __isset = other60.__isset;
+StartStrategyRequest& StartStrategyRequest::operator=(const StartStrategyRequest& other66) {
+  unitName = other66.unitName;
+  strategyName = other66.strategyName;
+  mode = other66.mode;
+  __isset = other66.__isset;
   return *this;
 }
 void StartStrategyRequest::printTo(std::ostream& out) const {
@@ -1446,15 +1488,15 @@ bool StartStrategyResponse::operator==(const StartStrategyResponse & rhs) const
   return true;
 }
 
-StartStrategyResponse::StartStrategyResponse(const StartStrategyResponse& other61) {
-  status = other61.status;
-  detail = other61.detail;
-  __isset = other61.__isset;
+StartStrategyResponse::StartStrategyResponse(const StartStrategyResponse& other67) {
+  status = other67.status;
+  detail = other67.detail;
+  __isset = other67.__isset;
 }
-StartStrategyResponse& StartStrategyResponse::operator=(const StartStrategyResponse& other62) {
-  status = other62.status;
-  detail = other62.detail;
-  __isset = other62.__isset;
+StartStrategyResponse& StartStrategyResponse::operator=(const StartStrategyResponse& other68) {
+  status = other68.status;
+  detail = other68.detail;
+  __isset = other68.__isset;
   return *this;
 }
 void StartStrategyResponse::printTo(std::ostream& out) const {
@@ -1532,9 +1574,9 @@ uint32_t StopStrategyRequest::read(::apache::thrift::protocol::TProtocol* iprot)
         break;
       case 3:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast63;
-          xfer += iprot->readI32(ecast63);
-          this->mode = static_cast<StrategyTradingMode::type>(ecast63);
+          int32_t ecast69;
+          xfer += iprot->readI32(ecast69);
+          this->mode = static_cast<StrategyTradingMode::type>(ecast69);
           this->__isset.mode = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -1593,17 +1635,17 @@ bool StopStrategyRequest::operator==(const StopStrategyRequest & rhs) const
   return true;
 }
 
-StopStrategyRequest::StopStrategyRequest(const StopStrategyRequest& other64) {
-  unitName = other64.unitName;
-  strategyName = other64.strategyName;
-  mode = other64.mode;
-  __isset = other64.__isset;
+StopStrategyRequest::StopStrategyRequest(const StopStrategyRequest& other70) {
+  unitName = other70.unitName;
+  strategyName = other70.strategyName;
+  mode = other70.mode;
+  __isset = other70.__isset;
 }
-StopStrategyRequest& StopStrategyRequest::operator=(const StopStrategyRequest& other65) {
-  unitName = other65.unitName;
-  strategyName = other65.strategyName;
-  mode = other65.mode;
-  __isset = other65.__isset;
+StopStrategyRequest& StopStrategyRequest::operator=(const StopStrategyRequest& other71) {
+  unitName = other71.unitName;
+  strategyName = other71.strategyName;
+  mode = other71.mode;
+  __isset = other71.__isset;
   return *this;
 }
 void StopStrategyRequest::printTo(std::ostream& out) const {
@@ -1721,15 +1763,15 @@ bool StopStrategyResponse::operator==(const StopStrategyResponse & rhs) const
   return true;
 }
 
-StopStrategyResponse::StopStrategyResponse(const StopStrategyResponse& other66) {
-  status = other66.status;
-  detail = other66.detail;
-  __isset = other66.__isset;
+StopStrategyResponse::StopStrategyResponse(const StopStrategyResponse& other72) {
+  status = other72.status;
+  detail = other72.detail;
+  __isset = other72.__isset;
 }
-StopStrategyResponse& StopStrategyResponse::operator=(const StopStrategyResponse& other67) {
-  status = other67.status;
-  detail = other67.detail;
-  __isset = other67.__isset;
+StopStrategyResponse& StopStrategyResponse::operator=(const StopStrategyResponse& other73) {
+  status = other73.status;
+  detail = other73.detail;
+  __isset = other73.__isset;
   return *this;
 }
 void StopStrategyResponse::printTo(std::ostream& out) const {

@@ -1,7 +1,7 @@
 <copylist>
 	<file name="PersonalLib.lib" dest="../Libs/PersonalLib/win64/" src="./out/build/x64-Debug/Target/PersonalLib/"/>
 	<file name="PersonalLib.dll" dest="../Libs/PersonalLib/win64/" src="./out/build/x64-Debug/Target/PersonalLib/"/>
-	<file name="PersonalLibMT.lib" dest="../Libs/PersonalLib/win64/" src="./out/build/x64-Debug/Target/PersonalLibMT/"/>
+	<file name="PersonalLibStatic.lib" dest="../Libs/PersonalLib/win64/" src="./out/build/x64-Debug/Target/PersonalLib/"/>
 	
 	<file name="Aspect.h" dest="../Libs/PersonalLib/include/" src="./Source/Aspect/"/>
 	<file name="AspectAfter.h" dest="../Libs/PersonalLib/include/" src="./Source/Aspect/"/>

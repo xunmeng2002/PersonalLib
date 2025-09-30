@@ -52,6 +52,7 @@ struct ListStrategyResponse
     2: string detail;
     3: string unitName;
     4: list<StrategyInfo> strategies;
+    5: list<string> accounts;
 }
 
 const i32 WMESSAGE_MONITOR_START_STRATEGY = 5122;

@@ -10,6 +10,7 @@
 #include "strategy_constants.h"
 #include "liveparam_constants.h"
 #include "account_constants.h"
+#include "instrument_constants.h"
 #include <cstring>
 #include <map>
 #include <iostream>
@@ -28,12 +29,16 @@ public:
 
 	void ReqLogin();
 	void QryUnit(const SessionIDType& sessionID, const std::string& hostname);
+	void QryInstrument(const SessionIDType& sessionID, const std::string& unitname);
 	void QryAccount(const SessionIDType& sessionID, const std::string& unitname);
+	void QryStrategy(const SessionIDType& sessionID, const std::string& unitname);
 	void QryAndSubscribeUnitTopic(const SessionIDType& sessionID, const std::string& unitname);
 protected:
 	void OnRspLogin(const SessionIDType& sessionID, const LoginResponse& rsp);
 	void OnRspQryUnit(const SessionIDType& sessionID, const ListUnitsResponse& rsp);
+	void OnRspQryInstrument(const SessionIDType& sessionID, const ListUnitInstrumentResponse& rsp);
 	void OnRspQryAccount(const SessionIDType& sessionID, const ListAccountResponse& rsp);
+	void OnRspQryStrategy(const SessionIDType& sessionID, const ListStrategyResponse& rsp);
 	void OnRspQryAndSubscribeUnitTopic(const SessionIDType& sessionID, const SubscribeUnitResponse& rsp);
 	
 	void OnRtnTopicNofity(const SessionIDType& sessionID, const TopicNotify& topic, std::shared_ptr<apache::thrift::protocol::TCompactProtocol> proto);

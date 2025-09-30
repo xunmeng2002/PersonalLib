@@ -42,6 +42,7 @@ add_package(Utility ${CMAKE_SOURCE_DIR}/Source/Utility)
 add_library(${PROJECT_NAME} STATIC ${all_file})
 
 
+
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 	# 设置运行时库为多线程静态链接版本
 	target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Release>:/MT> $<$<CONFIG:Debug>:/MTd>)

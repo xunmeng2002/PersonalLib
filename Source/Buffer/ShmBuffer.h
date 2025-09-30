@@ -8,11 +8,11 @@
 
 struct SingleShmHeader
 {
-	ConnectStatusType Status;
-	unsigned UpWriteCount;
-	unsigned UpReadCount;
-	unsigned DownWriteCount;
-	unsigned DownReadCount;
+	volatile ConnectStatusType Status;
+	volatile unsigned UpWriteCount;
+	volatile unsigned UpReadCount;
+	volatile unsigned DownWriteCount;
+	volatile unsigned DownReadCount;
 };
 
 

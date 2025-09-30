@@ -293,11 +293,12 @@ void swap(StrategyInfo &a, StrategyInfo &b);
 std::ostream& operator<<(std::ostream& out, const StrategyInfo& obj);
 
 typedef struct _ListStrategyResponse__isset {
-  _ListStrategyResponse__isset() : status(false), detail(false), unitName(false), strategies(false) {}
+  _ListStrategyResponse__isset() : status(false), detail(false), unitName(false), strategies(false), accounts(false) {}
   bool status :1;
   bool detail :1;
   bool unitName :1;
   bool strategies :1;
+  bool accounts :1;
 } _ListStrategyResponse__isset;
 
 class ListStrategyResponse : public virtual ::apache::thrift::TBase {
@@ -312,6 +313,7 @@ class ListStrategyResponse : public virtual ::apache::thrift::TBase {
   std::string detail;
   std::string unitName;
   std::vector<StrategyInfo>  strategies;
+  std::vector<std::string>  accounts;
 
   _ListStrategyResponse__isset __isset;
 
@@ -322,6 +324,8 @@ class ListStrategyResponse : public virtual ::apache::thrift::TBase {
   void __set_unitName(const std::string& val);
 
   void __set_strategies(const std::vector<StrategyInfo> & val);
+
+  void __set_accounts(const std::vector<std::string> & val);
 
   bool operator == (const ListStrategyResponse & rhs) const;
   bool operator != (const ListStrategyResponse &rhs) const {

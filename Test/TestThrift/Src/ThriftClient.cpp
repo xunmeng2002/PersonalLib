@@ -79,11 +79,23 @@ void ThriftClient::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer)
             OpDecoder::decode((const char*)buff + sizeof(OpMsgHeader), head->bodyLen, rsp);
             OnRspQryUnit(sessionID, rsp);
         }
+        else if (head->type == g_instrument_constants.WMESSAGE_MONITOR_LIST_UNIT_INSTRUMENT)
+        {
+            ListUnitInstrumentResponse rsp;
+            OpDecoder::decode((const char*)buff + sizeof(OpMsgHeader), head->bodyLen, rsp);
+            OnRspQryInstrument(sessionID, rsp);
+        }
         else if (head->type == g_account_constants.WMESSAGE_MONITOR_LIST_ACCOUNT)
         {
             ListAccountResponse rsp;
             OpDecoder::decode((const char*)buff + sizeof(OpMsgHeader), head->bodyLen, rsp);
             OnRspQryAccount(sessionID, rsp);
+        }
+        else if (head->type == g_strategy_constants.WMESSAGE_MONITOR_LIST_STRATEGY)
+        {
+            ListStrategyResponse rsp;
+            OpDecoder::decode((const char*)buff + sizeof(OpMsgHeader), head->bodyLen, rsp);
+            OnRspQryStrategy(sessionID, rsp);
         }
         else if (head->type == g_topic_constants.WMESSAGE_TOPIC_SUBSCRIBE_UNIT)
         {
@@ -147,6 +159,14 @@ void ThriftClient::QryUnit(const SessionIDType& sessionID, const std::string& ho
     int len = m_IO->Send(sessionID, msg.data(), (int)msg.length());
     WriteLog(LogLevel::Info, "QryUnit: MsgLen:%d, SendLen:%d", msg.length(), len);
 }
+void ThriftClient::QryInstrument(const SessionIDType& sessionID, const std::string& unitname)
+{
+    ListUnitInstrumentRequest req;
+    req.unitName = unitname;
+    auto msg = OpEncoder::encode(g_instrument_constants.WMESSAGE_MONITOR_LIST_UNIT_INSTRUMENT, 0, req);
+    int len = m_IO->Send(sessionID, msg.data(), (int)msg.length());
+    WriteLog(LogLevel::Info, "QryInstrument: MsgLen:%d, SendLen:%d", msg.length(), len);
+}
 void ThriftClient::QryAccount(const SessionIDType& sessionID, const std::string& unitname)
 {
     ListAccountRequest req;
@@ -154,6 +174,14 @@ void ThriftClient::QryAccount(const SessionIDType& sessionID, const std::string&
     auto msg = OpEncoder::encode(g_account_constants.WMESSAGE_MONITOR_LIST_ACCOUNT, 0, req);
     int len = m_IO->Send(sessionID, msg.data(), (int)msg.length());
     WriteLog(LogLevel::Info, "QryAccount: MsgLen:%d, SendLen:%d", msg.length(), len);
+}
+void ThriftClient::QryStrategy(const SessionIDType& sessionID, const std::string& unitname)
+{
+    ListStrategyRequest req;
+    req.unitName = unitname;
+    auto msg = OpEncoder::encode(g_strategy_constants.WMESSAGE_MONITOR_LIST_STRATEGY, 0, req);
+    int len = m_IO->Send(sessionID, msg.data(), (int)msg.length());
+    WriteLog(LogLevel::Info, "QryStrategy: MsgLen:%d, SendLen:%d", msg.length(), len);
 }
 void ThriftClient::QryAndSubscribeUnitTopic(const SessionIDType& sessionID, const std::string& unitname)
 {
@@ -181,14 +209,24 @@ void ThriftClient::OnRspQryUnit(const SessionIDType& sessionID, const ListUnitsR
     for (auto& unitInfo : rsp.units)
     {
         WriteLog(LogLevel::Info, "ListUnitsResponse Name:%s, Type:%s", unitInfo.name.c_str(), unitInfo.type.c_str());
+        QryInstrument(sessionID, unitInfo.name);
         if (unitInfo.type == "account")
         {
             QryAccount(sessionID, unitInfo.name);
         }
-        if (unitInfo.type == "strategy")
+        else if (unitInfo.type == "strategy")
         {
-            //qryStrategy(socket, unitInfo.name);
+            QryStrategy(sessionID, unitInfo.name);
         }
+    }
+}
+void ThriftClient::OnRspQryInstrument(const SessionIDType& sessionID, const ListUnitInstrumentResponse& rsp)
+{
+    WriteLog(LogLevel::Info, "OnRspQryInstrument Status:%d, Detail:%s, InstrumentSize:%d", rsp.status, rsp.detail.c_str(), rsp.instruments.size());
+    for (auto& it : rsp.instruments)
+    {
+        WriteLog(LogLevel::Info, "InstrumentInfo Name:%s, Type:%s, Underlying:%s, Multiplier:%f, Strike:%f, TickSize:%f, Expiration:%lld",
+            it.name.c_str(), it.type.c_str(), it.underlying.c_str(), it.multiplier, it.strike, it.tickSize, it.expiration);
     }
 }
 void ThriftClient::OnRspQryAccount(const SessionIDType& sessionID, const ListAccountResponse& rsp)
@@ -203,6 +241,44 @@ void ThriftClient::OnRspQryAccount(const SessionIDType& sessionID, const ListAcc
         WriteLog(LogLevel::Info, "AccountInfo TradeFundName:%s, Exchange:%s, AccountName:%s", accountInfo.tradeFundName.c_str(), accountInfo.exchange.c_str(), accountInfo.accountName.c_str());
     }
     //QryLiveParam(socket, rsp.unitName);
+    QryAndSubscribeUnitTopic(sessionID, rsp.unitName);
+}
+void ThriftClient::OnRspQryStrategy(const SessionIDType& sessionID, const ListStrategyResponse& rsp)
+{
+    WriteLog(LogLevel::Info, "OnRspQryStrategy Status:%d, Detail:%s, UnitName:%s, StrategySize:%d, AccountsSize:%d", rsp.status, rsp.detail.c_str(), rsp.unitName.c_str(), rsp.strategies.size(), rsp.accounts.size());
+
+    for (auto& account : rsp.accounts)
+    {
+        WriteLog(LogLevel::Info, "StrategyUnit Account:%s", account.c_str());
+    }
+    for (auto& strategyInfo : rsp.strategies)
+    {
+        WriteLog(LogLevel::Info, "StrategyInfo Name:%s", strategyInfo.name.c_str());
+        for (auto& it : strategyInfo.attributes)
+        {
+            WriteLog(LogLevel::Info, "Attributes Key:%s, Value:%s", it.first.c_str(), it.second.c_str());
+        }
+        for (auto& legInfo : strategyInfo.legs)
+        {
+            WriteLog(LogLevel::Info, "LegInfo Name:%s, Leg:%d, Future:%s, OptionChain:%s, CountFuture:%d", legInfo.name.c_str(), legInfo.leg, legInfo.future.c_str(), legInfo.optionChain.c_str(), legInfo.countFuture);
+        }
+        for (auto& risk : strategyInfo.risks)
+        {
+            WriteLog(LogLevel::Info, "RiskInfo Name:%s, ShortCut:%s, LpgName:%s", risk.name.c_str(), risk.shortcut.c_str(), risk.lpgName.c_str());
+        }
+        for (auto& alpha : strategyInfo.alphas)
+        {
+            WriteLog(LogLevel::Info, "AlphaInfo Id:%d, Name:%s, LpgName:%s", alpha.id, alpha.name.c_str(), alpha.lpgName.c_str());
+        }
+        for (auto& it : strategyInfo.topics)
+        {
+            WriteLog(LogLevel::Info, "Topic Key:%s, Value:%d", it.first.c_str(), it.second);
+        }
+        for (auto& extraLpg : strategyInfo.extraLpgs)
+        {
+            WriteLog(LogLevel::Info, "StrategyUnit ExtraLpg:%s", extraLpg.c_str());
+        }
+    }
     QryAndSubscribeUnitTopic(sessionID, rsp.unitName);
 }
 void ThriftClient::OnRspQryAndSubscribeUnitTopic(const SessionIDType& sessionID, const SubscribeUnitResponse& rsp)
@@ -236,6 +312,10 @@ void ThriftClient::OnRtnTopicNofity(const SessionIDType& sessionID, const TopicN
     WriteLog(LogLevel::Info, "OnRtnTopicNofity TopicDecoder ret:%d, TopicNotify.count:%d, valuesSize:%d", ret, topic.count, values.size());
     if (!ret)
         return;
+    if (topic.topicID == 38)
+    {
+        cout << "topicID:" << topic.topicID << endl;
+    }
     auto& topicInfo = topicDecoder->GetTopic(topic.topicID);
     for (auto i = 0; i < values.size(); ++i)
     {
@@ -258,6 +338,10 @@ void ThriftClient::OnRtnTopicNofity(const SessionIDType& sessionID, const TopicN
             else if (type.starts_with("i") || type.starts_with("u"))
             {
                 WriteLog(LogLevel::Info, "Name:%s, Type:%s, Value:%d", topicInfo.fields[j].name.c_str(), topicInfo.fields[j].type.c_str(), any_cast<int32_t>(values[i][j]));
+            }
+            else if (type == "bool")
+            {
+                WriteLog(LogLevel::Info, "Name:%s, Type:%s, Value:%d", topicInfo.fields[j].name.c_str(), topicInfo.fields[j].type.c_str(), any_cast<bool>(values[i][j]));
             }
             else
             {

@@ -31,7 +31,7 @@ int main(int argc, const char* argv[])
 	IOThread* ioThread = new IOThread("ThriftClient");
 	ioThread->SetIO(ioBase);
 
-	ThriftClient thriftClient(ioBase);
+	ThriftClient* thriftClient = new ThriftClient(ioBase);
 
 	if (!ioBase->Init())
 	{
@@ -43,7 +43,7 @@ int main(int argc, const char* argv[])
 	
 	ioThread->Stop();
 	ioThread->Join();
-	
+	delete thriftClient;
 	Logger::GetInstance().Stop();
 	Logger::GetInstance().Join();
 	return 0;
