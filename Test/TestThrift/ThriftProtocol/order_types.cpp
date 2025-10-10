@@ -14,14 +14,15 @@
 
 
 
-InsertOrderReq::~InsertOrderReq() noexcept {
+InsertOrderRequest::~InsertOrderRequest() noexcept {
 }
 
-InsertOrderReq::InsertOrderReq() noexcept
+InsertOrderRequest::InsertOrderRequest() noexcept
    : symbol(),
      account(),
      localId(),
      portfolio(),
+     orderType(),
      price(0),
      qty(0),
      isBuy(0),
@@ -29,49 +30,53 @@ InsertOrderReq::InsertOrderReq() noexcept
      isYesterday(0) {
 }
 
-void InsertOrderReq::__set_symbol(const std::string& val) {
+void InsertOrderRequest::__set_symbol(const std::string& val) {
   this->symbol = val;
 }
 
-void InsertOrderReq::__set_account(const std::string& val) {
+void InsertOrderRequest::__set_account(const std::string& val) {
   this->account = val;
 }
 
-void InsertOrderReq::__set_localId(const std::string& val) {
+void InsertOrderRequest::__set_localId(const std::string& val) {
   this->localId = val;
 }
 
-void InsertOrderReq::__set_portfolio(const std::string& val) {
+void InsertOrderRequest::__set_portfolio(const std::string& val) {
   this->portfolio = val;
 }
 
-void InsertOrderReq::__set_price(const double val) {
+void InsertOrderRequest::__set_orderType(const std::string& val) {
+  this->orderType = val;
+}
+
+void InsertOrderRequest::__set_price(const double val) {
   this->price = val;
 }
 
-void InsertOrderReq::__set_qty(const int32_t val) {
+void InsertOrderRequest::__set_qty(const int32_t val) {
   this->qty = val;
 }
 
-void InsertOrderReq::__set_isBuy(const bool val) {
+void InsertOrderRequest::__set_isBuy(const bool val) {
   this->isBuy = val;
 }
 
-void InsertOrderReq::__set_isOpen(const bool val) {
+void InsertOrderRequest::__set_isOpen(const bool val) {
   this->isOpen = val;
 }
 
-void InsertOrderReq::__set_isYesterday(const bool val) {
+void InsertOrderRequest::__set_isYesterday(const bool val) {
   this->isYesterday = val;
 }
-std::ostream& operator<<(std::ostream& out, const InsertOrderReq& obj)
+std::ostream& operator<<(std::ostream& out, const InsertOrderRequest& obj)
 {
   obj.printTo(out);
   return out;
 }
 
 
-uint32_t InsertOrderReq::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t InsertOrderRequest::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -125,6 +130,14 @@ uint32_t InsertOrderReq::read(::apache::thrift::protocol::TProtocol* iprot) {
         }
         break;
       case 5:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->orderType);
+          this->__isset.orderType = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 6:
         if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
           xfer += iprot->readDouble(this->price);
           this->__isset.price = true;
@@ -132,7 +145,7 @@ uint32_t InsertOrderReq::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 6:
+      case 7:
         if (ftype == ::apache::thrift::protocol::T_I32) {
           xfer += iprot->readI32(this->qty);
           this->__isset.qty = true;
@@ -140,7 +153,7 @@ uint32_t InsertOrderReq::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 7:
+      case 8:
         if (ftype == ::apache::thrift::protocol::T_BOOL) {
           xfer += iprot->readBool(this->isBuy);
           this->__isset.isBuy = true;
@@ -148,7 +161,7 @@ uint32_t InsertOrderReq::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 8:
+      case 9:
         if (ftype == ::apache::thrift::protocol::T_BOOL) {
           xfer += iprot->readBool(this->isOpen);
           this->__isset.isOpen = true;
@@ -156,7 +169,7 @@ uint32_t InsertOrderReq::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 9:
+      case 10:
         if (ftype == ::apache::thrift::protocol::T_BOOL) {
           xfer += iprot->readBool(this->isYesterday);
           this->__isset.isYesterday = true;
@@ -176,10 +189,10 @@ uint32_t InsertOrderReq::read(::apache::thrift::protocol::TProtocol* iprot) {
   return xfer;
 }
 
-uint32_t InsertOrderReq::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t InsertOrderRequest::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("InsertOrderReq");
+  xfer += oprot->writeStructBegin("InsertOrderRequest");
 
   xfer += oprot->writeFieldBegin("symbol", ::apache::thrift::protocol::T_STRING, 1);
   xfer += oprot->writeString(this->symbol);
@@ -197,23 +210,27 @@ uint32_t InsertOrderReq::write(::apache::thrift::protocol::TProtocol* oprot) con
   xfer += oprot->writeString(this->portfolio);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("price", ::apache::thrift::protocol::T_DOUBLE, 5);
+  xfer += oprot->writeFieldBegin("orderType", ::apache::thrift::protocol::T_STRING, 5);
+  xfer += oprot->writeString(this->orderType);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("price", ::apache::thrift::protocol::T_DOUBLE, 6);
   xfer += oprot->writeDouble(this->price);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("qty", ::apache::thrift::protocol::T_I32, 6);
+  xfer += oprot->writeFieldBegin("qty", ::apache::thrift::protocol::T_I32, 7);
   xfer += oprot->writeI32(this->qty);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("isBuy", ::apache::thrift::protocol::T_BOOL, 7);
+  xfer += oprot->writeFieldBegin("isBuy", ::apache::thrift::protocol::T_BOOL, 8);
   xfer += oprot->writeBool(this->isBuy);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("isOpen", ::apache::thrift::protocol::T_BOOL, 8);
+  xfer += oprot->writeFieldBegin("isOpen", ::apache::thrift::protocol::T_BOOL, 9);
   xfer += oprot->writeBool(this->isOpen);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("isYesterday", ::apache::thrift::protocol::T_BOOL, 9);
+  xfer += oprot->writeFieldBegin("isYesterday", ::apache::thrift::protocol::T_BOOL, 10);
   xfer += oprot->writeBool(this->isYesterday);
   xfer += oprot->writeFieldEnd();
 
@@ -222,12 +239,13 @@ uint32_t InsertOrderReq::write(::apache::thrift::protocol::TProtocol* oprot) con
   return xfer;
 }
 
-void swap(InsertOrderReq &a, InsertOrderReq &b) {
+void swap(InsertOrderRequest &a, InsertOrderRequest &b) {
   using ::std::swap;
   swap(a.symbol, b.symbol);
   swap(a.account, b.account);
   swap(a.localId, b.localId);
   swap(a.portfolio, b.portfolio);
+  swap(a.orderType, b.orderType);
   swap(a.price, b.price);
   swap(a.qty, b.qty);
   swap(a.isBuy, b.isBuy);
@@ -236,7 +254,7 @@ void swap(InsertOrderReq &a, InsertOrderReq &b) {
   swap(a.__isset, b.__isset);
 }
 
-bool InsertOrderReq::operator==(const InsertOrderReq & rhs) const
+bool InsertOrderRequest::operator==(const InsertOrderRequest & rhs) const
 {
   if (!(symbol == rhs.symbol))
     return false;
@@ -245,6 +263,8 @@ bool InsertOrderReq::operator==(const InsertOrderReq & rhs) const
   if (!(localId == rhs.localId))
     return false;
   if (!(portfolio == rhs.portfolio))
+    return false;
+  if (!(orderType == rhs.orderType))
     return false;
   if (!(price == rhs.price))
     return false;
@@ -259,11 +279,12 @@ bool InsertOrderReq::operator==(const InsertOrderReq & rhs) const
   return true;
 }
 
-InsertOrderReq::InsertOrderReq(const InsertOrderReq& other0) {
+InsertOrderRequest::InsertOrderRequest(const InsertOrderRequest& other0) {
   symbol = other0.symbol;
   account = other0.account;
   localId = other0.localId;
   portfolio = other0.portfolio;
+  orderType = other0.orderType;
   price = other0.price;
   qty = other0.qty;
   isBuy = other0.isBuy;
@@ -271,11 +292,12 @@ InsertOrderReq::InsertOrderReq(const InsertOrderReq& other0) {
   isYesterday = other0.isYesterday;
   __isset = other0.__isset;
 }
-InsertOrderReq& InsertOrderReq::operator=(const InsertOrderReq& other1) {
+InsertOrderRequest& InsertOrderRequest::operator=(const InsertOrderRequest& other1) {
   symbol = other1.symbol;
   account = other1.account;
   localId = other1.localId;
   portfolio = other1.portfolio;
+  orderType = other1.orderType;
   price = other1.price;
   qty = other1.qty;
   isBuy = other1.isBuy;
@@ -284,13 +306,14 @@ InsertOrderReq& InsertOrderReq::operator=(const InsertOrderReq& other1) {
   __isset = other1.__isset;
   return *this;
 }
-void InsertOrderReq::printTo(std::ostream& out) const {
+void InsertOrderRequest::printTo(std::ostream& out) const {
   using ::apache::thrift::to_string;
-  out << "InsertOrderReq(";
+  out << "InsertOrderRequest(";
   out << "symbol=" << to_string(symbol);
   out << ", " << "account=" << to_string(account);
   out << ", " << "localId=" << to_string(localId);
   out << ", " << "portfolio=" << to_string(portfolio);
+  out << ", " << "orderType=" << to_string(orderType);
   out << ", " << "price=" << to_string(price);
   out << ", " << "qty=" << to_string(qty);
   out << ", " << "isBuy=" << to_string(isBuy);
@@ -471,24 +494,24 @@ void InsertOrderResponse::printTo(std::ostream& out) const {
 }
 
 
-CancelOrderReq::~CancelOrderReq() noexcept {
+CancelOrderRequest::~CancelOrderRequest() noexcept {
 }
 
-CancelOrderReq::CancelOrderReq() noexcept
+CancelOrderRequest::CancelOrderRequest() noexcept
    : orderId(0) {
 }
 
-void CancelOrderReq::__set_orderId(const int32_t val) {
+void CancelOrderRequest::__set_orderId(const int32_t val) {
   this->orderId = val;
 }
-std::ostream& operator<<(std::ostream& out, const CancelOrderReq& obj)
+std::ostream& operator<<(std::ostream& out, const CancelOrderRequest& obj)
 {
   obj.printTo(out);
   return out;
 }
 
 
-uint32_t CancelOrderReq::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t CancelOrderRequest::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -529,10 +552,10 @@ uint32_t CancelOrderReq::read(::apache::thrift::protocol::TProtocol* iprot) {
   return xfer;
 }
 
-uint32_t CancelOrderReq::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t CancelOrderRequest::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("CancelOrderReq");
+  xfer += oprot->writeStructBegin("CancelOrderRequest");
 
   xfer += oprot->writeFieldBegin("orderId", ::apache::thrift::protocol::T_I32, 1);
   xfer += oprot->writeI32(this->orderId);
@@ -543,31 +566,31 @@ uint32_t CancelOrderReq::write(::apache::thrift::protocol::TProtocol* oprot) con
   return xfer;
 }
 
-void swap(CancelOrderReq &a, CancelOrderReq &b) {
+void swap(CancelOrderRequest &a, CancelOrderRequest &b) {
   using ::std::swap;
   swap(a.orderId, b.orderId);
   swap(a.__isset, b.__isset);
 }
 
-bool CancelOrderReq::operator==(const CancelOrderReq & rhs) const
+bool CancelOrderRequest::operator==(const CancelOrderRequest & rhs) const
 {
   if (!(orderId == rhs.orderId))
     return false;
   return true;
 }
 
-CancelOrderReq::CancelOrderReq(const CancelOrderReq& other4) noexcept {
+CancelOrderRequest::CancelOrderRequest(const CancelOrderRequest& other4) noexcept {
   orderId = other4.orderId;
   __isset = other4.__isset;
 }
-CancelOrderReq& CancelOrderReq::operator=(const CancelOrderReq& other5) noexcept {
+CancelOrderRequest& CancelOrderRequest::operator=(const CancelOrderRequest& other5) noexcept {
   orderId = other5.orderId;
   __isset = other5.__isset;
   return *this;
 }
-void CancelOrderReq::printTo(std::ostream& out) const {
+void CancelOrderRequest::printTo(std::ostream& out) const {
   using ::apache::thrift::to_string;
-  out << "CancelOrderReq(";
+  out << "CancelOrderRequest(";
   out << "orderId=" << to_string(orderId);
   out << ")";
 }

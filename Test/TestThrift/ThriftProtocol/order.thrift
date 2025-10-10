@@ -1,15 +1,16 @@
-const i32 WMESSAGE_ORDER_INSERT = 8193
-struct InsertOrderReq
+const i32 WMESSAGE_ORDER_INSERT = 9216
+struct InsertOrderRequest
 {
     1: string symbol;
     2: string account;
     3: string localId;
     4: string portfolio;
-    5: double price;
-    6: i32 qty;
-    7: bool isBuy;
-    8: bool isOpen;
-    9: bool isYesterday;
+    5: string orderType; //GFD,FAK etc.
+    6: double price;
+    7: i32 qty;
+    8: bool isBuy;
+    9: bool isOpen;
+    10: bool isYesterday;
 }
 
 struct InsertOrderResponse
@@ -20,8 +21,8 @@ struct InsertOrderResponse
     4: i32 orderId;
 }
 
-const i32 WMESSAGE_ORDER_CANCEL = 8194
-struct CancelOrderReq
+const i32 WMESSAGE_ORDER_CANCEL = 9217
+struct CancelOrderRequest
 {
     1: i32 orderId;
 }
@@ -32,7 +33,7 @@ struct CancelOrderResponse
     2: string detail;
 }
 
-const i32 WMESSAGE_COMB_COMB = 8195
+const i32 WMESSAGE_COMB_COMB = 9218
 struct SendCombRequest
 {
     1: string combStrategy; #CNSJC, CXSJC, PNSJC, PXSJC, KS, KKS, ZBD
@@ -52,7 +53,7 @@ struct SendCombResponse
     4: i32 combId;
 }
 
-const i32 WMESSAGE_COMB_UNCOMB = 8196
+const i32 WMESSAGE_COMB_UNCOMB = 9219
 struct SendUncombRequest
 {
     1: i32 combId;

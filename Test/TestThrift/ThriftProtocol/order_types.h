@@ -21,11 +21,11 @@
 
 
 
-class InsertOrderReq;
+class InsertOrderRequest;
 
 class InsertOrderResponse;
 
-class CancelOrderReq;
+class CancelOrderRequest;
 
 class CancelOrderResponse;
 
@@ -37,38 +37,40 @@ class SendUncombRequest;
 
 class SendUncombResponse;
 
-typedef struct _InsertOrderReq__isset {
-  _InsertOrderReq__isset() : symbol(false), account(false), localId(false), portfolio(false), price(false), qty(false), isBuy(false), isOpen(false), isYesterday(false) {}
+typedef struct _InsertOrderRequest__isset {
+  _InsertOrderRequest__isset() : symbol(false), account(false), localId(false), portfolio(false), orderType(false), price(false), qty(false), isBuy(false), isOpen(false), isYesterday(false) {}
   bool symbol :1;
   bool account :1;
   bool localId :1;
   bool portfolio :1;
+  bool orderType :1;
   bool price :1;
   bool qty :1;
   bool isBuy :1;
   bool isOpen :1;
   bool isYesterday :1;
-} _InsertOrderReq__isset;
+} _InsertOrderRequest__isset;
 
-class InsertOrderReq : public virtual ::apache::thrift::TBase {
+class InsertOrderRequest : public virtual ::apache::thrift::TBase {
  public:
 
-  InsertOrderReq(const InsertOrderReq&);
-  InsertOrderReq& operator=(const InsertOrderReq&);
-  InsertOrderReq() noexcept;
+  InsertOrderRequest(const InsertOrderRequest&);
+  InsertOrderRequest& operator=(const InsertOrderRequest&);
+  InsertOrderRequest() noexcept;
 
-  virtual ~InsertOrderReq() noexcept;
+  virtual ~InsertOrderRequest() noexcept;
   std::string symbol;
   std::string account;
   std::string localId;
   std::string portfolio;
+  std::string orderType;
   double price;
   int32_t qty;
   bool isBuy;
   bool isOpen;
   bool isYesterday;
 
-  _InsertOrderReq__isset __isset;
+  _InsertOrderRequest__isset __isset;
 
   void __set_symbol(const std::string& val);
 
@@ -77,6 +79,8 @@ class InsertOrderReq : public virtual ::apache::thrift::TBase {
   void __set_localId(const std::string& val);
 
   void __set_portfolio(const std::string& val);
+
+  void __set_orderType(const std::string& val);
 
   void __set_price(const double val);
 
@@ -88,12 +92,12 @@ class InsertOrderReq : public virtual ::apache::thrift::TBase {
 
   void __set_isYesterday(const bool val);
 
-  bool operator == (const InsertOrderReq & rhs) const;
-  bool operator != (const InsertOrderReq &rhs) const {
+  bool operator == (const InsertOrderRequest & rhs) const;
+  bool operator != (const InsertOrderRequest &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const InsertOrderReq & ) const;
+  bool operator < (const InsertOrderRequest & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot) override;
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const override;
@@ -101,9 +105,9 @@ class InsertOrderReq : public virtual ::apache::thrift::TBase {
   virtual void printTo(std::ostream& out) const;
 };
 
-void swap(InsertOrderReq &a, InsertOrderReq &b);
+void swap(InsertOrderRequest &a, InsertOrderRequest &b);
 
-std::ostream& operator<<(std::ostream& out, const InsertOrderReq& obj);
+std::ostream& operator<<(std::ostream& out, const InsertOrderRequest& obj);
 
 typedef struct _InsertOrderResponse__isset {
   _InsertOrderResponse__isset() : status(false), detail(false), localId(false), orderId(false) {}
@@ -153,31 +157,31 @@ void swap(InsertOrderResponse &a, InsertOrderResponse &b);
 
 std::ostream& operator<<(std::ostream& out, const InsertOrderResponse& obj);
 
-typedef struct _CancelOrderReq__isset {
-  _CancelOrderReq__isset() : orderId(false) {}
+typedef struct _CancelOrderRequest__isset {
+  _CancelOrderRequest__isset() : orderId(false) {}
   bool orderId :1;
-} _CancelOrderReq__isset;
+} _CancelOrderRequest__isset;
 
-class CancelOrderReq : public virtual ::apache::thrift::TBase {
+class CancelOrderRequest : public virtual ::apache::thrift::TBase {
  public:
 
-  CancelOrderReq(const CancelOrderReq&) noexcept;
-  CancelOrderReq& operator=(const CancelOrderReq&) noexcept;
-  CancelOrderReq() noexcept;
+  CancelOrderRequest(const CancelOrderRequest&) noexcept;
+  CancelOrderRequest& operator=(const CancelOrderRequest&) noexcept;
+  CancelOrderRequest() noexcept;
 
-  virtual ~CancelOrderReq() noexcept;
+  virtual ~CancelOrderRequest() noexcept;
   int32_t orderId;
 
-  _CancelOrderReq__isset __isset;
+  _CancelOrderRequest__isset __isset;
 
   void __set_orderId(const int32_t val);
 
-  bool operator == (const CancelOrderReq & rhs) const;
-  bool operator != (const CancelOrderReq &rhs) const {
+  bool operator == (const CancelOrderRequest & rhs) const;
+  bool operator != (const CancelOrderRequest &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const CancelOrderReq & ) const;
+  bool operator < (const CancelOrderRequest & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot) override;
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const override;
@@ -185,9 +189,9 @@ class CancelOrderReq : public virtual ::apache::thrift::TBase {
   virtual void printTo(std::ostream& out) const;
 };
 
-void swap(CancelOrderReq &a, CancelOrderReq &b);
+void swap(CancelOrderRequest &a, CancelOrderRequest &b);
 
-std::ostream& operator<<(std::ostream& out, const CancelOrderReq& obj);
+std::ostream& operator<<(std::ostream& out, const CancelOrderRequest& obj);
 
 typedef struct _CancelOrderResponse__isset {
   _CancelOrderResponse__isset() : status(false), detail(false) {}
