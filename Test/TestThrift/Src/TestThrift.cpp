@@ -39,7 +39,7 @@ int main(int argc, const char* argv[])
 		return -1;
 	}
 	ioThread->Start();
-	this_thread::sleep_for(chrono::seconds(50));
+	this_thread::sleep_for(chrono::seconds(300));
 	
 	ioThread->Stop();
 	ioThread->Join();

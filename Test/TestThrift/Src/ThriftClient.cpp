@@ -307,15 +307,11 @@ void ThriftClient::OnRspQryAndSubscribeUnitTopic(const SessionIDType& sessionID,
 void ThriftClient::OnRtnTopicNofity(const SessionIDType& sessionID, const TopicNotify& topic, std::shared_ptr<apache::thrift::protocol::TCompactProtocol> proto)
 {
     auto topicDecoder = m_SessionDecoders[sessionID];
-    std::vector<vector<any>> values;
+    std::vector<vector<DecodeItem*>> values;
     auto ret = (*topicDecoder)(topic, proto, values);
     WriteLog(LogLevel::Info, "OnRtnTopicNofity TopicDecoder ret:%d, TopicNotify.count:%d, valuesSize:%d", ret, topic.count, values.size());
     if (!ret)
         return;
-    if (topic.topicID == 38)
-    {
-        cout << "topicID:" << topic.topicID << endl;
-    }
     auto& topicInfo = topicDecoder->GetTopic(topic.topicID);
     for (auto i = 0; i < values.size(); ++i)
     {
@@ -323,25 +319,26 @@ void ThriftClient::OnRtnTopicNofity(const SessionIDType& sessionID, const TopicN
         for (auto j = 0; j < topicInfo.fields.size(); ++j)
         {
             auto& type = topicInfo.fields[j].type;
+            auto item = values[i][j];
             if (type.starts_with("s"))
             {
-                WriteLog(LogLevel::Info, "Name:%s, Type:%s, Value:%s", topicInfo.fields[j].name.c_str(), topicInfo.fields[j].type.c_str(), any_cast<string>(values[i][j]).c_str());
+                WriteLog(LogLevel::Info, "Name:%s, Type:%s, Value:%s", topicInfo.fields[j].name.c_str(), topicInfo.fields[j].type.c_str(), any_cast<string>(item->value).c_str());
             }
             else if (type.starts_with("f"))
             {
-                WriteLog(LogLevel::Info, "Name:%s, Type:%s, Value:%f", topicInfo.fields[j].name.c_str(), topicInfo.fields[j].type.c_str(), any_cast<double>(values[i][j]));
+                WriteLog(LogLevel::Info, "Name:%s, Type:%s, Value:%f", topicInfo.fields[j].name.c_str(), topicInfo.fields[j].type.c_str(), any_cast<double>(item->value));
             }
             else if (type.starts_with("i64") || type.starts_with("u64"))
             {
-                WriteLog(LogLevel::Info, "Name:%s, Type:%s, Value:%lld", topicInfo.fields[j].name.c_str(), topicInfo.fields[j].type.c_str(), any_cast<int64_t>(values[i][j]));
+                WriteLog(LogLevel::Info, "Name:%s, Type:%s, Value:%lld", topicInfo.fields[j].name.c_str(), topicInfo.fields[j].type.c_str(), any_cast<int64_t>(item->value));
             }
             else if (type.starts_with("i") || type.starts_with("u"))
             {
-                WriteLog(LogLevel::Info, "Name:%s, Type:%s, Value:%d", topicInfo.fields[j].name.c_str(), topicInfo.fields[j].type.c_str(), any_cast<int32_t>(values[i][j]));
+                WriteLog(LogLevel::Info, "Name:%s, Type:%s, Value:%d", topicInfo.fields[j].name.c_str(), topicInfo.fields[j].type.c_str(), any_cast<int32_t>(item->value));
             }
             else if (type == "bool")
             {
-                WriteLog(LogLevel::Info, "Name:%s, Type:%s, Value:%d", topicInfo.fields[j].name.c_str(), topicInfo.fields[j].type.c_str(), any_cast<bool>(values[i][j]));
+                WriteLog(LogLevel::Info, "Name:%s, Type:%s, Value:%d", topicInfo.fields[j].name.c_str(), topicInfo.fields[j].type.c_str(), any_cast<bool>(item->value));
             }
             else
             {
@@ -349,7 +346,7 @@ void ThriftClient::OnRtnTopicNofity(const SessionIDType& sessionID, const TopicN
                 if (it != topicInfo.enums.end())
                 {
                     auto& enumDesc = it->second;
-                    auto enumValue = any_cast<int32_t>(values[i][j]);
+                    auto enumValue = any_cast<int32_t>(item->value);
                     string enumName;
                     for (auto& enumIt : enumDesc.values)
                     {

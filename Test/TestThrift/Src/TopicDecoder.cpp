@@ -18,7 +18,7 @@ TopicInfo& TopicDecoder::GetTopic(int topicID)
 {
 	return m_Topics[topicID];
 }
-bool TopicDecoder::operator()(const TopicNotify& msg, std::shared_ptr<apache::thrift::protocol::TCompactProtocol> proto, std::vector<std::vector<std::any>>& values)
+bool TopicDecoder::operator()(const TopicNotify& msg, std::shared_ptr<apache::thrift::protocol::TCompactProtocol> proto, std::vector<std::vector<DecodeItem*>>& values)
 {
 	auto it = m_Topics.find(msg.topicID);
 	if (it == m_Topics.end())
@@ -28,59 +28,56 @@ bool TopicDecoder::operator()(const TopicNotify& msg, std::shared_ptr<apache::th
 	}
 	auto& topic = (*it).second;
 	auto size = topic.fields.size();
-	if (msg.topicID == 3)
-	{
-		WriteLog(LogLevel::Info, "OrderTopic");
-	}
 	for (auto i = 0; i < msg.count; ++i)
 	{
-		TType type;
+		
 		std::string name;
 		int16_t id;
-
-		vector<std::any> value;
+		vector<DecodeItem*> value;
 		for (auto j = 0; j < size; ++j)
 		{
-			auto rsize = proto->readFieldBegin(name, type, id);
+			DecodeItem* item = new DecodeItem();
+			value.push_back(item);
+			auto rsize = proto->readFieldBegin(name, item->Type, id);
 			if (rsize < 0)
 			{
 				break;
 			}
-			switch (type)
+			switch (item->Type)
 			{
 			case T_STRING:
 			{
 				string s;
 				proto->readString(s);
-				value.push_back(s);
+				item->value = s;;
 				break;
 			}
 			case T_I32:
 			{
 				int32_t v;
 				proto->readI32(v);
-				value.push_back(v);
+				item->value = v;
 				break;
 			}
 			case T_I64:
 			{
 				int64_t v;
 				proto->readI64(v);
-				value.push_back(v);
+				item->value = v;
 				break;
 			}
 			case T_DOUBLE:
 			{
 				double v;
 				proto->readDouble(v);
-				value.push_back(v);
+				item->value = v;
 				break;
 			}
 			case T_BOOL:
 			{
 				bool v;
 				proto->readBool(v);
-				value.push_back(v);
+				item->value = v;
 				break;
 			}
 			default:
@@ -89,7 +86,5 @@ bool TopicDecoder::operator()(const TopicNotify& msg, std::shared_ptr<apache::th
 		}
 		values.push_back(value);
 	}
-
-
 	return true;
 }
