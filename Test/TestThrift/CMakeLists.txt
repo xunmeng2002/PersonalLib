@@ -27,12 +27,15 @@ link_directories("C:/Libs/vcpkg/installed/x64-windows/debug/lib")
 add_executable (${PROJECT_NAME} ${all_file})
 
 
-if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-	find_library(PersonnalLib PersonnalLib ${CMAKE_SOURCE_DIR}/out/build/x64-Debug/Target/PersonnalLib)
-	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:PersonalLib>" "$<TARGET_FILE_DIR:${PROJECT_NAME}>" COMMENT "Copying PersonalLib.dll DLL...")
-elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
-endif()
-
 # 链接 Thrift 库
 target_link_libraries(${PROJECT_NAME} thrift::thrift thriftzmdd.lib ZLIB::ZLIB PersonalLib)
 
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+	add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD 
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different 
+        "$<TARGET_FILE:PersonalLib>" 
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/$<TARGET_FILE_NAME:PersonalLib>"
+    COMMENT "Copying PersonalLib.dll DLL...")
+endif()

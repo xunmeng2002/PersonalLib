@@ -5,6 +5,7 @@ project(${PROJECT_NAME})
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 20)
 set(BUILD_TEST_PROJECT 1)
+set(LibsPath "${CMAKE_SOURCE_DIR}/../Libs")
 
 add_definitions(-DUNICODE -D_UNICODE)
 message("CMAKE_BUILD_TYPE:" ${CMAKE_BUILD_TYPE})
@@ -71,7 +72,15 @@ endmacro(include_package)
 
 string(TIMESTAMP BUILD_TIMESTAMP "%Y%m%d-%H%M%S")
 message("Build timestamp is ${BUILD_TIMESTAMP}")
- 
 
 add_subdirectory(Target)
 add_subdirectory(Test)
+
+add_custom_target(copy_headers ALL
+    COMMAND ${CMAKE_COMMAND} -E echo "Running copyheader.py..."
+    COMMAND python.exe ${CMAKE_SOURCE_DIR}/copyheader.py
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Running copyheader.py to copy headers"
+    VERBATIM
+)
+

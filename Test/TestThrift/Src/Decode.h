@@ -40,7 +40,7 @@ struct OpEncoder
         memBuffer->getBuffer(&buffer, &sz);
 
         std::string s(sizeof(OpMsgHeader) + sz, '\0');
-        OpMsgHeader h{ type, peerAddr, sz };
+        OpMsgHeader h{ type, peerAddr, (int32_t)sz };
 
         std::memcpy(s.data(), &h, sizeof(h));
         std::memcpy(s.data() + sizeof(h), buffer, sz);
