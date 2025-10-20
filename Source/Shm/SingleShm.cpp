@@ -134,10 +134,6 @@ bool SingleShm::Init()
 	return true;
 }
 
-int SingleShm::Send(SessionIDType sessionID, const char* data, unsigned len)
-{
-	return m_ShmBuffer->Write(data, len);
-}
 int SingleShm::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
 	return m_ShmBuffer->Write(buffer->GetData(), buffer->GetLength());

@@ -5,6 +5,7 @@
 #include "Logger.h"
 #include "IOFactory.h"
 #include "TestUtility.h"
+#include "Buffer.h"
 #include "SystemVIPC.h"
 #include "PosixIPC.h"
 #include "SingleShm.h"
@@ -34,7 +35,7 @@ static void TestShm()
 		this_thread::sleep_for(chrono::seconds(1));
 	}
 
-	char sendBuff[128]{ 0 };
+	Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
 	ShmPackage shmPackage;
 	for (auto i = 0; i < 10; ++i)
 	{
@@ -42,14 +43,14 @@ static void TestShm()
 		shmPackage.ShmType = (int)ServerTypeType::Client;
 		shmPackage.Count = i;
 		sprintf(shmPackage.Data, "Count[%d]", i);
-		memcpy(sendBuff, &shmPackage, sizeof(ShmPackage));
+		sendBuff->Append((char*)&shmPackage, sizeof(ShmPackage));
 
 		int sendLen = 0;
 		while (sendLen < sizeof(ShmPackage))
 		{
-			sendLen += shmClient->Send(shmSubscriberImpl->m_SessionID, sendBuff + sendLen, sizeof(ShmPackage) - sendLen);
+			sendLen += shmClient->Send(shmSubscriberImpl->m_SessionID, sendBuff);
 		}
-		memset(sendBuff, 0, 128);
+		sendBuff->Reset();
 	}
 
 	std::this_thread::sleep_for(chrono::seconds(10));
@@ -76,7 +77,7 @@ static void TestSingleShm()
 		this_thread::sleep_for(chrono::seconds(1));
 	}
 
-	char sendBuff[128]{ 0 };
+	Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
 	ShmPackage shmPackage;
 	for (auto i = 0; i < 10; ++i)
 	{
@@ -84,14 +85,14 @@ static void TestSingleShm()
 		shmPackage.ShmType = (int)ServerTypeType::Client;
 		shmPackage.Count = i;
 		sprintf(shmPackage.Data, "Count[%d]", i);
-		memcpy(sendBuff, &shmPackage, sizeof(ShmPackage));
+		sendBuff->Append((char*)&shmPackage, sizeof(ShmPackage));
 
 		int sendLen = 0;
 		while (sendLen < sizeof(ShmPackage))
 		{
-			sendLen += singleShm->Send(shmSubscriberImpl->m_SessionID, sendBuff + sendLen, sizeof(ShmPackage) - sendLen);
+			sendLen += singleShm->Send(shmSubscriberImpl->m_SessionID, sendBuff);
 		}
-		memset(sendBuff, 0, 128);
+		sendBuff->Reset();
 	}
 
 	std::this_thread::sleep_for(chrono::seconds(10));

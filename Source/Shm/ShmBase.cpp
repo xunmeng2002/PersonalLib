@@ -86,13 +86,6 @@ bool ShmBase::Init()
 	return true;
 }
 
-int ShmBase::Send(SessionIDType sessionID, const char* data, unsigned len)
-{
-	auto shmConnect = (ShmConnect<ShmBuffSize>*)GetConnect(sessionID);
-	if (shmConnect == nullptr)
-		return -1;
-	return shmConnect->m_ShmBuffer->Write(data, len);
-}
 int ShmBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
 	auto shmConnect = (ShmConnect<ShmBuffSize>*)GetConnect(sessionID);

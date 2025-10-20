@@ -1,7 +1,7 @@
 #pragma once
 #include "IOBase.h"
 #include "IOThread.h"
-
+#include "Buffer.h"
 
 class ShmSubscriberImpl : public IOSubscriber
 {
@@ -22,7 +22,7 @@ private:
 
 	char* m_Buff;
 	int m_Length;
-	char* m_SendBuff;
+	Buffer<BuffSize>* m_SendBuff;
 };
 
 

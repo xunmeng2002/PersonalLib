@@ -10,7 +10,7 @@ ShmSubscriberImpl::ShmSubscriberImpl(IOBase* ioBase, ServerTypeType serverType)
 {
 	m_Buff = new char[BuffSize];
 	m_Length = 0;
-	m_SendBuff = new char[BuffSize];
+	m_SendBuff = new Buffer<BuffSize>();
 
 	m_IOBase->Subscribe(this);
 }
@@ -63,11 +63,11 @@ void ShmSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer
 			if (m_ServerType == ServerTypeType::Server)
 			{
 				shmPackage->ShmType = (int)ServerTypeType::Server;
-				memcpy(m_SendBuff, shmPackage, sizeof(ShmPackage));
+				m_SendBuff->Append((char*)shmPackage, sizeof(ShmPackage));
 				int sendLen = 0;
 				while (sendLen < sizeof(ShmPackage))
 				{
-					sendLen += m_IOBase->Send(sessionID, m_SendBuff + sendLen, sizeof(ShmPackage) - sendLen);
+					sendLen += m_IOBase->Send(sessionID, m_SendBuff);
 				}
 			}
 		}

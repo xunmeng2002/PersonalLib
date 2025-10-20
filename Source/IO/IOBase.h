@@ -1,5 +1,6 @@
 #pragma once
 #include "Types.h"
+#include "Constant.h"
 #include "Buffer.h"
 #include "Connect.h"
 #include "IOUtility.h"
@@ -30,7 +31,6 @@ public:
 	virtual bool Init() { return true; }
 	virtual void DisConnect(SessionIDType sessionID);
 	virtual void DisConnectAll();
-	virtual int Send(SessionIDType sessionID, const char* data, unsigned len) = 0;
 	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) = 0;
 	virtual void DoRecv(Connect* connect) = 0;
 	virtual void HandleIOEvent() = 0;

@@ -6,6 +6,8 @@
 #include "TcpBase.h"
 #include "MD5.h"
 #include "Decode.h"
+#include "Buffer.h"
+
 
 
 using namespace std;
@@ -148,7 +150,9 @@ void ThriftClient::ReqLogin()
     req.name = "kaiqiang.zhang";
     req.password = getMD5((const unsigned char*)"123456", 6);
     auto msg = OpEncoder::encode(g_login_constants.WMESSAGE_LOGIN_LOGIN, 0, req);
-    auto len = m_IO->Send(m_LoginSessionID, msg.data(), (int)msg.length());
+    Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
+    sendBuff->Append(msg.c_str(), msg.length());
+    auto len = m_IO->Send(m_LoginSessionID, sendBuff);
     WriteLog(LogLevel::Info, "ReqLogin: MsgLen:%d, SendLen:%d", msg.length(), len);
 }
 void ThriftClient::QryUnit(const SessionIDType& sessionID, const std::string& hostname)
@@ -156,7 +160,9 @@ void ThriftClient::QryUnit(const SessionIDType& sessionID, const std::string& ho
     ListUnitsRequest req;
     req.hostname = hostname;
     auto msg = OpEncoder::encode(g_unit_constants.WMESSAGE_MONITOR_UNIT_LIST, 0, req);
-    int len = m_IO->Send(sessionID, msg.data(), (int)msg.length());
+    Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
+    sendBuff->Append(msg.c_str(), msg.length());
+    auto len = m_IO->Send(sessionID, sendBuff);
     WriteLog(LogLevel::Info, "QryUnit: MsgLen:%d, SendLen:%d", msg.length(), len);
 }
 void ThriftClient::QryInstrument(const SessionIDType& sessionID, const std::string& unitname)
@@ -164,7 +170,9 @@ void ThriftClient::QryInstrument(const SessionIDType& sessionID, const std::stri
     ListUnitInstrumentRequest req;
     req.unitName = unitname;
     auto msg = OpEncoder::encode(g_instrument_constants.WMESSAGE_MONITOR_LIST_UNIT_INSTRUMENT, 0, req);
-    int len = m_IO->Send(sessionID, msg.data(), (int)msg.length());
+    Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
+    sendBuff->Append(msg.c_str(), msg.length());
+    auto len = m_IO->Send(sessionID, sendBuff);
     WriteLog(LogLevel::Info, "QryInstrument: MsgLen:%d, SendLen:%d", msg.length(), len);
 }
 void ThriftClient::QryAccount(const SessionIDType& sessionID, const std::string& unitname)
@@ -172,7 +180,9 @@ void ThriftClient::QryAccount(const SessionIDType& sessionID, const std::string&
     ListAccountRequest req;
     req.unitName = unitname;
     auto msg = OpEncoder::encode(g_account_constants.WMESSAGE_MONITOR_LIST_ACCOUNT, 0, req);
-    int len = m_IO->Send(sessionID, msg.data(), (int)msg.length());
+    Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
+    sendBuff->Append(msg.c_str(), msg.length());
+    auto len = m_IO->Send(sessionID, sendBuff);
     WriteLog(LogLevel::Info, "QryAccount: MsgLen:%d, SendLen:%d", msg.length(), len);
 }
 void ThriftClient::QryStrategy(const SessionIDType& sessionID, const std::string& unitname)
@@ -180,7 +190,9 @@ void ThriftClient::QryStrategy(const SessionIDType& sessionID, const std::string
     ListStrategyRequest req;
     req.unitName = unitname;
     auto msg = OpEncoder::encode(g_strategy_constants.WMESSAGE_MONITOR_LIST_STRATEGY, 0, req);
-    int len = m_IO->Send(sessionID, msg.data(), (int)msg.length());
+    Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
+    sendBuff->Append(msg.c_str(), msg.length());
+    auto len = m_IO->Send(sessionID, sendBuff);
     WriteLog(LogLevel::Info, "QryStrategy: MsgLen:%d, SendLen:%d", msg.length(), len);
 }
 void ThriftClient::QryAndSubscribeUnitTopic(const SessionIDType& sessionID, const std::string& unitname)
@@ -188,7 +200,9 @@ void ThriftClient::QryAndSubscribeUnitTopic(const SessionIDType& sessionID, cons
     SubscribeUnitRequest req;
     req.unitName = unitname;
     auto msg = OpEncoder::encode(g_topic_constants.WMESSAGE_TOPIC_SUBSCRIBE_UNIT, 0, req);
-    int len = m_IO->Send(sessionID, msg.data(), (int)msg.length());
+    Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
+    sendBuff->Append(msg.c_str(), msg.length());
+    auto len = m_IO->Send(sessionID, sendBuff);
     WriteLog(LogLevel::Info, "QryAndSubscribeUnitTopic: MsgLen:%d, SendLen:%d", msg.length(), len);
 }
 
@@ -309,7 +323,7 @@ void ThriftClient::OnRtnTopicNofity(const SessionIDType& sessionID, const TopicN
     auto topicDecoder = m_SessionDecoders[sessionID];
     std::vector<vector<DecodeItem*>> values;
     auto ret = (*topicDecoder)(topic, proto, values);
-    WriteLog(LogLevel::Info, "OnRtnTopicNofity TopicDecoder ret:%d, TopicNotify.count:%d, valuesSize:%d", ret, topic.count, values.size());
+    WriteLog(LogLevel::Warning, "OnRtnTopicNofity TopicDecoder ret:%d, TopicNotify.count:%d, valuesSize:%d", ret, topic.count, values.size());
     if (!ret)
         return;
     auto& topicInfo = topicDecoder->GetTopic(topic.topicID);

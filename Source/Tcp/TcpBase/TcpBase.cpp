@@ -56,15 +56,6 @@ bool TcpBase::Init()
 	}
 	return true;
 }
-int TcpBase::Send(SessionIDType sessionID, const char* data, unsigned len)
-{
-	auto tcpConnect = (TcpConnect*)GetConnect(sessionID);
-	if (!tcpConnect)
-	{
-		return -1;
-	}
-	return send(tcpConnect->SocketID, data, len, 0);
-}
 int TcpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
 	auto tcpConnect = (TcpConnect*)GetConnect(sessionID);
