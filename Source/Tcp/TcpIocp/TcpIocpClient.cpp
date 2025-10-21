@@ -55,7 +55,7 @@ bool TcpIocpClient::PostConnect()
     }
     return true;
 }
-void TcpIocpClient::DoConnect(MyOverlapped* overlapped)
+void TcpIocpClient::OnConnectComplete(MyOverlapped* overlapped)
 {
     PostRecv(overlapped);
     AddConnect(overlapped->Connect);
@@ -89,3 +89,4 @@ SOCKET TcpIocpClient::PrepareConnectSocket()
     }
     return socketID;
 }
+

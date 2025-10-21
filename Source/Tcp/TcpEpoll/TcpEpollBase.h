@@ -16,7 +16,9 @@ public:
 	TcpEpollBase(ServerTypeType serverType, const char* addressName, int milliSeconds);
 	~TcpEpollBase();
 	
+	
 protected:
+	virtual void HandleSendBufferCache() override;
 	virtual void HandleTcpEvent() override;
 
 	virtual void AddConnect(::Connect* connect) override;
@@ -25,6 +27,8 @@ protected:
 
 	void AddEpollEvent(TcpConnect* connect);
 	void RemoveEpollEvent(TcpConnect* connect);
+	void AddWriteEpollEvent(TcpConnect* connect);
+	void RemoveWriteEpollEvent(TcpConnect* connect);
 	
 protected:
 	int m_EpollFd;

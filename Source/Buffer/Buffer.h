@@ -50,8 +50,16 @@ public:
 	}
 	void Shift(unsigned len)
 	{
-		m_ReadPos += len;
-		m_Length -= len;
+		if (len >= m_Length)
+		{
+			m_ReadPos = m_Buffer;
+			m_Length = 0;
+		}
+		else
+		{
+			m_ReadPos += len;
+			m_Length -= len;
+		}
 	}
 	void Reset()
 	{

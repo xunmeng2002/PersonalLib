@@ -134,9 +134,21 @@ bool SingleShm::Init()
 	return true;
 }
 
-int SingleShm::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
+void SingleShm::DoSend(Connect* connect)
 {
-	return m_ShmBuffer->Write(buffer->GetData(), buffer->GetLength());
+	auto& buffers = m_SendBuffers[m_SessionID];
+
+	auto it = buffers.begin();
+	while (it != buffers.end())
+	{
+		auto buffer = *it;
+		int len = m_ShmBuffer->Write(buffer->GetData(), buffer->GetLength());
+		buffer->Shift(len);
+		if (buffer->GetLength() == 0)
+		{
+			it = buffers.erase(it);
+		}
+	}
 }
 void SingleShm::DoRecv(Connect* connect)
 {
@@ -151,11 +163,13 @@ void SingleShm::DoRecv(Connect* connect)
 }
 void SingleShm::HandleIOEvent()
 {
+	IOBase::HandleIOEvent();
+	CheckConnectStatus();
 	CheckEvent();
 	HandleEvent();
 }
 
-void SingleShm::CheckEvent()
+void SingleShm::CheckConnectStatus()
 {
 	if (!m_Connected && m_ShmBuffer->m_ShmHeader->Status == ConnectStatusType::Connected && m_IOSubscriber != nullptr)
 	{
@@ -168,29 +182,27 @@ void SingleShm::CheckEvent()
 		m_Connected = false;
 		m_IOSubscriber->OnDisConnect(m_SessionID, m_ShmName.c_str(), 0);
 	}
-	auto size = m_ShmBuffer->GetReadBufferSize();
-	if (size == 0)
-	{
-		if (m_ServerType == ServerTypeType::Client)
-		{
-			int lastWriteCount = m_ShmBuffer->m_ShmHeader->UpWriteCount;
-			std::unique_lock<std::mutex> guard(m_Mutex);
-			m_ThreadConditionVariable.wait_for(guard, m_TimeOut, [&] {return m_ShmBuffer->m_ShmHeader->UpWriteCount != lastWriteCount; });
-		}
-		else
-		{
-
-			int lastWriteCount = m_ShmBuffer->m_ShmHeader->DownWriteCount;
-			std::unique_lock<std::mutex> guard(m_Mutex);
-			m_ThreadConditionVariable.wait_for(guard, m_TimeOut, [&] {return m_ShmBuffer->m_ShmHeader->DownWriteCount != lastWriteCount; });
-		}
-	}
+}
+void SingleShm::CheckEvent()
+{
+	unique_lock guard(m_Mutex);
+	m_ThreadConditionVariable.wait_for(guard, m_TimeOut, [&]() {
+		if (m_ShmBuffer->GetReadBufferSize() > 0)
+			return true;
+		if (!m_SendBuffers[m_SessionID].empty() && m_ShmBuffer->GetWriteBufferSize() > 0)
+			return true;
+		return false;
+		});
 }
 void SingleShm::HandleEvent()
 {
 	if (m_Connected)
 	{
-		while (m_ShmBuffer->GetReadBufferSize() > 0)
+		if (!m_SendBuffers[m_SessionID].empty() && m_ShmBuffer->GetWriteBufferSize() > 0)
+		{
+			DoSend(nullptr);
+		}
+		if (m_ShmBuffer->GetReadBufferSize() > 0)
 		{
 			DoRecv(nullptr);
 		}

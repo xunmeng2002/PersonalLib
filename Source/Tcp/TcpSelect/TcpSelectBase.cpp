@@ -8,6 +8,7 @@ TcpSelectBase::TcpSelectBase(ServerTypeType serverType, const char* addressName,
 	:TcpBase(serverType, addressName, milliSeconds)
 {
 	FD_ZERO(&m_ReadFds);
+	FD_ZERO(&m_WriteFds);
 	FD_ZERO(&m_ErrorFds);
 	m_MaxID = 0;
 	m_SelectSocketTimeOut.tv_sec = milliSeconds / 1000;
@@ -25,6 +26,7 @@ void TcpSelectBase::SetTimeOut(int milliSeconds)
 void TcpSelectBase::PrepareFds()
 {
 	FD_ZERO(&m_ReadFds);
+	FD_ZERO(&m_WriteFds);
 	FD_ZERO(&m_ErrorFds);
 	m_MaxID = 0;
 	for (auto& it : m_Connects)
@@ -36,6 +38,15 @@ void TcpSelectBase::PrepareFds()
 		{
 			m_MaxID = connect->SocketID;
 		}
+	}
+	for (auto& it : m_SendBuffers)
+	{
+		if (it.second.empty())
+		{
+			continue;
+		}
+		auto connect = (TcpConnect*)m_Connects[it.first];
+		FD_SET(connect->SocketID, &m_WriteFds);
 	}
 	if (m_ServerType == ServerTypeType::Server)
 	{
@@ -60,6 +71,18 @@ void TcpSelectBase::HandleTcpEvent()
 			DoRecv(connect);
 		}
 	}
+	for (auto& it : m_SendBuffers)
+	{
+		if (it.second.empty())
+		{
+			continue;
+		}
+		auto connect = (TcpConnect*)m_Connects[it.first];
+		if (FD_ISSET(connect->SocketID, &m_WriteFds))
+		{
+			DoSend(connect);
+		}
+	}
 	for (auto& it : m_Connects)
 	{
 		auto connect = (TcpConnect*)it.second;
@@ -76,4 +99,3 @@ void TcpSelectBase::HandleTcpEvent()
 		}
 	}
 }
-

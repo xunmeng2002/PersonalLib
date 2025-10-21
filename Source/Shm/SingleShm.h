@@ -14,11 +14,12 @@ public:
 	virtual ~SingleShm();
 	virtual bool Init() override;
 
-	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
+	virtual void DoSend(Connect* connect) override;
 	virtual void DoRecv(Connect* connect) override;
 	virtual void HandleIOEvent() override;
 
 protected:
+	virtual void CheckConnectStatus();
 	virtual void CheckEvent();
 	virtual void HandleEvent();
 

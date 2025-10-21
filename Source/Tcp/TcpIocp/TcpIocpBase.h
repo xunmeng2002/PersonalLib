@@ -11,18 +11,22 @@ public:
 	
 	virtual bool Init() override;
 protected:
+	virtual void HandleSendBufferCache() override;
 	virtual void HandleTcpEvent() override;
 	virtual void DoDisConnect() override;
 
 	virtual bool PostAccept() { return false; }
 	virtual bool PostConnect() { return false; }
 	virtual bool PostDisConnect(Connect* connect);
-	virtual bool PostRecv(MyOverlapped* connect);
+	virtual bool PostDisConnect(MyOverlapped* overlapped);
+	virtual bool PostSend(MyOverlapped* overlapped);
+	virtual bool PostRecv(MyOverlapped* overlapped);
 
-	virtual void DoAccept(MyOverlapped* overlapped) {}
-	virtual void DoConnect(MyOverlapped* overlapped) {}
-	void DoDisConnect(MyOverlapped* overlapped);
-	void DoRecv(MyOverlapped* overlapped);
+	virtual void OnAcceptComplete(MyOverlapped* overlapped) {}
+	virtual void OnConnectComplete(MyOverlapped* overlapped) {}
+	virtual void OnDisConnectComplete(MyOverlapped* overlapped);
+	virtual void OnSendComplete(MyOverlapped* overlapped, int bytesTransferred);
+	virtual void OnRecvComplete(MyOverlapped* overlapped, int bytesTransferred);
 protected:
 	int m_BackLog;
 };

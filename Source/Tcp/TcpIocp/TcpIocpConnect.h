@@ -21,11 +21,16 @@ class MyOverlapped : public OVERLAPPED
 {
 public:
 	MyOverlapped();
+	static MyOverlapped* Allocate();
+	void Free();
+	void SetBuffer(Buffer<BuffSize>* buffer);
+	void Shift(unsigned int len);
 	void Reset();
+	
 
 	IocpEvent EventID;
 	WSABUF WsaBuffer;
-	Buffer<BuffSize> Buffer;
+	Buffer<BuffSize>* MyBuffer;
 	TcpConnect* Connect;
 };
 

@@ -56,15 +56,33 @@ bool TcpBase::Init()
 	}
 	return true;
 }
-int TcpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
+void TcpBase::DoSend(Connect* connect)
 {
-	auto tcpConnect = (TcpConnect*)GetConnect(sessionID);
-	if (!tcpConnect)
+	auto& buffers = m_SendBuffers[connect->SessionID];
+	auto it = buffers.begin();
+	while (it != buffers.end())
 	{
-		return -1;
+		auto buffer = *it;
+		int len = send(((TcpConnect*)connect)->SocketID, buffer->GetData(), buffer->GetLength(), 0);
+		if (len > 0)
+		{
+			buffer->Shift(len);
+			if (buffer->GetLength() > 0)
+			{
+				break;
+			}
+			else
+			{
+				it = buffers.erase(it);
+			}
+		}
+		else
+		{
+			//TODO:Handle SocketError
+		}
 	}
-	return send(tcpConnect->SocketID, buffer->GetData(), buffer->GetLength(), 0);
 }
+
 void TcpBase::DoRecv(Connect* connect)
 {
 	auto tcpConnect = (TcpConnect*)connect;
@@ -92,6 +110,7 @@ void TcpBase::HandleIOEvent()
 	if (m_ServerType == ServerTypeType::Client)
 		CheckConnect();
 	DoDisConnect();
+	HandleSendBufferCache();
 	HandleTcpEvent();
 }
 void TcpBase::DoAccept()

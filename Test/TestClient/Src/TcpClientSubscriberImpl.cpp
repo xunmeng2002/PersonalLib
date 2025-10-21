@@ -11,13 +11,13 @@ using namespace std;
 using namespace std::chrono;
 
 TcpClientSubscriberImpl::TcpClientSubscriberImpl(TcpBase* tcp)
-    :m_IOThread(tcp)
+    :m_IO(tcp)
 {
-    m_IOThread->Subscribe(this);
+    m_IO->Subscribe(this);
 }
 TcpClientSubscriberImpl::~TcpClientSubscriberImpl()
 {
-    m_IOThread->UnSubscribe();
+    m_IO->UnSubscribe();
 }
 
 
@@ -45,7 +45,7 @@ void TcpClientSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* 
     }
     else
     {
-        m_IOThread->DisConnect(sessionID);
+        m_IO->DisConnect(sessionID);
         buffer->Free();
     }
 }
@@ -73,11 +73,7 @@ void TcpClientSubscriberImpl::Send(SessionIDType sessionID)
     buffer->SetLength((unsigned)len);
 
     m_LastSendTime = high_resolution_clock::now();
-    auto sendLen = m_IOThread->Send(sessionID, buffer);
-    if (sendLen <= 0)
-    {
-        WriteLog(LogLevel::Error, "m_IOThread->Send sendLen:%d, Errno:%d, buffer Len:%d, Data:%s", sendLen, GetLastError(), buffer->GetLength(), buffer->GetData());
-    }
+    m_IO->Send(sessionID, buffer);
 }
 void TcpClientSubscriberImpl::SendCommand(SessionIDType sessionID, const char* cmd)
 {
@@ -85,6 +81,6 @@ void TcpClientSubscriberImpl::SendCommand(SessionIDType sessionID, const char* c
     Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
     int n = sprintf(buffer->GetData(), "%s\r\n", cmd);
     buffer->SetLength(n);
-    m_IOThread->Send(sessionID, buffer);
+    m_IO->Send(sessionID, buffer);
 }
 

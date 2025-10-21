@@ -11,7 +11,7 @@ public:
 	virtual bool ConnectToServer(const char* ip, unsigned short port) override;
 protected:
 	virtual bool PostConnect() override;
-	virtual void DoConnect(MyOverlapped* overlapped) override;
+	virtual void OnConnectComplete(MyOverlapped* overlapped) override;
 
 	SOCKET PrepareConnectSocket();
 

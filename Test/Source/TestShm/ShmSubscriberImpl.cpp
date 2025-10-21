@@ -5,14 +5,13 @@
 #include <assert.h>
 
 static int g_Count = 0;
-ShmSubscriberImpl::ShmSubscriberImpl(IOBase* ioBase, ServerTypeType serverType)
-	:m_IOBase(ioBase), m_ServerType(serverType), m_Connected(false), m_SessionID(0LL)
+ShmSubscriberImpl::ShmSubscriberImpl(IOBase* io, ServerTypeType serverType)
+	:m_IO(io), m_ServerType(serverType), m_Connected(false), m_SessionID(0LL)
 {
 	m_Buff = new char[BuffSize];
 	m_Length = 0;
-	m_SendBuff = new Buffer<BuffSize>();
 
-	m_IOBase->Subscribe(this);
+	m_IO->Subscribe(this);
 }
 void ShmSubscriberImpl::OnConnect(SessionIDType sessionID, const char* ip, int port)
 {
@@ -63,12 +62,9 @@ void ShmSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer
 			if (m_ServerType == ServerTypeType::Server)
 			{
 				shmPackage->ShmType = (int)ServerTypeType::Server;
-				m_SendBuff->Append((char*)shmPackage, sizeof(ShmPackage));
-				int sendLen = 0;
-				while (sendLen < sizeof(ShmPackage))
-				{
-					sendLen += m_IOBase->Send(sessionID, m_SendBuff);
-				}
+				auto sendBuff = new Buffer<BuffSize>();
+				sendBuff->Append((char*)shmPackage, sizeof(ShmPackage));
+				m_IO->Send(sessionID, sendBuff);
 			}
 		}
 	}

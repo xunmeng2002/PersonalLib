@@ -20,7 +20,7 @@ public:
 	void Send(SessionIDType sessionID);
 	void SendCommand(SessionIDType sessionID, const char* cmd);
 private:
-	TcpBase* m_IOThread;
+	TcpBase* m_IO;
 	std::map<SessionIDType, int> m_MessageCounts;
 	std::chrono::high_resolution_clock::time_point m_LastSendTime;
 };

@@ -16,7 +16,18 @@ TcpEpollBase::~TcpEpollBase()
 	close(m_EpollFd);
 #endif
 }
-
+void TcpEpollBase::HandleSendBufferCache()
+{
+	IOBase::HandleSendBufferCache();
+	for (auto& it : m_SendBuffers)
+	{
+		if (!it.second.empty())
+		{
+			auto connect = (TcpConnect*)m_Connects[it.first];
+			AddWriteEpollEvent(connect);
+		}
+	}
+}
 void TcpEpollBase::HandleTcpEvent()
 {
 #ifdef LINUX
@@ -40,25 +51,10 @@ void TcpEpollBase::HandleTcpEvent()
 		}
 		else if (epollEvent.events & EPOLLOUT)
 		{
-			int error = 0;
-			socklen_t len = sizeof(error);
-			int ret = getsockopt(tcpConnect->SocketID, SOL_SOCKET, SO_ERROR, &error, &len);
-			if (ret == -1)
+			DoSend(tcpConnect);
+			if (m_SendBuffers[tcpConnect->SessionID].empty())
 			{
-				WriteLog(LogLevel::Warning, "getsockopt Failed. SessionID:%lld, SocketID:%lld", tcpConnect->SessionID, tcpConnect->SocketID);
-				RemoveConnect(tcpConnect);
-				continue;
-			}
-			if (errno != 0)
-			{
-				WriteLog(LogLevel::Warning, "Connect Failed. SessionID:%lld, SocketID:%lld, errno:%d", tcpConnect->SessionID, tcpConnect->SocketID, errno);
-				RemoveConnect(tcpConnect);
-				continue;
-			}
-			else
-			{
-				RemoveEpollEvent(tcpConnect);
-				AddConnect(tcpConnect);
+				RemoveWriteEpollEvent(connect);
 			}
 		}
 	}
@@ -90,4 +86,21 @@ void TcpEpollBase::RemoveEpollEvent(TcpConnect* connect)
 	epoll_ctl(m_EpollFd, EPOLL_CTL_DEL, connect->SocketID, NULL);
 #endif
 }
-
+void TcpEpollBase::AddWriteEpollEvent(TcpConnect* connect)
+{
+#ifdef LINUX
+	epoll_event epollEvent;
+	epollEvent.data.ptr = connect;
+	epollEvent.events = EPOLLIN | EPOLLOUT;
+	epoll_ctl(m_EpollFd, EPOLL_CTL_MOD, connect->SocketID, &epollEvent);
+#endif
+}
+void TcpEpollBase::RemoveWriteEpollEvent(TcpConnect* connect)
+{
+#ifdef LINUX
+	epoll_event epollEvent;
+	epollEvent.data.ptr = connect;
+	epollEvent.events = EPOLLIN;
+	epoll_ctl(m_EpollFd, EPOLL_CTL_MOD, connect->SocketID, &epollEvent);
+#endif
+}

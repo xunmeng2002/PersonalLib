@@ -16,6 +16,7 @@ protected:
 
 protected:
 	fd_set m_ReadFds;
+	fd_set m_WriteFds;
 	fd_set m_ErrorFds;
 	SOCKET m_MaxID;
 	timeval m_SelectSocketTimeOut;

@@ -21,8 +21,21 @@ void ShmClient::HandleIOEvent()
 	if (m_Connected)
 	{
 		unique_lock guard(m_Mutex);
-		m_ThreadConditionVariable.wait_for(guard, m_TimeOut, [&]() {return m_ShmConnect->m_ShmBuffer->GetReadBufferSize() > 0; });
-		DoRecv(m_ShmConnect);
+		m_ThreadConditionVariable.wait_for(guard, m_TimeOut, [&]() {
+			if (m_ShmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
+				return true;
+			if (!m_SendBuffers[m_ShmConnect->SessionID].empty() && m_ShmConnect->m_ShmBuffer->GetWriteBufferSize() > 0)
+				return true;
+			return false;
+			});
+		if (!m_SendBuffers[m_ShmConnect->SessionID].empty() && m_ShmConnect->m_ShmBuffer->GetWriteBufferSize() > 0)
+		{
+			DoSend(m_ShmConnect);
+		}
+		if (m_ShmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
+		{
+			DoRecv(m_ShmConnect);
+		}
 	}
 	else
 	{

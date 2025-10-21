@@ -8,7 +8,7 @@ public:
 
 protected:
 	virtual bool PostAccept() override;
-	virtual void DoAccept(MyOverlapped* overlapped) override;
+	virtual void OnAcceptComplete(MyOverlapped* overlapped) override;
 
 	SOCKET PrepareAcceptSocket();
 };

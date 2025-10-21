@@ -6,7 +6,7 @@
 class ShmSubscriberImpl : public IOSubscriber
 {
 public:
-	ShmSubscriberImpl(IOBase* ioBase, ServerTypeType serverType);
+	ShmSubscriberImpl(IOBase* io, ServerTypeType serverType);
 
 	virtual void OnConnect(SessionIDType sessionID, const char* ip, int port) override;
 	virtual void OnDisConnect(SessionIDType sessionID, const char* ip, int port) override;
@@ -17,12 +17,11 @@ public:
 	bool m_Connected;
 	SessionIDType m_SessionID;
 private:
-	IOBase* m_IOBase;
+	IOBase* m_IO;
 	ServerTypeType m_ServerType;
 
 	char* m_Buff;
 	int m_Length;
-	Buffer<BuffSize>* m_SendBuff;
 };
 
 

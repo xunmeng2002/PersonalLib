@@ -102,18 +102,7 @@ bool Protocol::Send(Package* package)
 		return false;
 	Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
 	buffer->SetLength(package->MakePackage(m_ProtocolType, buffer->GetData(), BuffSize));
-	while (buffer->GetLength() > 0)
-	{
-		auto sendLen = m_IOBase->Send(package->SessionID, buffer);
-		if (sendLen < 0)
-		{
-			auto lastError = WSAGetLastError();
-			WriteLog(LogLevel::Warning, "Protocol::Send Failed. sendLen:%d, lastError:%d", sendLen, lastError);
-			return false;
-		}
-		buffer->Shift(sendLen);
-	}
-	buffer->Free();
+	m_IOBase->Send(package->SessionID, buffer);
 	return true;
 }
 

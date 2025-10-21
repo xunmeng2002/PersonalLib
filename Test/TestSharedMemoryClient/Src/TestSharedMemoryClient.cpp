@@ -35,22 +35,16 @@ static void TestShm()
 		this_thread::sleep_for(chrono::seconds(1));
 	}
 
-	Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
 	ShmPackage shmPackage;
 	for (auto i = 0; i < 10; ++i)
 	{
+		Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
 		memset(&shmPackage, 0, sizeof(ShmPackage));
 		shmPackage.ShmType = (int)ServerTypeType::Client;
 		shmPackage.Count = i;
 		sprintf(shmPackage.Data, "Count[%d]", i);
 		sendBuff->Append((char*)&shmPackage, sizeof(ShmPackage));
-
-		int sendLen = 0;
-		while (sendLen < sizeof(ShmPackage))
-		{
-			sendLen += shmClient->Send(shmSubscriberImpl->m_SessionID, sendBuff);
-		}
-		sendBuff->Reset();
+		shmClient->Send(shmSubscriberImpl->m_SessionID, sendBuff);
 	}
 
 	std::this_thread::sleep_for(chrono::seconds(10));
@@ -77,22 +71,16 @@ static void TestSingleShm()
 		this_thread::sleep_for(chrono::seconds(1));
 	}
 
-	Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
 	ShmPackage shmPackage;
 	for (auto i = 0; i < 10; ++i)
 	{
+		Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
 		memset(&shmPackage, 0, sizeof(ShmPackage));
 		shmPackage.ShmType = (int)ServerTypeType::Client;
 		shmPackage.Count = i;
 		sprintf(shmPackage.Data, "Count[%d]", i);
 		sendBuff->Append((char*)&shmPackage, sizeof(ShmPackage));
-
-		int sendLen = 0;
-		while (sendLen < sizeof(ShmPackage))
-		{
-			sendLen += singleShm->Send(shmSubscriberImpl->m_SessionID, sendBuff);
-		}
-		sendBuff->Reset();
+		singleShm->Send(shmSubscriberImpl->m_SessionID, sendBuff);
 	}
 
 	std::this_thread::sleep_for(chrono::seconds(10));

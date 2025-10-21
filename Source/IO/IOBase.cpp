@@ -41,6 +41,25 @@ void IOBase::DisConnectAll()
 	}
 }
 
+void IOBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
+{
+	lock_guard<mutex> guard(m_SendBufferCahcesMutex);
+	m_SendBufferCaches.push_back(make_pair(sessionID, buffer));
+}
+void IOBase::HandleIOEvent()
+{
+	HandleSendBufferCache();
+}
+void IOBase::HandleSendBufferCache()
+{
+	lock_guard<mutex> guard(m_SendBufferCahcesMutex);
+	for (auto& it : m_SendBufferCaches)
+	{
+		auto& sendBuffers = m_SendBuffers[it.first];
+		sendBuffers.push_back(it.second);
+	}
+	m_SendBufferCaches.clear();
+}
 void IOBase::DoDisConnect()
 {
 	if (m_DisConnectSessionIDs.empty())

@@ -14,5 +14,5 @@ public:
 	virtual void OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 
 private:
-	TcpBase* m_IOThread;
+	TcpBase* m_IO;
 };

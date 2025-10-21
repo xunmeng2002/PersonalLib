@@ -6,13 +6,13 @@
 
 
 TcpServerSubscriberImpl::TcpServerSubscriberImpl(TcpBase* tcp)
-    :m_IOThread(tcp)
+    :m_IO(tcp)
 {
-    m_IOThread->Subscribe(this);
+    m_IO->Subscribe(this);
 }
 TcpServerSubscriberImpl::~TcpServerSubscriberImpl()
 {
-    m_IOThread->UnSubscribe();
+    m_IO->UnSubscribe();
 }
 
 void TcpServerSubscriberImpl::OnConnect(SessionIDType sessionID, const char* ip, int port)
@@ -32,9 +32,5 @@ void TcpServerSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* 
     auto n = sprintf(message, "TcpServerSubscriberImpl::OnRecv SessionID:[%lld], Data:[%s]", (long long)sessionID, buffer->GetData());
     WriteLog(LogLevel::Info, message);
 
-    auto sendLen = m_IOThread->Send(sessionID, buffer);
-    if (sendLen <= 0)
-    {
-        WriteLog(LogLevel::Error, "m_IOThread->Send sendLen:%d, Errno:%d, buffer Len:%d, Data:%s", sendLen, GetLastError(), buffer->GetLength(), buffer->GetData());
-    }
+    m_IO->Send(sessionID, buffer);
 }

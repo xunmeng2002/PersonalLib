@@ -152,8 +152,8 @@ void ThriftClient::ReqLogin()
     auto msg = OpEncoder::encode(g_login_constants.WMESSAGE_LOGIN_LOGIN, 0, req);
     Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
     sendBuff->Append(msg.c_str(), msg.length());
-    auto len = m_IO->Send(m_LoginSessionID, sendBuff);
-    WriteLog(LogLevel::Info, "ReqLogin: MsgLen:%d, SendLen:%d", msg.length(), len);
+    m_IO->Send(m_LoginSessionID, sendBuff);
+    WriteLog(LogLevel::Info, "ReqLogin: MsgLen:%d", msg.length());
 }
 void ThriftClient::QryUnit(const SessionIDType& sessionID, const std::string& hostname)
 {
@@ -162,8 +162,8 @@ void ThriftClient::QryUnit(const SessionIDType& sessionID, const std::string& ho
     auto msg = OpEncoder::encode(g_unit_constants.WMESSAGE_MONITOR_UNIT_LIST, 0, req);
     Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
     sendBuff->Append(msg.c_str(), msg.length());
-    auto len = m_IO->Send(sessionID, sendBuff);
-    WriteLog(LogLevel::Info, "QryUnit: MsgLen:%d, SendLen:%d", msg.length(), len);
+    m_IO->Send(sessionID, sendBuff);
+    WriteLog(LogLevel::Info, "QryUnit: MsgLen:%d", msg.length());
 }
 void ThriftClient::QryInstrument(const SessionIDType& sessionID, const std::string& unitname)
 {
@@ -172,8 +172,8 @@ void ThriftClient::QryInstrument(const SessionIDType& sessionID, const std::stri
     auto msg = OpEncoder::encode(g_instrument_constants.WMESSAGE_MONITOR_LIST_UNIT_INSTRUMENT, 0, req);
     Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
     sendBuff->Append(msg.c_str(), msg.length());
-    auto len = m_IO->Send(sessionID, sendBuff);
-    WriteLog(LogLevel::Info, "QryInstrument: MsgLen:%d, SendLen:%d", msg.length(), len);
+    m_IO->Send(sessionID, sendBuff);
+    WriteLog(LogLevel::Info, "QryInstrument: MsgLen:%d", msg.length());
 }
 void ThriftClient::QryAccount(const SessionIDType& sessionID, const std::string& unitname)
 {
@@ -182,8 +182,8 @@ void ThriftClient::QryAccount(const SessionIDType& sessionID, const std::string&
     auto msg = OpEncoder::encode(g_account_constants.WMESSAGE_MONITOR_LIST_ACCOUNT, 0, req);
     Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
     sendBuff->Append(msg.c_str(), msg.length());
-    auto len = m_IO->Send(sessionID, sendBuff);
-    WriteLog(LogLevel::Info, "QryAccount: MsgLen:%d, SendLen:%d", msg.length(), len);
+    m_IO->Send(sessionID, sendBuff);
+    WriteLog(LogLevel::Info, "QryAccount: MsgLen:%d", msg.length());
 }
 void ThriftClient::QryStrategy(const SessionIDType& sessionID, const std::string& unitname)
 {
@@ -192,8 +192,8 @@ void ThriftClient::QryStrategy(const SessionIDType& sessionID, const std::string
     auto msg = OpEncoder::encode(g_strategy_constants.WMESSAGE_MONITOR_LIST_STRATEGY, 0, req);
     Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
     sendBuff->Append(msg.c_str(), msg.length());
-    auto len = m_IO->Send(sessionID, sendBuff);
-    WriteLog(LogLevel::Info, "QryStrategy: MsgLen:%d, SendLen:%d", msg.length(), len);
+    m_IO->Send(sessionID, sendBuff);
+    WriteLog(LogLevel::Info, "QryStrategy: MsgLen:%d", msg.length());
 }
 void ThriftClient::QryAndSubscribeUnitTopic(const SessionIDType& sessionID, const std::string& unitname)
 {
@@ -202,8 +202,8 @@ void ThriftClient::QryAndSubscribeUnitTopic(const SessionIDType& sessionID, cons
     auto msg = OpEncoder::encode(g_topic_constants.WMESSAGE_TOPIC_SUBSCRIBE_UNIT, 0, req);
     Buffer<BuffSize>* sendBuff = new Buffer<BuffSize>();
     sendBuff->Append(msg.c_str(), msg.length());
-    auto len = m_IO->Send(sessionID, sendBuff);
-    WriteLog(LogLevel::Info, "QryAndSubscribeUnitTopic: MsgLen:%d, SendLen:%d", msg.length(), len);
+    m_IO->Send(sessionID, sendBuff);
+    WriteLog(LogLevel::Info, "QryAndSubscribeUnitTopic: MsgLen:%d", msg.length());
 }
 
 void ThriftClient::OnRspLogin(const SessionIDType& sessionID, const LoginResponse& rsp)

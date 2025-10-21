@@ -33,7 +33,7 @@ bool TcpIocpServer::PostAccept()
     }
     return true;
 }
-void TcpIocpServer::DoAccept(MyOverlapped* overlapped)
+void TcpIocpServer::OnAcceptComplete(MyOverlapped* overlapped)
 {
     auto tcpConnect = (TcpConnect*)overlapped->Connect;
     SOCKADDR_IN* remoteAddr = NULL;

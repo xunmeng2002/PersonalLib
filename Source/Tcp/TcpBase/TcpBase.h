@@ -18,7 +18,7 @@ public:
 	
 	virtual bool Init() override;
 
-	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
+	virtual void DoSend(Connect* connect) override;
 	virtual void DoRecv(Connect* connect) override;
 	virtual void HandleIOEvent() override;
 
@@ -27,7 +27,6 @@ protected:
 	virtual void HandleTcpEvent() = 0;
 	virtual void CheckConnect() {}
 	virtual void DoAccept();
-	
 
 	bool InitSocket(SOCKET socketID);
 	SOCKET PrepareSocket(int family);
