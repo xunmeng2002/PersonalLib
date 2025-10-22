@@ -12,6 +12,7 @@ using namespace std;
 TcpBase::TcpBase(ServerTypeType serverType, const char* addressName, int milliSeconds)
 	:IOBase(serverType, addressName, milliSeconds), m_AddressInfo(nullptr), m_Socket(INVALID_SOCKET), m_RemoteAddressLen(sizeof(m_RemoteAddress))
 {
+	SocketInit::GetInstance().Init();
 	memset(&m_RemoteAddress, 0, sizeof(m_RemoteAddress));
 }
 TcpBase::~TcpBase()

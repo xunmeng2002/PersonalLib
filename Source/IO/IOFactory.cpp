@@ -19,7 +19,6 @@ IOBase* IOFactory::CreateIO(ServerTypeType serverType, const char* address, int 
 	if (strncmp(address, "tcp", 3) == 0)
 	{
 		ioType = IOTypeType::Tcp;
-		SocketInit::GetInstance().Init();
 	}
 	else if (strncmp(address, "udp", 3) == 0)
 	{

@@ -7,7 +7,7 @@ using namespace std::chrono;
 
 
 
-TcpProtocolType g_ClientProtocolType = TcpProtocolType::TcpSelect;
+TcpProtocolType g_ClientProtocolType = TcpProtocolType::TcpIocp;
 TcpProtocolType g_ServerProtocolType = TcpProtocolType::TcpIocp;
 const char* g_Address = "tcp://127.0.0.1:20001";
 //const char* g_Address = "shm://TestServerShm:3";
