@@ -8,9 +8,9 @@
 
 TcpConnect* TcpConnect::Allocate(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort)
 {
-	TcpConnect* connectData = MemCacheTemplateSingleton<TcpConnect>::GetInstance().Allocate();
-	connectData->Set(sessionID, socketID, remoteIP, remotePort);
-	return connectData;
+	TcpConnect* tcpConnect = MemCacheTemplateSingleton<TcpConnect>::GetInstance().Allocate();
+	tcpConnect->Set(sessionID, socketID, remoteIP, remotePort);
+	return tcpConnect;
 }
 void TcpConnect::Free()
 {

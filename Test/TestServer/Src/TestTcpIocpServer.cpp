@@ -14,7 +14,8 @@ void TestTcpIocpServer()
     WriteLog(LogLevel::Info, "TestTcpIocpServer");
 #ifdef WINDOWS
     IOThread* ioThread = new IOThread("TcpIocpServer");
-    TcpIocpServer* tcpIocpServer = new TcpIocpServer(g_IocpServerAddress, 5000);
+    //TcpIocpServer* tcpIocpServer = new TcpIocpServer(g_IocpServerAddress, 5000);
+    auto tcpIocpServer = (TcpBase*)IOFactory::CreateIO(ServerTypeType::Server, g_Address, 5000);
     TcpServerSubscriberImpl tcpServerSubscriberImpl(tcpIocpServer);
     ioThread->SetIO(tcpIocpServer);
 

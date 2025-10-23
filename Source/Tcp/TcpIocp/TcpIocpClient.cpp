@@ -39,8 +39,8 @@ bool TcpIocpClient::PostConnect()
         return false;
     }
     TcpConnect* tcpConnect = TcpConnect::Allocate(GetSessionID(), socketID, m_RemoteAddress, m_RemotePort);
-    MyOverlapped* overlapped = MemCacheTemplateSingleton<MyOverlapped>::GetInstance().Allocate();
-    overlapped->Reset();
+    MyOverlapped* overlapped = MyOverlapped::Allocate();
+    overlapped->SetBuffer(Buffer<BuffSize>::Allocate());
     overlapped->EventID = IocpEvent::EventConnect;
     overlapped->Connect = tcpConnect;
 

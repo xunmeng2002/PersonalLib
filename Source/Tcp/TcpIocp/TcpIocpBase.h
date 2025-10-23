@@ -10,6 +10,7 @@ public:
 	~TcpIocpBase();
 	
 	virtual bool Init() override;
+	virtual void Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 protected:
 	virtual void HandleSendBufferCache() override;
 	virtual void HandleTcpEvent() override;

@@ -83,7 +83,11 @@ void TcpBase::DoSend(Connect* connect)
 		}
 	}
 }
-
+void TcpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
+{
+	auto connect = (TcpConnect*)GetConnect(sessionID);
+	send(connect->SocketID, buffer->GetData(), buffer->GetLength(), 0);
+}
 void TcpBase::DoRecv(Connect* connect)
 {
 	auto tcpConnect = (TcpConnect*)connect;

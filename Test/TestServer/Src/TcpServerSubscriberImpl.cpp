@@ -32,5 +32,7 @@ void TcpServerSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* 
     auto n = sprintf(message, "TcpServerSubscriberImpl::OnRecv SessionID:[%lld], Data:[%s]", (long long)sessionID, buffer->GetData());
     WriteLog(LogLevel::Info, message);
 
-    m_IO->Send(sessionID, buffer);
+    auto responseBuffer = new Buffer<BuffSize>();
+    responseBuffer->Append(buffer->GetData(), buffer->GetLength());
+    m_IO->Send(sessionID, responseBuffer);
 }

@@ -18,6 +18,7 @@ add_package(IO ${CMAKE_SOURCE_DIR}/Source/IO)
 add_package(SocketInit ${CMAKE_SOURCE_DIR}/Source/SocketInit)
 add_package(TcpBase ${CMAKE_SOURCE_DIR}/Source/Tcp/TcpBase)
 add_package(TcpSelect ${CMAKE_SOURCE_DIR}/Source/Tcp/TcpSelect)
+add_package(TcpIocp ${CMAKE_SOURCE_DIR}/Source/Tcp/TcpIocp)
 add_package(TcpEpoll ${CMAKE_SOURCE_DIR}/Source/Tcp/TcpEpoll)
 add_package(Shm ${CMAKE_SOURCE_DIR}/Source/Shm)
 

@@ -17,8 +17,8 @@ bool TcpIocpServer::PostAccept()
         return false;
     }
     TcpConnect* tcpConnect = TcpConnect::Allocate(GetSessionID(), socketID, "", "");
-    MyOverlapped* overlapped = MemCacheTemplateSingleton<MyOverlapped>::GetInstance().Allocate();
-    overlapped->Reset();
+    MyOverlapped* overlapped = MyOverlapped::Allocate();
+    overlapped->SetBuffer(Buffer<BuffSize>::Allocate());
     overlapped->EventID = IocpEvent::EventAccept;
     overlapped->Connect = tcpConnect;
 

@@ -2,6 +2,31 @@
 #include "MemCacheTemplateSingleton.h"
 #include "Logger.h"
 
+
+
+TcpIocpConnect* TcpIocpConnect::Allocate(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort)
+{
+	TcpIocpConnect* tcpIocpConnect = MemCacheTemplateSingleton<TcpIocpConnect>::GetInstance().Allocate();
+	tcpIocpConnect->Set(sessionID, socketID, remoteIP, remotePort);
+	return tcpIocpConnect;
+}
+void TcpIocpConnect::Free()
+{
+	MemCacheTemplateSingleton<TcpConnect>::GetInstance().Free(this);
+}
+void TcpIocpConnect::Close()
+{
+	WriteLog(LogLevel::Info, "TcpIocpConnect::Close SessionID:%lld, Socket:%lld", SessionID, SocketID);
+#ifdef WINDOWS
+	shutdown(SocketID, SD_BOTH);
+#endif
+#ifdef LINUX
+	shutdown(SocketID, SHUT_RDWR);
+#endif
+	closesocket(SocketID);
+	SocketID = INVALID_SOCKET;
+}
+
 MyOverlapped::MyOverlapped()
 {
 	Internal = InternalHigh = 0;

@@ -4,9 +4,11 @@
 #include "TcpEpollClient.h"
 #include "TcpEpollServer.h"
 #elif defined WINDOWS
+#include "TcpIocpClient.h"
+#include "TcpIocpServer.h"
+#endif
 #include "TcpSelectClient.h"
 #include "TcpSelectServer.h"
-#endif
 #include "SingleShm.h"
 #include "ShmClient.h"
 #include "ShmServer.h"
@@ -62,7 +64,7 @@ IOBase* IOFactory::CreateIO(ServerTypeType serverType, const char* address, int 
 #ifdef LINUX
 			return new TcpEpollServer(addressName, milliSeconds);
 #elif defined WINDOWS
-			return new TcpSelectServer(addressName, milliSeconds);
+			return new TcpIocpServer(addressName, milliSeconds);
 #endif
 		case IOTypeType::Udp:
 			break;

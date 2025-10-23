@@ -17,6 +17,17 @@ enum class IocpEvent : int
 	EventRecv = 8,				//«Î«ÛΩ” ’
 };
 
+class TcpIocpConnect : public TcpConnect
+{
+public:
+	static TcpIocpConnect* Allocate(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort);
+	virtual void Free() override;
+	void Close();
+
+	std::atomic<bool> HasPendingSend = false;
+	std::atomic<int> ConnectRefCount = 0;
+};
+
 class MyOverlapped : public OVERLAPPED
 {
 public:
@@ -31,7 +42,7 @@ public:
 	IocpEvent EventID;
 	WSABUF WsaBuffer;
 	Buffer<BuffSize>* MyBuffer;
-	TcpConnect* Connect;
+	TcpIocpConnect* Connect;
 };
 
 

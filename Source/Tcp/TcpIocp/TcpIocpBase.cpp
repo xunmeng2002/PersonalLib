@@ -74,7 +74,14 @@ bool TcpIocpBase::Init()
 
     return true;
 }
-
+void TcpIocpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
+{
+    auto connect = (TcpConnect*)GetConnect(sessionID);
+    MyOverlapped* overlapped = MyOverlapped::Allocate();
+    overlapped->SetBuffer(buffer);
+    overlapped->Connect = connect;
+    PostSend(overlapped);
+}
 void TcpIocpBase::HandleSendBufferCache()
 {
     IOBase::HandleSendBufferCache();
@@ -102,23 +109,35 @@ void TcpIocpBase::HandleTcpEvent()
 
     auto bOK = IOCompletePort::GetInstance().GetStatus(&len, &competionKey, (LPOVERLAPPED*)&overlapped, (DWORD)m_TimeOut.count());
     WriteLog(LogLevel::Debug, "CompletionKey:%d, Len:%d, Ret:%d.", competionKey, len, bOK);
+    if (!bOK)
+    {
+        auto errorID = GetLastError();
+        if (errorID == WAIT_TIMEOUT)
+        {
+            return;
+        }
+        else
+        {
+            if (overlapped != nullptr)
+            {
+                WriteLog(LogLevel::Info, "GetStatus Failed. PostDisConnect For SessionID:%lld, CompetionKey:%d.", overlapped->Connect->SessionID, competionKey);
+                PostDisConnect(overlapped);
+                return;
+            }
+            else
+            {
+                WriteLog(LogLevel::Warning, "GetStatus Failed. Overlapped is NULL. Errno:%d", errorID);
+                return;
+            }
+        }
+    }
     if (overlapped == nullptr)
     {
-        WriteLog(LogLevel::Info, "CompetionKey:%d, OVERLAPPED is null.", competionKey);
+        WriteLog(LogLevel::Error, "CompetionKey:%d, OVERLAPPED is null.", competionKey);
         return;
     }
     auto tcpConnect = overlapped->Connect;
-    if (!bOK)
-    {
-        WriteLog(LogLevel::Warning, "GetQueuedCompletionStatus Failed. Errno:%d, SessionID:%lld, Socket:%lld.", 
-            GetLastError(), tcpConnect->SessionID, tcpConnect->SocketID);
-        if (tcpConnect != nullptr && tcpConnect->SocketID != INVALID_SOCKET)
-        {
-            PostDisConnect(overlapped);
-        }
-        MemCacheTemplateSingleton<MyOverlapped>::GetInstance().Free(overlapped);
-        return;
-    }
+
     if (len == 0 && (overlapped->EventID == IocpEvent::EventSend || overlapped->EventID == IocpEvent::EventRecv))
     {
         PostDisConnect(overlapped);
@@ -161,8 +180,8 @@ void TcpIocpBase::DoDisConnect()
 bool TcpIocpBase::PostDisConnect(Connect* connect)
 {
     auto tcpConnect = (TcpConnect*)connect;
-    MyOverlapped* overlapped = MemCacheTemplateSingleton<MyOverlapped>::GetInstance().Allocate();
-    overlapped->Reset();
+    MyOverlapped* overlapped = MyOverlapped::Allocate();
+    overlapped->SetBuffer(Buffer<BuffSize>::Allocate());
     overlapped->EventID = IocpEvent::EventDisConnect;
     overlapped->Connect = tcpConnect;
 
@@ -230,7 +249,7 @@ bool TcpIocpBase::PostRecv(MyOverlapped* overlapped)
 void TcpIocpBase::OnDisConnectComplete(MyOverlapped* overlapped)
 {
     RemoveConnect(overlapped->Connect);
-    MemCacheTemplateSingleton<MyOverlapped>::GetInstance().Free(overlapped);
+    overlapped->Free();
 }
 void TcpIocpBase::OnSendComplete(MyOverlapped* overlapped, int bytesTransferred)
 {
