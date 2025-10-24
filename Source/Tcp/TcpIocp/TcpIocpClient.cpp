@@ -7,20 +7,34 @@
 #include "Logger.h"
 
 
-TcpIocpClient::TcpIocpClient(const char* localAddressName, const char* remoteAddressName, int milliSeconds, int backlog)
-	:TcpIocpBase(ServerTypeType::Client, localAddressName, milliSeconds, backlog), m_RemoteAddressInfo(nullptr)
+TcpIocpClient::TcpIocpClient(const char* addressName, int milliSeconds, int backlog)
+	:TcpIocpBase(ServerTypeType::Client, addressName, milliSeconds, backlog)
 {
-	ParseAddress(remoteAddressName, m_RemoteAddress, m_RemotePort);
-    auto ret = GetAddrinfo(m_RemoteAddress.c_str(), m_RemotePort.c_str(), m_RemoteAddressInfo);
+
+}
+bool TcpIocpClient::Init()
+{
+    if (!TcpIocpBase::Init())
+        return false;
+    auto ret = GetClientAddrinfo(nullptr, "0", m_ClientLocalAddressInfo, m_AddressInfo->ai_family);
     if (ret < 0)
     {
-        WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:%s, Port:%s, ret:%d, Errno:%d", m_RemoteAddress.c_str(), m_RemotePort.c_str(), ret, errno);
+        WriteLog(LogLevel::Info, "GetAddrinfo for m_ClientLocalAddressInfo Failed. ret:%d, Errno:%d", ret, WSAGetLastError());
+        return false;
     }
+    PostConnect();
+    return true;
 }
 bool TcpIocpClient::ConnectToServer(const char* ip, unsigned short port)
 {
-    m_RemoteAddress = ip;
-    m_RemotePort = std::to_string(port);
+    m_Address = ip;
+    m_Port = std::to_string(port);
+    auto ret = GetAddrinfo(m_Address.c_str(), m_Port.c_str(), m_AddressInfo);
+    if (ret < 0)
+    {
+        WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:%s Port:%s ret:%d, Errno:%d", m_Address.c_str(), m_Port.c_str(), ret, WSAGetLastError());
+        return false;
+    }
     return PostConnect();
 }
 
@@ -32,7 +46,7 @@ bool TcpIocpClient::PostConnect()
         WriteLog(LogLevel::Error, "PrepareConnectSocket SOCKET Failed.");
         return false;
     }
-    TcpIocpConnect* tcpIocpConnect = TcpIocpConnect::Allocate(GetSessionID(), socketID, m_RemoteAddress, m_RemotePort);
+    TcpIocpConnect* tcpIocpConnect = TcpIocpConnect::Allocate(GetSessionID(), socketID, m_Address, m_Port);
     MyOverlapped* overlapped = MyOverlapped::Allocate();
     overlapped->SetBuffer(Buffer<BuffSize>::Allocate());
     overlapped->EventID = IocpEvent::EventConnect;
@@ -40,7 +54,7 @@ bool TcpIocpClient::PostConnect()
 
     WriteLog(LogLevel::Info, "PostConnect For SessionID:%lld, Socket:%lld", tcpIocpConnect->SessionID, tcpIocpConnect->SocketID);
     DWORD transBytes = 0;
-    auto ret = SocketApi::GetInstance().ConnectEx(tcpIocpConnect->SocketID, (const sockaddr*)m_RemoteAddressInfo->ai_addr, sizeof(SOCKADDR_IN),
+    auto ret = SocketApi::GetInstance().ConnectEx(tcpIocpConnect->SocketID, (const sockaddr*)m_AddressInfo->ai_addr, sizeof(SOCKADDR_IN),
         NULL, 0, &transBytes, overlapped);
     if (!ret && WSAGetLastError() != ERROR_IO_PENDING)
     {
@@ -60,7 +74,8 @@ void TcpIocpClient::OnConnectComplete(MyOverlapped* overlapped)
 }
 SOCKET TcpIocpClient::PrepareConnectSocket()
 {
-    SOCKET socketID = WSASocket(m_AddressInfo->ai_family, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
+    WriteLog(LogLevel::Info, "AI_Family for m_ClientLocalAddressInfo:%d, m_AddressInfo:%d", m_ClientLocalAddressInfo->ai_family, m_AddressInfo->ai_family);
+    SOCKET socketID = WSASocket(m_ClientLocalAddressInfo->ai_family, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
     if (socketID == INVALID_SOCKET)
     {
         WriteLog(LogLevel::Error, "Create SOCKET Failed.");
@@ -74,7 +89,7 @@ SOCKET TcpIocpClient::PrepareConnectSocket()
         closesocket(socketID);
         return INVALID_SOCKET;
     }
-    if (!Bind(socketID, m_AddressInfo))
+    if (!Bind(socketID, m_ClientLocalAddressInfo))
     {
         closesocket(socketID);
         return INVALID_SOCKET;

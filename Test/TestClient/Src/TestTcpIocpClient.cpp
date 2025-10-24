@@ -14,7 +14,7 @@ void TestTcpIocpClient()
 
 #ifdef WINDOWS
     IOThread* ioThread = new IOThread("TcpIocpClient");
-    TcpIocpClient* tcpIocpClient = new TcpIocpClient(g_IocpClientAddress, g_IocpServerAddress, 5000);
+    TcpIocpClient* tcpIocpClient = new TcpIocpClient(g_IocpServerAddress, 5000);
     TcpClientSubscriberImpl tcpClientSubscriberImpl(tcpIocpClient, ioThread);
     ioThread->SetIO(tcpIocpClient);
 

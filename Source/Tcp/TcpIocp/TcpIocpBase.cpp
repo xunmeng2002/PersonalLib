@@ -50,31 +50,6 @@ bool TcpIocpBase::Init()
         WriteErrorLog(GetLastError(), "AssociateDevice Failed.");
         return false;
     }
-    if (!Bind(m_Socket, m_AddressInfo))
-    {
-        return false;
-    }
-    if (m_ServerType == ServerTypeType::Client)
-    {
-        PostConnect();
-    }
-    if (m_ServerType == ServerTypeType::Server)
-    {
-
-        if (!Listen(m_Socket, m_BackLog))
-        {
-            return false;
-        }
-
-        for (auto i = 0; i < m_BackLog; i++)
-        {
-            if (!PostAccept())
-            {
-                WriteLog(LogLevel::Error, "PostAccept Failed.");
-                return false;
-            }
-        }
-    }
 
     return true;
 }

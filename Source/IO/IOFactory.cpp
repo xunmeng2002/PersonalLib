@@ -46,7 +46,7 @@ IOBase* IOFactory::CreateIO(ServerTypeType serverType, const char* address, int 
 #ifdef LINUX
 			return new TcpEpollClient(addressName, milliSeconds);
 #elif defined WINDOWS
-			return new TcpSelectClient(addressName, milliSeconds);
+			return new TcpIocpClient(addressName, milliSeconds);
 #endif
 		case IOTypeType::Udp:
 			break;

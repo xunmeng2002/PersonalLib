@@ -2,6 +2,7 @@
 #include "TcpIocpSockApi.h"
 #include "TcpIocpCompletePort.h"
 #include "Logger.h"
+#include "TcpUtility.h"
 
 
 TcpIocpServer::TcpIocpServer(const char* addressName, int milliSeconds, int backlog)
@@ -9,7 +10,28 @@ TcpIocpServer::TcpIocpServer(const char* addressName, int milliSeconds, int back
 {
 
 }
-
+bool TcpIocpServer::Init()
+{
+    if (!TcpIocpBase::Init())
+        return false;
+    if (!Bind(m_Socket, m_AddressInfo))
+    {
+        return false;
+    }
+    if (!Listen(m_Socket, m_BackLog))
+    {
+        return false;
+    }
+    for (auto i = 0; i < m_BackLog; i++)
+    {
+        if (!PostAccept())
+        {
+            WriteLog(LogLevel::Error, "PostAccept Failed.");
+            return false;
+        }
+    }
+    return true;
+}
 bool TcpIocpServer::PostAccept()
 {
     SOCKET socketID = PrepareAcceptSocket();

@@ -25,6 +25,18 @@ int GetAddrinfo(const char* ip, const char* port, addrinfo*& addrInfo)
 	WriteLog(LogLevel::Info, "GetAddrinfo: IP:%s Port:%s GetAddrinfo ret:%d", ip, port, ret);
 	return ret;
 }
+int GetClientAddrinfo(const char* ip, const char* port, addrinfo*& addrInfo, int serverAddressFamily)
+{
+	struct addrinfo hints;
+	::memset(&hints, 0, sizeof(hints));
+	hints.ai_flags = 0;
+	hints.ai_family = serverAddressFamily;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_protocol = IPPROTO_TCP;
+	auto ret = getaddrinfo(ip, port, &hints, &addrInfo);
+	WriteLog(LogLevel::Info, "GetClientAddrinfo: IP:%s Port:%s GetAddrinfo ret:%d", ip, port, ret);
+	return ret;
+}
 int GetNameinfo(const sockaddr* sockAddr, int len, std::string& ip, std::string& port, int flags)
 {
 	static mutex getnameinfoMutex;
