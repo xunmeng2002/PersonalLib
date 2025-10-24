@@ -19,7 +19,7 @@ void TestTcpSelectClient()
     IOThread* ioThread = new IOThread("TcpSelectClient");
     auto tcpAddress = g_Address + 6;
     TcpSelectClient* tcpSelectClient = new TcpSelectClient(tcpAddress, 1000);
-    TcpClientSubscriberImpl tcpClientSubscriberImpl(tcpSelectClient);
+    TcpClientSubscriberImpl tcpClientSubscriberImpl(tcpSelectClient, ioThread);
     ioThread->SetIO(tcpSelectClient);
 
     if (!tcpSelectClient->Init())
@@ -28,8 +28,5 @@ void TestTcpSelectClient()
         return;
     }
     ioThread->Start();
-
-    std::this_thread::sleep_for(std::chrono::seconds(50));
-    ioThread->Stop();
     ioThread->Join();
 }

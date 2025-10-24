@@ -1,6 +1,8 @@
 #pragma once
 #include "ThreadBase.h"
 #include "TcpBase.h"
+#include "IOThread.h"
+#include "TimeUtility.h"
 #include <map>
 #include <chrono>
 
@@ -8,7 +10,7 @@
 class TcpClientSubscriberImpl : public IOSubscriber
 {
 public:
-	TcpClientSubscriberImpl(TcpBase* tcp);
+	TcpClientSubscriberImpl(TcpBase* tcp, IOThread* ioThread);
 	~TcpClientSubscriberImpl();
 
 
@@ -21,6 +23,7 @@ public:
 	void SendCommand(SessionIDType sessionID, const char* cmd);
 private:
 	TcpBase* m_IO;
+	IOThread* m_IOThread;
 	std::map<SessionIDType, int> m_MessageCounts;
-	std::chrono::high_resolution_clock::time_point m_LastSendTime;
+	std::chrono::steady_clock::time_point m_StartSendTime;
 };

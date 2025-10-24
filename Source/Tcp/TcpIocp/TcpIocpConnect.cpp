@@ -12,10 +12,6 @@ TcpIocpConnect* TcpIocpConnect::Allocate(SessionIDType sessionID, const SOCKET& 
 }
 void TcpIocpConnect::Free()
 {
-	MemCacheTemplateSingleton<TcpConnect>::GetInstance().Free(this);
-}
-void TcpIocpConnect::Close()
-{
 	WriteLog(LogLevel::Info, "TcpIocpConnect::Close SessionID:%lld, Socket:%lld", SessionID, SocketID);
 #ifdef WINDOWS
 	shutdown(SocketID, SD_BOTH);
@@ -25,6 +21,7 @@ void TcpIocpConnect::Close()
 #endif
 	closesocket(SocketID);
 	SocketID = INVALID_SOCKET;
+	MemCacheTemplateSingleton<TcpConnect>::GetInstance().Free(this);
 }
 
 MyOverlapped::MyOverlapped()
@@ -33,6 +30,7 @@ MyOverlapped::MyOverlapped()
 	Offset = OffsetHigh = 0;
 	hEvent = nullptr;
 
+	EventID = IocpEvent::EventNone;
 	MyBuffer = nullptr;
 	WsaBuffer.buf = nullptr;
 	WsaBuffer.len = 0;

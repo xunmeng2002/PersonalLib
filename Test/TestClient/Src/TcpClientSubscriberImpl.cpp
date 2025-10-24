@@ -10,8 +10,8 @@
 using namespace std;
 using namespace std::chrono;
 
-TcpClientSubscriberImpl::TcpClientSubscriberImpl(TcpBase* tcp)
-    :m_IO(tcp)
+TcpClientSubscriberImpl::TcpClientSubscriberImpl(TcpBase* tcp, IOThread* ioThread)
+    :m_IO(tcp), m_IOThread(ioThread)
 {
     m_IO->Subscribe(this);
 }
@@ -25,26 +25,32 @@ void TcpClientSubscriberImpl::OnConnect(SessionIDType sessionID, const char* ip,
 {
     WriteLog(LogLevel::Info, "TcpClientSubscriberImpl::OnConnect SessionID:[%lld], IP:[%s], Port:[%d]", sessionID, ip, port);
     m_MessageCounts.insert(std::make_pair(sessionID, 0));
+    m_StartSendTime = steady_clock::now();
     Send(sessionID);
 }
 void TcpClientSubscriberImpl::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
 {
     WriteLog(LogLevel::Info, "TcpClientSubscriberImpl::OnDisConnect SessionID:[%lld], IP:[%s], Port:[%d]", sessionID, ip, port);
     m_MessageCounts.erase(sessionID);
+
+    m_IOThread->Stop();
 }
 void TcpClientSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
-    auto recvTime = high_resolution_clock::now();
-    auto t = duration_cast<microseconds>(recvTime - m_LastSendTime);
-    //WriteLog(LogLevel::Info, "TimeCost From Send to Recv:%lld us", t.count());
-
-    WriteLog(LogLevel::Info, "TcpClientSubscriberImpl::OnRecv SessionID:[%lld], Length:[%d], Data:[%s]", sessionID, buffer->GetLength(), buffer->GetData());
-    if (m_MessageCounts[sessionID] < 5)
+    auto count = m_MessageCounts[sessionID];
+    //if (count % 10 == 0)
+    {
+        WriteLog(LogLevel::Info, "TcpClientSubscriberImpl::OnRecv SessionID:[%lld], Length:[%d], Data:[%s]", sessionID, buffer->GetLength(), buffer->GetData());
+    }
+    if (m_MessageCounts[sessionID] < 10)
     {
         Send(sessionID);
     }
     else
     {
+        auto duration = GetDuration<milliseconds>(m_StartSendTime);
+        WriteLog(LogLevel::Info, "TimeCost:%lld ms", duration);
+
         m_IO->DisConnect(sessionID);
         buffer->Free();
     }
@@ -72,7 +78,6 @@ void TcpClientSubscriberImpl::Send(SessionIDType sessionID)
     memcpy(data, message, len);
     buffer->SetLength((unsigned)len);
 
-    m_LastSendTime = high_resolution_clock::now();
     m_IO->Send(sessionID, buffer);
 }
 void TcpClientSubscriberImpl::SendCommand(SessionIDType sessionID, const char* cmd)

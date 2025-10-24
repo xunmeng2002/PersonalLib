@@ -7,7 +7,6 @@ class TcpIocpClient : public TcpIocpBase
 public:
 	TcpIocpClient(const char* localAddressName, const char* remoteAddressName, int milliSeconds, int backlog = 5);
 
-	virtual bool Init() override;
 	virtual bool ConnectToServer(const char* ip, unsigned short port) override;
 protected:
 	virtual bool PostConnect() override;

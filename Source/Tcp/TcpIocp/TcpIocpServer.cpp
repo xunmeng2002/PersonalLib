@@ -3,11 +3,13 @@
 #include "TcpIocpCompletePort.h"
 #include "Logger.h"
 
+
 TcpIocpServer::TcpIocpServer(const char* addressName, int milliSeconds, int backlog)
 	:TcpIocpBase(ServerTypeType::Server, addressName, milliSeconds, backlog)
 {
 
 }
+
 bool TcpIocpServer::PostAccept()
 {
     SOCKET socketID = PrepareAcceptSocket();
@@ -16,38 +18,42 @@ bool TcpIocpServer::PostAccept()
         WriteLog(LogLevel::Error, "PrepareAcceptSocket SOCKET Failed.");
         return false;
     }
-    TcpConnect* tcpConnect = TcpConnect::Allocate(GetSessionID(), socketID, "", "");
+    TcpIocpConnect* tcpIocpConnect = TcpIocpConnect::Allocate(GetSessionID(), socketID, "", "");
     MyOverlapped* overlapped = MyOverlapped::Allocate();
     overlapped->SetBuffer(Buffer<BuffSize>::Allocate());
     overlapped->EventID = IocpEvent::EventAccept;
-    overlapped->Connect = tcpConnect;
+    overlapped->Connect = tcpIocpConnect;
 
-    WriteLog(LogLevel::Info, "PostAccept SessionID:%lld, Socket:%lld", tcpConnect->SessionID, tcpConnect->SocketID);
+    WriteLog(LogLevel::Info, "PostAccept SessionID:%lld, Socket:%lld", tcpIocpConnect->SessionID, tcpIocpConnect->SocketID);
     DWORD transBytes = 0;
-    auto ret = SocketApi::GetInstance().AcceptEx(m_Socket, tcpConnect->SocketID, overlapped->WsaBuffer.buf, 0, (sizeof(SOCKADDR_IN) + 16), (sizeof(SOCKADDR_IN) + 16), &transBytes, overlapped);
+    auto ret = SocketApi::GetInstance().AcceptEx(m_Socket, tcpIocpConnect->SocketID, overlapped->WsaBuffer.buf, 0, (sizeof(SOCKADDR_IN) + 16), (sizeof(SOCKADDR_IN) + 16), &transBytes, overlapped);
     auto lastError = WSAGetLastError();
     if (ret != 0 && lastError != ERROR_IO_PENDING)
     {
-        WriteLog(LogLevel::Error, "Call AcceptEx Failed. SessionID:%lld, Socket:%lld, Errno:%d", tcpConnect->SessionID, tcpConnect->SocketID, lastError);
+        WriteLog(LogLevel::Error, "Call AcceptEx Failed. SessionID:%lld, Socket:%lld, Errno:%d", tcpIocpConnect->SessionID, tcpIocpConnect->SocketID, lastError);
         return false;
     }
     return true;
 }
 void TcpIocpServer::OnAcceptComplete(MyOverlapped* overlapped)
 {
-    auto tcpConnect = (TcpConnect*)overlapped->Connect;
+    auto tcpIocpConnect = (TcpIocpConnect*)overlapped->Connect;
     SOCKADDR_IN* remoteAddr = NULL;
     SOCKADDR_IN* localAddr = NULL;
     int remoteLen = sizeof(SOCKADDR_IN), localLen = sizeof(SOCKADDR_IN);
     SocketApi::GetInstance().GetAcceptExSockAddrs(overlapped->WsaBuffer.buf, 0,
         (sizeof(SOCKADDR_IN) + 16), (sizeof(SOCKADDR_IN) + 16), (LPSOCKADDR*)&localAddr, &localLen, (LPSOCKADDR*)&remoteAddr, &remoteLen);
-    strcpy(tcpConnect->RemoteAddress, inet_ntoa(remoteAddr->sin_addr));
-    tcpConnect->RemotePort = ntohs(remoteAddr->sin_port);
+    strcpy(tcpIocpConnect->RemoteAddress, inet_ntoa(remoteAddr->sin_addr));
+    tcpIocpConnect->RemotePort = ntohs(remoteAddr->sin_port);
 
-    WriteLog(LogLevel::Info, "AcceptComplete: From <%s:%d>, SessionID:%lld, Socket:%lld", tcpConnect->RemoteAddress, tcpConnect->RemotePort, tcpConnect->SessionID, tcpConnect->SocketID);
+    WriteLog(LogLevel::Info, "AcceptComplete: From <%s:%d>, SessionID:%lld, Socket:%lld", tcpIocpConnect->RemoteAddress, tcpIocpConnect->RemotePort, tcpIocpConnect->SessionID, tcpIocpConnect->SocketID);
 
-    AddConnect(tcpConnect);
+    AddConnect(tcpIocpConnect);
     PostRecv(overlapped);
+    auto overlapped2 = MyOverlapped::Allocate();
+    overlapped2->SetBuffer(Buffer<BuffSize>::Allocate());
+    overlapped2->Connect = tcpIocpConnect;
+    PostRecv(overlapped2);
     PostAccept();
 }
 

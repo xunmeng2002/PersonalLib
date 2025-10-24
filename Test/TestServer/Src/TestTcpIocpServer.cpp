@@ -16,7 +16,7 @@ void TestTcpIocpServer()
     IOThread* ioThread = new IOThread("TcpIocpServer");
     //TcpIocpServer* tcpIocpServer = new TcpIocpServer(g_IocpServerAddress, 5000);
     auto tcpIocpServer = (TcpBase*)IOFactory::CreateIO(ServerTypeType::Server, g_Address, 5000);
-    TcpServerSubscriberImpl tcpServerSubscriberImpl(tcpIocpServer);
+    TcpServerSubscriberImpl tcpServerSubscriberImpl(tcpIocpServer, ioThread);
     ioThread->SetIO(tcpIocpServer);
 
     if (!tcpIocpServer->Init())

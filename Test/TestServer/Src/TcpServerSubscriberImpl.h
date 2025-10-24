@@ -1,12 +1,13 @@
 #pragma once
 #include "ThreadBase.h"
 #include "TcpBase.h"
+#include "IOThread.h"
 
 
 class TcpServerSubscriberImpl : public IOSubscriber
 {
 public:
-	TcpServerSubscriberImpl(TcpBase* tcp);
+	TcpServerSubscriberImpl(TcpBase* tcp, IOThread* ioThread);
 	~TcpServerSubscriberImpl();
 
 	virtual void OnConnect(SessionIDType sessionID, const char* ip, int port) override;
@@ -15,4 +16,7 @@ public:
 
 private:
 	TcpBase* m_IO;
+	IOThread* m_IOThread;
+
+	std::map<SessionIDType, int> m_MessageCounts;
 };

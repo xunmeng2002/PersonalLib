@@ -13,7 +13,7 @@ void TestTcpSelectServer()
     IOThread* ioThread = new IOThread("TcpSelectServer");
     auto tcpAddress = g_Address + 6;
     TcpSelectServer* tcpSelectServer = new TcpSelectServer(tcpAddress, 1000);
-    TcpServerSubscriberImpl tcpServerSubscriberImpl(tcpSelectServer);
+    TcpServerSubscriberImpl tcpServerSubscriberImpl(tcpSelectServer, ioThread);
     ioThread->SetIO(tcpSelectServer);
     
     if (!tcpSelectServer->Init())

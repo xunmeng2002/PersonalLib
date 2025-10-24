@@ -11,17 +11,11 @@ TcpIocpClient::TcpIocpClient(const char* localAddressName, const char* remoteAdd
 	:TcpIocpBase(ServerTypeType::Client, localAddressName, milliSeconds, backlog), m_RemoteAddressInfo(nullptr)
 {
 	ParseAddress(remoteAddressName, m_RemoteAddress, m_RemotePort);
-}
-bool TcpIocpClient::Init()
-{
-	auto ret = GetAddrinfo(m_RemoteAddress.c_str(), m_RemotePort.c_str(), m_RemoteAddressInfo);
-	if (ret < 0)
-	{
-		WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:%s, Port:%s, ret:%d, Errno:%d", m_RemoteAddress.c_str(), m_RemotePort.c_str(), ret, errno);
-		return false;
-	}
-	TcpIocpBase::Init();
-	return true;
+    auto ret = GetAddrinfo(m_RemoteAddress.c_str(), m_RemotePort.c_str(), m_RemoteAddressInfo);
+    if (ret < 0)
+    {
+        WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:%s, Port:%s, ret:%d, Errno:%d", m_RemoteAddress.c_str(), m_RemotePort.c_str(), ret, errno);
+    }
 }
 bool TcpIocpClient::ConnectToServer(const char* ip, unsigned short port)
 {
@@ -38,15 +32,15 @@ bool TcpIocpClient::PostConnect()
         WriteLog(LogLevel::Error, "PrepareConnectSocket SOCKET Failed.");
         return false;
     }
-    TcpConnect* tcpConnect = TcpConnect::Allocate(GetSessionID(), socketID, m_RemoteAddress, m_RemotePort);
+    TcpIocpConnect* tcpIocpConnect = TcpIocpConnect::Allocate(GetSessionID(), socketID, m_RemoteAddress, m_RemotePort);
     MyOverlapped* overlapped = MyOverlapped::Allocate();
     overlapped->SetBuffer(Buffer<BuffSize>::Allocate());
     overlapped->EventID = IocpEvent::EventConnect;
-    overlapped->Connect = tcpConnect;
+    overlapped->Connect = tcpIocpConnect;
 
-    WriteLog(LogLevel::Info, "PostConnect For SessionID:%lld, Socket:%lld", tcpConnect->SessionID, tcpConnect->SocketID);
+    WriteLog(LogLevel::Info, "PostConnect For SessionID:%lld, Socket:%lld", tcpIocpConnect->SessionID, tcpIocpConnect->SocketID);
     DWORD transBytes = 0;
-    auto ret = SocketApi::GetInstance().ConnectEx(tcpConnect->SocketID, (const sockaddr*)m_RemoteAddressInfo->ai_addr, sizeof(SOCKADDR_IN),
+    auto ret = SocketApi::GetInstance().ConnectEx(tcpIocpConnect->SocketID, (const sockaddr*)m_RemoteAddressInfo->ai_addr, sizeof(SOCKADDR_IN),
         NULL, 0, &transBytes, overlapped);
     if (!ret && WSAGetLastError() != ERROR_IO_PENDING)
     {
@@ -58,6 +52,10 @@ bool TcpIocpClient::PostConnect()
 void TcpIocpClient::OnConnectComplete(MyOverlapped* overlapped)
 {
     PostRecv(overlapped);
+    auto overlapped2 = MyOverlapped::Allocate();
+    overlapped2->SetBuffer(Buffer<BuffSize>::Allocate());
+    overlapped2->Connect = overlapped->Connect;
+    PostRecv(overlapped2);
     AddConnect(overlapped->Connect);
 }
 SOCKET TcpIocpClient::PrepareConnectSocket()

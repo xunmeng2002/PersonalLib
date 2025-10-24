@@ -17,7 +17,7 @@ void TestTcpEpollClient()
 
     IOThread* ioThread = new IOThread("TcpEpollClient");
     TcpEpollClient tcpEpollClient(g_Address, 100);
-    TcpClientSubscriberImpl tcpClientSubscriberImpl(&tcpEpollClient);
+    TcpClientSubscriberImpl tcpClientSubscriberImpl(&tcpEpollClient, ioThread);
     ioThread->SetIO(&tcpEpollClient);
 
     if (!tcpEpollClient.Init())
@@ -26,10 +26,6 @@ void TestTcpEpollClient()
         return;
     }
     ioThread->Start();
-
-    
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-    ioThread->Stop();
     ioThread->Join();
 #endif
 }

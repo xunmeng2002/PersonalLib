@@ -15,7 +15,7 @@ void TestTcpIocpClient()
 #ifdef WINDOWS
     IOThread* ioThread = new IOThread("TcpIocpClient");
     TcpIocpClient* tcpIocpClient = new TcpIocpClient(g_IocpClientAddress, g_IocpServerAddress, 5000);
-    TcpClientSubscriberImpl tcpClientSubscriberImpl(tcpIocpClient);
+    TcpClientSubscriberImpl tcpClientSubscriberImpl(tcpIocpClient, ioThread);
     ioThread->SetIO(tcpIocpClient);
 
     if (!tcpIocpClient->Init())
@@ -24,9 +24,6 @@ void TestTcpIocpClient()
         return;
     }
     ioThread->Start();
-
-    std::this_thread::sleep_for(std::chrono::seconds(60));
-    ioThread->Stop();
     ioThread->Join();
 #endif
 }

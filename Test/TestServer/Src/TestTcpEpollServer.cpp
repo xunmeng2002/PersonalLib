@@ -15,7 +15,7 @@ void TestTcpEpollServer()
 #ifdef LINUX
     IOThread* ioThread = new IOThread("TcpEpollServer");
     TcpEpollServer tcpEpollServer(g_Address, 100);
-    TcpServerSubscriberImpl tcpServerSubscriberImpl(&tcpEpollServer);
+    TcpServerSubscriberImpl tcpServerSubscriberImpl(&tcpEpollServer, ioThread);
     ioThread->SetIO(&tcpEpollServer);
 
     if (!tcpEpollServer.Init())
