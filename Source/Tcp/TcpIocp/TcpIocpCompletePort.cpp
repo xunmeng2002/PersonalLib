@@ -1,6 +1,5 @@
 #include "TcpIocpCompletePort.h"
 
-IOCompletePort IOCompletePort::m_Instance;
 
 IOCompletePort::IOCompletePort()
 {
@@ -9,10 +8,6 @@ IOCompletePort::IOCompletePort()
 IOCompletePort::~IOCompletePort()
 {
 	Close();
-}
-IOCompletePort& IOCompletePort::GetInstance()
-{
-	return m_Instance;
 }
 
 bool IOCompletePort::Create(int maxConcurrency)

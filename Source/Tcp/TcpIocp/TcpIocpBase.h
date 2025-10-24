@@ -1,7 +1,7 @@
 #pragma once
 #include "TcpBase.h"
 #include "TcpIocpConnect.h"
-
+#include "TcpIocpCompletePort.h"
 
 class TcpIocpBase : public TcpBase
 {
@@ -29,5 +29,6 @@ protected:
 	virtual void OnRecvComplete(MyOverlapped* overlapped, int bytesTransferred);
 protected:
 	int m_BackLog;
+	IOCompletePort* m_IOCompletePort;
 };
 

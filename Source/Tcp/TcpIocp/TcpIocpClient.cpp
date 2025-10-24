@@ -94,7 +94,7 @@ SOCKET TcpIocpClient::PrepareConnectSocket()
         closesocket(socketID);
         return INVALID_SOCKET;
     }
-    if (!IOCompletePort::GetInstance().AssociateDevice((HANDLE)socketID, socketID))
+    if (!m_IOCompletePort->AssociateDevice((HANDLE)socketID, socketID))
     {
         WriteErrorLog(GetLastError(), "AssociateDevice Failed.");
         closesocket(socketID);

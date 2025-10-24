@@ -38,11 +38,12 @@ void XtpClient::OnProtocolDisConnect(SessionIDType sessionID, const char* ip, in
 }
 void XtpClient::OnMessage(Package* package)
 {
-	if (++m_RecvCount % 10000 == 0)
+	++m_RecvCount;
+	//if (m_RecvCount % 10000 == 0)
 	{
 		WriteLog(LogLevel::Info, "OnMessage: %s", package->GetDebugString());
 	}
-	if (m_RecvCount < 1000000)
+	if (m_RecvCount < 10)
 	{
 		SendReqInsertOrder(m_RecvCount);
 	}

@@ -10,9 +10,6 @@ public:
 	IOCompletePort(const IOCompletePort&) = delete;
 	IOCompletePort& operator=(const IOCompletePort&) = delete;
 
-public:
-	static IOCompletePort& GetInstance();
-
 	bool Create(int maxConcurrency = 0);
 	bool Close();
 	bool AssociateDevice(HANDLE device, ULONG_PTR completeKey);
@@ -21,6 +18,5 @@ public:
 
 
 private:
-	static IOCompletePort m_Instance;
 	HANDLE m_Handle;
 };

@@ -101,7 +101,12 @@ bool Protocol::Send(Package* package)
 	if (m_IOBase == nullptr)
 		return false;
 	Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();
-	buffer->SetLength(package->MakePackage(m_ProtocolType, buffer->GetData(), BuffSize));
+	auto len = package->MakePackage(m_ProtocolType, buffer->GetData(), BuffSize);
+	if (len <= 0)
+	{
+		WriteLog(LogLevel::Info, "");
+	}
+	buffer->SetLength(len);
 	m_IOBase->Send(package->SessionID, buffer);
 	return true;
 }

@@ -32,7 +32,8 @@ void XtpServer::OnProtocolDisConnect(SessionIDType sessionID, const char* ip, in
 }
 void XtpServer::OnMessage(Package* xtpPackage)
 {
-	if ((++m_RecvCount) % 1000 == 0)
+	++m_RecvCount;
+	//if ((m_RecvCount) % 1000 == 0)
 	{
 		WriteLog(LogLevel::Info, "OnMessage SessionID:[%lld], %s", xtpPackage->SessionID, xtpPackage->GetDebugString());
 	}
