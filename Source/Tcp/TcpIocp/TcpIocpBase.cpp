@@ -64,6 +64,7 @@ void TcpIocpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
     auto connect = (TcpIocpConnect*)GetConnect(sessionID);
     if (connect->HasPendingSend || !connect->Buffers.empty())
     {
+        WriteLog(LogLevel::Info, "Add Buffer:%p to SendQueue. BufferLen:%d", buffer, buffer->GetLength());
         lock_guard<mutex> guard(connect->BuffersMutex);
         connect->Buffers.push_back(buffer);
     }
@@ -244,7 +245,7 @@ void TcpIocpBase::OnDisConnectComplete(MyOverlapped* overlapped)
 }
 void TcpIocpBase::OnSendComplete(MyOverlapped* overlapped, int bytesTransferred)
 {
-    WriteLog(LogLevel::Debug, "OnSendComplete SessionID:%lld, Socket:%lld, BufferLen:%d, bytesTransferred:%d", overlapped->Connect->SessionID, overlapped->Connect->SocketID, overlapped->MyBuffer->GetLength(), bytesTransferred);
+    WriteLog(LogLevel::Info, "OnSendComplete SessionID:%lld, Socket:%lld, BufferLen:%d, bytesTransferred:%d", overlapped->Connect->SessionID, overlapped->Connect->SocketID, overlapped->MyBuffer->GetLength(), bytesTransferred);
     if (bytesTransferred < overlapped->MyBuffer->GetLength())
     {
         WriteLog(LogLevel::Warning, "OnSendComplete PartSended. PostSend Again. BufferLen:%d, bytesTransferred:%d, overlapped:%p, overlapped->MyBuffer:%p",
@@ -269,7 +270,7 @@ void TcpIocpBase::OnSendComplete(MyOverlapped* overlapped, int bytesTransferred)
 }
 void TcpIocpBase::OnRecvComplete(MyOverlapped* overlapped, int bytesTransferred)
 {
-    WriteLog(LogLevel::Debug, "OnRecvComplete SessionID:%lld, Socket:%lld, bytesTransferred:%d", overlapped->Connect->SessionID, overlapped->Connect->SocketID, bytesTransferred);
+    WriteLog(LogLevel::Info, "OnRecvComplete SessionID:%lld, Socket:%lld, bytesTransferred:%d", overlapped->Connect->SessionID, overlapped->Connect->SocketID, bytesTransferred);
     overlapped->MyBuffer->SetLength(bytesTransferred);
     auto tcpConnect = (TcpConnect*)overlapped->Connect;
     if (m_IOSubscriber)

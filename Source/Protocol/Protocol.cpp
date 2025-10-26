@@ -104,7 +104,7 @@ bool Protocol::Send(Package* package)
 	auto len = package->MakePackage(m_ProtocolType, buffer->GetData(), BuffSize);
 	if (len <= 0)
 	{
-		WriteLog(LogLevel::Info, "");
+		WriteLog(LogLevel::Info, "MakePackage len is 0");
 	}
 	buffer->SetLength(len);
 	m_IOBase->Send(package->SessionID, buffer);
