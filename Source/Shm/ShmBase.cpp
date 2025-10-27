@@ -88,27 +88,31 @@ bool ShmBase::Init()
 
 void ShmBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
-	auto shmConnect = (ShmConnect<ShmBuffSize>*)GetConnect(sessionID);
-	if (shmConnect == nullptr)
+	auto connect = GetConnect(sessionID);
+	if (connect == nullptr)
 		return;
-	shmConnect->m_ShmBuffer->Write(buffer->GetData(), buffer->GetLength());
+	connect->PushBack(buffer);
+	m_ThreadConditionVariable.notify_one();
 }
 void ShmBase::DoSend(Connect* connect)
 {
-	//auto shmConnect = (ShmConnect<ShmBuffSize>*)connect;
-	//auto& buffers = m_SendBuffers[shmConnect->SessionID];
-
-	//auto it = buffers.begin();
-	//while (it != buffers.end())
-	//{
-	//	auto buffer = *it;
-	//	int len = shmConnect->m_ShmBuffer->Write(buffer->GetData(), buffer->GetLength());
-	//	buffer->Shift(len);
-	//	if (buffer->GetLength() == 0)
-	//	{
-	//		it = buffers.erase(it);
-	//	}
-	//}
+	auto shmConnect = (ShmConnect<ShmBuffSize>*)connect;
+	auto buffer = connect->GetNextBuffer();
+	while (buffer != nullptr)
+	{
+		int len = shmConnect->m_ShmBuffer->Write(buffer->GetData(), buffer->GetLength());
+		buffer->Shift(len);
+		if (buffer->GetLength() == 0)
+		{
+			buffer->Free();
+			buffer = connect->GetNextBuffer();
+		}
+		else
+		{
+			connect->PushFront(buffer);
+			break;
+		}
+	}
 }
 void ShmBase::DoRecv(Connect* connect)
 {
