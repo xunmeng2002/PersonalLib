@@ -71,7 +71,8 @@
 	<file name="SocketInit.h" dest="../Libs/PersonalLib/include/" src="./Source/SocketInit/"/>
 	<file name="sqlite3.h" dest="../Libs/PersonalLib/include/" src="./Source/Sqlite/"/>
 	<file name="sqlite3ext.h" dest="../Libs/PersonalLib/include/" src="./Source/Sqlite/"/>
-	
+
+	<file name="SocketNotify.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpBase/"/>
 	<file name="TcpBase.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpBase/"/>
 	<file name="TcpConnect.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpBase/"/>
 	<file name="TcpUtility.h" dest="../Libs/PersonalLib/include/" src="./Source/Tcp/TcpBase/"/>

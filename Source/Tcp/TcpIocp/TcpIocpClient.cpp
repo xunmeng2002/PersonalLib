@@ -85,7 +85,7 @@ SOCKET TcpIocpClient::PrepareConnectSocket()
     int on = 1;
     if (setsockopt(socketID, SOL_SOCKET, SO_REUSEADDR, (const char*)&on, sizeof(on)) != 0)
     {
-        WriteErrorLog(GetLastError(), "setsockopt Failed. ErrorID:%d, result:%d");
+        WriteErrorLog(WSAGetLastError(), "setsockopt Failed. ErrorID:%d, result:%d");
         closesocket(socketID);
         return INVALID_SOCKET;
     }
@@ -96,7 +96,7 @@ SOCKET TcpIocpClient::PrepareConnectSocket()
     }
     if (!m_IOCompletePort->AssociateDevice((HANDLE)socketID, socketID))
     {
-        WriteErrorLog(GetLastError(), "AssociateDevice Failed.");
+        WriteErrorLog(WSAGetLastError(), "AssociateDevice Failed.");
         closesocket(socketID);
         return INVALID_SOCKET;
     }

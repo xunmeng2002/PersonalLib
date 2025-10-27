@@ -49,12 +49,16 @@ int GetNameinfo(const sockaddr* sockAddr, int len, std::string& ip, std::string&
 	return ret;
 }
 
+SOCKET CreateSocket(int family)
+{
+	return socket(family, SOCK_STREAM, IPPROTO_TCP);
+}
 bool SetSockUnblock(SOCKET socketID, unsigned long unblock)
 {
 #ifdef  WINDOWS
 	if (::ioctlsocket(socketID, FIONBIO, &unblock) == SOCKET_ERROR)
 	{
-		WriteLog(LogLevel::Error, "ioctlsocket FIONBIO:%d, Failed. ErrorID:%d", unblock, GetLastError());
+		WriteLog(LogLevel::Error, "ioctlsocket FIONBIO:%d, Failed. ErrorID:%d", unblock, WSAGetLastError());
 		return false;
 	}
 	WriteLog(LogLevel::Info, "ioctlsocket FIONBIO:%d Success.", unblock);
@@ -62,7 +66,7 @@ bool SetSockUnblock(SOCKET socketID, unsigned long unblock)
 #ifdef LINUX
 	if (ioctl(socketID, FIONBIO, &unblock) == SOCKET_ERROR)
 	{
-		WriteLog(LogLevel::Error, "ioctl FIONBIO:%d Failed. ErrorID:%d", unblock, GetLastError());
+		WriteLog(LogLevel::Error, "ioctl FIONBIO:%d Failed. ErrorID:%d", unblock, WSAGetLastError());
 		return false;
 	}
 	WriteLog(LogLevel::Info, "ioctl FIONBIO:%d Success.", unblock);
@@ -73,7 +77,7 @@ bool SetSockReuse(SOCKET socketID, int resue)
 {
 	if (::setsockopt(socketID, SOL_SOCKET, SO_REUSEADDR, (char*)&resue, sizeof(int)) == SOCKET_ERROR)
 	{
-		WriteLog(LogLevel::Error, "setsockopt SO_REUSEADDR:%d Failed. ErrorID:%d", resue, GetLastError());
+		WriteLog(LogLevel::Error, "setsockopt SO_REUSEADDR:%d Failed. ErrorID:%d", resue, WSAGetLastError());
 		return false;
 	}
 	WriteLog(LogLevel::Info, "setsockopt SO_REUSEADDR:%d Success.", resue);
@@ -83,7 +87,7 @@ bool SetSockNodelay(SOCKET socketID, int nodelay)
 {
 	if (::setsockopt(socketID, IPPROTO_TCP, TCP_NODELAY, (char*)&nodelay, sizeof(int)) == SOCKET_ERROR)
 	{
-		WriteLog(LogLevel::Error, "setsockopt TCP_NODELAY:%d Failed. ErrorID:%d", nodelay, GetLastError());
+		WriteLog(LogLevel::Error, "setsockopt TCP_NODELAY:%d Failed. ErrorID:%d", nodelay, WSAGetLastError());
 		return false;
 	}
 	WriteLog(LogLevel::Info, "setsockopt TCP_NODELAY:%d Success.", nodelay);
@@ -93,7 +97,7 @@ bool SetSockIPV6Only(SOCKET socketID, int ipv6Only)
 {
 	if (::setsockopt(socketID, IPPROTO_IPV6, IPV6_V6ONLY, (char*)&ipv6Only, sizeof(int)) == SOCKET_ERROR)
 	{
-		WriteLog(LogLevel::Error, "setsockopt IPV6_V6ONLY:%d Failed. ErrorID:%d", ipv6Only, GetLastError());
+		WriteLog(LogLevel::Error, "setsockopt IPV6_V6ONLY:%d Failed. ErrorID:%d", ipv6Only, WSAGetLastError());
 		return false;
 	}
 	WriteLog(LogLevel::Error, "setsockopt IPV6_V6ONLY:%d Success.", ipv6Only);
@@ -103,7 +107,7 @@ bool Bind(SOCKET socketID, addrinfo* bindAddressInfo)
 {
 	if (::bind(socketID, bindAddressInfo->ai_addr, int(bindAddressInfo->ai_addrlen)) == SOCKET_ERROR)
 	{
-		WriteLog(LogLevel::Error, "Bind Failed. ErrorID:%d", GetLastError());
+		WriteLog(LogLevel::Error, "Bind Failed. ErrorID:%d", WSAGetLastError());
 		return false;
 	}
 	return true;
@@ -112,8 +116,30 @@ bool Listen(SOCKET socketID, int backLog)
 {
 	if (listen(socketID, backLog) == SOCKET_ERROR)
 	{
-		WriteLog(LogLevel::Error, "Listen Failed. ErrorID:%d", GetLastError());
+		WriteLog(LogLevel::Error, "Listen Failed. ErrorID:%d", WSAGetLastError());
 		return false;
 	}
 	return true;
 }
+
+bool InitSocket(SOCKET socketID)
+{
+	if (!SetSockUnblock(socketID) || !SetSockReuse(socketID) || !SetSockNodelay(socketID))
+	{
+		WriteLog(LogLevel::Warning, "InitSocket Failed. ErrorID:%d", WSAGetLastError());
+		return false;
+	}
+	return true;
+}
+SOCKET PrepareSocket(int family)
+{
+	auto socketID = CreateSocket(family);
+	if (!InitSocket(socketID))
+	{
+		closesocket(socketID);
+		return INVALID_SOCKET;
+	}
+	return socketID;
+}
+
+

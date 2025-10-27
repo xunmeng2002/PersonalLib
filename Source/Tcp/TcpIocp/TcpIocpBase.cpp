@@ -35,7 +35,7 @@ bool TcpIocpBase::Init()
     int on = 1;
     if (setsockopt(m_Socket, SOL_SOCKET, SO_REUSEADDR, (const char*)&on, sizeof(on)) != 0)
     {
-        WriteErrorLog(GetLastError(), "setsockopt Failed. ErrorID:%d, result:%d");
+        WriteErrorLog(WSAGetLastError(), "setsockopt Failed. ErrorID:%d, result:%d");
         return false;
     }
     if (!SocketApi::GetInstance().Init(m_Socket))
@@ -49,20 +49,19 @@ bool TcpIocpBase::Init()
     }
     if (!m_IOCompletePort->AssociateDevice((HANDLE)m_Socket, m_Socket))
     {
-        WriteErrorLog(GetLastError(), "AssociateDevice Failed.");
+        WriteErrorLog(WSAGetLastError(), "AssociateDevice Failed.");
         return false;
     }
 
     return true;
 }
-int TcpIocpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
+void TcpIocpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
-    auto len = buffer->GetLength();
     if (buffer->GetLength() == 0)
     {
         WriteLog(LogLevel::Error, "Send BufferLen is 0");
         buffer->Free();
-        return 0;
+        return;
     }
     auto connect = (TcpIocpConnect*)GetConnect(sessionID);
     {
@@ -70,7 +69,7 @@ int TcpIocpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
         if (connect->HasPendingSend || !connect->Buffers.empty())
         {
             connect->Buffers.push_back(buffer);
-            return len;
+            return;
         }
     }
     connect->HasPendingSend = true;
@@ -78,7 +77,6 @@ int TcpIocpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
     overlapped->SetBuffer(buffer);
     overlapped->Connect = connect;
     PostSend(overlapped);
-    return len;
 }
 void TcpIocpBase::HandleTcpEvent()
 {
@@ -90,7 +88,7 @@ void TcpIocpBase::HandleTcpEvent()
     WriteLog(LogLevel::Debug, "CompletionKey:%d, Len:%d, Ret:%d.", competionKey, len, bOK);
     if (!bOK)
     {
-        auto errorID = GetLastError();
+        auto errorID = WSAGetLastError();
         if (errorID == WAIT_TIMEOUT)
         {
             return;

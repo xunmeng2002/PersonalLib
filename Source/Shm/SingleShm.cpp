@@ -134,9 +134,9 @@ bool SingleShm::Init()
 	return true;
 }
 
-int SingleShm::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
+void SingleShm::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
-	return m_ShmBuffer->Write(buffer->GetData(), buffer->GetLength());
+	m_ShmBuffer->Write(buffer->GetData(), buffer->GetLength());
 }
 void SingleShm::DoRecv(Connect* connect)
 {

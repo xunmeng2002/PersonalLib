@@ -4,5 +4,6 @@
 #include <errno.h>
 
 int GetLastError();
+int WSAGetLastError();
 #endif
 

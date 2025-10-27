@@ -31,7 +31,7 @@ public:
 	virtual bool Init() { return true; }
 	virtual void DisConnect(SessionIDType sessionID);
 	virtual void DisConnectAll();
-	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) = 0;
+	virtual void Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) = 0;
 	
 	virtual void HandleIOEvent() = 0;
 

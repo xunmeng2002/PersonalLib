@@ -1,6 +1,7 @@
 #pragma once
 #include "SocketInit.h"
 #include "TcpConnect.h"
+#include "SocketNotify.h"
 #include "IOBase.h"
 #include "Buffer.h"
 #include "Constant.h"
@@ -18,7 +19,7 @@ public:
 	
 	virtual bool Init() override;
 
-	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
+	virtual void Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 	virtual bool ConnectToServer(const char* ip, unsigned short port) { return false; }
 	virtual void HandleIOEvent() override;
 protected:
@@ -28,12 +29,10 @@ protected:
 	virtual void HandleTcpEvent() = 0;
 	virtual void CheckConnect() {}
 
-	bool InitSocket(SOCKET socketID);
-	SOCKET PrepareSocket(int family);
-
 protected:
 	addrinfo* m_AddressInfo;
 	SOCKET m_Socket;
+	SocketNotify* m_SocketNotify;
 
 
 	std::mutex m_ConnectDataMutex;

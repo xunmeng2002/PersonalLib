@@ -18,7 +18,7 @@ public:
 	virtual ~ShmBase();
 
 	virtual bool Init() override;
-	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
+	virtual void Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 protected:
 	virtual void DoSend(Connect* connect) override;
 	virtual void DoRecv(Connect* connect) override;

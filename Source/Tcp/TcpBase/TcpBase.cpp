@@ -10,7 +10,7 @@
 using namespace std;
 
 TcpBase::TcpBase(ServerTypeType serverType, const char* addressName, int milliSeconds)
-	:IOBase(serverType, addressName, milliSeconds), m_AddressInfo(nullptr), m_Socket(INVALID_SOCKET), m_RemoteAddressLen(sizeof(m_RemoteAddress))
+	:IOBase(serverType, addressName, milliSeconds), m_AddressInfo(nullptr), m_Socket(INVALID_SOCKET), m_SocketNotify(nullptr), m_RemoteAddressLen(sizeof(m_RemoteAddress))
 {
 	SocketInit::GetInstance().Init();
 	memset(&m_RemoteAddress, 0, sizeof(m_RemoteAddress));
@@ -27,6 +27,13 @@ TcpBase::~TcpBase()
 bool TcpBase::Init()
 {
 	SocketInit::GetInstance().Init();
+	m_SocketNotify = new SocketNotify();
+	if (!m_SocketNotify->Init())
+	{
+		WriteLog(LogLevel::Error, "SocketNotify Init Failed.");
+		return false;
+	}
+
 	auto ret = GetAddrinfo(m_Address.c_str(), m_Port.c_str(), m_AddressInfo);
 	if (ret < 0)
 	{
@@ -39,14 +46,9 @@ bool TcpBase::Init()
 	}
 	else if (m_ServerType == ServerTypeType::Server)
 	{
-		m_Socket = socket(m_AddressInfo->ai_family, SOCK_STREAM, IPPROTO_TCP);
+		m_Socket = PrepareSocket(m_AddressInfo->ai_family);
 		if (m_Socket == INVALID_SOCKET)
 		{
-			return false;
-		}
-		if (!InitSocket(m_Socket))
-		{
-			closesocket(m_Socket);
 			return false;
 		}
 		if (!Bind(m_Socket, m_AddressInfo))
@@ -57,10 +59,11 @@ bool TcpBase::Init()
 	}
 	return true;
 }
-int TcpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
+void TcpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
 	auto connect = (TcpConnect*)GetConnect(sessionID);
-	return send(connect->SocketID, buffer->GetData(), buffer->GetLength(), 0);
+	connect->PushBack(buffer);
+	m_SocketNotify->Notify();
 }
 void TcpBase::HandleIOEvent()
 {
@@ -71,29 +74,40 @@ void TcpBase::HandleIOEvent()
 }
 void TcpBase::DoSend(Connect* connect)
 {
-	//auto& buffers = m_SendBuffers[connect->SessionID];
-	//auto it = buffers.begin();
-	//while (it != buffers.end())
-	//{
-	//	auto buffer = *it;
-	//	int len = send(((TcpConnect*)connect)->SocketID, buffer->GetData(), buffer->GetLength(), 0);
-	//	if (len > 0)
-	//	{
-	//		buffer->Shift(len);
-	//		if (buffer->GetLength() > 0)
-	//		{
-	//			break;
-	//		}
-	//		else
-	//		{
-	//			it = buffers.erase(it);
-	//		}
-	//	}
-	//	else
-	//	{
-	//		//TODO:Handle SocketError
-	//	}
-	//}
+	auto buffer = connect->GetNextBuffer();
+	while (buffer != nullptr)
+	{
+		int len = send(((TcpConnect*)connect)->SocketID, buffer->GetData(), buffer->GetLength(), 0);
+		if (len > 0)
+		{
+			buffer->Shift(len);
+			if (buffer->GetLength() > 0)
+			{
+				connect->PushFront(buffer);
+				break;
+			}
+			else
+			{
+				buffer->Free();
+				buffer = connect->GetNextBuffer();
+			}
+		}
+		else
+		{
+			auto errorID = WSAGetLastError();
+			if (errorID == WSAEWOULDBLOCK || errorID == WSAENOBUFS)
+			{
+				connect->PushFront(buffer);
+				break;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "Tcp send Failed. SessionID:%lld, len:%d, errorID:%d", connect->SessionID, len, errorID);
+				buffer->Free();
+				DisConnect(connect->SessionID);
+			}
+		}
+	}
 }
 void TcpBase::DoRecv(Connect* connect)
 {
@@ -133,22 +147,3 @@ void TcpBase::DoAccept()
 	}
 }
 
-bool TcpBase::InitSocket(SOCKET socketID)
-{
-	if (!SetSockUnblock(socketID) || !SetSockReuse(socketID)|| !SetSockNodelay(socketID))
-	{
-		WriteLog(LogLevel::Warning, "InitSocket Failed. ErrorID:%d", GetLastError());
-		return false;
-	}
-	return true;
-}
-SOCKET TcpBase::PrepareSocket(int family)
-{
-	auto socketID = socket(family, SOCK_STREAM, IPPROTO_TCP);
-	if (!InitSocket(socketID))
-	{
-		closesocket(socketID);
-		return INVALID_SOCKET;
-	}
-	return socketID;
-}

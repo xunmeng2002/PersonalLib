@@ -14,7 +14,7 @@ public:
 	virtual ~SingleShm();
 	virtual bool Init() override;
 	
-	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
+	virtual void Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 	virtual void DoRecv(Connect* connect) override;
 	virtual void HandleIOEvent() override;
 

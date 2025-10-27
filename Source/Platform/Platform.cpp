@@ -8,4 +8,8 @@ int GetLastError()
 {
     return errno;
 }
+int WSAGetLastError()
+{
+    return errno;
+}
 #endif
