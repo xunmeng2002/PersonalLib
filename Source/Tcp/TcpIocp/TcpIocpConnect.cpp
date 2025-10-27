@@ -46,12 +46,17 @@ void MyOverlapped::Free()
 	{
 		MyBuffer->Reset();
 		MyBuffer->Free();
+		MyBuffer = nullptr;
 	}
 	Reset();
 	MemCacheTemplateSingleton<MyOverlapped>::GetInstance().Free(this);
 }
 void MyOverlapped::SetBuffer(Buffer<BuffSize>* buffer)
 {
+	if (MyBuffer != nullptr)
+	{
+		MyBuffer->Free();
+	}
 	MyBuffer = buffer;
 	WsaBuffer.buf = MyBuffer->GetData();
 	WsaBuffer.len = MyBuffer->GetLength();
