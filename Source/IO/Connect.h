@@ -8,7 +8,6 @@ class Connect
 {
 public:
 	virtual void Free() = 0;
-	Buffer<BuffSize>* GetBuffer();
 
 	SessionIDType SessionID = 0LL;
 	ConnectStatusType ConnectStatus = ConnectStatusType::UnConnected;

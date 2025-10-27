@@ -18,7 +18,6 @@ public:
 	
 	
 protected:
-	virtual void HandleSendBufferCache() override;
 	virtual void HandleTcpEvent() override;
 
 	virtual void AddConnect(::Connect* connect) override;

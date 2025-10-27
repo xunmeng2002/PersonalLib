@@ -16,18 +16,6 @@ TcpEpollBase::~TcpEpollBase()
 	close(m_EpollFd);
 #endif
 }
-void TcpEpollBase::HandleSendBufferCache()
-{
-	IOBase::HandleSendBufferCache();
-	for (auto& it : m_SendBuffers)
-	{
-		if (!it.second.empty())
-		{
-			auto connect = (TcpConnect*)m_Connects[it.first];
-			AddWriteEpollEvent(connect);
-		}
-	}
-}
 void TcpEpollBase::HandleTcpEvent()
 {
 #ifdef LINUX
@@ -51,11 +39,11 @@ void TcpEpollBase::HandleTcpEvent()
 		}
 		else if (epollEvent.events & EPOLLOUT)
 		{
-			DoSend(tcpConnect);
-			if (m_SendBuffers[tcpConnect->SessionID].empty())
-			{
-				RemoveWriteEpollEvent(connect);
-			}
+			//DoSend(tcpConnect);
+			//if (m_SendBuffers[tcpConnect->SessionID].empty())
+			//{
+			//	RemoveWriteEpollEvent(connect);
+			//}
 		}
 	}
 #endif

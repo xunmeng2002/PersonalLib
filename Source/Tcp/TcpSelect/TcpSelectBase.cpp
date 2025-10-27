@@ -39,15 +39,6 @@ void TcpSelectBase::PrepareFds()
 			m_MaxID = connect->SocketID;
 		}
 	}
-	for (auto& it : m_SendBuffers)
-	{
-		if (it.second.empty())
-		{
-			continue;
-		}
-		auto connect = (TcpConnect*)m_Connects[it.first];
-		FD_SET(connect->SocketID, &m_WriteFds);
-	}
 	if (m_ServerType == ServerTypeType::Server)
 	{
 		FD_SET(m_Socket, &m_ReadFds);
@@ -69,18 +60,6 @@ void TcpSelectBase::HandleTcpEvent()
 		if (FD_ISSET(connect->SocketID, &m_ReadFds))
 		{
 			DoRecv(connect);
-		}
-	}
-	for (auto& it : m_SendBuffers)
-	{
-		if (it.second.empty())
-		{
-			continue;
-		}
-		auto connect = (TcpConnect*)m_Connects[it.first];
-		if (FD_ISSET(connect->SocketID, &m_WriteFds))
-		{
-			DoSend(connect);
 		}
 	}
 	for (auto& it : m_Connects)

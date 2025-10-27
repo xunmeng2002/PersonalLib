@@ -31,12 +31,11 @@ public:
 	virtual bool Init() { return true; }
 	virtual void DisConnect(SessionIDType sessionID);
 	virtual void DisConnectAll();
-	virtual void Send(SessionIDType sessionID, Buffer<BuffSize>* buffer);
+	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) = 0;
 	
-	virtual void HandleIOEvent();
+	virtual void HandleIOEvent() = 0;
 
 protected:
-	virtual void HandleSendBufferCache();
 	virtual void DoDisConnect();
 	virtual void DoSend(Connect* connect) = 0;
 	virtual void DoRecv(Connect* connect) = 0;
@@ -61,10 +60,6 @@ protected:
 	std::mutex m_ConnectsMutex;
 	std::list<SessionIDType> m_DisConnectSessionIDs;
 	std::mutex m_DisConnectSessionIDsMutex;
-
-	std::list<std::pair<SessionIDType, Buffer<BuffSize>*>> m_SendBufferCaches;
-	std::mutex m_SendBufferCahcesMutex;
-	std::map<SessionIDType, std::list<Buffer<BuffSize>*>> m_SendBuffers;
 
 	std::mutex m_Mutex;
 	std::condition_variable m_ThreadConditionVariable;

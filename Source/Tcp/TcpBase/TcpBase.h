@@ -22,7 +22,7 @@ public:
 	virtual void DoRecv(Connect* connect) override;
 	virtual void HandleIOEvent() override;
 
-	virtual void Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
+	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 	virtual bool ConnectToServer(const char* ip, unsigned short port) { return false; }
 protected:
 	virtual void HandleTcpEvent() = 0;

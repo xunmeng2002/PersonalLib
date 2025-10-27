@@ -22,22 +22,22 @@ void ShmServer::HandleIOEvent()
 			auto shmConnect = (ShmConnect<ShmBuffSize>*)it.second;
 			if (shmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
 				return true;
-			if (!m_SendBuffers[shmConnect->SessionID].empty() && shmConnect->m_ShmBuffer->GetWriteBufferSize() > 0)
-				return true;
+			//if (!m_SendBuffers[shmConnect->SessionID].empty() && shmConnect->m_ShmBuffer->GetWriteBufferSize() > 0)
+			//	return true;
 		}
 		return false;
 		});
-	for (auto& it : m_SendBuffers)
-	{
-		if (!it.second.empty())
-		{
-			auto shmConnect = (ShmConnect<ShmBuffSize>*)m_Connects[it.first];
-			if (shmConnect->m_ShmBuffer->GetWriteBufferSize() > 0)
-			{
-				DoSend(shmConnect);
-			}
-		}
-	}
+	//for (auto& it : m_SendBuffers)
+	//{
+	//	if (!it.second.empty())
+	//	{
+	//		auto shmConnect = (ShmConnect<ShmBuffSize>*)m_Connects[it.first];
+	//		if (shmConnect->m_ShmBuffer->GetWriteBufferSize() > 0)
+	//		{
+	//			DoSend(shmConnect);
+	//		}
+	//	}
+	//}
 	for (auto& it : m_Connects)
 	{
 		auto shmConnect = (ShmConnect<ShmBuffSize>*)it.second;

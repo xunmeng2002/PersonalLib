@@ -145,7 +145,6 @@ void Protocol::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 		return;
 	}
 	packageReader->Append(buffer->GetData(), buffer->GetLength());
-	buffer->Free();
 	while (true)
 	{
 		Package* package = nullptr;

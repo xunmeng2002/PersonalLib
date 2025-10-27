@@ -59,34 +59,34 @@ bool TcpBase::Init()
 }
 void TcpBase::DoSend(Connect* connect)
 {
-	auto& buffers = m_SendBuffers[connect->SessionID];
-	auto it = buffers.begin();
-	while (it != buffers.end())
-	{
-		auto buffer = *it;
-		int len = send(((TcpConnect*)connect)->SocketID, buffer->GetData(), buffer->GetLength(), 0);
-		if (len > 0)
-		{
-			buffer->Shift(len);
-			if (buffer->GetLength() > 0)
-			{
-				break;
-			}
-			else
-			{
-				it = buffers.erase(it);
-			}
-		}
-		else
-		{
-			//TODO:Handle SocketError
-		}
-	}
+	//auto& buffers = m_SendBuffers[connect->SessionID];
+	//auto it = buffers.begin();
+	//while (it != buffers.end())
+	//{
+	//	auto buffer = *it;
+	//	int len = send(((TcpConnect*)connect)->SocketID, buffer->GetData(), buffer->GetLength(), 0);
+	//	if (len > 0)
+	//	{
+	//		buffer->Shift(len);
+	//		if (buffer->GetLength() > 0)
+	//		{
+	//			break;
+	//		}
+	//		else
+	//		{
+	//			it = buffers.erase(it);
+	//		}
+	//	}
+	//	else
+	//	{
+	//		//TODO:Handle SocketError
+	//	}
+	//}
 }
-void TcpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
+int TcpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
 	auto connect = (TcpConnect*)GetConnect(sessionID);
-	send(connect->SocketID, buffer->GetData(), buffer->GetLength(), 0);
+	return send(connect->SocketID, buffer->GetData(), buffer->GetLength(), 0);
 }
 void TcpBase::DoRecv(Connect* connect)
 {
@@ -115,7 +115,6 @@ void TcpBase::HandleIOEvent()
 	if (m_ServerType == ServerTypeType::Client)
 		CheckConnect();
 	DoDisConnect();
-	HandleSendBufferCache();
 	HandleTcpEvent();
 }
 void TcpBase::DoAccept()

@@ -13,8 +13,8 @@ public:
 	SingleShm(ServerTypeType shmType, const char* shmName);
 	virtual ~SingleShm();
 	virtual bool Init() override;
-
-	virtual void DoSend(Connect* connect) override;
+	
+	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 	virtual void DoRecv(Connect* connect) override;
 	virtual void HandleIOEvent() override;
 
