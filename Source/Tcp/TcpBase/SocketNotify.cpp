@@ -1,9 +1,10 @@
 #include "SocketNotify.h"
 #include "TcpUtility.h"
+#include "TcpConnect.h"
 #include "Logger.h"
 
 SocketNotify::SocketNotify()
-	:m_Sockets{ INVALID_SOCKET, INVALID_SOCKET }, m_IP("127.0.0.1"), m_AddressInfo(nullptr), m_ReceiveBuffer{0}
+	:m_Sockets{ INVALID_SOCKET, INVALID_SOCKET }, m_TcpConnect(nullptr), m_IP("127.0.0.1"), m_AddressInfo(nullptr), m_ReceiveBuffer{0}
 {
 }
 SocketNotify::~SocketNotify()
@@ -23,6 +24,8 @@ bool SocketNotify::Init()
 		return false;
 	SetSockUnblock(m_Sockets[0]);
 	SetSockUnblock(m_Sockets[1]);
+
+	m_TcpConnect = TcpConnect::Allocate(0LL, m_Sockets[0], m_IP, "");
 	return true;
 }
 bool SocketNotify::Notify()
@@ -40,6 +43,11 @@ SOCKET SocketNotify::GetReadSocket()
 {
 	return m_Sockets[0];
 }
+TcpConnect* SocketNotify::GetConnect()
+{
+	return m_TcpConnect;
+}
+
 
 bool SocketNotify::CreateSocketPair()
 {
@@ -92,11 +100,15 @@ bool SocketNotify::CreateSocketPair()
 		closesocket(m_Sockets[1]);
 		return false;
 	}
-	return true;
 #endif
 #ifdef LINUX
-	return socketpair(AF_UNIX, SOCK_STREAM, 0, m_Sockets);
+	auto ret = socketpair(AF_UNIX, SOCK_STREAM, 0, m_Sockets);
+	if (ret != 0)
+	{
+		WriteLog(LogLevel::Warning, "socketpair failed. ret:%d, errorID:%d", ret, errno);
+	}
 #endif
+	return true;
 }
 
 

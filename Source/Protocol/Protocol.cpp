@@ -2,7 +2,6 @@
 #include "Logger.h"
 #include "IOFactory.h"
 #include <stdexcept>
-#include "Windows.h"
 
 Protocol::Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, int milliSeconds, PackageFactory* packageFactory)
 	:m_ProtocolType(protocolType), m_ServerType(serverType), m_MilliSeconds(milliSeconds), m_Subscriber(nullptr), m_PackageFactory(packageFactory), m_IOBase(nullptr), m_IOThread(nullptr)

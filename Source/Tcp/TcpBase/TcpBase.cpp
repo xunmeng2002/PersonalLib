@@ -95,7 +95,12 @@ void TcpBase::DoSend(Connect* connect)
 		else
 		{
 			auto errorID = WSAGetLastError();
+#ifdef WIN32
 			if (errorID == WSAEWOULDBLOCK || errorID == WSAENOBUFS)
+#endif
+#ifdef LINUX
+			if (errorID == EWOULDBLOCK || errorID == ENOBUFS || errorID == ENOMEM)
+#endif
 			{
 				connect->PushFront(buffer);
 				break;

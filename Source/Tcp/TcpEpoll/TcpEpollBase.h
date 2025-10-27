@@ -16,7 +16,7 @@ public:
 	TcpEpollBase(ServerTypeType serverType, const char* addressName, int milliSeconds);
 	~TcpEpollBase();
 	
-	
+	virtual bool Init() override;
 protected:
 	virtual void HandleTcpEvent() override;
 

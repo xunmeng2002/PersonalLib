@@ -16,6 +16,13 @@ TcpEpollBase::~TcpEpollBase()
 	close(m_EpollFd);
 #endif
 }
+bool TcpEpollBase::Init()
+{
+	if (!TcpBase::Init())
+		return false;
+	AddEpollEvent(m_SocketNotify->GetConnect());
+	return true;
+}
 void TcpEpollBase::HandleTcpEvent()
 {
 #ifdef LINUX
@@ -33,17 +40,59 @@ void TcpEpollBase::HandleTcpEvent()
 		{
 			DoAccept();
 		}
+		else if (tcpConnect == m_SocketNotify->GetConnect())
+		{
+			m_SocketNotify->Consume();
+			for (auto& it : m_Connects)
+			{
+				auto connect = it.second;
+				if (!connect->Buffers.empty())
+				{
+					DoSend(connect);
+				}
+				if (!connect->Buffers.empty())
+				{
+					AddWriteEpollEvent((TcpConnect*)connect);
+				}
+			}
+		}
 		else if (epollEvent.events & EPOLLIN)
 		{
 			DoRecv(tcpConnect);
 		}
 		else if (epollEvent.events & EPOLLOUT)
 		{
-			//DoSend(tcpConnect);
-			//if (m_SendBuffers[tcpConnect->SessionID].empty())
-			//{
-			//	RemoveWriteEpollEvent(connect);
-			//}
+			if (m_ServerType == ServerTypeType::Client && m_Connects.find(tcpConnect->SessionID) == m_Connects.end())
+			{
+				int error = 0;
+				socklen_t len = sizeof(error);
+				int ret = getsockopt(tcpConnect->SocketID, SOL_SOCKET, SO_ERROR, &error, &len);
+				if (ret == -1)
+				{
+					WriteLog(LogLevel::Warning, "getsockopt Failed. SessionID:%lld, SocketID:%lld", tcpConnect->SessionID, tcpConnect->SocketID);
+					RemoveConnect(tcpConnect);
+					continue;
+				}
+				if (errno != 0)
+				{
+					WriteLog(LogLevel::Warning, "Connect Failed. SessionID:%lld, SocketID:%lld, errno:%d", tcpConnect->SessionID, tcpConnect->SocketID, errno);
+					RemoveConnect(tcpConnect);
+					continue;
+				}
+				else
+				{
+					RemoveEpollEvent(tcpConnect);
+					AddConnect(tcpConnect);
+				}
+			}
+			else
+			{
+				DoSend(tcpConnect);
+				if (tcpConnect->Buffers.empty())
+				{
+					RemoveWriteEpollEvent(tcpConnect);
+				}
+			}
 		}
 	}
 #endif
