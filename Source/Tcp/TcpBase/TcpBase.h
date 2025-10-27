@@ -18,16 +18,15 @@ public:
 	
 	virtual bool Init() override;
 
-	virtual void DoSend(Connect* connect) override;
-	virtual void DoRecv(Connect* connect) override;
-	virtual void HandleIOEvent() override;
-
 	virtual int Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 	virtual bool ConnectToServer(const char* ip, unsigned short port) { return false; }
+	virtual void HandleIOEvent() override;
 protected:
+	virtual void DoSend(Connect* connect) override;
+	virtual void DoRecv(Connect* connect) override;
+	virtual void DoAccept();
 	virtual void HandleTcpEvent() = 0;
 	virtual void CheckConnect() {}
-	virtual void DoAccept();
 
 	bool InitSocket(SOCKET socketID);
 	SOCKET PrepareSocket(int family);

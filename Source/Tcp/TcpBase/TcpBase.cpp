@@ -57,6 +57,18 @@ bool TcpBase::Init()
 	}
 	return true;
 }
+int TcpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
+{
+	auto connect = (TcpConnect*)GetConnect(sessionID);
+	return send(connect->SocketID, buffer->GetData(), buffer->GetLength(), 0);
+}
+void TcpBase::HandleIOEvent()
+{
+	if (m_ServerType == ServerTypeType::Client)
+		CheckConnect();
+	DoDisConnect();
+	HandleTcpEvent();
+}
 void TcpBase::DoSend(Connect* connect)
 {
 	//auto& buffers = m_SendBuffers[connect->SessionID];
@@ -83,11 +95,6 @@ void TcpBase::DoSend(Connect* connect)
 	//	}
 	//}
 }
-int TcpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
-{
-	auto connect = (TcpConnect*)GetConnect(sessionID);
-	return send(connect->SocketID, buffer->GetData(), buffer->GetLength(), 0);
-}
 void TcpBase::DoRecv(Connect* connect)
 {
 	auto tcpConnect = (TcpConnect*)connect;
@@ -108,14 +115,6 @@ void TcpBase::DoRecv(Connect* connect)
 
 		m_IOSubscriber->OnRecv(tcpConnect->SessionID, buffer);
 	}
-}
-
-void TcpBase::HandleIOEvent()
-{
-	if (m_ServerType == ServerTypeType::Client)
-		CheckConnect();
-	DoDisConnect();
-	HandleTcpEvent();
 }
 void TcpBase::DoAccept()
 {
