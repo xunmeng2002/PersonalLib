@@ -62,5 +62,4 @@ protected:
 	std::mutex m_DisConnectSessionIDsMutex;
 
 	std::mutex m_Mutex;
-	std::condition_variable m_ThreadConditionVariable;
 };

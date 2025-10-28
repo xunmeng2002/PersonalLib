@@ -88,11 +88,34 @@ bool ShmBase::Init()
 
 void ShmBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
-	auto connect = GetConnect(sessionID);
-	if (connect == nullptr)
+	auto shmConnect = (ShmConnect<ShmBuffSize>*)GetConnect(sessionID);
+	if (shmConnect == nullptr)
+	{
+		buffer->Free();
 		return;
-	connect->PushBack(buffer);
-	m_ThreadConditionVariable.notify_one();
+	}
+	while (buffer->GetLength() > 0)
+	{
+		auto len = shmConnect->m_ShmBuffer->Write(buffer->GetData(), buffer->GetLength());
+		buffer->Shift(len);
+	}
+	buffer->Free();
+}
+
+void ShmBase::HandleIOEvent()
+{
+	if (m_ServerType == ServerTypeType::Client)
+	{
+		ConnectToServer();
+	}
+	else
+	{
+		Accept();
+	}
+	CheckConnect();
+	DoDisConnect();
+	CheckData();
+	HandleData();
 }
 void ShmBase::DoSend(Connect* connect)
 {

@@ -10,34 +10,6 @@ ShmServer::ShmServer(const char* shmName, int milliSeconds)
 ShmServer::~ShmServer()
 {
 }
-void ShmServer::HandleIOEvent()
-{
-	Accept();
-	CheckConnect();
-	DoDisConnect();
-	unique_lock guard(m_Mutex);
-	m_ThreadConditionVariable.wait_for(guard, m_TimeOut, [&]() {
-		for (auto& it : m_Connects)
-		{
-			auto shmConnect = (ShmConnect<ShmBuffSize>*)it.second;
-			if (shmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
-				return true;
-		}
-		return false;
-		});
-	for (auto& it : m_Connects)
-	{
-		auto shmConnect = (ShmConnect<ShmBuffSize>*)it.second;
-		if (!shmConnect->Buffers.empty())
-		{
-			DoSend(shmConnect);
-		}
-		if (shmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
-		{
-			DoRecv(shmConnect);
-		}
-	}
-}
 void ShmServer::Accept()
 {
 	switch (m_CommonShmHeader->Status)
@@ -123,6 +95,24 @@ void ShmServer::CheckConnect()
 		{
 			lock_guard<mutex> guard(m_DisConnectSessionIDsMutex);
 			m_DisConnectSessionIDs.push_back(shmConnect->SessionID);
+		}
+	}
+}
+void ShmServer::CheckData()
+{
+}
+void ShmServer::HandleData()
+{
+	for (auto& it : m_Connects)
+	{
+		auto shmConnect = (ShmConnect<ShmBuffSize>*)it.second;
+		//if (!shmConnect->Buffers.empty())
+		//{
+		//	DoSend(shmConnect);
+		//}
+		if (shmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
+		{
+			DoRecv(shmConnect);
 		}
 	}
 }

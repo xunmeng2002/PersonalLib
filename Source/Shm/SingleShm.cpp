@@ -172,12 +172,7 @@ void SingleShm::CheckConnectStatus()
 }
 void SingleShm::CheckEvent()
 {
-	unique_lock guard(m_Mutex);
-	m_ThreadConditionVariable.wait_for(guard, m_TimeOut, [&]() {
-		if (m_ShmBuffer->GetReadBufferSize() > 0)
-			return true;
-		return false;
-		});
+
 }
 void SingleShm::HandleEvent()
 {

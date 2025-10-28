@@ -13,36 +13,7 @@ ShmClient::~ShmClient()
 	m_ShmConnect = nullptr;
 }
 
-void ShmClient::HandleIOEvent()
-{
-	Connect();
-	DoDisConnect();
-	CheckConnectStatus();
-	if (m_Connected)
-	{
-		unique_lock guard(m_Mutex);
-		m_ThreadConditionVariable.wait_for(guard, m_TimeOut, [&]() {
-			if (m_ShmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
-				return true;
-			return false;
-			});
-		if (!m_ShmConnect->Buffers.empty())
-		{
-			DoSend(m_ShmConnect);
-		}
-		if (m_ShmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
-		{
-			DoRecv(m_ShmConnect);
-		}
-	}
-	else
-	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(m_TimeOut));
-	}
-}
-
-
-void ShmClient::Connect()
+void ShmClient::ConnectToServer()
 {
 	if (m_Connected)
 		return;
@@ -52,10 +23,10 @@ void ShmClient::Connect()
 	}
 	else if (m_HasSendConnect && m_CommonShmHeader->Status != ConnectStatusType::Connecting)
 	{
-		CheckConnect();
+		CheckConnectResult();
 	}
 }
-void ShmClient::CheckConnectStatus()
+void ShmClient::CheckConnect()
 {
 	if (!m_Connected)
 		return;
@@ -64,6 +35,23 @@ void ShmClient::CheckConnectStatus()
 		RemoveConnect(m_ShmConnect);
 	}
 }
+void ShmClient::CheckData()
+{
+}
+void ShmClient::HandleData()
+{
+	if (!m_Connected)
+		return;
+	//if (!m_ShmConnect->Buffers.empty())
+	//{
+	//	DoSend(m_ShmConnect);
+	//}
+	if (m_ShmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
+	{
+		DoRecv(m_ShmConnect);
+	}
+}
+
 
 void ShmClient::SendConnect()
 {
@@ -82,7 +70,7 @@ void ShmClient::SendConnect()
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 }
-void ShmClient::CheckConnect()
+void ShmClient::CheckConnectResult()
 {
 	if (m_Sem->Lock())
 	{

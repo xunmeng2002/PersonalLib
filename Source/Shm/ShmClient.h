@@ -10,14 +10,14 @@ public:
 	virtual ~ShmClient();
 
 protected:
-	virtual void HandleIOEvent() override;
+	virtual void ConnectToServer() override;
+	virtual void CheckConnect() override;
+	virtual void CheckData() override;
+	virtual void HandleData() override;
 
-	void Connect();
-	void CheckConnectStatus();
 
 	void SendConnect();
-	void CheckConnect();
-
+	void CheckConnectResult();
 	virtual void RemoveConnect(::Connect* connect) override;
 protected:
 	bool m_Connected;

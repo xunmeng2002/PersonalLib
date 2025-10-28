@@ -9,9 +9,11 @@ public:
 	ShmServer(const char* shmName, int milliSeconds);
 	~ShmServer();
 
-	virtual void HandleIOEvent() override;
-	void Accept();
-	void CheckConnect();
+private:
+	virtual void Accept() override;
+	virtual void CheckConnect() override;
+	virtual void CheckData() override;
+	virtual void HandleData() override;
 
 	virtual void RemoveConnect(Connect* connect) override;
 protected:
