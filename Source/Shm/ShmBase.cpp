@@ -23,13 +23,13 @@ ShmBase::ShmBase(ServerTypeType serverType, const char* shmName, int milliSecond
 	m_ShmName = m_Address;
 	m_MaxConnectSize = atoi(m_Port.c_str());
 
-	m_Sem = new Sem((m_ShmName + "Sem").c_str());
+	m_SemConnect = new Sem((m_ShmName + "Sem").c_str());
 }
 ShmBase::~ShmBase()
 {
-	if (m_Sem != nullptr)
-		delete m_Sem;
-	m_Sem = nullptr;
+	if (m_SemConnect != nullptr)
+		delete m_SemConnect;
+	m_SemConnect = nullptr;
 #ifdef WINDOWS
 	UnmapViewOfFile(m_ShmAddr);
 	CloseHandle(m_FileMap);
@@ -61,7 +61,7 @@ ShmBase::~ShmBase()
 }
 bool ShmBase::Init()
 {
-	if (!m_Sem->Init())
+	if (!m_SemConnect->Init())
 		return false;
 #ifdef WINDOWS
 	if (!WindowsInit())

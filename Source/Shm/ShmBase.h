@@ -41,7 +41,7 @@ protected:
 	unsigned m_MaxConnectSize;
 	SingleShmHeader* m_CommonShmHeader;
 	void* m_ShmAddr;
-	Sem* m_Sem;
+	Sem* m_SemConnect;
 
 	std::chrono::steady_clock::time_point m_LastSendTime;
 

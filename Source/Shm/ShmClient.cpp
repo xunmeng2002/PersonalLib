@@ -55,14 +55,14 @@ void ShmClient::HandleData()
 
 void ShmClient::SendConnect()
 {
-	if (m_Sem->Lock())
+	if (m_SemConnect->Lock())
 	{
 		if (m_CommonShmHeader->Status == ConnectStatusType::UnConnected)
 		{
 			m_CommonShmHeader->Status = ConnectStatusType::Connecting;
 			m_HasSendConnect = true;
 		}
-		m_Sem->UnLock();
+		m_SemConnect->UnLock();
 	}
 	else
 	{
@@ -72,7 +72,7 @@ void ShmClient::SendConnect()
 }
 void ShmClient::CheckConnectResult()
 {
-	if (m_Sem->Lock())
+	if (m_SemConnect->Lock())
 	{
 		m_HasSendConnect = false;
 		if (m_CommonShmHeader->Status == ConnectStatusType::Accepted)
@@ -91,7 +91,7 @@ void ShmClient::CheckConnectResult()
 		{
 			WriteLog(LogLevel::Info, "UnExpected Status:%d\n", (int)m_CommonShmHeader->Status);
 		}
-		m_Sem->UnLock();
+		m_SemConnect->UnLock();
 		if (!m_Connected)
 		{
 			WriteLog(LogLevel::Info, "Connect Failed. Sleep 1s\n");

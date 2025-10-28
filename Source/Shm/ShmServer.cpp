@@ -18,7 +18,7 @@ void ShmServer::Accept()
 		break;
 	case ConnectStatusType::Connecting:
 	{
-		if (m_Sem->Lock())
+		if (m_SemConnect->Lock())
 		{
 			if (m_ConnectCount >= m_MaxConnectSize - 1)
 			{
@@ -42,7 +42,7 @@ void ShmServer::Accept()
 				}
 			}
 			m_LastWriteTimePoint = chrono::system_clock::now();
-			m_Sem->UnLock();
+			m_SemConnect->UnLock();
 		}
 		else
 		{
@@ -57,7 +57,7 @@ void ShmServer::Accept()
 		auto t = chrono::duration_cast<chrono::seconds>(currTimePoint - m_LastWriteTimePoint);
 		if (t.count() >= 5)
 		{
-			if (m_Sem->Lock())
+			if (m_SemConnect->Lock())
 			{
 				if (m_CommonShmHeader->Status == ConnectStatusType::Accepted || m_CommonShmHeader->Status == ConnectStatusType::Rejected)
 				{
@@ -70,7 +70,7 @@ void ShmServer::Accept()
 					}
 					m_CommonShmHeader->Status = ConnectStatusType::UnConnected;
 				}
-				m_Sem->UnLock();
+				m_SemConnect->UnLock();
 			}
 			else
 			{
