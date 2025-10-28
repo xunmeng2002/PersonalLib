@@ -23,13 +23,23 @@ ShmBase::ShmBase(ServerTypeType serverType, const char* shmName, int milliSecond
 	m_ShmName = m_Address;
 	m_MaxConnectSize = atoi(m_Port.c_str());
 
-	m_SemConnect = new Sem((m_ShmName + "Sem").c_str());
+	m_SemConnect = new Sem((m_ShmName + "SemConnect").c_str());
+	for (auto i = 0; i < m_MaxConnectSize; ++i)
+	{
+		auto sem = new Sem((m_ShmName + "Sem" + to_string(i)).c_str());
+		m_Sems.push_back(sem);
+	}
 }
 ShmBase::~ShmBase()
 {
 	if (m_SemConnect != nullptr)
 		delete m_SemConnect;
 	m_SemConnect = nullptr;
+	for (auto sem : m_Sems)
+	{
+		delete sem;
+	}
+	m_Sems.clear();
 #ifdef WINDOWS
 	UnmapViewOfFile(m_ShmAddr);
 	CloseHandle(m_FileMap);
@@ -63,6 +73,11 @@ bool ShmBase::Init()
 {
 	if (!m_SemConnect->Init())
 		return false;
+	for (auto i = 0; i < m_MaxConnectSize; ++i)
+	{
+		if (!m_Sems[i]->Init())
+			return false;
+	}
 #ifdef WINDOWS
 	if (!WindowsInit())
 		return false;
@@ -97,7 +112,18 @@ void ShmBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 	while (buffer->GetLength() > 0)
 	{
 		auto len = shmConnect->m_ShmBuffer->Write(buffer->GetData(), buffer->GetLength());
-		buffer->Shift(len);
+		if (len > 0)
+		{
+			buffer->Shift(len);
+			if (m_ServerType == ServerTypeType::Server)
+			{
+				m_Sems[shmConnect->RemotePort]->UnLock();
+			}
+			else
+			{
+				m_Sems[0]->UnLock();
+			}
+		}
 	}
 	buffer->Free();
 }

@@ -100,16 +100,19 @@ void ShmServer::CheckConnect()
 }
 void ShmServer::CheckData()
 {
+	for (auto& it : m_Connects)
+	{
+		auto shmConnect = (ShmConnect<ShmBuffSize>*)it.second;
+		if (shmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
+			return;
+	}
+	m_Sems[0]->Lock();
 }
 void ShmServer::HandleData()
 {
 	for (auto& it : m_Connects)
 	{
 		auto shmConnect = (ShmConnect<ShmBuffSize>*)it.second;
-		//if (!shmConnect->Buffers.empty())
-		//{
-		//	DoSend(shmConnect);
-		//}
 		if (shmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
 		{
 			DoRecv(shmConnect);

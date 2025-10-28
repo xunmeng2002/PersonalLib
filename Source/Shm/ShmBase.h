@@ -42,6 +42,7 @@ protected:
 	SingleShmHeader* m_CommonShmHeader;
 	void* m_ShmAddr;
 	Sem* m_SemConnect;
+	std::vector<Sem*> m_Sems;
 
 	std::chrono::steady_clock::time_point m_LastSendTime;
 

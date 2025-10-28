@@ -37,15 +37,16 @@ void ShmClient::CheckConnect()
 }
 void ShmClient::CheckData()
 {
+	if (!m_Connected)
+		return;
+	if (m_ShmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
+		return;
+	m_Sems[m_ShmConnect->RemotePort]->Lock();
 }
 void ShmClient::HandleData()
 {
 	if (!m_Connected)
 		return;
-	//if (!m_ShmConnect->Buffers.empty())
-	//{
-	//	DoSend(m_ShmConnect);
-	//}
 	if (m_ShmConnect->m_ShmBuffer->GetReadBufferSize() > 0)
 	{
 		DoRecv(m_ShmConnect);
