@@ -10,7 +10,7 @@ void TestShmServer()
 {
     WriteLog(LogLevel::Info, "TestShmServer");
 
-    IOThread* ioThread = new IOThread("TcpEpollServer");
+    IOThread* ioThread = new IOThread("ShmServer");
     auto addressName = g_Address + 6;
     ShmServer shmServer(addressName, 100);
     ServerIOSubscriberImpl serverIOSubscriberImpl(&shmServer, ioThread);
