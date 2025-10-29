@@ -30,9 +30,6 @@ protected:
 	std::thread m_Thread;
 	std::string m_ThreadName;
 	std::atomic<bool> m_ShouldRun;
-	
 	std::chrono::milliseconds m_TimeOut;
-	std::mutex m_Mutex;
-	std::condition_variable m_ThreadConditionVariable;
 };
 
