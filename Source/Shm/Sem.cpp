@@ -81,7 +81,16 @@ bool Sem::Lock()
 #endif
 	
 #ifdef LINUX
-	return sem_trywait(m_Sem) == 0;
+	struct timespec ts;
+	clock_gettime(CLOCK_REALTIME, &ts);
+	ts.tv_sec += m_TimeOutMilliSecond / 1000;
+	ts.tv_nsec += (m_TimeOutMilliSecond % 1000) * 1000000L;
+	if (ts.tv_nsec >= 1000000000)
+	{
+		ts.tv_sec += ts.tv_nsec / 1000000000;
+		ts.tv_nsec = ts.tv_nsec % 1000000000;
+	}
+	return sem_timedwait(m_Sem, &ts) == 0;
 #endif
 }
 bool Sem::UnLock()
