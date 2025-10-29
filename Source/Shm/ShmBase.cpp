@@ -23,10 +23,10 @@ ShmBase::ShmBase(ServerTypeType serverType, const char* shmName, int milliSecond
 	m_ShmName = m_Address;
 	m_MaxConnectSize = atoi(m_Port.c_str());
 
-	m_SemConnect = new Sem((m_ShmName + "SemConnect").c_str());
+	m_SemConnect = new Sem((m_ShmName + "SemConnect").c_str(), serverType);
 	for (auto i = 0; i < m_MaxConnectSize; ++i)
 	{
-		auto sem = new Sem((m_ShmName + "Sem" + to_string(i)).c_str());
+		auto sem = new Sem((m_ShmName + "Sem" + to_string(i)).c_str(), serverType);
 		m_Sems.push_back(sem);
 	}
 }

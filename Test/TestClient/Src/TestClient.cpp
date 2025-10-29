@@ -3,6 +3,7 @@
 #include <string.h>
 #include <thread>
 #include "Logger.h"
+#include "TestShmClient.h"
 #include "TestTcpSelectClient.h"
 #include "TestTcpEpollClient.h"
 #include "TestTcpIocpClient.h"
@@ -21,6 +22,9 @@ int main(int argc, const char* argv[])
 
     switch (g_ClientProtocolType)
     {
+    case TcpProtocolType::Shm:
+        TestShmClient();
+        break;
     case TcpProtocolType::Udp:
         //TestUdpClient();
         break;

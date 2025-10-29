@@ -1,5 +1,5 @@
 #include "TestTcpSelectClient.h"
-#include "TcpClientSubscriberImpl.h"
+#include "ClientIOSubscriberImpl.h"
 #include "Logger.h"
 #include "TestUtility.h"
 #include "IOThread.h"
@@ -17,9 +17,9 @@ void TestTcpSelectClient()
     //auto IP = "114.80.171.123";
 
     IOThread* ioThread = new IOThread("TcpSelectClient");
-    auto tcpAddress = g_Address + 6;
-    TcpSelectClient* tcpSelectClient = new TcpSelectClient(tcpAddress, 1000);
-    TcpClientSubscriberImpl tcpClientSubscriberImpl(tcpSelectClient, ioThread);
+    auto addressName = g_Address + 6;
+    TcpSelectClient* tcpSelectClient = new TcpSelectClient(addressName, 1000);
+    ClientIOSubscriberImpl clientIOSubscriberImpl(tcpSelectClient, ioThread);
     ioThread->SetIO(tcpSelectClient);
 
     if (!tcpSelectClient->Init())

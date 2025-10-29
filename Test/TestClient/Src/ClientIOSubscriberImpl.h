@@ -1,22 +1,29 @@
 #pragma once
 #include "ThreadBase.h"
-#include "TcpBase.h"
+#include "IOBase.h"
 #include "IOThread.h"
+#include "TimeUtility.h"
+#include <map>
+#include <chrono>
 
 
-class TcpServerSubscriberImpl : public IOSubscriber
+class ClientIOSubscriberImpl : public IOSubscriber
 {
 public:
-	TcpServerSubscriberImpl(TcpBase* tcp, IOThread* ioThread);
-	~TcpServerSubscriberImpl();
+	ClientIOSubscriberImpl(IOBase* io, IOThread* ioThread);
+	~ClientIOSubscriberImpl();
+
+
 
 	virtual void OnConnect(SessionIDType sessionID, const char* ip, int port) override;
 	virtual void OnDisConnect(SessionIDType sessionID, const char* ip, int port) override;
 	virtual void OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
 
+	void Send(SessionIDType sessionID);
+	void SendCommand(SessionIDType sessionID, const char* cmd);
 private:
-	TcpBase* m_IO;
+	IOBase* m_IO;
 	IOThread* m_IOThread;
-
 	std::map<SessionIDType, int> m_MessageCounts;
+	std::chrono::steady_clock::time_point m_StartSendTime;
 };

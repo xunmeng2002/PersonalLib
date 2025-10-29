@@ -2,7 +2,7 @@
 #ifdef LINUX
 #include "TcpEpollServer.h"
 #endif
-#include "TcpServerSubscriberImpl.h"
+#include "ServerIOSubscriberImpl.h"
 #include "Logger.h"
 #include "TestUtility.h"
 #include "IOThread.h"
@@ -14,8 +14,9 @@ void TestTcpEpollServer()
 
 #ifdef LINUX
     IOThread* ioThread = new IOThread("TcpEpollServer");
-    TcpEpollServer tcpEpollServer(g_Address, 100);
-    TcpServerSubscriberImpl tcpServerSubscriberImpl(&tcpEpollServer, ioThread);
+    auto addressName = g_Address + 6;
+    TcpEpollServer tcpEpollServer(addressName, 100);
+    ServerIOSubscriberImpl serverIOSubscriberImpl(&tcpEpollServer, ioThread);
     ioThread->SetIO(&tcpEpollServer);
 
     if (!tcpEpollServer.Init())

@@ -7,12 +7,10 @@ using namespace std::chrono;
 
 
 
-TcpProtocolType g_ClientProtocolType = TcpProtocolType::Xtp;
-TcpProtocolType g_ServerProtocolType = TcpProtocolType::Xtp;
+TcpProtocolType g_ClientProtocolType = TcpProtocolType::TcpEpoll;
+TcpProtocolType g_ServerProtocolType = TcpProtocolType::TcpEpoll;
 const char* g_Address = "tcp://127.0.0.1:20001";
-//const char* g_Address = "shm://TestServerShm:3";
-const char* g_IocpServerAddress = "127.0.0.1:20001";
-const char* g_IocpClientAddress = "127.0.0.1:20002";
+//const char* g_Address = "shm://TestShm:4";
 #ifdef WINDOWS
 const char* g_ShmName = "../TestShm";
 const char* g_SemName = "../OnlySem";

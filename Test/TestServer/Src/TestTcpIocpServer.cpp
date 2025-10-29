@@ -2,7 +2,7 @@
 #ifdef WINDOWS
 #include "TcpIocpServer.h"
 #endif
-#include "TcpServerSubscriberImpl.h"
+#include "ServerIOSubscriberImpl.h"
 #include "Logger.h"
 #include "TestUtility.h"
 #include "IOThread.h"
@@ -14,9 +14,9 @@ void TestTcpIocpServer()
     WriteLog(LogLevel::Info, "TestTcpIocpServer");
 #ifdef WINDOWS
     IOThread* ioThread = new IOThread("TcpIocpServer");
-    //TcpIocpServer* tcpIocpServer = new TcpIocpServer(g_IocpServerAddress, 5000);
-    auto tcpIocpServer = (TcpBase*)IOFactory::CreateIO(ServerTypeType::Server, g_Address, 5000);
-    TcpServerSubscriberImpl tcpServerSubscriberImpl(tcpIocpServer, ioThread);
+    auto addressName = g_Address + 6;
+    TcpIocpServer* tcpIocpServer = new TcpIocpServer(addressName, 5000);
+    ServerIOSubscriberImpl serverIOSubscriberImpl(tcpIocpServer, ioThread);
     ioThread->SetIO(tcpIocpServer);
 
     if (!tcpIocpServer->Init())

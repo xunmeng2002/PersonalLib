@@ -4,12 +4,13 @@
 
 enum class TcpProtocolType : int
 {
-    Udp = '0',
-    TcpSelect = '1',
-    TcpEpoll = '2',
-    TcpIocp = '3',
-    Xtp = '4',
-    Step = '5'
+    Shm = 0,
+    Udp,
+    TcpSelect,
+    TcpEpoll,
+    TcpIocp,
+    Xtp,
+    Step
 };
 
 struct ShmPackage
@@ -22,8 +23,6 @@ struct ShmPackage
 extern TcpProtocolType g_ClientProtocolType;
 extern TcpProtocolType g_ServerProtocolType;
 extern const char* g_Address;
-extern const char* g_IocpServerAddress;
-extern const char* g_IocpClientAddress;
 extern const char* g_ShmName;
 extern const char* g_SemName;
 

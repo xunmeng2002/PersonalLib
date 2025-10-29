@@ -1,5 +1,5 @@
 #include "TestTcpEpollClient.h"
-#include "TcpClientSubscriberImpl.h"
+#include "ClientIOSubscriberImpl.h"
 #include "Logger.h"
 #include "TestUtility.h"
 #include "IOThread.h"
@@ -16,8 +16,9 @@ void TestTcpEpollClient()
     //auto IP = "114.80.171.123";
 
     IOThread* ioThread = new IOThread("TcpEpollClient");
-    TcpEpollClient tcpEpollClient(g_Address, 100);
-    TcpClientSubscriberImpl tcpClientSubscriberImpl(&tcpEpollClient, ioThread);
+    auto addressName = g_Address + 6;
+    TcpEpollClient tcpEpollClient(addressName, 100);
+    ClientIOSubscriberImpl clientIOSubscriberImpl(&tcpEpollClient, ioThread);
     ioThread->SetIO(&tcpEpollClient);
 
     if (!tcpEpollClient.Init())

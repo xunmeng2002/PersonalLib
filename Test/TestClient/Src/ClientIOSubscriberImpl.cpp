@@ -1,4 +1,4 @@
-#include "TcpClientSubscriberImpl.h"
+#include "ClientIOSubscriberImpl.h"
 #include "TcpSelectClient.h"
 #include "Logger.h"
 #include "Utility.h"
@@ -10,39 +10,39 @@
 using namespace std;
 using namespace std::chrono;
 
-TcpClientSubscriberImpl::TcpClientSubscriberImpl(TcpBase* tcp, IOThread* ioThread)
-    :m_IO(tcp), m_IOThread(ioThread)
+ClientIOSubscriberImpl::ClientIOSubscriberImpl(IOBase* io, IOThread* ioThread)
+    :m_IO(io), m_IOThread(ioThread)
 {
     m_IO->Subscribe(this);
 }
-TcpClientSubscriberImpl::~TcpClientSubscriberImpl()
+ClientIOSubscriberImpl::~ClientIOSubscriberImpl()
 {
     m_IO->UnSubscribe();
 }
 
 
-void TcpClientSubscriberImpl::OnConnect(SessionIDType sessionID, const char* ip, int port)
+void ClientIOSubscriberImpl::OnConnect(SessionIDType sessionID, const char* ip, int port)
 {
-    WriteLog(LogLevel::Info, "TcpClientSubscriberImpl::OnConnect SessionID:[%lld], IP:[%s], Port:[%d]", sessionID, ip, port);
+    WriteLog(LogLevel::Info, "ClientIOSubscriberImpl::OnConnect SessionID:[%lld], IP:[%s], Port:[%d]", sessionID, ip, port);
     m_MessageCounts.insert(std::make_pair(sessionID, 0));
     m_StartSendTime = steady_clock::now();
     Send(sessionID);
 }
-void TcpClientSubscriberImpl::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
+void ClientIOSubscriberImpl::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
 {
-    WriteLog(LogLevel::Info, "TcpClientSubscriberImpl::OnDisConnect SessionID:[%lld], IP:[%s], Port:[%d]", sessionID, ip, port);
+    WriteLog(LogLevel::Info, "ClientIOSubscriberImpl::OnDisConnect SessionID:[%lld], IP:[%s], Port:[%d]", sessionID, ip, port);
     m_MessageCounts.erase(sessionID);
 
     m_IOThread->Stop();
 }
-void TcpClientSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer)
+void ClientIOSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 {
     auto count = m_MessageCounts[sessionID];
-    //if (count % 10 == 0)
+    if (count % 100 == 0)
     {
-        WriteLog(LogLevel::Info, "TcpClientSubscriberImpl::OnRecv SessionID:[%lld], Length:[%d], Data:[%s]", sessionID, buffer->GetLength(), buffer->GetData());
+        WriteLog(LogLevel::Info, "ClientIOSubscriberImpl::OnRecv SessionID:[%lld], Length:[%d], Data:[%s]", sessionID, buffer->GetLength(), buffer->GetData());
     }
-    if (m_MessageCounts[sessionID] < 10)
+    if (m_MessageCounts[sessionID] < 10000)
     {
         Send(sessionID);
     }
@@ -55,7 +55,7 @@ void TcpClientSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* 
         buffer->Free();
     }
 }
-void TcpClientSubscriberImpl::Send(SessionIDType sessionID)
+void ClientIOSubscriberImpl::Send(SessionIDType sessionID)
 {
     ++m_MessageCounts[sessionID];
 
@@ -80,7 +80,7 @@ void TcpClientSubscriberImpl::Send(SessionIDType sessionID)
 
     m_IO->Send(sessionID, buffer);
 }
-void TcpClientSubscriberImpl::SendCommand(SessionIDType sessionID, const char* cmd)
+void ClientIOSubscriberImpl::SendCommand(SessionIDType sessionID, const char* cmd)
 {
     ++m_MessageCounts[sessionID];
     Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();

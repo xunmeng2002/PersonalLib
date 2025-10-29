@@ -1,6 +1,6 @@
 #include "TestTcpSelectServer.h"
 #include "TcpSelectServer.h"
-#include "TcpServerSubscriberImpl.h"
+#include "ServerIOSubscriberImpl.h"
 #include "Logger.h"
 #include "TestUtility.h"
 #include "IOThread.h"
@@ -11,9 +11,9 @@ void TestTcpSelectServer()
     WriteLog(LogLevel::Info, "TestTcpSelectServer");
 
     IOThread* ioThread = new IOThread("TcpSelectServer");
-    auto tcpAddress = g_Address + 6;
-    TcpSelectServer* tcpSelectServer = new TcpSelectServer(tcpAddress, 1000);
-    TcpServerSubscriberImpl tcpServerSubscriberImpl(tcpSelectServer, ioThread);
+    auto addressName = g_Address + 6;
+    TcpSelectServer* tcpSelectServer = new TcpSelectServer(addressName, 1000);
+    ServerIOSubscriberImpl serverIOSubscriberImpl(tcpSelectServer, ioThread);
     ioThread->SetIO(tcpSelectServer);
     
     if (!tcpSelectServer->Init())

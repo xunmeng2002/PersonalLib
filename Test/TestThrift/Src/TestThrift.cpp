@@ -26,8 +26,8 @@ int main(int argc, const char* argv[])
 	Logger::GetInstance().SetLogLevel(LogLevel::Info, LogLevel::Info);
 	Logger::GetInstance().Start();
 
-	std::string tcpAddress = "tcp://124.70.214.214:6333";
-	auto ioBase = IOFactory::CreateIO(ServerTypeType::Client, tcpAddress.c_str(), 100);
+	std::string addressName = "tcp://124.70.214.214:6333";
+	auto ioBase = IOFactory::CreateIO(ServerTypeType::Client, addressName.c_str(), 100);
 	IOThread* ioThread = new IOThread("ThriftClient");
 	ioThread->SetIO(ioBase);
 

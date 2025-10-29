@@ -13,8 +13,8 @@
 
 using namespace std;
 
-Sem::Sem(const char* name, unsigned timeOutMilliSecond)
-	:m_SemName(name), m_Sem(nullptr)
+Sem::Sem(const char* name, ServerTypeType serverType, unsigned timeOutMilliSecond)
+	:m_SemName(name), m_Sem(nullptr), m_ServerType(serverType)
 {
 	m_TimeOutMilliSecond = timeOutMilliSecond;
 }
@@ -27,7 +27,10 @@ Sem::~Sem()
 #endif
 #ifdef LINUX
 		sem_close(m_Sem);
-		sem_unlink(m_SemName.c_str());
+		if (m_ServerType == ServerTypeType::Server)
+		{
+			sem_unlink(m_SemName.c_str());
+		}
 #endif
 		m_Sem = nullptr;
 	}
@@ -35,44 +38,11 @@ Sem::~Sem()
 bool Sem::Init()
 {
 #ifdef WINDOWS
-	m_Sem = CreateSemaphoreA(NULL, 1, 1, m_SemName.c_str());
-	if (m_Sem == nullptr)
-	{
-		WriteLog(LogLevel::Error, "CreateSemaphoreA Failed. LastError:%d", GetLastError());
-		m_Sem = OpenSemaphoreA(SEMAPHORE_ALL_ACCESS, FALSE, m_SemName.c_str());
-		if (m_Sem == nullptr)
-		{
-			WriteLog(LogLevel::Error, "OpenSemaphoreA Failed. LastError:%d", GetLastError());
-		}
-	}
-	if (m_Sem == nullptr)
-	{
-		WriteLog(LogLevel::Info, "Create Or Open Semaphore Success.");
-		return false;
-	}
+	return WindowsInit();
 #endif
 #ifdef LINUX
-	m_Sem = sem_open(m_SemName.c_str(), O_CREAT | O_EXCL, 0666, 1);
-	if (m_Sem == nullptr)
-	{
-		m_Sem = sem_open(m_SemName.c_str(), O_EXCL, 0666, 1);
-		if (m_Sem == nullptr)
-		{
-			WriteLog(LogLevel::Warning, "sem_open Failed. ErrNo:%d", errno);
-			return false;
-		}
-		else
-		{
-			WriteLog(LogLevel::Warning, "sem_open Successed ReOpen");
-		}
-	}
-	else
-	{
-		WriteLog(LogLevel::Warning, "sem_open Successed FirstOpen");
-	}
+	return LinuxInit();
 #endif
-	WriteLog(LogLevel::Info, "Sem::Init Successed");
-	return true;
 }
 bool Sem::Lock()
 {
@@ -107,5 +77,58 @@ bool Sem::UnLock()
 		WriteLog(LogLevel::Error, "Sem UnLock Failed.");
 	}
 	return result;
+}
+
+bool Sem::WindowsInit()
+{
+#ifdef WINDOWS
+	m_Sem = CreateSemaphoreA(NULL, 1, 1, m_SemName.c_str());
+	if (m_Sem == nullptr)
+	{
+		WriteLog(LogLevel::Error, "CreateSemaphoreA Failed. LastError:%d", GetLastError());
+		m_Sem = OpenSemaphoreA(SEMAPHORE_ALL_ACCESS, FALSE, m_SemName.c_str());
+		if (m_Sem == nullptr)
+		{
+			WriteLog(LogLevel::Error, "OpenSemaphoreA Failed. LastError:%d", GetLastError());
+		}
+	}
+	if (m_Sem == nullptr)
+	{
+		WriteLog(LogLevel::Info, "Create Or Open Semaphore Success.");
+		return false;
+	}
+	WriteLog(LogLevel::Info, "Sem::Init Successed");
+	return true;
+#else
+	return false;
+#endif
+	
+}
+bool Sem::LinuxInit()
+{
+#ifdef LINUX
+	m_Sem = sem_open(m_SemName.c_str(), O_CREAT | O_EXCL, 0666, 1);
+	if (m_Sem == nullptr)
+	{
+		m_Sem = sem_open(m_SemName.c_str(), O_EXCL, 0666, 1);
+		if (m_Sem == nullptr)
+		{
+			WriteLog(LogLevel::Warning, "sem_open Failed. ErrNo:%d", errno);
+			return false;
+		}
+		else
+		{
+			WriteLog(LogLevel::Warning, "sem_open Successed ReOpen");
+		}
+	}
+	else
+	{
+		WriteLog(LogLevel::Warning, "sem_open Successed FirstOpen");
+	}
+	WriteLog(LogLevel::Info, "Sem::Init Successed");
+	return true;
+#else
+	return false;
+#endif
 }
 

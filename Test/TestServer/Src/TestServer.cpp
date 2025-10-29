@@ -2,6 +2,7 @@
 #include <set>
 #include <string.h>
 #include "Logger.h"
+#include "TestShmServer.h"
 #include "TestTcpSelectServer.h"
 #include "TestTcpEpollServer.h"
 #include "TestTcpIocpServer.h"
@@ -19,6 +20,9 @@ int main(int argc, const char* argv[])
 
     switch (g_ServerProtocolType)
     {
+    case TcpProtocolType::Shm:
+        TestShmServer();
+        break;
     case TcpProtocolType::Udp:
         //TestUdpServer();
         break;
