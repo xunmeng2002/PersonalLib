@@ -355,18 +355,24 @@ enum class ConnectStatusType : int
 //数据库操作
 enum class DBOperateType : int
 {
+	//创建所有表
+	CreateTables = '0',
+	//删除所有表
+	DropTables = '1',
+	//清空所有表
+	TruncateTables = '2',
 	//插入
-	Insert = '0',
+	Insert = '3',
 	//删除
-	Delete = '1',
+	Delete = '4',
 	//按索引删除
-	DeleteByIndex = '2',
+	DeleteByIndex = '5',
 	//更新
-	Update = '3',
+	Update = '6',
 	//批量插入
-	BatchInsert = '4',
+	BatchInsert = '7',
 	//清空
-	Truncate = '5',
+	Truncate = '8',
 };
 
 //交割方式
