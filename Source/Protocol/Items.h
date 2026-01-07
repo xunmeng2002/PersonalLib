@@ -63,6 +63,7 @@ public:
 	static constexpr unsigned int ProductName = 0x200C;
 	static constexpr unsigned int SessionName = 0x200D;
 	static constexpr unsigned int BrokerName = 0x200E;
+	static constexpr unsigned int MdUserName = 0x200F;
 	static constexpr unsigned int ErrorMsg = 0x2401;
 	static constexpr unsigned int StatusMsg = 0x2402;
 	static constexpr unsigned int RiskMessage = 0x2403;

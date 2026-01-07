@@ -18,6 +18,5 @@ struct IPAddressField
 struct SubscribeInstrument
 {
 	std::string ExchangeID;
-	std::string UnderlyingID;
-	std::list<std::string> InstrumentIDs;
+	std::string InstrumentID;
 };
