@@ -141,6 +141,9 @@ typedef char CpuIDType[32];
 //日期类型
 typedef char DateType[9];
 
+//数据库名称
+typedef char DBNameType[32];
+
 //磁盘序号类型
 typedef char DiskIDType[64];
 
@@ -373,6 +376,19 @@ enum class DBOperateType : int
 	BatchInsert = '7',
 	//清空
 	Truncate = '8',
+};
+
+//数据库类型
+enum class DBTypeType : int
+{
+	//duckdb
+	DuckDB = '0',
+	//sqlite
+	SqliteDB = '1',
+	//mysql
+	MysqlDB = '2',
+	//maria
+	MariaDB = '3',
 };
 
 //交割方式
