@@ -1,3 +1,3 @@
 <parselist>
-	<pump script="./ParseItemModel.py" dest="../Model/Items.xml" sources="../Model/ShortItems.xml"/>
+	<pump script="./ParseShortItem.py" dest="../Model/Items.xml" sources="../Model/ShortItems.xml"/>
 </parselist>
