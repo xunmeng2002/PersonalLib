@@ -175,7 +175,7 @@
 		<item name="ExchangeID" id="0x100A" type="ExchangeID" desc="交易所代码"/>
 		<item name="InstrumentID" id="0x100D" type="InstrumentID" desc="合约代码"/>
 		<item name="ExchangeInstID" id="0x100B" type="InstrumentID" desc="交易所合约代码"/>
-		<item name="InstrumentName" id="0x2004" type="InstrumentName" desc="合约名称"/>
+		<item name="InstrumentName" id="0x2006" type="InstrumentName" desc="合约名称"/>
 		<item name="VolumeMultiple" id="0x8403" type="VolumeMultiple" desc="合约乘数"/>
 		<item name="ProductClass" id="0x901C" type="ProductClass" desc="品种类型"/>
 	</field>
@@ -187,7 +187,7 @@
 		<item name="ExchangeID" id="0x100A" type="ExchangeID" desc="交易所代码"/>
 		<item name="InstrumentID" id="0x100D" type="InstrumentID" desc="合约代码"/>
 		<item name="ExchangeInstID" id="0x100B" type="InstrumentID" desc="交易所合约代码"/>
-		<item name="InstrumentName" id="0x2004" type="InstrumentName" desc="合约名称"/>
+		<item name="InstrumentName" id="0x2006" type="InstrumentName" desc="合约名称"/>
 		<item name="VolumeMultiple" id="0x8403" type="VolumeMultiple" desc="合约乘数"/>
 		<item name="OptionType" id="0x9015" type="OptionType" desc="期权类型"/>
 		<item name="UnderlyingInstrumentID" id="0x1021" type="InstrumentID" desc="标的合约代码"/>
@@ -432,7 +432,7 @@
 	<field name="ReqAddRiskUser" id="0x4006" desc="添加风控用户请求">
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
 		<item name="UserID" id="0x1022" type="UserID" desc="用户代码"/>
-		<item name="UserName" id="0x2003" type="UserName" desc="用户名称"/>
+		<item name="UserName" id="0x2010" type="UserName" desc="用户名称"/>
 		<item name="Password" id="0x2801" type="Password" desc="密码"/>
 		<item name="RiskGroupID" id="0x1019" type="GroupID" desc="交易组代码"/>
 	</field>
@@ -443,7 +443,7 @@
 	<field name="ReqUpdateRiskUser" id="0x4008" desc="更新风控用户请求">
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
 		<item name="UserID" id="0x1022" type="UserID" desc="用户代码"/>
-		<item name="UserName" id="0x2003" type="UserName" desc="用户名称"/>
+		<item name="UserName" id="0x2010" type="UserName" desc="用户名称"/>
 		<item name="Password" id="0x2801" type="Password" desc="密码"/>
 		<item name="RiskGroupID" id="0x1019" type="GroupID" desc="交易组代码"/>
 	</field>
@@ -462,7 +462,7 @@
 	<field name="ReqAddAdminUser" id="0x400C" desc="添加管理用户请求">
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
 		<item name="UserID" id="0x1022" type="UserID" desc="用户代码"/>
-		<item name="UserName" id="0x2003" type="UserName" desc="用户名称"/>
+		<item name="UserName" id="0x2010" type="UserName" desc="用户名称"/>
 		<item name="Password" id="0x2801" type="Password" desc="密码"/>
 	</field>
 	<field name="RspAddAdminUser" id="0x400D" desc="添加管理用户应答">
@@ -472,7 +472,7 @@
 	<field name="ReqUpdateAdminUser" id="0x400E" desc="更新管理用户请求">
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
 		<item name="UserID" id="0x1022" type="UserID" desc="用户代码"/>
-		<item name="UserName" id="0x2003" type="UserName" desc="用户名称"/>
+		<item name="UserName" id="0x2010" type="UserName" desc="用户名称"/>
 		<item name="Password" id="0x2801" type="Password" desc="密码"/>
 	</field>
 	<field name="RspUpdateAdminUser" id="0x400F" desc="更新管理用户应答">
@@ -491,7 +491,7 @@
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
 		<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 		<item name="PrimaryAccountID" id="0x1014" type="AccountID" desc="主账户代码"/>
-		<item name="PrimaryAccountName" id="0x2002" type="AccountName" desc="主账户名称"/>
+		<item name="PrimaryAccountName" id="0x2009" type="AccountName" desc="主账户名称"/>
 		<item name="AccountClass" id="0x9013" type="AccountClass" desc="账户类别"/>
 		<item name="BrokerPassword" id="0x2802" type="Password" desc="经纪公司密码"/>
 		<item name="OfferID" id="0x1011" type="OfferID" desc="报盘代码"/>
@@ -511,7 +511,7 @@
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
 		<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 		<item name="PrimaryAccountID" id="0x1014" type="AccountID" desc="主账户代码"/>
-		<item name="PrimaryAccountName" id="0x2002" type="AccountName" desc="主账户名称"/>
+		<item name="PrimaryAccountName" id="0x2009" type="AccountName" desc="主账户名称"/>
 		<item name="AccountClass" id="0x9013" type="AccountClass" desc="账户类别"/>
 		<item name="BrokerPassword" id="0x2802" type="Password" desc="经纪公司密码"/>
 		<item name="OfferID" id="0x1011" type="OfferID" desc="报盘代码"/>
@@ -623,7 +623,7 @@
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
 		<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 		<item name="CommissionGroupID" id="0x1007" type="GroupID" desc="交易组代码"/>
-		<item name="CommissionGroupName" id="0x2005" type="GroupName" desc="手续费组名称"/>
+		<item name="CommissionGroupName" id="0x2003" type="GroupName" desc="手续费组名称"/>
 		<item name="ExchangeID" id="0x100A" type="ExchangeID" desc="交易所代码"/>
 		<item name="ProductClass" id="0x901C" type="ProductClass" desc="品种类型"/>
 		<item name="OpenBuyByMoney" id="0x5006" type="Rate" desc="买开仓费率"/>
@@ -648,7 +648,7 @@
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
 		<item name="TradingDay" id="0x3001" type="Date" desc="交易日"/>
 		<item name="CommissionGroupID" id="0x1007" type="GroupID" desc="交易组代码"/>
-		<item name="CommissionGroupName" id="0x2005" type="GroupName" desc="手续费组名称"/>
+		<item name="CommissionGroupName" id="0x2003" type="GroupName" desc="手续费组名称"/>
 		<item name="ExchangeID" id="0x100A" type="ExchangeID" desc="交易所代码"/>
 		<item name="ProductClass" id="0x901C" type="ProductClass" desc="品种类型"/>
 		<item name="OpenBuyByMoney" id="0x5006" type="Rate" desc="买开仓费率"/>
@@ -716,7 +716,7 @@
 	<field name="ReqAddTradeOffer" id="0x4030" desc="添加交易报盘请求">
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
 		<item name="OfferID" id="0x1011" type="OfferID" desc="报盘代码"/>
-		<item name="OfferName" id="0x2006" type="OfferName" desc="报盘名称"/>
+		<item name="OfferName" id="0x2008" type="OfferName" desc="报盘名称"/>
 		<item name="OfferType" id="0x9018" type="OfferType" desc="报盘类型"/>
 		<item name="OfferPassword" id="0x2803" type="Password" desc="报盘密码"/>
 	</field>
@@ -727,7 +727,7 @@
 	<field name="ReqUpdateTradeOffer" id="0x4032" desc="更新交易报盘请求">
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
 		<item name="OfferID" id="0x1011" type="OfferID" desc="报盘代码"/>
-		<item name="OfferName" id="0x2006" type="OfferName" desc="报盘名称"/>
+		<item name="OfferName" id="0x2008" type="OfferName" desc="报盘名称"/>
 		<item name="OfferType" id="0x9018" type="OfferType" desc="报盘类型"/>
 		<item name="OfferPassword" id="0x2803" type="Password" desc="报盘密码"/>
 	</field>
@@ -746,7 +746,7 @@
 	<field name="ReqAddTradeGroup" id="0x4036" desc="添加交易组请求">
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
 		<item name="TradeGroupID" id="0x1020" type="GroupID" desc="交易组代码"/>
-		<item name="TradeGroupName" id="0x2008" type="GroupName" desc="交易组名称"/>
+		<item name="TradeGroupName" id="0x200F" type="GroupName" desc="交易组名称"/>
 	</field>
 	<field name="RspAddTradeGroup" id="0x4037" desc="添加交易组应答">
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
@@ -755,7 +755,7 @@
 	<field name="ReqUpdateTradeGroup" id="0x4038" desc="更新交易组请求">
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
 		<item name="TradeGroupID" id="0x1020" type="GroupID" desc="交易组代码"/>
-		<item name="TradeGroupName" id="0x2008" type="GroupName" desc="交易组名称"/>
+		<item name="TradeGroupName" id="0x200F" type="GroupName" desc="交易组名称"/>
 	</field>
 	<field name="RspUpdateTradeGroup" id="0x4039" desc="更新交易组应答">
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
@@ -804,7 +804,7 @@
 	<field name="ReqAddRiskGroup" id="0x4042" desc="添加风控组请求">
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
 		<item name="RiskGroupID" id="0x1019" type="GroupID" desc="交易组代码"/>
-		<item name="RiskGroupName" id="0x2009" type="GroupName" desc="风控组名称"/>
+		<item name="RiskGroupName" id="0x200B" type="GroupName" desc="风控组名称"/>
 	</field>
 	<field name="RspAddRiskGroup" id="0x4043" desc="添加风控组应答">
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
@@ -813,7 +813,7 @@
 	<field name="ReqUpdateRiskGroup" id="0x4044" desc="更新风控组请求">
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
 		<item name="RiskGroupID" id="0x1019" type="GroupID" desc="交易组代码"/>
-		<item name="RiskGroupName" id="0x2009" type="GroupName" desc="风控组名称"/>
+		<item name="RiskGroupName" id="0x200B" type="GroupName" desc="风控组名称"/>
 	</field>
 	<field name="RspUpdateRiskGroup" id="0x4045" desc="更新风控组应答">
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
@@ -860,7 +860,7 @@
 	<field name="ReqAddOrUpdateRisk" id="0x404E" desc="添加风控请求">
 		<item name="AdminUserID" id="0x1002" type="UserID" desc="管理用户代码"/>
 		<item name="RiskID" id="0x1018" type="RiskID" desc="风控代码"/>
-		<item name="RiskName" id="0x2007" type="RiskName" desc="风控名称"/>
+		<item name="RiskName" id="0x200C" type="RiskName" desc="风控名称"/>
 		<item name="RiskClassID" id="0x1017" type="RiskClassID" desc="风控类别代码"/>
 	</field>
 	<field name="RspAddOrUpdateRisk" id="0x404F" desc="添加风控应答">
@@ -1040,7 +1040,7 @@
 		<item name="ExchangeID" id="0x100A" type="ExchangeID" desc="交易所代码"/>
 		<item name="InstrumentID" id="0x100D" type="InstrumentID" desc="合约代码"/>
 		<item name="ExchangeInstID" id="0x100B" type="InstrumentID" desc="交易所合约代码"/>
-		<item name="InstrumentName" id="0x2004" type="InstrumentName" desc="合约名称"/>
+		<item name="InstrumentName" id="0x2006" type="InstrumentName" desc="合约名称"/>
 		<item name="VolumeMultiple" id="0x8403" type="VolumeMultiple" desc="合约乘数"/>
 		<item name="OptionType" id="0x9015" type="OptionType" desc="期权类型"/>
 		<item name="UnderlyingInstrumentID" id="0x1021" type="InstrumentID" desc="标的合约代码"/>

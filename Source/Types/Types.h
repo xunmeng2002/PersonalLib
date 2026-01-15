@@ -141,7 +141,7 @@ typedef char CpuIDType[32];
 //日期类型
 typedef char DateType[9];
 
-//数据库名称
+//数据库名称类型
 typedef char DBNameType[32];
 
 //磁盘序号类型
