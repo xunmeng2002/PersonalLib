@@ -9,9 +9,6 @@ typedef bool BoolType;
 typedef unsigned short UShortType;
 
 
-//经纪公司代码类型
-typedef int BrokerIDType;
-
 //客户端委托编号类型
 typedef int ClientOrderIDType;
 
@@ -123,7 +120,10 @@ typedef char BankCardIDType[32];
 //主板时间类型
 typedef char BiosTimeType[16];
 
-//经纪商名称
+//经纪公司代码
+typedef char BrokerIDType[16];
+
+//经纪公司名称
 typedef char BrokerNameType[16];
 
 //经纪公司委托编号类型
@@ -172,7 +172,7 @@ typedef char InstrumentIDType[32];
 typedef char InstrumentNameType[64];
 
 //IP地址类型
-typedef char IPAddressType[16];
+typedef char IPAddressType[32];
 
 //Mac地址类型
 typedef char MacAddressType[32];
@@ -197,6 +197,9 @@ typedef char PasswordType[64];
 
 //参数值类型
 typedef char ParamValueType[256];
+
+//手机号码类型
+typedef char PhoneNumberType[32];
 
 //品种代码类型
 typedef char ProductIDType[32];
