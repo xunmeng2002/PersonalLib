@@ -42,9 +42,10 @@
 	<file name="value.h" dest="../Libs/PersonalLib/include/json/" src="./Source/JsonCpp/json/"/>
 	<file name="version.h" dest="../Libs/PersonalLib/include/json/" src="./Source/JsonCpp/json/"/>
 	<file name="writer.h" dest="../Libs/PersonalLib/include/json/" src="./Source/JsonCpp/json/"/>
-	
-	<file name="Logger.h" dest="../Libs/PersonalLib/include/" src="./Source/Logger/"/>
+
 	<file name="LogData.h" dest="../Libs/PersonalLib/include/" src="./Source/Logger/"/>
+	<file name="Logger.h" dest="../Libs/PersonalLib/include/" src="./Source/Logger/"/>
+	<file name="LoggerInterface.h" dest="../Libs/PersonalLib/include/" src="./Source/Logger/"/>
 	
 	<file name="MD5.h" dest="../Libs/PersonalLib/include/" src="./Source/MD5/"/>
 	<file name="MemCacheTemplate.h" dest="../Libs/PersonalLib/include/" src="./Source/MemCache/"/>

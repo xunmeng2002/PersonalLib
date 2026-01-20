@@ -25,10 +25,6 @@ static std::map<LogLevel, std::string> s_LogLevelName = {
 
 thread_local char t_LogBuffer[LogLineLength];
 
-Logger Logger::m_Instance;
-LogLevel Logger::s_LogLevel = LogLevel::Info;
-LogLevel Logger::s_LogLevelConsole = LogLevel::Warning;
-
 Logger::Logger()
 	:ThreadBase("Logger"), m_ProcessName(""), m_CreateLogFileTime(), m_LogData(nullptr)
 {
@@ -40,7 +36,23 @@ Logger::~Logger()
 
 Logger& Logger::GetInstance()
 {
-	return m_Instance;
+	static Logger instance;
+	return instance;
+}
+WriteLogFunc& Logger::GetWriteLogFunc()
+{
+	static WriteLogFunc externLogger = nullptr;
+	return externLogger;
+}
+LogLevel& Logger::GetLogLevel()
+{
+	static LogLevel logLevel = LogLevel::Info;
+	return logLevel;
+}
+LogLevel& Logger::GetConsoleLogLevel()
+{
+	static LogLevel consoleLogLevel = LogLevel::Warning;
+	return consoleLogLevel;
 }
 bool Logger::Init(const char* fullProcessName)
 {
@@ -48,23 +60,28 @@ bool Logger::Init(const char* fullProcessName)
 	m_LogData = new LogData();
 	CreateLogDir("log");
 
+	GetWriteLogFunc() = Logger::Write;
 	return true;
 }
 void Logger::SetLogLevel(LogLevel logLevel, LogLevel logLevelConsole)
 {
-	s_LogLevel = logLevel;
-	s_LogLevelConsole = logLevelConsole;
+	GetLogLevel() = logLevel;
+	GetConsoleLogLevel() = logLevelConsole;
 }
-void Logger::WriteLogFunc(LogLevel level, const char* file, int line, const char* func, const char* formatStr, ...)
+void Logger::SetExternLogger(WriteLogFunc externLogger)
+{
+	GetWriteLogFunc() = externLogger;
+}
+void Logger::Write(LogLevel level, const char* file, int line, const char* func, const char* formatStr, ...)
 {
 	va_list va;
 	va_start(va, formatStr);
-	m_Instance.WriteToLog(level, file, line, func, formatStr, va);
+	GetInstance().WriteToLog(level, file, line, func, formatStr, va);
 	va_end(va);
-	if (level >= s_LogLevelConsole)
+	if (level >= GetConsoleLogLevel())
 	{
 		va_start(va, formatStr);
-		m_Instance.WriteToConsole(level, formatStr, va);
+		GetInstance().WriteToConsole(level, formatStr, va);
 		va_end(va);
 	}
 }
@@ -130,7 +147,7 @@ void Logger::FlushBuffers()
 
 void Logger::WriteToLog(LogLevel level, const char* file, int line, const char* func, const char* format, va_list va)
 {
-	if (level < s_LogLevel)
+	if (level < GetLogLevel())
 		return;
 	for (auto p = file; *p != '\0'; p++)
 		if (*p == '\\' || *p == '/')

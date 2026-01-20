@@ -4,18 +4,8 @@
 #include <map>
 #include <mutex>
 #include <condition_variable>
+#include "LoggerInterface.h"
 #include "ThreadBase.h"
-
-enum class LogLevel : int
-{
-	Ignore = 0,
-	Debug = 1,
-	Info = 2,
-	Warning = 3,
-	Error = 4,
-	Critical = 5,
-	Emergency = 6,
-};
 
 struct LogData;
 class Logger : public ThreadBase
@@ -28,15 +18,19 @@ private:
 
 public:
 	static Logger& GetInstance();
+	static WriteLogFunc& GetWriteLogFunc();
+	static LogLevel& GetLogLevel();
+	static LogLevel& GetConsoleLogLevel();
 	bool Init(const char* fullProcessName);
 	void SetLogLevel(LogLevel logLevel = LogLevel::Info, LogLevel logLevelConsole = LogLevel::Warning);
-	static void WriteLogFunc(LogLevel level, const char* file, int line, const char* func, const char* formatStr, ...);
+	static void SetExternLogger(WriteLogFunc externLogger);
+	static void Write(LogLevel level, const char* file, int line, const char* func, const char* formatStr, ...);
+
 
 protected:
 	virtual void ThreadInit() override;
 	virtual void ThreadExit() override;
 	virtual void Run() override;
-
 
 	bool CreateLogDir(const std::string& path);
 	void SwapInnerLogBuffers();
@@ -47,19 +41,17 @@ protected:
 	uint32_t GetCurrentThreadID();
 
 private:
-	static Logger m_Instance;
-
 	char m_ProcessName[128];
 	tm m_CreateLogFileTime;
 	LogData* m_LogData;
-	static LogLevel s_LogLevel;
-	static LogLevel s_LogLevelConsole;
 };
 
 
 #define WriteLog(level, formatStr, ...)\
-	Logger::WriteLogFunc(level, __FILE__, __LINE__, __func__, formatStr, ##__VA_ARGS__);
+	if (Logger::GetWriteLogFunc() != nullptr)\
+		Logger::GetWriteLogFunc()(level, __FILE__, __LINE__, __func__, formatStr, ##__VA_ARGS__);
 
 
 #define WriteErrorLog(errorID, errorMsg)\
-	Logger::WriteLogFunc(LogLevel::Error, __FILE__, __LINE__, __func__, "ErrorID:[%d], ErrorMsg:[%s].", errorID, errorMsg);
+	if (Logger::GetWriteLogFunc() != nullptr)\
+		Logger::GetWriteLogFunc()(LogLevel::Error, __FILE__, __LINE__, __func__, "ErrorID:[%d], ErrorMsg:[%s].", errorID, errorMsg);
