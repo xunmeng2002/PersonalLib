@@ -93,7 +93,8 @@
 	<file name="ThreadBase.h" dest="../Libs/PersonalLib/include/" src="./Source/ThreadBase/"/>
 	<file name="Timer.h" dest="../Libs/PersonalLib/include/" src="./Source/Timer/"/>
 	<file name="Types.h" dest="../Libs/PersonalLib/include/" src="./Source/Types/"/>
-	
+
+	<file name="DoubleUtility.h" dest="../Libs/PersonalLib/include/" src="./Source/Utility/"/>
 	<file name="TimeUtility.h" dest="../Libs/PersonalLib/include/" src="./Source/Utility/"/>
 	<file name="Utility.h" dest="../Libs/PersonalLib/include/" src="./Source/Utility/"/>
 </copylist>

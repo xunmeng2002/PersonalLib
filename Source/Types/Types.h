@@ -571,6 +571,19 @@ enum class MarketDataTypeType : int
 	Bar = '1',
 };
 
+//撮合模式
+enum class MatchModeType : int
+{
+	//订单簿
+	OrderBook = '0',
+	//最新价
+	LastPrice = '1',
+	//对手价
+	OppositePrice = '2',
+	//Bar撮合
+	Bar = '3',
+};
+
 //持仓方向
 enum class PosiDirectionType : int
 {
