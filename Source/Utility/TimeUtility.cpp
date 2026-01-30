@@ -6,6 +6,7 @@
 #include <sys/timeb.h>
 
 thread_local char t_DateTimeBuff[32];
+using namespace std;
 using namespace std::chrono;
 
 time_t GetTime()
@@ -251,7 +252,11 @@ long long GetMilliSecondTimeStamp()
 	sprintf(t_DateTimeBuff + len, "%03u", ms);
 	return atoll(t_DateTimeBuff);
 }
-
+void GetDateTimeFromTimeStamp(const Int64Type& timeStamp, DateType& date, TimeType& time)
+{
+	strcpy(date, to_string(timeStamp / 1000000000LL).c_str());
+	strcpy(time, to_string((timeStamp / 1000LL) % 1000000LL).c_str());
+}
 
 int GetTimeFromTimeString(const char* time)
 {

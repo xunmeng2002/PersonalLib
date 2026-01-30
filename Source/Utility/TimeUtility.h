@@ -1,7 +1,7 @@
 #pragma once
 #include <chrono>
 #include <string>
-
+#include "Types.h"
 
 time_t GetTime();
 time_t GetTime(const char* date);
@@ -34,6 +34,7 @@ std::string GetLocalDateTime();
 void GetLocalDateTime(char* date, char* time);
 std::string GetLocalDateTimeWithMilliSecond();
 long long GetMilliSecondTimeStamp();
+void GetDateTimeFromTimeStamp(const Int64Type& timeStamp, DateType& date, TimeType& time);
 
 int GetTimeFromTimeString(const char* time);
 time_t GetTimeFromString(std::string dateTime, std::string format = "%04d%02d%02d-%02d:%02d:%02d");

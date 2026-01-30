@@ -28,3 +28,12 @@ bool DoubleGreatEqual(const double& left, const double& right)
 {
 	return left > right - epsilon;
 }
+
+double GetDoubleValue(const double& value)
+{
+	if (isinf(value) || isnan(value))
+	{
+		return 0.0;
+	}
+	return value;
+}
