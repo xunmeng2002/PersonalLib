@@ -6,7 +6,7 @@
 
 
 constexpr unsigned int StepHeaderLen = 36u;
-constexpr unsigned int StepTailLen = 7u;
+constexpr unsigned int StepTailLen = 9u;
 constexpr unsigned int SOH = 1u;
 
 

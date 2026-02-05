@@ -11,11 +11,11 @@ void Package::Free()
 	memset(&Head, 0, sizeof(Head));
 	memset(&Tail, 0, sizeof(Tail));
 }
-void Package::Prepare(SessionIDType sessionID, bool messageChain, int msgSeqNum)
+void Package::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
 	SessionID = sessionID;
-	Head.MessageChain = messageChain;
 	Head.MsgSeqNum = msgSeqNum;
+	Head.MessageChain = messageChain;
 }
 int Package::MakePackage(ProtocolTypeType protocolType, char* buff, int size)
 {

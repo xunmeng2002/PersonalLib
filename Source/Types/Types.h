@@ -139,7 +139,7 @@ typedef char CurrencyGroupType[8];
 typedef char CpuIDType[32];
 
 //日期类型
-typedef char DateType[9];
+typedef char DateType[16];
 
 //数据库名称类型
 typedef char DBNameType[32];
@@ -223,7 +223,7 @@ typedef char RiskNameType[256];
 typedef char RoleNameType[32];
 
 //席位号
-typedef char SeatNoType[20];
+typedef char SeatNoType[24];
 
 //交易节名称
 typedef char SessionNameType[32];
@@ -232,7 +232,7 @@ typedef char SessionNameType[32];
 typedef char TickBSFlagType[8];
 
 //时间类型
-typedef char TimeType[9];
+typedef char TimeType[16];
 
 //成交编号类型
 typedef char TradeIDType[64];

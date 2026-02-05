@@ -167,8 +167,8 @@ void HeadToStream(HeadField* head, char* buff, int size)
 	int len = 0;
 	len += ::sprintf(buff + len, "%c%u=%04X%c", SOH, Items::PackageID, head->PackageID, SOH);
 	len += ::sprintf(buff + len, "%u=%05u%c", Items::BodyLen, head->BodyLen, SOH);
-	len += ::sprintf(buff + len, "%u=%d%c", Items::MessageChain, head->MessageChain, SOH);
-	len += ::sprintf(buff + len, "%u=%13d", Items::MsgSeqNum, head->MsgSeqNum);
+	len += ::sprintf(buff + len, "%u=%13d%c", Items::MsgSeqNum, head->MsgSeqNum, SOH);
+	len += ::sprintf(buff + len, "%u=%d", Items::MessageChain, head->MessageChain);
 	//最后一个不能使用sprintf赋值，因为sprintf会在末尾自动补上0
 	buff[len] = SOH;
 }
@@ -191,11 +191,11 @@ bool HeadFromStream(char* buff, int startIndex, int endIndex, HeadField* head)
 			case Items::BodyLen:
 				head->BodyLen = atoi(value.c_str());
 				break;
-			case Items::MessageChain:
-				head->MessageChain = atoi(value.c_str());
-				break;
 			case Items::MsgSeqNum:
 				head->MsgSeqNum = atoi(value.c_str());
+				break;
+			case Items::MessageChain:
+				head->MessageChain = atoi(value.c_str());
 				break;
 			default:
 				WriteLog(LogLevel::Warning, "UnExpected Key:0x%X For HeadField, buff:[%s]", key, buff);
@@ -212,7 +212,7 @@ bool HeadFromStream(char* buff, int startIndex, int endIndex, HeadField* head)
 }
 void TailToStream(TailField* tail, char* buff, int size)
 {
-	sprintf(buff, "%u=%03u%c", Items::CheckSum, tail->CheckSum, SOH);
+	sprintf(buff, "%u=%05u%c", Items::CheckSum, tail->CheckSum, SOH);
 }
 bool TailFromStream(char* buff, int startIndex, int endIndex, TailField* tail)
 {
