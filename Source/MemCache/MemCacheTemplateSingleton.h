@@ -56,7 +56,7 @@ public:
 private:
 	void AllocateBlock()
 	{
-		char* newBlock = new char[sizeof(T) * m_BlockUnitNum];
+		char* newBlock = (char*)malloc(sizeof(T) * m_BlockUnitNum);
 		for (auto i = 0; i < m_BlockUnitNum; ++i)
 		{
 			m_Items.push_back(new(newBlock + i * sizeof(T)) T());
