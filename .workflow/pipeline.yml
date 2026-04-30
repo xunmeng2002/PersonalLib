@@ -2,11 +2,7 @@ version: '1.0'
 name: pipeline
 displayName: pipeline
 triggers:
-  trigger: auto
-  push:
-    branches:
-      prefix:
-        - ''
+  trigger: manual
 stages:
   - name: stage-c7166dc6
     displayName: Build
