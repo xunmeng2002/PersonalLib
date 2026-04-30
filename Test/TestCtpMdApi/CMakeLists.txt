@@ -28,5 +28,5 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
 endif()
 
 IF(CMAKE_SYSTEM_NAME MATCHES "Windows")
-	configure_file("${LibsPath}/CTP/${APIVersion}/win64/thostmduserapi_se.dll" "${CMAKE_CURRENT_BINARY_DIR}/thostmduserapi_se.dll" COPYONLY)
+	configure_file("${LibsPath}/CTP/${APIVersion}/win64/thostmduserapi_se.dll" "${CMAKE_BINARY_DIR}/bin/thostmduserapi_se.dll" COPYONLY)
 endif()

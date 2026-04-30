@@ -68,8 +68,16 @@ macro(include_package name dir)
 endmacro(include_package)
 
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+IF(CMAKE_SYSTEM_NAME MATCHES "Windows")
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+ELSEIF(CMAKE_SYSTEM_NAME MATCHES "Linux")
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+ENDIF()
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
 string(TIMESTAMP BUILD_TIMESTAMP "%Y%m%d-%H%M%S")
 message("Build timestamp is ${BUILD_TIMESTAMP}")
 
 add_subdirectory(Target)
-#add_subdirectory(Test)
+add_subdirectory(Test)

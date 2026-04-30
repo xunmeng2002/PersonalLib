@@ -1,5 +1,4 @@
 ﻿SET(PROJECT_NAME "TestMD5")
-project(${PROJECT_NAME})
 message("PROJECT_NAME:" ${PROJECT_NAME})
 
 add_package(Src ./Src)
