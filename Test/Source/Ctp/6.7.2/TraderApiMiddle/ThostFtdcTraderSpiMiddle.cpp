@@ -1,5 +1,5 @@
 ﻿#include "ThostFtdcTraderSpiMiddle.h"
-#include "Logger.h"
+#include "Logger/Logger.h"
 #include "StructLogFunc.h"
 
 

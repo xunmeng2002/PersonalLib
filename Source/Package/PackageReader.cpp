@@ -1,8 +1,8 @@
-#include "PackageReader.h"
-#include "ProtocolUtility.h"
-#include "StepUtility.h"
-#include "Logger.h"
-#include "MemCacheTemplateSingleton.h"
+#include "Package/PackageReader.h"
+#include "Protocol/ProtocolUtility.h"
+#include "Protocol/StepUtility.h"
+#include "Logger/Logger.h"
+#include "MemCache/MemCacheTemplateSingleton.h"
 #include <stdio.h>
 #include <cstring>
 #include <algorithm>

@@ -1,6 +1,6 @@
-#include "TcpSelectBase.h"
-#include "Logger.h"
-#include "TcpUtility.h"
+#include "Tcp/TcpSelect/TcpSelectBase.h"
+#include "Logger/Logger.h"
+#include "Tcp/TcpBase/TcpUtility.h"
 #include <string.h>
 
 

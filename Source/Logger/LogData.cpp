@@ -1,6 +1,6 @@
-#include "LogData.h"
-#include "Buffer.h"
-#include "MemCacheTemplateSingleton.h"
+#include "Logger/LogData.h"
+#include "Buffer/Buffer.h"
+#include "MemCache/MemCacheTemplateSingleton.h"
 
 LogData::LogData()
 {

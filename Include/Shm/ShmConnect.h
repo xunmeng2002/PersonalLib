@@ -1,8 +1,8 @@
 #pragma once
-#include "Types.h"
-#include "Connect.h"
-#include "ShmBuffer.h"
-#include "MemCacheTemplateSingleton.h"
+#include "Types/Types.h"
+#include "IO/Connect.h"
+#include "Buffer/ShmBuffer.h"
+#include "MemCache/MemCacheTemplateSingleton.h"
 
 
 template<unsigned SIZE>

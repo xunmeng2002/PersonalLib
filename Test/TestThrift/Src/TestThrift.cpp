@@ -12,7 +12,7 @@
 #include "IOFactory.h"
 #include "TcpSelectClient.h"
 #include "ThriftClient.h"
-#include "Logger.h"
+#include "Logger/Logger.h"
 
 using namespace apache::thrift;
 using namespace apache::thrift::transport;

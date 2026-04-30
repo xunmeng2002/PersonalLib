@@ -1,5 +1,5 @@
 #include "TestStepServer.h"
-#include "Protocol/Utility.h"
+#include "Utility/Utility.h"
 #include "Logger/Logger.h"
 #include "TestUtility.h"
 #include "Package/PackageFactory.h"

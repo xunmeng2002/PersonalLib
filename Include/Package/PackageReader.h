@@ -1,6 +1,6 @@
 #pragma once
-#include "Package.h"
-#include "PackageFactory.h"
+#include "Package/Package.h"
+#include "Package/PackageFactory.h"
 
 
 class PackageReader

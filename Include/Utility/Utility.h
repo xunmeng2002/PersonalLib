@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <cstring>
-#include "Types.h"
+#include "Types/Types.h"
 
 void ParseProcessName(const char* fullProcessName, char* processName, int len);
 

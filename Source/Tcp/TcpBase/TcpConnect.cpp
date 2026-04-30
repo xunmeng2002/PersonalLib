@@ -1,8 +1,8 @@
-#include "TcpConnect.h"
-#include "Logger.h"
-#include "MemCacheTemplateSingleton.h"
-#include "TimeUtility.h"
-#include "TcpUtility.h"
+#include "Tcp/TcpBase/TcpConnect.h"
+#include "Logger/Logger.h"
+#include "MemCache/MemCacheTemplateSingleton.h"
+#include "Utility/TimeUtility.h"
+#include "Tcp/TcpBase/TcpUtility.h"
 
 
 

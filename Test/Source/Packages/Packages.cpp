@@ -1,8 +1,8 @@
 ﻿#include "Packages.h"
-#include "Items.h"
-#include "StepUtility.h"
-#include "Logger.h"
-#include "MemCacheTemplateSingleton.h"
+#include "Protocol/Items.h"
+#include "Protocol/StepUtility.h"
+#include "Logger/Logger.h"
+#include "MemCache/MemCacheTemplateSingleton.h"
 #include <cstring>
 
 thread_local char t_DataStringBuffer[10240];

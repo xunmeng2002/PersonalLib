@@ -1,8 +1,8 @@
-#include "TcpBase.h"
-#include "Platform.h"
-#include "Logger.h"
-#include "TcpUtility.h"
-#include "TimeUtility.h"
+#include "Tcp/TcpBase/TcpBase.h"
+#include "Platform/Platform.h"
+#include "Logger/Logger.h"
+#include "Tcp/TcpBase/TcpUtility.h"
+#include "Utility/TimeUtility.h"
 #include <cstring>
 #include <assert.h>
 #include <chrono>

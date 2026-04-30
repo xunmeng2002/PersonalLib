@@ -1,6 +1,6 @@
-#include "TcpSelectClient.h"
-#include "TcpUtility.h"
-#include "Logger.h"
+#include "Tcp/TcpSelect/TcpSelectClient.h"
+#include "Tcp/TcpBase/TcpUtility.h"
+#include "Logger/Logger.h"
 #include <cstring>
 
 using namespace std;

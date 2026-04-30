@@ -1,6 +1,6 @@
-#include "Protocol.h"
-#include "Logger.h"
-#include "IOFactory.h"
+#include "Protocol/Protocol.h"
+#include "Logger/Logger.h"
+#include "IO/IOFactory.h"
 #include <stdexcept>
 
 Protocol::Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, int milliSeconds, PackageFactory* packageFactory)

@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 #include <unordered_map>
-#include "Types.h"
-#include "Head.h"
+#include "Types/Types.h"
+#include "Protocol/Head.h"
 
 
 constexpr unsigned int StepHeaderLen = 36u;

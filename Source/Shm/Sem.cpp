@@ -1,6 +1,6 @@
-#include "Sem.h"
-#include "Logger.h"
-#include "TimeUtility.h"
+#include "Shm/Sem.h"
+#include "Logger/Logger.h"
+#include "Utility/TimeUtility.h"
 #include <thread>
 #include <chrono>
 #ifdef WINDOWS

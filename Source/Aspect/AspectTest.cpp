@@ -1,7 +1,7 @@
 #include "AspectTest.h"
-#include "Aspect.h"
-#include "AspectBefore.h"
-#include "AspectAfter.h"
+#include "Aspect/Aspect.h"
+#include "Aspect/AspectBefore.h"
+#include "Aspect/AspectAfter.h"
 #include <iostream>
 
 using namespace std;

@@ -1,10 +1,10 @@
-#include "TcpIocpClient.h"
-#include "TcpIocpCompletePort.h"
-#include "TcpIocpConnect.h"
-#include "TcpIocpSockApi.h"
-#include "IOUtility.h"
-#include "TcpUtility.h"
-#include "Logger.h"
+#include "Tcp/TcpIocp/TcpIocpClient.h"
+#include "Tcp/TcpIocp/TcpIocpCompletePort.h"
+#include "Tcp/TcpIocp/TcpIocpConnect.h"
+#include "Tcp/TcpIocp/TcpIocpSockApi.h"
+#include "IO/IOUtility.h"
+#include "Tcp/TcpBase/TcpUtility.h"
+#include "Logger/Logger.h"
 
 
 TcpIocpClient::TcpIocpClient(const char* addressName, int milliSeconds, int backlog)

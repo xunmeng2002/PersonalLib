@@ -1,9 +1,9 @@
-#include "TcpIocpBase.h"
-#include "TcpIocpConnect.h"
-#include "TcpIocpSockApi.h"
-#include "TcpIocpCompletePort.h"
-#include "TcpUtility.h"
-#include "Logger.h"
+#include "Tcp/TcpIocp/TcpIocpBase.h"
+#include "Tcp/TcpIocp/TcpIocpConnect.h"
+#include "Tcp/TcpIocp/TcpIocpSockApi.h"
+#include "Tcp/TcpIocp/TcpIocpCompletePort.h"
+#include "Tcp/TcpBase/TcpUtility.h"
+#include "Logger/Logger.h"
 
 using namespace std;
 

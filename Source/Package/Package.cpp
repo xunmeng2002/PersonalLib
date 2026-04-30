@@ -1,6 +1,6 @@
-#include "Package.h"
-#include "StepUtility.h"
-#include "ProtocolUtility.h"
+#include "Package/Package.h"
+#include "Protocol/StepUtility.h"
+#include "Protocol/ProtocolUtility.h"
 #include <string.h>
 
 

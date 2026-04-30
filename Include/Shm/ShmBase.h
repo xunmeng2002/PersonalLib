@@ -4,11 +4,11 @@
 #include <list>
 #include <mutex>
 #include <chrono>
-#include "Types.h"
-#include "Buffer.h"
-#include "IOBase.h"
-#include "Sem.h"
-#include "ShmConnect.h"
+#include "Types/Types.h"
+#include "Buffer/Buffer.h"
+#include "IO/IOBase.h"
+#include "Shm/Sem.h"
+#include "Shm/ShmConnect.h"
 
 
 

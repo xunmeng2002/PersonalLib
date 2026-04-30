@@ -1,7 +1,7 @@
 #pragma once
-#include "MemCacheTemplateSingleton.h"
-#include "Constant.h"
-#include "Logger.h"
+#include "MemCache/MemCacheTemplateSingleton.h"
+#include "Constant/Constant.h"
+#include "Logger/Logger.h"
 #include <string.h>
 
 template<unsigned SIZE>

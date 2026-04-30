@@ -1,5 +1,5 @@
 ﻿#include "StructLogFunc.h"
-#include "Logger.h"
+#include "Logger/Logger.h"
 #include <limits>
 
 double GetDoubleValue(double& value)

@@ -1,8 +1,8 @@
-#include "TcpIocpServer.h"
-#include "TcpIocpSockApi.h"
-#include "TcpIocpCompletePort.h"
-#include "Logger.h"
-#include "TcpUtility.h"
+#include "Tcp/TcpIocp/TcpIocpServer.h"
+#include "Tcp/TcpIocp/TcpIocpSockApi.h"
+#include "Tcp/TcpIocp/TcpIocpCompletePort.h"
+#include "Logger/Logger.h"
+#include "Tcp/TcpBase/TcpUtility.h"
 
 
 TcpIocpServer::TcpIocpServer(const char* addressName, int milliSeconds, int backlog)

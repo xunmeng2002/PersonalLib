@@ -1,8 +1,8 @@
 #pragma once
 #include <list>
 #include <map>
-#include "SocketInit.h"
-#include "TcpBase.h"
+#include "SocketInit/SocketInit.h"
+#include "Tcp/TcpBase/TcpBase.h"
 
 
 class TcpSelectBase : public TcpBase

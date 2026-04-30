@@ -1,6 +1,6 @@
 #include <functional>
-#include "ThreadBase.h"
-#include "Logger.h"
+#include "ThreadBase/ThreadBase.h"
+#include "Logger/Logger.h"
 
 
 ThreadBase::ThreadBase(const char* name, int milliSeconds)

@@ -1,7 +1,7 @@
 #pragma once
-#include "TcpBase.h"
-#include "TcpIocpConnect.h"
-#include "TcpIocpCompletePort.h"
+#include "Tcp/TcpBase/TcpBase.h"
+#include "Tcp/TcpIocp/TcpIocpConnect.h"
+#include "Tcp/TcpIocp/TcpIocpCompletePort.h"
 
 class TcpIocpBase : public TcpBase
 {

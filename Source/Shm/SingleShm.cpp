@@ -1,6 +1,6 @@
-#include "SingleShm.h"
-#include "Logger.h"
-#include "TimeUtility.h"
+#include "Shm/SingleShm.h"
+#include "Logger/Logger.h"
+#include "Utility/TimeUtility.h"
 #include <string.h>
 #include <assert.h>
 #ifdef LINUX

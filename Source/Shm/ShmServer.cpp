@@ -1,5 +1,5 @@
-#include "ShmServer.h"
-#include "TimeUtility.h"
+#include "Shm/ShmServer.h"
+#include "Utility/TimeUtility.h"
 #include <string.h>
 
 using namespace std;

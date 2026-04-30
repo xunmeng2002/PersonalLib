@@ -1,10 +1,10 @@
 #pragma once
-#include "SocketInit.h"
-#include "TcpConnect.h"
-#include "SocketNotify.h"
-#include "IOBase.h"
-#include "Buffer.h"
-#include "Constant.h"
+#include "SocketInit/SocketInit.h"
+#include "Tcp/TcpBase/TcpConnect.h"
+#include "Tcp/TcpBase/SocketNotify.h"
+#include "IO/IOBase.h"
+#include "Buffer/Buffer.h"
+#include "Constant/Constant.h"
 #include <list>
 #include <map>
 #include <mutex>

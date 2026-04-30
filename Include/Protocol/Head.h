@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Types.h"
+#include "Types/Types.h"
 
 #pragma pack(push, 1)
 //报文头
