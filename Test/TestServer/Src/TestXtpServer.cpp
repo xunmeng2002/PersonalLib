@@ -1,8 +1,8 @@
 #include "TestXtpServer.h"
-#include "Utility.h"
-#include "Logger.h"
+#include "Utility/Utility.h"
+#include "Logger/Logger.h"
 #include "TestUtility.h"
-#include "PackageFactory.h"
+#include "Package/PackageFactory.h"
 
 using namespace std;
 

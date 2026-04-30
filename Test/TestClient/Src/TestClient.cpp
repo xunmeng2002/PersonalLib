@@ -2,7 +2,7 @@
 #include <set>
 #include <string.h>
 #include <thread>
-#include "Logger.h"
+#include "Logger/Logger.h"
 #include "TestShmClient.h"
 #include "TestTcpSelectClient.h"
 #include "TestTcpEpollClient.h"

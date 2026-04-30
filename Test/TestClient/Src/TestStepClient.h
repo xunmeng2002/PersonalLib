@@ -1,7 +1,7 @@
 #pragma once
-#include "TcpBase.h"
+#include "Tcp/TcpBase/TcpBase.h"
 #include "Packages.h"
-#include "Protocol.h"
+#include "Protocol/Protocol.h"
 #include <chrono>
 
 class StepClient : public Protocol, public ProtocolSubscriber

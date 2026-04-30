@@ -6,9 +6,6 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 20)
 set(BUILD_TEST_PROJECT 1)
-set(LibsPath "${CMAKE_SOURCE_DIR}/../Libs")
-#set(VcpkgPth "D:/Github/vcpkg")
-set(VcpkgPth "C:/Libs/vcpkg")
 
 add_definitions(-DUNICODE -D_UNICODE)
 message("CMAKE_BUILD_TYPE:" ${CMAKE_BUILD_TYPE})
@@ -75,6 +72,8 @@ ELSEIF(CMAKE_SYSTEM_NAME MATCHES "Linux")
 	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 ENDIF()
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+include_directories(${CMAKE_SOURCE_DIR}/Source)
+
 
 string(TIMESTAMP BUILD_TIMESTAMP "%Y%m%d-%H%M%S")
 message("Build timestamp is ${BUILD_TIMESTAMP}")

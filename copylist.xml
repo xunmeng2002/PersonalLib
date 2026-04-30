@@ -1,0 +1,96 @@
+<copylist>
+	<file name="Aspect.h" dir="Aspect/"/>
+	<file name="AspectAfter.h" dir="Aspect/"/>
+	<file name="AspectBefore.h" dir="Aspect/"/>
+	<file name="AspectLogger.h" dir="AspectLogger/"/>
+	<file name="AspectPerformance.h" dir="AspectPerformance/"/>
+	
+	<file name="Base64.h" dir="Base64/"/>
+	<file name="Buffer.h" dir="Buffer/"/>
+	<file name="RingBuffer.h" dir="Buffer/"/>
+	<file name="ShmBuffer.h" dir="Buffer/"/>
+
+	<file name="ConfigStructs.h" dir="ConfigStructs/"/>
+	<file name="Constant.h" dir="Constant/"/>
+	<file name="CsvParser.h" dir="Csv/"/>
+	<file name="CsvRecord.h" dir="Csv/"/>
+
+	<file name="DBSubscriber.h" dir="DB/"/>
+	<file name="DBOperate.h" dir="DB/"/>
+	<file name="Dir.h" dir="Dir/"/>
+	
+	<file name="Encode.h" dir="Encode/"/>
+	
+	<file name="Connect.h" dir="IO/"/>
+	<file name="IOBase.h" dir="IO/"/>
+	<file name="IOFactory.h" dir="IO/"/>
+	<file name="IOThread.h" dir="IO/"/>
+	<file name="IOUtility.h" dir="IO/"/>
+	
+	<file name="json_tool.h" dir="Jsoncpp/"/>
+	<file name="allocator.h" dir="JsonCpp/json/"/>
+	<file name="assertions.h" dir="JsonCpp/json/"/>
+	<file name="config.h" dir="JsonCpp/json/"/>
+	<file name="forwards.h" dir="JsonCpp/json/"/>
+	<file name="json.h" dir="JsonCpp/json/"/>
+	<file name="json_features.h" dir="JsonCpp/json/"/>
+	<file name="reader.h" dir="JsonCpp/json/"/>
+	<file name="value.h" dir="JsonCpp/json/"/>
+	<file name="version.h" dir="JsonCpp/json/"/>
+	<file name="writer.h" dir="JsonCpp/json/"/>
+
+	<file name="LogData.h" dir="Logger/"/>
+	<file name="Logger.h" dir="Logger/"/>
+	<file name="LoggerInterface.h" dir="Logger/"/>
+	
+	<file name="MD5.h" dir="MD5/"/>
+	<file name="MemCacheTemplate.h" dir="MemCache/"/>
+	<file name="MemCacheTemplateSingleton.h" dir="MemCache/"/>
+	
+	<file name="Package.h" dir="Package/"/>
+	<file name="PackageFactory.h" dir="Package/"/>
+	<file name="PackageReader.h" dir="Package/"/>
+	<file name="Platform.h" dir="Platform/"/>
+	
+	<file name="Head.h" dir="Protocol/"/>
+	<file name="Items.h" dir="Protocol/"/>
+	<file name="Protocol.h" dir="Protocol/"/>
+	<file name="ProtocolSubscriber.h" dir="Protocol/"/>
+	<file name="ProtocolUtility.h" dir="Protocol/"/>
+	<file name="StepUtility.h" dir="Protocol/"/>
+
+	<file name="Sem.h" dir="Shm/"/>
+	<file name="ShmBase.h" dir="Shm/"/>
+	<file name="ShmConnect.h" dir="Shm/"/>
+	<file name="ShmClient.h" dir="Shm/"/>
+	<file name="ShmServer.h" dir="Shm/"/>
+	<file name="SingleShm.h" dir="Shm/"/>
+	<file name="SocketInit.h" dir="SocketInit/"/>
+	<file name="sqlite3.h" dir="Sqlite/"/>
+	<file name="sqlite3ext.h" dir="Sqlite/"/>
+
+	<file name="SocketNotify.h" dir="Tcp/TcpBase/"/>
+	<file name="TcpBase.h" dir="Tcp/TcpBase/"/>
+	<file name="TcpConnect.h" dir="Tcp/TcpBase/"/>
+	<file name="TcpUtility.h" dir="Tcp/TcpBase/"/>
+	<file name="TcpEpollBase.h" dir="Tcp/TcpEpoll/"/>
+	<file name="TcpEpollClient.h" dir="Tcp/TcpEpoll/"/>
+	<file name="TcpEpollServer.h" dir="Tcp/TcpEpoll/"/>
+	<file name="TcpIocpBase.h" dir="Tcp/TcpIocp/"/>
+	<file name="TcpIocpCompletePort.h" dir="Tcp/TcpIocp/"/>
+	<file name="TcpIocpConnect.h" dir="Tcp/TcpIocp/"/>
+	<file name="TcpIocpClient.h" dir="Tcp/TcpIocp/"/>
+	<file name="TcpIocpServer.h" dir="Tcp/TcpIocp/"/>
+	<file name="TcpIocpSockApi.h" dir="Tcp/TcpIocp/"/>
+	<file name="TcpSelectBase.h" dir="Tcp/TcpSelect/"/>
+	<file name="TcpSelectClient.h" dir="Tcp/TcpSelect/"/>
+	<file name="TcpSelectServer.h" dir="Tcp/TcpSelect/"/>
+	
+	<file name="ThreadBase.h" dir="ThreadBase/"/>
+	<file name="Timer.h" dir="Timer/"/>
+	<file name="Types.h" dir="Types/"/>
+
+	<file name="DoubleUtility.h" dir="Utility/"/>
+	<file name="TimeUtility.h" dir="Utility/"/>
+	<file name="Utility.h" dir="Utility/"/>
+</copylist>

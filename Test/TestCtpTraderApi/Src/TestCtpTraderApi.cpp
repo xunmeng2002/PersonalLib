@@ -1,7 +1,7 @@
 #pragma warning(disable:4819)
 #include "ThostFtdcTraderApiMiddle.h"
 #include "ThostFtdcTraderSpiImpl.h"
-#include "Logger.h"
+#include "Logger/Logger.h"
 #include <iostream>
 #include <map>
 #include <string.h>

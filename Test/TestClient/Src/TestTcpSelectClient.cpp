@@ -1,9 +1,10 @@
 #include "TestTcpSelectClient.h"
 #include "ClientIOSubscriberImpl.h"
-#include "Logger.h"
+#include "Tcp/TcpSelect/TcpSelectClient.h"
+#include "Logger/Logger.h"
 #include "TestUtility.h"
-#include "IOThread.h"
-#include "IOFactory.h"
+#include "IO/IOThread.h"
+#include "IO/IOFactory.h"
 
 
 void TestTcpSelectClient()

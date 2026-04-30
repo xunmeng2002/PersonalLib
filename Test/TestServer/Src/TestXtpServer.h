@@ -1,6 +1,6 @@
 #pragma once
-#include "TcpBase.h"
-#include "Protocol.h"
+#include "Tcp/TcpBase/TcpBase.h"
+#include "Protocol/Protocol.h"
 
 
 class XtpServer : public Protocol, public ProtocolSubscriber

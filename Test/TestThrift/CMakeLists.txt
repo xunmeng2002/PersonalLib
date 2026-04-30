@@ -2,6 +2,9 @@
 project(${PROJECT_NAME})
 message("PROJECT_NAME:" ${PROJECT_NAME})
 
+set(LibsPath "${CMAKE_SOURCE_DIR}/../Libs")
+#set(VcpkgPth "D:/Github/vcpkg")
+set(VcpkgPth "C:/Libs/vcpkg")
 
 file(GLOB PROTOS "${CMAKE_CURRENT_SOURCE_DIR}/ThriftProtocol/*.thrift")
 message(STATUS "PROTOS:${PROTOS}")
@@ -17,8 +20,6 @@ find_package(ZLIB REQUIRED)
 
 add_package(Src ./Src)
 add_package(ThriftProtocol ./ThriftProtocol)
-
-include_package(PersonalLibHeader ${CMAKE_SOURCE_DIR}/../Libs/PersonalLib/include)
 
 link_directories("${VcpkgPth}/installed/x64-windows/debug/lib")
 
