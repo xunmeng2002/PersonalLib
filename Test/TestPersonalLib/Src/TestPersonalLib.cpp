@@ -17,6 +17,8 @@ int main(int argc, const char* argv[])
     WriteLog(LogLevel::Info, "getMD5 Result:%s", s.c_str());
 
     WriteLog(LogLevel::Info, "TestPersonalLib Stop.");
+
+    this_thread::sleep_for(chrono::seconds(1));
     Logger::GetInstance().Stop();
     Logger::GetInstance().Join();
     return 0;

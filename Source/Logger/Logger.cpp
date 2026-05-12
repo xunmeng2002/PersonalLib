@@ -8,6 +8,10 @@
 #include <sstream>
 #include <stdarg.h>
 #include <filesystem>
+#include <format>
+#ifdef WINDOWS
+#include "Windows.h"
+#endif
 
 constexpr unsigned int LogLineLength = 64 * 1024;
 constexpr unsigned int MaxLogFormatLength = 1024;
@@ -89,6 +93,7 @@ void Logger::ThreadInit()
 {
 	m_CreateLogFileTime = *GetLocalTm();
 	CreateLogFile();
+	ThreadBase::ThreadInit();
 }
 void Logger::ThreadExit()
 {
@@ -152,8 +157,7 @@ void Logger::WriteToLog(LogLevel level, const char* file, int line, const char* 
 	for (auto p = file; *p != '\0'; p++)
 		if (*p == '\\' || *p == '/')
 			file = p + 1;
-	unsigned len1 = snprintf(t_LogBuffer, MaxLogFormatLength, "%s %d %s ", GetLocalDateTimeWithMilliSecond().c_str(), GetCurrentThreadID(), s_LogLevelName[level].c_str());
-
+	unsigned len1 = snprintf(t_LogBuffer, MaxLogFormatLength, "%s %lld %s ", GetLocalDateTimeWithMilliSecond().c_str(), GetCurrentThreadID(), s_LogLevelName[level].c_str());
 	unsigned len2 = vsnprintf(t_LogBuffer + len1, MaxLogLineContentLength, format, va);
 	unsigned len3 = snprintf(t_LogBuffer + len1 + len2, LogLineLength - len1 - len2 - 1, "\t\t---%s:%d[%s]\n", file, line, func);
 	unsigned len = len1 + len2 + len3;
@@ -167,8 +171,8 @@ void Logger::WriteToLog(LogLevel level, const char* file, int line, const char* 
 }
 void Logger::WriteToConsole(LogLevel level, const char* formatStr, va_list va)
 {
-	static char* logString = new char[LogLineLength] {0};
-	int len = snprintf(logString, MaxLogFormatLength, "ThreadID[%06d] ", GetCurrentThreadID());
+	static thread_local char logString[LogLineLength] = {0};
+	int len = snprintf(logString, MaxLogFormatLength, "ThreadID[%lld] ", GetCurrentThreadID());
 	len += vsnprintf(logString + len, LogLineLength - len -1, formatStr, va);
 
 	printf("%s\n", logString);
@@ -187,8 +191,18 @@ void Logger::CreateLogFile()
 	m_LogData->LogFile = fopen(fileName, "a+");
 	assert(m_LogData->LogFile != nullptr);
 }
-uint32_t Logger::GetCurrentThreadID()
+static int64_t GetCurrentThreadIdSysCall() noexcept {
+#ifdef WINDOWS
+	// Windows: 直接调用API
+	return static_cast<int64_t>(::GetCurrentThreadId());
+#elif defined(LINUX)
+	return static_cast<int64_t>(syscall(SYS_gettid));
+#else
+	return static_cast<int64_t>(pthread_self());
+#endif
+}
+long long Logger::GetCurrentThreadID()
 {
-	auto id = std::this_thread::get_id();
-	return *(uint32_t*)(&id);
+	static thread_local long long tid = GetCurrentThreadIdSysCall();
+	return tid;
 }

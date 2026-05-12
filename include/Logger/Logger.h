@@ -38,7 +38,7 @@ protected:
 	void WriteToLog(LogLevel level, const char* file, int line, const char* func, const char* format, va_list va);
 	void WriteToConsole(LogLevel level, const char* formatStr, va_list va);
 	void CreateLogFile();
-	uint32_t GetCurrentThreadID();
+	long long GetCurrentThreadID();
 
 private:
 	char m_ProcessName[128];

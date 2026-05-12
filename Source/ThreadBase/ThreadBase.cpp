@@ -48,10 +48,10 @@ void ThreadBase::ThreadFunc()
 }
 void ThreadBase::ThreadInit()
 {
-	WriteLog(LogLevel::Info, "Thread[%d]:%s Start", m_Thread.get_id(), m_ThreadName.c_str());
+	WriteLog(LogLevel::Info, "Thread:%s Start", m_ThreadName.c_str());
 }
 void ThreadBase::ThreadExit()
 {
-	WriteLog(LogLevel::Info, "Thread[%d]:%s Exit", m_Thread.get_id(), m_ThreadName.c_str());
+	WriteLog(LogLevel::Info, "Thread:%s Exit", m_ThreadName.c_str());
 }
 
