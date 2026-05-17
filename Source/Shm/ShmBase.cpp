@@ -218,7 +218,7 @@ bool ShmBase::LinuxInit()
 	}
 	else
 	{
-		fd = shm_open(m_ShmName.c_str(), O_EXCL | O_RDWR, 0666);
+		fd = shm_open(m_ShmName.c_str(), O_RDWR, 0666);
 	}
 	if (fd < 0)
 	{

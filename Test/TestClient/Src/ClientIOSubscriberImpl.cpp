@@ -57,7 +57,7 @@ void ClientIOSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* b
 }
 void ClientIOSubscriberImpl::Send(SessionIDType sessionID)
 {
-    ++m_MessageCounts[sessionID];
+    auto count = ++m_MessageCounts[sessionID];
 
     ReqInsertOrderPackage reqInsertOrder;
     reqInsertOrder.ReqInsertOrder = new ReqInsertOrderField();
@@ -69,7 +69,7 @@ void ClientIOSubscriberImpl::Send(SessionIDType sessionID)
     reqInsertOrder.ReqInsertOrder->OrderPriceType = OrderPriceTypeType::LimitPrice;
     reqInsertOrder.ReqInsertOrder->Price = 88.88;
     reqInsertOrder.ReqInsertOrder->Volume = 1000;
-    reqInsertOrder.ReqInsertOrder->ClientOrderID = 1;
+    reqInsertOrder.ReqInsertOrder->ClientOrderID = count;
     auto message = reqInsertOrder.GetDebugString();
 
     Buffer<BuffSize>* buffer = Buffer<BuffSize>::Allocate();

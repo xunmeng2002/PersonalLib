@@ -2,13 +2,14 @@
 #include "MemCache/MemCacheTemplateSingleton.h"
 #include "Constant/Constant.h"
 #include <string.h>
+#include <assert.h>
 
 template<unsigned SIZE>
 class RingBuffer
 {
 public:
 	RingBuffer()
-		:m_Buffer{ 0 }, m_ReadPos(m_Buffer), m_WritePos(m_Buffer)
+		:m_Buffer{ 0 }, m_ReadPos(m_Buffer), m_WritePos(m_Buffer), m_Length(0)
 	{}
 	static RingBuffer* Allocate()
 	{
@@ -19,12 +20,86 @@ public:
 		Reset();
 		MemCacheTemplateSingleton<RingBuffer<SIZE>>::GetInstance().Free(this);
 	}
-	unsigned Append(const char* data, unsigned len)
+	unsigned Write(const char* data, unsigned len)
 	{
-		auto size = GetWriteBufferSize();
+		unsigned size = GetWriteBufferSize();
 		len = std::min(len, size);
-		unsigned tailLen = (m_Buffer + SIZE) - m_WritePos;
-		tailLen = std::min(tailLen, len);
+		return CopyFromBuffer(data, len);
+	}
+	unsigned Read(char* buff, unsigned len)
+	{
+		unsigned size = GetReadBufferSize();
+		len = std::min(len, size);
+		return CopyToBuffer(buff, len, true);
+	}
+	unsigned Peek(char* buff, unsigned len)
+	{
+		unsigned size = GetReadBufferSize();
+		len = std::min(len, size);
+		return CopyToBuffer(buff, len, false);
+	}
+	unsigned Skip(unsigned len)
+	{
+		unsigned size = GetReadBufferSize();
+		len = std::min(len, size);
+		return CopyToBuffer(nullptr, len, true);
+	}
+	inline unsigned GetReadBufferSize()
+	{
+		return m_Length;
+	}
+	inline unsigned GetWriteBufferSize()
+	{
+		return SIZE - m_Length;
+	}
+	inline bool IsEmpty()
+	{
+		return m_Length == 0;
+	}
+	inline bool IsFull()
+	{
+		return m_Length == SIZE;
+	}
+	inline void Reset()
+	{
+		m_Length = 0;
+		m_ReadPos = m_Buffer;
+		m_WritePos = m_Buffer;
+	}
+
+private:
+	unsigned CopyToBuffer(char* buff, unsigned len, bool consume)
+	{
+		if (len == 0)
+			return 0;
+		unsigned tailLen = std::min<unsigned>(len, (m_Buffer + SIZE) - m_ReadPos);
+		if (buff != nullptr)
+		{
+			memcpy(buff, m_ReadPos, tailLen);
+			if (tailLen < len)
+			{
+				memcpy(buff + tailLen, m_Buffer, size_t(len - tailLen));
+			}
+		}
+		if (consume)
+		{
+			if (m_ReadPos + len < m_Buffer + SIZE)
+			{
+				m_ReadPos += len;
+			}
+			else
+			{
+				m_ReadPos = m_Buffer + len - tailLen;
+			}
+			m_Length -= len;
+		}
+		return len;
+	}
+	unsigned CopyFromBuffer(const char* data, unsigned len)
+	{
+		if (len == 0)
+			return 0;
+		unsigned tailLen = std::min<unsigned>(len, (m_Buffer + SIZE) - m_WritePos);
 		memcpy(m_WritePos, data, tailLen);
 		if (tailLen < len)
 		{
@@ -33,66 +108,14 @@ public:
 		}
 		else
 		{
-			m_WritePos = m_WritePos + tailLen;
+			m_WritePos += tailLen;
 		}
+		m_Length += len;
 		return len;
 	}
-	char* GetReadPos()
-	{
-		return m_ReadPos;
-	}
-	void ShiftRead(unsigned len)
-	{
-		if (m_ReadPos + len < m_Buffer + SIZE)
-		{
-			m_ReadPos = m_ReadPos + len;
-		}
-		else
-		{
-			m_ReadPos = m_ReadPos + len - SIZE;
-		}
-	}
-	char* GetWritePos()
-	{
-		return m_WritePos;
-	}
-	void ShiftWrite(unsigned len)
-	{
-		if (m_WritePos + len < m_Buffer + SIZE)
-		{
-			m_WritePos = m_WritePos + len;
-		}
-		else
-		{
-			m_WritePos = m_WritePos + len - SIZE;
-		}
-	}
-	unsigned GetReadBufferSize()
-	{
-		if (m_ReadPos < m_WritePos)
-		{
-			return m_WritePos - m_ReadPos;
-		}
-		return SIZE - (m_ReadPos - m_WritePos);
-	}
-	unsigned GetWriteBufferSize()
-	{
-		if (m_WritePos < m_ReadPos)
-		{
-			return m_ReadPos - m_WritePos - 1;
-		}
-		return SIZE - (m_WritePos - m_ReadPos) - 1;
-	}
-
-	void Reset()
-	{
-		memset(m_Buffer, 0, SIZE);
-		m_ReadPos = m_Buffer;
-		m_WritePos = m_Buffer;
-	}
-
 private:
 	char* m_ReadPos;
 	char* m_WritePos;
 	char m_Buffer[SIZE];
+	unsigned m_Length;
 };

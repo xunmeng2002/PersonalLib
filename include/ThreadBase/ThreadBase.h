@@ -1,6 +1,5 @@
 #pragma once
 #include <thread>
-#include <atomic>
 #include <string>
 #include <chrono>
 
@@ -14,6 +13,7 @@ public:
 	virtual bool Start();
 	virtual void Stop();
 	virtual void Join();
+	std::thread::id GetThreadId() const;
 	
 protected:
 	void ThreadFunc();
@@ -27,7 +27,7 @@ protected:
 protected:
 	std::thread m_Thread;
 	std::string m_ThreadName;
-	std::atomic<bool> m_ShouldRun;
+	volatile bool m_ShouldRun;
 	std::chrono::milliseconds m_TimeOut;
 };
 

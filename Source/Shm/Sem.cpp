@@ -108,17 +108,25 @@ bool Sem::LinuxInit()
 {
 #ifdef LINUX
 	m_Sem = sem_open(m_SemName.c_str(), O_CREAT | O_EXCL, 0666, 1);
-	if (m_Sem == nullptr)
+	if (m_Sem == SEM_FAILED)
 	{
-		m_Sem = sem_open(m_SemName.c_str(), O_EXCL, 0666, 1);
-		if (m_Sem == nullptr)
+		if (errno == EEXIST)
 		{
-			WriteLog(LogLevel::Warning, "sem_open Failed. ErrNo:%d", errno);
-			return false;
+			m_Sem = sem_open(m_SemName.c_str(), O_EXCL, 0666, 1);
+			if (m_Sem == SEM_FAILED)
+			{
+				WriteLog(LogLevel::Warning, "sem_open Failed. ErrNo:%d", errno);
+				return false;
+			}
+			else
+			{
+				WriteLog(LogLevel::Warning, "sem_open Successed ReOpen");
+			}
 		}
 		else
 		{
-			WriteLog(LogLevel::Warning, "sem_open Successed ReOpen");
+			WriteLog(LogLevel::Warning, "sem_open Create Failed. ErrNo:%d", errno);
+			return false;
 		}
 	}
 	else

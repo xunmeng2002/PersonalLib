@@ -4,6 +4,7 @@
 #include "MemCache/MemCacheTemplateSingleton.h"
 #include "Logger/Logger.h"
 #include <algorithm>
+#include <atomic>
 
 
 struct SingleShmHeader
@@ -33,8 +34,8 @@ public:
 		shmBuffer->m_Index = index;
 		shmBuffer->m_ShmHeader = (SingleShmHeader*)shmAddr + index;
 		shmBuffer->m_ShmHeader->Status = connectStatus;
-		shmBuffer->m_UpBuffer = (char*)shmAddr + ShmBuffSize * index * 2;
-		shmBuffer->m_DownBuffer = (char*)shmAddr + ShmBuffSize * (index * 2 + 1);
+		shmBuffer->m_UpBuffer = (char*)shmAddr + SIZE * index * 2;
+		shmBuffer->m_DownBuffer = (char*)shmAddr + SIZE * (index * 2 + 1);
 		return shmBuffer;
 	}
 	void Free()
@@ -123,15 +124,19 @@ private:
 			return 0;
 		auto size = GetUpWriteBufferSize();
 		unsigned int currLen = std::min<unsigned>(len, size);
+		if (currLen == 0)
+			return 0;
 		unsigned int tailLen = std::min<unsigned>(currLen, SIZE - m_ShmHeader->UpWriteCount);
 		memcpy(m_UpBuffer + m_ShmHeader->UpWriteCount, data, tailLen);
 		if (tailLen < currLen)
 		{
 			memcpy(m_UpBuffer, data + tailLen, size_t(currLen - tailLen));
+			std::atomic_thread_fence(std::memory_order_release);
 			m_ShmHeader->UpWriteCount = currLen - tailLen;
 		}
 		else
 		{
+			std::atomic_thread_fence(std::memory_order_release);
 			m_ShmHeader->UpWriteCount += currLen;
 		}
 		return currLen;
@@ -142,15 +147,19 @@ private:
 			return 0;
 		auto size = GetUpReadBufferSize();
 		auto currLen = std::min<unsigned>(len, size);
+		if (currLen == 0)
+			return 0;
 		auto tailLen = std::min<unsigned>(currLen, SIZE - m_ShmHeader->UpReadCount);
 		memcpy(buff, m_UpBuffer + m_ShmHeader->UpReadCount, tailLen);
 		if (tailLen < currLen)
 		{
 			memcpy(buff + tailLen, m_UpBuffer, currLen - tailLen);
+			std::atomic_thread_fence(std::memory_order_release);
 			m_ShmHeader->UpReadCount = currLen - tailLen;
 		}
 		else
 		{
+			std::atomic_thread_fence(std::memory_order_release);
 			m_ShmHeader->UpReadCount += currLen;
 		}
 		return currLen;
@@ -161,15 +170,19 @@ private:
 			return 0;
 		auto size = GetDownWriteBufferSize();
 		unsigned int currLen = std::min<unsigned>(len, size);
+		if (currLen == 0)
+			return 0;
 		unsigned int tailLen = std::min<unsigned>(currLen, SIZE - m_ShmHeader->DownWriteCount);
 		memcpy(m_DownBuffer + m_ShmHeader->DownWriteCount, data, tailLen);
 		if (tailLen < currLen)
 		{
 			memcpy(m_DownBuffer, data + tailLen, size_t(currLen - tailLen));
+			std::atomic_thread_fence(std::memory_order_release);
 			m_ShmHeader->DownWriteCount = currLen - tailLen;
 		}
 		else
 		{
+			std::atomic_thread_fence(std::memory_order_release);
 			m_ShmHeader->DownWriteCount += currLen;
 		}
 		return currLen;
@@ -180,15 +193,19 @@ private:
 			return 0;
 		auto size = GetDownReadBufferSize();
 		auto currLen = std::min<unsigned>(len, size);
+		if (currLen == 0)
+			return 0;
 		auto tailLen = std::min<unsigned>(currLen, SIZE - m_ShmHeader->DownReadCount);
 		memcpy(buff, m_DownBuffer + m_ShmHeader->DownReadCount, tailLen);
 		if (tailLen < currLen)
 		{
 			memcpy(buff + tailLen, m_DownBuffer, currLen - tailLen);
+			std::atomic_thread_fence(std::memory_order_release);
 			m_ShmHeader->DownReadCount = currLen - tailLen;
 		}
 		else
 		{
+			std::atomic_thread_fence(std::memory_order_release);
 			m_ShmHeader->DownReadCount += currLen;
 		}
 		return currLen;

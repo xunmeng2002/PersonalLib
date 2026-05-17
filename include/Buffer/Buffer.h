@@ -3,6 +3,7 @@
 #include "Constant/Constant.h"
 #include "Logger/Logger.h"
 #include <string.h>
+#include <assert.h>
 
 template<unsigned SIZE>
 class Buffer
@@ -38,6 +39,7 @@ public:
 	}
 	void SetLength(unsigned len)
 	{
+		assert(len <= SIZE);
 		m_Length = len;
 	}
 	unsigned GetLength()
@@ -64,7 +66,6 @@ public:
 	}
 	void Reset()
 	{
-		memset(m_Buffer, 0, SIZE);
 		m_ReadPos = m_Buffer;
 		m_Length = 0;
 	}

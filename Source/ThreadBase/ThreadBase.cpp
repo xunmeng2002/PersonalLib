@@ -1,12 +1,12 @@
 #include <functional>
+#include <assert.h>
 #include "ThreadBase/ThreadBase.h"
 #include "Logger/Logger.h"
 
 
 ThreadBase::ThreadBase(const char* name, int milliSeconds)
-	:m_ShouldRun(false), m_TimeOut(milliSeconds)
+	:m_ThreadName(name), m_ShouldRun(false), m_TimeOut(milliSeconds)
 {
-	m_ThreadName = name;
 }
 ThreadBase::~ThreadBase()
 {
@@ -16,31 +16,39 @@ ThreadBase::~ThreadBase()
 
 void ThreadBase::SetTimeOut(int milliSeconds)
 {
+	assert(!m_ShouldRun && "Cannot modify timeout while thread is running");
 	m_TimeOut = std::chrono::milliseconds(milliSeconds);
 }
 bool ThreadBase::Start()
 {
-	if (m_ShouldRun.load())
+	if (m_Thread.joinable() || m_ShouldRun)
 		return false;
 
-	m_ShouldRun.store(true);
+	m_ShouldRun = true;
 	m_Thread = std::thread(std::bind(&ThreadBase::ThreadFunc, this));
 	return true;
 }
 void ThreadBase::Stop()
 {
-	m_ShouldRun.store(false);
+	m_ShouldRun = false;
 }
 void ThreadBase::Join()
 {
 	if (m_Thread.joinable())
 		m_Thread.join();
 }
+std::thread::id ThreadBase::GetThreadId() const
+{
+	if (m_Thread.joinable())
+		return m_Thread.get_id();
+	else
+		return std::thread::id();
+}
 
 void ThreadBase::ThreadFunc()
 {
 	ThreadInit();
-	while (m_ShouldRun.load())
+	while (m_ShouldRun)
 	{
 		Run();
 	}
