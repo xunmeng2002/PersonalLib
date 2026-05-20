@@ -21,7 +21,7 @@ void TcpIocpConnect::Free()
 #endif
 	closesocket(SocketID);
 	SocketID = INVALID_SOCKET;
-	MemCacheTemplateSingleton<TcpConnect>::GetInstance().Free(this);
+	MemCacheTemplateSingleton<TcpIocpConnect>::GetInstance().Free(this);
 }
 
 MyOverlapped::MyOverlapped()
