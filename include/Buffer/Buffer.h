@@ -1,5 +1,5 @@
 #pragma once
-#include "MemCache/MemCacheTemplateSingleton.h"
+#include "ObjectPool/ObjectPool.h"
 #include "Constant/Constant.h"
 #include "Logger/Logger.h"
 #include <string.h>
@@ -14,12 +14,11 @@ public:
 	{}
 	static Buffer* Allocate()
 	{
-		return ::Allocate<Buffer<SIZE>>();
+		return ObjectPool<Buffer<SIZE>>::GetInstance().Allocate();
 	}
-	void Free()
+	void Deallocate()
 	{
-		Reset();
-		MemCacheTemplateSingleton<Buffer<SIZE>>::GetInstance().Free(this);
+		ObjectPool<Buffer<SIZE>>::GetInstance().Deallocate(this);
 	}
 	unsigned Append(const char* data, unsigned len)
 	{

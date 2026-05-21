@@ -12,7 +12,7 @@ private:
 			:data(nullptr), next(nullptr)
 		{ }
 		T* data;
-		Node* next;
+		std::atomic<Node*> next;
 	};
 public:
 	LockFreeQueue()
