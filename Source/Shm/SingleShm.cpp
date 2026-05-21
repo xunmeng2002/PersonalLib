@@ -147,7 +147,7 @@ void SingleShm::DoRecv(Connect* connect)
 	if (m_IOSubscriber != nullptr)
 		m_IOSubscriber->OnRecv(m_SessionID, buffer);
 	else
-		buffer->Free();
+		buffer->Deallocate();
 }
 void SingleShm::HandleIOEvent()
 {

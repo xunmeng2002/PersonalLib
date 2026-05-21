@@ -4,8 +4,8 @@
 #include <string.h>
 
 
-void Package::Free()
-{
+
+Package::~Package() {
 	SessionID = 0;
 	memset(IPAddress, 0, sizeof(IPAddressType));
 	memset(&Head, 0, sizeof(Head));

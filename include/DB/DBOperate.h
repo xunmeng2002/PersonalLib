@@ -5,8 +5,8 @@ class DBOperate
 {
 public:
 	static DBOperate* Allocate();
-	virtual void Free() = 0;
-	virtual void FreeRecord() = 0;
+	virtual void Deallocate() = 0;
+	virtual void DeallocateRecord() = 0;
 	virtual const char* GetDebugString() const = 0;
 
 

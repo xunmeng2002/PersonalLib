@@ -20,8 +20,10 @@ enum class IocpEvent : int
 class TcpIocpConnect : public TcpConnect
 {
 public:
+	TcpIocpConnect(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort);
+	~TcpIocpConnect();
 	static TcpIocpConnect* Allocate(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort);
-	virtual void Free() override;
+	virtual void Deallocate() override;
 
 	std::atomic<bool> HasPendingSend = false;
 };
@@ -30,8 +32,9 @@ class MyOverlapped : public OVERLAPPED
 {
 public:
 	MyOverlapped();
+	~MyOverlapped();
 	static MyOverlapped* Allocate();
-	void Free();
+	void Deallocate();
 	void SetBuffer(Buffer<BuffSize>* buffer);
 	void Shift(unsigned int len);
 	void Reset();

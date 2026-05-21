@@ -88,7 +88,7 @@ void TcpBase::DoSend(Connect* connect)
 			}
 			else
 			{
-				buffer->Free();
+				buffer->Deallocate();
 				buffer = connect->GetNextBuffer();
 			}
 		}
@@ -108,7 +108,7 @@ void TcpBase::DoSend(Connect* connect)
 			else
 			{
 				WriteLog(LogLevel::Warning, "Tcp send Failed. SessionID:%lld, len:%d, errorID:%d", connect->SessionID, len, errorID);
-				buffer->Free();
+				buffer->Deallocate();
 				DisConnect(connect->SessionID);
 			}
 		}
@@ -123,7 +123,7 @@ void TcpBase::DoRecv(Connect* connect)
 	if (len <= 0)
 	{
 		WriteLog(LogLevel::Info, "DisConnect For Recv. SessionID:%lld, Socket:%lld, ErrorID:%d", tcpConnect->SessionID, tcpConnect->SocketID, len);
-		buffer->Free();
+		buffer->Deallocate();
 		DisConnect(tcpConnect->SessionID);
 	}
 	else if (m_IOSubscriber)

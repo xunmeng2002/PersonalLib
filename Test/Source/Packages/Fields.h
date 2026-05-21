@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "Types/Types.h"
 
-#pragma pack(push, 1)
 class RspInfoField
 {
 public:
@@ -1665,4 +1664,3 @@ public:
 	MoneyType Margin;		//保证金
 	MoneyType MarketValue;		//市值
 };
-#pragma pack(pop)

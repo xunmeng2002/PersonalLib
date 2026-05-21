@@ -1,6 +1,5 @@
 #include "Logger/LogData.h"
 #include "Buffer/Buffer.h"
-#include "MemCache/MemCacheTemplateSingleton.h"
 
 LogData::LogData()
 {
@@ -14,16 +13,16 @@ LogData::~LogData()
 		fclose(LogFile);
 		LogFile = nullptr;
 	}
-	CurrBuffer->Free();
+	CurrBuffer->Deallocate();
 	for (auto& logBuffer : LogBuffers)
 	{
-		logBuffer->Free();
+		logBuffer->Deallocate();
 	}
 	LogBuffers.clear();
 
 	for (auto& logBuffer : InnerLogBuffers)
 	{
-		logBuffer->Free();
+		logBuffer->Deallocate();
 	}
 	InnerLogBuffers.clear();
 }

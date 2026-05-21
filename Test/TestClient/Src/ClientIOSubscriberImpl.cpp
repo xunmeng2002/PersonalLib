@@ -52,7 +52,7 @@ void ClientIOSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* b
         WriteLog(LogLevel::Info, "TimeCost:%lld ms", duration);
 
         m_IO->DisConnect(sessionID);
-        buffer->Free();
+        buffer->Deallocate();
     }
 }
 void ClientIOSubscriberImpl::Send(SessionIDType sessionID)

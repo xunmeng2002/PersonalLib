@@ -60,7 +60,7 @@ void TcpIocpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
     if (buffer->GetLength() == 0)
     {
         WriteLog(LogLevel::Error, "Send BufferLen is 0");
-        buffer->Free();
+        buffer->Deallocate();
         return;
     }
     auto connect = (TcpIocpConnect*)GetConnect(sessionID);
@@ -96,7 +96,7 @@ void TcpIocpBase::HandleTcpEvent()
         else if (errorID == ERROR_OPERATION_ABORTED)
         {
             WriteLog(LogLevel::Info, "GetStatus Failed For CancelIoEx. errorID:%d, SessionID:%lld, CompetionKey:%d.", errorID, overlapped->Connect->SessionID, competionKey);
-            overlapped->Free();
+            overlapped->Deallocate();
             return;
         }
         else
@@ -244,7 +244,7 @@ void TcpIocpBase::OnDisConnectComplete(MyOverlapped* overlapped)
 {
     WriteLog(LogLevel::Info, "OnDisConnectComplete SessionID:%lld, Socket:%lld", overlapped->Connect->SessionID, overlapped->Connect->SocketID);
     RemoveConnect(overlapped->Connect);
-    overlapped->Free();
+    overlapped->Deallocate();
 }
 void TcpIocpBase::OnSendComplete(MyOverlapped* overlapped, int bytesTransferred)
 {
@@ -265,7 +265,7 @@ void TcpIocpBase::OnSendComplete(MyOverlapped* overlapped, int bytesTransferred)
             if (overlapped->Connect->Buffers.empty())
             {
                 overlapped->Connect->HasPendingSend = false;
-                overlapped->Free();
+                overlapped->Deallocate();
                 return;
             }
             else

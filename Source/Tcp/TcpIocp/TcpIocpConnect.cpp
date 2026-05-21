@@ -1,18 +1,14 @@
 #include "Tcp/TcpIocp/TcpIocpConnect.h"
-#include "MemCache/MemCacheTemplateSingleton.h"
+#include "ObjectPool/ObjectPool.h"
 #include "Logger/Logger.h"
 
 
-
-TcpIocpConnect* TcpIocpConnect::Allocate(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort)
+TcpIocpConnect::TcpIocpConnect(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort)
+	:TcpConnect(sessionID, socketID, remoteIP, remotePort)
 {
-	TcpIocpConnect* tcpIocpConnect = MemCacheTemplateSingleton<TcpIocpConnect>::GetInstance().Allocate();
-	tcpIocpConnect->Set(sessionID, socketID, remoteIP, remotePort);
-	return tcpIocpConnect;
 }
-void TcpIocpConnect::Free()
+TcpIocpConnect::~TcpIocpConnect()
 {
-	WriteLog(LogLevel::Info, "TcpIocpConnect::Close SessionID:%lld, Socket:%lld", SessionID, SocketID);
 #ifdef WINDOWS
 	shutdown(SocketID, SD_BOTH);
 #endif
@@ -21,7 +17,15 @@ void TcpIocpConnect::Free()
 #endif
 	closesocket(SocketID);
 	SocketID = INVALID_SOCKET;
-	MemCacheTemplateSingleton<TcpIocpConnect>::GetInstance().Free(this);
+}
+TcpIocpConnect* TcpIocpConnect::Allocate(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort)
+{
+	return ObjectPool<TcpIocpConnect>::GetInstance().Allocate(sessionID, socketID, remoteIP, remotePort);
+}
+void TcpIocpConnect::Deallocate()
+{
+	WriteLog(LogLevel::Info, "TcpIocpConnect::Close SessionID:%lld, Socket:%lld", SessionID, SocketID);
+	ObjectPool<TcpIocpConnect>::GetInstance().Deallocate(this);
 }
 
 MyOverlapped::MyOverlapped()
@@ -36,26 +40,32 @@ MyOverlapped::MyOverlapped()
 	WsaBuffer.len = 0;
 	Connect = nullptr;
 }
-MyOverlapped* MyOverlapped::Allocate()
-{
-	return ::Allocate<MyOverlapped>();
-}
-void MyOverlapped::Free()
+MyOverlapped::~MyOverlapped()
 {
 	if (MyBuffer)
 	{
 		MyBuffer->Reset();
-		MyBuffer->Free();
+		MyBuffer->Deallocate();
 		MyBuffer = nullptr;
 	}
-	Reset();
-	MemCacheTemplateSingleton<MyOverlapped>::GetInstance().Free(this);
+	if (Connect)
+	{
+		Connect = nullptr;
+	}
+}
+MyOverlapped* MyOverlapped::Allocate()
+{
+	return ObjectPool<MyOverlapped>::GetInstance().Allocate();
+}
+void MyOverlapped::Deallocate()
+{
+	ObjectPool<MyOverlapped>::GetInstance().Deallocate(this);
 }
 void MyOverlapped::SetBuffer(Buffer<BuffSize>* buffer)
 {
 	if (MyBuffer != nullptr)
 	{
-		MyBuffer->Free();
+		MyBuffer->Deallocate();
 	}
 	MyBuffer = buffer;
 	WsaBuffer.buf = MyBuffer->GetData();

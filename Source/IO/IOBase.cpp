@@ -84,7 +84,7 @@ void IOBase::RemoveConnect(Connect* connect)
 	}
 	std::lock_guard<std::mutex> guard(m_ConnectsMutex);
 	m_Connects.erase(connect->SessionID);
-	connect->Free();
+	connect->Deallocate();
 }
 Connect* IOBase::GetConnect(SessionIDType sessionID)
 {

@@ -1,7 +1,7 @@
 #pragma once
 #include "Constant/Constant.h"
 #include "Types/Types.h"
-#include "MemCache/MemCacheTemplateSingleton.h"
+#include "ObjectPool/ObjectPool.h"
 #include "Logger/Logger.h"
 #include <algorithm>
 #include <atomic>
@@ -27,18 +27,32 @@ public:
 	char* m_UpBuffer;
 	char* m_DownBuffer;
 
+	ShmBuffer()
+	{
+		m_ShmHeader = nullptr;
+		m_UpBuffer = nullptr;
+		m_DownBuffer = nullptr;
+	}
+	ShmBuffer(ServerTypeType serverType, int index, void* shmAddr, ConnectStatusType connectStatus)
+	{
+		m_ServerType = serverType;
+		m_Index = index;
+		m_ShmHeader = (SingleShmHeader*)shmAddr + index;
+		m_ShmHeader->Status = connectStatus;
+		m_UpBuffer = (char*)shmAddr + SIZE * index * 2;
+		m_DownBuffer = (char*)shmAddr + SIZE * (index * 2 + 1);
+	}
+	~ShmBuffer()
+	{
+		m_ShmHeader = nullptr;
+		m_UpBuffer = nullptr;
+		m_DownBuffer = nullptr;
+	}
 	static ShmBuffer* Allocate(ServerTypeType serverType, int index, void* shmAddr, ConnectStatusType connectStatus)
 	{
-		auto shmBuffer = ::Allocate<ShmBuffer<SIZE>>();
-		shmBuffer->m_ServerType = serverType;
-		shmBuffer->m_Index = index;
-		shmBuffer->m_ShmHeader = (SingleShmHeader*)shmAddr + index;
-		shmBuffer->m_ShmHeader->Status = connectStatus;
-		shmBuffer->m_UpBuffer = (char*)shmAddr + SIZE * index * 2;
-		shmBuffer->m_DownBuffer = (char*)shmAddr + SIZE * (index * 2 + 1);
-		return shmBuffer;
+		return ObjectPool<ShmBuffer<SIZE>>::GetInstance().Allocate(serverType, index, shmAddr, connectStatus);
 	}
-	void Free()
+	void Deallocate()
 	{
 		if (m_ShmHeader->Status != ConnectStatusType::DisConnected)
 		{
@@ -52,10 +66,7 @@ public:
 			m_ShmHeader->DownWriteCount = 0;
 			m_ShmHeader->DownReadCount = 0;
 		}
-		m_ShmHeader = nullptr;
-		m_UpBuffer = nullptr;
-		m_DownBuffer = nullptr;
-		MemCacheTemplateSingleton<ShmBuffer<SIZE>>::GetInstance().Free(this);
+		ObjectPool<ShmBuffer<SIZE>>::GetInstance().Deallocate(this);
 	}
 
 	unsigned Write(const char* data, unsigned len)

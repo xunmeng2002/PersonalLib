@@ -1,20 +1,17 @@
 #include "Tcp/TcpBase/TcpConnect.h"
 #include "Logger/Logger.h"
-#include "MemCache/MemCacheTemplateSingleton.h"
+#include "ObjectPool/ObjectPool.h"
 #include "Utility/TimeUtility.h"
 #include "Tcp/TcpBase/TcpUtility.h"
 
 
+TcpConnect::TcpConnect(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort)
+	:Connect(sessionID, remoteIP.c_str(), atoi(remotePort.c_str()), ConnectStatusType::Connected), SocketID(socketID)
+{
 
-TcpConnect* TcpConnect::Allocate(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort)
-{
-	TcpConnect* tcpConnect = MemCacheTemplateSingleton<TcpConnect>::GetInstance().Allocate();
-	tcpConnect->Set(sessionID, socketID, remoteIP, remotePort);
-	return tcpConnect;
 }
-void TcpConnect::Free()
+TcpConnect::~TcpConnect()
 {
-	WriteLog(LogLevel::Info, "TcpConnect::Free SessionID:%lld, Socket:%lld", SessionID, SocketID);
 #ifdef WINDOWS
 	shutdown(SocketID, SD_BOTH);
 #endif
@@ -23,7 +20,15 @@ void TcpConnect::Free()
 #endif
 	closesocket(SocketID);
 	SocketID = INVALID_SOCKET;
-	MemCacheTemplateSingleton<TcpConnect>::GetInstance().Free(this);
+}
+TcpConnect* TcpConnect::Allocate(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort)
+{
+	return ObjectPool<TcpConnect>::GetInstance().Allocate(sessionID, socketID, remoteIP, remotePort);
+}
+void TcpConnect::Deallocate()
+{
+	WriteLog(LogLevel::Info, "TcpConnect::Deallocate SessionID:%lld, Socket:%lld", SessionID, SocketID);
+	ObjectPool<TcpConnect>::GetInstance().Deallocate(this);
 }
 
 void TcpConnect::Set(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort)

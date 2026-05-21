@@ -10,8 +10,11 @@
 class TcpConnect : public Connect
 {
 public:
+	TcpConnect(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort);
+	virtual ~TcpConnect();
+
 	static TcpConnect* Allocate(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort);
-	virtual void Free() override;
+	virtual void Deallocate() override;
 
 	virtual void Set(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort);
 	void UpdateLastSendTime();

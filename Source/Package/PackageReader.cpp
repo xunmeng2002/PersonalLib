@@ -2,17 +2,24 @@
 #include "Protocol/ProtocolUtility.h"
 #include "Protocol/StepUtility.h"
 #include "Logger/Logger.h"
-#include "MemCache/MemCacheTemplateSingleton.h"
+#include "ObjectPool/ObjectPool.h"
 #include <stdio.h>
 #include <cstring>
 #include <algorithm>
 
 
-PackageReader::PackageReader()
+PackageReader::PackageReader(ProtocolTypeType protocolType, PackageFactory* packageFactory, SessionIDType sessionID, const char* ipAddress)
 	:m_Buff{ 0 }
 {
 	m_Data = m_Buff;
 	m_Length = 0;
+
+	m_ProtocolType = protocolType;
+	m_PackageFactory = packageFactory;
+	m_SessionID = sessionID;
+	strcpy(m_IPAddress, ipAddress);
+	memset(&(m_Head), 0, sizeof(HeadField));
+	memset(&(m_Tail), 0, sizeof(TailField));
 }
 PackageReader::~PackageReader()
 {
@@ -21,19 +28,11 @@ PackageReader::~PackageReader()
 }
 PackageReader* PackageReader::Allocate(ProtocolTypeType protocolType, PackageFactory* packageFactory, SessionIDType sessionID, const char* ipAddress)
 {
-	auto record = ::Allocate<PackageReader>();
-	record->m_ProtocolType = protocolType;
-	record->m_PackageFactory = packageFactory;
-	record->m_SessionID = sessionID;
-	strcpy(record->m_IPAddress, ipAddress);
-	memset(&(record->m_Head), 0, sizeof(HeadField));
-	memset(&(record->m_Tail), 0, sizeof(TailField));
-	return record;
+	return ObjectPool<PackageReader>::GetInstance().Allocate(protocolType, packageFactory, sessionID, ipAddress);
 }
-void PackageReader::Free()
+void PackageReader::Deallocate()
 {
-	Reset();
-	MemCacheTemplateSingleton<PackageReader>::GetInstance().Free(this);
+	ObjectPool<PackageReader>::GetInstance().Deallocate(this);
 }
 void PackageReader::Reset()
 {

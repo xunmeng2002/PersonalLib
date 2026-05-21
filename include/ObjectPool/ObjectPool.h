@@ -20,7 +20,7 @@ private:
         }
     };
 
-    struct alignas(T) FreeNode
+    struct FreeNode
     {
         std::atomic<FreeNode*> Next;
     };

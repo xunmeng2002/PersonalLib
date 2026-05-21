@@ -2,7 +2,7 @@
 #include "Protocol/Items.h"
 #include "Protocol/StepUtility.h"
 #include "Logger/Logger.h"
-#include "MemCache/MemCacheTemplateSingleton.h"
+#include "ObjectPool/ObjectPool.h"
 #include <cstring>
 
 thread_local char t_DataStringBuffer[10240];
@@ -10,19 +10,25 @@ thread_local char t_DataStringBuffer[10240];
 
 
  
-NotifyComponentConnectStatusPackage* NotifyComponentConnectStatusPackage::Allocate()
+NotifyComponentConnectStatusPackage::NotifyComponentConnectStatusPackage()
+	:NotifyComponentConnectStatus(nullptr)
 {
-	return ::Allocate<NotifyComponentConnectStatusPackage>();
 }
-void NotifyComponentConnectStatusPackage::Free()
+NotifyComponentConnectStatusPackage::~NotifyComponentConnectStatusPackage()
 {
-	Package::Free();
 	if (NotifyComponentConnectStatus != nullptr)
 	{
-		::Free<NotifyComponentConnectStatusField>(NotifyComponentConnectStatus);
+		ObjectPool<NotifyComponentConnectStatusField>::GetInstance().Deallocate(NotifyComponentConnectStatus);
 		NotifyComponentConnectStatus = nullptr;
 	}
-	MemCacheTemplateSingleton<NotifyComponentConnectStatusPackage>::GetInstance().Free(this);
+}
+NotifyComponentConnectStatusPackage* NotifyComponentConnectStatusPackage::Allocate()
+{
+	return ObjectPool<NotifyComponentConnectStatusPackage>::GetInstance().Allocate();
+}
+void NotifyComponentConnectStatusPackage::Deallocate()
+{
+	ObjectPool<NotifyComponentConnectStatusPackage>::GetInstance().Deallocate(this);
 }
 void NotifyComponentConnectStatusPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -56,7 +62,7 @@ bool NotifyComponentConnectStatusPackage::FromStepStream(char* buff, int startIn
 			{
 			case NotifyComponentConnectStatusField::FieldID:
 			{
-				NotifyComponentConnectStatus = ::Allocate<NotifyComponentConnectStatusField>();
+				NotifyComponentConnectStatus = ObjectPool<NotifyComponentConnectStatusField>::GetInstance().Allocate();
 				memset(NotifyComponentConnectStatus, 0, sizeof(*NotifyComponentConnectStatus));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -136,7 +142,7 @@ bool NotifyComponentConnectStatusPackage::FromXtpStream(char* buff, int startInd
 		{
 		case NotifyComponentConnectStatusField::FieldID:
 		{
-			NotifyComponentConnectStatus = ::Allocate<NotifyComponentConnectStatusField>();
+			NotifyComponentConnectStatus = ObjectPool<NotifyComponentConnectStatusField>::GetInstance().Allocate();
 			memcpy(NotifyComponentConnectStatus, buff + offset, sizeof(NotifyComponentConnectStatusField));
 			offset += sizeof(NotifyComponentConnectStatusField);	
 			break;
@@ -157,19 +163,25 @@ const char* NotifyComponentConnectStatusPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAccountLoginPackage* ReqAccountLoginPackage::Allocate()
+ReqAccountLoginPackage::ReqAccountLoginPackage()
+	:ReqAccountLogin(nullptr)
 {
-	return ::Allocate<ReqAccountLoginPackage>();
 }
-void ReqAccountLoginPackage::Free()
+ReqAccountLoginPackage::~ReqAccountLoginPackage()
 {
-	Package::Free();
 	if (ReqAccountLogin != nullptr)
 	{
-		::Free<ReqAccountLoginField>(ReqAccountLogin);
+		ObjectPool<ReqAccountLoginField>::GetInstance().Deallocate(ReqAccountLogin);
 		ReqAccountLogin = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAccountLoginPackage>::GetInstance().Free(this);
+}
+ReqAccountLoginPackage* ReqAccountLoginPackage::Allocate()
+{
+	return ObjectPool<ReqAccountLoginPackage>::GetInstance().Allocate();
+}
+void ReqAccountLoginPackage::Deallocate()
+{
+	ObjectPool<ReqAccountLoginPackage>::GetInstance().Deallocate(this);
 }
 void ReqAccountLoginPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -210,7 +222,7 @@ bool ReqAccountLoginPackage::FromStepStream(char* buff, int startIndex, int endI
 			{
 			case ReqAccountLoginField::FieldID:
 			{
-				ReqAccountLogin = ::Allocate<ReqAccountLoginField>();
+				ReqAccountLogin = ObjectPool<ReqAccountLoginField>::GetInstance().Allocate();
 				memset(ReqAccountLogin, 0, sizeof(*ReqAccountLogin));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -287,7 +299,7 @@ bool ReqAccountLoginPackage::FromXtpStream(char* buff, int startIndex, int endIn
 		{
 		case ReqAccountLoginField::FieldID:
 		{
-			ReqAccountLogin = ::Allocate<ReqAccountLoginField>();
+			ReqAccountLogin = ObjectPool<ReqAccountLoginField>::GetInstance().Allocate();
 			memcpy(ReqAccountLogin, buff + offset, sizeof(ReqAccountLoginField));
 			offset += sizeof(ReqAccountLoginField);	
 			break;
@@ -308,24 +320,30 @@ const char* ReqAccountLoginPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAccountLoginPackage* RspAccountLoginPackage::Allocate()
+RspAccountLoginPackage::RspAccountLoginPackage()
+	:RspAccountLogin(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAccountLoginPackage>();
 }
-void RspAccountLoginPackage::Free()
+RspAccountLoginPackage::~RspAccountLoginPackage()
 {
-	Package::Free();
 	if (RspAccountLogin != nullptr)
 	{
-		::Free<RspAccountLoginField>(RspAccountLogin);
+		ObjectPool<RspAccountLoginField>::GetInstance().Deallocate(RspAccountLogin);
 		RspAccountLogin = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAccountLoginPackage>::GetInstance().Free(this);
+}
+RspAccountLoginPackage* RspAccountLoginPackage::Allocate()
+{
+	return ObjectPool<RspAccountLoginPackage>::GetInstance().Allocate();
+}
+void RspAccountLoginPackage::Deallocate()
+{
+	ObjectPool<RspAccountLoginPackage>::GetInstance().Deallocate(this);
 }
 void RspAccountLoginPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -383,7 +401,7 @@ bool RspAccountLoginPackage::FromStepStream(char* buff, int startIndex, int endI
 			{
 			case RspAccountLoginField::FieldID:
 			{
-				RspAccountLogin = ::Allocate<RspAccountLoginField>();
+				RspAccountLogin = ObjectPool<RspAccountLoginField>::GetInstance().Allocate();
 				memset(RspAccountLogin, 0, sizeof(*RspAccountLogin));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -436,7 +454,7 @@ bool RspAccountLoginPackage::FromStepStream(char* buff, int startIndex, int endI
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -519,14 +537,14 @@ bool RspAccountLoginPackage::FromXtpStream(char* buff, int startIndex, int endIn
 		{
 		case RspAccountLoginField::FieldID:
 		{
-			RspAccountLogin = ::Allocate<RspAccountLoginField>();
+			RspAccountLogin = ObjectPool<RspAccountLoginField>::GetInstance().Allocate();
 			memcpy(RspAccountLogin, buff + offset, sizeof(RspAccountLoginField));
 			offset += sizeof(RspAccountLoginField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -551,19 +569,25 @@ const char* RspAccountLoginPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAccountLogoutPackage* ReqAccountLogoutPackage::Allocate()
+ReqAccountLogoutPackage::ReqAccountLogoutPackage()
+	:ReqAccountLogout(nullptr)
 {
-	return ::Allocate<ReqAccountLogoutPackage>();
 }
-void ReqAccountLogoutPackage::Free()
+ReqAccountLogoutPackage::~ReqAccountLogoutPackage()
 {
-	Package::Free();
 	if (ReqAccountLogout != nullptr)
 	{
-		::Free<ReqAccountLogoutField>(ReqAccountLogout);
+		ObjectPool<ReqAccountLogoutField>::GetInstance().Deallocate(ReqAccountLogout);
 		ReqAccountLogout = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAccountLogoutPackage>::GetInstance().Free(this);
+}
+ReqAccountLogoutPackage* ReqAccountLogoutPackage::Allocate()
+{
+	return ObjectPool<ReqAccountLogoutPackage>::GetInstance().Allocate();
+}
+void ReqAccountLogoutPackage::Deallocate()
+{
+	ObjectPool<ReqAccountLogoutPackage>::GetInstance().Deallocate(this);
 }
 void ReqAccountLogoutPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -599,7 +623,7 @@ bool ReqAccountLogoutPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case ReqAccountLogoutField::FieldID:
 			{
-				ReqAccountLogout = ::Allocate<ReqAccountLogoutField>();
+				ReqAccountLogout = ObjectPool<ReqAccountLogoutField>::GetInstance().Allocate();
 				memset(ReqAccountLogout, 0, sizeof(*ReqAccountLogout));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -670,7 +694,7 @@ bool ReqAccountLogoutPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case ReqAccountLogoutField::FieldID:
 		{
-			ReqAccountLogout = ::Allocate<ReqAccountLogoutField>();
+			ReqAccountLogout = ObjectPool<ReqAccountLogoutField>::GetInstance().Allocate();
 			memcpy(ReqAccountLogout, buff + offset, sizeof(ReqAccountLogoutField));
 			offset += sizeof(ReqAccountLogoutField);	
 			break;
@@ -691,24 +715,30 @@ const char* ReqAccountLogoutPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAccountLogoutPackage* RspAccountLogoutPackage::Allocate()
+RspAccountLogoutPackage::RspAccountLogoutPackage()
+	:RspAccountLogout(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAccountLogoutPackage>();
 }
-void RspAccountLogoutPackage::Free()
+RspAccountLogoutPackage::~RspAccountLogoutPackage()
 {
-	Package::Free();
 	if (RspAccountLogout != nullptr)
 	{
-		::Free<RspAccountLogoutField>(RspAccountLogout);
+		ObjectPool<RspAccountLogoutField>::GetInstance().Deallocate(RspAccountLogout);
 		RspAccountLogout = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAccountLogoutPackage>::GetInstance().Free(this);
+}
+RspAccountLogoutPackage* RspAccountLogoutPackage::Allocate()
+{
+	return ObjectPool<RspAccountLogoutPackage>::GetInstance().Allocate();
+}
+void RspAccountLogoutPackage::Deallocate()
+{
+	ObjectPool<RspAccountLogoutPackage>::GetInstance().Deallocate(this);
 }
 void RspAccountLogoutPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -755,7 +785,7 @@ bool RspAccountLogoutPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case RspAccountLogoutField::FieldID:
 			{
-				RspAccountLogout = ::Allocate<RspAccountLogoutField>();
+				RspAccountLogout = ObjectPool<RspAccountLogoutField>::GetInstance().Allocate();
 				memset(RspAccountLogout, 0, sizeof(*RspAccountLogout));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -791,7 +821,7 @@ bool RspAccountLogoutPackage::FromStepStream(char* buff, int startIndex, int end
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -874,14 +904,14 @@ bool RspAccountLogoutPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case RspAccountLogoutField::FieldID:
 		{
-			RspAccountLogout = ::Allocate<RspAccountLogoutField>();
+			RspAccountLogout = ObjectPool<RspAccountLogoutField>::GetInstance().Allocate();
 			memcpy(RspAccountLogout, buff + offset, sizeof(RspAccountLogoutField));
 			offset += sizeof(RspAccountLogoutField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -906,19 +936,25 @@ const char* RspAccountLogoutPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryAccountPackage* ReqQryAccountPackage::Allocate()
+ReqQryAccountPackage::ReqQryAccountPackage()
+	:ReqQryAccount(nullptr)
 {
-	return ::Allocate<ReqQryAccountPackage>();
 }
-void ReqQryAccountPackage::Free()
+ReqQryAccountPackage::~ReqQryAccountPackage()
 {
-	Package::Free();
 	if (ReqQryAccount != nullptr)
 	{
-		::Free<ReqQryAccountField>(ReqQryAccount);
+		ObjectPool<ReqQryAccountField>::GetInstance().Deallocate(ReqQryAccount);
 		ReqQryAccount = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryAccountPackage>::GetInstance().Free(this);
+}
+ReqQryAccountPackage* ReqQryAccountPackage::Allocate()
+{
+	return ObjectPool<ReqQryAccountPackage>::GetInstance().Allocate();
+}
+void ReqQryAccountPackage::Deallocate()
+{
+	ObjectPool<ReqQryAccountPackage>::GetInstance().Deallocate(this);
 }
 void ReqQryAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -954,7 +990,7 @@ bool ReqQryAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 			{
 			case ReqQryAccountField::FieldID:
 			{
-				ReqQryAccount = ::Allocate<ReqQryAccountField>();
+				ReqQryAccount = ObjectPool<ReqQryAccountField>::GetInstance().Allocate();
 				memset(ReqQryAccount, 0, sizeof(*ReqQryAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -1025,7 +1061,7 @@ bool ReqQryAccountPackage::FromXtpStream(char* buff, int startIndex, int endInde
 		{
 		case ReqQryAccountField::FieldID:
 		{
-			ReqQryAccount = ::Allocate<ReqQryAccountField>();
+			ReqQryAccount = ObjectPool<ReqQryAccountField>::GetInstance().Allocate();
 			memcpy(ReqQryAccount, buff + offset, sizeof(ReqQryAccountField));
 			offset += sizeof(ReqQryAccountField);	
 			break;
@@ -1046,24 +1082,30 @@ const char* ReqQryAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryAccountPackage* RspQryAccountPackage::Allocate()
+RspQryAccountPackage::RspQryAccountPackage()
+	:Account(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryAccountPackage>();
 }
-void RspQryAccountPackage::Free()
+RspQryAccountPackage::~RspQryAccountPackage()
 {
-	Package::Free();
 	if (Account != nullptr)
 	{
-		::Free<AccountField>(Account);
+		ObjectPool<AccountField>::GetInstance().Deallocate(Account);
 		Account = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryAccountPackage>::GetInstance().Free(this);
+}
+RspQryAccountPackage* RspQryAccountPackage::Allocate()
+{
+	return ObjectPool<RspQryAccountPackage>::GetInstance().Allocate();
+}
+void RspQryAccountPackage::Deallocate()
+{
+	ObjectPool<RspQryAccountPackage>::GetInstance().Deallocate(this);
 }
 void RspQryAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -1115,7 +1157,7 @@ bool RspQryAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 			{
 			case AccountField::FieldID:
 			{
-				Account = ::Allocate<AccountField>();
+				Account = ObjectPool<AccountField>::GetInstance().Allocate();
 				memset(Account, 0, sizeof(*Account));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -1176,7 +1218,7 @@ bool RspQryAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -1259,14 +1301,14 @@ bool RspQryAccountPackage::FromXtpStream(char* buff, int startIndex, int endInde
 		{
 		case AccountField::FieldID:
 		{
-			Account = ::Allocate<AccountField>();
+			Account = ObjectPool<AccountField>::GetInstance().Allocate();
 			memcpy(Account, buff + offset, sizeof(AccountField));
 			offset += sizeof(AccountField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -1291,19 +1333,25 @@ const char* RspQryAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryHolderAccountPackage* ReqQryHolderAccountPackage::Allocate()
+ReqQryHolderAccountPackage::ReqQryHolderAccountPackage()
+	:ReqQryHolderAccount(nullptr)
 {
-	return ::Allocate<ReqQryHolderAccountPackage>();
 }
-void ReqQryHolderAccountPackage::Free()
+ReqQryHolderAccountPackage::~ReqQryHolderAccountPackage()
 {
-	Package::Free();
 	if (ReqQryHolderAccount != nullptr)
 	{
-		::Free<ReqQryHolderAccountField>(ReqQryHolderAccount);
+		ObjectPool<ReqQryHolderAccountField>::GetInstance().Deallocate(ReqQryHolderAccount);
 		ReqQryHolderAccount = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryHolderAccountPackage>::GetInstance().Free(this);
+}
+ReqQryHolderAccountPackage* ReqQryHolderAccountPackage::Allocate()
+{
+	return ObjectPool<ReqQryHolderAccountPackage>::GetInstance().Allocate();
+}
+void ReqQryHolderAccountPackage::Deallocate()
+{
+	ObjectPool<ReqQryHolderAccountPackage>::GetInstance().Deallocate(this);
 }
 void ReqQryHolderAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -1339,7 +1387,7 @@ bool ReqQryHolderAccountPackage::FromStepStream(char* buff, int startIndex, int 
 			{
 			case ReqQryHolderAccountField::FieldID:
 			{
-				ReqQryHolderAccount = ::Allocate<ReqQryHolderAccountField>();
+				ReqQryHolderAccount = ObjectPool<ReqQryHolderAccountField>::GetInstance().Allocate();
 				memset(ReqQryHolderAccount, 0, sizeof(*ReqQryHolderAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -1410,7 +1458,7 @@ bool ReqQryHolderAccountPackage::FromXtpStream(char* buff, int startIndex, int e
 		{
 		case ReqQryHolderAccountField::FieldID:
 		{
-			ReqQryHolderAccount = ::Allocate<ReqQryHolderAccountField>();
+			ReqQryHolderAccount = ObjectPool<ReqQryHolderAccountField>::GetInstance().Allocate();
 			memcpy(ReqQryHolderAccount, buff + offset, sizeof(ReqQryHolderAccountField));
 			offset += sizeof(ReqQryHolderAccountField);	
 			break;
@@ -1431,24 +1479,30 @@ const char* ReqQryHolderAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryHolderAccountPackage* RspQryHolderAccountPackage::Allocate()
+RspQryHolderAccountPackage::RspQryHolderAccountPackage()
+	:HolderAccount(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryHolderAccountPackage>();
 }
-void RspQryHolderAccountPackage::Free()
+RspQryHolderAccountPackage::~RspQryHolderAccountPackage()
 {
-	Package::Free();
 	if (HolderAccount != nullptr)
 	{
-		::Free<HolderAccountField>(HolderAccount);
+		ObjectPool<HolderAccountField>::GetInstance().Deallocate(HolderAccount);
 		HolderAccount = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryHolderAccountPackage>::GetInstance().Free(this);
+}
+RspQryHolderAccountPackage* RspQryHolderAccountPackage::Allocate()
+{
+	return ObjectPool<RspQryHolderAccountPackage>::GetInstance().Allocate();
+}
+void RspQryHolderAccountPackage::Deallocate()
+{
+	ObjectPool<RspQryHolderAccountPackage>::GetInstance().Deallocate(this);
 }
 void RspQryHolderAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -1501,7 +1555,7 @@ bool RspQryHolderAccountPackage::FromStepStream(char* buff, int startIndex, int 
 			{
 			case HolderAccountField::FieldID:
 			{
-				HolderAccount = ::Allocate<HolderAccountField>();
+				HolderAccount = ObjectPool<HolderAccountField>::GetInstance().Allocate();
 				memset(HolderAccount, 0, sizeof(*HolderAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -1548,7 +1602,7 @@ bool RspQryHolderAccountPackage::FromStepStream(char* buff, int startIndex, int 
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -1631,14 +1685,14 @@ bool RspQryHolderAccountPackage::FromXtpStream(char* buff, int startIndex, int e
 		{
 		case HolderAccountField::FieldID:
 		{
-			HolderAccount = ::Allocate<HolderAccountField>();
+			HolderAccount = ObjectPool<HolderAccountField>::GetInstance().Allocate();
 			memcpy(HolderAccount, buff + offset, sizeof(HolderAccountField));
 			offset += sizeof(HolderAccountField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -1663,19 +1717,25 @@ const char* RspQryHolderAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryCapitalPackage* ReqQryCapitalPackage::Allocate()
+ReqQryCapitalPackage::ReqQryCapitalPackage()
+	:ReqQryCapital(nullptr)
 {
-	return ::Allocate<ReqQryCapitalPackage>();
 }
-void ReqQryCapitalPackage::Free()
+ReqQryCapitalPackage::~ReqQryCapitalPackage()
 {
-	Package::Free();
 	if (ReqQryCapital != nullptr)
 	{
-		::Free<ReqQryCapitalField>(ReqQryCapital);
+		ObjectPool<ReqQryCapitalField>::GetInstance().Deallocate(ReqQryCapital);
 		ReqQryCapital = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryCapitalPackage>::GetInstance().Free(this);
+}
+ReqQryCapitalPackage* ReqQryCapitalPackage::Allocate()
+{
+	return ObjectPool<ReqQryCapitalPackage>::GetInstance().Allocate();
+}
+void ReqQryCapitalPackage::Deallocate()
+{
+	ObjectPool<ReqQryCapitalPackage>::GetInstance().Deallocate(this);
 }
 void ReqQryCapitalPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -1711,7 +1771,7 @@ bool ReqQryCapitalPackage::FromStepStream(char* buff, int startIndex, int endInd
 			{
 			case ReqQryCapitalField::FieldID:
 			{
-				ReqQryCapital = ::Allocate<ReqQryCapitalField>();
+				ReqQryCapital = ObjectPool<ReqQryCapitalField>::GetInstance().Allocate();
 				memset(ReqQryCapital, 0, sizeof(*ReqQryCapital));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -1782,7 +1842,7 @@ bool ReqQryCapitalPackage::FromXtpStream(char* buff, int startIndex, int endInde
 		{
 		case ReqQryCapitalField::FieldID:
 		{
-			ReqQryCapital = ::Allocate<ReqQryCapitalField>();
+			ReqQryCapital = ObjectPool<ReqQryCapitalField>::GetInstance().Allocate();
 			memcpy(ReqQryCapital, buff + offset, sizeof(ReqQryCapitalField));
 			offset += sizeof(ReqQryCapitalField);	
 			break;
@@ -1803,24 +1863,30 @@ const char* ReqQryCapitalPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryCapitalPackage* RspQryCapitalPackage::Allocate()
+RspQryCapitalPackage::RspQryCapitalPackage()
+	:Capital(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryCapitalPackage>();
 }
-void RspQryCapitalPackage::Free()
+RspQryCapitalPackage::~RspQryCapitalPackage()
 {
-	Package::Free();
 	if (Capital != nullptr)
 	{
-		::Free<CapitalField>(Capital);
+		ObjectPool<CapitalField>::GetInstance().Deallocate(Capital);
 		Capital = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryCapitalPackage>::GetInstance().Free(this);
+}
+RspQryCapitalPackage* RspQryCapitalPackage::Allocate()
+{
+	return ObjectPool<RspQryCapitalPackage>::GetInstance().Allocate();
+}
+void RspQryCapitalPackage::Deallocate()
+{
+	ObjectPool<RspQryCapitalPackage>::GetInstance().Deallocate(this);
 }
 void RspQryCapitalPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -1894,7 +1960,7 @@ bool RspQryCapitalPackage::FromStepStream(char* buff, int startIndex, int endInd
 			{
 			case CapitalField::FieldID:
 			{
-				Capital = ::Allocate<CapitalField>();
+				Capital = ObjectPool<CapitalField>::GetInstance().Allocate();
 				memset(Capital, 0, sizeof(*Capital));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -2046,7 +2112,7 @@ bool RspQryCapitalPackage::FromStepStream(char* buff, int startIndex, int endInd
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -2129,14 +2195,14 @@ bool RspQryCapitalPackage::FromXtpStream(char* buff, int startIndex, int endInde
 		{
 		case CapitalField::FieldID:
 		{
-			Capital = ::Allocate<CapitalField>();
+			Capital = ObjectPool<CapitalField>::GetInstance().Allocate();
 			memcpy(Capital, buff + offset, sizeof(CapitalField));
 			offset += sizeof(CapitalField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -2161,19 +2227,25 @@ const char* RspQryCapitalPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryPositionPackage* ReqQryPositionPackage::Allocate()
+ReqQryPositionPackage::ReqQryPositionPackage()
+	:ReqQryPosition(nullptr)
 {
-	return ::Allocate<ReqQryPositionPackage>();
 }
-void ReqQryPositionPackage::Free()
+ReqQryPositionPackage::~ReqQryPositionPackage()
 {
-	Package::Free();
 	if (ReqQryPosition != nullptr)
 	{
-		::Free<ReqQryPositionField>(ReqQryPosition);
+		ObjectPool<ReqQryPositionField>::GetInstance().Deallocate(ReqQryPosition);
 		ReqQryPosition = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryPositionPackage>::GetInstance().Free(this);
+}
+ReqQryPositionPackage* ReqQryPositionPackage::Allocate()
+{
+	return ObjectPool<ReqQryPositionPackage>::GetInstance().Allocate();
+}
+void ReqQryPositionPackage::Deallocate()
+{
+	ObjectPool<ReqQryPositionPackage>::GetInstance().Deallocate(this);
 }
 void ReqQryPositionPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -2209,7 +2281,7 @@ bool ReqQryPositionPackage::FromStepStream(char* buff, int startIndex, int endIn
 			{
 			case ReqQryPositionField::FieldID:
 			{
-				ReqQryPosition = ::Allocate<ReqQryPositionField>();
+				ReqQryPosition = ObjectPool<ReqQryPositionField>::GetInstance().Allocate();
 				memset(ReqQryPosition, 0, sizeof(*ReqQryPosition));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -2280,7 +2352,7 @@ bool ReqQryPositionPackage::FromXtpStream(char* buff, int startIndex, int endInd
 		{
 		case ReqQryPositionField::FieldID:
 		{
-			ReqQryPosition = ::Allocate<ReqQryPositionField>();
+			ReqQryPosition = ObjectPool<ReqQryPositionField>::GetInstance().Allocate();
 			memcpy(ReqQryPosition, buff + offset, sizeof(ReqQryPositionField));
 			offset += sizeof(ReqQryPositionField);	
 			break;
@@ -2301,24 +2373,30 @@ const char* ReqQryPositionPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryPositionPackage* RspQryPositionPackage::Allocate()
+RspQryPositionPackage::RspQryPositionPackage()
+	:Position(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryPositionPackage>();
 }
-void RspQryPositionPackage::Free()
+RspQryPositionPackage::~RspQryPositionPackage()
 {
-	Package::Free();
 	if (Position != nullptr)
 	{
-		::Free<PositionField>(Position);
+		ObjectPool<PositionField>::GetInstance().Deallocate(Position);
 		Position = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryPositionPackage>::GetInstance().Free(this);
+}
+RspQryPositionPackage* RspQryPositionPackage::Allocate()
+{
+	return ObjectPool<RspQryPositionPackage>::GetInstance().Allocate();
+}
+void RspQryPositionPackage::Deallocate()
+{
+	ObjectPool<RspQryPositionPackage>::GetInstance().Deallocate(this);
 }
 void RspQryPositionPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -2402,7 +2480,7 @@ bool RspQryPositionPackage::FromStepStream(char* buff, int startIndex, int endIn
 			{
 			case PositionField::FieldID:
 			{
-				Position = ::Allocate<PositionField>();
+				Position = ObjectPool<PositionField>::GetInstance().Allocate();
 				memset(Position, 0, sizeof(*Position));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -2566,7 +2644,7 @@ bool RspQryPositionPackage::FromStepStream(char* buff, int startIndex, int endIn
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -2649,14 +2727,14 @@ bool RspQryPositionPackage::FromXtpStream(char* buff, int startIndex, int endInd
 		{
 		case PositionField::FieldID:
 		{
-			Position = ::Allocate<PositionField>();
+			Position = ObjectPool<PositionField>::GetInstance().Allocate();
 			memcpy(Position, buff + offset, sizeof(PositionField));
 			offset += sizeof(PositionField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -2681,19 +2759,25 @@ const char* RspQryPositionPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryOrderPackage* ReqQryOrderPackage::Allocate()
+ReqQryOrderPackage::ReqQryOrderPackage()
+	:ReqQryOrder(nullptr)
 {
-	return ::Allocate<ReqQryOrderPackage>();
 }
-void ReqQryOrderPackage::Free()
+ReqQryOrderPackage::~ReqQryOrderPackage()
 {
-	Package::Free();
 	if (ReqQryOrder != nullptr)
 	{
-		::Free<ReqQryOrderField>(ReqQryOrder);
+		ObjectPool<ReqQryOrderField>::GetInstance().Deallocate(ReqQryOrder);
 		ReqQryOrder = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryOrderPackage>::GetInstance().Free(this);
+}
+ReqQryOrderPackage* ReqQryOrderPackage::Allocate()
+{
+	return ObjectPool<ReqQryOrderPackage>::GetInstance().Allocate();
+}
+void ReqQryOrderPackage::Deallocate()
+{
+	ObjectPool<ReqQryOrderPackage>::GetInstance().Deallocate(this);
 }
 void ReqQryOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -2729,7 +2813,7 @@ bool ReqQryOrderPackage::FromStepStream(char* buff, int startIndex, int endIndex
 			{
 			case ReqQryOrderField::FieldID:
 			{
-				ReqQryOrder = ::Allocate<ReqQryOrderField>();
+				ReqQryOrder = ObjectPool<ReqQryOrderField>::GetInstance().Allocate();
 				memset(ReqQryOrder, 0, sizeof(*ReqQryOrder));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -2800,7 +2884,7 @@ bool ReqQryOrderPackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 		{
 		case ReqQryOrderField::FieldID:
 		{
-			ReqQryOrder = ::Allocate<ReqQryOrderField>();
+			ReqQryOrder = ObjectPool<ReqQryOrderField>::GetInstance().Allocate();
 			memcpy(ReqQryOrder, buff + offset, sizeof(ReqQryOrderField));
 			offset += sizeof(ReqQryOrderField);	
 			break;
@@ -2821,24 +2905,30 @@ const char* ReqQryOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryOrderPackage* RspQryOrderPackage::Allocate()
+RspQryOrderPackage::RspQryOrderPackage()
+	:Order(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryOrderPackage>();
 }
-void RspQryOrderPackage::Free()
+RspQryOrderPackage::~RspQryOrderPackage()
 {
-	Package::Free();
 	if (Order != nullptr)
 	{
-		::Free<OrderField>(Order);
+		ObjectPool<OrderField>::GetInstance().Deallocate(Order);
 		Order = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryOrderPackage>::GetInstance().Free(this);
+}
+RspQryOrderPackage* RspQryOrderPackage::Allocate()
+{
+	return ObjectPool<RspQryOrderPackage>::GetInstance().Allocate();
+}
+void RspQryOrderPackage::Deallocate()
+{
+	ObjectPool<RspQryOrderPackage>::GetInstance().Deallocate(this);
 }
 void RspQryOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -2949,7 +3039,7 @@ bool RspQryOrderPackage::FromStepStream(char* buff, int startIndex, int endIndex
 			{
 			case OrderField::FieldID:
 			{
-				Order = ::Allocate<OrderField>();
+				Order = ObjectPool<OrderField>::GetInstance().Allocate();
 				memset(Order, 0, sizeof(*Order));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -3134,7 +3224,7 @@ bool RspQryOrderPackage::FromStepStream(char* buff, int startIndex, int endIndex
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -3217,14 +3307,14 @@ bool RspQryOrderPackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 		{
 		case OrderField::FieldID:
 		{
-			Order = ::Allocate<OrderField>();
+			Order = ObjectPool<OrderField>::GetInstance().Allocate();
 			memcpy(Order, buff + offset, sizeof(OrderField));
 			offset += sizeof(OrderField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -3249,19 +3339,25 @@ const char* RspQryOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryTradePackage* ReqQryTradePackage::Allocate()
+ReqQryTradePackage::ReqQryTradePackage()
+	:ReqQryTrade(nullptr)
 {
-	return ::Allocate<ReqQryTradePackage>();
 }
-void ReqQryTradePackage::Free()
+ReqQryTradePackage::~ReqQryTradePackage()
 {
-	Package::Free();
 	if (ReqQryTrade != nullptr)
 	{
-		::Free<ReqQryTradeField>(ReqQryTrade);
+		ObjectPool<ReqQryTradeField>::GetInstance().Deallocate(ReqQryTrade);
 		ReqQryTrade = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryTradePackage>::GetInstance().Free(this);
+}
+ReqQryTradePackage* ReqQryTradePackage::Allocate()
+{
+	return ObjectPool<ReqQryTradePackage>::GetInstance().Allocate();
+}
+void ReqQryTradePackage::Deallocate()
+{
+	ObjectPool<ReqQryTradePackage>::GetInstance().Deallocate(this);
 }
 void ReqQryTradePackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -3297,7 +3393,7 @@ bool ReqQryTradePackage::FromStepStream(char* buff, int startIndex, int endIndex
 			{
 			case ReqQryTradeField::FieldID:
 			{
-				ReqQryTrade = ::Allocate<ReqQryTradeField>();
+				ReqQryTrade = ObjectPool<ReqQryTradeField>::GetInstance().Allocate();
 				memset(ReqQryTrade, 0, sizeof(*ReqQryTrade));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -3368,7 +3464,7 @@ bool ReqQryTradePackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 		{
 		case ReqQryTradeField::FieldID:
 		{
-			ReqQryTrade = ::Allocate<ReqQryTradeField>();
+			ReqQryTrade = ObjectPool<ReqQryTradeField>::GetInstance().Allocate();
 			memcpy(ReqQryTrade, buff + offset, sizeof(ReqQryTradeField));
 			offset += sizeof(ReqQryTradeField);	
 			break;
@@ -3389,24 +3485,30 @@ const char* ReqQryTradePackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryTradePackage* RspQryTradePackage::Allocate()
+RspQryTradePackage::RspQryTradePackage()
+	:Trade(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryTradePackage>();
 }
-void RspQryTradePackage::Free()
+RspQryTradePackage::~RspQryTradePackage()
 {
-	Package::Free();
 	if (Trade != nullptr)
 	{
-		::Free<TradeField>(Trade);
+		ObjectPool<TradeField>::GetInstance().Deallocate(Trade);
 		Trade = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryTradePackage>::GetInstance().Free(this);
+}
+RspQryTradePackage* RspQryTradePackage::Allocate()
+{
+	return ObjectPool<RspQryTradePackage>::GetInstance().Allocate();
+}
+void RspQryTradePackage::Deallocate()
+{
+	ObjectPool<RspQryTradePackage>::GetInstance().Deallocate(this);
 }
 void RspQryTradePackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -3499,7 +3601,7 @@ bool RspQryTradePackage::FromStepStream(char* buff, int startIndex, int endIndex
 			{
 			case TradeField::FieldID:
 			{
-				Trade = ::Allocate<TradeField>();
+				Trade = ObjectPool<TradeField>::GetInstance().Allocate();
 				memset(Trade, 0, sizeof(*Trade));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -3632,7 +3734,7 @@ bool RspQryTradePackage::FromStepStream(char* buff, int startIndex, int endIndex
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -3715,14 +3817,14 @@ bool RspQryTradePackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 		{
 		case TradeField::FieldID:
 		{
-			Trade = ::Allocate<TradeField>();
+			Trade = ObjectPool<TradeField>::GetInstance().Allocate();
 			memcpy(Trade, buff + offset, sizeof(TradeField));
 			offset += sizeof(TradeField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -3747,19 +3849,25 @@ const char* RspQryTradePackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryInstrumentPackage* ReqQryInstrumentPackage::Allocate()
+ReqQryInstrumentPackage::ReqQryInstrumentPackage()
+	:ReqQryInstrument(nullptr)
 {
-	return ::Allocate<ReqQryInstrumentPackage>();
 }
-void ReqQryInstrumentPackage::Free()
+ReqQryInstrumentPackage::~ReqQryInstrumentPackage()
 {
-	Package::Free();
 	if (ReqQryInstrument != nullptr)
 	{
-		::Free<ReqQryInstrumentField>(ReqQryInstrument);
+		ObjectPool<ReqQryInstrumentField>::GetInstance().Deallocate(ReqQryInstrument);
 		ReqQryInstrument = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryInstrumentPackage>::GetInstance().Free(this);
+}
+ReqQryInstrumentPackage* ReqQryInstrumentPackage::Allocate()
+{
+	return ObjectPool<ReqQryInstrumentPackage>::GetInstance().Allocate();
+}
+void ReqQryInstrumentPackage::Deallocate()
+{
+	ObjectPool<ReqQryInstrumentPackage>::GetInstance().Deallocate(this);
 }
 void ReqQryInstrumentPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -3800,7 +3908,7 @@ bool ReqQryInstrumentPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case ReqQryInstrumentField::FieldID:
 			{
-				ReqQryInstrument = ::Allocate<ReqQryInstrumentField>();
+				ReqQryInstrument = ObjectPool<ReqQryInstrumentField>::GetInstance().Allocate();
 				memset(ReqQryInstrument, 0, sizeof(*ReqQryInstrument));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -3877,7 +3985,7 @@ bool ReqQryInstrumentPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case ReqQryInstrumentField::FieldID:
 		{
-			ReqQryInstrument = ::Allocate<ReqQryInstrumentField>();
+			ReqQryInstrument = ObjectPool<ReqQryInstrumentField>::GetInstance().Allocate();
 			memcpy(ReqQryInstrument, buff + offset, sizeof(ReqQryInstrumentField));
 			offset += sizeof(ReqQryInstrumentField);	
 			break;
@@ -3898,24 +4006,30 @@ const char* ReqQryInstrumentPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryInstrumentPackage* RspQryInstrumentPackage::Allocate()
+RspQryInstrumentPackage::RspQryInstrumentPackage()
+	:Instrument(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryInstrumentPackage>();
 }
-void RspQryInstrumentPackage::Free()
+RspQryInstrumentPackage::~RspQryInstrumentPackage()
 {
-	Package::Free();
 	if (Instrument != nullptr)
 	{
-		::Free<InstrumentField>(Instrument);
+		ObjectPool<InstrumentField>::GetInstance().Deallocate(Instrument);
 		Instrument = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryInstrumentPackage>::GetInstance().Free(this);
+}
+RspQryInstrumentPackage* RspQryInstrumentPackage::Allocate()
+{
+	return ObjectPool<RspQryInstrumentPackage>::GetInstance().Allocate();
+}
+void RspQryInstrumentPackage::Deallocate()
+{
+	ObjectPool<RspQryInstrumentPackage>::GetInstance().Deallocate(this);
 }
 void RspQryInstrumentPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -3979,7 +4093,7 @@ bool RspQryInstrumentPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case InstrumentField::FieldID:
 			{
-				Instrument = ::Allocate<InstrumentField>();
+				Instrument = ObjectPool<InstrumentField>::GetInstance().Allocate();
 				memset(Instrument, 0, sizeof(*Instrument));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -4043,7 +4157,7 @@ bool RspQryInstrumentPackage::FromStepStream(char* buff, int startIndex, int end
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -4126,14 +4240,14 @@ bool RspQryInstrumentPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case InstrumentField::FieldID:
 		{
-			Instrument = ::Allocate<InstrumentField>();
+			Instrument = ObjectPool<InstrumentField>::GetInstance().Allocate();
 			memcpy(Instrument, buff + offset, sizeof(InstrumentField));
 			offset += sizeof(InstrumentField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -4158,19 +4272,25 @@ const char* RspQryInstrumentPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryOptionInstrumentPackage* ReqQryOptionInstrumentPackage::Allocate()
+ReqQryOptionInstrumentPackage::ReqQryOptionInstrumentPackage()
+	:ReqQryOptionInstrument(nullptr)
 {
-	return ::Allocate<ReqQryOptionInstrumentPackage>();
 }
-void ReqQryOptionInstrumentPackage::Free()
+ReqQryOptionInstrumentPackage::~ReqQryOptionInstrumentPackage()
 {
-	Package::Free();
 	if (ReqQryOptionInstrument != nullptr)
 	{
-		::Free<ReqQryOptionInstrumentField>(ReqQryOptionInstrument);
+		ObjectPool<ReqQryOptionInstrumentField>::GetInstance().Deallocate(ReqQryOptionInstrument);
 		ReqQryOptionInstrument = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryOptionInstrumentPackage>::GetInstance().Free(this);
+}
+ReqQryOptionInstrumentPackage* ReqQryOptionInstrumentPackage::Allocate()
+{
+	return ObjectPool<ReqQryOptionInstrumentPackage>::GetInstance().Allocate();
+}
+void ReqQryOptionInstrumentPackage::Deallocate()
+{
+	ObjectPool<ReqQryOptionInstrumentPackage>::GetInstance().Deallocate(this);
 }
 void ReqQryOptionInstrumentPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -4211,7 +4331,7 @@ bool ReqQryOptionInstrumentPackage::FromStepStream(char* buff, int startIndex, i
 			{
 			case ReqQryOptionInstrumentField::FieldID:
 			{
-				ReqQryOptionInstrument = ::Allocate<ReqQryOptionInstrumentField>();
+				ReqQryOptionInstrument = ObjectPool<ReqQryOptionInstrumentField>::GetInstance().Allocate();
 				memset(ReqQryOptionInstrument, 0, sizeof(*ReqQryOptionInstrument));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -4288,7 +4408,7 @@ bool ReqQryOptionInstrumentPackage::FromXtpStream(char* buff, int startIndex, in
 		{
 		case ReqQryOptionInstrumentField::FieldID:
 		{
-			ReqQryOptionInstrument = ::Allocate<ReqQryOptionInstrumentField>();
+			ReqQryOptionInstrument = ObjectPool<ReqQryOptionInstrumentField>::GetInstance().Allocate();
 			memcpy(ReqQryOptionInstrument, buff + offset, sizeof(ReqQryOptionInstrumentField));
 			offset += sizeof(ReqQryOptionInstrumentField);	
 			break;
@@ -4309,24 +4429,30 @@ const char* ReqQryOptionInstrumentPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryOptionInstrumentPackage* RspQryOptionInstrumentPackage::Allocate()
+RspQryOptionInstrumentPackage::RspQryOptionInstrumentPackage()
+	:OptionInstrument(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryOptionInstrumentPackage>();
 }
-void RspQryOptionInstrumentPackage::Free()
+RspQryOptionInstrumentPackage::~RspQryOptionInstrumentPackage()
 {
-	Package::Free();
 	if (OptionInstrument != nullptr)
 	{
-		::Free<OptionInstrumentField>(OptionInstrument);
+		ObjectPool<OptionInstrumentField>::GetInstance().Deallocate(OptionInstrument);
 		OptionInstrument = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryOptionInstrumentPackage>::GetInstance().Free(this);
+}
+RspQryOptionInstrumentPackage* RspQryOptionInstrumentPackage::Allocate()
+{
+	return ObjectPool<RspQryOptionInstrumentPackage>::GetInstance().Allocate();
+}
+void RspQryOptionInstrumentPackage::Deallocate()
+{
+	ObjectPool<RspQryOptionInstrumentPackage>::GetInstance().Deallocate(this);
 }
 void RspQryOptionInstrumentPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -4405,7 +4531,7 @@ bool RspQryOptionInstrumentPackage::FromStepStream(char* buff, int startIndex, i
 			{
 			case OptionInstrumentField::FieldID:
 			{
-				OptionInstrument = ::Allocate<OptionInstrumentField>();
+				OptionInstrument = ObjectPool<OptionInstrumentField>::GetInstance().Allocate();
 				memset(OptionInstrument, 0, sizeof(*OptionInstrument));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -4506,7 +4632,7 @@ bool RspQryOptionInstrumentPackage::FromStepStream(char* buff, int startIndex, i
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -4589,14 +4715,14 @@ bool RspQryOptionInstrumentPackage::FromXtpStream(char* buff, int startIndex, in
 		{
 		case OptionInstrumentField::FieldID:
 		{
-			OptionInstrument = ::Allocate<OptionInstrumentField>();
+			OptionInstrument = ObjectPool<OptionInstrumentField>::GetInstance().Allocate();
 			memcpy(OptionInstrument, buff + offset, sizeof(OptionInstrumentField));
 			offset += sizeof(OptionInstrumentField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -4621,19 +4747,25 @@ const char* RspQryOptionInstrumentPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryCommissionRatePackage* ReqQryCommissionRatePackage::Allocate()
+ReqQryCommissionRatePackage::ReqQryCommissionRatePackage()
+	:ReqQryCommissionRate(nullptr)
 {
-	return ::Allocate<ReqQryCommissionRatePackage>();
 }
-void ReqQryCommissionRatePackage::Free()
+ReqQryCommissionRatePackage::~ReqQryCommissionRatePackage()
 {
-	Package::Free();
 	if (ReqQryCommissionRate != nullptr)
 	{
-		::Free<ReqQryCommissionRateField>(ReqQryCommissionRate);
+		ObjectPool<ReqQryCommissionRateField>::GetInstance().Deallocate(ReqQryCommissionRate);
 		ReqQryCommissionRate = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryCommissionRatePackage>::GetInstance().Free(this);
+}
+ReqQryCommissionRatePackage* ReqQryCommissionRatePackage::Allocate()
+{
+	return ObjectPool<ReqQryCommissionRatePackage>::GetInstance().Allocate();
+}
+void ReqQryCommissionRatePackage::Deallocate()
+{
+	ObjectPool<ReqQryCommissionRatePackage>::GetInstance().Deallocate(this);
 }
 void ReqQryCommissionRatePackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -4675,7 +4807,7 @@ bool ReqQryCommissionRatePackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case ReqQryCommissionRateField::FieldID:
 			{
-				ReqQryCommissionRate = ::Allocate<ReqQryCommissionRateField>();
+				ReqQryCommissionRate = ObjectPool<ReqQryCommissionRateField>::GetInstance().Allocate();
 				memset(ReqQryCommissionRate, 0, sizeof(*ReqQryCommissionRate));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -4757,7 +4889,7 @@ bool ReqQryCommissionRatePackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case ReqQryCommissionRateField::FieldID:
 		{
-			ReqQryCommissionRate = ::Allocate<ReqQryCommissionRateField>();
+			ReqQryCommissionRate = ObjectPool<ReqQryCommissionRateField>::GetInstance().Allocate();
 			memcpy(ReqQryCommissionRate, buff + offset, sizeof(ReqQryCommissionRateField));
 			offset += sizeof(ReqQryCommissionRateField);	
 			break;
@@ -4778,24 +4910,30 @@ const char* ReqQryCommissionRatePackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryCommissionRatePackage* RspQryCommissionRatePackage::Allocate()
+RspQryCommissionRatePackage::RspQryCommissionRatePackage()
+	:CommissionRate(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryCommissionRatePackage>();
 }
-void RspQryCommissionRatePackage::Free()
+RspQryCommissionRatePackage::~RspQryCommissionRatePackage()
 {
-	Package::Free();
 	if (CommissionRate != nullptr)
 	{
-		::Free<CommissionRateField>(CommissionRate);
+		ObjectPool<CommissionRateField>::GetInstance().Deallocate(CommissionRate);
 		CommissionRate = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryCommissionRatePackage>::GetInstance().Free(this);
+}
+RspQryCommissionRatePackage* RspQryCommissionRatePackage::Allocate()
+{
+	return ObjectPool<RspQryCommissionRatePackage>::GetInstance().Allocate();
+}
+void RspQryCommissionRatePackage::Deallocate()
+{
+	ObjectPool<RspQryCommissionRatePackage>::GetInstance().Deallocate(this);
 }
 void RspQryCommissionRatePackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -4858,7 +4996,7 @@ bool RspQryCommissionRatePackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case CommissionRateField::FieldID:
 			{
-				CommissionRate = ::Allocate<CommissionRateField>();
+				CommissionRate = ObjectPool<CommissionRateField>::GetInstance().Allocate();
 				memset(CommissionRate, 0, sizeof(*CommissionRate));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -4955,7 +5093,7 @@ bool RspQryCommissionRatePackage::FromStepStream(char* buff, int startIndex, int
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -5038,14 +5176,14 @@ bool RspQryCommissionRatePackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case CommissionRateField::FieldID:
 		{
-			CommissionRate = ::Allocate<CommissionRateField>();
+			CommissionRate = ObjectPool<CommissionRateField>::GetInstance().Allocate();
 			memcpy(CommissionRate, buff + offset, sizeof(CommissionRateField));
 			offset += sizeof(CommissionRateField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -5070,19 +5208,25 @@ const char* RspQryCommissionRatePackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryMoneyTransferPackage* ReqQryMoneyTransferPackage::Allocate()
+ReqQryMoneyTransferPackage::ReqQryMoneyTransferPackage()
+	:ReqQryMoneyTransfer(nullptr)
 {
-	return ::Allocate<ReqQryMoneyTransferPackage>();
 }
-void ReqQryMoneyTransferPackage::Free()
+ReqQryMoneyTransferPackage::~ReqQryMoneyTransferPackage()
 {
-	Package::Free();
 	if (ReqQryMoneyTransfer != nullptr)
 	{
-		::Free<ReqQryMoneyTransferField>(ReqQryMoneyTransfer);
+		ObjectPool<ReqQryMoneyTransferField>::GetInstance().Deallocate(ReqQryMoneyTransfer);
 		ReqQryMoneyTransfer = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryMoneyTransferPackage>::GetInstance().Free(this);
+}
+ReqQryMoneyTransferPackage* ReqQryMoneyTransferPackage::Allocate()
+{
+	return ObjectPool<ReqQryMoneyTransferPackage>::GetInstance().Allocate();
+}
+void ReqQryMoneyTransferPackage::Deallocate()
+{
+	ObjectPool<ReqQryMoneyTransferPackage>::GetInstance().Deallocate(this);
 }
 void ReqQryMoneyTransferPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -5118,7 +5262,7 @@ bool ReqQryMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int 
 			{
 			case ReqQryMoneyTransferField::FieldID:
 			{
-				ReqQryMoneyTransfer = ::Allocate<ReqQryMoneyTransferField>();
+				ReqQryMoneyTransfer = ObjectPool<ReqQryMoneyTransferField>::GetInstance().Allocate();
 				memset(ReqQryMoneyTransfer, 0, sizeof(*ReqQryMoneyTransfer));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -5189,7 +5333,7 @@ bool ReqQryMoneyTransferPackage::FromXtpStream(char* buff, int startIndex, int e
 		{
 		case ReqQryMoneyTransferField::FieldID:
 		{
-			ReqQryMoneyTransfer = ::Allocate<ReqQryMoneyTransferField>();
+			ReqQryMoneyTransfer = ObjectPool<ReqQryMoneyTransferField>::GetInstance().Allocate();
 			memcpy(ReqQryMoneyTransfer, buff + offset, sizeof(ReqQryMoneyTransferField));
 			offset += sizeof(ReqQryMoneyTransferField);	
 			break;
@@ -5210,24 +5354,30 @@ const char* ReqQryMoneyTransferPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryMoneyTransferPackage* RspQryMoneyTransferPackage::Allocate()
+RspQryMoneyTransferPackage::RspQryMoneyTransferPackage()
+	:MoneyTransfer(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryMoneyTransferPackage>();
 }
-void RspQryMoneyTransferPackage::Free()
+RspQryMoneyTransferPackage::~RspQryMoneyTransferPackage()
 {
-	Package::Free();
 	if (MoneyTransfer != nullptr)
 	{
-		::Free<MoneyTransferField>(MoneyTransfer);
+		ObjectPool<MoneyTransferField>::GetInstance().Deallocate(MoneyTransfer);
 		MoneyTransfer = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryMoneyTransferPackage>::GetInstance().Free(this);
+}
+RspQryMoneyTransferPackage* RspQryMoneyTransferPackage::Allocate()
+{
+	return ObjectPool<RspQryMoneyTransferPackage>::GetInstance().Allocate();
+}
+void RspQryMoneyTransferPackage::Deallocate()
+{
+	ObjectPool<RspQryMoneyTransferPackage>::GetInstance().Deallocate(this);
 }
 void RspQryMoneyTransferPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -5303,7 +5453,7 @@ bool RspQryMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int 
 			{
 			case MoneyTransferField::FieldID:
 			{
-				MoneyTransfer = ::Allocate<MoneyTransferField>();
+				MoneyTransfer = ObjectPool<MoneyTransferField>::GetInstance().Allocate();
 				memset(MoneyTransfer, 0, sizeof(*MoneyTransfer));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -5389,7 +5539,7 @@ bool RspQryMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int 
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -5472,14 +5622,14 @@ bool RspQryMoneyTransferPackage::FromXtpStream(char* buff, int startIndex, int e
 		{
 		case MoneyTransferField::FieldID:
 		{
-			MoneyTransfer = ::Allocate<MoneyTransferField>();
+			MoneyTransfer = ObjectPool<MoneyTransferField>::GetInstance().Allocate();
 			memcpy(MoneyTransfer, buff + offset, sizeof(MoneyTransferField));
 			offset += sizeof(MoneyTransferField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -5504,19 +5654,25 @@ const char* RspQryMoneyTransferPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqInsertOrderPackage* ReqInsertOrderPackage::Allocate()
+ReqInsertOrderPackage::ReqInsertOrderPackage()
+	:ReqInsertOrder(nullptr)
 {
-	return ::Allocate<ReqInsertOrderPackage>();
 }
-void ReqInsertOrderPackage::Free()
+ReqInsertOrderPackage::~ReqInsertOrderPackage()
 {
-	Package::Free();
 	if (ReqInsertOrder != nullptr)
 	{
-		::Free<ReqInsertOrderField>(ReqInsertOrder);
+		ObjectPool<ReqInsertOrderField>::GetInstance().Deallocate(ReqInsertOrder);
 		ReqInsertOrder = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqInsertOrderPackage>::GetInstance().Free(this);
+}
+ReqInsertOrderPackage* ReqInsertOrderPackage::Allocate()
+{
+	return ObjectPool<ReqInsertOrderPackage>::GetInstance().Allocate();
+}
+void ReqInsertOrderPackage::Deallocate()
+{
+	ObjectPool<ReqInsertOrderPackage>::GetInstance().Deallocate(this);
 }
 void ReqInsertOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -5568,7 +5724,7 @@ bool ReqInsertOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 			{
 			case ReqInsertOrderField::FieldID:
 			{
-				ReqInsertOrder = ::Allocate<ReqInsertOrderField>();
+				ReqInsertOrder = ObjectPool<ReqInsertOrderField>::GetInstance().Allocate();
 				memset(ReqInsertOrder, 0, sizeof(*ReqInsertOrder));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -5681,7 +5837,7 @@ bool ReqInsertOrderPackage::FromXtpStream(char* buff, int startIndex, int endInd
 		{
 		case ReqInsertOrderField::FieldID:
 		{
-			ReqInsertOrder = ::Allocate<ReqInsertOrderField>();
+			ReqInsertOrder = ObjectPool<ReqInsertOrderField>::GetInstance().Allocate();
 			memcpy(ReqInsertOrder, buff + offset, sizeof(ReqInsertOrderField));
 			offset += sizeof(ReqInsertOrderField);	
 			break;
@@ -5702,24 +5858,30 @@ const char* ReqInsertOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspInsertOrderPackage* RspInsertOrderPackage::Allocate()
+RspInsertOrderPackage::RspInsertOrderPackage()
+	:Order(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspInsertOrderPackage>();
 }
-void RspInsertOrderPackage::Free()
+RspInsertOrderPackage::~RspInsertOrderPackage()
 {
-	Package::Free();
 	if (Order != nullptr)
 	{
-		::Free<OrderField>(Order);
+		ObjectPool<OrderField>::GetInstance().Deallocate(Order);
 		Order = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspInsertOrderPackage>::GetInstance().Free(this);
+}
+RspInsertOrderPackage* RspInsertOrderPackage::Allocate()
+{
+	return ObjectPool<RspInsertOrderPackage>::GetInstance().Allocate();
+}
+void RspInsertOrderPackage::Deallocate()
+{
+	ObjectPool<RspInsertOrderPackage>::GetInstance().Deallocate(this);
 }
 void RspInsertOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -5830,7 +5992,7 @@ bool RspInsertOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 			{
 			case OrderField::FieldID:
 			{
-				Order = ::Allocate<OrderField>();
+				Order = ObjectPool<OrderField>::GetInstance().Allocate();
 				memset(Order, 0, sizeof(*Order));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -6015,7 +6177,7 @@ bool RspInsertOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -6098,14 +6260,14 @@ bool RspInsertOrderPackage::FromXtpStream(char* buff, int startIndex, int endInd
 		{
 		case OrderField::FieldID:
 		{
-			Order = ::Allocate<OrderField>();
+			Order = ObjectPool<OrderField>::GetInstance().Allocate();
 			memcpy(Order, buff + offset, sizeof(OrderField));
 			offset += sizeof(OrderField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -6130,19 +6292,25 @@ const char* RspInsertOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqCancelOrderPackage* ReqCancelOrderPackage::Allocate()
+ReqCancelOrderPackage::ReqCancelOrderPackage()
+	:ReqCancelOrder(nullptr)
 {
-	return ::Allocate<ReqCancelOrderPackage>();
 }
-void ReqCancelOrderPackage::Free()
+ReqCancelOrderPackage::~ReqCancelOrderPackage()
 {
-	Package::Free();
 	if (ReqCancelOrder != nullptr)
 	{
-		::Free<ReqCancelOrderField>(ReqCancelOrder);
+		ObjectPool<ReqCancelOrderField>::GetInstance().Deallocate(ReqCancelOrder);
 		ReqCancelOrder = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqCancelOrderPackage>::GetInstance().Free(this);
+}
+ReqCancelOrderPackage* ReqCancelOrderPackage::Allocate()
+{
+	return ObjectPool<ReqCancelOrderPackage>::GetInstance().Allocate();
+}
+void ReqCancelOrderPackage::Deallocate()
+{
+	ObjectPool<ReqCancelOrderPackage>::GetInstance().Deallocate(this);
 }
 void ReqCancelOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -6196,7 +6364,7 @@ bool ReqCancelOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 			{
 			case ReqCancelOrderField::FieldID:
 			{
-				ReqCancelOrder = ::Allocate<ReqCancelOrderField>();
+				ReqCancelOrder = ObjectPool<ReqCancelOrderField>::GetInstance().Allocate();
 				memset(ReqCancelOrder, 0, sizeof(*ReqCancelOrder));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -6300,7 +6468,7 @@ bool ReqCancelOrderPackage::FromXtpStream(char* buff, int startIndex, int endInd
 		{
 		case ReqCancelOrderField::FieldID:
 		{
-			ReqCancelOrder = ::Allocate<ReqCancelOrderField>();
+			ReqCancelOrder = ObjectPool<ReqCancelOrderField>::GetInstance().Allocate();
 			memcpy(ReqCancelOrder, buff + offset, sizeof(ReqCancelOrderField));
 			offset += sizeof(ReqCancelOrderField);	
 			break;
@@ -6321,24 +6489,30 @@ const char* ReqCancelOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspCancelOrderPackage* RspCancelOrderPackage::Allocate()
+RspCancelOrderPackage::RspCancelOrderPackage()
+	:CancelOrder(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspCancelOrderPackage>();
 }
-void RspCancelOrderPackage::Free()
+RspCancelOrderPackage::~RspCancelOrderPackage()
 {
-	Package::Free();
 	if (CancelOrder != nullptr)
 	{
-		::Free<CancelOrderField>(CancelOrder);
+		ObjectPool<CancelOrderField>::GetInstance().Deallocate(CancelOrder);
 		CancelOrder = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspCancelOrderPackage>::GetInstance().Free(this);
+}
+RspCancelOrderPackage* RspCancelOrderPackage::Allocate()
+{
+	return ObjectPool<RspCancelOrderPackage>::GetInstance().Allocate();
+}
+void RspCancelOrderPackage::Deallocate()
+{
+	ObjectPool<RspCancelOrderPackage>::GetInstance().Deallocate(this);
 }
 void RspCancelOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -6403,7 +6577,7 @@ bool RspCancelOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 			{
 			case CancelOrderField::FieldID:
 			{
-				CancelOrder = ::Allocate<CancelOrderField>();
+				CancelOrder = ObjectPool<CancelOrderField>::GetInstance().Allocate();
 				memset(CancelOrder, 0, sizeof(*CancelOrder));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -6472,7 +6646,7 @@ bool RspCancelOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -6555,14 +6729,14 @@ bool RspCancelOrderPackage::FromXtpStream(char* buff, int startIndex, int endInd
 		{
 		case CancelOrderField::FieldID:
 		{
-			CancelOrder = ::Allocate<CancelOrderField>();
+			CancelOrder = ObjectPool<CancelOrderField>::GetInstance().Allocate();
 			memcpy(CancelOrder, buff + offset, sizeof(CancelOrderField));
 			offset += sizeof(CancelOrderField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -6587,19 +6761,25 @@ const char* RspCancelOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnOrderPackage* RtnOrderPackage::Allocate()
+RtnOrderPackage::RtnOrderPackage()
+	:Order(nullptr)
 {
-	return ::Allocate<RtnOrderPackage>();
 }
-void RtnOrderPackage::Free()
+RtnOrderPackage::~RtnOrderPackage()
 {
-	Package::Free();
 	if (Order != nullptr)
 	{
-		::Free<OrderField>(Order);
+		ObjectPool<OrderField>::GetInstance().Deallocate(Order);
 		Order = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnOrderPackage>::GetInstance().Free(this);
+}
+RtnOrderPackage* RtnOrderPackage::Allocate()
+{
+	return ObjectPool<RtnOrderPackage>::GetInstance().Allocate();
+}
+void RtnOrderPackage::Deallocate()
+{
+	ObjectPool<RtnOrderPackage>::GetInstance().Deallocate(this);
 }
 void RtnOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -6699,7 +6879,7 @@ bool RtnOrderPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 			{
 			case OrderField::FieldID:
 			{
-				Order = ::Allocate<OrderField>();
+				Order = ObjectPool<OrderField>::GetInstance().Allocate();
 				memset(Order, 0, sizeof(*Order));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -6919,7 +7099,7 @@ bool RtnOrderPackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 		{
 		case OrderField::FieldID:
 		{
-			Order = ::Allocate<OrderField>();
+			Order = ObjectPool<OrderField>::GetInstance().Allocate();
 			memcpy(Order, buff + offset, sizeof(OrderField));
 			offset += sizeof(OrderField);	
 			break;
@@ -6940,19 +7120,25 @@ const char* RtnOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnTradePackage* RtnTradePackage::Allocate()
+RtnTradePackage::RtnTradePackage()
+	:Trade(nullptr)
 {
-	return ::Allocate<RtnTradePackage>();
 }
-void RtnTradePackage::Free()
+RtnTradePackage::~RtnTradePackage()
 {
-	Package::Free();
 	if (Trade != nullptr)
 	{
-		::Free<TradeField>(Trade);
+		ObjectPool<TradeField>::GetInstance().Deallocate(Trade);
 		Trade = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnTradePackage>::GetInstance().Free(this);
+}
+RtnTradePackage* RtnTradePackage::Allocate()
+{
+	return ObjectPool<RtnTradePackage>::GetInstance().Allocate();
+}
+void RtnTradePackage::Deallocate()
+{
+	ObjectPool<RtnTradePackage>::GetInstance().Deallocate(this);
 }
 void RtnTradePackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -7034,7 +7220,7 @@ bool RtnTradePackage::FromStepStream(char* buff, int startIndex, int endIndex)
 			{
 			case TradeField::FieldID:
 			{
-				Trade = ::Allocate<TradeField>();
+				Trade = ObjectPool<TradeField>::GetInstance().Allocate();
 				memset(Trade, 0, sizeof(*Trade));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -7202,7 +7388,7 @@ bool RtnTradePackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 		{
 		case TradeField::FieldID:
 		{
-			Trade = ::Allocate<TradeField>();
+			Trade = ObjectPool<TradeField>::GetInstance().Allocate();
 			memcpy(Trade, buff + offset, sizeof(TradeField));
 			offset += sizeof(TradeField);	
 			break;
@@ -7223,19 +7409,25 @@ const char* RtnTradePackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnMoneyTransferPackage* RtnMoneyTransferPackage::Allocate()
+RtnMoneyTransferPackage::RtnMoneyTransferPackage()
+	:MoneyTransfer(nullptr)
 {
-	return ::Allocate<RtnMoneyTransferPackage>();
 }
-void RtnMoneyTransferPackage::Free()
+RtnMoneyTransferPackage::~RtnMoneyTransferPackage()
 {
-	Package::Free();
 	if (MoneyTransfer != nullptr)
 	{
-		::Free<MoneyTransferField>(MoneyTransfer);
+		ObjectPool<MoneyTransferField>::GetInstance().Deallocate(MoneyTransfer);
 		MoneyTransfer = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnMoneyTransferPackage>::GetInstance().Free(this);
+}
+RtnMoneyTransferPackage* RtnMoneyTransferPackage::Allocate()
+{
+	return ObjectPool<RtnMoneyTransferPackage>::GetInstance().Allocate();
+}
+void RtnMoneyTransferPackage::Deallocate()
+{
+	ObjectPool<RtnMoneyTransferPackage>::GetInstance().Deallocate(this);
 }
 void RtnMoneyTransferPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -7300,7 +7492,7 @@ bool RtnMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case MoneyTransferField::FieldID:
 			{
-				MoneyTransfer = ::Allocate<MoneyTransferField>();
+				MoneyTransfer = ObjectPool<MoneyTransferField>::GetInstance().Allocate();
 				memset(MoneyTransfer, 0, sizeof(*MoneyTransfer));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -7421,7 +7613,7 @@ bool RtnMoneyTransferPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case MoneyTransferField::FieldID:
 		{
-			MoneyTransfer = ::Allocate<MoneyTransferField>();
+			MoneyTransfer = ObjectPool<MoneyTransferField>::GetInstance().Allocate();
 			memcpy(MoneyTransfer, buff + offset, sizeof(MoneyTransferField));
 			offset += sizeof(MoneyTransferField);	
 			break;
@@ -7442,19 +7634,25 @@ const char* RtnMoneyTransferPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnAccountLogoutPackage* RtnAccountLogoutPackage::Allocate()
+RtnAccountLogoutPackage::RtnAccountLogoutPackage()
+	:AccountLogout(nullptr)
 {
-	return ::Allocate<RtnAccountLogoutPackage>();
 }
-void RtnAccountLogoutPackage::Free()
+RtnAccountLogoutPackage::~RtnAccountLogoutPackage()
 {
-	Package::Free();
 	if (AccountLogout != nullptr)
 	{
-		::Free<AccountLogoutField>(AccountLogout);
+		ObjectPool<AccountLogoutField>::GetInstance().Deallocate(AccountLogout);
 		AccountLogout = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnAccountLogoutPackage>::GetInstance().Free(this);
+}
+RtnAccountLogoutPackage* RtnAccountLogoutPackage::Allocate()
+{
+	return ObjectPool<RtnAccountLogoutPackage>::GetInstance().Allocate();
+}
+void RtnAccountLogoutPackage::Deallocate()
+{
+	ObjectPool<RtnAccountLogoutPackage>::GetInstance().Deallocate(this);
 }
 void RtnAccountLogoutPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -7496,7 +7694,7 @@ bool RtnAccountLogoutPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case AccountLogoutField::FieldID:
 			{
-				AccountLogout = ::Allocate<AccountLogoutField>();
+				AccountLogout = ObjectPool<AccountLogoutField>::GetInstance().Allocate();
 				memset(AccountLogout, 0, sizeof(*AccountLogout));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -7578,7 +7776,7 @@ bool RtnAccountLogoutPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case AccountLogoutField::FieldID:
 		{
-			AccountLogout = ::Allocate<AccountLogoutField>();
+			AccountLogout = ObjectPool<AccountLogoutField>::GetInstance().Allocate();
 			memcpy(AccountLogout, buff + offset, sizeof(AccountLogoutField));
 			offset += sizeof(AccountLogoutField);	
 			break;
@@ -7599,19 +7797,25 @@ const char* RtnAccountLogoutPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRiskUserLoginPackage* ReqRiskUserLoginPackage::Allocate()
+ReqRiskUserLoginPackage::ReqRiskUserLoginPackage()
+	:ReqRiskUserLogin(nullptr)
 {
-	return ::Allocate<ReqRiskUserLoginPackage>();
 }
-void ReqRiskUserLoginPackage::Free()
+ReqRiskUserLoginPackage::~ReqRiskUserLoginPackage()
 {
-	Package::Free();
 	if (ReqRiskUserLogin != nullptr)
 	{
-		::Free<ReqRiskUserLoginField>(ReqRiskUserLogin);
+		ObjectPool<ReqRiskUserLoginField>::GetInstance().Deallocate(ReqRiskUserLogin);
 		ReqRiskUserLogin = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRiskUserLoginPackage>::GetInstance().Free(this);
+}
+ReqRiskUserLoginPackage* ReqRiskUserLoginPackage::Allocate()
+{
+	return ObjectPool<ReqRiskUserLoginPackage>::GetInstance().Allocate();
+}
+void ReqRiskUserLoginPackage::Deallocate()
+{
+	ObjectPool<ReqRiskUserLoginPackage>::GetInstance().Deallocate(this);
 }
 void ReqRiskUserLoginPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -7652,7 +7856,7 @@ bool ReqRiskUserLoginPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case ReqRiskUserLoginField::FieldID:
 			{
-				ReqRiskUserLogin = ::Allocate<ReqRiskUserLoginField>();
+				ReqRiskUserLogin = ObjectPool<ReqRiskUserLoginField>::GetInstance().Allocate();
 				memset(ReqRiskUserLogin, 0, sizeof(*ReqRiskUserLogin));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -7729,7 +7933,7 @@ bool ReqRiskUserLoginPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case ReqRiskUserLoginField::FieldID:
 		{
-			ReqRiskUserLogin = ::Allocate<ReqRiskUserLoginField>();
+			ReqRiskUserLogin = ObjectPool<ReqRiskUserLoginField>::GetInstance().Allocate();
 			memcpy(ReqRiskUserLogin, buff + offset, sizeof(ReqRiskUserLoginField));
 			offset += sizeof(ReqRiskUserLoginField);	
 			break;
@@ -7750,24 +7954,30 @@ const char* ReqRiskUserLoginPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRiskUserLoginPackage* RspRiskUserLoginPackage::Allocate()
+RspRiskUserLoginPackage::RspRiskUserLoginPackage()
+	:RspRiskUserLogin(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRiskUserLoginPackage>();
 }
-void RspRiskUserLoginPackage::Free()
+RspRiskUserLoginPackage::~RspRiskUserLoginPackage()
 {
-	Package::Free();
 	if (RspRiskUserLogin != nullptr)
 	{
-		::Free<RspRiskUserLoginField>(RspRiskUserLogin);
+		ObjectPool<RspRiskUserLoginField>::GetInstance().Deallocate(RspRiskUserLogin);
 		RspRiskUserLogin = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRiskUserLoginPackage>::GetInstance().Free(this);
+}
+RspRiskUserLoginPackage* RspRiskUserLoginPackage::Allocate()
+{
+	return ObjectPool<RspRiskUserLoginPackage>::GetInstance().Allocate();
+}
+void RspRiskUserLoginPackage::Deallocate()
+{
+	ObjectPool<RspRiskUserLoginPackage>::GetInstance().Deallocate(this);
 }
 void RspRiskUserLoginPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -7826,7 +8036,7 @@ bool RspRiskUserLoginPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case RspRiskUserLoginField::FieldID:
 			{
-				RspRiskUserLogin = ::Allocate<RspRiskUserLoginField>();
+				RspRiskUserLogin = ObjectPool<RspRiskUserLoginField>::GetInstance().Allocate();
 				memset(RspRiskUserLogin, 0, sizeof(*RspRiskUserLogin));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -7884,7 +8094,7 @@ bool RspRiskUserLoginPackage::FromStepStream(char* buff, int startIndex, int end
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -7967,14 +8177,14 @@ bool RspRiskUserLoginPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case RspRiskUserLoginField::FieldID:
 		{
-			RspRiskUserLogin = ::Allocate<RspRiskUserLoginField>();
+			RspRiskUserLogin = ObjectPool<RspRiskUserLoginField>::GetInstance().Allocate();
 			memcpy(RspRiskUserLogin, buff + offset, sizeof(RspRiskUserLoginField));
 			offset += sizeof(RspRiskUserLoginField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -7999,19 +8209,25 @@ const char* RspRiskUserLoginPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRiskUserLogoutPackage* ReqRiskUserLogoutPackage::Allocate()
+ReqRiskUserLogoutPackage::ReqRiskUserLogoutPackage()
+	:ReqRiskUserLogout(nullptr)
 {
-	return ::Allocate<ReqRiskUserLogoutPackage>();
 }
-void ReqRiskUserLogoutPackage::Free()
+ReqRiskUserLogoutPackage::~ReqRiskUserLogoutPackage()
 {
-	Package::Free();
 	if (ReqRiskUserLogout != nullptr)
 	{
-		::Free<ReqRiskUserLogoutField>(ReqRiskUserLogout);
+		ObjectPool<ReqRiskUserLogoutField>::GetInstance().Deallocate(ReqRiskUserLogout);
 		ReqRiskUserLogout = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRiskUserLogoutPackage>::GetInstance().Free(this);
+}
+ReqRiskUserLogoutPackage* ReqRiskUserLogoutPackage::Allocate()
+{
+	return ObjectPool<ReqRiskUserLogoutPackage>::GetInstance().Allocate();
+}
+void ReqRiskUserLogoutPackage::Deallocate()
+{
+	ObjectPool<ReqRiskUserLogoutPackage>::GetInstance().Deallocate(this);
 }
 void ReqRiskUserLogoutPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -8047,7 +8263,7 @@ bool ReqRiskUserLogoutPackage::FromStepStream(char* buff, int startIndex, int en
 			{
 			case ReqRiskUserLogoutField::FieldID:
 			{
-				ReqRiskUserLogout = ::Allocate<ReqRiskUserLogoutField>();
+				ReqRiskUserLogout = ObjectPool<ReqRiskUserLogoutField>::GetInstance().Allocate();
 				memset(ReqRiskUserLogout, 0, sizeof(*ReqRiskUserLogout));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -8118,7 +8334,7 @@ bool ReqRiskUserLogoutPackage::FromXtpStream(char* buff, int startIndex, int end
 		{
 		case ReqRiskUserLogoutField::FieldID:
 		{
-			ReqRiskUserLogout = ::Allocate<ReqRiskUserLogoutField>();
+			ReqRiskUserLogout = ObjectPool<ReqRiskUserLogoutField>::GetInstance().Allocate();
 			memcpy(ReqRiskUserLogout, buff + offset, sizeof(ReqRiskUserLogoutField));
 			offset += sizeof(ReqRiskUserLogoutField);	
 			break;
@@ -8139,24 +8355,30 @@ const char* ReqRiskUserLogoutPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRiskUserLogoutPackage* RspRiskUserLogoutPackage::Allocate()
+RspRiskUserLogoutPackage::RspRiskUserLogoutPackage()
+	:RspRiskUserLogout(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRiskUserLogoutPackage>();
 }
-void RspRiskUserLogoutPackage::Free()
+RspRiskUserLogoutPackage::~RspRiskUserLogoutPackage()
 {
-	Package::Free();
 	if (RspRiskUserLogout != nullptr)
 	{
-		::Free<RspRiskUserLogoutField>(RspRiskUserLogout);
+		ObjectPool<RspRiskUserLogoutField>::GetInstance().Deallocate(RspRiskUserLogout);
 		RspRiskUserLogout = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRiskUserLogoutPackage>::GetInstance().Free(this);
+}
+RspRiskUserLogoutPackage* RspRiskUserLogoutPackage::Allocate()
+{
+	return ObjectPool<RspRiskUserLogoutPackage>::GetInstance().Allocate();
+}
+void RspRiskUserLogoutPackage::Deallocate()
+{
+	ObjectPool<RspRiskUserLogoutPackage>::GetInstance().Deallocate(this);
 }
 void RspRiskUserLogoutPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -8203,7 +8425,7 @@ bool RspRiskUserLogoutPackage::FromStepStream(char* buff, int startIndex, int en
 			{
 			case RspRiskUserLogoutField::FieldID:
 			{
-				RspRiskUserLogout = ::Allocate<RspRiskUserLogoutField>();
+				RspRiskUserLogout = ObjectPool<RspRiskUserLogoutField>::GetInstance().Allocate();
 				memset(RspRiskUserLogout, 0, sizeof(*RspRiskUserLogout));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -8239,7 +8461,7 @@ bool RspRiskUserLogoutPackage::FromStepStream(char* buff, int startIndex, int en
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -8322,14 +8544,14 @@ bool RspRiskUserLogoutPackage::FromXtpStream(char* buff, int startIndex, int end
 		{
 		case RspRiskUserLogoutField::FieldID:
 		{
-			RspRiskUserLogout = ::Allocate<RspRiskUserLogoutField>();
+			RspRiskUserLogout = ObjectPool<RspRiskUserLogoutField>::GetInstance().Allocate();
 			memcpy(RspRiskUserLogout, buff + offset, sizeof(RspRiskUserLogoutField));
 			offset += sizeof(RspRiskUserLogoutField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -8354,19 +8576,25 @@ const char* RspRiskUserLogoutPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnRiskUserLogoutPackage* RtnRiskUserLogoutPackage::Allocate()
+RtnRiskUserLogoutPackage::RtnRiskUserLogoutPackage()
+	:RiskUserLogout(nullptr)
 {
-	return ::Allocate<RtnRiskUserLogoutPackage>();
 }
-void RtnRiskUserLogoutPackage::Free()
+RtnRiskUserLogoutPackage::~RtnRiskUserLogoutPackage()
 {
-	Package::Free();
 	if (RiskUserLogout != nullptr)
 	{
-		::Free<RiskUserLogoutField>(RiskUserLogout);
+		ObjectPool<RiskUserLogoutField>::GetInstance().Deallocate(RiskUserLogout);
 		RiskUserLogout = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnRiskUserLogoutPackage>::GetInstance().Free(this);
+}
+RtnRiskUserLogoutPackage* RtnRiskUserLogoutPackage::Allocate()
+{
+	return ObjectPool<RtnRiskUserLogoutPackage>::GetInstance().Allocate();
+}
+void RtnRiskUserLogoutPackage::Deallocate()
+{
+	ObjectPool<RtnRiskUserLogoutPackage>::GetInstance().Deallocate(this);
 }
 void RtnRiskUserLogoutPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -8408,7 +8636,7 @@ bool RtnRiskUserLogoutPackage::FromStepStream(char* buff, int startIndex, int en
 			{
 			case RiskUserLogoutField::FieldID:
 			{
-				RiskUserLogout = ::Allocate<RiskUserLogoutField>();
+				RiskUserLogout = ObjectPool<RiskUserLogoutField>::GetInstance().Allocate();
 				memset(RiskUserLogout, 0, sizeof(*RiskUserLogout));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -8490,7 +8718,7 @@ bool RtnRiskUserLogoutPackage::FromXtpStream(char* buff, int startIndex, int end
 		{
 		case RiskUserLogoutField::FieldID:
 		{
-			RiskUserLogout = ::Allocate<RiskUserLogoutField>();
+			RiskUserLogout = ObjectPool<RiskUserLogoutField>::GetInstance().Allocate();
 			memcpy(RiskUserLogout, buff + offset, sizeof(RiskUserLogoutField));
 			offset += sizeof(RiskUserLogoutField);	
 			break;
@@ -8511,19 +8739,25 @@ const char* RtnRiskUserLogoutPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnAccountPackage* RtnAccountPackage::Allocate()
+RtnAccountPackage::RtnAccountPackage()
+	:Account(nullptr)
 {
-	return ::Allocate<RtnAccountPackage>();
 }
-void RtnAccountPackage::Free()
+RtnAccountPackage::~RtnAccountPackage()
 {
-	Package::Free();
 	if (Account != nullptr)
 	{
-		::Free<AccountField>(Account);
+		ObjectPool<AccountField>::GetInstance().Deallocate(Account);
 		Account = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnAccountPackage>::GetInstance().Free(this);
+}
+RtnAccountPackage* RtnAccountPackage::Allocate()
+{
+	return ObjectPool<RtnAccountPackage>::GetInstance().Allocate();
+}
+void RtnAccountPackage::Deallocate()
+{
+	ObjectPool<RtnAccountPackage>::GetInstance().Deallocate(this);
 }
 void RtnAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -8564,7 +8798,7 @@ bool RtnAccountPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 			{
 			case AccountField::FieldID:
 			{
-				Account = ::Allocate<AccountField>();
+				Account = ObjectPool<AccountField>::GetInstance().Allocate();
 				memset(Account, 0, sizeof(*Account));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -8660,7 +8894,7 @@ bool RtnAccountPackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 		{
 		case AccountField::FieldID:
 		{
-			Account = ::Allocate<AccountField>();
+			Account = ObjectPool<AccountField>::GetInstance().Allocate();
 			memcpy(Account, buff + offset, sizeof(AccountField));
 			offset += sizeof(AccountField);	
 			break;
@@ -8681,19 +8915,25 @@ const char* RtnAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnAccountDeletePackage* RtnAccountDeletePackage::Allocate()
+RtnAccountDeletePackage::RtnAccountDeletePackage()
+	:AccountDelete(nullptr)
 {
-	return ::Allocate<RtnAccountDeletePackage>();
 }
-void RtnAccountDeletePackage::Free()
+RtnAccountDeletePackage::~RtnAccountDeletePackage()
 {
-	Package::Free();
 	if (AccountDelete != nullptr)
 	{
-		::Free<AccountDeleteField>(AccountDelete);
+		ObjectPool<AccountDeleteField>::GetInstance().Deallocate(AccountDelete);
 		AccountDelete = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnAccountDeletePackage>::GetInstance().Free(this);
+}
+RtnAccountDeletePackage* RtnAccountDeletePackage::Allocate()
+{
+	return ObjectPool<RtnAccountDeletePackage>::GetInstance().Allocate();
+}
+void RtnAccountDeletePackage::Deallocate()
+{
+	ObjectPool<RtnAccountDeletePackage>::GetInstance().Deallocate(this);
 }
 void RtnAccountDeletePackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -8729,7 +8969,7 @@ bool RtnAccountDeletePackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case AccountDeleteField::FieldID:
 			{
-				AccountDelete = ::Allocate<AccountDeleteField>();
+				AccountDelete = ObjectPool<AccountDeleteField>::GetInstance().Allocate();
 				memset(AccountDelete, 0, sizeof(*AccountDelete));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -8800,7 +9040,7 @@ bool RtnAccountDeletePackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case AccountDeleteField::FieldID:
 		{
-			AccountDelete = ::Allocate<AccountDeleteField>();
+			AccountDelete = ObjectPool<AccountDeleteField>::GetInstance().Allocate();
 			memcpy(AccountDelete, buff + offset, sizeof(AccountDeleteField));
 			offset += sizeof(AccountDeleteField);	
 			break;
@@ -8821,19 +9061,25 @@ const char* RtnAccountDeletePackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnPositionPackage* RtnPositionPackage::Allocate()
+RtnPositionPackage::RtnPositionPackage()
+	:Position(nullptr)
 {
-	return ::Allocate<RtnPositionPackage>();
 }
-void RtnPositionPackage::Free()
+RtnPositionPackage::~RtnPositionPackage()
 {
-	Package::Free();
 	if (Position != nullptr)
 	{
-		::Free<PositionField>(Position);
+		ObjectPool<PositionField>::GetInstance().Deallocate(Position);
 		Position = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnPositionPackage>::GetInstance().Free(this);
+}
+RtnPositionPackage* RtnPositionPackage::Allocate()
+{
+	return ObjectPool<RtnPositionPackage>::GetInstance().Allocate();
+}
+void RtnPositionPackage::Deallocate()
+{
+	ObjectPool<RtnPositionPackage>::GetInstance().Deallocate(this);
 }
 void RtnPositionPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -8906,7 +9152,7 @@ bool RtnPositionPackage::FromStepStream(char* buff, int startIndex, int endIndex
 			{
 			case PositionField::FieldID:
 			{
-				Position = ::Allocate<PositionField>();
+				Position = ObjectPool<PositionField>::GetInstance().Allocate();
 				memset(Position, 0, sizeof(*Position));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -9105,7 +9351,7 @@ bool RtnPositionPackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 		{
 		case PositionField::FieldID:
 		{
-			Position = ::Allocate<PositionField>();
+			Position = ObjectPool<PositionField>::GetInstance().Allocate();
 			memcpy(Position, buff + offset, sizeof(PositionField));
 			offset += sizeof(PositionField);	
 			break;
@@ -9126,19 +9372,25 @@ const char* RtnPositionPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnAccountRiskPackage* RtnAccountRiskPackage::Allocate()
+RtnAccountRiskPackage::RtnAccountRiskPackage()
+	:AccountRisk(nullptr)
 {
-	return ::Allocate<RtnAccountRiskPackage>();
 }
-void RtnAccountRiskPackage::Free()
+RtnAccountRiskPackage::~RtnAccountRiskPackage()
 {
-	Package::Free();
 	if (AccountRisk != nullptr)
 	{
-		::Free<AccountRiskField>(AccountRisk);
+		ObjectPool<AccountRiskField>::GetInstance().Deallocate(AccountRisk);
 		AccountRisk = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnAccountRiskPackage>::GetInstance().Free(this);
+}
+RtnAccountRiskPackage* RtnAccountRiskPackage::Allocate()
+{
+	return ObjectPool<RtnAccountRiskPackage>::GetInstance().Allocate();
+}
+void RtnAccountRiskPackage::Deallocate()
+{
+	ObjectPool<RtnAccountRiskPackage>::GetInstance().Deallocate(this);
 }
 void RtnAccountRiskPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -9176,7 +9428,7 @@ bool RtnAccountRiskPackage::FromStepStream(char* buff, int startIndex, int endIn
 			{
 			case AccountRiskField::FieldID:
 			{
-				AccountRisk = ::Allocate<AccountRiskField>();
+				AccountRisk = ObjectPool<AccountRiskField>::GetInstance().Allocate();
 				memset(AccountRisk, 0, sizeof(*AccountRisk));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -9257,7 +9509,7 @@ bool RtnAccountRiskPackage::FromXtpStream(char* buff, int startIndex, int endInd
 		{
 		case AccountRiskField::FieldID:
 		{
-			AccountRisk = ::Allocate<AccountRiskField>();
+			AccountRisk = ObjectPool<AccountRiskField>::GetInstance().Allocate();
 			memcpy(AccountRisk, buff + offset, sizeof(AccountRiskField));
 			offset += sizeof(AccountRiskField);	
 			break;
@@ -9278,19 +9530,25 @@ const char* RtnAccountRiskPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnAccountRiskDeletePackage* RtnAccountRiskDeletePackage::Allocate()
+RtnAccountRiskDeletePackage::RtnAccountRiskDeletePackage()
+	:AccountRiskDelete(nullptr)
 {
-	return ::Allocate<RtnAccountRiskDeletePackage>();
 }
-void RtnAccountRiskDeletePackage::Free()
+RtnAccountRiskDeletePackage::~RtnAccountRiskDeletePackage()
 {
-	Package::Free();
 	if (AccountRiskDelete != nullptr)
 	{
-		::Free<AccountRiskDeleteField>(AccountRiskDelete);
+		ObjectPool<AccountRiskDeleteField>::GetInstance().Deallocate(AccountRiskDelete);
 		AccountRiskDelete = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnAccountRiskDeletePackage>::GetInstance().Free(this);
+}
+RtnAccountRiskDeletePackage* RtnAccountRiskDeletePackage::Allocate()
+{
+	return ObjectPool<RtnAccountRiskDeletePackage>::GetInstance().Allocate();
+}
+void RtnAccountRiskDeletePackage::Deallocate()
+{
+	ObjectPool<RtnAccountRiskDeletePackage>::GetInstance().Deallocate(this);
 }
 void RtnAccountRiskDeletePackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -9327,7 +9585,7 @@ bool RtnAccountRiskDeletePackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case AccountRiskDeleteField::FieldID:
 			{
-				AccountRiskDelete = ::Allocate<AccountRiskDeleteField>();
+				AccountRiskDelete = ObjectPool<AccountRiskDeleteField>::GetInstance().Allocate();
 				memset(AccountRiskDelete, 0, sizeof(*AccountRiskDelete));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -9403,7 +9661,7 @@ bool RtnAccountRiskDeletePackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case AccountRiskDeleteField::FieldID:
 		{
-			AccountRiskDelete = ::Allocate<AccountRiskDeleteField>();
+			AccountRiskDelete = ObjectPool<AccountRiskDeleteField>::GetInstance().Allocate();
 			memcpy(AccountRiskDelete, buff + offset, sizeof(AccountRiskDeleteField));
 			offset += sizeof(AccountRiskDeleteField);	
 			break;
@@ -9424,19 +9682,25 @@ const char* RtnAccountRiskDeletePackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnAccountRiskNotifyPackage* RtnAccountRiskNotifyPackage::Allocate()
+RtnAccountRiskNotifyPackage::RtnAccountRiskNotifyPackage()
+	:AccountRiskNotify(nullptr)
 {
-	return ::Allocate<RtnAccountRiskNotifyPackage>();
 }
-void RtnAccountRiskNotifyPackage::Free()
+RtnAccountRiskNotifyPackage::~RtnAccountRiskNotifyPackage()
 {
-	Package::Free();
 	if (AccountRiskNotify != nullptr)
 	{
-		::Free<AccountRiskNotifyField>(AccountRiskNotify);
+		ObjectPool<AccountRiskNotifyField>::GetInstance().Deallocate(AccountRiskNotify);
 		AccountRiskNotify = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnAccountRiskNotifyPackage>::GetInstance().Free(this);
+}
+RtnAccountRiskNotifyPackage* RtnAccountRiskNotifyPackage::Allocate()
+{
+	return ObjectPool<RtnAccountRiskNotifyPackage>::GetInstance().Allocate();
+}
+void RtnAccountRiskNotifyPackage::Deallocate()
+{
+	ObjectPool<RtnAccountRiskNotifyPackage>::GetInstance().Deallocate(this);
 }
 void RtnAccountRiskNotifyPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -9490,7 +9754,7 @@ bool RtnAccountRiskNotifyPackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case AccountRiskNotifyField::FieldID:
 			{
-				AccountRiskNotify = ::Allocate<AccountRiskNotifyField>();
+				AccountRiskNotify = ObjectPool<AccountRiskNotifyField>::GetInstance().Allocate();
 				memset(AccountRiskNotify, 0, sizeof(*AccountRiskNotify));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -9594,7 +9858,7 @@ bool RtnAccountRiskNotifyPackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case AccountRiskNotifyField::FieldID:
 		{
-			AccountRiskNotify = ::Allocate<AccountRiskNotifyField>();
+			AccountRiskNotify = ObjectPool<AccountRiskNotifyField>::GetInstance().Allocate();
 			memcpy(AccountRiskNotify, buff + offset, sizeof(AccountRiskNotifyField));
 			offset += sizeof(AccountRiskNotifyField);	
 			break;
@@ -9615,19 +9879,25 @@ const char* RtnAccountRiskNotifyPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryRiskGroupAccountPackage* ReqQryRiskGroupAccountPackage::Allocate()
+ReqQryRiskGroupAccountPackage::ReqQryRiskGroupAccountPackage()
+	:ReqQryRiskGroupAccount(nullptr)
 {
-	return ::Allocate<ReqQryRiskGroupAccountPackage>();
 }
-void ReqQryRiskGroupAccountPackage::Free()
+ReqQryRiskGroupAccountPackage::~ReqQryRiskGroupAccountPackage()
 {
-	Package::Free();
 	if (ReqQryRiskGroupAccount != nullptr)
 	{
-		::Free<ReqQryRiskGroupAccountField>(ReqQryRiskGroupAccount);
+		ObjectPool<ReqQryRiskGroupAccountField>::GetInstance().Deallocate(ReqQryRiskGroupAccount);
 		ReqQryRiskGroupAccount = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryRiskGroupAccountPackage>::GetInstance().Free(this);
+}
+ReqQryRiskGroupAccountPackage* ReqQryRiskGroupAccountPackage::Allocate()
+{
+	return ObjectPool<ReqQryRiskGroupAccountPackage>::GetInstance().Allocate();
+}
+void ReqQryRiskGroupAccountPackage::Deallocate()
+{
+	ObjectPool<ReqQryRiskGroupAccountPackage>::GetInstance().Deallocate(this);
 }
 void ReqQryRiskGroupAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -9663,7 +9933,7 @@ bool ReqQryRiskGroupAccountPackage::FromStepStream(char* buff, int startIndex, i
 			{
 			case ReqQryRiskGroupAccountField::FieldID:
 			{
-				ReqQryRiskGroupAccount = ::Allocate<ReqQryRiskGroupAccountField>();
+				ReqQryRiskGroupAccount = ObjectPool<ReqQryRiskGroupAccountField>::GetInstance().Allocate();
 				memset(ReqQryRiskGroupAccount, 0, sizeof(*ReqQryRiskGroupAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -9734,7 +10004,7 @@ bool ReqQryRiskGroupAccountPackage::FromXtpStream(char* buff, int startIndex, in
 		{
 		case ReqQryRiskGroupAccountField::FieldID:
 		{
-			ReqQryRiskGroupAccount = ::Allocate<ReqQryRiskGroupAccountField>();
+			ReqQryRiskGroupAccount = ObjectPool<ReqQryRiskGroupAccountField>::GetInstance().Allocate();
 			memcpy(ReqQryRiskGroupAccount, buff + offset, sizeof(ReqQryRiskGroupAccountField));
 			offset += sizeof(ReqQryRiskGroupAccountField);	
 			break;
@@ -9755,24 +10025,30 @@ const char* ReqQryRiskGroupAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryRiskGroupAccountPackage* RspQryRiskGroupAccountPackage::Allocate()
+RspQryRiskGroupAccountPackage::RspQryRiskGroupAccountPackage()
+	:Account(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryRiskGroupAccountPackage>();
 }
-void RspQryRiskGroupAccountPackage::Free()
+RspQryRiskGroupAccountPackage::~RspQryRiskGroupAccountPackage()
 {
-	Package::Free();
 	if (Account != nullptr)
 	{
-		::Free<AccountField>(Account);
+		ObjectPool<AccountField>::GetInstance().Deallocate(Account);
 		Account = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryRiskGroupAccountPackage>::GetInstance().Free(this);
+}
+RspQryRiskGroupAccountPackage* RspQryRiskGroupAccountPackage::Allocate()
+{
+	return ObjectPool<RspQryRiskGroupAccountPackage>::GetInstance().Allocate();
+}
+void RspQryRiskGroupAccountPackage::Deallocate()
+{
+	ObjectPool<RspQryRiskGroupAccountPackage>::GetInstance().Deallocate(this);
 }
 void RspQryRiskGroupAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -9824,7 +10100,7 @@ bool RspQryRiskGroupAccountPackage::FromStepStream(char* buff, int startIndex, i
 			{
 			case AccountField::FieldID:
 			{
-				Account = ::Allocate<AccountField>();
+				Account = ObjectPool<AccountField>::GetInstance().Allocate();
 				memset(Account, 0, sizeof(*Account));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -9885,7 +10161,7 @@ bool RspQryRiskGroupAccountPackage::FromStepStream(char* buff, int startIndex, i
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -9968,14 +10244,14 @@ bool RspQryRiskGroupAccountPackage::FromXtpStream(char* buff, int startIndex, in
 		{
 		case AccountField::FieldID:
 		{
-			Account = ::Allocate<AccountField>();
+			Account = ObjectPool<AccountField>::GetInstance().Allocate();
 			memcpy(Account, buff + offset, sizeof(AccountField));
 			offset += sizeof(AccountField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -10000,19 +10276,25 @@ const char* RspQryRiskGroupAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryRiskGroupCapitalPackage* ReqQryRiskGroupCapitalPackage::Allocate()
+ReqQryRiskGroupCapitalPackage::ReqQryRiskGroupCapitalPackage()
+	:ReqQryRiskGroupCapital(nullptr)
 {
-	return ::Allocate<ReqQryRiskGroupCapitalPackage>();
 }
-void ReqQryRiskGroupCapitalPackage::Free()
+ReqQryRiskGroupCapitalPackage::~ReqQryRiskGroupCapitalPackage()
 {
-	Package::Free();
 	if (ReqQryRiskGroupCapital != nullptr)
 	{
-		::Free<ReqQryRiskGroupCapitalField>(ReqQryRiskGroupCapital);
+		ObjectPool<ReqQryRiskGroupCapitalField>::GetInstance().Deallocate(ReqQryRiskGroupCapital);
 		ReqQryRiskGroupCapital = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryRiskGroupCapitalPackage>::GetInstance().Free(this);
+}
+ReqQryRiskGroupCapitalPackage* ReqQryRiskGroupCapitalPackage::Allocate()
+{
+	return ObjectPool<ReqQryRiskGroupCapitalPackage>::GetInstance().Allocate();
+}
+void ReqQryRiskGroupCapitalPackage::Deallocate()
+{
+	ObjectPool<ReqQryRiskGroupCapitalPackage>::GetInstance().Deallocate(this);
 }
 void ReqQryRiskGroupCapitalPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -10053,7 +10335,7 @@ bool ReqQryRiskGroupCapitalPackage::FromStepStream(char* buff, int startIndex, i
 			{
 			case ReqQryRiskGroupCapitalField::FieldID:
 			{
-				ReqQryRiskGroupCapital = ::Allocate<ReqQryRiskGroupCapitalField>();
+				ReqQryRiskGroupCapital = ObjectPool<ReqQryRiskGroupCapitalField>::GetInstance().Allocate();
 				memset(ReqQryRiskGroupCapital, 0, sizeof(*ReqQryRiskGroupCapital));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -10130,7 +10412,7 @@ bool ReqQryRiskGroupCapitalPackage::FromXtpStream(char* buff, int startIndex, in
 		{
 		case ReqQryRiskGroupCapitalField::FieldID:
 		{
-			ReqQryRiskGroupCapital = ::Allocate<ReqQryRiskGroupCapitalField>();
+			ReqQryRiskGroupCapital = ObjectPool<ReqQryRiskGroupCapitalField>::GetInstance().Allocate();
 			memcpy(ReqQryRiskGroupCapital, buff + offset, sizeof(ReqQryRiskGroupCapitalField));
 			offset += sizeof(ReqQryRiskGroupCapitalField);	
 			break;
@@ -10151,24 +10433,30 @@ const char* ReqQryRiskGroupCapitalPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryRiskGroupCapitalPackage* RspQryRiskGroupCapitalPackage::Allocate()
+RspQryRiskGroupCapitalPackage::RspQryRiskGroupCapitalPackage()
+	:Capital(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryRiskGroupCapitalPackage>();
 }
-void RspQryRiskGroupCapitalPackage::Free()
+RspQryRiskGroupCapitalPackage::~RspQryRiskGroupCapitalPackage()
 {
-	Package::Free();
 	if (Capital != nullptr)
 	{
-		::Free<CapitalField>(Capital);
+		ObjectPool<CapitalField>::GetInstance().Deallocate(Capital);
 		Capital = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryRiskGroupCapitalPackage>::GetInstance().Free(this);
+}
+RspQryRiskGroupCapitalPackage* RspQryRiskGroupCapitalPackage::Allocate()
+{
+	return ObjectPool<RspQryRiskGroupCapitalPackage>::GetInstance().Allocate();
+}
+void RspQryRiskGroupCapitalPackage::Deallocate()
+{
+	ObjectPool<RspQryRiskGroupCapitalPackage>::GetInstance().Deallocate(this);
 }
 void RspQryRiskGroupCapitalPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -10242,7 +10530,7 @@ bool RspQryRiskGroupCapitalPackage::FromStepStream(char* buff, int startIndex, i
 			{
 			case CapitalField::FieldID:
 			{
-				Capital = ::Allocate<CapitalField>();
+				Capital = ObjectPool<CapitalField>::GetInstance().Allocate();
 				memset(Capital, 0, sizeof(*Capital));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -10394,7 +10682,7 @@ bool RspQryRiskGroupCapitalPackage::FromStepStream(char* buff, int startIndex, i
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -10477,14 +10765,14 @@ bool RspQryRiskGroupCapitalPackage::FromXtpStream(char* buff, int startIndex, in
 		{
 		case CapitalField::FieldID:
 		{
-			Capital = ::Allocate<CapitalField>();
+			Capital = ObjectPool<CapitalField>::GetInstance().Allocate();
 			memcpy(Capital, buff + offset, sizeof(CapitalField));
 			offset += sizeof(CapitalField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -10509,19 +10797,25 @@ const char* RspQryRiskGroupCapitalPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryRiskGroupPositionPackage* ReqQryRiskGroupPositionPackage::Allocate()
+ReqQryRiskGroupPositionPackage::ReqQryRiskGroupPositionPackage()
+	:ReqQryRiskGroupPosition(nullptr)
 {
-	return ::Allocate<ReqQryRiskGroupPositionPackage>();
 }
-void ReqQryRiskGroupPositionPackage::Free()
+ReqQryRiskGroupPositionPackage::~ReqQryRiskGroupPositionPackage()
 {
-	Package::Free();
 	if (ReqQryRiskGroupPosition != nullptr)
 	{
-		::Free<ReqQryRiskGroupPositionField>(ReqQryRiskGroupPosition);
+		ObjectPool<ReqQryRiskGroupPositionField>::GetInstance().Deallocate(ReqQryRiskGroupPosition);
 		ReqQryRiskGroupPosition = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryRiskGroupPositionPackage>::GetInstance().Free(this);
+}
+ReqQryRiskGroupPositionPackage* ReqQryRiskGroupPositionPackage::Allocate()
+{
+	return ObjectPool<ReqQryRiskGroupPositionPackage>::GetInstance().Allocate();
+}
+void ReqQryRiskGroupPositionPackage::Deallocate()
+{
+	ObjectPool<ReqQryRiskGroupPositionPackage>::GetInstance().Deallocate(this);
 }
 void ReqQryRiskGroupPositionPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -10562,7 +10856,7 @@ bool ReqQryRiskGroupPositionPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case ReqQryRiskGroupPositionField::FieldID:
 			{
-				ReqQryRiskGroupPosition = ::Allocate<ReqQryRiskGroupPositionField>();
+				ReqQryRiskGroupPosition = ObjectPool<ReqQryRiskGroupPositionField>::GetInstance().Allocate();
 				memset(ReqQryRiskGroupPosition, 0, sizeof(*ReqQryRiskGroupPosition));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -10639,7 +10933,7 @@ bool ReqQryRiskGroupPositionPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case ReqQryRiskGroupPositionField::FieldID:
 		{
-			ReqQryRiskGroupPosition = ::Allocate<ReqQryRiskGroupPositionField>();
+			ReqQryRiskGroupPosition = ObjectPool<ReqQryRiskGroupPositionField>::GetInstance().Allocate();
 			memcpy(ReqQryRiskGroupPosition, buff + offset, sizeof(ReqQryRiskGroupPositionField));
 			offset += sizeof(ReqQryRiskGroupPositionField);	
 			break;
@@ -10660,24 +10954,30 @@ const char* ReqQryRiskGroupPositionPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryRiskGroupPositionPackage* RspQryRiskGroupPositionPackage::Allocate()
+RspQryRiskGroupPositionPackage::RspQryRiskGroupPositionPackage()
+	:Position(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryRiskGroupPositionPackage>();
 }
-void RspQryRiskGroupPositionPackage::Free()
+RspQryRiskGroupPositionPackage::~RspQryRiskGroupPositionPackage()
 {
-	Package::Free();
 	if (Position != nullptr)
 	{
-		::Free<PositionField>(Position);
+		ObjectPool<PositionField>::GetInstance().Deallocate(Position);
 		Position = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryRiskGroupPositionPackage>::GetInstance().Free(this);
+}
+RspQryRiskGroupPositionPackage* RspQryRiskGroupPositionPackage::Allocate()
+{
+	return ObjectPool<RspQryRiskGroupPositionPackage>::GetInstance().Allocate();
+}
+void RspQryRiskGroupPositionPackage::Deallocate()
+{
+	ObjectPool<RspQryRiskGroupPositionPackage>::GetInstance().Deallocate(this);
 }
 void RspQryRiskGroupPositionPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -10761,7 +11061,7 @@ bool RspQryRiskGroupPositionPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case PositionField::FieldID:
 			{
-				Position = ::Allocate<PositionField>();
+				Position = ObjectPool<PositionField>::GetInstance().Allocate();
 				memset(Position, 0, sizeof(*Position));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -10925,7 +11225,7 @@ bool RspQryRiskGroupPositionPackage::FromStepStream(char* buff, int startIndex, 
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -11008,14 +11308,14 @@ bool RspQryRiskGroupPositionPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case PositionField::FieldID:
 		{
-			Position = ::Allocate<PositionField>();
+			Position = ObjectPool<PositionField>::GetInstance().Allocate();
 			memcpy(Position, buff + offset, sizeof(PositionField));
 			offset += sizeof(PositionField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -11040,19 +11340,25 @@ const char* RspQryRiskGroupPositionPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryRiskGroupOrderPackage* ReqQryRiskGroupOrderPackage::Allocate()
+ReqQryRiskGroupOrderPackage::ReqQryRiskGroupOrderPackage()
+	:ReqQryRiskGroupOrder(nullptr)
 {
-	return ::Allocate<ReqQryRiskGroupOrderPackage>();
 }
-void ReqQryRiskGroupOrderPackage::Free()
+ReqQryRiskGroupOrderPackage::~ReqQryRiskGroupOrderPackage()
 {
-	Package::Free();
 	if (ReqQryRiskGroupOrder != nullptr)
 	{
-		::Free<ReqQryRiskGroupOrderField>(ReqQryRiskGroupOrder);
+		ObjectPool<ReqQryRiskGroupOrderField>::GetInstance().Deallocate(ReqQryRiskGroupOrder);
 		ReqQryRiskGroupOrder = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryRiskGroupOrderPackage>::GetInstance().Free(this);
+}
+ReqQryRiskGroupOrderPackage* ReqQryRiskGroupOrderPackage::Allocate()
+{
+	return ObjectPool<ReqQryRiskGroupOrderPackage>::GetInstance().Allocate();
+}
+void ReqQryRiskGroupOrderPackage::Deallocate()
+{
+	ObjectPool<ReqQryRiskGroupOrderPackage>::GetInstance().Deallocate(this);
 }
 void ReqQryRiskGroupOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -11093,7 +11399,7 @@ bool ReqQryRiskGroupOrderPackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case ReqQryRiskGroupOrderField::FieldID:
 			{
-				ReqQryRiskGroupOrder = ::Allocate<ReqQryRiskGroupOrderField>();
+				ReqQryRiskGroupOrder = ObjectPool<ReqQryRiskGroupOrderField>::GetInstance().Allocate();
 				memset(ReqQryRiskGroupOrder, 0, sizeof(*ReqQryRiskGroupOrder));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -11170,7 +11476,7 @@ bool ReqQryRiskGroupOrderPackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case ReqQryRiskGroupOrderField::FieldID:
 		{
-			ReqQryRiskGroupOrder = ::Allocate<ReqQryRiskGroupOrderField>();
+			ReqQryRiskGroupOrder = ObjectPool<ReqQryRiskGroupOrderField>::GetInstance().Allocate();
 			memcpy(ReqQryRiskGroupOrder, buff + offset, sizeof(ReqQryRiskGroupOrderField));
 			offset += sizeof(ReqQryRiskGroupOrderField);	
 			break;
@@ -11191,24 +11497,30 @@ const char* ReqQryRiskGroupOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryRiskGroupOrderPackage* RspQryRiskGroupOrderPackage::Allocate()
+RspQryRiskGroupOrderPackage::RspQryRiskGroupOrderPackage()
+	:Order(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryRiskGroupOrderPackage>();
 }
-void RspQryRiskGroupOrderPackage::Free()
+RspQryRiskGroupOrderPackage::~RspQryRiskGroupOrderPackage()
 {
-	Package::Free();
 	if (Order != nullptr)
 	{
-		::Free<OrderField>(Order);
+		ObjectPool<OrderField>::GetInstance().Deallocate(Order);
 		Order = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryRiskGroupOrderPackage>::GetInstance().Free(this);
+}
+RspQryRiskGroupOrderPackage* RspQryRiskGroupOrderPackage::Allocate()
+{
+	return ObjectPool<RspQryRiskGroupOrderPackage>::GetInstance().Allocate();
+}
+void RspQryRiskGroupOrderPackage::Deallocate()
+{
+	ObjectPool<RspQryRiskGroupOrderPackage>::GetInstance().Deallocate(this);
 }
 void RspQryRiskGroupOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -11319,7 +11631,7 @@ bool RspQryRiskGroupOrderPackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case OrderField::FieldID:
 			{
-				Order = ::Allocate<OrderField>();
+				Order = ObjectPool<OrderField>::GetInstance().Allocate();
 				memset(Order, 0, sizeof(*Order));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -11504,7 +11816,7 @@ bool RspQryRiskGroupOrderPackage::FromStepStream(char* buff, int startIndex, int
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -11587,14 +11899,14 @@ bool RspQryRiskGroupOrderPackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case OrderField::FieldID:
 		{
-			Order = ::Allocate<OrderField>();
+			Order = ObjectPool<OrderField>::GetInstance().Allocate();
 			memcpy(Order, buff + offset, sizeof(OrderField));
 			offset += sizeof(OrderField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -11619,19 +11931,25 @@ const char* RspQryRiskGroupOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryRiskGroupTradePackage* ReqQryRiskGroupTradePackage::Allocate()
+ReqQryRiskGroupTradePackage::ReqQryRiskGroupTradePackage()
+	:ReqQryRiskGroupTrade(nullptr)
 {
-	return ::Allocate<ReqQryRiskGroupTradePackage>();
 }
-void ReqQryRiskGroupTradePackage::Free()
+ReqQryRiskGroupTradePackage::~ReqQryRiskGroupTradePackage()
 {
-	Package::Free();
 	if (ReqQryRiskGroupTrade != nullptr)
 	{
-		::Free<ReqQryRiskGroupTradeField>(ReqQryRiskGroupTrade);
+		ObjectPool<ReqQryRiskGroupTradeField>::GetInstance().Deallocate(ReqQryRiskGroupTrade);
 		ReqQryRiskGroupTrade = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryRiskGroupTradePackage>::GetInstance().Free(this);
+}
+ReqQryRiskGroupTradePackage* ReqQryRiskGroupTradePackage::Allocate()
+{
+	return ObjectPool<ReqQryRiskGroupTradePackage>::GetInstance().Allocate();
+}
+void ReqQryRiskGroupTradePackage::Deallocate()
+{
+	ObjectPool<ReqQryRiskGroupTradePackage>::GetInstance().Deallocate(this);
 }
 void ReqQryRiskGroupTradePackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -11672,7 +11990,7 @@ bool ReqQryRiskGroupTradePackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case ReqQryRiskGroupTradeField::FieldID:
 			{
-				ReqQryRiskGroupTrade = ::Allocate<ReqQryRiskGroupTradeField>();
+				ReqQryRiskGroupTrade = ObjectPool<ReqQryRiskGroupTradeField>::GetInstance().Allocate();
 				memset(ReqQryRiskGroupTrade, 0, sizeof(*ReqQryRiskGroupTrade));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -11749,7 +12067,7 @@ bool ReqQryRiskGroupTradePackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case ReqQryRiskGroupTradeField::FieldID:
 		{
-			ReqQryRiskGroupTrade = ::Allocate<ReqQryRiskGroupTradeField>();
+			ReqQryRiskGroupTrade = ObjectPool<ReqQryRiskGroupTradeField>::GetInstance().Allocate();
 			memcpy(ReqQryRiskGroupTrade, buff + offset, sizeof(ReqQryRiskGroupTradeField));
 			offset += sizeof(ReqQryRiskGroupTradeField);	
 			break;
@@ -11770,24 +12088,30 @@ const char* ReqQryRiskGroupTradePackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryRiskGroupTradePackage* RspQryRiskGroupTradePackage::Allocate()
+RspQryRiskGroupTradePackage::RspQryRiskGroupTradePackage()
+	:Trade(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryRiskGroupTradePackage>();
 }
-void RspQryRiskGroupTradePackage::Free()
+RspQryRiskGroupTradePackage::~RspQryRiskGroupTradePackage()
 {
-	Package::Free();
 	if (Trade != nullptr)
 	{
-		::Free<TradeField>(Trade);
+		ObjectPool<TradeField>::GetInstance().Deallocate(Trade);
 		Trade = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryRiskGroupTradePackage>::GetInstance().Free(this);
+}
+RspQryRiskGroupTradePackage* RspQryRiskGroupTradePackage::Allocate()
+{
+	return ObjectPool<RspQryRiskGroupTradePackage>::GetInstance().Allocate();
+}
+void RspQryRiskGroupTradePackage::Deallocate()
+{
+	ObjectPool<RspQryRiskGroupTradePackage>::GetInstance().Deallocate(this);
 }
 void RspQryRiskGroupTradePackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -11880,7 +12204,7 @@ bool RspQryRiskGroupTradePackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case TradeField::FieldID:
 			{
-				Trade = ::Allocate<TradeField>();
+				Trade = ObjectPool<TradeField>::GetInstance().Allocate();
 				memset(Trade, 0, sizeof(*Trade));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -12013,7 +12337,7 @@ bool RspQryRiskGroupTradePackage::FromStepStream(char* buff, int startIndex, int
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -12096,14 +12420,14 @@ bool RspQryRiskGroupTradePackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case TradeField::FieldID:
 		{
-			Trade = ::Allocate<TradeField>();
+			Trade = ObjectPool<TradeField>::GetInstance().Allocate();
 			memcpy(Trade, buff + offset, sizeof(TradeField));
 			offset += sizeof(TradeField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -12128,19 +12452,25 @@ const char* RspQryRiskGroupTradePackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryRiskGroupAccountRiskPackage* ReqQryRiskGroupAccountRiskPackage::Allocate()
+ReqQryRiskGroupAccountRiskPackage::ReqQryRiskGroupAccountRiskPackage()
+	:ReqQryRiskGroupAccountRisk(nullptr)
 {
-	return ::Allocate<ReqQryRiskGroupAccountRiskPackage>();
 }
-void ReqQryRiskGroupAccountRiskPackage::Free()
+ReqQryRiskGroupAccountRiskPackage::~ReqQryRiskGroupAccountRiskPackage()
 {
-	Package::Free();
 	if (ReqQryRiskGroupAccountRisk != nullptr)
 	{
-		::Free<ReqQryRiskGroupAccountRiskField>(ReqQryRiskGroupAccountRisk);
+		ObjectPool<ReqQryRiskGroupAccountRiskField>::GetInstance().Deallocate(ReqQryRiskGroupAccountRisk);
 		ReqQryRiskGroupAccountRisk = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryRiskGroupAccountRiskPackage>::GetInstance().Free(this);
+}
+ReqQryRiskGroupAccountRiskPackage* ReqQryRiskGroupAccountRiskPackage::Allocate()
+{
+	return ObjectPool<ReqQryRiskGroupAccountRiskPackage>::GetInstance().Allocate();
+}
+void ReqQryRiskGroupAccountRiskPackage::Deallocate()
+{
+	ObjectPool<ReqQryRiskGroupAccountRiskPackage>::GetInstance().Deallocate(this);
 }
 void ReqQryRiskGroupAccountRiskPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -12181,7 +12511,7 @@ bool ReqQryRiskGroupAccountRiskPackage::FromStepStream(char* buff, int startInde
 			{
 			case ReqQryRiskGroupAccountRiskField::FieldID:
 			{
-				ReqQryRiskGroupAccountRisk = ::Allocate<ReqQryRiskGroupAccountRiskField>();
+				ReqQryRiskGroupAccountRisk = ObjectPool<ReqQryRiskGroupAccountRiskField>::GetInstance().Allocate();
 				memset(ReqQryRiskGroupAccountRisk, 0, sizeof(*ReqQryRiskGroupAccountRisk));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -12258,7 +12588,7 @@ bool ReqQryRiskGroupAccountRiskPackage::FromXtpStream(char* buff, int startIndex
 		{
 		case ReqQryRiskGroupAccountRiskField::FieldID:
 		{
-			ReqQryRiskGroupAccountRisk = ::Allocate<ReqQryRiskGroupAccountRiskField>();
+			ReqQryRiskGroupAccountRisk = ObjectPool<ReqQryRiskGroupAccountRiskField>::GetInstance().Allocate();
 			memcpy(ReqQryRiskGroupAccountRisk, buff + offset, sizeof(ReqQryRiskGroupAccountRiskField));
 			offset += sizeof(ReqQryRiskGroupAccountRiskField);	
 			break;
@@ -12279,24 +12609,30 @@ const char* ReqQryRiskGroupAccountRiskPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryRiskGroupAccountRiskPackage* RspQryRiskGroupAccountRiskPackage::Allocate()
+RspQryRiskGroupAccountRiskPackage::RspQryRiskGroupAccountRiskPackage()
+	:AccountRisk(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryRiskGroupAccountRiskPackage>();
 }
-void RspQryRiskGroupAccountRiskPackage::Free()
+RspQryRiskGroupAccountRiskPackage::~RspQryRiskGroupAccountRiskPackage()
 {
-	Package::Free();
 	if (AccountRisk != nullptr)
 	{
-		::Free<AccountRiskField>(AccountRisk);
+		ObjectPool<AccountRiskField>::GetInstance().Deallocate(AccountRisk);
 		AccountRisk = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryRiskGroupAccountRiskPackage>::GetInstance().Free(this);
+}
+RspQryRiskGroupAccountRiskPackage* RspQryRiskGroupAccountRiskPackage::Allocate()
+{
+	return ObjectPool<RspQryRiskGroupAccountRiskPackage>::GetInstance().Allocate();
+}
+void RspQryRiskGroupAccountRiskPackage::Deallocate()
+{
+	ObjectPool<RspQryRiskGroupAccountRiskPackage>::GetInstance().Deallocate(this);
 }
 void RspQryRiskGroupAccountRiskPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -12345,7 +12681,7 @@ bool RspQryRiskGroupAccountRiskPackage::FromStepStream(char* buff, int startInde
 			{
 			case AccountRiskField::FieldID:
 			{
-				AccountRisk = ::Allocate<AccountRiskField>();
+				AccountRisk = ObjectPool<AccountRiskField>::GetInstance().Allocate();
 				memset(AccountRisk, 0, sizeof(*AccountRisk));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -12391,7 +12727,7 @@ bool RspQryRiskGroupAccountRiskPackage::FromStepStream(char* buff, int startInde
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -12474,14 +12810,14 @@ bool RspQryRiskGroupAccountRiskPackage::FromXtpStream(char* buff, int startIndex
 		{
 		case AccountRiskField::FieldID:
 		{
-			AccountRisk = ::Allocate<AccountRiskField>();
+			AccountRisk = ObjectPool<AccountRiskField>::GetInstance().Allocate();
 			memcpy(AccountRisk, buff + offset, sizeof(AccountRiskField));
 			offset += sizeof(AccountRiskField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -12506,19 +12842,25 @@ const char* RspQryRiskGroupAccountRiskPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryRiskGroupAccountRiskNotifyPackage* ReqQryRiskGroupAccountRiskNotifyPackage::Allocate()
+ReqQryRiskGroupAccountRiskNotifyPackage::ReqQryRiskGroupAccountRiskNotifyPackage()
+	:ReqQryRiskGroupAccountRiskNotify(nullptr)
 {
-	return ::Allocate<ReqQryRiskGroupAccountRiskNotifyPackage>();
 }
-void ReqQryRiskGroupAccountRiskNotifyPackage::Free()
+ReqQryRiskGroupAccountRiskNotifyPackage::~ReqQryRiskGroupAccountRiskNotifyPackage()
 {
-	Package::Free();
 	if (ReqQryRiskGroupAccountRiskNotify != nullptr)
 	{
-		::Free<ReqQryRiskGroupAccountRiskNotifyField>(ReqQryRiskGroupAccountRiskNotify);
+		ObjectPool<ReqQryRiskGroupAccountRiskNotifyField>::GetInstance().Deallocate(ReqQryRiskGroupAccountRiskNotify);
 		ReqQryRiskGroupAccountRiskNotify = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryRiskGroupAccountRiskNotifyPackage>::GetInstance().Free(this);
+}
+ReqQryRiskGroupAccountRiskNotifyPackage* ReqQryRiskGroupAccountRiskNotifyPackage::Allocate()
+{
+	return ObjectPool<ReqQryRiskGroupAccountRiskNotifyPackage>::GetInstance().Allocate();
+}
+void ReqQryRiskGroupAccountRiskNotifyPackage::Deallocate()
+{
+	ObjectPool<ReqQryRiskGroupAccountRiskNotifyPackage>::GetInstance().Deallocate(this);
 }
 void ReqQryRiskGroupAccountRiskNotifyPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -12559,7 +12901,7 @@ bool ReqQryRiskGroupAccountRiskNotifyPackage::FromStepStream(char* buff, int sta
 			{
 			case ReqQryRiskGroupAccountRiskNotifyField::FieldID:
 			{
-				ReqQryRiskGroupAccountRiskNotify = ::Allocate<ReqQryRiskGroupAccountRiskNotifyField>();
+				ReqQryRiskGroupAccountRiskNotify = ObjectPool<ReqQryRiskGroupAccountRiskNotifyField>::GetInstance().Allocate();
 				memset(ReqQryRiskGroupAccountRiskNotify, 0, sizeof(*ReqQryRiskGroupAccountRiskNotify));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -12636,7 +12978,7 @@ bool ReqQryRiskGroupAccountRiskNotifyPackage::FromXtpStream(char* buff, int star
 		{
 		case ReqQryRiskGroupAccountRiskNotifyField::FieldID:
 		{
-			ReqQryRiskGroupAccountRiskNotify = ::Allocate<ReqQryRiskGroupAccountRiskNotifyField>();
+			ReqQryRiskGroupAccountRiskNotify = ObjectPool<ReqQryRiskGroupAccountRiskNotifyField>::GetInstance().Allocate();
 			memcpy(ReqQryRiskGroupAccountRiskNotify, buff + offset, sizeof(ReqQryRiskGroupAccountRiskNotifyField));
 			offset += sizeof(ReqQryRiskGroupAccountRiskNotifyField);	
 			break;
@@ -12657,24 +12999,30 @@ const char* ReqQryRiskGroupAccountRiskNotifyPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryRiskGroupAccountRiskNotifyPackage* RspQryRiskGroupAccountRiskNotifyPackage::Allocate()
+RspQryRiskGroupAccountRiskNotifyPackage::RspQryRiskGroupAccountRiskNotifyPackage()
+	:AccountRiskNotify(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspQryRiskGroupAccountRiskNotifyPackage>();
 }
-void RspQryRiskGroupAccountRiskNotifyPackage::Free()
+RspQryRiskGroupAccountRiskNotifyPackage::~RspQryRiskGroupAccountRiskNotifyPackage()
 {
-	Package::Free();
 	if (AccountRiskNotify != nullptr)
 	{
-		::Free<AccountRiskNotifyField>(AccountRiskNotify);
+		ObjectPool<AccountRiskNotifyField>::GetInstance().Deallocate(AccountRiskNotify);
 		AccountRiskNotify = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryRiskGroupAccountRiskNotifyPackage>::GetInstance().Free(this);
+}
+RspQryRiskGroupAccountRiskNotifyPackage* RspQryRiskGroupAccountRiskNotifyPackage::Allocate()
+{
+	return ObjectPool<RspQryRiskGroupAccountRiskNotifyPackage>::GetInstance().Allocate();
+}
+void RspQryRiskGroupAccountRiskNotifyPackage::Deallocate()
+{
+	ObjectPool<RspQryRiskGroupAccountRiskNotifyPackage>::GetInstance().Deallocate(this);
 }
 void RspQryRiskGroupAccountRiskNotifyPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -12739,7 +13087,7 @@ bool RspQryRiskGroupAccountRiskNotifyPackage::FromStepStream(char* buff, int sta
 			{
 			case AccountRiskNotifyField::FieldID:
 			{
-				AccountRiskNotify = ::Allocate<AccountRiskNotifyField>();
+				AccountRiskNotify = ObjectPool<AccountRiskNotifyField>::GetInstance().Allocate();
 				memset(AccountRiskNotify, 0, sizeof(*AccountRiskNotify));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -12808,7 +13156,7 @@ bool RspQryRiskGroupAccountRiskNotifyPackage::FromStepStream(char* buff, int sta
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -12891,14 +13239,14 @@ bool RspQryRiskGroupAccountRiskNotifyPackage::FromXtpStream(char* buff, int star
 		{
 		case AccountRiskNotifyField::FieldID:
 		{
-			AccountRiskNotify = ::Allocate<AccountRiskNotifyField>();
+			AccountRiskNotify = ObjectPool<AccountRiskNotifyField>::GetInstance().Allocate();
 			memcpy(AccountRiskNotify, buff + offset, sizeof(AccountRiskNotifyField));
 			offset += sizeof(AccountRiskNotifyField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -12923,19 +13271,25 @@ const char* RspQryRiskGroupAccountRiskNotifyPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRiskInsertOrderPackage* ReqRiskInsertOrderPackage::Allocate()
+ReqRiskInsertOrderPackage::ReqRiskInsertOrderPackage()
+	:ReqRiskInsertOrder(nullptr)
 {
-	return ::Allocate<ReqRiskInsertOrderPackage>();
 }
-void ReqRiskInsertOrderPackage::Free()
+ReqRiskInsertOrderPackage::~ReqRiskInsertOrderPackage()
 {
-	Package::Free();
 	if (ReqRiskInsertOrder != nullptr)
 	{
-		::Free<ReqRiskInsertOrderField>(ReqRiskInsertOrder);
+		ObjectPool<ReqRiskInsertOrderField>::GetInstance().Deallocate(ReqRiskInsertOrder);
 		ReqRiskInsertOrder = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRiskInsertOrderPackage>::GetInstance().Free(this);
+}
+ReqRiskInsertOrderPackage* ReqRiskInsertOrderPackage::Allocate()
+{
+	return ObjectPool<ReqRiskInsertOrderPackage>::GetInstance().Allocate();
+}
+void ReqRiskInsertOrderPackage::Deallocate()
+{
+	ObjectPool<ReqRiskInsertOrderPackage>::GetInstance().Deallocate(this);
 }
 void ReqRiskInsertOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -12993,7 +13347,7 @@ bool ReqRiskInsertOrderPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case ReqRiskInsertOrderField::FieldID:
 			{
-				ReqRiskInsertOrder = ::Allocate<ReqRiskInsertOrderField>();
+				ReqRiskInsertOrder = ObjectPool<ReqRiskInsertOrderField>::GetInstance().Allocate();
 				memset(ReqRiskInsertOrder, 0, sizeof(*ReqRiskInsertOrder));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -13117,7 +13471,7 @@ bool ReqRiskInsertOrderPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case ReqRiskInsertOrderField::FieldID:
 		{
-			ReqRiskInsertOrder = ::Allocate<ReqRiskInsertOrderField>();
+			ReqRiskInsertOrder = ObjectPool<ReqRiskInsertOrderField>::GetInstance().Allocate();
 			memcpy(ReqRiskInsertOrder, buff + offset, sizeof(ReqRiskInsertOrderField));
 			offset += sizeof(ReqRiskInsertOrderField);	
 			break;
@@ -13138,24 +13492,30 @@ const char* ReqRiskInsertOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRiskInsertOrderPackage* RspRiskInsertOrderPackage::Allocate()
+RspRiskInsertOrderPackage::RspRiskInsertOrderPackage()
+	:Order(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRiskInsertOrderPackage>();
 }
-void RspRiskInsertOrderPackage::Free()
+RspRiskInsertOrderPackage::~RspRiskInsertOrderPackage()
 {
-	Package::Free();
 	if (Order != nullptr)
 	{
-		::Free<OrderField>(Order);
+		ObjectPool<OrderField>::GetInstance().Deallocate(Order);
 		Order = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRiskInsertOrderPackage>::GetInstance().Free(this);
+}
+RspRiskInsertOrderPackage* RspRiskInsertOrderPackage::Allocate()
+{
+	return ObjectPool<RspRiskInsertOrderPackage>::GetInstance().Allocate();
+}
+void RspRiskInsertOrderPackage::Deallocate()
+{
+	ObjectPool<RspRiskInsertOrderPackage>::GetInstance().Deallocate(this);
 }
 void RspRiskInsertOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -13266,7 +13626,7 @@ bool RspRiskInsertOrderPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case OrderField::FieldID:
 			{
-				Order = ::Allocate<OrderField>();
+				Order = ObjectPool<OrderField>::GetInstance().Allocate();
 				memset(Order, 0, sizeof(*Order));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -13451,7 +13811,7 @@ bool RspRiskInsertOrderPackage::FromStepStream(char* buff, int startIndex, int e
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -13534,14 +13894,14 @@ bool RspRiskInsertOrderPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case OrderField::FieldID:
 		{
-			Order = ::Allocate<OrderField>();
+			Order = ObjectPool<OrderField>::GetInstance().Allocate();
 			memcpy(Order, buff + offset, sizeof(OrderField));
 			offset += sizeof(OrderField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -13566,19 +13926,25 @@ const char* RspRiskInsertOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRiskCancelOrderPackage* ReqRiskCancelOrderPackage::Allocate()
+ReqRiskCancelOrderPackage::ReqRiskCancelOrderPackage()
+	:ReqRiskCancelOrder(nullptr)
 {
-	return ::Allocate<ReqRiskCancelOrderPackage>();
 }
-void ReqRiskCancelOrderPackage::Free()
+ReqRiskCancelOrderPackage::~ReqRiskCancelOrderPackage()
 {
-	Package::Free();
 	if (ReqRiskCancelOrder != nullptr)
 	{
-		::Free<ReqRiskCancelOrderField>(ReqRiskCancelOrder);
+		ObjectPool<ReqRiskCancelOrderField>::GetInstance().Deallocate(ReqRiskCancelOrder);
 		ReqRiskCancelOrder = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRiskCancelOrderPackage>::GetInstance().Free(this);
+}
+ReqRiskCancelOrderPackage* ReqRiskCancelOrderPackage::Allocate()
+{
+	return ObjectPool<ReqRiskCancelOrderPackage>::GetInstance().Allocate();
+}
+void ReqRiskCancelOrderPackage::Deallocate()
+{
+	ObjectPool<ReqRiskCancelOrderPackage>::GetInstance().Deallocate(this);
 }
 void ReqRiskCancelOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -13637,7 +14003,7 @@ bool ReqRiskCancelOrderPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case ReqRiskCancelOrderField::FieldID:
 			{
-				ReqRiskCancelOrder = ::Allocate<ReqRiskCancelOrderField>();
+				ReqRiskCancelOrder = ObjectPool<ReqRiskCancelOrderField>::GetInstance().Allocate();
 				memset(ReqRiskCancelOrder, 0, sizeof(*ReqRiskCancelOrder));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -13747,7 +14113,7 @@ bool ReqRiskCancelOrderPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case ReqRiskCancelOrderField::FieldID:
 		{
-			ReqRiskCancelOrder = ::Allocate<ReqRiskCancelOrderField>();
+			ReqRiskCancelOrder = ObjectPool<ReqRiskCancelOrderField>::GetInstance().Allocate();
 			memcpy(ReqRiskCancelOrder, buff + offset, sizeof(ReqRiskCancelOrderField));
 			offset += sizeof(ReqRiskCancelOrderField);	
 			break;
@@ -13768,24 +14134,30 @@ const char* ReqRiskCancelOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRiskCancelOrderPackage* RspRiskCancelOrderPackage::Allocate()
+RspRiskCancelOrderPackage::RspRiskCancelOrderPackage()
+	:CancelOrder(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRiskCancelOrderPackage>();
 }
-void RspRiskCancelOrderPackage::Free()
+RspRiskCancelOrderPackage::~RspRiskCancelOrderPackage()
 {
-	Package::Free();
 	if (CancelOrder != nullptr)
 	{
-		::Free<CancelOrderField>(CancelOrder);
+		ObjectPool<CancelOrderField>::GetInstance().Deallocate(CancelOrder);
 		CancelOrder = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRiskCancelOrderPackage>::GetInstance().Free(this);
+}
+RspRiskCancelOrderPackage* RspRiskCancelOrderPackage::Allocate()
+{
+	return ObjectPool<RspRiskCancelOrderPackage>::GetInstance().Allocate();
+}
+void RspRiskCancelOrderPackage::Deallocate()
+{
+	ObjectPool<RspRiskCancelOrderPackage>::GetInstance().Deallocate(this);
 }
 void RspRiskCancelOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -13850,7 +14222,7 @@ bool RspRiskCancelOrderPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case CancelOrderField::FieldID:
 			{
-				CancelOrder = ::Allocate<CancelOrderField>();
+				CancelOrder = ObjectPool<CancelOrderField>::GetInstance().Allocate();
 				memset(CancelOrder, 0, sizeof(*CancelOrder));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -13919,7 +14291,7 @@ bool RspRiskCancelOrderPackage::FromStepStream(char* buff, int startIndex, int e
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -14002,14 +14374,14 @@ bool RspRiskCancelOrderPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case CancelOrderField::FieldID:
 		{
-			CancelOrder = ::Allocate<CancelOrderField>();
+			CancelOrder = ObjectPool<CancelOrderField>::GetInstance().Allocate();
 			memcpy(CancelOrder, buff + offset, sizeof(CancelOrderField));
 			offset += sizeof(CancelOrderField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -14034,19 +14406,25 @@ const char* RspRiskCancelOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqMdUserLoginPackage* ReqMdUserLoginPackage::Allocate()
+ReqMdUserLoginPackage::ReqMdUserLoginPackage()
+	:ReqMdUserLogin(nullptr)
 {
-	return ::Allocate<ReqMdUserLoginPackage>();
 }
-void ReqMdUserLoginPackage::Free()
+ReqMdUserLoginPackage::~ReqMdUserLoginPackage()
 {
-	Package::Free();
 	if (ReqMdUserLogin != nullptr)
 	{
-		::Free<ReqMdUserLoginField>(ReqMdUserLogin);
+		ObjectPool<ReqMdUserLoginField>::GetInstance().Deallocate(ReqMdUserLogin);
 		ReqMdUserLogin = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqMdUserLoginPackage>::GetInstance().Free(this);
+}
+ReqMdUserLoginPackage* ReqMdUserLoginPackage::Allocate()
+{
+	return ObjectPool<ReqMdUserLoginPackage>::GetInstance().Allocate();
+}
+void ReqMdUserLoginPackage::Deallocate()
+{
+	ObjectPool<ReqMdUserLoginPackage>::GetInstance().Deallocate(this);
 }
 void ReqMdUserLoginPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -14087,7 +14465,7 @@ bool ReqMdUserLoginPackage::FromStepStream(char* buff, int startIndex, int endIn
 			{
 			case ReqMdUserLoginField::FieldID:
 			{
-				ReqMdUserLogin = ::Allocate<ReqMdUserLoginField>();
+				ReqMdUserLogin = ObjectPool<ReqMdUserLoginField>::GetInstance().Allocate();
 				memset(ReqMdUserLogin, 0, sizeof(*ReqMdUserLogin));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -14164,7 +14542,7 @@ bool ReqMdUserLoginPackage::FromXtpStream(char* buff, int startIndex, int endInd
 		{
 		case ReqMdUserLoginField::FieldID:
 		{
-			ReqMdUserLogin = ::Allocate<ReqMdUserLoginField>();
+			ReqMdUserLogin = ObjectPool<ReqMdUserLoginField>::GetInstance().Allocate();
 			memcpy(ReqMdUserLogin, buff + offset, sizeof(ReqMdUserLoginField));
 			offset += sizeof(ReqMdUserLoginField);	
 			break;
@@ -14185,24 +14563,30 @@ const char* ReqMdUserLoginPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspMdUserLoginPackage* RspMdUserLoginPackage::Allocate()
+RspMdUserLoginPackage::RspMdUserLoginPackage()
+	:RspMdUserLogin(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspMdUserLoginPackage>();
 }
-void RspMdUserLoginPackage::Free()
+RspMdUserLoginPackage::~RspMdUserLoginPackage()
 {
-	Package::Free();
 	if (RspMdUserLogin != nullptr)
 	{
-		::Free<RspMdUserLoginField>(RspMdUserLogin);
+		ObjectPool<RspMdUserLoginField>::GetInstance().Deallocate(RspMdUserLogin);
 		RspMdUserLogin = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspMdUserLoginPackage>::GetInstance().Free(this);
+}
+RspMdUserLoginPackage* RspMdUserLoginPackage::Allocate()
+{
+	return ObjectPool<RspMdUserLoginPackage>::GetInstance().Allocate();
+}
+void RspMdUserLoginPackage::Deallocate()
+{
+	ObjectPool<RspMdUserLoginPackage>::GetInstance().Deallocate(this);
 }
 void RspMdUserLoginPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -14260,7 +14644,7 @@ bool RspMdUserLoginPackage::FromStepStream(char* buff, int startIndex, int endIn
 			{
 			case RspMdUserLoginField::FieldID:
 			{
-				RspMdUserLogin = ::Allocate<RspMdUserLoginField>();
+				RspMdUserLogin = ObjectPool<RspMdUserLoginField>::GetInstance().Allocate();
 				memset(RspMdUserLogin, 0, sizeof(*RspMdUserLogin));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -14313,7 +14697,7 @@ bool RspMdUserLoginPackage::FromStepStream(char* buff, int startIndex, int endIn
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -14396,14 +14780,14 @@ bool RspMdUserLoginPackage::FromXtpStream(char* buff, int startIndex, int endInd
 		{
 		case RspMdUserLoginField::FieldID:
 		{
-			RspMdUserLogin = ::Allocate<RspMdUserLoginField>();
+			RspMdUserLogin = ObjectPool<RspMdUserLoginField>::GetInstance().Allocate();
 			memcpy(RspMdUserLogin, buff + offset, sizeof(RspMdUserLoginField));
 			offset += sizeof(RspMdUserLoginField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -14428,19 +14812,25 @@ const char* RspMdUserLoginPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqMdUserLogoutPackage* ReqMdUserLogoutPackage::Allocate()
+ReqMdUserLogoutPackage::ReqMdUserLogoutPackage()
+	:ReqMdUserLogout(nullptr)
 {
-	return ::Allocate<ReqMdUserLogoutPackage>();
 }
-void ReqMdUserLogoutPackage::Free()
+ReqMdUserLogoutPackage::~ReqMdUserLogoutPackage()
 {
-	Package::Free();
 	if (ReqMdUserLogout != nullptr)
 	{
-		::Free<ReqMdUserLogoutField>(ReqMdUserLogout);
+		ObjectPool<ReqMdUserLogoutField>::GetInstance().Deallocate(ReqMdUserLogout);
 		ReqMdUserLogout = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqMdUserLogoutPackage>::GetInstance().Free(this);
+}
+ReqMdUserLogoutPackage* ReqMdUserLogoutPackage::Allocate()
+{
+	return ObjectPool<ReqMdUserLogoutPackage>::GetInstance().Allocate();
+}
+void ReqMdUserLogoutPackage::Deallocate()
+{
+	ObjectPool<ReqMdUserLogoutPackage>::GetInstance().Deallocate(this);
 }
 void ReqMdUserLogoutPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -14476,7 +14866,7 @@ bool ReqMdUserLogoutPackage::FromStepStream(char* buff, int startIndex, int endI
 			{
 			case ReqMdUserLogoutField::FieldID:
 			{
-				ReqMdUserLogout = ::Allocate<ReqMdUserLogoutField>();
+				ReqMdUserLogout = ObjectPool<ReqMdUserLogoutField>::GetInstance().Allocate();
 				memset(ReqMdUserLogout, 0, sizeof(*ReqMdUserLogout));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -14547,7 +14937,7 @@ bool ReqMdUserLogoutPackage::FromXtpStream(char* buff, int startIndex, int endIn
 		{
 		case ReqMdUserLogoutField::FieldID:
 		{
-			ReqMdUserLogout = ::Allocate<ReqMdUserLogoutField>();
+			ReqMdUserLogout = ObjectPool<ReqMdUserLogoutField>::GetInstance().Allocate();
 			memcpy(ReqMdUserLogout, buff + offset, sizeof(ReqMdUserLogoutField));
 			offset += sizeof(ReqMdUserLogoutField);	
 			break;
@@ -14568,24 +14958,30 @@ const char* ReqMdUserLogoutPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspMdUserLogoutPackage* RspMdUserLogoutPackage::Allocate()
+RspMdUserLogoutPackage::RspMdUserLogoutPackage()
+	:RspMdUserLogout(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspMdUserLogoutPackage>();
 }
-void RspMdUserLogoutPackage::Free()
+RspMdUserLogoutPackage::~RspMdUserLogoutPackage()
 {
-	Package::Free();
 	if (RspMdUserLogout != nullptr)
 	{
-		::Free<RspMdUserLogoutField>(RspMdUserLogout);
+		ObjectPool<RspMdUserLogoutField>::GetInstance().Deallocate(RspMdUserLogout);
 		RspMdUserLogout = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspMdUserLogoutPackage>::GetInstance().Free(this);
+}
+RspMdUserLogoutPackage* RspMdUserLogoutPackage::Allocate()
+{
+	return ObjectPool<RspMdUserLogoutPackage>::GetInstance().Allocate();
+}
+void RspMdUserLogoutPackage::Deallocate()
+{
+	ObjectPool<RspMdUserLogoutPackage>::GetInstance().Deallocate(this);
 }
 void RspMdUserLogoutPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -14632,7 +15028,7 @@ bool RspMdUserLogoutPackage::FromStepStream(char* buff, int startIndex, int endI
 			{
 			case RspMdUserLogoutField::FieldID:
 			{
-				RspMdUserLogout = ::Allocate<RspMdUserLogoutField>();
+				RspMdUserLogout = ObjectPool<RspMdUserLogoutField>::GetInstance().Allocate();
 				memset(RspMdUserLogout, 0, sizeof(*RspMdUserLogout));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -14668,7 +15064,7 @@ bool RspMdUserLogoutPackage::FromStepStream(char* buff, int startIndex, int endI
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -14751,14 +15147,14 @@ bool RspMdUserLogoutPackage::FromXtpStream(char* buff, int startIndex, int endIn
 		{
 		case RspMdUserLogoutField::FieldID:
 		{
-			RspMdUserLogout = ::Allocate<RspMdUserLogoutField>();
+			RspMdUserLogout = ObjectPool<RspMdUserLogoutField>::GetInstance().Allocate();
 			memcpy(RspMdUserLogout, buff + offset, sizeof(RspMdUserLogoutField));
 			offset += sizeof(RspMdUserLogoutField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -14783,19 +15179,25 @@ const char* RspMdUserLogoutPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqMdInitPackage* ReqMdInitPackage::Allocate()
+ReqMdInitPackage::ReqMdInitPackage()
+	:ReqMdInit(nullptr)
 {
-	return ::Allocate<ReqMdInitPackage>();
 }
-void ReqMdInitPackage::Free()
+ReqMdInitPackage::~ReqMdInitPackage()
 {
-	Package::Free();
 	if (ReqMdInit != nullptr)
 	{
-		::Free<ReqMdInitField>(ReqMdInit);
+		ObjectPool<ReqMdInitField>::GetInstance().Deallocate(ReqMdInit);
 		ReqMdInit = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqMdInitPackage>::GetInstance().Free(this);
+}
+ReqMdInitPackage* ReqMdInitPackage::Allocate()
+{
+	return ObjectPool<ReqMdInitPackage>::GetInstance().Allocate();
+}
+void ReqMdInitPackage::Deallocate()
+{
+	ObjectPool<ReqMdInitPackage>::GetInstance().Deallocate(this);
 }
 void ReqMdInitPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -14836,7 +15238,7 @@ bool ReqMdInitPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 			{
 			case ReqMdInitField::FieldID:
 			{
-				ReqMdInit = ::Allocate<ReqMdInitField>();
+				ReqMdInit = ObjectPool<ReqMdInitField>::GetInstance().Allocate();
 				memset(ReqMdInit, 0, sizeof(*ReqMdInit));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -14913,7 +15315,7 @@ bool ReqMdInitPackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 		{
 		case ReqMdInitField::FieldID:
 		{
-			ReqMdInit = ::Allocate<ReqMdInitField>();
+			ReqMdInit = ObjectPool<ReqMdInitField>::GetInstance().Allocate();
 			memcpy(ReqMdInit, buff + offset, sizeof(ReqMdInitField));
 			offset += sizeof(ReqMdInitField);	
 			break;
@@ -14934,24 +15336,30 @@ const char* ReqMdInitPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspMdInitPackage* RspMdInitPackage::Allocate()
+RspMdInitPackage::RspMdInitPackage()
+	:RspMdInit(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspMdInitPackage>();
 }
-void RspMdInitPackage::Free()
+RspMdInitPackage::~RspMdInitPackage()
 {
-	Package::Free();
 	if (RspMdInit != nullptr)
 	{
-		::Free<RspMdInitField>(RspMdInit);
+		ObjectPool<RspMdInitField>::GetInstance().Deallocate(RspMdInit);
 		RspMdInit = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspMdInitPackage>::GetInstance().Free(this);
+}
+RspMdInitPackage* RspMdInitPackage::Allocate()
+{
+	return ObjectPool<RspMdInitPackage>::GetInstance().Allocate();
+}
+void RspMdInitPackage::Deallocate()
+{
+	ObjectPool<RspMdInitPackage>::GetInstance().Deallocate(this);
 }
 void RspMdInitPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -15003,7 +15411,7 @@ bool RspMdInitPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 			{
 			case RspMdInitField::FieldID:
 			{
-				RspMdInit = ::Allocate<RspMdInitField>();
+				RspMdInit = ObjectPool<RspMdInitField>::GetInstance().Allocate();
 				memset(RspMdInit, 0, sizeof(*RspMdInit));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -15045,7 +15453,7 @@ bool RspMdInitPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -15128,14 +15536,14 @@ bool RspMdInitPackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 		{
 		case RspMdInitField::FieldID:
 		{
-			RspMdInit = ::Allocate<RspMdInitField>();
+			RspMdInit = ObjectPool<RspMdInitField>::GetInstance().Allocate();
 			memcpy(RspMdInit, buff + offset, sizeof(RspMdInitField));
 			offset += sizeof(RspMdInitField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -15160,19 +15568,25 @@ const char* RspMdInitPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqSubscribeMdPackage* ReqSubscribeMdPackage::Allocate()
+ReqSubscribeMdPackage::ReqSubscribeMdPackage()
+	:ReqSubscribeMd(nullptr)
 {
-	return ::Allocate<ReqSubscribeMdPackage>();
 }
-void ReqSubscribeMdPackage::Free()
+ReqSubscribeMdPackage::~ReqSubscribeMdPackage()
 {
-	Package::Free();
 	if (ReqSubscribeMd != nullptr)
 	{
-		::Free<ReqSubscribeMdField>(ReqSubscribeMd);
+		ObjectPool<ReqSubscribeMdField>::GetInstance().Deallocate(ReqSubscribeMd);
 		ReqSubscribeMd = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqSubscribeMdPackage>::GetInstance().Free(this);
+}
+ReqSubscribeMdPackage* ReqSubscribeMdPackage::Allocate()
+{
+	return ObjectPool<ReqSubscribeMdPackage>::GetInstance().Allocate();
+}
+void ReqSubscribeMdPackage::Deallocate()
+{
+	ObjectPool<ReqSubscribeMdPackage>::GetInstance().Deallocate(this);
 }
 void ReqSubscribeMdPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -15213,7 +15627,7 @@ bool ReqSubscribeMdPackage::FromStepStream(char* buff, int startIndex, int endIn
 			{
 			case ReqSubscribeMdField::FieldID:
 			{
-				ReqSubscribeMd = ::Allocate<ReqSubscribeMdField>();
+				ReqSubscribeMd = ObjectPool<ReqSubscribeMdField>::GetInstance().Allocate();
 				memset(ReqSubscribeMd, 0, sizeof(*ReqSubscribeMd));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -15290,7 +15704,7 @@ bool ReqSubscribeMdPackage::FromXtpStream(char* buff, int startIndex, int endInd
 		{
 		case ReqSubscribeMdField::FieldID:
 		{
-			ReqSubscribeMd = ::Allocate<ReqSubscribeMdField>();
+			ReqSubscribeMd = ObjectPool<ReqSubscribeMdField>::GetInstance().Allocate();
 			memcpy(ReqSubscribeMd, buff + offset, sizeof(ReqSubscribeMdField));
 			offset += sizeof(ReqSubscribeMdField);	
 			break;
@@ -15311,24 +15725,30 @@ const char* ReqSubscribeMdPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspSubscribeMdPackage* RspSubscribeMdPackage::Allocate()
+RspSubscribeMdPackage::RspSubscribeMdPackage()
+	:RspSubscribeMd(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspSubscribeMdPackage>();
 }
-void RspSubscribeMdPackage::Free()
+RspSubscribeMdPackage::~RspSubscribeMdPackage()
 {
-	Package::Free();
 	if (RspSubscribeMd != nullptr)
 	{
-		::Free<RspSubscribeMdField>(RspSubscribeMd);
+		ObjectPool<RspSubscribeMdField>::GetInstance().Deallocate(RspSubscribeMd);
 		RspSubscribeMd = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspSubscribeMdPackage>::GetInstance().Free(this);
+}
+RspSubscribeMdPackage* RspSubscribeMdPackage::Allocate()
+{
+	return ObjectPool<RspSubscribeMdPackage>::GetInstance().Allocate();
+}
+void RspSubscribeMdPackage::Deallocate()
+{
+	ObjectPool<RspSubscribeMdPackage>::GetInstance().Deallocate(this);
 }
 void RspSubscribeMdPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -15380,7 +15800,7 @@ bool RspSubscribeMdPackage::FromStepStream(char* buff, int startIndex, int endIn
 			{
 			case RspSubscribeMdField::FieldID:
 			{
-				RspSubscribeMd = ::Allocate<RspSubscribeMdField>();
+				RspSubscribeMd = ObjectPool<RspSubscribeMdField>::GetInstance().Allocate();
 				memset(RspSubscribeMd, 0, sizeof(*RspSubscribeMd));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -15422,7 +15842,7 @@ bool RspSubscribeMdPackage::FromStepStream(char* buff, int startIndex, int endIn
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -15505,14 +15925,14 @@ bool RspSubscribeMdPackage::FromXtpStream(char* buff, int startIndex, int endInd
 		{
 		case RspSubscribeMdField::FieldID:
 		{
-			RspSubscribeMd = ::Allocate<RspSubscribeMdField>();
+			RspSubscribeMd = ObjectPool<RspSubscribeMdField>::GetInstance().Allocate();
 			memcpy(RspSubscribeMd, buff + offset, sizeof(RspSubscribeMdField));
 			offset += sizeof(RspSubscribeMdField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -15537,19 +15957,25 @@ const char* RspSubscribeMdPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnShortMdPackage* RtnShortMdPackage::Allocate()
+RtnShortMdPackage::RtnShortMdPackage()
+	:ShortMd(nullptr)
 {
-	return ::Allocate<RtnShortMdPackage>();
 }
-void RtnShortMdPackage::Free()
+RtnShortMdPackage::~RtnShortMdPackage()
 {
-	Package::Free();
 	if (ShortMd != nullptr)
 	{
-		::Free<ShortMdField>(ShortMd);
+		ObjectPool<ShortMdField>::GetInstance().Deallocate(ShortMd);
 		ShortMd = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnShortMdPackage>::GetInstance().Free(this);
+}
+RtnShortMdPackage* RtnShortMdPackage::Allocate()
+{
+	return ObjectPool<RtnShortMdPackage>::GetInstance().Allocate();
+}
+void RtnShortMdPackage::Deallocate()
+{
+	ObjectPool<RtnShortMdPackage>::GetInstance().Deallocate(this);
 }
 void RtnShortMdPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -15602,7 +16028,7 @@ bool RtnShortMdPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 			{
 			case ShortMdField::FieldID:
 			{
-				ShortMd = ::Allocate<ShortMdField>();
+				ShortMd = ObjectPool<ShortMdField>::GetInstance().Allocate();
 				memset(ShortMd, 0, sizeof(*ShortMd));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -15720,7 +16146,7 @@ bool RtnShortMdPackage::FromXtpStream(char* buff, int startIndex, int endIndex)
 		{
 		case ShortMdField::FieldID:
 		{
-			ShortMd = ::Allocate<ShortMdField>();
+			ShortMd = ObjectPool<ShortMdField>::GetInstance().Allocate();
 			memcpy(ShortMd, buff + offset, sizeof(ShortMdField));
 			offset += sizeof(ShortMdField);	
 			break;
@@ -15741,19 +16167,25 @@ const char* RtnShortMdPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnExchangeStatusPackage* RtnExchangeStatusPackage::Allocate()
+RtnExchangeStatusPackage::RtnExchangeStatusPackage()
+	:RtnExchangeStatus(nullptr)
 {
-	return ::Allocate<RtnExchangeStatusPackage>();
 }
-void RtnExchangeStatusPackage::Free()
+RtnExchangeStatusPackage::~RtnExchangeStatusPackage()
 {
-	Package::Free();
 	if (RtnExchangeStatus != nullptr)
 	{
-		::Free<RtnExchangeStatusField>(RtnExchangeStatus);
+		ObjectPool<RtnExchangeStatusField>::GetInstance().Deallocate(RtnExchangeStatus);
 		RtnExchangeStatus = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnExchangeStatusPackage>::GetInstance().Free(this);
+}
+RtnExchangeStatusPackage* RtnExchangeStatusPackage::Allocate()
+{
+	return ObjectPool<RtnExchangeStatusPackage>::GetInstance().Allocate();
+}
+void RtnExchangeStatusPackage::Deallocate()
+{
+	ObjectPool<RtnExchangeStatusPackage>::GetInstance().Deallocate(this);
 }
 void RtnExchangeStatusPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -15795,7 +16227,7 @@ bool RtnExchangeStatusPackage::FromStepStream(char* buff, int startIndex, int en
 			{
 			case RtnExchangeStatusField::FieldID:
 			{
-				RtnExchangeStatus = ::Allocate<RtnExchangeStatusField>();
+				RtnExchangeStatus = ObjectPool<RtnExchangeStatusField>::GetInstance().Allocate();
 				memset(RtnExchangeStatus, 0, sizeof(*RtnExchangeStatus));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -15877,7 +16309,7 @@ bool RtnExchangeStatusPackage::FromXtpStream(char* buff, int startIndex, int end
 		{
 		case RtnExchangeStatusField::FieldID:
 		{
-			RtnExchangeStatus = ::Allocate<RtnExchangeStatusField>();
+			RtnExchangeStatus = ObjectPool<RtnExchangeStatusField>::GetInstance().Allocate();
 			memcpy(RtnExchangeStatus, buff + offset, sizeof(RtnExchangeStatusField));
 			offset += sizeof(RtnExchangeStatusField);	
 			break;
@@ -15898,19 +16330,25 @@ const char* RtnExchangeStatusPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnMdInitCompletedPackage* RtnMdInitCompletedPackage::Allocate()
+RtnMdInitCompletedPackage::RtnMdInitCompletedPackage()
+	:MdInitCompleted(nullptr)
 {
-	return ::Allocate<RtnMdInitCompletedPackage>();
 }
-void RtnMdInitCompletedPackage::Free()
+RtnMdInitCompletedPackage::~RtnMdInitCompletedPackage()
 {
-	Package::Free();
 	if (MdInitCompleted != nullptr)
 	{
-		::Free<MdInitCompletedField>(MdInitCompleted);
+		ObjectPool<MdInitCompletedField>::GetInstance().Deallocate(MdInitCompleted);
 		MdInitCompleted = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnMdInitCompletedPackage>::GetInstance().Free(this);
+}
+RtnMdInitCompletedPackage* RtnMdInitCompletedPackage::Allocate()
+{
+	return ObjectPool<RtnMdInitCompletedPackage>::GetInstance().Allocate();
+}
+void RtnMdInitCompletedPackage::Deallocate()
+{
+	ObjectPool<RtnMdInitCompletedPackage>::GetInstance().Deallocate(this);
 }
 void RtnMdInitCompletedPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -15951,7 +16389,7 @@ bool RtnMdInitCompletedPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case MdInitCompletedField::FieldID:
 			{
-				MdInitCompleted = ::Allocate<MdInitCompletedField>();
+				MdInitCompleted = ObjectPool<MdInitCompletedField>::GetInstance().Allocate();
 				memset(MdInitCompleted, 0, sizeof(*MdInitCompleted));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -16028,7 +16466,7 @@ bool RtnMdInitCompletedPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case MdInitCompletedField::FieldID:
 		{
-			MdInitCompleted = ::Allocate<MdInitCompletedField>();
+			MdInitCompleted = ObjectPool<MdInitCompletedField>::GetInstance().Allocate();
 			memcpy(MdInitCompleted, buff + offset, sizeof(MdInitCompletedField));
 			offset += sizeof(MdInitCompletedField);	
 			break;
@@ -16049,19 +16487,25 @@ const char* RtnMdInitCompletedPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAdminUserLoginPackage* ReqAdminUserLoginPackage::Allocate()
+ReqAdminUserLoginPackage::ReqAdminUserLoginPackage()
+	:ReqAdminUserLogin(nullptr)
 {
-	return ::Allocate<ReqAdminUserLoginPackage>();
 }
-void ReqAdminUserLoginPackage::Free()
+ReqAdminUserLoginPackage::~ReqAdminUserLoginPackage()
 {
-	Package::Free();
 	if (ReqAdminUserLogin != nullptr)
 	{
-		::Free<ReqAdminUserLoginField>(ReqAdminUserLogin);
+		ObjectPool<ReqAdminUserLoginField>::GetInstance().Deallocate(ReqAdminUserLogin);
 		ReqAdminUserLogin = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAdminUserLoginPackage>::GetInstance().Free(this);
+}
+ReqAdminUserLoginPackage* ReqAdminUserLoginPackage::Allocate()
+{
+	return ObjectPool<ReqAdminUserLoginPackage>::GetInstance().Allocate();
+}
+void ReqAdminUserLoginPackage::Deallocate()
+{
+	ObjectPool<ReqAdminUserLoginPackage>::GetInstance().Deallocate(this);
 }
 void ReqAdminUserLoginPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -16102,7 +16546,7 @@ bool ReqAdminUserLoginPackage::FromStepStream(char* buff, int startIndex, int en
 			{
 			case ReqAdminUserLoginField::FieldID:
 			{
-				ReqAdminUserLogin = ::Allocate<ReqAdminUserLoginField>();
+				ReqAdminUserLogin = ObjectPool<ReqAdminUserLoginField>::GetInstance().Allocate();
 				memset(ReqAdminUserLogin, 0, sizeof(*ReqAdminUserLogin));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -16179,7 +16623,7 @@ bool ReqAdminUserLoginPackage::FromXtpStream(char* buff, int startIndex, int end
 		{
 		case ReqAdminUserLoginField::FieldID:
 		{
-			ReqAdminUserLogin = ::Allocate<ReqAdminUserLoginField>();
+			ReqAdminUserLogin = ObjectPool<ReqAdminUserLoginField>::GetInstance().Allocate();
 			memcpy(ReqAdminUserLogin, buff + offset, sizeof(ReqAdminUserLoginField));
 			offset += sizeof(ReqAdminUserLoginField);	
 			break;
@@ -16200,24 +16644,30 @@ const char* ReqAdminUserLoginPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAdminUserLoginPackage* RspAdminUserLoginPackage::Allocate()
+RspAdminUserLoginPackage::RspAdminUserLoginPackage()
+	:RspAdminUserLogin(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAdminUserLoginPackage>();
 }
-void RspAdminUserLoginPackage::Free()
+RspAdminUserLoginPackage::~RspAdminUserLoginPackage()
 {
-	Package::Free();
 	if (RspAdminUserLogin != nullptr)
 	{
-		::Free<RspAdminUserLoginField>(RspAdminUserLogin);
+		ObjectPool<RspAdminUserLoginField>::GetInstance().Deallocate(RspAdminUserLogin);
 		RspAdminUserLogin = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAdminUserLoginPackage>::GetInstance().Free(this);
+}
+RspAdminUserLoginPackage* RspAdminUserLoginPackage::Allocate()
+{
+	return ObjectPool<RspAdminUserLoginPackage>::GetInstance().Allocate();
+}
+void RspAdminUserLoginPackage::Deallocate()
+{
+	ObjectPool<RspAdminUserLoginPackage>::GetInstance().Deallocate(this);
 }
 void RspAdminUserLoginPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -16275,7 +16725,7 @@ bool RspAdminUserLoginPackage::FromStepStream(char* buff, int startIndex, int en
 			{
 			case RspAdminUserLoginField::FieldID:
 			{
-				RspAdminUserLogin = ::Allocate<RspAdminUserLoginField>();
+				RspAdminUserLogin = ObjectPool<RspAdminUserLoginField>::GetInstance().Allocate();
 				memset(RspAdminUserLogin, 0, sizeof(*RspAdminUserLogin));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -16328,7 +16778,7 @@ bool RspAdminUserLoginPackage::FromStepStream(char* buff, int startIndex, int en
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -16411,14 +16861,14 @@ bool RspAdminUserLoginPackage::FromXtpStream(char* buff, int startIndex, int end
 		{
 		case RspAdminUserLoginField::FieldID:
 		{
-			RspAdminUserLogin = ::Allocate<RspAdminUserLoginField>();
+			RspAdminUserLogin = ObjectPool<RspAdminUserLoginField>::GetInstance().Allocate();
 			memcpy(RspAdminUserLogin, buff + offset, sizeof(RspAdminUserLoginField));
 			offset += sizeof(RspAdminUserLoginField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -16443,19 +16893,25 @@ const char* RspAdminUserLoginPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAdminUserLogoutPackage* ReqAdminUserLogoutPackage::Allocate()
+ReqAdminUserLogoutPackage::ReqAdminUserLogoutPackage()
+	:ReqAdminUserLogout(nullptr)
 {
-	return ::Allocate<ReqAdminUserLogoutPackage>();
 }
-void ReqAdminUserLogoutPackage::Free()
+ReqAdminUserLogoutPackage::~ReqAdminUserLogoutPackage()
 {
-	Package::Free();
 	if (ReqAdminUserLogout != nullptr)
 	{
-		::Free<ReqAdminUserLogoutField>(ReqAdminUserLogout);
+		ObjectPool<ReqAdminUserLogoutField>::GetInstance().Deallocate(ReqAdminUserLogout);
 		ReqAdminUserLogout = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAdminUserLogoutPackage>::GetInstance().Free(this);
+}
+ReqAdminUserLogoutPackage* ReqAdminUserLogoutPackage::Allocate()
+{
+	return ObjectPool<ReqAdminUserLogoutPackage>::GetInstance().Allocate();
+}
+void ReqAdminUserLogoutPackage::Deallocate()
+{
+	ObjectPool<ReqAdminUserLogoutPackage>::GetInstance().Deallocate(this);
 }
 void ReqAdminUserLogoutPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -16491,7 +16947,7 @@ bool ReqAdminUserLogoutPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case ReqAdminUserLogoutField::FieldID:
 			{
-				ReqAdminUserLogout = ::Allocate<ReqAdminUserLogoutField>();
+				ReqAdminUserLogout = ObjectPool<ReqAdminUserLogoutField>::GetInstance().Allocate();
 				memset(ReqAdminUserLogout, 0, sizeof(*ReqAdminUserLogout));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -16562,7 +17018,7 @@ bool ReqAdminUserLogoutPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case ReqAdminUserLogoutField::FieldID:
 		{
-			ReqAdminUserLogout = ::Allocate<ReqAdminUserLogoutField>();
+			ReqAdminUserLogout = ObjectPool<ReqAdminUserLogoutField>::GetInstance().Allocate();
 			memcpy(ReqAdminUserLogout, buff + offset, sizeof(ReqAdminUserLogoutField));
 			offset += sizeof(ReqAdminUserLogoutField);	
 			break;
@@ -16583,24 +17039,30 @@ const char* ReqAdminUserLogoutPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAdminUserLogoutPackage* RspAdminUserLogoutPackage::Allocate()
+RspAdminUserLogoutPackage::RspAdminUserLogoutPackage()
+	:RspAdminUserLogout(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAdminUserLogoutPackage>();
 }
-void RspAdminUserLogoutPackage::Free()
+RspAdminUserLogoutPackage::~RspAdminUserLogoutPackage()
 {
-	Package::Free();
 	if (RspAdminUserLogout != nullptr)
 	{
-		::Free<RspAdminUserLogoutField>(RspAdminUserLogout);
+		ObjectPool<RspAdminUserLogoutField>::GetInstance().Deallocate(RspAdminUserLogout);
 		RspAdminUserLogout = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAdminUserLogoutPackage>::GetInstance().Free(this);
+}
+RspAdminUserLogoutPackage* RspAdminUserLogoutPackage::Allocate()
+{
+	return ObjectPool<RspAdminUserLogoutPackage>::GetInstance().Allocate();
+}
+void RspAdminUserLogoutPackage::Deallocate()
+{
+	ObjectPool<RspAdminUserLogoutPackage>::GetInstance().Deallocate(this);
 }
 void RspAdminUserLogoutPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -16647,7 +17109,7 @@ bool RspAdminUserLogoutPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case RspAdminUserLogoutField::FieldID:
 			{
-				RspAdminUserLogout = ::Allocate<RspAdminUserLogoutField>();
+				RspAdminUserLogout = ObjectPool<RspAdminUserLogoutField>::GetInstance().Allocate();
 				memset(RspAdminUserLogout, 0, sizeof(*RspAdminUserLogout));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -16683,7 +17145,7 @@ bool RspAdminUserLogoutPackage::FromStepStream(char* buff, int startIndex, int e
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -16766,14 +17228,14 @@ bool RspAdminUserLogoutPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case RspAdminUserLogoutField::FieldID:
 		{
-			RspAdminUserLogout = ::Allocate<RspAdminUserLogoutField>();
+			RspAdminUserLogout = ObjectPool<RspAdminUserLogoutField>::GetInstance().Allocate();
 			memcpy(RspAdminUserLogout, buff + offset, sizeof(RspAdminUserLogoutField));
 			offset += sizeof(RspAdminUserLogoutField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -16798,19 +17260,25 @@ const char* RspAdminUserLogoutPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnAdminUserLogoutPackage* RtnAdminUserLogoutPackage::Allocate()
+RtnAdminUserLogoutPackage::RtnAdminUserLogoutPackage()
+	:AdminUserLogout(nullptr)
 {
-	return ::Allocate<RtnAdminUserLogoutPackage>();
 }
-void RtnAdminUserLogoutPackage::Free()
+RtnAdminUserLogoutPackage::~RtnAdminUserLogoutPackage()
 {
-	Package::Free();
 	if (AdminUserLogout != nullptr)
 	{
-		::Free<AdminUserLogoutField>(AdminUserLogout);
+		ObjectPool<AdminUserLogoutField>::GetInstance().Deallocate(AdminUserLogout);
 		AdminUserLogout = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnAdminUserLogoutPackage>::GetInstance().Free(this);
+}
+RtnAdminUserLogoutPackage* RtnAdminUserLogoutPackage::Allocate()
+{
+	return ObjectPool<RtnAdminUserLogoutPackage>::GetInstance().Allocate();
+}
+void RtnAdminUserLogoutPackage::Deallocate()
+{
+	ObjectPool<RtnAdminUserLogoutPackage>::GetInstance().Deallocate(this);
 }
 void RtnAdminUserLogoutPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -16852,7 +17320,7 @@ bool RtnAdminUserLogoutPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case AdminUserLogoutField::FieldID:
 			{
-				AdminUserLogout = ::Allocate<AdminUserLogoutField>();
+				AdminUserLogout = ObjectPool<AdminUserLogoutField>::GetInstance().Allocate();
 				memset(AdminUserLogout, 0, sizeof(*AdminUserLogout));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -16934,7 +17402,7 @@ bool RtnAdminUserLogoutPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case AdminUserLogoutField::FieldID:
 		{
-			AdminUserLogout = ::Allocate<AdminUserLogoutField>();
+			AdminUserLogout = ObjectPool<AdminUserLogoutField>::GetInstance().Allocate();
 			memcpy(AdminUserLogout, buff + offset, sizeof(AdminUserLogoutField));
 			offset += sizeof(AdminUserLogoutField);	
 			break;
@@ -16955,19 +17423,25 @@ const char* RtnAdminUserLogoutPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddRiskUserPackage* ReqAddRiskUserPackage::Allocate()
+ReqAddRiskUserPackage::ReqAddRiskUserPackage()
+	:ReqAddRiskUser(nullptr)
 {
-	return ::Allocate<ReqAddRiskUserPackage>();
 }
-void ReqAddRiskUserPackage::Free()
+ReqAddRiskUserPackage::~ReqAddRiskUserPackage()
 {
-	Package::Free();
 	if (ReqAddRiskUser != nullptr)
 	{
-		::Free<ReqAddRiskUserField>(ReqAddRiskUser);
+		ObjectPool<ReqAddRiskUserField>::GetInstance().Deallocate(ReqAddRiskUser);
 		ReqAddRiskUser = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddRiskUserPackage>::GetInstance().Free(this);
+}
+ReqAddRiskUserPackage* ReqAddRiskUserPackage::Allocate()
+{
+	return ObjectPool<ReqAddRiskUserPackage>::GetInstance().Allocate();
+}
+void ReqAddRiskUserPackage::Deallocate()
+{
+	ObjectPool<ReqAddRiskUserPackage>::GetInstance().Deallocate(this);
 }
 void ReqAddRiskUserPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -17019,7 +17493,7 @@ bool ReqAddRiskUserPackage::FromStepStream(char* buff, int startIndex, int endIn
 			{
 			case ReqAddRiskUserField::FieldID:
 			{
-				ReqAddRiskUser = ::Allocate<ReqAddRiskUserField>();
+				ReqAddRiskUser = ObjectPool<ReqAddRiskUserField>::GetInstance().Allocate();
 				memset(ReqAddRiskUser, 0, sizeof(*ReqAddRiskUser));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -17113,7 +17587,7 @@ bool ReqAddRiskUserPackage::FromXtpStream(char* buff, int startIndex, int endInd
 		{
 		case ReqAddRiskUserField::FieldID:
 		{
-			ReqAddRiskUser = ::Allocate<ReqAddRiskUserField>();
+			ReqAddRiskUser = ObjectPool<ReqAddRiskUserField>::GetInstance().Allocate();
 			memcpy(ReqAddRiskUser, buff + offset, sizeof(ReqAddRiskUserField));
 			offset += sizeof(ReqAddRiskUserField);	
 			break;
@@ -17134,24 +17608,30 @@ const char* ReqAddRiskUserPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddRiskUserPackage* RspAddRiskUserPackage::Allocate()
+RspAddRiskUserPackage::RspAddRiskUserPackage()
+	:RspAddRiskUser(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddRiskUserPackage>();
 }
-void RspAddRiskUserPackage::Free()
+RspAddRiskUserPackage::~RspAddRiskUserPackage()
 {
-	Package::Free();
 	if (RspAddRiskUser != nullptr)
 	{
-		::Free<RspAddRiskUserField>(RspAddRiskUser);
+		ObjectPool<RspAddRiskUserField>::GetInstance().Deallocate(RspAddRiskUser);
 		RspAddRiskUser = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddRiskUserPackage>::GetInstance().Free(this);
+}
+RspAddRiskUserPackage* RspAddRiskUserPackage::Allocate()
+{
+	return ObjectPool<RspAddRiskUserPackage>::GetInstance().Allocate();
+}
+void RspAddRiskUserPackage::Deallocate()
+{
+	ObjectPool<RspAddRiskUserPackage>::GetInstance().Deallocate(this);
 }
 void RspAddRiskUserPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -17203,7 +17683,7 @@ bool RspAddRiskUserPackage::FromStepStream(char* buff, int startIndex, int endIn
 			{
 			case RspAddRiskUserField::FieldID:
 			{
-				RspAddRiskUser = ::Allocate<RspAddRiskUserField>();
+				RspAddRiskUser = ObjectPool<RspAddRiskUserField>::GetInstance().Allocate();
 				memset(RspAddRiskUser, 0, sizeof(*RspAddRiskUser));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -17245,7 +17725,7 @@ bool RspAddRiskUserPackage::FromStepStream(char* buff, int startIndex, int endIn
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -17328,14 +17808,14 @@ bool RspAddRiskUserPackage::FromXtpStream(char* buff, int startIndex, int endInd
 		{
 		case RspAddRiskUserField::FieldID:
 		{
-			RspAddRiskUser = ::Allocate<RspAddRiskUserField>();
+			RspAddRiskUser = ObjectPool<RspAddRiskUserField>::GetInstance().Allocate();
 			memcpy(RspAddRiskUser, buff + offset, sizeof(RspAddRiskUserField));
 			offset += sizeof(RspAddRiskUserField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -17360,19 +17840,25 @@ const char* RspAddRiskUserPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqUpdateRiskUserPackage* ReqUpdateRiskUserPackage::Allocate()
+ReqUpdateRiskUserPackage::ReqUpdateRiskUserPackage()
+	:ReqUpdateRiskUser(nullptr)
 {
-	return ::Allocate<ReqUpdateRiskUserPackage>();
 }
-void ReqUpdateRiskUserPackage::Free()
+ReqUpdateRiskUserPackage::~ReqUpdateRiskUserPackage()
 {
-	Package::Free();
 	if (ReqUpdateRiskUser != nullptr)
 	{
-		::Free<ReqUpdateRiskUserField>(ReqUpdateRiskUser);
+		ObjectPool<ReqUpdateRiskUserField>::GetInstance().Deallocate(ReqUpdateRiskUser);
 		ReqUpdateRiskUser = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqUpdateRiskUserPackage>::GetInstance().Free(this);
+}
+ReqUpdateRiskUserPackage* ReqUpdateRiskUserPackage::Allocate()
+{
+	return ObjectPool<ReqUpdateRiskUserPackage>::GetInstance().Allocate();
+}
+void ReqUpdateRiskUserPackage::Deallocate()
+{
+	ObjectPool<ReqUpdateRiskUserPackage>::GetInstance().Deallocate(this);
 }
 void ReqUpdateRiskUserPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -17424,7 +17910,7 @@ bool ReqUpdateRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 			{
 			case ReqUpdateRiskUserField::FieldID:
 			{
-				ReqUpdateRiskUser = ::Allocate<ReqUpdateRiskUserField>();
+				ReqUpdateRiskUser = ObjectPool<ReqUpdateRiskUserField>::GetInstance().Allocate();
 				memset(ReqUpdateRiskUser, 0, sizeof(*ReqUpdateRiskUser));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -17518,7 +18004,7 @@ bool ReqUpdateRiskUserPackage::FromXtpStream(char* buff, int startIndex, int end
 		{
 		case ReqUpdateRiskUserField::FieldID:
 		{
-			ReqUpdateRiskUser = ::Allocate<ReqUpdateRiskUserField>();
+			ReqUpdateRiskUser = ObjectPool<ReqUpdateRiskUserField>::GetInstance().Allocate();
 			memcpy(ReqUpdateRiskUser, buff + offset, sizeof(ReqUpdateRiskUserField));
 			offset += sizeof(ReqUpdateRiskUserField);	
 			break;
@@ -17539,24 +18025,30 @@ const char* ReqUpdateRiskUserPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspUpdateRiskUserPackage* RspUpdateRiskUserPackage::Allocate()
+RspUpdateRiskUserPackage::RspUpdateRiskUserPackage()
+	:RspUpdateRiskUser(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspUpdateRiskUserPackage>();
 }
-void RspUpdateRiskUserPackage::Free()
+RspUpdateRiskUserPackage::~RspUpdateRiskUserPackage()
 {
-	Package::Free();
 	if (RspUpdateRiskUser != nullptr)
 	{
-		::Free<RspUpdateRiskUserField>(RspUpdateRiskUser);
+		ObjectPool<RspUpdateRiskUserField>::GetInstance().Deallocate(RspUpdateRiskUser);
 		RspUpdateRiskUser = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspUpdateRiskUserPackage>::GetInstance().Free(this);
+}
+RspUpdateRiskUserPackage* RspUpdateRiskUserPackage::Allocate()
+{
+	return ObjectPool<RspUpdateRiskUserPackage>::GetInstance().Allocate();
+}
+void RspUpdateRiskUserPackage::Deallocate()
+{
+	ObjectPool<RspUpdateRiskUserPackage>::GetInstance().Deallocate(this);
 }
 void RspUpdateRiskUserPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -17608,7 +18100,7 @@ bool RspUpdateRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 			{
 			case RspUpdateRiskUserField::FieldID:
 			{
-				RspUpdateRiskUser = ::Allocate<RspUpdateRiskUserField>();
+				RspUpdateRiskUser = ObjectPool<RspUpdateRiskUserField>::GetInstance().Allocate();
 				memset(RspUpdateRiskUser, 0, sizeof(*RspUpdateRiskUser));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -17650,7 +18142,7 @@ bool RspUpdateRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -17733,14 +18225,14 @@ bool RspUpdateRiskUserPackage::FromXtpStream(char* buff, int startIndex, int end
 		{
 		case RspUpdateRiskUserField::FieldID:
 		{
-			RspUpdateRiskUser = ::Allocate<RspUpdateRiskUserField>();
+			RspUpdateRiskUser = ObjectPool<RspUpdateRiskUserField>::GetInstance().Allocate();
 			memcpy(RspUpdateRiskUser, buff + offset, sizeof(RspUpdateRiskUserField));
 			offset += sizeof(RspUpdateRiskUserField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -17765,19 +18257,25 @@ const char* RspUpdateRiskUserPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRemoveRiskUserPackage* ReqRemoveRiskUserPackage::Allocate()
+ReqRemoveRiskUserPackage::ReqRemoveRiskUserPackage()
+	:ReqRemoveRiskUser(nullptr)
 {
-	return ::Allocate<ReqRemoveRiskUserPackage>();
 }
-void ReqRemoveRiskUserPackage::Free()
+ReqRemoveRiskUserPackage::~ReqRemoveRiskUserPackage()
 {
-	Package::Free();
 	if (ReqRemoveRiskUser != nullptr)
 	{
-		::Free<ReqRemoveRiskUserField>(ReqRemoveRiskUser);
+		ObjectPool<ReqRemoveRiskUserField>::GetInstance().Deallocate(ReqRemoveRiskUser);
 		ReqRemoveRiskUser = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRemoveRiskUserPackage>::GetInstance().Free(this);
+}
+ReqRemoveRiskUserPackage* ReqRemoveRiskUserPackage::Allocate()
+{
+	return ObjectPool<ReqRemoveRiskUserPackage>::GetInstance().Allocate();
+}
+void ReqRemoveRiskUserPackage::Deallocate()
+{
+	ObjectPool<ReqRemoveRiskUserPackage>::GetInstance().Deallocate(this);
 }
 void ReqRemoveRiskUserPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -17818,7 +18316,7 @@ bool ReqRemoveRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 			{
 			case ReqRemoveRiskUserField::FieldID:
 			{
-				ReqRemoveRiskUser = ::Allocate<ReqRemoveRiskUserField>();
+				ReqRemoveRiskUser = ObjectPool<ReqRemoveRiskUserField>::GetInstance().Allocate();
 				memset(ReqRemoveRiskUser, 0, sizeof(*ReqRemoveRiskUser));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -17895,7 +18393,7 @@ bool ReqRemoveRiskUserPackage::FromXtpStream(char* buff, int startIndex, int end
 		{
 		case ReqRemoveRiskUserField::FieldID:
 		{
-			ReqRemoveRiskUser = ::Allocate<ReqRemoveRiskUserField>();
+			ReqRemoveRiskUser = ObjectPool<ReqRemoveRiskUserField>::GetInstance().Allocate();
 			memcpy(ReqRemoveRiskUser, buff + offset, sizeof(ReqRemoveRiskUserField));
 			offset += sizeof(ReqRemoveRiskUserField);	
 			break;
@@ -17916,24 +18414,30 @@ const char* ReqRemoveRiskUserPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRemoveRiskUserPackage* RspRemoveRiskUserPackage::Allocate()
+RspRemoveRiskUserPackage::RspRemoveRiskUserPackage()
+	:RspRemoveRiskUser(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRemoveRiskUserPackage>();
 }
-void RspRemoveRiskUserPackage::Free()
+RspRemoveRiskUserPackage::~RspRemoveRiskUserPackage()
 {
-	Package::Free();
 	if (RspRemoveRiskUser != nullptr)
 	{
-		::Free<RspRemoveRiskUserField>(RspRemoveRiskUser);
+		ObjectPool<RspRemoveRiskUserField>::GetInstance().Deallocate(RspRemoveRiskUser);
 		RspRemoveRiskUser = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRemoveRiskUserPackage>::GetInstance().Free(this);
+}
+RspRemoveRiskUserPackage* RspRemoveRiskUserPackage::Allocate()
+{
+	return ObjectPool<RspRemoveRiskUserPackage>::GetInstance().Allocate();
+}
+void RspRemoveRiskUserPackage::Deallocate()
+{
+	ObjectPool<RspRemoveRiskUserPackage>::GetInstance().Deallocate(this);
 }
 void RspRemoveRiskUserPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -17985,7 +18489,7 @@ bool RspRemoveRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 			{
 			case RspRemoveRiskUserField::FieldID:
 			{
-				RspRemoveRiskUser = ::Allocate<RspRemoveRiskUserField>();
+				RspRemoveRiskUser = ObjectPool<RspRemoveRiskUserField>::GetInstance().Allocate();
 				memset(RspRemoveRiskUser, 0, sizeof(*RspRemoveRiskUser));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -18027,7 +18531,7 @@ bool RspRemoveRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -18110,14 +18614,14 @@ bool RspRemoveRiskUserPackage::FromXtpStream(char* buff, int startIndex, int end
 		{
 		case RspRemoveRiskUserField::FieldID:
 		{
-			RspRemoveRiskUser = ::Allocate<RspRemoveRiskUserField>();
+			RspRemoveRiskUser = ObjectPool<RspRemoveRiskUserField>::GetInstance().Allocate();
 			memcpy(RspRemoveRiskUser, buff + offset, sizeof(RspRemoveRiskUserField));
 			offset += sizeof(RspRemoveRiskUserField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -18142,19 +18646,25 @@ const char* RspRemoveRiskUserPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddAdminUserPackage* ReqAddAdminUserPackage::Allocate()
+ReqAddAdminUserPackage::ReqAddAdminUserPackage()
+	:ReqAddAdminUser(nullptr)
 {
-	return ::Allocate<ReqAddAdminUserPackage>();
 }
-void ReqAddAdminUserPackage::Free()
+ReqAddAdminUserPackage::~ReqAddAdminUserPackage()
 {
-	Package::Free();
 	if (ReqAddAdminUser != nullptr)
 	{
-		::Free<ReqAddAdminUserField>(ReqAddAdminUser);
+		ObjectPool<ReqAddAdminUserField>::GetInstance().Deallocate(ReqAddAdminUser);
 		ReqAddAdminUser = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddAdminUserPackage>::GetInstance().Free(this);
+}
+ReqAddAdminUserPackage* ReqAddAdminUserPackage::Allocate()
+{
+	return ObjectPool<ReqAddAdminUserPackage>::GetInstance().Allocate();
+}
+void ReqAddAdminUserPackage::Deallocate()
+{
+	ObjectPool<ReqAddAdminUserPackage>::GetInstance().Deallocate(this);
 }
 void ReqAddAdminUserPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -18205,7 +18715,7 @@ bool ReqAddAdminUserPackage::FromStepStream(char* buff, int startIndex, int endI
 			{
 			case ReqAddAdminUserField::FieldID:
 			{
-				ReqAddAdminUser = ::Allocate<ReqAddAdminUserField>();
+				ReqAddAdminUser = ObjectPool<ReqAddAdminUserField>::GetInstance().Allocate();
 				memset(ReqAddAdminUser, 0, sizeof(*ReqAddAdminUser));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -18294,7 +18804,7 @@ bool ReqAddAdminUserPackage::FromXtpStream(char* buff, int startIndex, int endIn
 		{
 		case ReqAddAdminUserField::FieldID:
 		{
-			ReqAddAdminUser = ::Allocate<ReqAddAdminUserField>();
+			ReqAddAdminUser = ObjectPool<ReqAddAdminUserField>::GetInstance().Allocate();
 			memcpy(ReqAddAdminUser, buff + offset, sizeof(ReqAddAdminUserField));
 			offset += sizeof(ReqAddAdminUserField);	
 			break;
@@ -18315,24 +18825,30 @@ const char* ReqAddAdminUserPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddAdminUserPackage* RspAddAdminUserPackage::Allocate()
+RspAddAdminUserPackage::RspAddAdminUserPackage()
+	:RspAddAdminUser(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddAdminUserPackage>();
 }
-void RspAddAdminUserPackage::Free()
+RspAddAdminUserPackage::~RspAddAdminUserPackage()
 {
-	Package::Free();
 	if (RspAddAdminUser != nullptr)
 	{
-		::Free<RspAddAdminUserField>(RspAddAdminUser);
+		ObjectPool<RspAddAdminUserField>::GetInstance().Deallocate(RspAddAdminUser);
 		RspAddAdminUser = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddAdminUserPackage>::GetInstance().Free(this);
+}
+RspAddAdminUserPackage* RspAddAdminUserPackage::Allocate()
+{
+	return ObjectPool<RspAddAdminUserPackage>::GetInstance().Allocate();
+}
+void RspAddAdminUserPackage::Deallocate()
+{
+	ObjectPool<RspAddAdminUserPackage>::GetInstance().Deallocate(this);
 }
 void RspAddAdminUserPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -18384,7 +18900,7 @@ bool RspAddAdminUserPackage::FromStepStream(char* buff, int startIndex, int endI
 			{
 			case RspAddAdminUserField::FieldID:
 			{
-				RspAddAdminUser = ::Allocate<RspAddAdminUserField>();
+				RspAddAdminUser = ObjectPool<RspAddAdminUserField>::GetInstance().Allocate();
 				memset(RspAddAdminUser, 0, sizeof(*RspAddAdminUser));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -18426,7 +18942,7 @@ bool RspAddAdminUserPackage::FromStepStream(char* buff, int startIndex, int endI
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -18509,14 +19025,14 @@ bool RspAddAdminUserPackage::FromXtpStream(char* buff, int startIndex, int endIn
 		{
 		case RspAddAdminUserField::FieldID:
 		{
-			RspAddAdminUser = ::Allocate<RspAddAdminUserField>();
+			RspAddAdminUser = ObjectPool<RspAddAdminUserField>::GetInstance().Allocate();
 			memcpy(RspAddAdminUser, buff + offset, sizeof(RspAddAdminUserField));
 			offset += sizeof(RspAddAdminUserField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -18541,19 +19057,25 @@ const char* RspAddAdminUserPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqUpdateAdminUserPackage* ReqUpdateAdminUserPackage::Allocate()
+ReqUpdateAdminUserPackage::ReqUpdateAdminUserPackage()
+	:ReqUpdateAdminUser(nullptr)
 {
-	return ::Allocate<ReqUpdateAdminUserPackage>();
 }
-void ReqUpdateAdminUserPackage::Free()
+ReqUpdateAdminUserPackage::~ReqUpdateAdminUserPackage()
 {
-	Package::Free();
 	if (ReqUpdateAdminUser != nullptr)
 	{
-		::Free<ReqUpdateAdminUserField>(ReqUpdateAdminUser);
+		ObjectPool<ReqUpdateAdminUserField>::GetInstance().Deallocate(ReqUpdateAdminUser);
 		ReqUpdateAdminUser = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqUpdateAdminUserPackage>::GetInstance().Free(this);
+}
+ReqUpdateAdminUserPackage* ReqUpdateAdminUserPackage::Allocate()
+{
+	return ObjectPool<ReqUpdateAdminUserPackage>::GetInstance().Allocate();
+}
+void ReqUpdateAdminUserPackage::Deallocate()
+{
+	ObjectPool<ReqUpdateAdminUserPackage>::GetInstance().Deallocate(this);
 }
 void ReqUpdateAdminUserPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -18604,7 +19126,7 @@ bool ReqUpdateAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case ReqUpdateAdminUserField::FieldID:
 			{
-				ReqUpdateAdminUser = ::Allocate<ReqUpdateAdminUserField>();
+				ReqUpdateAdminUser = ObjectPool<ReqUpdateAdminUserField>::GetInstance().Allocate();
 				memset(ReqUpdateAdminUser, 0, sizeof(*ReqUpdateAdminUser));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -18693,7 +19215,7 @@ bool ReqUpdateAdminUserPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case ReqUpdateAdminUserField::FieldID:
 		{
-			ReqUpdateAdminUser = ::Allocate<ReqUpdateAdminUserField>();
+			ReqUpdateAdminUser = ObjectPool<ReqUpdateAdminUserField>::GetInstance().Allocate();
 			memcpy(ReqUpdateAdminUser, buff + offset, sizeof(ReqUpdateAdminUserField));
 			offset += sizeof(ReqUpdateAdminUserField);	
 			break;
@@ -18714,24 +19236,30 @@ const char* ReqUpdateAdminUserPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspUpdateAdminUserPackage* RspUpdateAdminUserPackage::Allocate()
+RspUpdateAdminUserPackage::RspUpdateAdminUserPackage()
+	:RspUpdateAdminUser(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspUpdateAdminUserPackage>();
 }
-void RspUpdateAdminUserPackage::Free()
+RspUpdateAdminUserPackage::~RspUpdateAdminUserPackage()
 {
-	Package::Free();
 	if (RspUpdateAdminUser != nullptr)
 	{
-		::Free<RspUpdateAdminUserField>(RspUpdateAdminUser);
+		ObjectPool<RspUpdateAdminUserField>::GetInstance().Deallocate(RspUpdateAdminUser);
 		RspUpdateAdminUser = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspUpdateAdminUserPackage>::GetInstance().Free(this);
+}
+RspUpdateAdminUserPackage* RspUpdateAdminUserPackage::Allocate()
+{
+	return ObjectPool<RspUpdateAdminUserPackage>::GetInstance().Allocate();
+}
+void RspUpdateAdminUserPackage::Deallocate()
+{
+	ObjectPool<RspUpdateAdminUserPackage>::GetInstance().Deallocate(this);
 }
 void RspUpdateAdminUserPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -18783,7 +19311,7 @@ bool RspUpdateAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case RspUpdateAdminUserField::FieldID:
 			{
-				RspUpdateAdminUser = ::Allocate<RspUpdateAdminUserField>();
+				RspUpdateAdminUser = ObjectPool<RspUpdateAdminUserField>::GetInstance().Allocate();
 				memset(RspUpdateAdminUser, 0, sizeof(*RspUpdateAdminUser));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -18825,7 +19353,7 @@ bool RspUpdateAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -18908,14 +19436,14 @@ bool RspUpdateAdminUserPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case RspUpdateAdminUserField::FieldID:
 		{
-			RspUpdateAdminUser = ::Allocate<RspUpdateAdminUserField>();
+			RspUpdateAdminUser = ObjectPool<RspUpdateAdminUserField>::GetInstance().Allocate();
 			memcpy(RspUpdateAdminUser, buff + offset, sizeof(RspUpdateAdminUserField));
 			offset += sizeof(RspUpdateAdminUserField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -18940,19 +19468,25 @@ const char* RspUpdateAdminUserPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRemoveAdminUserPackage* ReqRemoveAdminUserPackage::Allocate()
+ReqRemoveAdminUserPackage::ReqRemoveAdminUserPackage()
+	:ReqRemoveAdminUser(nullptr)
 {
-	return ::Allocate<ReqRemoveAdminUserPackage>();
 }
-void ReqRemoveAdminUserPackage::Free()
+ReqRemoveAdminUserPackage::~ReqRemoveAdminUserPackage()
 {
-	Package::Free();
 	if (ReqRemoveAdminUser != nullptr)
 	{
-		::Free<ReqRemoveAdminUserField>(ReqRemoveAdminUser);
+		ObjectPool<ReqRemoveAdminUserField>::GetInstance().Deallocate(ReqRemoveAdminUser);
 		ReqRemoveAdminUser = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRemoveAdminUserPackage>::GetInstance().Free(this);
+}
+ReqRemoveAdminUserPackage* ReqRemoveAdminUserPackage::Allocate()
+{
+	return ObjectPool<ReqRemoveAdminUserPackage>::GetInstance().Allocate();
+}
+void ReqRemoveAdminUserPackage::Deallocate()
+{
+	ObjectPool<ReqRemoveAdminUserPackage>::GetInstance().Deallocate(this);
 }
 void ReqRemoveAdminUserPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -18993,7 +19527,7 @@ bool ReqRemoveAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case ReqRemoveAdminUserField::FieldID:
 			{
-				ReqRemoveAdminUser = ::Allocate<ReqRemoveAdminUserField>();
+				ReqRemoveAdminUser = ObjectPool<ReqRemoveAdminUserField>::GetInstance().Allocate();
 				memset(ReqRemoveAdminUser, 0, sizeof(*ReqRemoveAdminUser));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -19070,7 +19604,7 @@ bool ReqRemoveAdminUserPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case ReqRemoveAdminUserField::FieldID:
 		{
-			ReqRemoveAdminUser = ::Allocate<ReqRemoveAdminUserField>();
+			ReqRemoveAdminUser = ObjectPool<ReqRemoveAdminUserField>::GetInstance().Allocate();
 			memcpy(ReqRemoveAdminUser, buff + offset, sizeof(ReqRemoveAdminUserField));
 			offset += sizeof(ReqRemoveAdminUserField);	
 			break;
@@ -19091,24 +19625,30 @@ const char* ReqRemoveAdminUserPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRemoveAdminUserPackage* RspRemoveAdminUserPackage::Allocate()
+RspRemoveAdminUserPackage::RspRemoveAdminUserPackage()
+	:RspRemoveAdminUser(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRemoveAdminUserPackage>();
 }
-void RspRemoveAdminUserPackage::Free()
+RspRemoveAdminUserPackage::~RspRemoveAdminUserPackage()
 {
-	Package::Free();
 	if (RspRemoveAdminUser != nullptr)
 	{
-		::Free<RspRemoveAdminUserField>(RspRemoveAdminUser);
+		ObjectPool<RspRemoveAdminUserField>::GetInstance().Deallocate(RspRemoveAdminUser);
 		RspRemoveAdminUser = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRemoveAdminUserPackage>::GetInstance().Free(this);
+}
+RspRemoveAdminUserPackage* RspRemoveAdminUserPackage::Allocate()
+{
+	return ObjectPool<RspRemoveAdminUserPackage>::GetInstance().Allocate();
+}
+void RspRemoveAdminUserPackage::Deallocate()
+{
+	ObjectPool<RspRemoveAdminUserPackage>::GetInstance().Deallocate(this);
 }
 void RspRemoveAdminUserPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -19160,7 +19700,7 @@ bool RspRemoveAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case RspRemoveAdminUserField::FieldID:
 			{
-				RspRemoveAdminUser = ::Allocate<RspRemoveAdminUserField>();
+				RspRemoveAdminUser = ObjectPool<RspRemoveAdminUserField>::GetInstance().Allocate();
 				memset(RspRemoveAdminUser, 0, sizeof(*RspRemoveAdminUser));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -19202,7 +19742,7 @@ bool RspRemoveAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -19285,14 +19825,14 @@ bool RspRemoveAdminUserPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case RspRemoveAdminUserField::FieldID:
 		{
-			RspRemoveAdminUser = ::Allocate<RspRemoveAdminUserField>();
+			RspRemoveAdminUser = ObjectPool<RspRemoveAdminUserField>::GetInstance().Allocate();
 			memcpy(RspRemoveAdminUser, buff + offset, sizeof(RspRemoveAdminUserField));
 			offset += sizeof(RspRemoveAdminUserField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -19317,19 +19857,25 @@ const char* RspRemoveAdminUserPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddPrimaryAccountPackage* ReqAddPrimaryAccountPackage::Allocate()
+ReqAddPrimaryAccountPackage::ReqAddPrimaryAccountPackage()
+	:ReqAddPrimaryAccount(nullptr)
 {
-	return ::Allocate<ReqAddPrimaryAccountPackage>();
 }
-void ReqAddPrimaryAccountPackage::Free()
+ReqAddPrimaryAccountPackage::~ReqAddPrimaryAccountPackage()
 {
-	Package::Free();
 	if (ReqAddPrimaryAccount != nullptr)
 	{
-		::Free<ReqAddPrimaryAccountField>(ReqAddPrimaryAccount);
+		ObjectPool<ReqAddPrimaryAccountField>::GetInstance().Deallocate(ReqAddPrimaryAccount);
 		ReqAddPrimaryAccount = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddPrimaryAccountPackage>::GetInstance().Free(this);
+}
+ReqAddPrimaryAccountPackage* ReqAddPrimaryAccountPackage::Allocate()
+{
+	return ObjectPool<ReqAddPrimaryAccountPackage>::GetInstance().Allocate();
+}
+void ReqAddPrimaryAccountPackage::Deallocate()
+{
+	ObjectPool<ReqAddPrimaryAccountPackage>::GetInstance().Deallocate(this);
 }
 void ReqAddPrimaryAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -19398,7 +19944,7 @@ bool ReqAddPrimaryAccountPackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case ReqAddPrimaryAccountField::FieldID:
 			{
-				ReqAddPrimaryAccount = ::Allocate<ReqAddPrimaryAccountField>();
+				ReqAddPrimaryAccount = ObjectPool<ReqAddPrimaryAccountField>::GetInstance().Allocate();
 				memset(ReqAddPrimaryAccount, 0, sizeof(*ReqAddPrimaryAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -19539,7 +20085,7 @@ bool ReqAddPrimaryAccountPackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case ReqAddPrimaryAccountField::FieldID:
 		{
-			ReqAddPrimaryAccount = ::Allocate<ReqAddPrimaryAccountField>();
+			ReqAddPrimaryAccount = ObjectPool<ReqAddPrimaryAccountField>::GetInstance().Allocate();
 			memcpy(ReqAddPrimaryAccount, buff + offset, sizeof(ReqAddPrimaryAccountField));
 			offset += sizeof(ReqAddPrimaryAccountField);	
 			break;
@@ -19560,24 +20106,30 @@ const char* ReqAddPrimaryAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddPrimaryAccountPackage* RspAddPrimaryAccountPackage::Allocate()
+RspAddPrimaryAccountPackage::RspAddPrimaryAccountPackage()
+	:RspAddPrimaryAccount(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddPrimaryAccountPackage>();
 }
-void RspAddPrimaryAccountPackage::Free()
+RspAddPrimaryAccountPackage::~RspAddPrimaryAccountPackage()
 {
-	Package::Free();
 	if (RspAddPrimaryAccount != nullptr)
 	{
-		::Free<RspAddPrimaryAccountField>(RspAddPrimaryAccount);
+		ObjectPool<RspAddPrimaryAccountField>::GetInstance().Deallocate(RspAddPrimaryAccount);
 		RspAddPrimaryAccount = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddPrimaryAccountPackage>::GetInstance().Free(this);
+}
+RspAddPrimaryAccountPackage* RspAddPrimaryAccountPackage::Allocate()
+{
+	return ObjectPool<RspAddPrimaryAccountPackage>::GetInstance().Allocate();
+}
+void RspAddPrimaryAccountPackage::Deallocate()
+{
+	ObjectPool<RspAddPrimaryAccountPackage>::GetInstance().Deallocate(this);
 }
 void RspAddPrimaryAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -19629,7 +20181,7 @@ bool RspAddPrimaryAccountPackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case RspAddPrimaryAccountField::FieldID:
 			{
-				RspAddPrimaryAccount = ::Allocate<RspAddPrimaryAccountField>();
+				RspAddPrimaryAccount = ObjectPool<RspAddPrimaryAccountField>::GetInstance().Allocate();
 				memset(RspAddPrimaryAccount, 0, sizeof(*RspAddPrimaryAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -19671,7 +20223,7 @@ bool RspAddPrimaryAccountPackage::FromStepStream(char* buff, int startIndex, int
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -19754,14 +20306,14 @@ bool RspAddPrimaryAccountPackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case RspAddPrimaryAccountField::FieldID:
 		{
-			RspAddPrimaryAccount = ::Allocate<RspAddPrimaryAccountField>();
+			RspAddPrimaryAccount = ObjectPool<RspAddPrimaryAccountField>::GetInstance().Allocate();
 			memcpy(RspAddPrimaryAccount, buff + offset, sizeof(RspAddPrimaryAccountField));
 			offset += sizeof(RspAddPrimaryAccountField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -19786,19 +20338,25 @@ const char* RspAddPrimaryAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqUpdatePrimaryAccountPackage* ReqUpdatePrimaryAccountPackage::Allocate()
+ReqUpdatePrimaryAccountPackage::ReqUpdatePrimaryAccountPackage()
+	:ReqUpdatePrimaryAccount(nullptr)
 {
-	return ::Allocate<ReqUpdatePrimaryAccountPackage>();
 }
-void ReqUpdatePrimaryAccountPackage::Free()
+ReqUpdatePrimaryAccountPackage::~ReqUpdatePrimaryAccountPackage()
 {
-	Package::Free();
 	if (ReqUpdatePrimaryAccount != nullptr)
 	{
-		::Free<ReqUpdatePrimaryAccountField>(ReqUpdatePrimaryAccount);
+		ObjectPool<ReqUpdatePrimaryAccountField>::GetInstance().Deallocate(ReqUpdatePrimaryAccount);
 		ReqUpdatePrimaryAccount = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqUpdatePrimaryAccountPackage>::GetInstance().Free(this);
+}
+ReqUpdatePrimaryAccountPackage* ReqUpdatePrimaryAccountPackage::Allocate()
+{
+	return ObjectPool<ReqUpdatePrimaryAccountPackage>::GetInstance().Allocate();
+}
+void ReqUpdatePrimaryAccountPackage::Deallocate()
+{
+	ObjectPool<ReqUpdatePrimaryAccountPackage>::GetInstance().Deallocate(this);
 }
 void ReqUpdatePrimaryAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -19867,7 +20425,7 @@ bool ReqUpdatePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case ReqUpdatePrimaryAccountField::FieldID:
 			{
-				ReqUpdatePrimaryAccount = ::Allocate<ReqUpdatePrimaryAccountField>();
+				ReqUpdatePrimaryAccount = ObjectPool<ReqUpdatePrimaryAccountField>::GetInstance().Allocate();
 				memset(ReqUpdatePrimaryAccount, 0, sizeof(*ReqUpdatePrimaryAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -20008,7 +20566,7 @@ bool ReqUpdatePrimaryAccountPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case ReqUpdatePrimaryAccountField::FieldID:
 		{
-			ReqUpdatePrimaryAccount = ::Allocate<ReqUpdatePrimaryAccountField>();
+			ReqUpdatePrimaryAccount = ObjectPool<ReqUpdatePrimaryAccountField>::GetInstance().Allocate();
 			memcpy(ReqUpdatePrimaryAccount, buff + offset, sizeof(ReqUpdatePrimaryAccountField));
 			offset += sizeof(ReqUpdatePrimaryAccountField);	
 			break;
@@ -20029,24 +20587,30 @@ const char* ReqUpdatePrimaryAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspUpdatePrimaryAccountPackage* RspUpdatePrimaryAccountPackage::Allocate()
+RspUpdatePrimaryAccountPackage::RspUpdatePrimaryAccountPackage()
+	:RspUpdatePrimaryAccount(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspUpdatePrimaryAccountPackage>();
 }
-void RspUpdatePrimaryAccountPackage::Free()
+RspUpdatePrimaryAccountPackage::~RspUpdatePrimaryAccountPackage()
 {
-	Package::Free();
 	if (RspUpdatePrimaryAccount != nullptr)
 	{
-		::Free<RspUpdatePrimaryAccountField>(RspUpdatePrimaryAccount);
+		ObjectPool<RspUpdatePrimaryAccountField>::GetInstance().Deallocate(RspUpdatePrimaryAccount);
 		RspUpdatePrimaryAccount = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspUpdatePrimaryAccountPackage>::GetInstance().Free(this);
+}
+RspUpdatePrimaryAccountPackage* RspUpdatePrimaryAccountPackage::Allocate()
+{
+	return ObjectPool<RspUpdatePrimaryAccountPackage>::GetInstance().Allocate();
+}
+void RspUpdatePrimaryAccountPackage::Deallocate()
+{
+	ObjectPool<RspUpdatePrimaryAccountPackage>::GetInstance().Deallocate(this);
 }
 void RspUpdatePrimaryAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -20098,7 +20662,7 @@ bool RspUpdatePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case RspUpdatePrimaryAccountField::FieldID:
 			{
-				RspUpdatePrimaryAccount = ::Allocate<RspUpdatePrimaryAccountField>();
+				RspUpdatePrimaryAccount = ObjectPool<RspUpdatePrimaryAccountField>::GetInstance().Allocate();
 				memset(RspUpdatePrimaryAccount, 0, sizeof(*RspUpdatePrimaryAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -20140,7 +20704,7 @@ bool RspUpdatePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -20223,14 +20787,14 @@ bool RspUpdatePrimaryAccountPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case RspUpdatePrimaryAccountField::FieldID:
 		{
-			RspUpdatePrimaryAccount = ::Allocate<RspUpdatePrimaryAccountField>();
+			RspUpdatePrimaryAccount = ObjectPool<RspUpdatePrimaryAccountField>::GetInstance().Allocate();
 			memcpy(RspUpdatePrimaryAccount, buff + offset, sizeof(RspUpdatePrimaryAccountField));
 			offset += sizeof(RspUpdatePrimaryAccountField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -20255,19 +20819,25 @@ const char* RspUpdatePrimaryAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRemovePrimaryAccountPackage* ReqRemovePrimaryAccountPackage::Allocate()
+ReqRemovePrimaryAccountPackage::ReqRemovePrimaryAccountPackage()
+	:ReqRemovePrimaryAccount(nullptr)
 {
-	return ::Allocate<ReqRemovePrimaryAccountPackage>();
 }
-void ReqRemovePrimaryAccountPackage::Free()
+ReqRemovePrimaryAccountPackage::~ReqRemovePrimaryAccountPackage()
 {
-	Package::Free();
 	if (ReqRemovePrimaryAccount != nullptr)
 	{
-		::Free<ReqRemovePrimaryAccountField>(ReqRemovePrimaryAccount);
+		ObjectPool<ReqRemovePrimaryAccountField>::GetInstance().Deallocate(ReqRemovePrimaryAccount);
 		ReqRemovePrimaryAccount = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRemovePrimaryAccountPackage>::GetInstance().Free(this);
+}
+ReqRemovePrimaryAccountPackage* ReqRemovePrimaryAccountPackage::Allocate()
+{
+	return ObjectPool<ReqRemovePrimaryAccountPackage>::GetInstance().Allocate();
+}
+void ReqRemovePrimaryAccountPackage::Deallocate()
+{
+	ObjectPool<ReqRemovePrimaryAccountPackage>::GetInstance().Deallocate(this);
 }
 void ReqRemovePrimaryAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -20308,7 +20878,7 @@ bool ReqRemovePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case ReqRemovePrimaryAccountField::FieldID:
 			{
-				ReqRemovePrimaryAccount = ::Allocate<ReqRemovePrimaryAccountField>();
+				ReqRemovePrimaryAccount = ObjectPool<ReqRemovePrimaryAccountField>::GetInstance().Allocate();
 				memset(ReqRemovePrimaryAccount, 0, sizeof(*ReqRemovePrimaryAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -20385,7 +20955,7 @@ bool ReqRemovePrimaryAccountPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case ReqRemovePrimaryAccountField::FieldID:
 		{
-			ReqRemovePrimaryAccount = ::Allocate<ReqRemovePrimaryAccountField>();
+			ReqRemovePrimaryAccount = ObjectPool<ReqRemovePrimaryAccountField>::GetInstance().Allocate();
 			memcpy(ReqRemovePrimaryAccount, buff + offset, sizeof(ReqRemovePrimaryAccountField));
 			offset += sizeof(ReqRemovePrimaryAccountField);	
 			break;
@@ -20406,24 +20976,30 @@ const char* ReqRemovePrimaryAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRemovePrimaryAccountPackage* RspRemovePrimaryAccountPackage::Allocate()
+RspRemovePrimaryAccountPackage::RspRemovePrimaryAccountPackage()
+	:RspRemovePrimaryAccount(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRemovePrimaryAccountPackage>();
 }
-void RspRemovePrimaryAccountPackage::Free()
+RspRemovePrimaryAccountPackage::~RspRemovePrimaryAccountPackage()
 {
-	Package::Free();
 	if (RspRemovePrimaryAccount != nullptr)
 	{
-		::Free<RspRemovePrimaryAccountField>(RspRemovePrimaryAccount);
+		ObjectPool<RspRemovePrimaryAccountField>::GetInstance().Deallocate(RspRemovePrimaryAccount);
 		RspRemovePrimaryAccount = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRemovePrimaryAccountPackage>::GetInstance().Free(this);
+}
+RspRemovePrimaryAccountPackage* RspRemovePrimaryAccountPackage::Allocate()
+{
+	return ObjectPool<RspRemovePrimaryAccountPackage>::GetInstance().Allocate();
+}
+void RspRemovePrimaryAccountPackage::Deallocate()
+{
+	ObjectPool<RspRemovePrimaryAccountPackage>::GetInstance().Deallocate(this);
 }
 void RspRemovePrimaryAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -20475,7 +21051,7 @@ bool RspRemovePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case RspRemovePrimaryAccountField::FieldID:
 			{
-				RspRemovePrimaryAccount = ::Allocate<RspRemovePrimaryAccountField>();
+				RspRemovePrimaryAccount = ObjectPool<RspRemovePrimaryAccountField>::GetInstance().Allocate();
 				memset(RspRemovePrimaryAccount, 0, sizeof(*RspRemovePrimaryAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -20517,7 +21093,7 @@ bool RspRemovePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -20600,14 +21176,14 @@ bool RspRemovePrimaryAccountPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case RspRemovePrimaryAccountField::FieldID:
 		{
-			RspRemovePrimaryAccount = ::Allocate<RspRemovePrimaryAccountField>();
+			RspRemovePrimaryAccount = ObjectPool<RspRemovePrimaryAccountField>::GetInstance().Allocate();
 			memcpy(RspRemovePrimaryAccount, buff + offset, sizeof(RspRemovePrimaryAccountField));
 			offset += sizeof(RspRemovePrimaryAccountField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -20632,19 +21208,25 @@ const char* RspRemovePrimaryAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddAccountPackage* ReqAddAccountPackage::Allocate()
+ReqAddAccountPackage::ReqAddAccountPackage()
+	:ReqAddAccount(nullptr)
 {
-	return ::Allocate<ReqAddAccountPackage>();
 }
-void ReqAddAccountPackage::Free()
+ReqAddAccountPackage::~ReqAddAccountPackage()
 {
-	Package::Free();
 	if (ReqAddAccount != nullptr)
 	{
-		::Free<ReqAddAccountField>(ReqAddAccount);
+		ObjectPool<ReqAddAccountField>::GetInstance().Deallocate(ReqAddAccount);
 		ReqAddAccount = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddAccountPackage>::GetInstance().Free(this);
+}
+ReqAddAccountPackage* ReqAddAccountPackage::Allocate()
+{
+	return ObjectPool<ReqAddAccountPackage>::GetInstance().Allocate();
+}
+void ReqAddAccountPackage::Deallocate()
+{
+	ObjectPool<ReqAddAccountPackage>::GetInstance().Deallocate(this);
 }
 void ReqAddAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -20705,7 +21287,7 @@ bool ReqAddAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 			{
 			case ReqAddAccountField::FieldID:
 			{
-				ReqAddAccount = ::Allocate<ReqAddAccountField>();
+				ReqAddAccount = ObjectPool<ReqAddAccountField>::GetInstance().Allocate();
 				memset(ReqAddAccount, 0, sizeof(*ReqAddAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -20825,7 +21407,7 @@ bool ReqAddAccountPackage::FromXtpStream(char* buff, int startIndex, int endInde
 		{
 		case ReqAddAccountField::FieldID:
 		{
-			ReqAddAccount = ::Allocate<ReqAddAccountField>();
+			ReqAddAccount = ObjectPool<ReqAddAccountField>::GetInstance().Allocate();
 			memcpy(ReqAddAccount, buff + offset, sizeof(ReqAddAccountField));
 			offset += sizeof(ReqAddAccountField);	
 			break;
@@ -20846,24 +21428,30 @@ const char* ReqAddAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddAccountPackage* RspAddAccountPackage::Allocate()
+RspAddAccountPackage::RspAddAccountPackage()
+	:RspAddAccount(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddAccountPackage>();
 }
-void RspAddAccountPackage::Free()
+RspAddAccountPackage::~RspAddAccountPackage()
 {
-	Package::Free();
 	if (RspAddAccount != nullptr)
 	{
-		::Free<RspAddAccountField>(RspAddAccount);
+		ObjectPool<RspAddAccountField>::GetInstance().Deallocate(RspAddAccount);
 		RspAddAccount = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddAccountPackage>::GetInstance().Free(this);
+}
+RspAddAccountPackage* RspAddAccountPackage::Allocate()
+{
+	return ObjectPool<RspAddAccountPackage>::GetInstance().Allocate();
+}
+void RspAddAccountPackage::Deallocate()
+{
+	ObjectPool<RspAddAccountPackage>::GetInstance().Deallocate(this);
 }
 void RspAddAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -20915,7 +21503,7 @@ bool RspAddAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 			{
 			case RspAddAccountField::FieldID:
 			{
-				RspAddAccount = ::Allocate<RspAddAccountField>();
+				RspAddAccount = ObjectPool<RspAddAccountField>::GetInstance().Allocate();
 				memset(RspAddAccount, 0, sizeof(*RspAddAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -20957,7 +21545,7 @@ bool RspAddAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -21040,14 +21628,14 @@ bool RspAddAccountPackage::FromXtpStream(char* buff, int startIndex, int endInde
 		{
 		case RspAddAccountField::FieldID:
 		{
-			RspAddAccount = ::Allocate<RspAddAccountField>();
+			RspAddAccount = ObjectPool<RspAddAccountField>::GetInstance().Allocate();
 			memcpy(RspAddAccount, buff + offset, sizeof(RspAddAccountField));
 			offset += sizeof(RspAddAccountField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -21072,19 +21660,25 @@ const char* RspAddAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqUpdateAccountPackage* ReqUpdateAccountPackage::Allocate()
+ReqUpdateAccountPackage::ReqUpdateAccountPackage()
+	:ReqUpdateAccount(nullptr)
 {
-	return ::Allocate<ReqUpdateAccountPackage>();
 }
-void ReqUpdateAccountPackage::Free()
+ReqUpdateAccountPackage::~ReqUpdateAccountPackage()
 {
-	Package::Free();
 	if (ReqUpdateAccount != nullptr)
 	{
-		::Free<ReqUpdateAccountField>(ReqUpdateAccount);
+		ObjectPool<ReqUpdateAccountField>::GetInstance().Deallocate(ReqUpdateAccount);
 		ReqUpdateAccount = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqUpdateAccountPackage>::GetInstance().Free(this);
+}
+ReqUpdateAccountPackage* ReqUpdateAccountPackage::Allocate()
+{
+	return ObjectPool<ReqUpdateAccountPackage>::GetInstance().Allocate();
+}
+void ReqUpdateAccountPackage::Deallocate()
+{
+	ObjectPool<ReqUpdateAccountPackage>::GetInstance().Deallocate(this);
 }
 void ReqUpdateAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -21145,7 +21739,7 @@ bool ReqUpdateAccountPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case ReqUpdateAccountField::FieldID:
 			{
-				ReqUpdateAccount = ::Allocate<ReqUpdateAccountField>();
+				ReqUpdateAccount = ObjectPool<ReqUpdateAccountField>::GetInstance().Allocate();
 				memset(ReqUpdateAccount, 0, sizeof(*ReqUpdateAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -21265,7 +21859,7 @@ bool ReqUpdateAccountPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case ReqUpdateAccountField::FieldID:
 		{
-			ReqUpdateAccount = ::Allocate<ReqUpdateAccountField>();
+			ReqUpdateAccount = ObjectPool<ReqUpdateAccountField>::GetInstance().Allocate();
 			memcpy(ReqUpdateAccount, buff + offset, sizeof(ReqUpdateAccountField));
 			offset += sizeof(ReqUpdateAccountField);	
 			break;
@@ -21286,24 +21880,30 @@ const char* ReqUpdateAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspUpdateAccountPackage* RspUpdateAccountPackage::Allocate()
+RspUpdateAccountPackage::RspUpdateAccountPackage()
+	:RspUpdateAccount(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspUpdateAccountPackage>();
 }
-void RspUpdateAccountPackage::Free()
+RspUpdateAccountPackage::~RspUpdateAccountPackage()
 {
-	Package::Free();
 	if (RspUpdateAccount != nullptr)
 	{
-		::Free<RspUpdateAccountField>(RspUpdateAccount);
+		ObjectPool<RspUpdateAccountField>::GetInstance().Deallocate(RspUpdateAccount);
 		RspUpdateAccount = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspUpdateAccountPackage>::GetInstance().Free(this);
+}
+RspUpdateAccountPackage* RspUpdateAccountPackage::Allocate()
+{
+	return ObjectPool<RspUpdateAccountPackage>::GetInstance().Allocate();
+}
+void RspUpdateAccountPackage::Deallocate()
+{
+	ObjectPool<RspUpdateAccountPackage>::GetInstance().Deallocate(this);
 }
 void RspUpdateAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -21355,7 +21955,7 @@ bool RspUpdateAccountPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case RspUpdateAccountField::FieldID:
 			{
-				RspUpdateAccount = ::Allocate<RspUpdateAccountField>();
+				RspUpdateAccount = ObjectPool<RspUpdateAccountField>::GetInstance().Allocate();
 				memset(RspUpdateAccount, 0, sizeof(*RspUpdateAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -21397,7 +21997,7 @@ bool RspUpdateAccountPackage::FromStepStream(char* buff, int startIndex, int end
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -21480,14 +22080,14 @@ bool RspUpdateAccountPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case RspUpdateAccountField::FieldID:
 		{
-			RspUpdateAccount = ::Allocate<RspUpdateAccountField>();
+			RspUpdateAccount = ObjectPool<RspUpdateAccountField>::GetInstance().Allocate();
 			memcpy(RspUpdateAccount, buff + offset, sizeof(RspUpdateAccountField));
 			offset += sizeof(RspUpdateAccountField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -21512,19 +22112,25 @@ const char* RspUpdateAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRemoveAccountPackage* ReqRemoveAccountPackage::Allocate()
+ReqRemoveAccountPackage::ReqRemoveAccountPackage()
+	:ReqRemoveAccount(nullptr)
 {
-	return ::Allocate<ReqRemoveAccountPackage>();
 }
-void ReqRemoveAccountPackage::Free()
+ReqRemoveAccountPackage::~ReqRemoveAccountPackage()
 {
-	Package::Free();
 	if (ReqRemoveAccount != nullptr)
 	{
-		::Free<ReqRemoveAccountField>(ReqRemoveAccount);
+		ObjectPool<ReqRemoveAccountField>::GetInstance().Deallocate(ReqRemoveAccount);
 		ReqRemoveAccount = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRemoveAccountPackage>::GetInstance().Free(this);
+}
+ReqRemoveAccountPackage* ReqRemoveAccountPackage::Allocate()
+{
+	return ObjectPool<ReqRemoveAccountPackage>::GetInstance().Allocate();
+}
+void ReqRemoveAccountPackage::Deallocate()
+{
+	ObjectPool<ReqRemoveAccountPackage>::GetInstance().Deallocate(this);
 }
 void ReqRemoveAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -21565,7 +22171,7 @@ bool ReqRemoveAccountPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case ReqRemoveAccountField::FieldID:
 			{
-				ReqRemoveAccount = ::Allocate<ReqRemoveAccountField>();
+				ReqRemoveAccount = ObjectPool<ReqRemoveAccountField>::GetInstance().Allocate();
 				memset(ReqRemoveAccount, 0, sizeof(*ReqRemoveAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -21642,7 +22248,7 @@ bool ReqRemoveAccountPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case ReqRemoveAccountField::FieldID:
 		{
-			ReqRemoveAccount = ::Allocate<ReqRemoveAccountField>();
+			ReqRemoveAccount = ObjectPool<ReqRemoveAccountField>::GetInstance().Allocate();
 			memcpy(ReqRemoveAccount, buff + offset, sizeof(ReqRemoveAccountField));
 			offset += sizeof(ReqRemoveAccountField);	
 			break;
@@ -21663,24 +22269,30 @@ const char* ReqRemoveAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRemoveAccountPackage* RspRemoveAccountPackage::Allocate()
+RspRemoveAccountPackage::RspRemoveAccountPackage()
+	:RspRemoveAccount(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRemoveAccountPackage>();
 }
-void RspRemoveAccountPackage::Free()
+RspRemoveAccountPackage::~RspRemoveAccountPackage()
 {
-	Package::Free();
 	if (RspRemoveAccount != nullptr)
 	{
-		::Free<RspRemoveAccountField>(RspRemoveAccount);
+		ObjectPool<RspRemoveAccountField>::GetInstance().Deallocate(RspRemoveAccount);
 		RspRemoveAccount = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRemoveAccountPackage>::GetInstance().Free(this);
+}
+RspRemoveAccountPackage* RspRemoveAccountPackage::Allocate()
+{
+	return ObjectPool<RspRemoveAccountPackage>::GetInstance().Allocate();
+}
+void RspRemoveAccountPackage::Deallocate()
+{
+	ObjectPool<RspRemoveAccountPackage>::GetInstance().Deallocate(this);
 }
 void RspRemoveAccountPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -21732,7 +22344,7 @@ bool RspRemoveAccountPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case RspRemoveAccountField::FieldID:
 			{
-				RspRemoveAccount = ::Allocate<RspRemoveAccountField>();
+				RspRemoveAccount = ObjectPool<RspRemoveAccountField>::GetInstance().Allocate();
 				memset(RspRemoveAccount, 0, sizeof(*RspRemoveAccount));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -21774,7 +22386,7 @@ bool RspRemoveAccountPackage::FromStepStream(char* buff, int startIndex, int end
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -21857,14 +22469,14 @@ bool RspRemoveAccountPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case RspRemoveAccountField::FieldID:
 		{
-			RspRemoveAccount = ::Allocate<RspRemoveAccountField>();
+			RspRemoveAccount = ObjectPool<RspRemoveAccountField>::GetInstance().Allocate();
 			memcpy(RspRemoveAccount, buff + offset, sizeof(RspRemoveAccountField));
 			offset += sizeof(RspRemoveAccountField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -21889,19 +22501,25 @@ const char* RspRemoveAccountPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddBaseCommissionPackage* ReqAddBaseCommissionPackage::Allocate()
+ReqAddBaseCommissionPackage::ReqAddBaseCommissionPackage()
+	:ReqAddBaseCommission(nullptr)
 {
-	return ::Allocate<ReqAddBaseCommissionPackage>();
 }
-void ReqAddBaseCommissionPackage::Free()
+ReqAddBaseCommissionPackage::~ReqAddBaseCommissionPackage()
 {
-	Package::Free();
 	if (ReqAddBaseCommission != nullptr)
 	{
-		::Free<ReqAddBaseCommissionField>(ReqAddBaseCommission);
+		ObjectPool<ReqAddBaseCommissionField>::GetInstance().Deallocate(ReqAddBaseCommission);
 		ReqAddBaseCommission = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddBaseCommissionPackage>::GetInstance().Free(this);
+}
+ReqAddBaseCommissionPackage* ReqAddBaseCommissionPackage::Allocate()
+{
+	return ObjectPool<ReqAddBaseCommissionPackage>::GetInstance().Allocate();
+}
+void ReqAddBaseCommissionPackage::Deallocate()
+{
+	ObjectPool<ReqAddBaseCommissionPackage>::GetInstance().Deallocate(this);
 }
 void ReqAddBaseCommissionPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -21952,7 +22570,7 @@ bool ReqAddBaseCommissionPackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case ReqAddBaseCommissionField::FieldID:
 			{
-				ReqAddBaseCommission = ::Allocate<ReqAddBaseCommissionField>();
+				ReqAddBaseCommission = ObjectPool<ReqAddBaseCommissionField>::GetInstance().Allocate();
 				memset(ReqAddBaseCommission, 0, sizeof(*ReqAddBaseCommission));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -22060,7 +22678,7 @@ bool ReqAddBaseCommissionPackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case ReqAddBaseCommissionField::FieldID:
 		{
-			ReqAddBaseCommission = ::Allocate<ReqAddBaseCommissionField>();
+			ReqAddBaseCommission = ObjectPool<ReqAddBaseCommissionField>::GetInstance().Allocate();
 			memcpy(ReqAddBaseCommission, buff + offset, sizeof(ReqAddBaseCommissionField));
 			offset += sizeof(ReqAddBaseCommissionField);	
 			break;
@@ -22081,24 +22699,30 @@ const char* ReqAddBaseCommissionPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddBaseCommissionPackage* RspAddBaseCommissionPackage::Allocate()
+RspAddBaseCommissionPackage::RspAddBaseCommissionPackage()
+	:RspAddBaseCommission(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddBaseCommissionPackage>();
 }
-void RspAddBaseCommissionPackage::Free()
+RspAddBaseCommissionPackage::~RspAddBaseCommissionPackage()
 {
-	Package::Free();
 	if (RspAddBaseCommission != nullptr)
 	{
-		::Free<RspAddBaseCommissionField>(RspAddBaseCommission);
+		ObjectPool<RspAddBaseCommissionField>::GetInstance().Deallocate(RspAddBaseCommission);
 		RspAddBaseCommission = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddBaseCommissionPackage>::GetInstance().Free(this);
+}
+RspAddBaseCommissionPackage* RspAddBaseCommissionPackage::Allocate()
+{
+	return ObjectPool<RspAddBaseCommissionPackage>::GetInstance().Allocate();
+}
+void RspAddBaseCommissionPackage::Deallocate()
+{
+	ObjectPool<RspAddBaseCommissionPackage>::GetInstance().Deallocate(this);
 }
 void RspAddBaseCommissionPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -22156,7 +22780,7 @@ bool RspAddBaseCommissionPackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case RspAddBaseCommissionField::FieldID:
 			{
-				RspAddBaseCommission = ::Allocate<RspAddBaseCommissionField>();
+				RspAddBaseCommission = ObjectPool<RspAddBaseCommissionField>::GetInstance().Allocate();
 				memset(RspAddBaseCommission, 0, sizeof(*RspAddBaseCommission));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -22209,7 +22833,7 @@ bool RspAddBaseCommissionPackage::FromStepStream(char* buff, int startIndex, int
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -22292,14 +22916,14 @@ bool RspAddBaseCommissionPackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case RspAddBaseCommissionField::FieldID:
 		{
-			RspAddBaseCommission = ::Allocate<RspAddBaseCommissionField>();
+			RspAddBaseCommission = ObjectPool<RspAddBaseCommissionField>::GetInstance().Allocate();
 			memcpy(RspAddBaseCommission, buff + offset, sizeof(RspAddBaseCommissionField));
 			offset += sizeof(RspAddBaseCommissionField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -22324,19 +22948,25 @@ const char* RspAddBaseCommissionPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqUpdateBaseCommissionPackage* ReqUpdateBaseCommissionPackage::Allocate()
+ReqUpdateBaseCommissionPackage::ReqUpdateBaseCommissionPackage()
+	:ReqUpdateBaseCommission(nullptr)
 {
-	return ::Allocate<ReqUpdateBaseCommissionPackage>();
 }
-void ReqUpdateBaseCommissionPackage::Free()
+ReqUpdateBaseCommissionPackage::~ReqUpdateBaseCommissionPackage()
 {
-	Package::Free();
 	if (ReqUpdateBaseCommission != nullptr)
 	{
-		::Free<ReqUpdateBaseCommissionField>(ReqUpdateBaseCommission);
+		ObjectPool<ReqUpdateBaseCommissionField>::GetInstance().Deallocate(ReqUpdateBaseCommission);
 		ReqUpdateBaseCommission = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqUpdateBaseCommissionPackage>::GetInstance().Free(this);
+}
+ReqUpdateBaseCommissionPackage* ReqUpdateBaseCommissionPackage::Allocate()
+{
+	return ObjectPool<ReqUpdateBaseCommissionPackage>::GetInstance().Allocate();
+}
+void ReqUpdateBaseCommissionPackage::Deallocate()
+{
+	ObjectPool<ReqUpdateBaseCommissionPackage>::GetInstance().Deallocate(this);
 }
 void ReqUpdateBaseCommissionPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -22387,7 +23017,7 @@ bool ReqUpdateBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case ReqUpdateBaseCommissionField::FieldID:
 			{
-				ReqUpdateBaseCommission = ::Allocate<ReqUpdateBaseCommissionField>();
+				ReqUpdateBaseCommission = ObjectPool<ReqUpdateBaseCommissionField>::GetInstance().Allocate();
 				memset(ReqUpdateBaseCommission, 0, sizeof(*ReqUpdateBaseCommission));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -22495,7 +23125,7 @@ bool ReqUpdateBaseCommissionPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case ReqUpdateBaseCommissionField::FieldID:
 		{
-			ReqUpdateBaseCommission = ::Allocate<ReqUpdateBaseCommissionField>();
+			ReqUpdateBaseCommission = ObjectPool<ReqUpdateBaseCommissionField>::GetInstance().Allocate();
 			memcpy(ReqUpdateBaseCommission, buff + offset, sizeof(ReqUpdateBaseCommissionField));
 			offset += sizeof(ReqUpdateBaseCommissionField);	
 			break;
@@ -22516,24 +23146,30 @@ const char* ReqUpdateBaseCommissionPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspUpdateBaseCommissionPackage* RspUpdateBaseCommissionPackage::Allocate()
+RspUpdateBaseCommissionPackage::RspUpdateBaseCommissionPackage()
+	:RspUpdateBaseCommission(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspUpdateBaseCommissionPackage>();
 }
-void RspUpdateBaseCommissionPackage::Free()
+RspUpdateBaseCommissionPackage::~RspUpdateBaseCommissionPackage()
 {
-	Package::Free();
 	if (RspUpdateBaseCommission != nullptr)
 	{
-		::Free<RspUpdateBaseCommissionField>(RspUpdateBaseCommission);
+		ObjectPool<RspUpdateBaseCommissionField>::GetInstance().Deallocate(RspUpdateBaseCommission);
 		RspUpdateBaseCommission = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspUpdateBaseCommissionPackage>::GetInstance().Free(this);
+}
+RspUpdateBaseCommissionPackage* RspUpdateBaseCommissionPackage::Allocate()
+{
+	return ObjectPool<RspUpdateBaseCommissionPackage>::GetInstance().Allocate();
+}
+void RspUpdateBaseCommissionPackage::Deallocate()
+{
+	ObjectPool<RspUpdateBaseCommissionPackage>::GetInstance().Deallocate(this);
 }
 void RspUpdateBaseCommissionPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -22591,7 +23227,7 @@ bool RspUpdateBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case RspUpdateBaseCommissionField::FieldID:
 			{
-				RspUpdateBaseCommission = ::Allocate<RspUpdateBaseCommissionField>();
+				RspUpdateBaseCommission = ObjectPool<RspUpdateBaseCommissionField>::GetInstance().Allocate();
 				memset(RspUpdateBaseCommission, 0, sizeof(*RspUpdateBaseCommission));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -22644,7 +23280,7 @@ bool RspUpdateBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -22727,14 +23363,14 @@ bool RspUpdateBaseCommissionPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case RspUpdateBaseCommissionField::FieldID:
 		{
-			RspUpdateBaseCommission = ::Allocate<RspUpdateBaseCommissionField>();
+			RspUpdateBaseCommission = ObjectPool<RspUpdateBaseCommissionField>::GetInstance().Allocate();
 			memcpy(RspUpdateBaseCommission, buff + offset, sizeof(RspUpdateBaseCommissionField));
 			offset += sizeof(RspUpdateBaseCommissionField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -22759,19 +23395,25 @@ const char* RspUpdateBaseCommissionPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRemoveBaseCommissionPackage* ReqRemoveBaseCommissionPackage::Allocate()
+ReqRemoveBaseCommissionPackage::ReqRemoveBaseCommissionPackage()
+	:ReqRemoveBaseCommission(nullptr)
 {
-	return ::Allocate<ReqRemoveBaseCommissionPackage>();
 }
-void ReqRemoveBaseCommissionPackage::Free()
+ReqRemoveBaseCommissionPackage::~ReqRemoveBaseCommissionPackage()
 {
-	Package::Free();
 	if (ReqRemoveBaseCommission != nullptr)
 	{
-		::Free<ReqRemoveBaseCommissionField>(ReqRemoveBaseCommission);
+		ObjectPool<ReqRemoveBaseCommissionField>::GetInstance().Deallocate(ReqRemoveBaseCommission);
 		ReqRemoveBaseCommission = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRemoveBaseCommissionPackage>::GetInstance().Free(this);
+}
+ReqRemoveBaseCommissionPackage* ReqRemoveBaseCommissionPackage::Allocate()
+{
+	return ObjectPool<ReqRemoveBaseCommissionPackage>::GetInstance().Allocate();
+}
+void ReqRemoveBaseCommissionPackage::Deallocate()
+{
+	ObjectPool<ReqRemoveBaseCommissionPackage>::GetInstance().Deallocate(this);
 }
 void ReqRemoveBaseCommissionPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -22818,7 +23460,7 @@ bool ReqRemoveBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case ReqRemoveBaseCommissionField::FieldID:
 			{
-				ReqRemoveBaseCommission = ::Allocate<ReqRemoveBaseCommissionField>();
+				ReqRemoveBaseCommission = ObjectPool<ReqRemoveBaseCommissionField>::GetInstance().Allocate();
 				memset(ReqRemoveBaseCommission, 0, sizeof(*ReqRemoveBaseCommission));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -22906,7 +23548,7 @@ bool ReqRemoveBaseCommissionPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case ReqRemoveBaseCommissionField::FieldID:
 		{
-			ReqRemoveBaseCommission = ::Allocate<ReqRemoveBaseCommissionField>();
+			ReqRemoveBaseCommission = ObjectPool<ReqRemoveBaseCommissionField>::GetInstance().Allocate();
 			memcpy(ReqRemoveBaseCommission, buff + offset, sizeof(ReqRemoveBaseCommissionField));
 			offset += sizeof(ReqRemoveBaseCommissionField);	
 			break;
@@ -22927,24 +23569,30 @@ const char* ReqRemoveBaseCommissionPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRemoveBaseCommissionPackage* RspRemoveBaseCommissionPackage::Allocate()
+RspRemoveBaseCommissionPackage::RspRemoveBaseCommissionPackage()
+	:RspInfo(nullptr), RspRemoveBaseCommission(nullptr)
 {
-	return ::Allocate<RspRemoveBaseCommissionPackage>();
 }
-void RspRemoveBaseCommissionPackage::Free()
+RspRemoveBaseCommissionPackage::~RspRemoveBaseCommissionPackage()
 {
-	Package::Free();
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
 	if (RspRemoveBaseCommission != nullptr)
 	{
-		::Free<RspRemoveBaseCommissionField>(RspRemoveBaseCommission);
+		ObjectPool<RspRemoveBaseCommissionField>::GetInstance().Deallocate(RspRemoveBaseCommission);
 		RspRemoveBaseCommission = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRemoveBaseCommissionPackage>::GetInstance().Free(this);
+}
+RspRemoveBaseCommissionPackage* RspRemoveBaseCommissionPackage::Allocate()
+{
+	return ObjectPool<RspRemoveBaseCommissionPackage>::GetInstance().Allocate();
+}
+void RspRemoveBaseCommissionPackage::Deallocate()
+{
+	ObjectPool<RspRemoveBaseCommissionPackage>::GetInstance().Deallocate(this);
 }
 void RspRemoveBaseCommissionPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -23002,7 +23650,7 @@ bool RspRemoveBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -23043,7 +23691,7 @@ bool RspRemoveBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 			}
 			case RspRemoveBaseCommissionField::FieldID:
 			{
-				RspRemoveBaseCommission = ::Allocate<RspRemoveBaseCommissionField>();
+				RspRemoveBaseCommission = ObjectPool<RspRemoveBaseCommissionField>::GetInstance().Allocate();
 				memset(RspRemoveBaseCommission, 0, sizeof(*RspRemoveBaseCommission));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -23138,14 +23786,14 @@ bool RspRemoveBaseCommissionPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
 		}
 		case RspRemoveBaseCommissionField::FieldID:
 		{
-			RspRemoveBaseCommission = ::Allocate<RspRemoveBaseCommissionField>();
+			RspRemoveBaseCommission = ObjectPool<RspRemoveBaseCommissionField>::GetInstance().Allocate();
 			memcpy(RspRemoveBaseCommission, buff + offset, sizeof(RspRemoveBaseCommissionField));
 			offset += sizeof(RspRemoveBaseCommissionField);	
 			break;
@@ -23170,19 +23818,25 @@ const char* RspRemoveBaseCommissionPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddCommissionGroupPackage* ReqAddCommissionGroupPackage::Allocate()
+ReqAddCommissionGroupPackage::ReqAddCommissionGroupPackage()
+	:ReqAddCommissionGroup(nullptr)
 {
-	return ::Allocate<ReqAddCommissionGroupPackage>();
 }
-void ReqAddCommissionGroupPackage::Free()
+ReqAddCommissionGroupPackage::~ReqAddCommissionGroupPackage()
 {
-	Package::Free();
 	if (ReqAddCommissionGroup != nullptr)
 	{
-		::Free<ReqAddCommissionGroupField>(ReqAddCommissionGroup);
+		ObjectPool<ReqAddCommissionGroupField>::GetInstance().Deallocate(ReqAddCommissionGroup);
 		ReqAddCommissionGroup = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddCommissionGroupPackage>::GetInstance().Free(this);
+}
+ReqAddCommissionGroupPackage* ReqAddCommissionGroupPackage::Allocate()
+{
+	return ObjectPool<ReqAddCommissionGroupPackage>::GetInstance().Allocate();
+}
+void ReqAddCommissionGroupPackage::Deallocate()
+{
+	ObjectPool<ReqAddCommissionGroupPackage>::GetInstance().Deallocate(this);
 }
 void ReqAddCommissionGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -23245,7 +23899,7 @@ bool ReqAddCommissionGroupPackage::FromStepStream(char* buff, int startIndex, in
 			{
 			case ReqAddCommissionGroupField::FieldID:
 			{
-				ReqAddCommissionGroup = ::Allocate<ReqAddCommissionGroupField>();
+				ReqAddCommissionGroup = ObjectPool<ReqAddCommissionGroupField>::GetInstance().Allocate();
 				memset(ReqAddCommissionGroup, 0, sizeof(*ReqAddCommissionGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -23394,7 +24048,7 @@ bool ReqAddCommissionGroupPackage::FromXtpStream(char* buff, int startIndex, int
 		{
 		case ReqAddCommissionGroupField::FieldID:
 		{
-			ReqAddCommissionGroup = ::Allocate<ReqAddCommissionGroupField>();
+			ReqAddCommissionGroup = ObjectPool<ReqAddCommissionGroupField>::GetInstance().Allocate();
 			memcpy(ReqAddCommissionGroup, buff + offset, sizeof(ReqAddCommissionGroupField));
 			offset += sizeof(ReqAddCommissionGroupField);	
 			break;
@@ -23415,24 +24069,30 @@ const char* ReqAddCommissionGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddCommissionGroupPackage* RspAddCommissionGroupPackage::Allocate()
+RspAddCommissionGroupPackage::RspAddCommissionGroupPackage()
+	:RspAddCommissionGroup(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddCommissionGroupPackage>();
 }
-void RspAddCommissionGroupPackage::Free()
+RspAddCommissionGroupPackage::~RspAddCommissionGroupPackage()
 {
-	Package::Free();
 	if (RspAddCommissionGroup != nullptr)
 	{
-		::Free<RspAddCommissionGroupField>(RspAddCommissionGroup);
+		ObjectPool<RspAddCommissionGroupField>::GetInstance().Deallocate(RspAddCommissionGroup);
 		RspAddCommissionGroup = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddCommissionGroupPackage>::GetInstance().Free(this);
+}
+RspAddCommissionGroupPackage* RspAddCommissionGroupPackage::Allocate()
+{
+	return ObjectPool<RspAddCommissionGroupPackage>::GetInstance().Allocate();
+}
+void RspAddCommissionGroupPackage::Deallocate()
+{
+	ObjectPool<RspAddCommissionGroupPackage>::GetInstance().Deallocate(this);
 }
 void RspAddCommissionGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -23491,7 +24151,7 @@ bool RspAddCommissionGroupPackage::FromStepStream(char* buff, int startIndex, in
 			{
 			case RspAddCommissionGroupField::FieldID:
 			{
-				RspAddCommissionGroup = ::Allocate<RspAddCommissionGroupField>();
+				RspAddCommissionGroup = ObjectPool<RspAddCommissionGroupField>::GetInstance().Allocate();
 				memset(RspAddCommissionGroup, 0, sizeof(*RspAddCommissionGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -23549,7 +24209,7 @@ bool RspAddCommissionGroupPackage::FromStepStream(char* buff, int startIndex, in
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -23632,14 +24292,14 @@ bool RspAddCommissionGroupPackage::FromXtpStream(char* buff, int startIndex, int
 		{
 		case RspAddCommissionGroupField::FieldID:
 		{
-			RspAddCommissionGroup = ::Allocate<RspAddCommissionGroupField>();
+			RspAddCommissionGroup = ObjectPool<RspAddCommissionGroupField>::GetInstance().Allocate();
 			memcpy(RspAddCommissionGroup, buff + offset, sizeof(RspAddCommissionGroupField));
 			offset += sizeof(RspAddCommissionGroupField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -23664,19 +24324,25 @@ const char* RspAddCommissionGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqUpdateCommissionGroupPackage* ReqUpdateCommissionGroupPackage::Allocate()
+ReqUpdateCommissionGroupPackage::ReqUpdateCommissionGroupPackage()
+	:ReqUpdateCommissionGroup(nullptr)
 {
-	return ::Allocate<ReqUpdateCommissionGroupPackage>();
 }
-void ReqUpdateCommissionGroupPackage::Free()
+ReqUpdateCommissionGroupPackage::~ReqUpdateCommissionGroupPackage()
 {
-	Package::Free();
 	if (ReqUpdateCommissionGroup != nullptr)
 	{
-		::Free<ReqUpdateCommissionGroupField>(ReqUpdateCommissionGroup);
+		ObjectPool<ReqUpdateCommissionGroupField>::GetInstance().Deallocate(ReqUpdateCommissionGroup);
 		ReqUpdateCommissionGroup = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqUpdateCommissionGroupPackage>::GetInstance().Free(this);
+}
+ReqUpdateCommissionGroupPackage* ReqUpdateCommissionGroupPackage::Allocate()
+{
+	return ObjectPool<ReqUpdateCommissionGroupPackage>::GetInstance().Allocate();
+}
+void ReqUpdateCommissionGroupPackage::Deallocate()
+{
+	ObjectPool<ReqUpdateCommissionGroupPackage>::GetInstance().Deallocate(this);
 }
 void ReqUpdateCommissionGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -23739,7 +24405,7 @@ bool ReqUpdateCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 			{
 			case ReqUpdateCommissionGroupField::FieldID:
 			{
-				ReqUpdateCommissionGroup = ::Allocate<ReqUpdateCommissionGroupField>();
+				ReqUpdateCommissionGroup = ObjectPool<ReqUpdateCommissionGroupField>::GetInstance().Allocate();
 				memset(ReqUpdateCommissionGroup, 0, sizeof(*ReqUpdateCommissionGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -23888,7 +24554,7 @@ bool ReqUpdateCommissionGroupPackage::FromXtpStream(char* buff, int startIndex, 
 		{
 		case ReqUpdateCommissionGroupField::FieldID:
 		{
-			ReqUpdateCommissionGroup = ::Allocate<ReqUpdateCommissionGroupField>();
+			ReqUpdateCommissionGroup = ObjectPool<ReqUpdateCommissionGroupField>::GetInstance().Allocate();
 			memcpy(ReqUpdateCommissionGroup, buff + offset, sizeof(ReqUpdateCommissionGroupField));
 			offset += sizeof(ReqUpdateCommissionGroupField);	
 			break;
@@ -23909,24 +24575,30 @@ const char* ReqUpdateCommissionGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspUpdateCommissionGroupPackage* RspUpdateCommissionGroupPackage::Allocate()
+RspUpdateCommissionGroupPackage::RspUpdateCommissionGroupPackage()
+	:RspUpdateCommissionGroup(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspUpdateCommissionGroupPackage>();
 }
-void RspUpdateCommissionGroupPackage::Free()
+RspUpdateCommissionGroupPackage::~RspUpdateCommissionGroupPackage()
 {
-	Package::Free();
 	if (RspUpdateCommissionGroup != nullptr)
 	{
-		::Free<RspUpdateCommissionGroupField>(RspUpdateCommissionGroup);
+		ObjectPool<RspUpdateCommissionGroupField>::GetInstance().Deallocate(RspUpdateCommissionGroup);
 		RspUpdateCommissionGroup = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspUpdateCommissionGroupPackage>::GetInstance().Free(this);
+}
+RspUpdateCommissionGroupPackage* RspUpdateCommissionGroupPackage::Allocate()
+{
+	return ObjectPool<RspUpdateCommissionGroupPackage>::GetInstance().Allocate();
+}
+void RspUpdateCommissionGroupPackage::Deallocate()
+{
+	ObjectPool<RspUpdateCommissionGroupPackage>::GetInstance().Deallocate(this);
 }
 void RspUpdateCommissionGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -23985,7 +24657,7 @@ bool RspUpdateCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 			{
 			case RspUpdateCommissionGroupField::FieldID:
 			{
-				RspUpdateCommissionGroup = ::Allocate<RspUpdateCommissionGroupField>();
+				RspUpdateCommissionGroup = ObjectPool<RspUpdateCommissionGroupField>::GetInstance().Allocate();
 				memset(RspUpdateCommissionGroup, 0, sizeof(*RspUpdateCommissionGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -24043,7 +24715,7 @@ bool RspUpdateCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -24126,14 +24798,14 @@ bool RspUpdateCommissionGroupPackage::FromXtpStream(char* buff, int startIndex, 
 		{
 		case RspUpdateCommissionGroupField::FieldID:
 		{
-			RspUpdateCommissionGroup = ::Allocate<RspUpdateCommissionGroupField>();
+			RspUpdateCommissionGroup = ObjectPool<RspUpdateCommissionGroupField>::GetInstance().Allocate();
 			memcpy(RspUpdateCommissionGroup, buff + offset, sizeof(RspUpdateCommissionGroupField));
 			offset += sizeof(RspUpdateCommissionGroupField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -24158,19 +24830,25 @@ const char* RspUpdateCommissionGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRemoveCommissionGroupPackage* ReqRemoveCommissionGroupPackage::Allocate()
+ReqRemoveCommissionGroupPackage::ReqRemoveCommissionGroupPackage()
+	:ReqRemoveCommissionGroup(nullptr)
 {
-	return ::Allocate<ReqRemoveCommissionGroupPackage>();
 }
-void ReqRemoveCommissionGroupPackage::Free()
+ReqRemoveCommissionGroupPackage::~ReqRemoveCommissionGroupPackage()
 {
-	Package::Free();
 	if (ReqRemoveCommissionGroup != nullptr)
 	{
-		::Free<ReqRemoveCommissionGroupField>(ReqRemoveCommissionGroup);
+		ObjectPool<ReqRemoveCommissionGroupField>::GetInstance().Deallocate(ReqRemoveCommissionGroup);
 		ReqRemoveCommissionGroup = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRemoveCommissionGroupPackage>::GetInstance().Free(this);
+}
+ReqRemoveCommissionGroupPackage* ReqRemoveCommissionGroupPackage::Allocate()
+{
+	return ObjectPool<ReqRemoveCommissionGroupPackage>::GetInstance().Allocate();
+}
+void ReqRemoveCommissionGroupPackage::Deallocate()
+{
+	ObjectPool<ReqRemoveCommissionGroupPackage>::GetInstance().Deallocate(this);
 }
 void ReqRemoveCommissionGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -24218,7 +24896,7 @@ bool ReqRemoveCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 			{
 			case ReqRemoveCommissionGroupField::FieldID:
 			{
-				ReqRemoveCommissionGroup = ::Allocate<ReqRemoveCommissionGroupField>();
+				ReqRemoveCommissionGroup = ObjectPool<ReqRemoveCommissionGroupField>::GetInstance().Allocate();
 				memset(ReqRemoveCommissionGroup, 0, sizeof(*ReqRemoveCommissionGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -24311,7 +24989,7 @@ bool ReqRemoveCommissionGroupPackage::FromXtpStream(char* buff, int startIndex, 
 		{
 		case ReqRemoveCommissionGroupField::FieldID:
 		{
-			ReqRemoveCommissionGroup = ::Allocate<ReqRemoveCommissionGroupField>();
+			ReqRemoveCommissionGroup = ObjectPool<ReqRemoveCommissionGroupField>::GetInstance().Allocate();
 			memcpy(ReqRemoveCommissionGroup, buff + offset, sizeof(ReqRemoveCommissionGroupField));
 			offset += sizeof(ReqRemoveCommissionGroupField);	
 			break;
@@ -24332,24 +25010,30 @@ const char* ReqRemoveCommissionGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRemoveCommissionGroupPackage* RspRemoveCommissionGroupPackage::Allocate()
+RspRemoveCommissionGroupPackage::RspRemoveCommissionGroupPackage()
+	:RspRemoveCommissionGroup(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRemoveCommissionGroupPackage>();
 }
-void RspRemoveCommissionGroupPackage::Free()
+RspRemoveCommissionGroupPackage::~RspRemoveCommissionGroupPackage()
 {
-	Package::Free();
 	if (RspRemoveCommissionGroup != nullptr)
 	{
-		::Free<RspRemoveCommissionGroupField>(RspRemoveCommissionGroup);
+		ObjectPool<RspRemoveCommissionGroupField>::GetInstance().Deallocate(RspRemoveCommissionGroup);
 		RspRemoveCommissionGroup = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRemoveCommissionGroupPackage>::GetInstance().Free(this);
+}
+RspRemoveCommissionGroupPackage* RspRemoveCommissionGroupPackage::Allocate()
+{
+	return ObjectPool<RspRemoveCommissionGroupPackage>::GetInstance().Allocate();
+}
+void RspRemoveCommissionGroupPackage::Deallocate()
+{
+	ObjectPool<RspRemoveCommissionGroupPackage>::GetInstance().Deallocate(this);
 }
 void RspRemoveCommissionGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -24408,7 +25092,7 @@ bool RspRemoveCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 			{
 			case RspRemoveCommissionGroupField::FieldID:
 			{
-				RspRemoveCommissionGroup = ::Allocate<RspRemoveCommissionGroupField>();
+				RspRemoveCommissionGroup = ObjectPool<RspRemoveCommissionGroupField>::GetInstance().Allocate();
 				memset(RspRemoveCommissionGroup, 0, sizeof(*RspRemoveCommissionGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -24466,7 +25150,7 @@ bool RspRemoveCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -24549,14 +25233,14 @@ bool RspRemoveCommissionGroupPackage::FromXtpStream(char* buff, int startIndex, 
 		{
 		case RspRemoveCommissionGroupField::FieldID:
 		{
-			RspRemoveCommissionGroup = ::Allocate<RspRemoveCommissionGroupField>();
+			RspRemoveCommissionGroup = ObjectPool<RspRemoveCommissionGroupField>::GetInstance().Allocate();
 			memcpy(RspRemoveCommissionGroup, buff + offset, sizeof(RspRemoveCommissionGroupField));
 			offset += sizeof(RspRemoveCommissionGroupField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -24581,19 +25265,25 @@ const char* RspRemoveCommissionGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddOptionMarginParamPackage* ReqAddOptionMarginParamPackage::Allocate()
+ReqAddOptionMarginParamPackage::ReqAddOptionMarginParamPackage()
+	:ReqAddOptionMarginParam(nullptr)
 {
-	return ::Allocate<ReqAddOptionMarginParamPackage>();
 }
-void ReqAddOptionMarginParamPackage::Free()
+ReqAddOptionMarginParamPackage::~ReqAddOptionMarginParamPackage()
 {
-	Package::Free();
 	if (ReqAddOptionMarginParam != nullptr)
 	{
-		::Free<ReqAddOptionMarginParamField>(ReqAddOptionMarginParam);
+		ObjectPool<ReqAddOptionMarginParamField>::GetInstance().Deallocate(ReqAddOptionMarginParam);
 		ReqAddOptionMarginParam = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddOptionMarginParamPackage>::GetInstance().Free(this);
+}
+ReqAddOptionMarginParamPackage* ReqAddOptionMarginParamPackage::Allocate()
+{
+	return ObjectPool<ReqAddOptionMarginParamPackage>::GetInstance().Allocate();
+}
+void ReqAddOptionMarginParamPackage::Deallocate()
+{
+	ObjectPool<ReqAddOptionMarginParamPackage>::GetInstance().Deallocate(this);
 }
 void ReqAddOptionMarginParamPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -24641,7 +25331,7 @@ bool ReqAddOptionMarginParamPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case ReqAddOptionMarginParamField::FieldID:
 			{
-				ReqAddOptionMarginParam = ::Allocate<ReqAddOptionMarginParamField>();
+				ReqAddOptionMarginParam = ObjectPool<ReqAddOptionMarginParamField>::GetInstance().Allocate();
 				memset(ReqAddOptionMarginParam, 0, sizeof(*ReqAddOptionMarginParam));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -24734,7 +25424,7 @@ bool ReqAddOptionMarginParamPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case ReqAddOptionMarginParamField::FieldID:
 		{
-			ReqAddOptionMarginParam = ::Allocate<ReqAddOptionMarginParamField>();
+			ReqAddOptionMarginParam = ObjectPool<ReqAddOptionMarginParamField>::GetInstance().Allocate();
 			memcpy(ReqAddOptionMarginParam, buff + offset, sizeof(ReqAddOptionMarginParamField));
 			offset += sizeof(ReqAddOptionMarginParamField);	
 			break;
@@ -24755,24 +25445,30 @@ const char* ReqAddOptionMarginParamPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddOptionMarginParamPackage* RspAddOptionMarginParamPackage::Allocate()
+RspAddOptionMarginParamPackage::RspAddOptionMarginParamPackage()
+	:RspAddOptionMarginParam(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddOptionMarginParamPackage>();
 }
-void RspAddOptionMarginParamPackage::Free()
+RspAddOptionMarginParamPackage::~RspAddOptionMarginParamPackage()
 {
-	Package::Free();
 	if (RspAddOptionMarginParam != nullptr)
 	{
-		::Free<RspAddOptionMarginParamField>(RspAddOptionMarginParam);
+		ObjectPool<RspAddOptionMarginParamField>::GetInstance().Deallocate(RspAddOptionMarginParam);
 		RspAddOptionMarginParam = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddOptionMarginParamPackage>::GetInstance().Free(this);
+}
+RspAddOptionMarginParamPackage* RspAddOptionMarginParamPackage::Allocate()
+{
+	return ObjectPool<RspAddOptionMarginParamPackage>::GetInstance().Allocate();
+}
+void RspAddOptionMarginParamPackage::Deallocate()
+{
+	ObjectPool<RspAddOptionMarginParamPackage>::GetInstance().Deallocate(this);
 }
 void RspAddOptionMarginParamPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -24824,7 +25520,7 @@ bool RspAddOptionMarginParamPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case RspAddOptionMarginParamField::FieldID:
 			{
-				RspAddOptionMarginParam = ::Allocate<RspAddOptionMarginParamField>();
+				RspAddOptionMarginParam = ObjectPool<RspAddOptionMarginParamField>::GetInstance().Allocate();
 				memset(RspAddOptionMarginParam, 0, sizeof(*RspAddOptionMarginParam));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -24866,7 +25562,7 @@ bool RspAddOptionMarginParamPackage::FromStepStream(char* buff, int startIndex, 
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -24949,14 +25645,14 @@ bool RspAddOptionMarginParamPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case RspAddOptionMarginParamField::FieldID:
 		{
-			RspAddOptionMarginParam = ::Allocate<RspAddOptionMarginParamField>();
+			RspAddOptionMarginParam = ObjectPool<RspAddOptionMarginParamField>::GetInstance().Allocate();
 			memcpy(RspAddOptionMarginParam, buff + offset, sizeof(RspAddOptionMarginParamField));
 			offset += sizeof(RspAddOptionMarginParamField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -24981,19 +25677,25 @@ const char* RspAddOptionMarginParamPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqUpdateOptionMarginParamPackage* ReqUpdateOptionMarginParamPackage::Allocate()
+ReqUpdateOptionMarginParamPackage::ReqUpdateOptionMarginParamPackage()
+	:ReqUpdateOptionMarginParam(nullptr)
 {
-	return ::Allocate<ReqUpdateOptionMarginParamPackage>();
 }
-void ReqUpdateOptionMarginParamPackage::Free()
+ReqUpdateOptionMarginParamPackage::~ReqUpdateOptionMarginParamPackage()
 {
-	Package::Free();
 	if (ReqUpdateOptionMarginParam != nullptr)
 	{
-		::Free<ReqUpdateOptionMarginParamField>(ReqUpdateOptionMarginParam);
+		ObjectPool<ReqUpdateOptionMarginParamField>::GetInstance().Deallocate(ReqUpdateOptionMarginParam);
 		ReqUpdateOptionMarginParam = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqUpdateOptionMarginParamPackage>::GetInstance().Free(this);
+}
+ReqUpdateOptionMarginParamPackage* ReqUpdateOptionMarginParamPackage::Allocate()
+{
+	return ObjectPool<ReqUpdateOptionMarginParamPackage>::GetInstance().Allocate();
+}
+void ReqUpdateOptionMarginParamPackage::Deallocate()
+{
+	ObjectPool<ReqUpdateOptionMarginParamPackage>::GetInstance().Deallocate(this);
 }
 void ReqUpdateOptionMarginParamPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -25041,7 +25743,7 @@ bool ReqUpdateOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 			{
 			case ReqUpdateOptionMarginParamField::FieldID:
 			{
-				ReqUpdateOptionMarginParam = ::Allocate<ReqUpdateOptionMarginParamField>();
+				ReqUpdateOptionMarginParam = ObjectPool<ReqUpdateOptionMarginParamField>::GetInstance().Allocate();
 				memset(ReqUpdateOptionMarginParam, 0, sizeof(*ReqUpdateOptionMarginParam));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -25134,7 +25836,7 @@ bool ReqUpdateOptionMarginParamPackage::FromXtpStream(char* buff, int startIndex
 		{
 		case ReqUpdateOptionMarginParamField::FieldID:
 		{
-			ReqUpdateOptionMarginParam = ::Allocate<ReqUpdateOptionMarginParamField>();
+			ReqUpdateOptionMarginParam = ObjectPool<ReqUpdateOptionMarginParamField>::GetInstance().Allocate();
 			memcpy(ReqUpdateOptionMarginParam, buff + offset, sizeof(ReqUpdateOptionMarginParamField));
 			offset += sizeof(ReqUpdateOptionMarginParamField);	
 			break;
@@ -25155,24 +25857,30 @@ const char* ReqUpdateOptionMarginParamPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspUpdateOptionMarginParamPackage* RspUpdateOptionMarginParamPackage::Allocate()
+RspUpdateOptionMarginParamPackage::RspUpdateOptionMarginParamPackage()
+	:RspUpdateOptionMarginParam(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspUpdateOptionMarginParamPackage>();
 }
-void RspUpdateOptionMarginParamPackage::Free()
+RspUpdateOptionMarginParamPackage::~RspUpdateOptionMarginParamPackage()
 {
-	Package::Free();
 	if (RspUpdateOptionMarginParam != nullptr)
 	{
-		::Free<RspUpdateOptionMarginParamField>(RspUpdateOptionMarginParam);
+		ObjectPool<RspUpdateOptionMarginParamField>::GetInstance().Deallocate(RspUpdateOptionMarginParam);
 		RspUpdateOptionMarginParam = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspUpdateOptionMarginParamPackage>::GetInstance().Free(this);
+}
+RspUpdateOptionMarginParamPackage* RspUpdateOptionMarginParamPackage::Allocate()
+{
+	return ObjectPool<RspUpdateOptionMarginParamPackage>::GetInstance().Allocate();
+}
+void RspUpdateOptionMarginParamPackage::Deallocate()
+{
+	ObjectPool<RspUpdateOptionMarginParamPackage>::GetInstance().Deallocate(this);
 }
 void RspUpdateOptionMarginParamPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -25224,7 +25932,7 @@ bool RspUpdateOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 			{
 			case RspUpdateOptionMarginParamField::FieldID:
 			{
-				RspUpdateOptionMarginParam = ::Allocate<RspUpdateOptionMarginParamField>();
+				RspUpdateOptionMarginParam = ObjectPool<RspUpdateOptionMarginParamField>::GetInstance().Allocate();
 				memset(RspUpdateOptionMarginParam, 0, sizeof(*RspUpdateOptionMarginParam));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -25266,7 +25974,7 @@ bool RspUpdateOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -25349,14 +26057,14 @@ bool RspUpdateOptionMarginParamPackage::FromXtpStream(char* buff, int startIndex
 		{
 		case RspUpdateOptionMarginParamField::FieldID:
 		{
-			RspUpdateOptionMarginParam = ::Allocate<RspUpdateOptionMarginParamField>();
+			RspUpdateOptionMarginParam = ObjectPool<RspUpdateOptionMarginParamField>::GetInstance().Allocate();
 			memcpy(RspUpdateOptionMarginParam, buff + offset, sizeof(RspUpdateOptionMarginParamField));
 			offset += sizeof(RspUpdateOptionMarginParamField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -25381,19 +26089,25 @@ const char* RspUpdateOptionMarginParamPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRemoveOptionMarginParamPackage* ReqRemoveOptionMarginParamPackage::Allocate()
+ReqRemoveOptionMarginParamPackage::ReqRemoveOptionMarginParamPackage()
+	:ReqRemoveOptionMarginParam(nullptr)
 {
-	return ::Allocate<ReqRemoveOptionMarginParamPackage>();
 }
-void ReqRemoveOptionMarginParamPackage::Free()
+ReqRemoveOptionMarginParamPackage::~ReqRemoveOptionMarginParamPackage()
 {
-	Package::Free();
 	if (ReqRemoveOptionMarginParam != nullptr)
 	{
-		::Free<ReqRemoveOptionMarginParamField>(ReqRemoveOptionMarginParam);
+		ObjectPool<ReqRemoveOptionMarginParamField>::GetInstance().Deallocate(ReqRemoveOptionMarginParam);
 		ReqRemoveOptionMarginParam = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRemoveOptionMarginParamPackage>::GetInstance().Free(this);
+}
+ReqRemoveOptionMarginParamPackage* ReqRemoveOptionMarginParamPackage::Allocate()
+{
+	return ObjectPool<ReqRemoveOptionMarginParamPackage>::GetInstance().Allocate();
+}
+void ReqRemoveOptionMarginParamPackage::Deallocate()
+{
+	ObjectPool<ReqRemoveOptionMarginParamPackage>::GetInstance().Deallocate(this);
 }
 void ReqRemoveOptionMarginParamPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -25434,7 +26148,7 @@ bool ReqRemoveOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 			{
 			case ReqRemoveOptionMarginParamField::FieldID:
 			{
-				ReqRemoveOptionMarginParam = ::Allocate<ReqRemoveOptionMarginParamField>();
+				ReqRemoveOptionMarginParam = ObjectPool<ReqRemoveOptionMarginParamField>::GetInstance().Allocate();
 				memset(ReqRemoveOptionMarginParam, 0, sizeof(*ReqRemoveOptionMarginParam));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -25511,7 +26225,7 @@ bool ReqRemoveOptionMarginParamPackage::FromXtpStream(char* buff, int startIndex
 		{
 		case ReqRemoveOptionMarginParamField::FieldID:
 		{
-			ReqRemoveOptionMarginParam = ::Allocate<ReqRemoveOptionMarginParamField>();
+			ReqRemoveOptionMarginParam = ObjectPool<ReqRemoveOptionMarginParamField>::GetInstance().Allocate();
 			memcpy(ReqRemoveOptionMarginParam, buff + offset, sizeof(ReqRemoveOptionMarginParamField));
 			offset += sizeof(ReqRemoveOptionMarginParamField);	
 			break;
@@ -25532,24 +26246,30 @@ const char* ReqRemoveOptionMarginParamPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRemoveOptionMarginParamPackage* RspRemoveOptionMarginParamPackage::Allocate()
+RspRemoveOptionMarginParamPackage::RspRemoveOptionMarginParamPackage()
+	:RspRemoveOptionMarginParam(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRemoveOptionMarginParamPackage>();
 }
-void RspRemoveOptionMarginParamPackage::Free()
+RspRemoveOptionMarginParamPackage::~RspRemoveOptionMarginParamPackage()
 {
-	Package::Free();
 	if (RspRemoveOptionMarginParam != nullptr)
 	{
-		::Free<RspRemoveOptionMarginParamField>(RspRemoveOptionMarginParam);
+		ObjectPool<RspRemoveOptionMarginParamField>::GetInstance().Deallocate(RspRemoveOptionMarginParam);
 		RspRemoveOptionMarginParam = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRemoveOptionMarginParamPackage>::GetInstance().Free(this);
+}
+RspRemoveOptionMarginParamPackage* RspRemoveOptionMarginParamPackage::Allocate()
+{
+	return ObjectPool<RspRemoveOptionMarginParamPackage>::GetInstance().Allocate();
+}
+void RspRemoveOptionMarginParamPackage::Deallocate()
+{
+	ObjectPool<RspRemoveOptionMarginParamPackage>::GetInstance().Deallocate(this);
 }
 void RspRemoveOptionMarginParamPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -25601,7 +26321,7 @@ bool RspRemoveOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 			{
 			case RspRemoveOptionMarginParamField::FieldID:
 			{
-				RspRemoveOptionMarginParam = ::Allocate<RspRemoveOptionMarginParamField>();
+				RspRemoveOptionMarginParam = ObjectPool<RspRemoveOptionMarginParamField>::GetInstance().Allocate();
 				memset(RspRemoveOptionMarginParam, 0, sizeof(*RspRemoveOptionMarginParam));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -25643,7 +26363,7 @@ bool RspRemoveOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -25726,14 +26446,14 @@ bool RspRemoveOptionMarginParamPackage::FromXtpStream(char* buff, int startIndex
 		{
 		case RspRemoveOptionMarginParamField::FieldID:
 		{
-			RspRemoveOptionMarginParam = ::Allocate<RspRemoveOptionMarginParamField>();
+			RspRemoveOptionMarginParam = ObjectPool<RspRemoveOptionMarginParamField>::GetInstance().Allocate();
 			memcpy(RspRemoveOptionMarginParam, buff + offset, sizeof(RspRemoveOptionMarginParamField));
 			offset += sizeof(RspRemoveOptionMarginParamField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -25758,19 +26478,25 @@ const char* RspRemoveOptionMarginParamPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddTradeOfferPackage* ReqAddTradeOfferPackage::Allocate()
+ReqAddTradeOfferPackage::ReqAddTradeOfferPackage()
+	:ReqAddTradeOffer(nullptr)
 {
-	return ::Allocate<ReqAddTradeOfferPackage>();
 }
-void ReqAddTradeOfferPackage::Free()
+ReqAddTradeOfferPackage::~ReqAddTradeOfferPackage()
 {
-	Package::Free();
 	if (ReqAddTradeOffer != nullptr)
 	{
-		::Free<ReqAddTradeOfferField>(ReqAddTradeOffer);
+		ObjectPool<ReqAddTradeOfferField>::GetInstance().Deallocate(ReqAddTradeOffer);
 		ReqAddTradeOffer = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddTradeOfferPackage>::GetInstance().Free(this);
+}
+ReqAddTradeOfferPackage* ReqAddTradeOfferPackage::Allocate()
+{
+	return ObjectPool<ReqAddTradeOfferPackage>::GetInstance().Allocate();
+}
+void ReqAddTradeOfferPackage::Deallocate()
+{
+	ObjectPool<ReqAddTradeOfferPackage>::GetInstance().Deallocate(this);
 }
 void ReqAddTradeOfferPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -25818,7 +26544,7 @@ bool ReqAddTradeOfferPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case ReqAddTradeOfferField::FieldID:
 			{
-				ReqAddTradeOffer = ::Allocate<ReqAddTradeOfferField>();
+				ReqAddTradeOffer = ObjectPool<ReqAddTradeOfferField>::GetInstance().Allocate();
 				memset(ReqAddTradeOffer, 0, sizeof(*ReqAddTradeOffer));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -25911,7 +26637,7 @@ bool ReqAddTradeOfferPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case ReqAddTradeOfferField::FieldID:
 		{
-			ReqAddTradeOffer = ::Allocate<ReqAddTradeOfferField>();
+			ReqAddTradeOffer = ObjectPool<ReqAddTradeOfferField>::GetInstance().Allocate();
 			memcpy(ReqAddTradeOffer, buff + offset, sizeof(ReqAddTradeOfferField));
 			offset += sizeof(ReqAddTradeOfferField);	
 			break;
@@ -25932,24 +26658,30 @@ const char* ReqAddTradeOfferPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddTradeOfferPackage* RspAddTradeOfferPackage::Allocate()
+RspAddTradeOfferPackage::RspAddTradeOfferPackage()
+	:RspAddTradeOffer(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddTradeOfferPackage>();
 }
-void RspAddTradeOfferPackage::Free()
+RspAddTradeOfferPackage::~RspAddTradeOfferPackage()
 {
-	Package::Free();
 	if (RspAddTradeOffer != nullptr)
 	{
-		::Free<RspAddTradeOfferField>(RspAddTradeOffer);
+		ObjectPool<RspAddTradeOfferField>::GetInstance().Deallocate(RspAddTradeOffer);
 		RspAddTradeOffer = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddTradeOfferPackage>::GetInstance().Free(this);
+}
+RspAddTradeOfferPackage* RspAddTradeOfferPackage::Allocate()
+{
+	return ObjectPool<RspAddTradeOfferPackage>::GetInstance().Allocate();
+}
+void RspAddTradeOfferPackage::Deallocate()
+{
+	ObjectPool<RspAddTradeOfferPackage>::GetInstance().Deallocate(this);
 }
 void RspAddTradeOfferPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -25997,7 +26729,7 @@ bool RspAddTradeOfferPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case RspAddTradeOfferField::FieldID:
 			{
-				RspAddTradeOffer = ::Allocate<RspAddTradeOfferField>();
+				RspAddTradeOffer = ObjectPool<RspAddTradeOfferField>::GetInstance().Allocate();
 				memset(RspAddTradeOffer, 0, sizeof(*RspAddTradeOffer));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -26038,7 +26770,7 @@ bool RspAddTradeOfferPackage::FromStepStream(char* buff, int startIndex, int end
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -26121,14 +26853,14 @@ bool RspAddTradeOfferPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case RspAddTradeOfferField::FieldID:
 		{
-			RspAddTradeOffer = ::Allocate<RspAddTradeOfferField>();
+			RspAddTradeOffer = ObjectPool<RspAddTradeOfferField>::GetInstance().Allocate();
 			memcpy(RspAddTradeOffer, buff + offset, sizeof(RspAddTradeOfferField));
 			offset += sizeof(RspAddTradeOfferField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -26153,19 +26885,25 @@ const char* RspAddTradeOfferPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqUpdateTradeOfferPackage* ReqUpdateTradeOfferPackage::Allocate()
+ReqUpdateTradeOfferPackage::ReqUpdateTradeOfferPackage()
+	:ReqUpdateTradeOffer(nullptr)
 {
-	return ::Allocate<ReqUpdateTradeOfferPackage>();
 }
-void ReqUpdateTradeOfferPackage::Free()
+ReqUpdateTradeOfferPackage::~ReqUpdateTradeOfferPackage()
 {
-	Package::Free();
 	if (ReqUpdateTradeOffer != nullptr)
 	{
-		::Free<ReqUpdateTradeOfferField>(ReqUpdateTradeOffer);
+		ObjectPool<ReqUpdateTradeOfferField>::GetInstance().Deallocate(ReqUpdateTradeOffer);
 		ReqUpdateTradeOffer = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqUpdateTradeOfferPackage>::GetInstance().Free(this);
+}
+ReqUpdateTradeOfferPackage* ReqUpdateTradeOfferPackage::Allocate()
+{
+	return ObjectPool<ReqUpdateTradeOfferPackage>::GetInstance().Allocate();
+}
+void ReqUpdateTradeOfferPackage::Deallocate()
+{
+	ObjectPool<ReqUpdateTradeOfferPackage>::GetInstance().Deallocate(this);
 }
 void ReqUpdateTradeOfferPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -26213,7 +26951,7 @@ bool ReqUpdateTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 			{
 			case ReqUpdateTradeOfferField::FieldID:
 			{
-				ReqUpdateTradeOffer = ::Allocate<ReqUpdateTradeOfferField>();
+				ReqUpdateTradeOffer = ObjectPool<ReqUpdateTradeOfferField>::GetInstance().Allocate();
 				memset(ReqUpdateTradeOffer, 0, sizeof(*ReqUpdateTradeOffer));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -26306,7 +27044,7 @@ bool ReqUpdateTradeOfferPackage::FromXtpStream(char* buff, int startIndex, int e
 		{
 		case ReqUpdateTradeOfferField::FieldID:
 		{
-			ReqUpdateTradeOffer = ::Allocate<ReqUpdateTradeOfferField>();
+			ReqUpdateTradeOffer = ObjectPool<ReqUpdateTradeOfferField>::GetInstance().Allocate();
 			memcpy(ReqUpdateTradeOffer, buff + offset, sizeof(ReqUpdateTradeOfferField));
 			offset += sizeof(ReqUpdateTradeOfferField);	
 			break;
@@ -26327,24 +27065,30 @@ const char* ReqUpdateTradeOfferPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspUpdateTradeOfferPackage* RspUpdateTradeOfferPackage::Allocate()
+RspUpdateTradeOfferPackage::RspUpdateTradeOfferPackage()
+	:RspUpdateTradeOffer(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspUpdateTradeOfferPackage>();
 }
-void RspUpdateTradeOfferPackage::Free()
+RspUpdateTradeOfferPackage::~RspUpdateTradeOfferPackage()
 {
-	Package::Free();
 	if (RspUpdateTradeOffer != nullptr)
 	{
-		::Free<RspUpdateTradeOfferField>(RspUpdateTradeOffer);
+		ObjectPool<RspUpdateTradeOfferField>::GetInstance().Deallocate(RspUpdateTradeOffer);
 		RspUpdateTradeOffer = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspUpdateTradeOfferPackage>::GetInstance().Free(this);
+}
+RspUpdateTradeOfferPackage* RspUpdateTradeOfferPackage::Allocate()
+{
+	return ObjectPool<RspUpdateTradeOfferPackage>::GetInstance().Allocate();
+}
+void RspUpdateTradeOfferPackage::Deallocate()
+{
+	ObjectPool<RspUpdateTradeOfferPackage>::GetInstance().Deallocate(this);
 }
 void RspUpdateTradeOfferPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -26392,7 +27136,7 @@ bool RspUpdateTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 			{
 			case RspUpdateTradeOfferField::FieldID:
 			{
-				RspUpdateTradeOffer = ::Allocate<RspUpdateTradeOfferField>();
+				RspUpdateTradeOffer = ObjectPool<RspUpdateTradeOfferField>::GetInstance().Allocate();
 				memset(RspUpdateTradeOffer, 0, sizeof(*RspUpdateTradeOffer));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -26433,7 +27177,7 @@ bool RspUpdateTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -26516,14 +27260,14 @@ bool RspUpdateTradeOfferPackage::FromXtpStream(char* buff, int startIndex, int e
 		{
 		case RspUpdateTradeOfferField::FieldID:
 		{
-			RspUpdateTradeOffer = ::Allocate<RspUpdateTradeOfferField>();
+			RspUpdateTradeOffer = ObjectPool<RspUpdateTradeOfferField>::GetInstance().Allocate();
 			memcpy(RspUpdateTradeOffer, buff + offset, sizeof(RspUpdateTradeOfferField));
 			offset += sizeof(RspUpdateTradeOfferField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -26548,19 +27292,25 @@ const char* RspUpdateTradeOfferPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRemoveTradeOfferPackage* ReqRemoveTradeOfferPackage::Allocate()
+ReqRemoveTradeOfferPackage::ReqRemoveTradeOfferPackage()
+	:ReqRemoveTradeOffer(nullptr)
 {
-	return ::Allocate<ReqRemoveTradeOfferPackage>();
 }
-void ReqRemoveTradeOfferPackage::Free()
+ReqRemoveTradeOfferPackage::~ReqRemoveTradeOfferPackage()
 {
-	Package::Free();
 	if (ReqRemoveTradeOffer != nullptr)
 	{
-		::Free<ReqRemoveTradeOfferField>(ReqRemoveTradeOffer);
+		ObjectPool<ReqRemoveTradeOfferField>::GetInstance().Deallocate(ReqRemoveTradeOffer);
 		ReqRemoveTradeOffer = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRemoveTradeOfferPackage>::GetInstance().Free(this);
+}
+ReqRemoveTradeOfferPackage* ReqRemoveTradeOfferPackage::Allocate()
+{
+	return ObjectPool<ReqRemoveTradeOfferPackage>::GetInstance().Allocate();
+}
+void ReqRemoveTradeOfferPackage::Deallocate()
+{
+	ObjectPool<ReqRemoveTradeOfferPackage>::GetInstance().Deallocate(this);
 }
 void ReqRemoveTradeOfferPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -26597,7 +27347,7 @@ bool ReqRemoveTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 			{
 			case ReqRemoveTradeOfferField::FieldID:
 			{
-				ReqRemoveTradeOffer = ::Allocate<ReqRemoveTradeOfferField>();
+				ReqRemoveTradeOffer = ObjectPool<ReqRemoveTradeOfferField>::GetInstance().Allocate();
 				memset(ReqRemoveTradeOffer, 0, sizeof(*ReqRemoveTradeOffer));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -26673,7 +27423,7 @@ bool ReqRemoveTradeOfferPackage::FromXtpStream(char* buff, int startIndex, int e
 		{
 		case ReqRemoveTradeOfferField::FieldID:
 		{
-			ReqRemoveTradeOffer = ::Allocate<ReqRemoveTradeOfferField>();
+			ReqRemoveTradeOffer = ObjectPool<ReqRemoveTradeOfferField>::GetInstance().Allocate();
 			memcpy(ReqRemoveTradeOffer, buff + offset, sizeof(ReqRemoveTradeOfferField));
 			offset += sizeof(ReqRemoveTradeOfferField);	
 			break;
@@ -26694,24 +27444,30 @@ const char* ReqRemoveTradeOfferPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRemoveTradeOfferPackage* RspRemoveTradeOfferPackage::Allocate()
+RspRemoveTradeOfferPackage::RspRemoveTradeOfferPackage()
+	:RspRemoveTradeOffer(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRemoveTradeOfferPackage>();
 }
-void RspRemoveTradeOfferPackage::Free()
+RspRemoveTradeOfferPackage::~RspRemoveTradeOfferPackage()
 {
-	Package::Free();
 	if (RspRemoveTradeOffer != nullptr)
 	{
-		::Free<RspRemoveTradeOfferField>(RspRemoveTradeOffer);
+		ObjectPool<RspRemoveTradeOfferField>::GetInstance().Deallocate(RspRemoveTradeOffer);
 		RspRemoveTradeOffer = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRemoveTradeOfferPackage>::GetInstance().Free(this);
+}
+RspRemoveTradeOfferPackage* RspRemoveTradeOfferPackage::Allocate()
+{
+	return ObjectPool<RspRemoveTradeOfferPackage>::GetInstance().Allocate();
+}
+void RspRemoveTradeOfferPackage::Deallocate()
+{
+	ObjectPool<RspRemoveTradeOfferPackage>::GetInstance().Deallocate(this);
 }
 void RspRemoveTradeOfferPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -26759,7 +27515,7 @@ bool RspRemoveTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 			{
 			case RspRemoveTradeOfferField::FieldID:
 			{
-				RspRemoveTradeOffer = ::Allocate<RspRemoveTradeOfferField>();
+				RspRemoveTradeOffer = ObjectPool<RspRemoveTradeOfferField>::GetInstance().Allocate();
 				memset(RspRemoveTradeOffer, 0, sizeof(*RspRemoveTradeOffer));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -26800,7 +27556,7 @@ bool RspRemoveTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -26883,14 +27639,14 @@ bool RspRemoveTradeOfferPackage::FromXtpStream(char* buff, int startIndex, int e
 		{
 		case RspRemoveTradeOfferField::FieldID:
 		{
-			RspRemoveTradeOffer = ::Allocate<RspRemoveTradeOfferField>();
+			RspRemoveTradeOffer = ObjectPool<RspRemoveTradeOfferField>::GetInstance().Allocate();
 			memcpy(RspRemoveTradeOffer, buff + offset, sizeof(RspRemoveTradeOfferField));
 			offset += sizeof(RspRemoveTradeOfferField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -26915,19 +27671,25 @@ const char* RspRemoveTradeOfferPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddTradeGroupPackage* ReqAddTradeGroupPackage::Allocate()
+ReqAddTradeGroupPackage::ReqAddTradeGroupPackage()
+	:ReqAddTradeGroup(nullptr)
 {
-	return ::Allocate<ReqAddTradeGroupPackage>();
 }
-void ReqAddTradeGroupPackage::Free()
+ReqAddTradeGroupPackage::~ReqAddTradeGroupPackage()
 {
-	Package::Free();
 	if (ReqAddTradeGroup != nullptr)
 	{
-		::Free<ReqAddTradeGroupField>(ReqAddTradeGroup);
+		ObjectPool<ReqAddTradeGroupField>::GetInstance().Deallocate(ReqAddTradeGroup);
 		ReqAddTradeGroup = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddTradeGroupPackage>::GetInstance().Free(this);
+}
+ReqAddTradeGroupPackage* ReqAddTradeGroupPackage::Allocate()
+{
+	return ObjectPool<ReqAddTradeGroupPackage>::GetInstance().Allocate();
+}
+void ReqAddTradeGroupPackage::Deallocate()
+{
+	ObjectPool<ReqAddTradeGroupPackage>::GetInstance().Deallocate(this);
 }
 void ReqAddTradeGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -26969,7 +27731,7 @@ bool ReqAddTradeGroupPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case ReqAddTradeGroupField::FieldID:
 			{
-				ReqAddTradeGroup = ::Allocate<ReqAddTradeGroupField>();
+				ReqAddTradeGroup = ObjectPool<ReqAddTradeGroupField>::GetInstance().Allocate();
 				memset(ReqAddTradeGroup, 0, sizeof(*ReqAddTradeGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -27051,7 +27813,7 @@ bool ReqAddTradeGroupPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case ReqAddTradeGroupField::FieldID:
 		{
-			ReqAddTradeGroup = ::Allocate<ReqAddTradeGroupField>();
+			ReqAddTradeGroup = ObjectPool<ReqAddTradeGroupField>::GetInstance().Allocate();
 			memcpy(ReqAddTradeGroup, buff + offset, sizeof(ReqAddTradeGroupField));
 			offset += sizeof(ReqAddTradeGroupField);	
 			break;
@@ -27072,24 +27834,30 @@ const char* ReqAddTradeGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddTradeGroupPackage* RspAddTradeGroupPackage::Allocate()
+RspAddTradeGroupPackage::RspAddTradeGroupPackage()
+	:RspAddTradeGroup(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddTradeGroupPackage>();
 }
-void RspAddTradeGroupPackage::Free()
+RspAddTradeGroupPackage::~RspAddTradeGroupPackage()
 {
-	Package::Free();
 	if (RspAddTradeGroup != nullptr)
 	{
-		::Free<RspAddTradeGroupField>(RspAddTradeGroup);
+		ObjectPool<RspAddTradeGroupField>::GetInstance().Deallocate(RspAddTradeGroup);
 		RspAddTradeGroup = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddTradeGroupPackage>::GetInstance().Free(this);
+}
+RspAddTradeGroupPackage* RspAddTradeGroupPackage::Allocate()
+{
+	return ObjectPool<RspAddTradeGroupPackage>::GetInstance().Allocate();
+}
+void RspAddTradeGroupPackage::Deallocate()
+{
+	ObjectPool<RspAddTradeGroupPackage>::GetInstance().Deallocate(this);
 }
 void RspAddTradeGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -27137,7 +27905,7 @@ bool RspAddTradeGroupPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case RspAddTradeGroupField::FieldID:
 			{
-				RspAddTradeGroup = ::Allocate<RspAddTradeGroupField>();
+				RspAddTradeGroup = ObjectPool<RspAddTradeGroupField>::GetInstance().Allocate();
 				memset(RspAddTradeGroup, 0, sizeof(*RspAddTradeGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -27178,7 +27946,7 @@ bool RspAddTradeGroupPackage::FromStepStream(char* buff, int startIndex, int end
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -27261,14 +28029,14 @@ bool RspAddTradeGroupPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case RspAddTradeGroupField::FieldID:
 		{
-			RspAddTradeGroup = ::Allocate<RspAddTradeGroupField>();
+			RspAddTradeGroup = ObjectPool<RspAddTradeGroupField>::GetInstance().Allocate();
 			memcpy(RspAddTradeGroup, buff + offset, sizeof(RspAddTradeGroupField));
 			offset += sizeof(RspAddTradeGroupField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -27293,19 +28061,25 @@ const char* RspAddTradeGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqUpdateTradeGroupPackage* ReqUpdateTradeGroupPackage::Allocate()
+ReqUpdateTradeGroupPackage::ReqUpdateTradeGroupPackage()
+	:ReqUpdateTradeGroup(nullptr)
 {
-	return ::Allocate<ReqUpdateTradeGroupPackage>();
 }
-void ReqUpdateTradeGroupPackage::Free()
+ReqUpdateTradeGroupPackage::~ReqUpdateTradeGroupPackage()
 {
-	Package::Free();
 	if (ReqUpdateTradeGroup != nullptr)
 	{
-		::Free<ReqUpdateTradeGroupField>(ReqUpdateTradeGroup);
+		ObjectPool<ReqUpdateTradeGroupField>::GetInstance().Deallocate(ReqUpdateTradeGroup);
 		ReqUpdateTradeGroup = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqUpdateTradeGroupPackage>::GetInstance().Free(this);
+}
+ReqUpdateTradeGroupPackage* ReqUpdateTradeGroupPackage::Allocate()
+{
+	return ObjectPool<ReqUpdateTradeGroupPackage>::GetInstance().Allocate();
+}
+void ReqUpdateTradeGroupPackage::Deallocate()
+{
+	ObjectPool<ReqUpdateTradeGroupPackage>::GetInstance().Deallocate(this);
 }
 void ReqUpdateTradeGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -27347,7 +28121,7 @@ bool ReqUpdateTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 			{
 			case ReqUpdateTradeGroupField::FieldID:
 			{
-				ReqUpdateTradeGroup = ::Allocate<ReqUpdateTradeGroupField>();
+				ReqUpdateTradeGroup = ObjectPool<ReqUpdateTradeGroupField>::GetInstance().Allocate();
 				memset(ReqUpdateTradeGroup, 0, sizeof(*ReqUpdateTradeGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -27429,7 +28203,7 @@ bool ReqUpdateTradeGroupPackage::FromXtpStream(char* buff, int startIndex, int e
 		{
 		case ReqUpdateTradeGroupField::FieldID:
 		{
-			ReqUpdateTradeGroup = ::Allocate<ReqUpdateTradeGroupField>();
+			ReqUpdateTradeGroup = ObjectPool<ReqUpdateTradeGroupField>::GetInstance().Allocate();
 			memcpy(ReqUpdateTradeGroup, buff + offset, sizeof(ReqUpdateTradeGroupField));
 			offset += sizeof(ReqUpdateTradeGroupField);	
 			break;
@@ -27450,24 +28224,30 @@ const char* ReqUpdateTradeGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspUpdateTradeGroupPackage* RspUpdateTradeGroupPackage::Allocate()
+RspUpdateTradeGroupPackage::RspUpdateTradeGroupPackage()
+	:RspUpdateTradeGroup(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspUpdateTradeGroupPackage>();
 }
-void RspUpdateTradeGroupPackage::Free()
+RspUpdateTradeGroupPackage::~RspUpdateTradeGroupPackage()
 {
-	Package::Free();
 	if (RspUpdateTradeGroup != nullptr)
 	{
-		::Free<RspUpdateTradeGroupField>(RspUpdateTradeGroup);
+		ObjectPool<RspUpdateTradeGroupField>::GetInstance().Deallocate(RspUpdateTradeGroup);
 		RspUpdateTradeGroup = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspUpdateTradeGroupPackage>::GetInstance().Free(this);
+}
+RspUpdateTradeGroupPackage* RspUpdateTradeGroupPackage::Allocate()
+{
+	return ObjectPool<RspUpdateTradeGroupPackage>::GetInstance().Allocate();
+}
+void RspUpdateTradeGroupPackage::Deallocate()
+{
+	ObjectPool<RspUpdateTradeGroupPackage>::GetInstance().Deallocate(this);
 }
 void RspUpdateTradeGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -27515,7 +28295,7 @@ bool RspUpdateTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 			{
 			case RspUpdateTradeGroupField::FieldID:
 			{
-				RspUpdateTradeGroup = ::Allocate<RspUpdateTradeGroupField>();
+				RspUpdateTradeGroup = ObjectPool<RspUpdateTradeGroupField>::GetInstance().Allocate();
 				memset(RspUpdateTradeGroup, 0, sizeof(*RspUpdateTradeGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -27556,7 +28336,7 @@ bool RspUpdateTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -27639,14 +28419,14 @@ bool RspUpdateTradeGroupPackage::FromXtpStream(char* buff, int startIndex, int e
 		{
 		case RspUpdateTradeGroupField::FieldID:
 		{
-			RspUpdateTradeGroup = ::Allocate<RspUpdateTradeGroupField>();
+			RspUpdateTradeGroup = ObjectPool<RspUpdateTradeGroupField>::GetInstance().Allocate();
 			memcpy(RspUpdateTradeGroup, buff + offset, sizeof(RspUpdateTradeGroupField));
 			offset += sizeof(RspUpdateTradeGroupField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -27671,19 +28451,25 @@ const char* RspUpdateTradeGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRemoveTradeGroupPackage* ReqRemoveTradeGroupPackage::Allocate()
+ReqRemoveTradeGroupPackage::ReqRemoveTradeGroupPackage()
+	:ReqRemoveTradeGroup(nullptr)
 {
-	return ::Allocate<ReqRemoveTradeGroupPackage>();
 }
-void ReqRemoveTradeGroupPackage::Free()
+ReqRemoveTradeGroupPackage::~ReqRemoveTradeGroupPackage()
 {
-	Package::Free();
 	if (ReqRemoveTradeGroup != nullptr)
 	{
-		::Free<ReqRemoveTradeGroupField>(ReqRemoveTradeGroup);
+		ObjectPool<ReqRemoveTradeGroupField>::GetInstance().Deallocate(ReqRemoveTradeGroup);
 		ReqRemoveTradeGroup = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRemoveTradeGroupPackage>::GetInstance().Free(this);
+}
+ReqRemoveTradeGroupPackage* ReqRemoveTradeGroupPackage::Allocate()
+{
+	return ObjectPool<ReqRemoveTradeGroupPackage>::GetInstance().Allocate();
+}
+void ReqRemoveTradeGroupPackage::Deallocate()
+{
+	ObjectPool<ReqRemoveTradeGroupPackage>::GetInstance().Deallocate(this);
 }
 void ReqRemoveTradeGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -27720,7 +28506,7 @@ bool ReqRemoveTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 			{
 			case ReqRemoveTradeGroupField::FieldID:
 			{
-				ReqRemoveTradeGroup = ::Allocate<ReqRemoveTradeGroupField>();
+				ReqRemoveTradeGroup = ObjectPool<ReqRemoveTradeGroupField>::GetInstance().Allocate();
 				memset(ReqRemoveTradeGroup, 0, sizeof(*ReqRemoveTradeGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -27796,7 +28582,7 @@ bool ReqRemoveTradeGroupPackage::FromXtpStream(char* buff, int startIndex, int e
 		{
 		case ReqRemoveTradeGroupField::FieldID:
 		{
-			ReqRemoveTradeGroup = ::Allocate<ReqRemoveTradeGroupField>();
+			ReqRemoveTradeGroup = ObjectPool<ReqRemoveTradeGroupField>::GetInstance().Allocate();
 			memcpy(ReqRemoveTradeGroup, buff + offset, sizeof(ReqRemoveTradeGroupField));
 			offset += sizeof(ReqRemoveTradeGroupField);	
 			break;
@@ -27817,24 +28603,30 @@ const char* ReqRemoveTradeGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRemoveTradeGroupPackage* RspRemoveTradeGroupPackage::Allocate()
+RspRemoveTradeGroupPackage::RspRemoveTradeGroupPackage()
+	:RspRemoveTradeGroup(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRemoveTradeGroupPackage>();
 }
-void RspRemoveTradeGroupPackage::Free()
+RspRemoveTradeGroupPackage::~RspRemoveTradeGroupPackage()
 {
-	Package::Free();
 	if (RspRemoveTradeGroup != nullptr)
 	{
-		::Free<RspRemoveTradeGroupField>(RspRemoveTradeGroup);
+		ObjectPool<RspRemoveTradeGroupField>::GetInstance().Deallocate(RspRemoveTradeGroup);
 		RspRemoveTradeGroup = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRemoveTradeGroupPackage>::GetInstance().Free(this);
+}
+RspRemoveTradeGroupPackage* RspRemoveTradeGroupPackage::Allocate()
+{
+	return ObjectPool<RspRemoveTradeGroupPackage>::GetInstance().Allocate();
+}
+void RspRemoveTradeGroupPackage::Deallocate()
+{
+	ObjectPool<RspRemoveTradeGroupPackage>::GetInstance().Deallocate(this);
 }
 void RspRemoveTradeGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -27882,7 +28674,7 @@ bool RspRemoveTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 			{
 			case RspRemoveTradeGroupField::FieldID:
 			{
-				RspRemoveTradeGroup = ::Allocate<RspRemoveTradeGroupField>();
+				RspRemoveTradeGroup = ObjectPool<RspRemoveTradeGroupField>::GetInstance().Allocate();
 				memset(RspRemoveTradeGroup, 0, sizeof(*RspRemoveTradeGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -27923,7 +28715,7 @@ bool RspRemoveTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -28006,14 +28798,14 @@ bool RspRemoveTradeGroupPackage::FromXtpStream(char* buff, int startIndex, int e
 		{
 		case RspRemoveTradeGroupField::FieldID:
 		{
-			RspRemoveTradeGroup = ::Allocate<RspRemoveTradeGroupField>();
+			RspRemoveTradeGroup = ObjectPool<RspRemoveTradeGroupField>::GetInstance().Allocate();
 			memcpy(RspRemoveTradeGroup, buff + offset, sizeof(RspRemoveTradeGroupField));
 			offset += sizeof(RspRemoveTradeGroupField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -28038,19 +28830,25 @@ const char* RspRemoveTradeGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddTradeGroupItemPackage* ReqAddTradeGroupItemPackage::Allocate()
+ReqAddTradeGroupItemPackage::ReqAddTradeGroupItemPackage()
+	:ReqAddTradeGroupItem(nullptr)
 {
-	return ::Allocate<ReqAddTradeGroupItemPackage>();
 }
-void ReqAddTradeGroupItemPackage::Free()
+ReqAddTradeGroupItemPackage::~ReqAddTradeGroupItemPackage()
 {
-	Package::Free();
 	if (ReqAddTradeGroupItem != nullptr)
 	{
-		::Free<ReqAddTradeGroupItemField>(ReqAddTradeGroupItem);
+		ObjectPool<ReqAddTradeGroupItemField>::GetInstance().Deallocate(ReqAddTradeGroupItem);
 		ReqAddTradeGroupItem = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddTradeGroupItemPackage>::GetInstance().Free(this);
+}
+ReqAddTradeGroupItemPackage* ReqAddTradeGroupItemPackage::Allocate()
+{
+	return ObjectPool<ReqAddTradeGroupItemPackage>::GetInstance().Allocate();
+}
+void ReqAddTradeGroupItemPackage::Deallocate()
+{
+	ObjectPool<ReqAddTradeGroupItemPackage>::GetInstance().Deallocate(this);
 }
 void ReqAddTradeGroupItemPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -28093,7 +28891,7 @@ bool ReqAddTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case ReqAddTradeGroupItemField::FieldID:
 			{
-				ReqAddTradeGroupItem = ::Allocate<ReqAddTradeGroupItemField>();
+				ReqAddTradeGroupItem = ObjectPool<ReqAddTradeGroupItemField>::GetInstance().Allocate();
 				memset(ReqAddTradeGroupItem, 0, sizeof(*ReqAddTradeGroupItem));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -28180,7 +28978,7 @@ bool ReqAddTradeGroupItemPackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case ReqAddTradeGroupItemField::FieldID:
 		{
-			ReqAddTradeGroupItem = ::Allocate<ReqAddTradeGroupItemField>();
+			ReqAddTradeGroupItem = ObjectPool<ReqAddTradeGroupItemField>::GetInstance().Allocate();
 			memcpy(ReqAddTradeGroupItem, buff + offset, sizeof(ReqAddTradeGroupItemField));
 			offset += sizeof(ReqAddTradeGroupItemField);	
 			break;
@@ -28201,24 +28999,30 @@ const char* ReqAddTradeGroupItemPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddTradeGroupItemPackage* RspAddTradeGroupItemPackage::Allocate()
+RspAddTradeGroupItemPackage::RspAddTradeGroupItemPackage()
+	:RspAddTradeGroupItem(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddTradeGroupItemPackage>();
 }
-void RspAddTradeGroupItemPackage::Free()
+RspAddTradeGroupItemPackage::~RspAddTradeGroupItemPackage()
 {
-	Package::Free();
 	if (RspAddTradeGroupItem != nullptr)
 	{
-		::Free<RspAddTradeGroupItemField>(RspAddTradeGroupItem);
+		ObjectPool<RspAddTradeGroupItemField>::GetInstance().Deallocate(RspAddTradeGroupItem);
 		RspAddTradeGroupItem = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddTradeGroupItemPackage>::GetInstance().Free(this);
+}
+RspAddTradeGroupItemPackage* RspAddTradeGroupItemPackage::Allocate()
+{
+	return ObjectPool<RspAddTradeGroupItemPackage>::GetInstance().Allocate();
+}
+void RspAddTradeGroupItemPackage::Deallocate()
+{
+	ObjectPool<RspAddTradeGroupItemPackage>::GetInstance().Deallocate(this);
 }
 void RspAddTradeGroupItemPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -28267,7 +29071,7 @@ bool RspAddTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case RspAddTradeGroupItemField::FieldID:
 			{
-				RspAddTradeGroupItem = ::Allocate<RspAddTradeGroupItemField>();
+				RspAddTradeGroupItem = ObjectPool<RspAddTradeGroupItemField>::GetInstance().Allocate();
 				memset(RspAddTradeGroupItem, 0, sizeof(*RspAddTradeGroupItem));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -28313,7 +29117,7 @@ bool RspAddTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, int
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -28396,14 +29200,14 @@ bool RspAddTradeGroupItemPackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case RspAddTradeGroupItemField::FieldID:
 		{
-			RspAddTradeGroupItem = ::Allocate<RspAddTradeGroupItemField>();
+			RspAddTradeGroupItem = ObjectPool<RspAddTradeGroupItemField>::GetInstance().Allocate();
 			memcpy(RspAddTradeGroupItem, buff + offset, sizeof(RspAddTradeGroupItemField));
 			offset += sizeof(RspAddTradeGroupItemField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -28428,19 +29232,25 @@ const char* RspAddTradeGroupItemPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqUpdateTradeGroupItemPackage* ReqUpdateTradeGroupItemPackage::Allocate()
+ReqUpdateTradeGroupItemPackage::ReqUpdateTradeGroupItemPackage()
+	:ReqUpdateTradeGroupItem(nullptr)
 {
-	return ::Allocate<ReqUpdateTradeGroupItemPackage>();
 }
-void ReqUpdateTradeGroupItemPackage::Free()
+ReqUpdateTradeGroupItemPackage::~ReqUpdateTradeGroupItemPackage()
 {
-	Package::Free();
 	if (ReqUpdateTradeGroupItem != nullptr)
 	{
-		::Free<ReqUpdateTradeGroupItemField>(ReqUpdateTradeGroupItem);
+		ObjectPool<ReqUpdateTradeGroupItemField>::GetInstance().Deallocate(ReqUpdateTradeGroupItem);
 		ReqUpdateTradeGroupItem = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqUpdateTradeGroupItemPackage>::GetInstance().Free(this);
+}
+ReqUpdateTradeGroupItemPackage* ReqUpdateTradeGroupItemPackage::Allocate()
+{
+	return ObjectPool<ReqUpdateTradeGroupItemPackage>::GetInstance().Allocate();
+}
+void ReqUpdateTradeGroupItemPackage::Deallocate()
+{
+	ObjectPool<ReqUpdateTradeGroupItemPackage>::GetInstance().Deallocate(this);
 }
 void ReqUpdateTradeGroupItemPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -28483,7 +29293,7 @@ bool ReqUpdateTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case ReqUpdateTradeGroupItemField::FieldID:
 			{
-				ReqUpdateTradeGroupItem = ::Allocate<ReqUpdateTradeGroupItemField>();
+				ReqUpdateTradeGroupItem = ObjectPool<ReqUpdateTradeGroupItemField>::GetInstance().Allocate();
 				memset(ReqUpdateTradeGroupItem, 0, sizeof(*ReqUpdateTradeGroupItem));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -28570,7 +29380,7 @@ bool ReqUpdateTradeGroupItemPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case ReqUpdateTradeGroupItemField::FieldID:
 		{
-			ReqUpdateTradeGroupItem = ::Allocate<ReqUpdateTradeGroupItemField>();
+			ReqUpdateTradeGroupItem = ObjectPool<ReqUpdateTradeGroupItemField>::GetInstance().Allocate();
 			memcpy(ReqUpdateTradeGroupItem, buff + offset, sizeof(ReqUpdateTradeGroupItemField));
 			offset += sizeof(ReqUpdateTradeGroupItemField);	
 			break;
@@ -28591,24 +29401,30 @@ const char* ReqUpdateTradeGroupItemPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspUpdateTradeGroupItemPackage* RspUpdateTradeGroupItemPackage::Allocate()
+RspUpdateTradeGroupItemPackage::RspUpdateTradeGroupItemPackage()
+	:RspUpdateTradeGroupItem(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspUpdateTradeGroupItemPackage>();
 }
-void RspUpdateTradeGroupItemPackage::Free()
+RspUpdateTradeGroupItemPackage::~RspUpdateTradeGroupItemPackage()
 {
-	Package::Free();
 	if (RspUpdateTradeGroupItem != nullptr)
 	{
-		::Free<RspUpdateTradeGroupItemField>(RspUpdateTradeGroupItem);
+		ObjectPool<RspUpdateTradeGroupItemField>::GetInstance().Deallocate(RspUpdateTradeGroupItem);
 		RspUpdateTradeGroupItem = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspUpdateTradeGroupItemPackage>::GetInstance().Free(this);
+}
+RspUpdateTradeGroupItemPackage* RspUpdateTradeGroupItemPackage::Allocate()
+{
+	return ObjectPool<RspUpdateTradeGroupItemPackage>::GetInstance().Allocate();
+}
+void RspUpdateTradeGroupItemPackage::Deallocate()
+{
+	ObjectPool<RspUpdateTradeGroupItemPackage>::GetInstance().Deallocate(this);
 }
 void RspUpdateTradeGroupItemPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -28657,7 +29473,7 @@ bool RspUpdateTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case RspUpdateTradeGroupItemField::FieldID:
 			{
-				RspUpdateTradeGroupItem = ::Allocate<RspUpdateTradeGroupItemField>();
+				RspUpdateTradeGroupItem = ObjectPool<RspUpdateTradeGroupItemField>::GetInstance().Allocate();
 				memset(RspUpdateTradeGroupItem, 0, sizeof(*RspUpdateTradeGroupItem));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -28703,7 +29519,7 @@ bool RspUpdateTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -28786,14 +29602,14 @@ bool RspUpdateTradeGroupItemPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case RspUpdateTradeGroupItemField::FieldID:
 		{
-			RspUpdateTradeGroupItem = ::Allocate<RspUpdateTradeGroupItemField>();
+			RspUpdateTradeGroupItem = ObjectPool<RspUpdateTradeGroupItemField>::GetInstance().Allocate();
 			memcpy(RspUpdateTradeGroupItem, buff + offset, sizeof(RspUpdateTradeGroupItemField));
 			offset += sizeof(RspUpdateTradeGroupItemField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -28818,19 +29634,25 @@ const char* RspUpdateTradeGroupItemPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRemoveTradeGroupItemPackage* ReqRemoveTradeGroupItemPackage::Allocate()
+ReqRemoveTradeGroupItemPackage::ReqRemoveTradeGroupItemPackage()
+	:ReqRemoveTradeGroupItem(nullptr)
 {
-	return ::Allocate<ReqRemoveTradeGroupItemPackage>();
 }
-void ReqRemoveTradeGroupItemPackage::Free()
+ReqRemoveTradeGroupItemPackage::~ReqRemoveTradeGroupItemPackage()
 {
-	Package::Free();
 	if (ReqRemoveTradeGroupItem != nullptr)
 	{
-		::Free<ReqRemoveTradeGroupItemField>(ReqRemoveTradeGroupItem);
+		ObjectPool<ReqRemoveTradeGroupItemField>::GetInstance().Deallocate(ReqRemoveTradeGroupItem);
 		ReqRemoveTradeGroupItem = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRemoveTradeGroupItemPackage>::GetInstance().Free(this);
+}
+ReqRemoveTradeGroupItemPackage* ReqRemoveTradeGroupItemPackage::Allocate()
+{
+	return ObjectPool<ReqRemoveTradeGroupItemPackage>::GetInstance().Allocate();
+}
+void ReqRemoveTradeGroupItemPackage::Deallocate()
+{
+	ObjectPool<ReqRemoveTradeGroupItemPackage>::GetInstance().Deallocate(this);
 }
 void ReqRemoveTradeGroupItemPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -28868,7 +29690,7 @@ bool ReqRemoveTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case ReqRemoveTradeGroupItemField::FieldID:
 			{
-				ReqRemoveTradeGroupItem = ::Allocate<ReqRemoveTradeGroupItemField>();
+				ReqRemoveTradeGroupItem = ObjectPool<ReqRemoveTradeGroupItemField>::GetInstance().Allocate();
 				memset(ReqRemoveTradeGroupItem, 0, sizeof(*ReqRemoveTradeGroupItem));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -28949,7 +29771,7 @@ bool ReqRemoveTradeGroupItemPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case ReqRemoveTradeGroupItemField::FieldID:
 		{
-			ReqRemoveTradeGroupItem = ::Allocate<ReqRemoveTradeGroupItemField>();
+			ReqRemoveTradeGroupItem = ObjectPool<ReqRemoveTradeGroupItemField>::GetInstance().Allocate();
 			memcpy(ReqRemoveTradeGroupItem, buff + offset, sizeof(ReqRemoveTradeGroupItemField));
 			offset += sizeof(ReqRemoveTradeGroupItemField);	
 			break;
@@ -28970,24 +29792,30 @@ const char* ReqRemoveTradeGroupItemPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRemoveTradeGroupItemPackage* RspRemoveTradeGroupItemPackage::Allocate()
+RspRemoveTradeGroupItemPackage::RspRemoveTradeGroupItemPackage()
+	:RspRemoveTradeGroupItem(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRemoveTradeGroupItemPackage>();
 }
-void RspRemoveTradeGroupItemPackage::Free()
+RspRemoveTradeGroupItemPackage::~RspRemoveTradeGroupItemPackage()
 {
-	Package::Free();
 	if (RspRemoveTradeGroupItem != nullptr)
 	{
-		::Free<RspRemoveTradeGroupItemField>(RspRemoveTradeGroupItem);
+		ObjectPool<RspRemoveTradeGroupItemField>::GetInstance().Deallocate(RspRemoveTradeGroupItem);
 		RspRemoveTradeGroupItem = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRemoveTradeGroupItemPackage>::GetInstance().Free(this);
+}
+RspRemoveTradeGroupItemPackage* RspRemoveTradeGroupItemPackage::Allocate()
+{
+	return ObjectPool<RspRemoveTradeGroupItemPackage>::GetInstance().Allocate();
+}
+void RspRemoveTradeGroupItemPackage::Deallocate()
+{
+	ObjectPool<RspRemoveTradeGroupItemPackage>::GetInstance().Deallocate(this);
 }
 void RspRemoveTradeGroupItemPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -29036,7 +29864,7 @@ bool RspRemoveTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case RspRemoveTradeGroupItemField::FieldID:
 			{
-				RspRemoveTradeGroupItem = ::Allocate<RspRemoveTradeGroupItemField>();
+				RspRemoveTradeGroupItem = ObjectPool<RspRemoveTradeGroupItemField>::GetInstance().Allocate();
 				memset(RspRemoveTradeGroupItem, 0, sizeof(*RspRemoveTradeGroupItem));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -29082,7 +29910,7 @@ bool RspRemoveTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -29165,14 +29993,14 @@ bool RspRemoveTradeGroupItemPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case RspRemoveTradeGroupItemField::FieldID:
 		{
-			RspRemoveTradeGroupItem = ::Allocate<RspRemoveTradeGroupItemField>();
+			RspRemoveTradeGroupItem = ObjectPool<RspRemoveTradeGroupItemField>::GetInstance().Allocate();
 			memcpy(RspRemoveTradeGroupItem, buff + offset, sizeof(RspRemoveTradeGroupItemField));
 			offset += sizeof(RspRemoveTradeGroupItemField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -29197,19 +30025,25 @@ const char* RspRemoveTradeGroupItemPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddRiskGroupPackage* ReqAddRiskGroupPackage::Allocate()
+ReqAddRiskGroupPackage::ReqAddRiskGroupPackage()
+	:ReqAddRiskGroup(nullptr)
 {
-	return ::Allocate<ReqAddRiskGroupPackage>();
 }
-void ReqAddRiskGroupPackage::Free()
+ReqAddRiskGroupPackage::~ReqAddRiskGroupPackage()
 {
-	Package::Free();
 	if (ReqAddRiskGroup != nullptr)
 	{
-		::Free<ReqAddRiskGroupField>(ReqAddRiskGroup);
+		ObjectPool<ReqAddRiskGroupField>::GetInstance().Deallocate(ReqAddRiskGroup);
 		ReqAddRiskGroup = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddRiskGroupPackage>::GetInstance().Free(this);
+}
+ReqAddRiskGroupPackage* ReqAddRiskGroupPackage::Allocate()
+{
+	return ObjectPool<ReqAddRiskGroupPackage>::GetInstance().Allocate();
+}
+void ReqAddRiskGroupPackage::Deallocate()
+{
+	ObjectPool<ReqAddRiskGroupPackage>::GetInstance().Deallocate(this);
 }
 void ReqAddRiskGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -29251,7 +30085,7 @@ bool ReqAddRiskGroupPackage::FromStepStream(char* buff, int startIndex, int endI
 			{
 			case ReqAddRiskGroupField::FieldID:
 			{
-				ReqAddRiskGroup = ::Allocate<ReqAddRiskGroupField>();
+				ReqAddRiskGroup = ObjectPool<ReqAddRiskGroupField>::GetInstance().Allocate();
 				memset(ReqAddRiskGroup, 0, sizeof(*ReqAddRiskGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -29333,7 +30167,7 @@ bool ReqAddRiskGroupPackage::FromXtpStream(char* buff, int startIndex, int endIn
 		{
 		case ReqAddRiskGroupField::FieldID:
 		{
-			ReqAddRiskGroup = ::Allocate<ReqAddRiskGroupField>();
+			ReqAddRiskGroup = ObjectPool<ReqAddRiskGroupField>::GetInstance().Allocate();
 			memcpy(ReqAddRiskGroup, buff + offset, sizeof(ReqAddRiskGroupField));
 			offset += sizeof(ReqAddRiskGroupField);	
 			break;
@@ -29354,24 +30188,30 @@ const char* ReqAddRiskGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddRiskGroupPackage* RspAddRiskGroupPackage::Allocate()
+RspAddRiskGroupPackage::RspAddRiskGroupPackage()
+	:RspAddRiskGroup(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddRiskGroupPackage>();
 }
-void RspAddRiskGroupPackage::Free()
+RspAddRiskGroupPackage::~RspAddRiskGroupPackage()
 {
-	Package::Free();
 	if (RspAddRiskGroup != nullptr)
 	{
-		::Free<RspAddRiskGroupField>(RspAddRiskGroup);
+		ObjectPool<RspAddRiskGroupField>::GetInstance().Deallocate(RspAddRiskGroup);
 		RspAddRiskGroup = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddRiskGroupPackage>::GetInstance().Free(this);
+}
+RspAddRiskGroupPackage* RspAddRiskGroupPackage::Allocate()
+{
+	return ObjectPool<RspAddRiskGroupPackage>::GetInstance().Allocate();
+}
+void RspAddRiskGroupPackage::Deallocate()
+{
+	ObjectPool<RspAddRiskGroupPackage>::GetInstance().Deallocate(this);
 }
 void RspAddRiskGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -29419,7 +30259,7 @@ bool RspAddRiskGroupPackage::FromStepStream(char* buff, int startIndex, int endI
 			{
 			case RspAddRiskGroupField::FieldID:
 			{
-				RspAddRiskGroup = ::Allocate<RspAddRiskGroupField>();
+				RspAddRiskGroup = ObjectPool<RspAddRiskGroupField>::GetInstance().Allocate();
 				memset(RspAddRiskGroup, 0, sizeof(*RspAddRiskGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -29460,7 +30300,7 @@ bool RspAddRiskGroupPackage::FromStepStream(char* buff, int startIndex, int endI
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -29543,14 +30383,14 @@ bool RspAddRiskGroupPackage::FromXtpStream(char* buff, int startIndex, int endIn
 		{
 		case RspAddRiskGroupField::FieldID:
 		{
-			RspAddRiskGroup = ::Allocate<RspAddRiskGroupField>();
+			RspAddRiskGroup = ObjectPool<RspAddRiskGroupField>::GetInstance().Allocate();
 			memcpy(RspAddRiskGroup, buff + offset, sizeof(RspAddRiskGroupField));
 			offset += sizeof(RspAddRiskGroupField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -29575,19 +30415,25 @@ const char* RspAddRiskGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqUpdateRiskGroupPackage* ReqUpdateRiskGroupPackage::Allocate()
+ReqUpdateRiskGroupPackage::ReqUpdateRiskGroupPackage()
+	:ReqUpdateRiskGroup(nullptr)
 {
-	return ::Allocate<ReqUpdateRiskGroupPackage>();
 }
-void ReqUpdateRiskGroupPackage::Free()
+ReqUpdateRiskGroupPackage::~ReqUpdateRiskGroupPackage()
 {
-	Package::Free();
 	if (ReqUpdateRiskGroup != nullptr)
 	{
-		::Free<ReqUpdateRiskGroupField>(ReqUpdateRiskGroup);
+		ObjectPool<ReqUpdateRiskGroupField>::GetInstance().Deallocate(ReqUpdateRiskGroup);
 		ReqUpdateRiskGroup = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqUpdateRiskGroupPackage>::GetInstance().Free(this);
+}
+ReqUpdateRiskGroupPackage* ReqUpdateRiskGroupPackage::Allocate()
+{
+	return ObjectPool<ReqUpdateRiskGroupPackage>::GetInstance().Allocate();
+}
+void ReqUpdateRiskGroupPackage::Deallocate()
+{
+	ObjectPool<ReqUpdateRiskGroupPackage>::GetInstance().Deallocate(this);
 }
 void ReqUpdateRiskGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -29629,7 +30475,7 @@ bool ReqUpdateRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case ReqUpdateRiskGroupField::FieldID:
 			{
-				ReqUpdateRiskGroup = ::Allocate<ReqUpdateRiskGroupField>();
+				ReqUpdateRiskGroup = ObjectPool<ReqUpdateRiskGroupField>::GetInstance().Allocate();
 				memset(ReqUpdateRiskGroup, 0, sizeof(*ReqUpdateRiskGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -29711,7 +30557,7 @@ bool ReqUpdateRiskGroupPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case ReqUpdateRiskGroupField::FieldID:
 		{
-			ReqUpdateRiskGroup = ::Allocate<ReqUpdateRiskGroupField>();
+			ReqUpdateRiskGroup = ObjectPool<ReqUpdateRiskGroupField>::GetInstance().Allocate();
 			memcpy(ReqUpdateRiskGroup, buff + offset, sizeof(ReqUpdateRiskGroupField));
 			offset += sizeof(ReqUpdateRiskGroupField);	
 			break;
@@ -29732,24 +30578,30 @@ const char* ReqUpdateRiskGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspUpdateRiskGroupPackage* RspUpdateRiskGroupPackage::Allocate()
+RspUpdateRiskGroupPackage::RspUpdateRiskGroupPackage()
+	:RspUpdateRiskGroup(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspUpdateRiskGroupPackage>();
 }
-void RspUpdateRiskGroupPackage::Free()
+RspUpdateRiskGroupPackage::~RspUpdateRiskGroupPackage()
 {
-	Package::Free();
 	if (RspUpdateRiskGroup != nullptr)
 	{
-		::Free<RspUpdateRiskGroupField>(RspUpdateRiskGroup);
+		ObjectPool<RspUpdateRiskGroupField>::GetInstance().Deallocate(RspUpdateRiskGroup);
 		RspUpdateRiskGroup = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspUpdateRiskGroupPackage>::GetInstance().Free(this);
+}
+RspUpdateRiskGroupPackage* RspUpdateRiskGroupPackage::Allocate()
+{
+	return ObjectPool<RspUpdateRiskGroupPackage>::GetInstance().Allocate();
+}
+void RspUpdateRiskGroupPackage::Deallocate()
+{
+	ObjectPool<RspUpdateRiskGroupPackage>::GetInstance().Deallocate(this);
 }
 void RspUpdateRiskGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -29797,7 +30649,7 @@ bool RspUpdateRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case RspUpdateRiskGroupField::FieldID:
 			{
-				RspUpdateRiskGroup = ::Allocate<RspUpdateRiskGroupField>();
+				RspUpdateRiskGroup = ObjectPool<RspUpdateRiskGroupField>::GetInstance().Allocate();
 				memset(RspUpdateRiskGroup, 0, sizeof(*RspUpdateRiskGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -29838,7 +30690,7 @@ bool RspUpdateRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -29921,14 +30773,14 @@ bool RspUpdateRiskGroupPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case RspUpdateRiskGroupField::FieldID:
 		{
-			RspUpdateRiskGroup = ::Allocate<RspUpdateRiskGroupField>();
+			RspUpdateRiskGroup = ObjectPool<RspUpdateRiskGroupField>::GetInstance().Allocate();
 			memcpy(RspUpdateRiskGroup, buff + offset, sizeof(RspUpdateRiskGroupField));
 			offset += sizeof(RspUpdateRiskGroupField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -29953,19 +30805,25 @@ const char* RspUpdateRiskGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRemoveRiskGroupPackage* ReqRemoveRiskGroupPackage::Allocate()
+ReqRemoveRiskGroupPackage::ReqRemoveRiskGroupPackage()
+	:ReqRemoveRiskGroup(nullptr)
 {
-	return ::Allocate<ReqRemoveRiskGroupPackage>();
 }
-void ReqRemoveRiskGroupPackage::Free()
+ReqRemoveRiskGroupPackage::~ReqRemoveRiskGroupPackage()
 {
-	Package::Free();
 	if (ReqRemoveRiskGroup != nullptr)
 	{
-		::Free<ReqRemoveRiskGroupField>(ReqRemoveRiskGroup);
+		ObjectPool<ReqRemoveRiskGroupField>::GetInstance().Deallocate(ReqRemoveRiskGroup);
 		ReqRemoveRiskGroup = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRemoveRiskGroupPackage>::GetInstance().Free(this);
+}
+ReqRemoveRiskGroupPackage* ReqRemoveRiskGroupPackage::Allocate()
+{
+	return ObjectPool<ReqRemoveRiskGroupPackage>::GetInstance().Allocate();
+}
+void ReqRemoveRiskGroupPackage::Deallocate()
+{
+	ObjectPool<ReqRemoveRiskGroupPackage>::GetInstance().Deallocate(this);
 }
 void ReqRemoveRiskGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -30002,7 +30860,7 @@ bool ReqRemoveRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case ReqRemoveRiskGroupField::FieldID:
 			{
-				ReqRemoveRiskGroup = ::Allocate<ReqRemoveRiskGroupField>();
+				ReqRemoveRiskGroup = ObjectPool<ReqRemoveRiskGroupField>::GetInstance().Allocate();
 				memset(ReqRemoveRiskGroup, 0, sizeof(*ReqRemoveRiskGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -30078,7 +30936,7 @@ bool ReqRemoveRiskGroupPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case ReqRemoveRiskGroupField::FieldID:
 		{
-			ReqRemoveRiskGroup = ::Allocate<ReqRemoveRiskGroupField>();
+			ReqRemoveRiskGroup = ObjectPool<ReqRemoveRiskGroupField>::GetInstance().Allocate();
 			memcpy(ReqRemoveRiskGroup, buff + offset, sizeof(ReqRemoveRiskGroupField));
 			offset += sizeof(ReqRemoveRiskGroupField);	
 			break;
@@ -30099,24 +30957,30 @@ const char* ReqRemoveRiskGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRemoveRiskGroupPackage* RspRemoveRiskGroupPackage::Allocate()
+RspRemoveRiskGroupPackage::RspRemoveRiskGroupPackage()
+	:RspRemoveRiskGroup(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRemoveRiskGroupPackage>();
 }
-void RspRemoveRiskGroupPackage::Free()
+RspRemoveRiskGroupPackage::~RspRemoveRiskGroupPackage()
 {
-	Package::Free();
 	if (RspRemoveRiskGroup != nullptr)
 	{
-		::Free<RspRemoveRiskGroupField>(RspRemoveRiskGroup);
+		ObjectPool<RspRemoveRiskGroupField>::GetInstance().Deallocate(RspRemoveRiskGroup);
 		RspRemoveRiskGroup = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRemoveRiskGroupPackage>::GetInstance().Free(this);
+}
+RspRemoveRiskGroupPackage* RspRemoveRiskGroupPackage::Allocate()
+{
+	return ObjectPool<RspRemoveRiskGroupPackage>::GetInstance().Allocate();
+}
+void RspRemoveRiskGroupPackage::Deallocate()
+{
+	ObjectPool<RspRemoveRiskGroupPackage>::GetInstance().Deallocate(this);
 }
 void RspRemoveRiskGroupPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -30164,7 +31028,7 @@ bool RspRemoveRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case RspRemoveRiskGroupField::FieldID:
 			{
-				RspRemoveRiskGroup = ::Allocate<RspRemoveRiskGroupField>();
+				RspRemoveRiskGroup = ObjectPool<RspRemoveRiskGroupField>::GetInstance().Allocate();
 				memset(RspRemoveRiskGroup, 0, sizeof(*RspRemoveRiskGroup));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -30205,7 +31069,7 @@ bool RspRemoveRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -30288,14 +31152,14 @@ bool RspRemoveRiskGroupPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case RspRemoveRiskGroupField::FieldID:
 		{
-			RspRemoveRiskGroup = ::Allocate<RspRemoveRiskGroupField>();
+			RspRemoveRiskGroup = ObjectPool<RspRemoveRiskGroupField>::GetInstance().Allocate();
 			memcpy(RspRemoveRiskGroup, buff + offset, sizeof(RspRemoveRiskGroupField));
 			offset += sizeof(RspRemoveRiskGroupField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -30320,19 +31184,25 @@ const char* RspRemoveRiskGroupPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddRiskGroupItemPackage* ReqAddRiskGroupItemPackage::Allocate()
+ReqAddRiskGroupItemPackage::ReqAddRiskGroupItemPackage()
+	:ReqAddRiskGroupItem(nullptr)
 {
-	return ::Allocate<ReqAddRiskGroupItemPackage>();
 }
-void ReqAddRiskGroupItemPackage::Free()
+ReqAddRiskGroupItemPackage::~ReqAddRiskGroupItemPackage()
 {
-	Package::Free();
 	if (ReqAddRiskGroupItem != nullptr)
 	{
-		::Free<ReqAddRiskGroupItemField>(ReqAddRiskGroupItem);
+		ObjectPool<ReqAddRiskGroupItemField>::GetInstance().Deallocate(ReqAddRiskGroupItem);
 		ReqAddRiskGroupItem = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddRiskGroupItemPackage>::GetInstance().Free(this);
+}
+ReqAddRiskGroupItemPackage* ReqAddRiskGroupItemPackage::Allocate()
+{
+	return ObjectPool<ReqAddRiskGroupItemPackage>::GetInstance().Allocate();
+}
+void ReqAddRiskGroupItemPackage::Deallocate()
+{
+	ObjectPool<ReqAddRiskGroupItemPackage>::GetInstance().Deallocate(this);
 }
 void ReqAddRiskGroupItemPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -30370,7 +31240,7 @@ bool ReqAddRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, int 
 			{
 			case ReqAddRiskGroupItemField::FieldID:
 			{
-				ReqAddRiskGroupItem = ::Allocate<ReqAddRiskGroupItemField>();
+				ReqAddRiskGroupItem = ObjectPool<ReqAddRiskGroupItemField>::GetInstance().Allocate();
 				memset(ReqAddRiskGroupItem, 0, sizeof(*ReqAddRiskGroupItem));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -30451,7 +31321,7 @@ bool ReqAddRiskGroupItemPackage::FromXtpStream(char* buff, int startIndex, int e
 		{
 		case ReqAddRiskGroupItemField::FieldID:
 		{
-			ReqAddRiskGroupItem = ::Allocate<ReqAddRiskGroupItemField>();
+			ReqAddRiskGroupItem = ObjectPool<ReqAddRiskGroupItemField>::GetInstance().Allocate();
 			memcpy(ReqAddRiskGroupItem, buff + offset, sizeof(ReqAddRiskGroupItemField));
 			offset += sizeof(ReqAddRiskGroupItemField);	
 			break;
@@ -30472,24 +31342,30 @@ const char* ReqAddRiskGroupItemPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddRiskGroupItemPackage* RspAddRiskGroupItemPackage::Allocate()
+RspAddRiskGroupItemPackage::RspAddRiskGroupItemPackage()
+	:RspAddRiskGroupItem(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddRiskGroupItemPackage>();
 }
-void RspAddRiskGroupItemPackage::Free()
+RspAddRiskGroupItemPackage::~RspAddRiskGroupItemPackage()
 {
-	Package::Free();
 	if (RspAddRiskGroupItem != nullptr)
 	{
-		::Free<RspAddRiskGroupItemField>(RspAddRiskGroupItem);
+		ObjectPool<RspAddRiskGroupItemField>::GetInstance().Deallocate(RspAddRiskGroupItem);
 		RspAddRiskGroupItem = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddRiskGroupItemPackage>::GetInstance().Free(this);
+}
+RspAddRiskGroupItemPackage* RspAddRiskGroupItemPackage::Allocate()
+{
+	return ObjectPool<RspAddRiskGroupItemPackage>::GetInstance().Allocate();
+}
+void RspAddRiskGroupItemPackage::Deallocate()
+{
+	ObjectPool<RspAddRiskGroupItemPackage>::GetInstance().Deallocate(this);
 }
 void RspAddRiskGroupItemPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -30538,7 +31414,7 @@ bool RspAddRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, int 
 			{
 			case RspAddRiskGroupItemField::FieldID:
 			{
-				RspAddRiskGroupItem = ::Allocate<RspAddRiskGroupItemField>();
+				RspAddRiskGroupItem = ObjectPool<RspAddRiskGroupItemField>::GetInstance().Allocate();
 				memset(RspAddRiskGroupItem, 0, sizeof(*RspAddRiskGroupItem));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -30584,7 +31460,7 @@ bool RspAddRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, int 
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -30667,14 +31543,14 @@ bool RspAddRiskGroupItemPackage::FromXtpStream(char* buff, int startIndex, int e
 		{
 		case RspAddRiskGroupItemField::FieldID:
 		{
-			RspAddRiskGroupItem = ::Allocate<RspAddRiskGroupItemField>();
+			RspAddRiskGroupItem = ObjectPool<RspAddRiskGroupItemField>::GetInstance().Allocate();
 			memcpy(RspAddRiskGroupItem, buff + offset, sizeof(RspAddRiskGroupItemField));
 			offset += sizeof(RspAddRiskGroupItemField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -30699,19 +31575,25 @@ const char* RspAddRiskGroupItemPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqUpdateRiskGroupItemPackage* ReqUpdateRiskGroupItemPackage::Allocate()
+ReqUpdateRiskGroupItemPackage::ReqUpdateRiskGroupItemPackage()
+	:ReqUpdateRiskGroupItem(nullptr)
 {
-	return ::Allocate<ReqUpdateRiskGroupItemPackage>();
 }
-void ReqUpdateRiskGroupItemPackage::Free()
+ReqUpdateRiskGroupItemPackage::~ReqUpdateRiskGroupItemPackage()
 {
-	Package::Free();
 	if (ReqUpdateRiskGroupItem != nullptr)
 	{
-		::Free<ReqUpdateRiskGroupItemField>(ReqUpdateRiskGroupItem);
+		ObjectPool<ReqUpdateRiskGroupItemField>::GetInstance().Deallocate(ReqUpdateRiskGroupItem);
 		ReqUpdateRiskGroupItem = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqUpdateRiskGroupItemPackage>::GetInstance().Free(this);
+}
+ReqUpdateRiskGroupItemPackage* ReqUpdateRiskGroupItemPackage::Allocate()
+{
+	return ObjectPool<ReqUpdateRiskGroupItemPackage>::GetInstance().Allocate();
+}
+void ReqUpdateRiskGroupItemPackage::Deallocate()
+{
+	ObjectPool<ReqUpdateRiskGroupItemPackage>::GetInstance().Deallocate(this);
 }
 void ReqUpdateRiskGroupItemPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -30749,7 +31631,7 @@ bool ReqUpdateRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 			{
 			case ReqUpdateRiskGroupItemField::FieldID:
 			{
-				ReqUpdateRiskGroupItem = ::Allocate<ReqUpdateRiskGroupItemField>();
+				ReqUpdateRiskGroupItem = ObjectPool<ReqUpdateRiskGroupItemField>::GetInstance().Allocate();
 				memset(ReqUpdateRiskGroupItem, 0, sizeof(*ReqUpdateRiskGroupItem));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -30830,7 +31712,7 @@ bool ReqUpdateRiskGroupItemPackage::FromXtpStream(char* buff, int startIndex, in
 		{
 		case ReqUpdateRiskGroupItemField::FieldID:
 		{
-			ReqUpdateRiskGroupItem = ::Allocate<ReqUpdateRiskGroupItemField>();
+			ReqUpdateRiskGroupItem = ObjectPool<ReqUpdateRiskGroupItemField>::GetInstance().Allocate();
 			memcpy(ReqUpdateRiskGroupItem, buff + offset, sizeof(ReqUpdateRiskGroupItemField));
 			offset += sizeof(ReqUpdateRiskGroupItemField);	
 			break;
@@ -30851,24 +31733,30 @@ const char* ReqUpdateRiskGroupItemPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspUpdateRiskGroupItemPackage* RspUpdateRiskGroupItemPackage::Allocate()
+RspUpdateRiskGroupItemPackage::RspUpdateRiskGroupItemPackage()
+	:RspUpdateRiskGroupItem(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspUpdateRiskGroupItemPackage>();
 }
-void RspUpdateRiskGroupItemPackage::Free()
+RspUpdateRiskGroupItemPackage::~RspUpdateRiskGroupItemPackage()
 {
-	Package::Free();
 	if (RspUpdateRiskGroupItem != nullptr)
 	{
-		::Free<RspUpdateRiskGroupItemField>(RspUpdateRiskGroupItem);
+		ObjectPool<RspUpdateRiskGroupItemField>::GetInstance().Deallocate(RspUpdateRiskGroupItem);
 		RspUpdateRiskGroupItem = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspUpdateRiskGroupItemPackage>::GetInstance().Free(this);
+}
+RspUpdateRiskGroupItemPackage* RspUpdateRiskGroupItemPackage::Allocate()
+{
+	return ObjectPool<RspUpdateRiskGroupItemPackage>::GetInstance().Allocate();
+}
+void RspUpdateRiskGroupItemPackage::Deallocate()
+{
+	ObjectPool<RspUpdateRiskGroupItemPackage>::GetInstance().Deallocate(this);
 }
 void RspUpdateRiskGroupItemPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -30917,7 +31805,7 @@ bool RspUpdateRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 			{
 			case RspUpdateRiskGroupItemField::FieldID:
 			{
-				RspUpdateRiskGroupItem = ::Allocate<RspUpdateRiskGroupItemField>();
+				RspUpdateRiskGroupItem = ObjectPool<RspUpdateRiskGroupItemField>::GetInstance().Allocate();
 				memset(RspUpdateRiskGroupItem, 0, sizeof(*RspUpdateRiskGroupItem));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -30963,7 +31851,7 @@ bool RspUpdateRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -31046,14 +31934,14 @@ bool RspUpdateRiskGroupItemPackage::FromXtpStream(char* buff, int startIndex, in
 		{
 		case RspUpdateRiskGroupItemField::FieldID:
 		{
-			RspUpdateRiskGroupItem = ::Allocate<RspUpdateRiskGroupItemField>();
+			RspUpdateRiskGroupItem = ObjectPool<RspUpdateRiskGroupItemField>::GetInstance().Allocate();
 			memcpy(RspUpdateRiskGroupItem, buff + offset, sizeof(RspUpdateRiskGroupItemField));
 			offset += sizeof(RspUpdateRiskGroupItemField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -31078,19 +31966,25 @@ const char* RspUpdateRiskGroupItemPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRemoveRiskGroupItemPackage* ReqRemoveRiskGroupItemPackage::Allocate()
+ReqRemoveRiskGroupItemPackage::ReqRemoveRiskGroupItemPackage()
+	:ReqRemoveRiskGroupItem(nullptr)
 {
-	return ::Allocate<ReqRemoveRiskGroupItemPackage>();
 }
-void ReqRemoveRiskGroupItemPackage::Free()
+ReqRemoveRiskGroupItemPackage::~ReqRemoveRiskGroupItemPackage()
 {
-	Package::Free();
 	if (ReqRemoveRiskGroupItem != nullptr)
 	{
-		::Free<ReqRemoveRiskGroupItemField>(ReqRemoveRiskGroupItem);
+		ObjectPool<ReqRemoveRiskGroupItemField>::GetInstance().Deallocate(ReqRemoveRiskGroupItem);
 		ReqRemoveRiskGroupItem = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRemoveRiskGroupItemPackage>::GetInstance().Free(this);
+}
+ReqRemoveRiskGroupItemPackage* ReqRemoveRiskGroupItemPackage::Allocate()
+{
+	return ObjectPool<ReqRemoveRiskGroupItemPackage>::GetInstance().Allocate();
+}
+void ReqRemoveRiskGroupItemPackage::Deallocate()
+{
+	ObjectPool<ReqRemoveRiskGroupItemPackage>::GetInstance().Deallocate(this);
 }
 void ReqRemoveRiskGroupItemPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -31128,7 +32022,7 @@ bool ReqRemoveRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 			{
 			case ReqRemoveRiskGroupItemField::FieldID:
 			{
-				ReqRemoveRiskGroupItem = ::Allocate<ReqRemoveRiskGroupItemField>();
+				ReqRemoveRiskGroupItem = ObjectPool<ReqRemoveRiskGroupItemField>::GetInstance().Allocate();
 				memset(ReqRemoveRiskGroupItem, 0, sizeof(*ReqRemoveRiskGroupItem));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -31209,7 +32103,7 @@ bool ReqRemoveRiskGroupItemPackage::FromXtpStream(char* buff, int startIndex, in
 		{
 		case ReqRemoveRiskGroupItemField::FieldID:
 		{
-			ReqRemoveRiskGroupItem = ::Allocate<ReqRemoveRiskGroupItemField>();
+			ReqRemoveRiskGroupItem = ObjectPool<ReqRemoveRiskGroupItemField>::GetInstance().Allocate();
 			memcpy(ReqRemoveRiskGroupItem, buff + offset, sizeof(ReqRemoveRiskGroupItemField));
 			offset += sizeof(ReqRemoveRiskGroupItemField);	
 			break;
@@ -31230,24 +32124,30 @@ const char* ReqRemoveRiskGroupItemPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRemoveRiskGroupItemPackage* RspRemoveRiskGroupItemPackage::Allocate()
+RspRemoveRiskGroupItemPackage::RspRemoveRiskGroupItemPackage()
+	:RspRemoveRiskGroupItem(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRemoveRiskGroupItemPackage>();
 }
-void RspRemoveRiskGroupItemPackage::Free()
+RspRemoveRiskGroupItemPackage::~RspRemoveRiskGroupItemPackage()
 {
-	Package::Free();
 	if (RspRemoveRiskGroupItem != nullptr)
 	{
-		::Free<RspRemoveRiskGroupItemField>(RspRemoveRiskGroupItem);
+		ObjectPool<RspRemoveRiskGroupItemField>::GetInstance().Deallocate(RspRemoveRiskGroupItem);
 		RspRemoveRiskGroupItem = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRemoveRiskGroupItemPackage>::GetInstance().Free(this);
+}
+RspRemoveRiskGroupItemPackage* RspRemoveRiskGroupItemPackage::Allocate()
+{
+	return ObjectPool<RspRemoveRiskGroupItemPackage>::GetInstance().Allocate();
+}
+void RspRemoveRiskGroupItemPackage::Deallocate()
+{
+	ObjectPool<RspRemoveRiskGroupItemPackage>::GetInstance().Deallocate(this);
 }
 void RspRemoveRiskGroupItemPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -31296,7 +32196,7 @@ bool RspRemoveRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 			{
 			case RspRemoveRiskGroupItemField::FieldID:
 			{
-				RspRemoveRiskGroupItem = ::Allocate<RspRemoveRiskGroupItemField>();
+				RspRemoveRiskGroupItem = ObjectPool<RspRemoveRiskGroupItemField>::GetInstance().Allocate();
 				memset(RspRemoveRiskGroupItem, 0, sizeof(*RspRemoveRiskGroupItem));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -31342,7 +32242,7 @@ bool RspRemoveRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -31425,14 +32325,14 @@ bool RspRemoveRiskGroupItemPackage::FromXtpStream(char* buff, int startIndex, in
 		{
 		case RspRemoveRiskGroupItemField::FieldID:
 		{
-			RspRemoveRiskGroupItem = ::Allocate<RspRemoveRiskGroupItemField>();
+			RspRemoveRiskGroupItem = ObjectPool<RspRemoveRiskGroupItemField>::GetInstance().Allocate();
 			memcpy(RspRemoveRiskGroupItem, buff + offset, sizeof(RspRemoveRiskGroupItemField));
 			offset += sizeof(RspRemoveRiskGroupItemField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -31457,19 +32357,25 @@ const char* RspRemoveRiskGroupItemPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddOrUpdateRiskPackage* ReqAddOrUpdateRiskPackage::Allocate()
+ReqAddOrUpdateRiskPackage::ReqAddOrUpdateRiskPackage()
+	:ReqAddOrUpdateRisk(nullptr)
 {
-	return ::Allocate<ReqAddOrUpdateRiskPackage>();
 }
-void ReqAddOrUpdateRiskPackage::Free()
+ReqAddOrUpdateRiskPackage::~ReqAddOrUpdateRiskPackage()
 {
-	Package::Free();
 	if (ReqAddOrUpdateRisk != nullptr)
 	{
-		::Free<ReqAddOrUpdateRiskField>(ReqAddOrUpdateRisk);
+		ObjectPool<ReqAddOrUpdateRiskField>::GetInstance().Deallocate(ReqAddOrUpdateRisk);
 		ReqAddOrUpdateRisk = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddOrUpdateRiskPackage>::GetInstance().Free(this);
+}
+ReqAddOrUpdateRiskPackage* ReqAddOrUpdateRiskPackage::Allocate()
+{
+	return ObjectPool<ReqAddOrUpdateRiskPackage>::GetInstance().Allocate();
+}
+void ReqAddOrUpdateRiskPackage::Deallocate()
+{
+	ObjectPool<ReqAddOrUpdateRiskPackage>::GetInstance().Deallocate(this);
 }
 void ReqAddOrUpdateRiskPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -31512,7 +32418,7 @@ bool ReqAddOrUpdateRiskPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case ReqAddOrUpdateRiskField::FieldID:
 			{
-				ReqAddOrUpdateRisk = ::Allocate<ReqAddOrUpdateRiskField>();
+				ReqAddOrUpdateRisk = ObjectPool<ReqAddOrUpdateRiskField>::GetInstance().Allocate();
 				memset(ReqAddOrUpdateRisk, 0, sizeof(*ReqAddOrUpdateRisk));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -31599,7 +32505,7 @@ bool ReqAddOrUpdateRiskPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case ReqAddOrUpdateRiskField::FieldID:
 		{
-			ReqAddOrUpdateRisk = ::Allocate<ReqAddOrUpdateRiskField>();
+			ReqAddOrUpdateRisk = ObjectPool<ReqAddOrUpdateRiskField>::GetInstance().Allocate();
 			memcpy(ReqAddOrUpdateRisk, buff + offset, sizeof(ReqAddOrUpdateRiskField));
 			offset += sizeof(ReqAddOrUpdateRiskField);	
 			break;
@@ -31620,24 +32526,30 @@ const char* ReqAddOrUpdateRiskPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddOrUpdateRiskPackage* RspAddOrUpdateRiskPackage::Allocate()
+RspAddOrUpdateRiskPackage::RspAddOrUpdateRiskPackage()
+	:RspAddOrUpdateRisk(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddOrUpdateRiskPackage>();
 }
-void RspAddOrUpdateRiskPackage::Free()
+RspAddOrUpdateRiskPackage::~RspAddOrUpdateRiskPackage()
 {
-	Package::Free();
 	if (RspAddOrUpdateRisk != nullptr)
 	{
-		::Free<RspAddOrUpdateRiskField>(RspAddOrUpdateRisk);
+		ObjectPool<RspAddOrUpdateRiskField>::GetInstance().Deallocate(RspAddOrUpdateRisk);
 		RspAddOrUpdateRisk = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddOrUpdateRiskPackage>::GetInstance().Free(this);
+}
+RspAddOrUpdateRiskPackage* RspAddOrUpdateRiskPackage::Allocate()
+{
+	return ObjectPool<RspAddOrUpdateRiskPackage>::GetInstance().Allocate();
+}
+void RspAddOrUpdateRiskPackage::Deallocate()
+{
+	ObjectPool<RspAddOrUpdateRiskPackage>::GetInstance().Deallocate(this);
 }
 void RspAddOrUpdateRiskPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -31685,7 +32597,7 @@ bool RspAddOrUpdateRiskPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case RspAddOrUpdateRiskField::FieldID:
 			{
-				RspAddOrUpdateRisk = ::Allocate<RspAddOrUpdateRiskField>();
+				RspAddOrUpdateRisk = ObjectPool<RspAddOrUpdateRiskField>::GetInstance().Allocate();
 				memset(RspAddOrUpdateRisk, 0, sizeof(*RspAddOrUpdateRisk));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -31726,7 +32638,7 @@ bool RspAddOrUpdateRiskPackage::FromStepStream(char* buff, int startIndex, int e
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -31809,14 +32721,14 @@ bool RspAddOrUpdateRiskPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case RspAddOrUpdateRiskField::FieldID:
 		{
-			RspAddOrUpdateRisk = ::Allocate<RspAddOrUpdateRiskField>();
+			RspAddOrUpdateRisk = ObjectPool<RspAddOrUpdateRiskField>::GetInstance().Allocate();
 			memcpy(RspAddOrUpdateRisk, buff + offset, sizeof(RspAddOrUpdateRiskField));
 			offset += sizeof(RspAddOrUpdateRiskField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -31841,19 +32753,25 @@ const char* RspAddOrUpdateRiskPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRemoveRiskPackage* ReqRemoveRiskPackage::Allocate()
+ReqRemoveRiskPackage::ReqRemoveRiskPackage()
+	:ReqRemoveRisk(nullptr)
 {
-	return ::Allocate<ReqRemoveRiskPackage>();
 }
-void ReqRemoveRiskPackage::Free()
+ReqRemoveRiskPackage::~ReqRemoveRiskPackage()
 {
-	Package::Free();
 	if (ReqRemoveRisk != nullptr)
 	{
-		::Free<ReqRemoveRiskField>(ReqRemoveRisk);
+		ObjectPool<ReqRemoveRiskField>::GetInstance().Deallocate(ReqRemoveRisk);
 		ReqRemoveRisk = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRemoveRiskPackage>::GetInstance().Free(this);
+}
+ReqRemoveRiskPackage* ReqRemoveRiskPackage::Allocate()
+{
+	return ObjectPool<ReqRemoveRiskPackage>::GetInstance().Allocate();
+}
+void ReqRemoveRiskPackage::Deallocate()
+{
+	ObjectPool<ReqRemoveRiskPackage>::GetInstance().Deallocate(this);
 }
 void ReqRemoveRiskPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -31890,7 +32808,7 @@ bool ReqRemoveRiskPackage::FromStepStream(char* buff, int startIndex, int endInd
 			{
 			case ReqRemoveRiskField::FieldID:
 			{
-				ReqRemoveRisk = ::Allocate<ReqRemoveRiskField>();
+				ReqRemoveRisk = ObjectPool<ReqRemoveRiskField>::GetInstance().Allocate();
 				memset(ReqRemoveRisk, 0, sizeof(*ReqRemoveRisk));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -31966,7 +32884,7 @@ bool ReqRemoveRiskPackage::FromXtpStream(char* buff, int startIndex, int endInde
 		{
 		case ReqRemoveRiskField::FieldID:
 		{
-			ReqRemoveRisk = ::Allocate<ReqRemoveRiskField>();
+			ReqRemoveRisk = ObjectPool<ReqRemoveRiskField>::GetInstance().Allocate();
 			memcpy(ReqRemoveRisk, buff + offset, sizeof(ReqRemoveRiskField));
 			offset += sizeof(ReqRemoveRiskField);	
 			break;
@@ -31987,24 +32905,30 @@ const char* ReqRemoveRiskPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRemoveRiskPackage* RspRemoveRiskPackage::Allocate()
+RspRemoveRiskPackage::RspRemoveRiskPackage()
+	:RspRemoveRisk(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRemoveRiskPackage>();
 }
-void RspRemoveRiskPackage::Free()
+RspRemoveRiskPackage::~RspRemoveRiskPackage()
 {
-	Package::Free();
 	if (RspRemoveRisk != nullptr)
 	{
-		::Free<RspRemoveRiskField>(RspRemoveRisk);
+		ObjectPool<RspRemoveRiskField>::GetInstance().Deallocate(RspRemoveRisk);
 		RspRemoveRisk = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRemoveRiskPackage>::GetInstance().Free(this);
+}
+RspRemoveRiskPackage* RspRemoveRiskPackage::Allocate()
+{
+	return ObjectPool<RspRemoveRiskPackage>::GetInstance().Allocate();
+}
+void RspRemoveRiskPackage::Deallocate()
+{
+	ObjectPool<RspRemoveRiskPackage>::GetInstance().Deallocate(this);
 }
 void RspRemoveRiskPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -32052,7 +32976,7 @@ bool RspRemoveRiskPackage::FromStepStream(char* buff, int startIndex, int endInd
 			{
 			case RspRemoveRiskField::FieldID:
 			{
-				RspRemoveRisk = ::Allocate<RspRemoveRiskField>();
+				RspRemoveRisk = ObjectPool<RspRemoveRiskField>::GetInstance().Allocate();
 				memset(RspRemoveRisk, 0, sizeof(*RspRemoveRisk));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -32093,7 +33017,7 @@ bool RspRemoveRiskPackage::FromStepStream(char* buff, int startIndex, int endInd
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -32176,14 +33100,14 @@ bool RspRemoveRiskPackage::FromXtpStream(char* buff, int startIndex, int endInde
 		{
 		case RspRemoveRiskField::FieldID:
 		{
-			RspRemoveRisk = ::Allocate<RspRemoveRiskField>();
+			RspRemoveRisk = ObjectPool<RspRemoveRiskField>::GetInstance().Allocate();
 			memcpy(RspRemoveRisk, buff + offset, sizeof(RspRemoveRiskField));
 			offset += sizeof(RspRemoveRiskField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -32208,19 +33132,25 @@ const char* RspRemoveRiskPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddRiskRulePackage* ReqAddRiskRulePackage::Allocate()
+ReqAddRiskRulePackage::ReqAddRiskRulePackage()
+	:ReqAddRiskRule(nullptr)
 {
-	return ::Allocate<ReqAddRiskRulePackage>();
 }
-void ReqAddRiskRulePackage::Free()
+ReqAddRiskRulePackage::~ReqAddRiskRulePackage()
 {
-	Package::Free();
 	if (ReqAddRiskRule != nullptr)
 	{
-		::Free<ReqAddRiskRuleField>(ReqAddRiskRule);
+		ObjectPool<ReqAddRiskRuleField>::GetInstance().Deallocate(ReqAddRiskRule);
 		ReqAddRiskRule = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddRiskRulePackage>::GetInstance().Free(this);
+}
+ReqAddRiskRulePackage* ReqAddRiskRulePackage::Allocate()
+{
+	return ObjectPool<ReqAddRiskRulePackage>::GetInstance().Allocate();
+}
+void ReqAddRiskRulePackage::Deallocate()
+{
+	ObjectPool<ReqAddRiskRulePackage>::GetInstance().Deallocate(this);
 }
 void ReqAddRiskRulePackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -32264,7 +33194,7 @@ bool ReqAddRiskRulePackage::FromStepStream(char* buff, int startIndex, int endIn
 			{
 			case ReqAddRiskRuleField::FieldID:
 			{
-				ReqAddRiskRule = ::Allocate<ReqAddRiskRuleField>();
+				ReqAddRiskRule = ObjectPool<ReqAddRiskRuleField>::GetInstance().Allocate();
 				memset(ReqAddRiskRule, 0, sizeof(*ReqAddRiskRule));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -32356,7 +33286,7 @@ bool ReqAddRiskRulePackage::FromXtpStream(char* buff, int startIndex, int endInd
 		{
 		case ReqAddRiskRuleField::FieldID:
 		{
-			ReqAddRiskRule = ::Allocate<ReqAddRiskRuleField>();
+			ReqAddRiskRule = ObjectPool<ReqAddRiskRuleField>::GetInstance().Allocate();
 			memcpy(ReqAddRiskRule, buff + offset, sizeof(ReqAddRiskRuleField));
 			offset += sizeof(ReqAddRiskRuleField);	
 			break;
@@ -32377,24 +33307,30 @@ const char* ReqAddRiskRulePackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddRiskRulePackage* RspAddRiskRulePackage::Allocate()
+RspAddRiskRulePackage::RspAddRiskRulePackage()
+	:RspAddRiskRule(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddRiskRulePackage>();
 }
-void RspAddRiskRulePackage::Free()
+RspAddRiskRulePackage::~RspAddRiskRulePackage()
 {
-	Package::Free();
 	if (RspAddRiskRule != nullptr)
 	{
-		::Free<RspAddRiskRuleField>(RspAddRiskRule);
+		ObjectPool<RspAddRiskRuleField>::GetInstance().Deallocate(RspAddRiskRule);
 		RspAddRiskRule = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddRiskRulePackage>::GetInstance().Free(this);
+}
+RspAddRiskRulePackage* RspAddRiskRulePackage::Allocate()
+{
+	return ObjectPool<RspAddRiskRulePackage>::GetInstance().Allocate();
+}
+void RspAddRiskRulePackage::Deallocate()
+{
+	ObjectPool<RspAddRiskRulePackage>::GetInstance().Deallocate(this);
 }
 void RspAddRiskRulePackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -32443,7 +33379,7 @@ bool RspAddRiskRulePackage::FromStepStream(char* buff, int startIndex, int endIn
 			{
 			case RspAddRiskRuleField::FieldID:
 			{
-				RspAddRiskRule = ::Allocate<RspAddRiskRuleField>();
+				RspAddRiskRule = ObjectPool<RspAddRiskRuleField>::GetInstance().Allocate();
 				memset(RspAddRiskRule, 0, sizeof(*RspAddRiskRule));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -32489,7 +33425,7 @@ bool RspAddRiskRulePackage::FromStepStream(char* buff, int startIndex, int endIn
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -32572,14 +33508,14 @@ bool RspAddRiskRulePackage::FromXtpStream(char* buff, int startIndex, int endInd
 		{
 		case RspAddRiskRuleField::FieldID:
 		{
-			RspAddRiskRule = ::Allocate<RspAddRiskRuleField>();
+			RspAddRiskRule = ObjectPool<RspAddRiskRuleField>::GetInstance().Allocate();
 			memcpy(RspAddRiskRule, buff + offset, sizeof(RspAddRiskRuleField));
 			offset += sizeof(RspAddRiskRuleField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -32604,19 +33540,25 @@ const char* RspAddRiskRulePackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddRiskRuleItemPackage* ReqAddRiskRuleItemPackage::Allocate()
+ReqAddRiskRuleItemPackage::ReqAddRiskRuleItemPackage()
+	:ReqAddRiskRuleItem(nullptr)
 {
-	return ::Allocate<ReqAddRiskRuleItemPackage>();
 }
-void ReqAddRiskRuleItemPackage::Free()
+ReqAddRiskRuleItemPackage::~ReqAddRiskRuleItemPackage()
 {
-	Package::Free();
 	if (ReqAddRiskRuleItem != nullptr)
 	{
-		::Free<ReqAddRiskRuleItemField>(ReqAddRiskRuleItem);
+		ObjectPool<ReqAddRiskRuleItemField>::GetInstance().Deallocate(ReqAddRiskRuleItem);
 		ReqAddRiskRuleItem = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddRiskRuleItemPackage>::GetInstance().Free(this);
+}
+ReqAddRiskRuleItemPackage* ReqAddRiskRuleItemPackage::Allocate()
+{
+	return ObjectPool<ReqAddRiskRuleItemPackage>::GetInstance().Allocate();
+}
+void ReqAddRiskRuleItemPackage::Deallocate()
+{
+	ObjectPool<ReqAddRiskRuleItemPackage>::GetInstance().Deallocate(this);
 }
 void ReqAddRiskRuleItemPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -32703,7 +33645,7 @@ bool ReqAddRiskRuleItemPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case ReqAddRiskRuleItemField::FieldID:
 			{
-				ReqAddRiskRuleItem = ::Allocate<ReqAddRiskRuleItemField>();
+				ReqAddRiskRuleItem = ObjectPool<ReqAddRiskRuleItemField>::GetInstance().Allocate();
 				memset(ReqAddRiskRuleItem, 0, sizeof(*ReqAddRiskRuleItem));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -32877,7 +33819,7 @@ bool ReqAddRiskRuleItemPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case ReqAddRiskRuleItemField::FieldID:
 		{
-			ReqAddRiskRuleItem = ::Allocate<ReqAddRiskRuleItemField>();
+			ReqAddRiskRuleItem = ObjectPool<ReqAddRiskRuleItemField>::GetInstance().Allocate();
 			memcpy(ReqAddRiskRuleItem, buff + offset, sizeof(ReqAddRiskRuleItemField));
 			offset += sizeof(ReqAddRiskRuleItemField);	
 			break;
@@ -32898,24 +33840,30 @@ const char* ReqAddRiskRuleItemPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddRiskRuleItemPackage* RspAddRiskRuleItemPackage::Allocate()
+RspAddRiskRuleItemPackage::RspAddRiskRuleItemPackage()
+	:RspAddRiskRuleItem(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddRiskRuleItemPackage>();
 }
-void RspAddRiskRuleItemPackage::Free()
+RspAddRiskRuleItemPackage::~RspAddRiskRuleItemPackage()
 {
-	Package::Free();
 	if (RspAddRiskRuleItem != nullptr)
 	{
-		::Free<RspAddRiskRuleItemField>(RspAddRiskRuleItem);
+		ObjectPool<RspAddRiskRuleItemField>::GetInstance().Deallocate(RspAddRiskRuleItem);
 		RspAddRiskRuleItem = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddRiskRuleItemPackage>::GetInstance().Free(this);
+}
+RspAddRiskRuleItemPackage* RspAddRiskRuleItemPackage::Allocate()
+{
+	return ObjectPool<RspAddRiskRuleItemPackage>::GetInstance().Allocate();
+}
+void RspAddRiskRuleItemPackage::Deallocate()
+{
+	ObjectPool<RspAddRiskRuleItemPackage>::GetInstance().Deallocate(this);
 }
 void RspAddRiskRuleItemPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -32965,7 +33913,7 @@ bool RspAddRiskRuleItemPackage::FromStepStream(char* buff, int startIndex, int e
 			{
 			case RspAddRiskRuleItemField::FieldID:
 			{
-				RspAddRiskRuleItem = ::Allocate<RspAddRiskRuleItemField>();
+				RspAddRiskRuleItem = ObjectPool<RspAddRiskRuleItemField>::GetInstance().Allocate();
 				memset(RspAddRiskRuleItem, 0, sizeof(*RspAddRiskRuleItem));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -33016,7 +33964,7 @@ bool RspAddRiskRuleItemPackage::FromStepStream(char* buff, int startIndex, int e
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -33099,14 +34047,14 @@ bool RspAddRiskRuleItemPackage::FromXtpStream(char* buff, int startIndex, int en
 		{
 		case RspAddRiskRuleItemField::FieldID:
 		{
-			RspAddRiskRuleItem = ::Allocate<RspAddRiskRuleItemField>();
+			RspAddRiskRuleItem = ObjectPool<RspAddRiskRuleItemField>::GetInstance().Allocate();
 			memcpy(RspAddRiskRuleItem, buff + offset, sizeof(RspAddRiskRuleItemField));
 			offset += sizeof(RspAddRiskRuleItemField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -33131,19 +34079,25 @@ const char* RspAddRiskRuleItemPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddRiskTradeScopePackage* ReqAddRiskTradeScopePackage::Allocate()
+ReqAddRiskTradeScopePackage::ReqAddRiskTradeScopePackage()
+	:ReqAddRiskTradeScope(nullptr)
 {
-	return ::Allocate<ReqAddRiskTradeScopePackage>();
 }
-void ReqAddRiskTradeScopePackage::Free()
+ReqAddRiskTradeScopePackage::~ReqAddRiskTradeScopePackage()
 {
-	Package::Free();
 	if (ReqAddRiskTradeScope != nullptr)
 	{
-		::Free<ReqAddRiskTradeScopeField>(ReqAddRiskTradeScope);
+		ObjectPool<ReqAddRiskTradeScopeField>::GetInstance().Deallocate(ReqAddRiskTradeScope);
 		ReqAddRiskTradeScope = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddRiskTradeScopePackage>::GetInstance().Free(this);
+}
+ReqAddRiskTradeScopePackage* ReqAddRiskTradeScopePackage::Allocate()
+{
+	return ObjectPool<ReqAddRiskTradeScopePackage>::GetInstance().Allocate();
+}
+void ReqAddRiskTradeScopePackage::Deallocate()
+{
+	ObjectPool<ReqAddRiskTradeScopePackage>::GetInstance().Deallocate(this);
 }
 void ReqAddRiskTradeScopePackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -33187,7 +34141,7 @@ bool ReqAddRiskTradeScopePackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case ReqAddRiskTradeScopeField::FieldID:
 			{
-				ReqAddRiskTradeScope = ::Allocate<ReqAddRiskTradeScopeField>();
+				ReqAddRiskTradeScope = ObjectPool<ReqAddRiskTradeScopeField>::GetInstance().Allocate();
 				memset(ReqAddRiskTradeScope, 0, sizeof(*ReqAddRiskTradeScope));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -33279,7 +34233,7 @@ bool ReqAddRiskTradeScopePackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case ReqAddRiskTradeScopeField::FieldID:
 		{
-			ReqAddRiskTradeScope = ::Allocate<ReqAddRiskTradeScopeField>();
+			ReqAddRiskTradeScope = ObjectPool<ReqAddRiskTradeScopeField>::GetInstance().Allocate();
 			memcpy(ReqAddRiskTradeScope, buff + offset, sizeof(ReqAddRiskTradeScopeField));
 			offset += sizeof(ReqAddRiskTradeScopeField);	
 			break;
@@ -33300,24 +34254,30 @@ const char* ReqAddRiskTradeScopePackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddRiskTradeScopePackage* RspAddRiskTradeScopePackage::Allocate()
+RspAddRiskTradeScopePackage::RspAddRiskTradeScopePackage()
+	:RspAddRiskTradeScope(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddRiskTradeScopePackage>();
 }
-void RspAddRiskTradeScopePackage::Free()
+RspAddRiskTradeScopePackage::~RspAddRiskTradeScopePackage()
 {
-	Package::Free();
 	if (RspAddRiskTradeScope != nullptr)
 	{
-		::Free<RspAddRiskTradeScopeField>(RspAddRiskTradeScope);
+		ObjectPool<RspAddRiskTradeScopeField>::GetInstance().Deallocate(RspAddRiskTradeScope);
 		RspAddRiskTradeScope = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddRiskTradeScopePackage>::GetInstance().Free(this);
+}
+RspAddRiskTradeScopePackage* RspAddRiskTradeScopePackage::Allocate()
+{
+	return ObjectPool<RspAddRiskTradeScopePackage>::GetInstance().Allocate();
+}
+void RspAddRiskTradeScopePackage::Deallocate()
+{
+	ObjectPool<RspAddRiskTradeScopePackage>::GetInstance().Deallocate(this);
 }
 void RspAddRiskTradeScopePackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -33365,7 +34325,7 @@ bool RspAddRiskTradeScopePackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case RspAddRiskTradeScopeField::FieldID:
 			{
-				RspAddRiskTradeScope = ::Allocate<RspAddRiskTradeScopeField>();
+				RspAddRiskTradeScope = ObjectPool<RspAddRiskTradeScopeField>::GetInstance().Allocate();
 				memset(RspAddRiskTradeScope, 0, sizeof(*RspAddRiskTradeScope));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -33406,7 +34366,7 @@ bool RspAddRiskTradeScopePackage::FromStepStream(char* buff, int startIndex, int
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -33489,14 +34449,14 @@ bool RspAddRiskTradeScopePackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case RspAddRiskTradeScopeField::FieldID:
 		{
-			RspAddRiskTradeScope = ::Allocate<RspAddRiskTradeScopeField>();
+			RspAddRiskTradeScope = ObjectPool<RspAddRiskTradeScopeField>::GetInstance().Allocate();
 			memcpy(RspAddRiskTradeScope, buff + offset, sizeof(RspAddRiskTradeScopeField));
 			offset += sizeof(RspAddRiskTradeScopeField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -33521,19 +34481,25 @@ const char* RspAddRiskTradeScopePackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAddAccountRiskPackage* ReqAddAccountRiskPackage::Allocate()
+ReqAddAccountRiskPackage::ReqAddAccountRiskPackage()
+	:ReqAddAccountRisk(nullptr)
 {
-	return ::Allocate<ReqAddAccountRiskPackage>();
 }
-void ReqAddAccountRiskPackage::Free()
+ReqAddAccountRiskPackage::~ReqAddAccountRiskPackage()
 {
-	Package::Free();
 	if (ReqAddAccountRisk != nullptr)
 	{
-		::Free<ReqAddAccountRiskField>(ReqAddAccountRisk);
+		ObjectPool<ReqAddAccountRiskField>::GetInstance().Deallocate(ReqAddAccountRisk);
 		ReqAddAccountRisk = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAddAccountRiskPackage>::GetInstance().Free(this);
+}
+ReqAddAccountRiskPackage* ReqAddAccountRiskPackage::Allocate()
+{
+	return ObjectPool<ReqAddAccountRiskPackage>::GetInstance().Allocate();
+}
+void ReqAddAccountRiskPackage::Deallocate()
+{
+	ObjectPool<ReqAddAccountRiskPackage>::GetInstance().Deallocate(this);
 }
 void ReqAddAccountRiskPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -33575,7 +34541,7 @@ bool ReqAddAccountRiskPackage::FromStepStream(char* buff, int startIndex, int en
 			{
 			case ReqAddAccountRiskField::FieldID:
 			{
-				ReqAddAccountRisk = ::Allocate<ReqAddAccountRiskField>();
+				ReqAddAccountRisk = ObjectPool<ReqAddAccountRiskField>::GetInstance().Allocate();
 				memset(ReqAddAccountRisk, 0, sizeof(*ReqAddAccountRisk));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -33657,7 +34623,7 @@ bool ReqAddAccountRiskPackage::FromXtpStream(char* buff, int startIndex, int end
 		{
 		case ReqAddAccountRiskField::FieldID:
 		{
-			ReqAddAccountRisk = ::Allocate<ReqAddAccountRiskField>();
+			ReqAddAccountRisk = ObjectPool<ReqAddAccountRiskField>::GetInstance().Allocate();
 			memcpy(ReqAddAccountRisk, buff + offset, sizeof(ReqAddAccountRiskField));
 			offset += sizeof(ReqAddAccountRiskField);	
 			break;
@@ -33678,24 +34644,30 @@ const char* ReqAddAccountRiskPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAddAccountRiskPackage* RspAddAccountRiskPackage::Allocate()
+RspAddAccountRiskPackage::RspAddAccountRiskPackage()
+	:RspAddAccountRisk(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAddAccountRiskPackage>();
 }
-void RspAddAccountRiskPackage::Free()
+RspAddAccountRiskPackage::~RspAddAccountRiskPackage()
 {
-	Package::Free();
 	if (RspAddAccountRisk != nullptr)
 	{
-		::Free<RspAddAccountRiskField>(RspAddAccountRisk);
+		ObjectPool<RspAddAccountRiskField>::GetInstance().Deallocate(RspAddAccountRisk);
 		RspAddAccountRisk = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAddAccountRiskPackage>::GetInstance().Free(this);
+}
+RspAddAccountRiskPackage* RspAddAccountRiskPackage::Allocate()
+{
+	return ObjectPool<RspAddAccountRiskPackage>::GetInstance().Allocate();
+}
+void RspAddAccountRiskPackage::Deallocate()
+{
+	ObjectPool<RspAddAccountRiskPackage>::GetInstance().Deallocate(this);
 }
 void RspAddAccountRiskPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -33748,7 +34720,7 @@ bool RspAddAccountRiskPackage::FromStepStream(char* buff, int startIndex, int en
 			{
 			case RspAddAccountRiskField::FieldID:
 			{
-				RspAddAccountRisk = ::Allocate<RspAddAccountRiskField>();
+				RspAddAccountRisk = ObjectPool<RspAddAccountRiskField>::GetInstance().Allocate();
 				memset(RspAddAccountRisk, 0, sizeof(*RspAddAccountRisk));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -33795,7 +34767,7 @@ bool RspAddAccountRiskPackage::FromStepStream(char* buff, int startIndex, int en
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -33878,14 +34850,14 @@ bool RspAddAccountRiskPackage::FromXtpStream(char* buff, int startIndex, int end
 		{
 		case RspAddAccountRiskField::FieldID:
 		{
-			RspAddAccountRisk = ::Allocate<RspAddAccountRiskField>();
+			RspAddAccountRisk = ObjectPool<RspAddAccountRiskField>::GetInstance().Allocate();
 			memcpy(RspAddAccountRisk, buff + offset, sizeof(RspAddAccountRiskField));
 			offset += sizeof(RspAddAccountRiskField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -33910,19 +34882,25 @@ const char* RspAddAccountRiskPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqRemoveAccountRiskPackage* ReqRemoveAccountRiskPackage::Allocate()
+ReqRemoveAccountRiskPackage::ReqRemoveAccountRiskPackage()
+	:ReqRemoveAccountRisk(nullptr)
 {
-	return ::Allocate<ReqRemoveAccountRiskPackage>();
 }
-void ReqRemoveAccountRiskPackage::Free()
+ReqRemoveAccountRiskPackage::~ReqRemoveAccountRiskPackage()
 {
-	Package::Free();
 	if (ReqRemoveAccountRisk != nullptr)
 	{
-		::Free<ReqRemoveAccountRiskField>(ReqRemoveAccountRisk);
+		ObjectPool<ReqRemoveAccountRiskField>::GetInstance().Deallocate(ReqRemoveAccountRisk);
 		ReqRemoveAccountRisk = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqRemoveAccountRiskPackage>::GetInstance().Free(this);
+}
+ReqRemoveAccountRiskPackage* ReqRemoveAccountRiskPackage::Allocate()
+{
+	return ObjectPool<ReqRemoveAccountRiskPackage>::GetInstance().Allocate();
+}
+void ReqRemoveAccountRiskPackage::Deallocate()
+{
+	ObjectPool<ReqRemoveAccountRiskPackage>::GetInstance().Deallocate(this);
 }
 void ReqRemoveAccountRiskPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -33964,7 +34942,7 @@ bool ReqRemoveAccountRiskPackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case ReqRemoveAccountRiskField::FieldID:
 			{
-				ReqRemoveAccountRisk = ::Allocate<ReqRemoveAccountRiskField>();
+				ReqRemoveAccountRisk = ObjectPool<ReqRemoveAccountRiskField>::GetInstance().Allocate();
 				memset(ReqRemoveAccountRisk, 0, sizeof(*ReqRemoveAccountRisk));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -34046,7 +35024,7 @@ bool ReqRemoveAccountRiskPackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case ReqRemoveAccountRiskField::FieldID:
 		{
-			ReqRemoveAccountRisk = ::Allocate<ReqRemoveAccountRiskField>();
+			ReqRemoveAccountRisk = ObjectPool<ReqRemoveAccountRiskField>::GetInstance().Allocate();
 			memcpy(ReqRemoveAccountRisk, buff + offset, sizeof(ReqRemoveAccountRiskField));
 			offset += sizeof(ReqRemoveAccountRiskField);	
 			break;
@@ -34067,24 +35045,30 @@ const char* ReqRemoveAccountRiskPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspRemoveAccountRiskPackage* RspRemoveAccountRiskPackage::Allocate()
+RspRemoveAccountRiskPackage::RspRemoveAccountRiskPackage()
+	:RspRemoveAccountRisk(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspRemoveAccountRiskPackage>();
 }
-void RspRemoveAccountRiskPackage::Free()
+RspRemoveAccountRiskPackage::~RspRemoveAccountRiskPackage()
 {
-	Package::Free();
 	if (RspRemoveAccountRisk != nullptr)
 	{
-		::Free<RspRemoveAccountRiskField>(RspRemoveAccountRisk);
+		ObjectPool<RspRemoveAccountRiskField>::GetInstance().Deallocate(RspRemoveAccountRisk);
 		RspRemoveAccountRisk = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspRemoveAccountRiskPackage>::GetInstance().Free(this);
+}
+RspRemoveAccountRiskPackage* RspRemoveAccountRiskPackage::Allocate()
+{
+	return ObjectPool<RspRemoveAccountRiskPackage>::GetInstance().Allocate();
+}
+void RspRemoveAccountRiskPackage::Deallocate()
+{
+	ObjectPool<RspRemoveAccountRiskPackage>::GetInstance().Deallocate(this);
 }
 void RspRemoveAccountRiskPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -34137,7 +35121,7 @@ bool RspRemoveAccountRiskPackage::FromStepStream(char* buff, int startIndex, int
 			{
 			case RspRemoveAccountRiskField::FieldID:
 			{
-				RspRemoveAccountRisk = ::Allocate<RspRemoveAccountRiskField>();
+				RspRemoveAccountRisk = ObjectPool<RspRemoveAccountRiskField>::GetInstance().Allocate();
 				memset(RspRemoveAccountRisk, 0, sizeof(*RspRemoveAccountRisk));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -34184,7 +35168,7 @@ bool RspRemoveAccountRiskPackage::FromStepStream(char* buff, int startIndex, int
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -34267,14 +35251,14 @@ bool RspRemoveAccountRiskPackage::FromXtpStream(char* buff, int startIndex, int 
 		{
 		case RspRemoveAccountRiskField::FieldID:
 		{
-			RspRemoveAccountRisk = ::Allocate<RspRemoveAccountRiskField>();
+			RspRemoveAccountRisk = ObjectPool<RspRemoveAccountRiskField>::GetInstance().Allocate();
 			memcpy(RspRemoveAccountRisk, buff + offset, sizeof(RspRemoveAccountRiskField));
 			offset += sizeof(RspRemoveAccountRiskField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -34299,19 +35283,25 @@ const char* RspRemoveAccountRiskPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqMoneyTransferPackage* ReqMoneyTransferPackage::Allocate()
+ReqMoneyTransferPackage::ReqMoneyTransferPackage()
+	:ReqMoneyTransfer(nullptr)
 {
-	return ::Allocate<ReqMoneyTransferPackage>();
 }
-void ReqMoneyTransferPackage::Free()
+ReqMoneyTransferPackage::~ReqMoneyTransferPackage()
 {
-	Package::Free();
 	if (ReqMoneyTransfer != nullptr)
 	{
-		::Free<ReqMoneyTransferField>(ReqMoneyTransfer);
+		ObjectPool<ReqMoneyTransferField>::GetInstance().Deallocate(ReqMoneyTransfer);
 		ReqMoneyTransfer = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqMoneyTransferPackage>::GetInstance().Free(this);
+}
+ReqMoneyTransferPackage* ReqMoneyTransferPackage::Allocate()
+{
+	return ObjectPool<ReqMoneyTransferPackage>::GetInstance().Allocate();
+}
+void ReqMoneyTransferPackage::Deallocate()
+{
+	ObjectPool<ReqMoneyTransferPackage>::GetInstance().Deallocate(this);
 }
 void ReqMoneyTransferPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -34381,7 +35371,7 @@ bool ReqMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case ReqMoneyTransferField::FieldID:
 			{
-				ReqMoneyTransfer = ::Allocate<ReqMoneyTransferField>();
+				ReqMoneyTransfer = ObjectPool<ReqMoneyTransferField>::GetInstance().Allocate();
 				memset(ReqMoneyTransfer, 0, sizeof(*ReqMoneyTransfer));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -34508,7 +35498,7 @@ bool ReqMoneyTransferPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case ReqMoneyTransferField::FieldID:
 		{
-			ReqMoneyTransfer = ::Allocate<ReqMoneyTransferField>();
+			ReqMoneyTransfer = ObjectPool<ReqMoneyTransferField>::GetInstance().Allocate();
 			memcpy(ReqMoneyTransfer, buff + offset, sizeof(ReqMoneyTransferField));
 			offset += sizeof(ReqMoneyTransferField);	
 			break;
@@ -34529,24 +35519,30 @@ const char* ReqMoneyTransferPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspMoneyTransferPackage* RspMoneyTransferPackage::Allocate()
+RspMoneyTransferPackage::RspMoneyTransferPackage()
+	:RspMoneyTransfer(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspMoneyTransferPackage>();
 }
-void RspMoneyTransferPackage::Free()
+RspMoneyTransferPackage::~RspMoneyTransferPackage()
 {
-	Package::Free();
 	if (RspMoneyTransfer != nullptr)
 	{
-		::Free<RspMoneyTransferField>(RspMoneyTransfer);
+		ObjectPool<RspMoneyTransferField>::GetInstance().Deallocate(RspMoneyTransfer);
 		RspMoneyTransfer = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspMoneyTransferPackage>::GetInstance().Free(this);
+}
+RspMoneyTransferPackage* RspMoneyTransferPackage::Allocate()
+{
+	return ObjectPool<RspMoneyTransferPackage>::GetInstance().Allocate();
+}
+void RspMoneyTransferPackage::Deallocate()
+{
+	ObjectPool<RspMoneyTransferPackage>::GetInstance().Deallocate(this);
 }
 void RspMoneyTransferPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -34604,7 +35600,7 @@ bool RspMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case RspMoneyTransferField::FieldID:
 			{
-				RspMoneyTransfer = ::Allocate<RspMoneyTransferField>();
+				RspMoneyTransfer = ObjectPool<RspMoneyTransferField>::GetInstance().Allocate();
 				memset(RspMoneyTransfer, 0, sizeof(*RspMoneyTransfer));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -34657,7 +35653,7 @@ bool RspMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int end
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -34740,14 +35736,14 @@ bool RspMoneyTransferPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case RspMoneyTransferField::FieldID:
 		{
-			RspMoneyTransfer = ::Allocate<RspMoneyTransferField>();
+			RspMoneyTransfer = ObjectPool<RspMoneyTransferField>::GetInstance().Allocate();
 			memcpy(RspMoneyTransfer, buff + offset, sizeof(RspMoneyTransferField));
 			offset += sizeof(RspMoneyTransferField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -34772,19 +35768,25 @@ const char* RspMoneyTransferPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqAuditOrderPackage* ReqAuditOrderPackage::Allocate()
+ReqAuditOrderPackage::ReqAuditOrderPackage()
+	:ReqAuditOrder(nullptr)
 {
-	return ::Allocate<ReqAuditOrderPackage>();
 }
-void ReqAuditOrderPackage::Free()
+ReqAuditOrderPackage::~ReqAuditOrderPackage()
 {
-	Package::Free();
 	if (ReqAuditOrder != nullptr)
 	{
-		::Free<ReqAuditOrderField>(ReqAuditOrder);
+		ObjectPool<ReqAuditOrderField>::GetInstance().Deallocate(ReqAuditOrder);
 		ReqAuditOrder = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqAuditOrderPackage>::GetInstance().Free(this);
+}
+ReqAuditOrderPackage* ReqAuditOrderPackage::Allocate()
+{
+	return ObjectPool<ReqAuditOrderPackage>::GetInstance().Allocate();
+}
+void ReqAuditOrderPackage::Deallocate()
+{
+	ObjectPool<ReqAuditOrderPackage>::GetInstance().Deallocate(this);
 }
 void ReqAuditOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -34842,7 +35844,7 @@ bool ReqAuditOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 			{
 			case ReqAuditOrderField::FieldID:
 			{
-				ReqAuditOrder = ::Allocate<ReqAuditOrderField>();
+				ReqAuditOrder = ObjectPool<ReqAuditOrderField>::GetInstance().Allocate();
 				memset(ReqAuditOrder, 0, sizeof(*ReqAuditOrder));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -34947,7 +35949,7 @@ bool ReqAuditOrderPackage::FromXtpStream(char* buff, int startIndex, int endInde
 		{
 		case ReqAuditOrderField::FieldID:
 		{
-			ReqAuditOrder = ::Allocate<ReqAuditOrderField>();
+			ReqAuditOrder = ObjectPool<ReqAuditOrderField>::GetInstance().Allocate();
 			memcpy(ReqAuditOrder, buff + offset, sizeof(ReqAuditOrderField));
 			offset += sizeof(ReqAuditOrderField);	
 			break;
@@ -34968,24 +35970,30 @@ const char* ReqAuditOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspAuditOrderPackage* RspAuditOrderPackage::Allocate()
+RspAuditOrderPackage::RspAuditOrderPackage()
+	:RspAuditOrder(nullptr), RspInfo(nullptr)
 {
-	return ::Allocate<RspAuditOrderPackage>();
 }
-void RspAuditOrderPackage::Free()
+RspAuditOrderPackage::~RspAuditOrderPackage()
 {
-	Package::Free();
 	if (RspAuditOrder != nullptr)
 	{
-		::Free<RspAuditOrderField>(RspAuditOrder);
+		ObjectPool<RspAuditOrderField>::GetInstance().Deallocate(RspAuditOrder);
 		RspAuditOrder = nullptr;
 	}
 	if (RspInfo != nullptr)
 	{
-		::Free<RspInfoField>(RspInfo);
+		ObjectPool<RspInfoField>::GetInstance().Deallocate(RspInfo);
 		RspInfo = nullptr;
 	}
-	MemCacheTemplateSingleton<RspAuditOrderPackage>::GetInstance().Free(this);
+}
+RspAuditOrderPackage* RspAuditOrderPackage::Allocate()
+{
+	return ObjectPool<RspAuditOrderPackage>::GetInstance().Allocate();
+}
+void RspAuditOrderPackage::Deallocate()
+{
+	ObjectPool<RspAuditOrderPackage>::GetInstance().Deallocate(this);
 }
 void RspAuditOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -35054,7 +36062,7 @@ bool RspAuditOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 			{
 			case RspAuditOrderField::FieldID:
 			{
-				RspAuditOrder = ::Allocate<RspAuditOrderField>();
+				RspAuditOrder = ObjectPool<RspAuditOrderField>::GetInstance().Allocate();
 				memset(RspAuditOrder, 0, sizeof(*RspAuditOrder));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -35124,7 +36132,7 @@ bool RspAuditOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 			}
 			case RspInfoField::FieldID:
 			{
-				RspInfo = ::Allocate<RspInfoField>();
+				RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 				memset(RspInfo, 0, sizeof(*RspInfo));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -35207,14 +36215,14 @@ bool RspAuditOrderPackage::FromXtpStream(char* buff, int startIndex, int endInde
 		{
 		case RspAuditOrderField::FieldID:
 		{
-			RspAuditOrder = ::Allocate<RspAuditOrderField>();
+			RspAuditOrder = ObjectPool<RspAuditOrderField>::GetInstance().Allocate();
 			memcpy(RspAuditOrder, buff + offset, sizeof(RspAuditOrderField));
 			offset += sizeof(RspAuditOrderField);	
 			break;
 		}
 		case RspInfoField::FieldID:
 		{
-			RspInfo = ::Allocate<RspInfoField>();
+			RspInfo = ObjectPool<RspInfoField>::GetInstance().Allocate();
 			memcpy(RspInfo, buff + offset, sizeof(RspInfoField));
 			offset += sizeof(RspInfoField);	
 			break;
@@ -35239,19 +36247,25 @@ const char* RspAuditOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqOfferLoginPackage* ReqOfferLoginPackage::Allocate()
+ReqOfferLoginPackage::ReqOfferLoginPackage()
+	:ReqOfferLogin(nullptr)
 {
-	return ::Allocate<ReqOfferLoginPackage>();
 }
-void ReqOfferLoginPackage::Free()
+ReqOfferLoginPackage::~ReqOfferLoginPackage()
 {
-	Package::Free();
 	if (ReqOfferLogin != nullptr)
 	{
-		::Free<ReqOfferLoginField>(ReqOfferLogin);
+		ObjectPool<ReqOfferLoginField>::GetInstance().Deallocate(ReqOfferLogin);
 		ReqOfferLogin = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqOfferLoginPackage>::GetInstance().Free(this);
+}
+ReqOfferLoginPackage* ReqOfferLoginPackage::Allocate()
+{
+	return ObjectPool<ReqOfferLoginPackage>::GetInstance().Allocate();
+}
+void ReqOfferLoginPackage::Deallocate()
+{
+	ObjectPool<ReqOfferLoginPackage>::GetInstance().Deallocate(this);
 }
 void ReqOfferLoginPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -35288,7 +36302,7 @@ bool ReqOfferLoginPackage::FromStepStream(char* buff, int startIndex, int endInd
 			{
 			case ReqOfferLoginField::FieldID:
 			{
-				ReqOfferLogin = ::Allocate<ReqOfferLoginField>();
+				ReqOfferLogin = ObjectPool<ReqOfferLoginField>::GetInstance().Allocate();
 				memset(ReqOfferLogin, 0, sizeof(*ReqOfferLogin));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -35364,7 +36378,7 @@ bool ReqOfferLoginPackage::FromXtpStream(char* buff, int startIndex, int endInde
 		{
 		case ReqOfferLoginField::FieldID:
 		{
-			ReqOfferLogin = ::Allocate<ReqOfferLoginField>();
+			ReqOfferLogin = ObjectPool<ReqOfferLoginField>::GetInstance().Allocate();
 			memcpy(ReqOfferLogin, buff + offset, sizeof(ReqOfferLoginField));
 			offset += sizeof(ReqOfferLoginField);	
 			break;
@@ -35385,19 +36399,25 @@ const char* ReqOfferLoginPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspOfferLoginPackage* RspOfferLoginPackage::Allocate()
+RspOfferLoginPackage::RspOfferLoginPackage()
+	:RspOfferLogin(nullptr)
 {
-	return ::Allocate<RspOfferLoginPackage>();
 }
-void RspOfferLoginPackage::Free()
+RspOfferLoginPackage::~RspOfferLoginPackage()
 {
-	Package::Free();
 	if (RspOfferLogin != nullptr)
 	{
-		::Free<RspOfferLoginField>(RspOfferLogin);
+		ObjectPool<RspOfferLoginField>::GetInstance().Deallocate(RspOfferLogin);
 		RspOfferLogin = nullptr;
 	}
-	MemCacheTemplateSingleton<RspOfferLoginPackage>::GetInstance().Free(this);
+}
+RspOfferLoginPackage* RspOfferLoginPackage::Allocate()
+{
+	return ObjectPool<RspOfferLoginPackage>::GetInstance().Allocate();
+}
+void RspOfferLoginPackage::Deallocate()
+{
+	ObjectPool<RspOfferLoginPackage>::GetInstance().Deallocate(this);
 }
 void RspOfferLoginPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -35440,7 +36460,7 @@ bool RspOfferLoginPackage::FromStepStream(char* buff, int startIndex, int endInd
 			{
 			case RspOfferLoginField::FieldID:
 			{
-				RspOfferLogin = ::Allocate<RspOfferLoginField>();
+				RspOfferLogin = ObjectPool<RspOfferLoginField>::GetInstance().Allocate();
 				memset(RspOfferLogin, 0, sizeof(*RspOfferLogin));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -35527,7 +36547,7 @@ bool RspOfferLoginPackage::FromXtpStream(char* buff, int startIndex, int endInde
 		{
 		case RspOfferLoginField::FieldID:
 		{
-			RspOfferLogin = ::Allocate<RspOfferLoginField>();
+			RspOfferLogin = ObjectPool<RspOfferLoginField>::GetInstance().Allocate();
 			memcpy(RspOfferLogin, buff + offset, sizeof(RspOfferLoginField));
 			offset += sizeof(RspOfferLoginField);	
 			break;
@@ -35548,19 +36568,25 @@ const char* RspOfferLoginPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqPrimaryAccountLoginPackage* ReqPrimaryAccountLoginPackage::Allocate()
+ReqPrimaryAccountLoginPackage::ReqPrimaryAccountLoginPackage()
+	:ReqPrimaryAccountLogin(nullptr)
 {
-	return ::Allocate<ReqPrimaryAccountLoginPackage>();
 }
-void ReqPrimaryAccountLoginPackage::Free()
+ReqPrimaryAccountLoginPackage::~ReqPrimaryAccountLoginPackage()
 {
-	Package::Free();
 	if (ReqPrimaryAccountLogin != nullptr)
 	{
-		::Free<ReqPrimaryAccountLoginField>(ReqPrimaryAccountLogin);
+		ObjectPool<ReqPrimaryAccountLoginField>::GetInstance().Deallocate(ReqPrimaryAccountLogin);
 		ReqPrimaryAccountLogin = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqPrimaryAccountLoginPackage>::GetInstance().Free(this);
+}
+ReqPrimaryAccountLoginPackage* ReqPrimaryAccountLoginPackage::Allocate()
+{
+	return ObjectPool<ReqPrimaryAccountLoginPackage>::GetInstance().Allocate();
+}
+void ReqPrimaryAccountLoginPackage::Deallocate()
+{
+	ObjectPool<ReqPrimaryAccountLoginPackage>::GetInstance().Deallocate(this);
 }
 void ReqPrimaryAccountLoginPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -35601,7 +36627,7 @@ bool ReqPrimaryAccountLoginPackage::FromStepStream(char* buff, int startIndex, i
 			{
 			case ReqPrimaryAccountLoginField::FieldID:
 			{
-				ReqPrimaryAccountLogin = ::Allocate<ReqPrimaryAccountLoginField>();
+				ReqPrimaryAccountLogin = ObjectPool<ReqPrimaryAccountLoginField>::GetInstance().Allocate();
 				memset(ReqPrimaryAccountLogin, 0, sizeof(*ReqPrimaryAccountLogin));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -35678,7 +36704,7 @@ bool ReqPrimaryAccountLoginPackage::FromXtpStream(char* buff, int startIndex, in
 		{
 		case ReqPrimaryAccountLoginField::FieldID:
 		{
-			ReqPrimaryAccountLogin = ::Allocate<ReqPrimaryAccountLoginField>();
+			ReqPrimaryAccountLogin = ObjectPool<ReqPrimaryAccountLoginField>::GetInstance().Allocate();
 			memcpy(ReqPrimaryAccountLogin, buff + offset, sizeof(ReqPrimaryAccountLoginField));
 			offset += sizeof(ReqPrimaryAccountLoginField);	
 			break;
@@ -35699,19 +36725,25 @@ const char* ReqPrimaryAccountLoginPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspPrimaryAccountLoginPackage* RspPrimaryAccountLoginPackage::Allocate()
+RspPrimaryAccountLoginPackage::RspPrimaryAccountLoginPackage()
+	:RspPrimaryAccountLogin(nullptr)
 {
-	return ::Allocate<RspPrimaryAccountLoginPackage>();
 }
-void RspPrimaryAccountLoginPackage::Free()
+RspPrimaryAccountLoginPackage::~RspPrimaryAccountLoginPackage()
 {
-	Package::Free();
 	if (RspPrimaryAccountLogin != nullptr)
 	{
-		::Free<RspPrimaryAccountLoginField>(RspPrimaryAccountLogin);
+		ObjectPool<RspPrimaryAccountLoginField>::GetInstance().Deallocate(RspPrimaryAccountLogin);
 		RspPrimaryAccountLogin = nullptr;
 	}
-	MemCacheTemplateSingleton<RspPrimaryAccountLoginPackage>::GetInstance().Free(this);
+}
+RspPrimaryAccountLoginPackage* RspPrimaryAccountLoginPackage::Allocate()
+{
+	return ObjectPool<RspPrimaryAccountLoginPackage>::GetInstance().Allocate();
+}
+void RspPrimaryAccountLoginPackage::Deallocate()
+{
+	ObjectPool<RspPrimaryAccountLoginPackage>::GetInstance().Deallocate(this);
 }
 void RspPrimaryAccountLoginPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -35758,7 +36790,7 @@ bool RspPrimaryAccountLoginPackage::FromStepStream(char* buff, int startIndex, i
 			{
 			case RspPrimaryAccountLoginField::FieldID:
 			{
-				RspPrimaryAccountLogin = ::Allocate<RspPrimaryAccountLoginField>();
+				RspPrimaryAccountLogin = ObjectPool<RspPrimaryAccountLoginField>::GetInstance().Allocate();
 				memset(RspPrimaryAccountLogin, 0, sizeof(*RspPrimaryAccountLogin));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -35846,7 +36878,7 @@ bool RspPrimaryAccountLoginPackage::FromXtpStream(char* buff, int startIndex, in
 		{
 		case RspPrimaryAccountLoginField::FieldID:
 		{
-			RspPrimaryAccountLogin = ::Allocate<RspPrimaryAccountLoginField>();
+			RspPrimaryAccountLogin = ObjectPool<RspPrimaryAccountLoginField>::GetInstance().Allocate();
 			memcpy(RspPrimaryAccountLogin, buff + offset, sizeof(RspPrimaryAccountLoginField));
 			offset += sizeof(RspPrimaryAccountLoginField);	
 			break;
@@ -35867,19 +36899,25 @@ const char* RspPrimaryAccountLoginPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqPrimaryAccountLogoutPackage* ReqPrimaryAccountLogoutPackage::Allocate()
+ReqPrimaryAccountLogoutPackage::ReqPrimaryAccountLogoutPackage()
+	:ReqPrimaryAccountLogout(nullptr)
 {
-	return ::Allocate<ReqPrimaryAccountLogoutPackage>();
 }
-void ReqPrimaryAccountLogoutPackage::Free()
+ReqPrimaryAccountLogoutPackage::~ReqPrimaryAccountLogoutPackage()
 {
-	Package::Free();
 	if (ReqPrimaryAccountLogout != nullptr)
 	{
-		::Free<ReqPrimaryAccountLogoutField>(ReqPrimaryAccountLogout);
+		ObjectPool<ReqPrimaryAccountLogoutField>::GetInstance().Deallocate(ReqPrimaryAccountLogout);
 		ReqPrimaryAccountLogout = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqPrimaryAccountLogoutPackage>::GetInstance().Free(this);
+}
+ReqPrimaryAccountLogoutPackage* ReqPrimaryAccountLogoutPackage::Allocate()
+{
+	return ObjectPool<ReqPrimaryAccountLogoutPackage>::GetInstance().Allocate();
+}
+void ReqPrimaryAccountLogoutPackage::Deallocate()
+{
+	ObjectPool<ReqPrimaryAccountLogoutPackage>::GetInstance().Deallocate(this);
 }
 void ReqPrimaryAccountLogoutPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -35920,7 +36958,7 @@ bool ReqPrimaryAccountLogoutPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case ReqPrimaryAccountLogoutField::FieldID:
 			{
-				ReqPrimaryAccountLogout = ::Allocate<ReqPrimaryAccountLogoutField>();
+				ReqPrimaryAccountLogout = ObjectPool<ReqPrimaryAccountLogoutField>::GetInstance().Allocate();
 				memset(ReqPrimaryAccountLogout, 0, sizeof(*ReqPrimaryAccountLogout));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -35997,7 +37035,7 @@ bool ReqPrimaryAccountLogoutPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case ReqPrimaryAccountLogoutField::FieldID:
 		{
-			ReqPrimaryAccountLogout = ::Allocate<ReqPrimaryAccountLogoutField>();
+			ReqPrimaryAccountLogout = ObjectPool<ReqPrimaryAccountLogoutField>::GetInstance().Allocate();
 			memcpy(ReqPrimaryAccountLogout, buff + offset, sizeof(ReqPrimaryAccountLogoutField));
 			offset += sizeof(ReqPrimaryAccountLogoutField);	
 			break;
@@ -36018,19 +37056,25 @@ const char* ReqPrimaryAccountLogoutPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnPrimaryAccountLogoutPackage* RtnPrimaryAccountLogoutPackage::Allocate()
+RtnPrimaryAccountLogoutPackage::RtnPrimaryAccountLogoutPackage()
+	:RtnPrimaryAccountLogout(nullptr)
 {
-	return ::Allocate<RtnPrimaryAccountLogoutPackage>();
 }
-void RtnPrimaryAccountLogoutPackage::Free()
+RtnPrimaryAccountLogoutPackage::~RtnPrimaryAccountLogoutPackage()
 {
-	Package::Free();
 	if (RtnPrimaryAccountLogout != nullptr)
 	{
-		::Free<RtnPrimaryAccountLogoutField>(RtnPrimaryAccountLogout);
+		ObjectPool<RtnPrimaryAccountLogoutField>::GetInstance().Deallocate(RtnPrimaryAccountLogout);
 		RtnPrimaryAccountLogout = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnPrimaryAccountLogoutPackage>::GetInstance().Free(this);
+}
+RtnPrimaryAccountLogoutPackage* RtnPrimaryAccountLogoutPackage::Allocate()
+{
+	return ObjectPool<RtnPrimaryAccountLogoutPackage>::GetInstance().Allocate();
+}
+void RtnPrimaryAccountLogoutPackage::Deallocate()
+{
+	ObjectPool<RtnPrimaryAccountLogoutPackage>::GetInstance().Deallocate(this);
 }
 void RtnPrimaryAccountLogoutPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -36071,7 +37115,7 @@ bool RtnPrimaryAccountLogoutPackage::FromStepStream(char* buff, int startIndex, 
 			{
 			case RtnPrimaryAccountLogoutField::FieldID:
 			{
-				RtnPrimaryAccountLogout = ::Allocate<RtnPrimaryAccountLogoutField>();
+				RtnPrimaryAccountLogout = ObjectPool<RtnPrimaryAccountLogoutField>::GetInstance().Allocate();
 				memset(RtnPrimaryAccountLogout, 0, sizeof(*RtnPrimaryAccountLogout));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -36148,7 +37192,7 @@ bool RtnPrimaryAccountLogoutPackage::FromXtpStream(char* buff, int startIndex, i
 		{
 		case RtnPrimaryAccountLogoutField::FieldID:
 		{
-			RtnPrimaryAccountLogout = ::Allocate<RtnPrimaryAccountLogoutField>();
+			RtnPrimaryAccountLogout = ObjectPool<RtnPrimaryAccountLogoutField>::GetInstance().Allocate();
 			memcpy(RtnPrimaryAccountLogout, buff + offset, sizeof(RtnPrimaryAccountLogoutField));
 			offset += sizeof(RtnPrimaryAccountLogoutField);	
 			break;
@@ -36169,19 +37213,25 @@ const char* RtnPrimaryAccountLogoutPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqPrimaryAccountInitPackage* ReqPrimaryAccountInitPackage::Allocate()
+ReqPrimaryAccountInitPackage::ReqPrimaryAccountInitPackage()
+	:ReqPrimaryAccountInit(nullptr)
 {
-	return ::Allocate<ReqPrimaryAccountInitPackage>();
 }
-void ReqPrimaryAccountInitPackage::Free()
+ReqPrimaryAccountInitPackage::~ReqPrimaryAccountInitPackage()
 {
-	Package::Free();
 	if (ReqPrimaryAccountInit != nullptr)
 	{
-		::Free<ReqPrimaryAccountInitField>(ReqPrimaryAccountInit);
+		ObjectPool<ReqPrimaryAccountInitField>::GetInstance().Deallocate(ReqPrimaryAccountInit);
 		ReqPrimaryAccountInit = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqPrimaryAccountInitPackage>::GetInstance().Free(this);
+}
+ReqPrimaryAccountInitPackage* ReqPrimaryAccountInitPackage::Allocate()
+{
+	return ObjectPool<ReqPrimaryAccountInitPackage>::GetInstance().Allocate();
+}
+void ReqPrimaryAccountInitPackage::Deallocate()
+{
+	ObjectPool<ReqPrimaryAccountInitPackage>::GetInstance().Deallocate(this);
 }
 void ReqPrimaryAccountInitPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -36217,7 +37267,7 @@ bool ReqPrimaryAccountInitPackage::FromStepStream(char* buff, int startIndex, in
 			{
 			case ReqPrimaryAccountInitField::FieldID:
 			{
-				ReqPrimaryAccountInit = ::Allocate<ReqPrimaryAccountInitField>();
+				ReqPrimaryAccountInit = ObjectPool<ReqPrimaryAccountInitField>::GetInstance().Allocate();
 				memset(ReqPrimaryAccountInit, 0, sizeof(*ReqPrimaryAccountInit));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -36288,7 +37338,7 @@ bool ReqPrimaryAccountInitPackage::FromXtpStream(char* buff, int startIndex, int
 		{
 		case ReqPrimaryAccountInitField::FieldID:
 		{
-			ReqPrimaryAccountInit = ::Allocate<ReqPrimaryAccountInitField>();
+			ReqPrimaryAccountInit = ObjectPool<ReqPrimaryAccountInitField>::GetInstance().Allocate();
 			memcpy(ReqPrimaryAccountInit, buff + offset, sizeof(ReqPrimaryAccountInitField));
 			offset += sizeof(ReqPrimaryAccountInitField);	
 			break;
@@ -36309,19 +37359,25 @@ const char* ReqPrimaryAccountInitPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspPrimaryAccountInitPackage* RspPrimaryAccountInitPackage::Allocate()
+RspPrimaryAccountInitPackage::RspPrimaryAccountInitPackage()
+	:RspPrimaryAccountInit(nullptr)
 {
-	return ::Allocate<RspPrimaryAccountInitPackage>();
 }
-void RspPrimaryAccountInitPackage::Free()
+RspPrimaryAccountInitPackage::~RspPrimaryAccountInitPackage()
 {
-	Package::Free();
 	if (RspPrimaryAccountInit != nullptr)
 	{
-		::Free<RspPrimaryAccountInitField>(RspPrimaryAccountInit);
+		ObjectPool<RspPrimaryAccountInitField>::GetInstance().Deallocate(RspPrimaryAccountInit);
 		RspPrimaryAccountInit = nullptr;
 	}
-	MemCacheTemplateSingleton<RspPrimaryAccountInitPackage>::GetInstance().Free(this);
+}
+RspPrimaryAccountInitPackage* RspPrimaryAccountInitPackage::Allocate()
+{
+	return ObjectPool<RspPrimaryAccountInitPackage>::GetInstance().Allocate();
+}
+void RspPrimaryAccountInitPackage::Deallocate()
+{
+	ObjectPool<RspPrimaryAccountInitPackage>::GetInstance().Deallocate(this);
 }
 void RspPrimaryAccountInitPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -36363,7 +37419,7 @@ bool RspPrimaryAccountInitPackage::FromStepStream(char* buff, int startIndex, in
 			{
 			case RspPrimaryAccountInitField::FieldID:
 			{
-				RspPrimaryAccountInit = ::Allocate<RspPrimaryAccountInitField>();
+				RspPrimaryAccountInit = ObjectPool<RspPrimaryAccountInitField>::GetInstance().Allocate();
 				memset(RspPrimaryAccountInit, 0, sizeof(*RspPrimaryAccountInit));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -36445,7 +37501,7 @@ bool RspPrimaryAccountInitPackage::FromXtpStream(char* buff, int startIndex, int
 		{
 		case RspPrimaryAccountInitField::FieldID:
 		{
-			RspPrimaryAccountInit = ::Allocate<RspPrimaryAccountInitField>();
+			RspPrimaryAccountInit = ObjectPool<RspPrimaryAccountInitField>::GetInstance().Allocate();
 			memcpy(RspPrimaryAccountInit, buff + offset, sizeof(RspPrimaryAccountInitField));
 			offset += sizeof(RspPrimaryAccountInitField);	
 			break;
@@ -36466,19 +37522,25 @@ const char* RspPrimaryAccountInitPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqPrimaryAccountQueryPackage* ReqPrimaryAccountQueryPackage::Allocate()
+ReqPrimaryAccountQueryPackage::ReqPrimaryAccountQueryPackage()
+	:ReqPrimaryAccountQuery(nullptr)
 {
-	return ::Allocate<ReqPrimaryAccountQueryPackage>();
 }
-void ReqPrimaryAccountQueryPackage::Free()
+ReqPrimaryAccountQueryPackage::~ReqPrimaryAccountQueryPackage()
 {
-	Package::Free();
 	if (ReqPrimaryAccountQuery != nullptr)
 	{
-		::Free<ReqPrimaryAccountQueryField>(ReqPrimaryAccountQuery);
+		ObjectPool<ReqPrimaryAccountQueryField>::GetInstance().Deallocate(ReqPrimaryAccountQuery);
 		ReqPrimaryAccountQuery = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqPrimaryAccountQueryPackage>::GetInstance().Free(this);
+}
+ReqPrimaryAccountQueryPackage* ReqPrimaryAccountQueryPackage::Allocate()
+{
+	return ObjectPool<ReqPrimaryAccountQueryPackage>::GetInstance().Allocate();
+}
+void ReqPrimaryAccountQueryPackage::Deallocate()
+{
+	ObjectPool<ReqPrimaryAccountQueryPackage>::GetInstance().Deallocate(this);
 }
 void ReqPrimaryAccountQueryPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -36514,7 +37576,7 @@ bool ReqPrimaryAccountQueryPackage::FromStepStream(char* buff, int startIndex, i
 			{
 			case ReqPrimaryAccountQueryField::FieldID:
 			{
-				ReqPrimaryAccountQuery = ::Allocate<ReqPrimaryAccountQueryField>();
+				ReqPrimaryAccountQuery = ObjectPool<ReqPrimaryAccountQueryField>::GetInstance().Allocate();
 				memset(ReqPrimaryAccountQuery, 0, sizeof(*ReqPrimaryAccountQuery));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -36585,7 +37647,7 @@ bool ReqPrimaryAccountQueryPackage::FromXtpStream(char* buff, int startIndex, in
 		{
 		case ReqPrimaryAccountQueryField::FieldID:
 		{
-			ReqPrimaryAccountQuery = ::Allocate<ReqPrimaryAccountQueryField>();
+			ReqPrimaryAccountQuery = ObjectPool<ReqPrimaryAccountQueryField>::GetInstance().Allocate();
 			memcpy(ReqPrimaryAccountQuery, buff + offset, sizeof(ReqPrimaryAccountQueryField));
 			offset += sizeof(ReqPrimaryAccountQueryField);	
 			break;
@@ -36606,19 +37668,25 @@ const char* ReqPrimaryAccountQueryPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspPrimaryAccountQueryPackage* RspPrimaryAccountQueryPackage::Allocate()
+RspPrimaryAccountQueryPackage::RspPrimaryAccountQueryPackage()
+	:RspPrimaryAccountQuery(nullptr)
 {
-	return ::Allocate<RspPrimaryAccountQueryPackage>();
 }
-void RspPrimaryAccountQueryPackage::Free()
+RspPrimaryAccountQueryPackage::~RspPrimaryAccountQueryPackage()
 {
-	Package::Free();
 	if (RspPrimaryAccountQuery != nullptr)
 	{
-		::Free<RspPrimaryAccountQueryField>(RspPrimaryAccountQuery);
+		ObjectPool<RspPrimaryAccountQueryField>::GetInstance().Deallocate(RspPrimaryAccountQuery);
 		RspPrimaryAccountQuery = nullptr;
 	}
-	MemCacheTemplateSingleton<RspPrimaryAccountQueryPackage>::GetInstance().Free(this);
+}
+RspPrimaryAccountQueryPackage* RspPrimaryAccountQueryPackage::Allocate()
+{
+	return ObjectPool<RspPrimaryAccountQueryPackage>::GetInstance().Allocate();
+}
+void RspPrimaryAccountQueryPackage::Deallocate()
+{
+	ObjectPool<RspPrimaryAccountQueryPackage>::GetInstance().Deallocate(this);
 }
 void RspPrimaryAccountQueryPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -36660,7 +37728,7 @@ bool RspPrimaryAccountQueryPackage::FromStepStream(char* buff, int startIndex, i
 			{
 			case RspPrimaryAccountQueryField::FieldID:
 			{
-				RspPrimaryAccountQuery = ::Allocate<RspPrimaryAccountQueryField>();
+				RspPrimaryAccountQuery = ObjectPool<RspPrimaryAccountQueryField>::GetInstance().Allocate();
 				memset(RspPrimaryAccountQuery, 0, sizeof(*RspPrimaryAccountQuery));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -36742,7 +37810,7 @@ bool RspPrimaryAccountQueryPackage::FromXtpStream(char* buff, int startIndex, in
 		{
 		case RspPrimaryAccountQueryField::FieldID:
 		{
-			RspPrimaryAccountQuery = ::Allocate<RspPrimaryAccountQueryField>();
+			RspPrimaryAccountQuery = ObjectPool<RspPrimaryAccountQueryField>::GetInstance().Allocate();
 			memcpy(RspPrimaryAccountQuery, buff + offset, sizeof(RspPrimaryAccountQueryField));
 			offset += sizeof(RspPrimaryAccountQueryField);	
 			break;
@@ -36763,19 +37831,25 @@ const char* RspPrimaryAccountQueryPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqQryOfferOptionInstrumentPackage* ReqQryOfferOptionInstrumentPackage::Allocate()
+ReqQryOfferOptionInstrumentPackage::ReqQryOfferOptionInstrumentPackage()
+	:ReqQryOfferOptionInstrument(nullptr)
 {
-	return ::Allocate<ReqQryOfferOptionInstrumentPackage>();
 }
-void ReqQryOfferOptionInstrumentPackage::Free()
+ReqQryOfferOptionInstrumentPackage::~ReqQryOfferOptionInstrumentPackage()
 {
-	Package::Free();
 	if (ReqQryOfferOptionInstrument != nullptr)
 	{
-		::Free<ReqQryOfferOptionInstrumentField>(ReqQryOfferOptionInstrument);
+		ObjectPool<ReqQryOfferOptionInstrumentField>::GetInstance().Deallocate(ReqQryOfferOptionInstrument);
 		ReqQryOfferOptionInstrument = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqQryOfferOptionInstrumentPackage>::GetInstance().Free(this);
+}
+ReqQryOfferOptionInstrumentPackage* ReqQryOfferOptionInstrumentPackage::Allocate()
+{
+	return ObjectPool<ReqQryOfferOptionInstrumentPackage>::GetInstance().Allocate();
+}
+void ReqQryOfferOptionInstrumentPackage::Deallocate()
+{
+	ObjectPool<ReqQryOfferOptionInstrumentPackage>::GetInstance().Deallocate(this);
 }
 void ReqQryOfferOptionInstrumentPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -36811,7 +37885,7 @@ bool ReqQryOfferOptionInstrumentPackage::FromStepStream(char* buff, int startInd
 			{
 			case ReqQryOfferOptionInstrumentField::FieldID:
 			{
-				ReqQryOfferOptionInstrument = ::Allocate<ReqQryOfferOptionInstrumentField>();
+				ReqQryOfferOptionInstrument = ObjectPool<ReqQryOfferOptionInstrumentField>::GetInstance().Allocate();
 				memset(ReqQryOfferOptionInstrument, 0, sizeof(*ReqQryOfferOptionInstrument));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -36882,7 +37956,7 @@ bool ReqQryOfferOptionInstrumentPackage::FromXtpStream(char* buff, int startInde
 		{
 		case ReqQryOfferOptionInstrumentField::FieldID:
 		{
-			ReqQryOfferOptionInstrument = ::Allocate<ReqQryOfferOptionInstrumentField>();
+			ReqQryOfferOptionInstrument = ObjectPool<ReqQryOfferOptionInstrumentField>::GetInstance().Allocate();
 			memcpy(ReqQryOfferOptionInstrument, buff + offset, sizeof(ReqQryOfferOptionInstrumentField));
 			offset += sizeof(ReqQryOfferOptionInstrumentField);	
 			break;
@@ -36903,19 +37977,25 @@ const char* ReqQryOfferOptionInstrumentPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RspQryOfferOptionInstrumentPackage* RspQryOfferOptionInstrumentPackage::Allocate()
+RspQryOfferOptionInstrumentPackage::RspQryOfferOptionInstrumentPackage()
+	:RspQryOfferOptionInstrument(nullptr)
 {
-	return ::Allocate<RspQryOfferOptionInstrumentPackage>();
 }
-void RspQryOfferOptionInstrumentPackage::Free()
+RspQryOfferOptionInstrumentPackage::~RspQryOfferOptionInstrumentPackage()
 {
-	Package::Free();
 	if (RspQryOfferOptionInstrument != nullptr)
 	{
-		::Free<RspQryOfferOptionInstrumentField>(RspQryOfferOptionInstrument);
+		ObjectPool<RspQryOfferOptionInstrumentField>::GetInstance().Deallocate(RspQryOfferOptionInstrument);
 		RspQryOfferOptionInstrument = nullptr;
 	}
-	MemCacheTemplateSingleton<RspQryOfferOptionInstrumentPackage>::GetInstance().Free(this);
+}
+RspQryOfferOptionInstrumentPackage* RspQryOfferOptionInstrumentPackage::Allocate()
+{
+	return ObjectPool<RspQryOfferOptionInstrumentPackage>::GetInstance().Allocate();
+}
+void RspQryOfferOptionInstrumentPackage::Deallocate()
+{
+	ObjectPool<RspQryOfferOptionInstrumentPackage>::GetInstance().Deallocate(this);
 }
 void RspQryOfferOptionInstrumentPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -36957,7 +38037,7 @@ bool RspQryOfferOptionInstrumentPackage::FromStepStream(char* buff, int startInd
 			{
 			case RspQryOfferOptionInstrumentField::FieldID:
 			{
-				RspQryOfferOptionInstrument = ::Allocate<RspQryOfferOptionInstrumentField>();
+				RspQryOfferOptionInstrument = ObjectPool<RspQryOfferOptionInstrumentField>::GetInstance().Allocate();
 				memset(RspQryOfferOptionInstrument, 0, sizeof(*RspQryOfferOptionInstrument));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -37039,7 +38119,7 @@ bool RspQryOfferOptionInstrumentPackage::FromXtpStream(char* buff, int startInde
 		{
 		case RspQryOfferOptionInstrumentField::FieldID:
 		{
-			RspQryOfferOptionInstrument = ::Allocate<RspQryOfferOptionInstrumentField>();
+			RspQryOfferOptionInstrument = ObjectPool<RspQryOfferOptionInstrumentField>::GetInstance().Allocate();
 			memcpy(RspQryOfferOptionInstrument, buff + offset, sizeof(RspQryOfferOptionInstrumentField));
 			offset += sizeof(RspQryOfferOptionInstrumentField);	
 			break;
@@ -37060,19 +38140,25 @@ const char* RspQryOfferOptionInstrumentPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnOfferOptionInstrumentPackage* RtnOfferOptionInstrumentPackage::Allocate()
+RtnOfferOptionInstrumentPackage::RtnOfferOptionInstrumentPackage()
+	:OfferOptionInstrument(nullptr)
 {
-	return ::Allocate<RtnOfferOptionInstrumentPackage>();
 }
-void RtnOfferOptionInstrumentPackage::Free()
+RtnOfferOptionInstrumentPackage::~RtnOfferOptionInstrumentPackage()
 {
-	Package::Free();
 	if (OfferOptionInstrument != nullptr)
 	{
-		::Free<OfferOptionInstrumentField>(OfferOptionInstrument);
+		ObjectPool<OfferOptionInstrumentField>::GetInstance().Deallocate(OfferOptionInstrument);
 		OfferOptionInstrument = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnOfferOptionInstrumentPackage>::GetInstance().Free(this);
+}
+RtnOfferOptionInstrumentPackage* RtnOfferOptionInstrumentPackage::Allocate()
+{
+	return ObjectPool<RtnOfferOptionInstrumentPackage>::GetInstance().Allocate();
+}
+void RtnOfferOptionInstrumentPackage::Deallocate()
+{
+	ObjectPool<RtnOfferOptionInstrumentPackage>::GetInstance().Deallocate(this);
 }
 void RtnOfferOptionInstrumentPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -37145,7 +38231,7 @@ bool RtnOfferOptionInstrumentPackage::FromStepStream(char* buff, int startIndex,
 			{
 			case OfferOptionInstrumentField::FieldID:
 			{
-				OfferOptionInstrument = ::Allocate<OfferOptionInstrumentField>();
+				OfferOptionInstrument = ObjectPool<OfferOptionInstrumentField>::GetInstance().Allocate();
 				memset(OfferOptionInstrument, 0, sizeof(*OfferOptionInstrument));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -37287,7 +38373,7 @@ bool RtnOfferOptionInstrumentPackage::FromXtpStream(char* buff, int startIndex, 
 		{
 		case OfferOptionInstrumentField::FieldID:
 		{
-			OfferOptionInstrument = ::Allocate<OfferOptionInstrumentField>();
+			OfferOptionInstrument = ObjectPool<OfferOptionInstrumentField>::GetInstance().Allocate();
 			memcpy(OfferOptionInstrument, buff + offset, sizeof(OfferOptionInstrumentField));
 			offset += sizeof(OfferOptionInstrumentField);	
 			break;
@@ -37308,19 +38394,25 @@ const char* RtnOfferOptionInstrumentPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqOfferOrderPackage* ReqOfferOrderPackage::Allocate()
+ReqOfferOrderPackage::ReqOfferOrderPackage()
+	:ReqOfferOrder(nullptr)
 {
-	return ::Allocate<ReqOfferOrderPackage>();
 }
-void ReqOfferOrderPackage::Free()
+ReqOfferOrderPackage::~ReqOfferOrderPackage()
 {
-	Package::Free();
 	if (ReqOfferOrder != nullptr)
 	{
-		::Free<ReqOfferOrderField>(ReqOfferOrder);
+		ObjectPool<ReqOfferOrderField>::GetInstance().Deallocate(ReqOfferOrder);
 		ReqOfferOrder = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqOfferOrderPackage>::GetInstance().Free(this);
+}
+ReqOfferOrderPackage* ReqOfferOrderPackage::Allocate()
+{
+	return ObjectPool<ReqOfferOrderPackage>::GetInstance().Allocate();
+}
+void ReqOfferOrderPackage::Deallocate()
+{
+	ObjectPool<ReqOfferOrderPackage>::GetInstance().Deallocate(this);
 }
 void ReqOfferOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -37378,7 +38470,7 @@ bool ReqOfferOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 			{
 			case ReqOfferOrderField::FieldID:
 			{
-				ReqOfferOrder = ::Allocate<ReqOfferOrderField>();
+				ReqOfferOrder = ObjectPool<ReqOfferOrderField>::GetInstance().Allocate();
 				memset(ReqOfferOrder, 0, sizeof(*ReqOfferOrder));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -37502,7 +38594,7 @@ bool ReqOfferOrderPackage::FromXtpStream(char* buff, int startIndex, int endInde
 		{
 		case ReqOfferOrderField::FieldID:
 		{
-			ReqOfferOrder = ::Allocate<ReqOfferOrderField>();
+			ReqOfferOrder = ObjectPool<ReqOfferOrderField>::GetInstance().Allocate();
 			memcpy(ReqOfferOrder, buff + offset, sizeof(ReqOfferOrderField));
 			offset += sizeof(ReqOfferOrderField);	
 			break;
@@ -37523,19 +38615,25 @@ const char* ReqOfferOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-ReqOfferCancelOrderPackage* ReqOfferCancelOrderPackage::Allocate()
+ReqOfferCancelOrderPackage::ReqOfferCancelOrderPackage()
+	:ReqOfferCancelOrder(nullptr)
 {
-	return ::Allocate<ReqOfferCancelOrderPackage>();
 }
-void ReqOfferCancelOrderPackage::Free()
+ReqOfferCancelOrderPackage::~ReqOfferCancelOrderPackage()
 {
-	Package::Free();
 	if (ReqOfferCancelOrder != nullptr)
 	{
-		::Free<ReqOfferCancelOrderField>(ReqOfferCancelOrder);
+		ObjectPool<ReqOfferCancelOrderField>::GetInstance().Deallocate(ReqOfferCancelOrder);
 		ReqOfferCancelOrder = nullptr;
 	}
-	MemCacheTemplateSingleton<ReqOfferCancelOrderPackage>::GetInstance().Free(this);
+}
+ReqOfferCancelOrderPackage* ReqOfferCancelOrderPackage::Allocate()
+{
+	return ObjectPool<ReqOfferCancelOrderPackage>::GetInstance().Allocate();
+}
+void ReqOfferCancelOrderPackage::Deallocate()
+{
+	ObjectPool<ReqOfferCancelOrderPackage>::GetInstance().Deallocate(this);
 }
 void ReqOfferCancelOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -37595,7 +38693,7 @@ bool ReqOfferCancelOrderPackage::FromStepStream(char* buff, int startIndex, int 
 			{
 			case ReqOfferCancelOrderField::FieldID:
 			{
-				ReqOfferCancelOrder = ::Allocate<ReqOfferCancelOrderField>();
+				ReqOfferCancelOrder = ObjectPool<ReqOfferCancelOrderField>::GetInstance().Allocate();
 				memset(ReqOfferCancelOrder, 0, sizeof(*ReqOfferCancelOrder));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -37710,7 +38808,7 @@ bool ReqOfferCancelOrderPackage::FromXtpStream(char* buff, int startIndex, int e
 		{
 		case ReqOfferCancelOrderField::FieldID:
 		{
-			ReqOfferCancelOrder = ::Allocate<ReqOfferCancelOrderField>();
+			ReqOfferCancelOrder = ObjectPool<ReqOfferCancelOrderField>::GetInstance().Allocate();
 			memcpy(ReqOfferCancelOrder, buff + offset, sizeof(ReqOfferCancelOrderField));
 			offset += sizeof(ReqOfferCancelOrderField);	
 			break;
@@ -37731,19 +38829,25 @@ const char* ReqOfferCancelOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnOfferOrderPackage* RtnOfferOrderPackage::Allocate()
+RtnOfferOrderPackage::RtnOfferOrderPackage()
+	:OfferOrder(nullptr)
 {
-	return ::Allocate<RtnOfferOrderPackage>();
 }
-void RtnOfferOrderPackage::Free()
+RtnOfferOrderPackage::~RtnOfferOrderPackage()
 {
-	Package::Free();
 	if (OfferOrder != nullptr)
 	{
-		::Free<OfferOrderField>(OfferOrder);
+		ObjectPool<OfferOrderField>::GetInstance().Deallocate(OfferOrder);
 		OfferOrder = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnOfferOrderPackage>::GetInstance().Free(this);
+}
+RtnOfferOrderPackage* RtnOfferOrderPackage::Allocate()
+{
+	return ObjectPool<RtnOfferOrderPackage>::GetInstance().Allocate();
+}
+void RtnOfferOrderPackage::Deallocate()
+{
+	ObjectPool<RtnOfferOrderPackage>::GetInstance().Deallocate(this);
 }
 void RtnOfferOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -37834,7 +38938,7 @@ bool RtnOfferOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 			{
 			case OfferOrderField::FieldID:
 			{
-				OfferOrder = ::Allocate<OfferOrderField>();
+				OfferOrder = ObjectPool<OfferOrderField>::GetInstance().Allocate();
 				memset(OfferOrder, 0, sizeof(*OfferOrder));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -38009,7 +39113,7 @@ bool RtnOfferOrderPackage::FromXtpStream(char* buff, int startIndex, int endInde
 		{
 		case OfferOrderField::FieldID:
 		{
-			OfferOrder = ::Allocate<OfferOrderField>();
+			OfferOrder = ObjectPool<OfferOrderField>::GetInstance().Allocate();
 			memcpy(OfferOrder, buff + offset, sizeof(OfferOrderField));
 			offset += sizeof(OfferOrderField);	
 			break;
@@ -38030,19 +39134,25 @@ const char* RtnOfferOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnOfferTradePackage* RtnOfferTradePackage::Allocate()
+RtnOfferTradePackage::RtnOfferTradePackage()
+	:OfferTrade(nullptr)
 {
-	return ::Allocate<RtnOfferTradePackage>();
 }
-void RtnOfferTradePackage::Free()
+RtnOfferTradePackage::~RtnOfferTradePackage()
 {
-	Package::Free();
 	if (OfferTrade != nullptr)
 	{
-		::Free<OfferTradeField>(OfferTrade);
+		ObjectPool<OfferTradeField>::GetInstance().Deallocate(OfferTrade);
 		OfferTrade = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnOfferTradePackage>::GetInstance().Free(this);
+}
+RtnOfferTradePackage* RtnOfferTradePackage::Allocate()
+{
+	return ObjectPool<RtnOfferTradePackage>::GetInstance().Allocate();
+}
+void RtnOfferTradePackage::Deallocate()
+{
+	ObjectPool<RtnOfferTradePackage>::GetInstance().Deallocate(this);
 }
 void RtnOfferTradePackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -38118,7 +39228,7 @@ bool RtnOfferTradePackage::FromStepStream(char* buff, int startIndex, int endInd
 			{
 			case OfferTradeField::FieldID:
 			{
-				OfferTrade = ::Allocate<OfferTradeField>();
+				OfferTrade = ObjectPool<OfferTradeField>::GetInstance().Allocate();
 				memset(OfferTrade, 0, sizeof(*OfferTrade));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -38256,7 +39366,7 @@ bool RtnOfferTradePackage::FromXtpStream(char* buff, int startIndex, int endInde
 		{
 		case OfferTradeField::FieldID:
 		{
-			OfferTrade = ::Allocate<OfferTradeField>();
+			OfferTrade = ObjectPool<OfferTradeField>::GetInstance().Allocate();
 			memcpy(OfferTrade, buff + offset, sizeof(OfferTradeField));
 			offset += sizeof(OfferTradeField);	
 			break;
@@ -38277,19 +39387,25 @@ const char* RtnOfferTradePackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnOfferErrorCancelOrderPackage* RtnOfferErrorCancelOrderPackage::Allocate()
+RtnOfferErrorCancelOrderPackage::RtnOfferErrorCancelOrderPackage()
+	:OfferErrorCancelOrder(nullptr)
 {
-	return ::Allocate<RtnOfferErrorCancelOrderPackage>();
 }
-void RtnOfferErrorCancelOrderPackage::Free()
+RtnOfferErrorCancelOrderPackage::~RtnOfferErrorCancelOrderPackage()
 {
-	Package::Free();
 	if (OfferErrorCancelOrder != nullptr)
 	{
-		::Free<OfferErrorCancelOrderField>(OfferErrorCancelOrder);
+		ObjectPool<OfferErrorCancelOrderField>::GetInstance().Deallocate(OfferErrorCancelOrder);
 		OfferErrorCancelOrder = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnOfferErrorCancelOrderPackage>::GetInstance().Free(this);
+}
+RtnOfferErrorCancelOrderPackage* RtnOfferErrorCancelOrderPackage::Allocate()
+{
+	return ObjectPool<RtnOfferErrorCancelOrderPackage>::GetInstance().Allocate();
+}
+void RtnOfferErrorCancelOrderPackage::Deallocate()
+{
+	ObjectPool<RtnOfferErrorCancelOrderPackage>::GetInstance().Deallocate(this);
 }
 void RtnOfferErrorCancelOrderPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -38354,7 +39470,7 @@ bool RtnOfferErrorCancelOrderPackage::FromStepStream(char* buff, int startIndex,
 			{
 			case OfferErrorCancelOrderField::FieldID:
 			{
-				OfferErrorCancelOrder = ::Allocate<OfferErrorCancelOrderField>();
+				OfferErrorCancelOrder = ObjectPool<OfferErrorCancelOrderField>::GetInstance().Allocate();
 				memset(OfferErrorCancelOrder, 0, sizeof(*OfferErrorCancelOrder));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -38475,7 +39591,7 @@ bool RtnOfferErrorCancelOrderPackage::FromXtpStream(char* buff, int startIndex, 
 		{
 		case OfferErrorCancelOrderField::FieldID:
 		{
-			OfferErrorCancelOrder = ::Allocate<OfferErrorCancelOrderField>();
+			OfferErrorCancelOrder = ObjectPool<OfferErrorCancelOrderField>::GetInstance().Allocate();
 			memcpy(OfferErrorCancelOrder, buff + offset, sizeof(OfferErrorCancelOrderField));
 			offset += sizeof(OfferErrorCancelOrderField);	
 			break;
@@ -38496,19 +39612,25 @@ const char* RtnOfferErrorCancelOrderPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnOfferCapitalPackage* RtnOfferCapitalPackage::Allocate()
+RtnOfferCapitalPackage::RtnOfferCapitalPackage()
+	:OfferCapital(nullptr)
 {
-	return ::Allocate<RtnOfferCapitalPackage>();
 }
-void RtnOfferCapitalPackage::Free()
+RtnOfferCapitalPackage::~RtnOfferCapitalPackage()
 {
-	Package::Free();
 	if (OfferCapital != nullptr)
 	{
-		::Free<OfferCapitalField>(OfferCapital);
+		ObjectPool<OfferCapitalField>::GetInstance().Deallocate(OfferCapital);
 		OfferCapital = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnOfferCapitalPackage>::GetInstance().Free(this);
+}
+RtnOfferCapitalPackage* RtnOfferCapitalPackage::Allocate()
+{
+	return ObjectPool<RtnOfferCapitalPackage>::GetInstance().Allocate();
+}
+void RtnOfferCapitalPackage::Deallocate()
+{
+	ObjectPool<RtnOfferCapitalPackage>::GetInstance().Deallocate(this);
 }
 void RtnOfferCapitalPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -38550,7 +39672,7 @@ bool RtnOfferCapitalPackage::FromStepStream(char* buff, int startIndex, int endI
 			{
 			case OfferCapitalField::FieldID:
 			{
-				OfferCapital = ::Allocate<OfferCapitalField>();
+				OfferCapital = ObjectPool<OfferCapitalField>::GetInstance().Allocate();
 				memset(OfferCapital, 0, sizeof(*OfferCapital));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -38632,7 +39754,7 @@ bool RtnOfferCapitalPackage::FromXtpStream(char* buff, int startIndex, int endIn
 		{
 		case OfferCapitalField::FieldID:
 		{
-			OfferCapital = ::Allocate<OfferCapitalField>();
+			OfferCapital = ObjectPool<OfferCapitalField>::GetInstance().Allocate();
 			memcpy(OfferCapital, buff + offset, sizeof(OfferCapitalField));
 			offset += sizeof(OfferCapitalField);	
 			break;
@@ -38653,19 +39775,25 @@ const char* RtnOfferCapitalPackage::GetDebugString() const
 	return t_DataStringBuffer;
 }
  
-RtnOfferPositionPackage* RtnOfferPositionPackage::Allocate()
+RtnOfferPositionPackage::RtnOfferPositionPackage()
+	:OfferPosition(nullptr)
 {
-	return ::Allocate<RtnOfferPositionPackage>();
 }
-void RtnOfferPositionPackage::Free()
+RtnOfferPositionPackage::~RtnOfferPositionPackage()
 {
-	Package::Free();
 	if (OfferPosition != nullptr)
 	{
-		::Free<OfferPositionField>(OfferPosition);
+		ObjectPool<OfferPositionField>::GetInstance().Deallocate(OfferPosition);
 		OfferPosition = nullptr;
 	}
-	MemCacheTemplateSingleton<RtnOfferPositionPackage>::GetInstance().Free(this);
+}
+RtnOfferPositionPackage* RtnOfferPositionPackage::Allocate()
+{
+	return ObjectPool<RtnOfferPositionPackage>::GetInstance().Allocate();
+}
+void RtnOfferPositionPackage::Deallocate()
+{
+	ObjectPool<RtnOfferPositionPackage>::GetInstance().Deallocate(this);
 }
 void RtnOfferPositionPackage::Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum)
 {
@@ -38722,7 +39850,7 @@ bool RtnOfferPositionPackage::FromStepStream(char* buff, int startIndex, int end
 			{
 			case OfferPositionField::FieldID:
 			{
-				OfferPosition = ::Allocate<OfferPositionField>();
+				OfferPosition = ObjectPool<OfferPositionField>::GetInstance().Allocate();
 				memset(OfferPosition, 0, sizeof(*OfferPosition));
 				while (itemStartIndex < fieldEndIndex)
 				{
@@ -38841,7 +39969,7 @@ bool RtnOfferPositionPackage::FromXtpStream(char* buff, int startIndex, int endI
 		{
 		case OfferPositionField::FieldID:
 		{
-			OfferPosition = ::Allocate<OfferPositionField>();
+			OfferPosition = ObjectPool<OfferPositionField>::GetInstance().Allocate();
 			memcpy(OfferPosition, buff + offset, sizeof(OfferPositionField));
 			offset += sizeof(OfferPositionField);	
 			break;

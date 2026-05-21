@@ -6,6 +6,7 @@
 #include "Package/PackageFactory.h"
 #include "Packages.h"
 #include "IO/IOThread.h"
+#include "ObjectPool/ObjectPool.h"
 
 using namespace std;
 
@@ -57,7 +58,7 @@ void StepClient::OnMessage(Package* package)
 void StepClient::SendReqInsertOrder(int index)
 {
 	m_ReqInsertOrder->Prepare(m_SessionID, false, index);
-	m_ReqInsertOrder->ReqInsertOrder = Allocate<ReqInsertOrderField>();
+	m_ReqInsertOrder->ReqInsertOrder = ObjectPool<ReqInsertOrderField>::GetInstance().Allocate();
 	memset(m_ReqInsertOrder->ReqInsertOrder, 0, sizeof(ReqInsertOrderField));
 	Strcpy(m_ReqInsertOrder->ReqInsertOrder->AccountID, "Xunmeng001");
 	Strcpy(m_ReqInsertOrder->ReqInsertOrder->ExchangeID, "SHSE");
@@ -69,6 +70,7 @@ void StepClient::SendReqInsertOrder(int index)
 	m_ReqInsertOrder->ReqInsertOrder->Volume = index;
 	m_ReqInsertOrder->ReqInsertOrder->ClientOrderID = index;
 	Send(m_ReqInsertOrder);
+	m_ReqInsertOrder->Deallocate();
 }
 
 void TestStepClient()

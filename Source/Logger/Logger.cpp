@@ -144,7 +144,7 @@ void Logger::FlushBuffers()
 	for (auto& buffer : m_LogData->InnerLogBuffers)
 	{
 		fwrite(buffer->GetData(), buffer->GetLength(), 1, m_LogData->LogFile);
-		buffer->Free();
+		buffer->Deallocate();
 	}
 	m_LogData->InnerLogBuffers.clear();
 	fflush(m_LogData->LogFile);

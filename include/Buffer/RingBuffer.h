@@ -1,5 +1,5 @@
 #pragma once
-#include "MemCache/MemCacheTemplateSingleton.h"
+#include "ObjectPool/ObjectPool.h"
 #include "Constant/Constant.h"
 #include <string.h>
 #include <assert.h>
@@ -13,12 +13,11 @@ public:
 	{}
 	static RingBuffer* Allocate()
 	{
-		return ::Allocate<RingBuffer<SIZE>>();
+		return ObjectPool<RingBuffer<SIZE>>::GetInstance().Allocate();
 	}
-	void Free()
+	void Deallocate()
 	{
-		Reset();
-		MemCacheTemplateSingleton<RingBuffer<SIZE>>::GetInstance().Free(this);
+		ObjectPool<RingBuffer<SIZE>>::GetInstance().Deallocate(this);
 	}
 	unsigned Write(const char* data, unsigned len)
 	{

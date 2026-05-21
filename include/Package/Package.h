@@ -13,7 +13,8 @@ public:
 		:SessionID(0), IPAddress{ 0 }
 	{
 	}
-	virtual void Free();
+	virtual ~Package();
+	virtual void Deallocate() = 0;
 	virtual void Prepare(SessionIDType sessionID, int messageChain, int msgSeqNum);
 	virtual int MakePackage(ProtocolTypeType protocolType, char* buff, int size);
 	virtual int ToStepStream(char* buff, int size) const = 0;

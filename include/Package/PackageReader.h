@@ -6,10 +6,10 @@
 class PackageReader
 {
 public:
-	PackageReader();
+	PackageReader(ProtocolTypeType protocolType, PackageFactory* packageFactory, SessionIDType sessionID, const char* ipAddress);
 	~PackageReader();
 	static PackageReader* Allocate(ProtocolTypeType protocolType, PackageFactory* packageFactory, SessionIDType sessionID, const char* ipAddress);
-	void Free();
+	void Deallocate();
 
 	void Reset();
 	void PopFront(unsigned int len);
