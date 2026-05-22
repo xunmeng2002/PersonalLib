@@ -6,58 +6,95 @@ template <typename T>
 class LockFreeQueue
 {
 private:
-	struct Node
-	{
-		Node()
-			:data(nullptr), next(nullptr)
-		{ }
-		T* data;
-		std::atomic<Node*> next;
-	};
+    struct Node
+    {
+        Node() : data(nullptr), next(nullptr) {}
+        Node(T* val) : data(val), next(nullptr) {}
+
+        T* data;
+        std::atomic<Node*> next;
+    };
+    std::atomic<Node*> m_Head;
+    std::atomic<Node*> m_Tail;
+
 public:
-	LockFreeQueue()
-		:m_Head(new Node), m_Tail(m_Head.load())
-	{}
-	LockFreeQueue(const LockFreeQueue&) = delete;
-	LockFreeQueue& operator=(const LockFreeQueue&) = delete;
-	~LockFreeQueue()
-	{
-		Node* oldHead = nullptr;
-		while (oldHead = m_Head.load())
-		{
-			m_Head.store(oldHead->next);
-			delete oldHead->data;
-			delete oldHead;
-		}
-	}
-
-	T* PopFront()
-	{
-		auto oldHead = m_Head.load();
-		if (oldHead == m_Tail.load())
-		{
-			return nullptr;
-		}
-		m_Head.store(oldHead->next);
-		auto data = oldHead->data;
-		delete oldHead;
-		return data;
-	}
-	void PushBack(T* data)
-	{
-		Node* node = new Node();
-		auto oldTail = m_Tail.load();
-		oldTail->data = data;
-		oldTail->next = node;
-		m_Tail.store(node);
-	}
-	bool Empty()
-	{
-		return m_Head.load() == m_Tail.load();
-	}
-
-private:
-	std::atomic<Node*> m_Head;
-	std::atomic<Node*> m_Tail;
+    LockFreeQueue()
+    {
+        Node* dummy = new Node();
+        m_Head.store(dummy, std::memory_order_release);
+        m_Tail.store(dummy, std::memory_order_release);
+    }
+    ~LockFreeQueue()
+    {
+        Node* node = m_Head.load(std::memory_order_acquire);
+        Node* next = nullptr;
+        while (node)
+        {
+            next = node->next.load(std::memory_order_acquire);
+            delete node;
+            node = next;
+        }
+    }
+    LockFreeQueue(const LockFreeQueue&) = delete;
+    LockFreeQueue& operator=(const LockFreeQueue&) = delete;
+    void PushBack(T* data)
+    {
+        Node* newNode = new Node(data);
+        Node* oldTail = nullptr;
+        while (true)
+        {
+            oldTail = m_Tail.load(std::memory_order_acquire);
+            Node* next = oldTail->next.load(std::memory_order_acquire);
+            if (oldTail == m_Tail.load(std::memory_order_acquire))
+            {
+                if (next == nullptr)
+                {
+                    if (oldTail->next.compare_exchange_weak(next, newNode, std::memory_order_release, std::memory_order_acquire))
+                    {
+                        m_Tail.store(newNode, std::memory_order_release);
+                        return;
+                    }
+                }
+                else
+                {
+                    m_Tail.store(next, std::memory_order_release);
+                }
+            }
+        }
+    }
+    T* PopFront()
+    {
+        Node* oldHead = nullptr;
+        while (true)
+        {
+            oldHead = m_Head.load(std::memory_order_acquire);
+            Node* tail = m_Tail.load(std::memory_order_acquire);
+            Node* next = oldHead->next.load(std::memory_order_acquire);
+            if (oldHead == m_Head.load(std::memory_order_acquire))
+            {
+                if (oldHead == tail)
+                {
+                    if (next == nullptr)
+                    {
+                        return nullptr;
+                    }
+                    m_Tail.store(next, std::memory_order_release);
+                }
+                else
+                {
+                    T* data = next->data;
+                    if (m_Head.compare_exchange_weak(oldHead, next, std::memory_order_release, std::memory_order_acquire))
+                    {
+                        delete oldHead;
+                        return data;
+                    }
+                }
+            }
+        }
+    }
+    bool Empty() const
+    {
+        return m_Head.load(std::memory_order_acquire) == m_Tail.load(std::memory_order_acquire);
+    }
 };
 
