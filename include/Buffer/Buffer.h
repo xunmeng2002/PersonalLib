@@ -2,7 +2,7 @@
 #include "ObjectPool/ObjectPool.h"
 #include "Constant/Constant.h"
 #include "Logger/Logger.h"
-#include <string.h>
+#include <cstring>
 #include <assert.h>
 
 template<unsigned SIZE>

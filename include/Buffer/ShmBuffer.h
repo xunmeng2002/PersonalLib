@@ -5,6 +5,7 @@
 #include "Logger/Logger.h"
 #include <algorithm>
 #include <atomic>
+#include <cstring>
 
 
 struct SingleShmHeader
