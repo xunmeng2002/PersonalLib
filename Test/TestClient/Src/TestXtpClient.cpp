@@ -1,10 +1,10 @@
 #include "TestXtpClient.h"
 #include "Utility/Utility.h"
 #include "Logger/Logger.h"
-#include "TestUtility.h"
+#include "TestUtility/TestUtility.h"
 #include "Package/PackageFactory.h"
 #include "Utility/TimeUtility.h"
-#include "Packages.h"
+#include "Packages/Packages.h"
 #include "IO/IOThread.h"
 #include "ObjectPool/ObjectPool.h"
 

@@ -8,7 +8,7 @@
 #include "TestTcpIocpServer.h"
 #include "TestXtpServer.h"
 #include "TestStepServer.h"
-#include "TestUtility.h"
+#include "TestUtility/TestUtility.h"
 #include "IO/IOFactory.h"
 
 int main(int argc, const char* argv[])

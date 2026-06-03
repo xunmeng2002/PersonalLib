@@ -2,7 +2,7 @@
 #include "ClientIOSubscriberImpl.h"
 #include "Tcp/TcpSelect/TcpSelectClient.h"
 #include "Logger/Logger.h"
-#include "TestUtility.h"
+#include "TestUtility/TestUtility.h"
 #include "IO/IOThread.h"
 #include "IO/IOFactory.h"
 

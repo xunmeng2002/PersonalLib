@@ -9,7 +9,7 @@
 #include "TestTcpIocpClient.h"
 #include "TestXtpClient.h"
 #include "TestStepClient.h"
-#include "TestUtility.h"
+#include "TestUtility/TestUtility.h"
 
 
 

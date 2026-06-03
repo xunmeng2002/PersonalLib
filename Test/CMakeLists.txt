@@ -1,3 +1,5 @@
+include_directories(${CMAKE_SOURCE_DIR}/Test/Source)
+
 add_subdirectory(TestPersonalLib)
 add_subdirectory(TestMD5)
 add_subdirectory(TestClient)

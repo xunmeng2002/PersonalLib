@@ -4,7 +4,7 @@
 #include "Tcp/TcpEpoll/TcpEpollClient.h"
 #endif //  LINUX
 #include "Logger/Logger.h"
-#include "TestUtility.h"
+#include "TestUtility/TestUtility.h"
 #include "IO/IOThread.h"
 
 

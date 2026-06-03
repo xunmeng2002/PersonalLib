@@ -1,7 +1,7 @@
 #include "TestStepServer.h"
 #include "Utility/Utility.h"
 #include "Logger/Logger.h"
-#include "TestUtility.h"
+#include "TestUtility/TestUtility.h"
 #include "Package/PackageFactory.h"
 
 using namespace std;
