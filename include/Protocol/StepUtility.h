@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <unordered_map>
-#include "Types/Types.h"
+#include "Types.h"
 #include "Protocol/Head.h"
 
 

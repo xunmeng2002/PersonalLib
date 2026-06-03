@@ -1,6 +1,6 @@
 #pragma once
 #include "SocketInit/SocketInit.h"
-#include "Types/Types.h"
+#include "Types.h"
 #include "IO/Connect.h"
 #include <mutex>
 #include <string>

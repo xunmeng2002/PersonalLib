@@ -1,7 +1,7 @@
 #pragma once
 #include <chrono>
 #include <string>
-#include "Types/Types.h"
+#include "Types.h"
 
 time_t GetTime();
 time_t GetTime(const char* date);

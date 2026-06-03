@@ -1,7 +1,7 @@
 #pragma once
 #include "ThreadBase/ThreadBase.h"
 #include "IO/IOBase.h"
-#include "Types/Types.h"
+#include "Types.h"
 #include "Buffer/Buffer.h"
 #include "IO/Connect.h"
 #include <string>

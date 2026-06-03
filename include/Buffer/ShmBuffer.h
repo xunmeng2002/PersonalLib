@@ -1,6 +1,6 @@
 #pragma once
 #include "Constant/Constant.h"
-#include "Types/Types.h"
+#include "Types.h"
 #include "ObjectPool/ObjectPool.h"
 #include "Logger/Logger.h"
 #include <algorithm>

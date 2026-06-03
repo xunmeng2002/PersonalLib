@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Types/Types.h"
+#include "Types.h"
 #include "Buffer/Buffer.h"
 #include "IO/IOBase.h"
 #include "Shm/ShmConnect.h"

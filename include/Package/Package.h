@@ -1,6 +1,6 @@
 #pragma once
 #include <stdint.h>
-#include "Types/Types.h"
+#include "Types.h"
 #include "Protocol/Head.h"
 
 #define MaxPackageSize 2 * 64 * 1024

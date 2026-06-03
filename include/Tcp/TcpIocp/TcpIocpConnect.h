@@ -1,5 +1,5 @@
 #pragma once
-#include "Types/Types.h"
+#include "Types.h"
 #include "SocketInit/SocketInit.h"
 #include "Tcp/TcpBase/TcpConnect.h"
 #include "Buffer/Buffer.h"

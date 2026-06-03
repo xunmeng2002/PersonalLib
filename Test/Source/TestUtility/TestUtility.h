@@ -1,6 +1,6 @@
 #pragma once
 #include <chrono>
-#include "Types/Types.h"
+#include "Types.h"
 
 enum class TcpProtocolType : int
 {
