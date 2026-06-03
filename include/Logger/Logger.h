@@ -4,7 +4,7 @@
 #include <map>
 #include <mutex>
 #include <condition_variable>
-#include "Logger/LoggerInterface.h"
+#include "LoggerInterface.h"
 #include "ThreadBase/ThreadBase.h"
 
 struct LogData;
