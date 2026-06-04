@@ -1,5 +1,0 @@
-add_subdirectory(PersonalLib)
-#add_subdirectory(PersonalLibMT)
-if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
-endif()
