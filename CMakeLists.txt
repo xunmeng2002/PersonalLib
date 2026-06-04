@@ -52,4 +52,4 @@ string(TIMESTAMP BUILD_TIMESTAMP "%Y%m%d-%H%M%S")
 message("Build timestamp is ${BUILD_TIMESTAMP}")
 
 #add_subdirectory(Target)
-#add_subdirectory(Test)
+add_subdirectory(Test)
