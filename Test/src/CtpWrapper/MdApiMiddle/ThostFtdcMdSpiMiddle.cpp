@@ -1,6 +1,6 @@
-﻿#include "ThostFtdcMdSpiMiddle.h"
-#include "Core/Logger.h"
-#include "StructLogFunc.h"
+﻿#include "CtpWrapper/MdApiMiddle/ThostFtdcMdSpiMiddle.h"
+#include "Core/Logger/Logger.h"
+#include "CtpWrapper/StructLogFunc/StructLogFunc.h"
 
 
 

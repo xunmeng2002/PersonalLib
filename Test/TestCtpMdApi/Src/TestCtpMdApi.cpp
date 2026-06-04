@@ -1,8 +1,8 @@
 #pragma warning(disable:4819)
-#include "ThostFtdcMdApiMiddle.h"
+#include "CtpWrapper/MdApiMiddle/ThostFtdcMdApiMiddle.h"
 #include "ThostFtdcMdSpiImpl.h"
 #include "Core/Logger/Logger.h"
-#include "CtpAccountInfo.h"
+#include "CtpWrapper/CtpAccountInfo/CtpAccountInfo.h"
 #include <iostream>
 #include <string.h>
 #ifdef LINUX

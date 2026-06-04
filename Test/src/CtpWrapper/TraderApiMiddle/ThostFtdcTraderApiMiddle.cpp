@@ -1,6 +1,6 @@
-﻿#include "ThostFtdcTraderApiMiddle.h"
-#include "Core/Logger.h"
-#include "StructLogFunc.h"
+﻿#include "CtpWrapper/TraderApiMiddle/ThostFtdcTraderApiMiddle.h"
+#include "Core/Logger/Logger.h"
+#include "CtpWrapper/StructLogFunc/StructLogFunc.h"
 
 
 

@@ -1,6 +1,6 @@
 #pragma once
-#include "ThostFtdcMdSpiMiddle.h"
-#include "CtpAccountInfo.h"
+#include "CtpWrapper/MdApiMiddle/ThostFtdcMdSpiMiddle.h"
+#include "CtpWrapper/CtpAccountInfo/CtpAccountInfo.h"
 #include <set>
 #include <string>
 

@@ -7,7 +7,7 @@
 #define JSON_JSON_H_INCLUDED
 
 #include "config.h"
-#include "Serialization/json_features.h"
+#include "Serialization/json/json_features.h"
 #include "reader.h"
 #include "value.h"
 #include "writer.h"

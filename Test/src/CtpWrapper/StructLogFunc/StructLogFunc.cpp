@@ -1,5 +1,5 @@
-﻿#include "StructLogFunc.h"
-#include "Core/Logger.h"
+﻿#include "CtpWrapper/StructLogFunc/StructLogFunc.h"
+#include "Core/Logger/Logger.h"
 #include <limits>
 
 double GetDoubleValue(double& value)
@@ -32,8 +32,8 @@ void WriteRspUserLogin(CThostFtdcRspUserLoginField* RspUserLogin)
 {
 	if(RspUserLogin)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcRspUserLoginField: TradingDay[%s], LoginTime[%s], BrokerID[%s], UserID[%s], SystemName[%s], FrontID[%d], SessionID[%d], MaxOrderRef[%s], SHFETime[%s], DCETime[%s], CZCETime[%s], FFEXTime[%s], INETime[%s], SysVersion[%s], GFEXTime[%s]",
-			RspUserLogin->TradingDay, RspUserLogin->LoginTime, RspUserLogin->BrokerID, RspUserLogin->UserID, RspUserLogin->SystemName, RspUserLogin->FrontID, RspUserLogin->SessionID, RspUserLogin->MaxOrderRef, RspUserLogin->SHFETime, RspUserLogin->DCETime, RspUserLogin->CZCETime, RspUserLogin->FFEXTime, RspUserLogin->INETime, RspUserLogin->SysVersion, RspUserLogin->GFEXTime);
+		WriteLog(LogLevel::Info, "CThostFtdcRspUserLoginField: TradingDay[%s], LoginTime[%s], BrokerID[%s], UserID[%s], SystemName[%s], FrontID[%d], SessionID[%d], MaxOrderRef[%s], SHFETime[%s], DCETime[%s], CZCETime[%s], FFEXTime[%s], INETime[%s], SysVersion[%s], GFEXTime[%s], LoginDRIdentityID[%d], UserDRIdentityID[%d]",
+			RspUserLogin->TradingDay, RspUserLogin->LoginTime, RspUserLogin->BrokerID, RspUserLogin->UserID, RspUserLogin->SystemName, RspUserLogin->FrontID, RspUserLogin->SessionID, RspUserLogin->MaxOrderRef, RspUserLogin->SHFETime, RspUserLogin->DCETime, RspUserLogin->CZCETime, RspUserLogin->FFEXTime, RspUserLogin->INETime, RspUserLogin->SysVersion, RspUserLogin->GFEXTime, RspUserLogin->LoginDRIdentityID, RspUserLogin->UserDRIdentityID);
 	}
 }
 void WriteUserLogout(CThostFtdcUserLogoutField* UserLogout)
@@ -432,16 +432,16 @@ void WriteInputOrder(CThostFtdcInputOrderField* InputOrder)
 {
 	if(InputOrder)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcInputOrderField: BrokerID[%s], InvestorID[%s], reserve1[%s], OrderRef[%s], UserID[%s], OrderPriceType[%c], Direction[%c], CombOffsetFlag[%s], CombHedgeFlag[%s], LimitPrice[%f], VolumeTotalOriginal[%d], TimeCondition[%c], GTDDate[%s], VolumeCondition[%c], MinVolume[%d], ContingentCondition[%c], StopPrice[%f], ForceCloseReason[%c], IsAutoSuspend[%d], BusinessUnit[%s], RequestID[%d], UserForceClose[%d], IsSwapOrder[%d], ExchangeID[%s], InvestUnitID[%s], AccountID[%s], CurrencyID[%s], ClientID[%s], reserve2[%s], MacAddress[%s], InstrumentID[%s], IPAddress[%s]",
-			InputOrder->BrokerID, InputOrder->InvestorID, InputOrder->reserve1, InputOrder->OrderRef, InputOrder->UserID, InputOrder->OrderPriceType, InputOrder->Direction, InputOrder->CombOffsetFlag, InputOrder->CombHedgeFlag, GetDoubleValue(InputOrder->LimitPrice), InputOrder->VolumeTotalOriginal, InputOrder->TimeCondition, InputOrder->GTDDate, InputOrder->VolumeCondition, InputOrder->MinVolume, InputOrder->ContingentCondition, GetDoubleValue(InputOrder->StopPrice), InputOrder->ForceCloseReason, InputOrder->IsAutoSuspend, InputOrder->BusinessUnit, InputOrder->RequestID, InputOrder->UserForceClose, InputOrder->IsSwapOrder, InputOrder->ExchangeID, InputOrder->InvestUnitID, InputOrder->AccountID, InputOrder->CurrencyID, InputOrder->ClientID, InputOrder->reserve2, InputOrder->MacAddress, InputOrder->InstrumentID, InputOrder->IPAddress);
+		WriteLog(LogLevel::Info, "CThostFtdcInputOrderField: BrokerID[%s], InvestorID[%s], reserve1[%s], OrderRef[%s], UserID[%s], OrderPriceType[%c], Direction[%c], CombOffsetFlag[%s], CombHedgeFlag[%s], LimitPrice[%f], VolumeTotalOriginal[%d], TimeCondition[%c], GTDDate[%s], VolumeCondition[%c], MinVolume[%d], ContingentCondition[%c], StopPrice[%f], ForceCloseReason[%c], IsAutoSuspend[%d], BusinessUnit[%s], RequestID[%d], UserForceClose[%d], IsSwapOrder[%d], ExchangeID[%s], InvestUnitID[%s], AccountID[%s], CurrencyID[%s], ClientID[%s], reserve2[%s], MacAddress[%s], InstrumentID[%s], IPAddress[%s], OrderMemo[%s], SessionReqSeq[%d]",
+			InputOrder->BrokerID, InputOrder->InvestorID, InputOrder->reserve1, InputOrder->OrderRef, InputOrder->UserID, InputOrder->OrderPriceType, InputOrder->Direction, InputOrder->CombOffsetFlag, InputOrder->CombHedgeFlag, GetDoubleValue(InputOrder->LimitPrice), InputOrder->VolumeTotalOriginal, InputOrder->TimeCondition, InputOrder->GTDDate, InputOrder->VolumeCondition, InputOrder->MinVolume, InputOrder->ContingentCondition, GetDoubleValue(InputOrder->StopPrice), InputOrder->ForceCloseReason, InputOrder->IsAutoSuspend, InputOrder->BusinessUnit, InputOrder->RequestID, InputOrder->UserForceClose, InputOrder->IsSwapOrder, InputOrder->ExchangeID, InputOrder->InvestUnitID, InputOrder->AccountID, InputOrder->CurrencyID, InputOrder->ClientID, InputOrder->reserve2, InputOrder->MacAddress, InputOrder->InstrumentID, InputOrder->IPAddress, InputOrder->OrderMemo, InputOrder->SessionReqSeq);
 	}
 }
 void WriteOrder(CThostFtdcOrderField* Order)
 {
 	if(Order)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcOrderField: BrokerID[%s], InvestorID[%s], reserve1[%s], OrderRef[%s], UserID[%s], OrderPriceType[%c], Direction[%c], CombOffsetFlag[%s], CombHedgeFlag[%s], LimitPrice[%f], VolumeTotalOriginal[%d], TimeCondition[%c], GTDDate[%s], VolumeCondition[%c], MinVolume[%d], ContingentCondition[%c], StopPrice[%f], ForceCloseReason[%c], IsAutoSuspend[%d], BusinessUnit[%s], RequestID[%d], OrderLocalID[%s], ExchangeID[%s], ParticipantID[%s], ClientID[%s], reserve2[%s], TraderID[%s], InstallID[%d], OrderSubmitStatus[%c], NotifySequence[%d], TradingDay[%s], SettlementID[%d], OrderSysID[%s], OrderSource[%c], OrderStatus[%c], OrderType[%c], VolumeTraded[%d], VolumeTotal[%d], InsertDate[%s], InsertTime[%s], ActiveTime[%s], SuspendTime[%s], UpdateTime[%s], CancelTime[%s], ActiveTraderID[%s], ClearingPartID[%s], SequenceNo[%d], FrontID[%d], SessionID[%d], UserProductInfo[%s], StatusMsg[%s], UserForceClose[%d], ActiveUserID[%s], BrokerOrderSeq[%d], RelativeOrderSysID[%s], ZCETotalTradedVolume[%d], IsSwapOrder[%d], BranchID[%s], InvestUnitID[%s], AccountID[%s], CurrencyID[%s], reserve3[%s], MacAddress[%s], InstrumentID[%s], ExchangeInstID[%s], IPAddress[%s]",
-			Order->BrokerID, Order->InvestorID, Order->reserve1, Order->OrderRef, Order->UserID, Order->OrderPriceType, Order->Direction, Order->CombOffsetFlag, Order->CombHedgeFlag, GetDoubleValue(Order->LimitPrice), Order->VolumeTotalOriginal, Order->TimeCondition, Order->GTDDate, Order->VolumeCondition, Order->MinVolume, Order->ContingentCondition, GetDoubleValue(Order->StopPrice), Order->ForceCloseReason, Order->IsAutoSuspend, Order->BusinessUnit, Order->RequestID, Order->OrderLocalID, Order->ExchangeID, Order->ParticipantID, Order->ClientID, Order->reserve2, Order->TraderID, Order->InstallID, Order->OrderSubmitStatus, Order->NotifySequence, Order->TradingDay, Order->SettlementID, Order->OrderSysID, Order->OrderSource, Order->OrderStatus, Order->OrderType, Order->VolumeTraded, Order->VolumeTotal, Order->InsertDate, Order->InsertTime, Order->ActiveTime, Order->SuspendTime, Order->UpdateTime, Order->CancelTime, Order->ActiveTraderID, Order->ClearingPartID, Order->SequenceNo, Order->FrontID, Order->SessionID, Order->UserProductInfo, Order->StatusMsg, Order->UserForceClose, Order->ActiveUserID, Order->BrokerOrderSeq, Order->RelativeOrderSysID, Order->ZCETotalTradedVolume, Order->IsSwapOrder, Order->BranchID, Order->InvestUnitID, Order->AccountID, Order->CurrencyID, Order->reserve3, Order->MacAddress, Order->InstrumentID, Order->ExchangeInstID, Order->IPAddress);
+		WriteLog(LogLevel::Info, "CThostFtdcOrderField: BrokerID[%s], InvestorID[%s], reserve1[%s], OrderRef[%s], UserID[%s], OrderPriceType[%c], Direction[%c], CombOffsetFlag[%s], CombHedgeFlag[%s], LimitPrice[%f], VolumeTotalOriginal[%d], TimeCondition[%c], GTDDate[%s], VolumeCondition[%c], MinVolume[%d], ContingentCondition[%c], StopPrice[%f], ForceCloseReason[%c], IsAutoSuspend[%d], BusinessUnit[%s], RequestID[%d], OrderLocalID[%s], ExchangeID[%s], ParticipantID[%s], ClientID[%s], reserve2[%s], TraderID[%s], InstallID[%d], OrderSubmitStatus[%c], NotifySequence[%d], TradingDay[%s], SettlementID[%d], OrderSysID[%s], OrderSource[%c], OrderStatus[%c], OrderType[%c], VolumeTraded[%d], VolumeTotal[%d], InsertDate[%s], InsertTime[%s], ActiveTime[%s], SuspendTime[%s], UpdateTime[%s], CancelTime[%s], ActiveTraderID[%s], ClearingPartID[%s], SequenceNo[%d], FrontID[%d], SessionID[%d], UserProductInfo[%s], StatusMsg[%s], UserForceClose[%d], ActiveUserID[%s], BrokerOrderSeq[%d], RelativeOrderSysID[%s], ZCETotalTradedVolume[%d], IsSwapOrder[%d], BranchID[%s], InvestUnitID[%s], AccountID[%s], CurrencyID[%s], reserve3[%s], MacAddress[%s], InstrumentID[%s], ExchangeInstID[%s], IPAddress[%s], OrderMemo[%s], SessionReqSeq[%d]",
+			Order->BrokerID, Order->InvestorID, Order->reserve1, Order->OrderRef, Order->UserID, Order->OrderPriceType, Order->Direction, Order->CombOffsetFlag, Order->CombHedgeFlag, GetDoubleValue(Order->LimitPrice), Order->VolumeTotalOriginal, Order->TimeCondition, Order->GTDDate, Order->VolumeCondition, Order->MinVolume, Order->ContingentCondition, GetDoubleValue(Order->StopPrice), Order->ForceCloseReason, Order->IsAutoSuspend, Order->BusinessUnit, Order->RequestID, Order->OrderLocalID, Order->ExchangeID, Order->ParticipantID, Order->ClientID, Order->reserve2, Order->TraderID, Order->InstallID, Order->OrderSubmitStatus, Order->NotifySequence, Order->TradingDay, Order->SettlementID, Order->OrderSysID, Order->OrderSource, Order->OrderStatus, Order->OrderType, Order->VolumeTraded, Order->VolumeTotal, Order->InsertDate, Order->InsertTime, Order->ActiveTime, Order->SuspendTime, Order->UpdateTime, Order->CancelTime, Order->ActiveTraderID, Order->ClearingPartID, Order->SequenceNo, Order->FrontID, Order->SessionID, Order->UserProductInfo, Order->StatusMsg, Order->UserForceClose, Order->ActiveUserID, Order->BrokerOrderSeq, Order->RelativeOrderSysID, Order->ZCETotalTradedVolume, Order->IsSwapOrder, Order->BranchID, Order->InvestUnitID, Order->AccountID, Order->CurrencyID, Order->reserve3, Order->MacAddress, Order->InstrumentID, Order->ExchangeInstID, Order->IPAddress, Order->OrderMemo, Order->SessionReqSeq);
 	}
 }
 void WriteExchangeOrder(CThostFtdcExchangeOrderField* ExchangeOrder)
@@ -464,16 +464,16 @@ void WriteInputOrderAction(CThostFtdcInputOrderActionField* InputOrderAction)
 {
 	if(InputOrderAction)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcInputOrderActionField: BrokerID[%s], InvestorID[%s], OrderActionRef[%d], OrderRef[%s], RequestID[%d], FrontID[%d], SessionID[%d], ExchangeID[%s], OrderSysID[%s], ActionFlag[%c], LimitPrice[%f], VolumeChange[%d], UserID[%s], reserve1[%s], InvestUnitID[%s], reserve2[%s], MacAddress[%s], InstrumentID[%s], IPAddress[%s]",
-			InputOrderAction->BrokerID, InputOrderAction->InvestorID, InputOrderAction->OrderActionRef, InputOrderAction->OrderRef, InputOrderAction->RequestID, InputOrderAction->FrontID, InputOrderAction->SessionID, InputOrderAction->ExchangeID, InputOrderAction->OrderSysID, InputOrderAction->ActionFlag, GetDoubleValue(InputOrderAction->LimitPrice), InputOrderAction->VolumeChange, InputOrderAction->UserID, InputOrderAction->reserve1, InputOrderAction->InvestUnitID, InputOrderAction->reserve2, InputOrderAction->MacAddress, InputOrderAction->InstrumentID, InputOrderAction->IPAddress);
+		WriteLog(LogLevel::Info, "CThostFtdcInputOrderActionField: BrokerID[%s], InvestorID[%s], OrderActionRef[%d], OrderRef[%s], RequestID[%d], FrontID[%d], SessionID[%d], ExchangeID[%s], OrderSysID[%s], ActionFlag[%c], LimitPrice[%f], VolumeChange[%d], UserID[%s], reserve1[%s], InvestUnitID[%s], reserve2[%s], MacAddress[%s], InstrumentID[%s], IPAddress[%s], OrderMemo[%s], SessionReqSeq[%d]",
+			InputOrderAction->BrokerID, InputOrderAction->InvestorID, InputOrderAction->OrderActionRef, InputOrderAction->OrderRef, InputOrderAction->RequestID, InputOrderAction->FrontID, InputOrderAction->SessionID, InputOrderAction->ExchangeID, InputOrderAction->OrderSysID, InputOrderAction->ActionFlag, GetDoubleValue(InputOrderAction->LimitPrice), InputOrderAction->VolumeChange, InputOrderAction->UserID, InputOrderAction->reserve1, InputOrderAction->InvestUnitID, InputOrderAction->reserve2, InputOrderAction->MacAddress, InputOrderAction->InstrumentID, InputOrderAction->IPAddress, InputOrderAction->OrderMemo, InputOrderAction->SessionReqSeq);
 	}
 }
 void WriteOrderAction(CThostFtdcOrderActionField* OrderAction)
 {
 	if(OrderAction)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcOrderActionField: BrokerID[%s], InvestorID[%s], OrderActionRef[%d], OrderRef[%s], RequestID[%d], FrontID[%d], SessionID[%d], ExchangeID[%s], OrderSysID[%s], ActionFlag[%c], LimitPrice[%f], VolumeChange[%d], ActionDate[%s], ActionTime[%s], TraderID[%s], InstallID[%d], OrderLocalID[%s], ActionLocalID[%s], ParticipantID[%s], ClientID[%s], BusinessUnit[%s], OrderActionStatus[%c], UserID[%s], StatusMsg[%s], reserve1[%s], BranchID[%s], InvestUnitID[%s], reserve2[%s], MacAddress[%s], InstrumentID[%s], IPAddress[%s]",
-			OrderAction->BrokerID, OrderAction->InvestorID, OrderAction->OrderActionRef, OrderAction->OrderRef, OrderAction->RequestID, OrderAction->FrontID, OrderAction->SessionID, OrderAction->ExchangeID, OrderAction->OrderSysID, OrderAction->ActionFlag, GetDoubleValue(OrderAction->LimitPrice), OrderAction->VolumeChange, OrderAction->ActionDate, OrderAction->ActionTime, OrderAction->TraderID, OrderAction->InstallID, OrderAction->OrderLocalID, OrderAction->ActionLocalID, OrderAction->ParticipantID, OrderAction->ClientID, OrderAction->BusinessUnit, OrderAction->OrderActionStatus, OrderAction->UserID, OrderAction->StatusMsg, OrderAction->reserve1, OrderAction->BranchID, OrderAction->InvestUnitID, OrderAction->reserve2, OrderAction->MacAddress, OrderAction->InstrumentID, OrderAction->IPAddress);
+		WriteLog(LogLevel::Info, "CThostFtdcOrderActionField: BrokerID[%s], InvestorID[%s], OrderActionRef[%d], OrderRef[%s], RequestID[%d], FrontID[%d], SessionID[%d], ExchangeID[%s], OrderSysID[%s], ActionFlag[%c], LimitPrice[%f], VolumeChange[%d], ActionDate[%s], ActionTime[%s], TraderID[%s], InstallID[%d], OrderLocalID[%s], ActionLocalID[%s], ParticipantID[%s], ClientID[%s], BusinessUnit[%s], OrderActionStatus[%c], UserID[%s], StatusMsg[%s], reserve1[%s], BranchID[%s], InvestUnitID[%s], reserve2[%s], MacAddress[%s], InstrumentID[%s], IPAddress[%s], OrderMemo[%s], SessionReqSeq[%d]",
+			OrderAction->BrokerID, OrderAction->InvestorID, OrderAction->OrderActionRef, OrderAction->OrderRef, OrderAction->RequestID, OrderAction->FrontID, OrderAction->SessionID, OrderAction->ExchangeID, OrderAction->OrderSysID, OrderAction->ActionFlag, GetDoubleValue(OrderAction->LimitPrice), OrderAction->VolumeChange, OrderAction->ActionDate, OrderAction->ActionTime, OrderAction->TraderID, OrderAction->InstallID, OrderAction->OrderLocalID, OrderAction->ActionLocalID, OrderAction->ParticipantID, OrderAction->ClientID, OrderAction->BusinessUnit, OrderAction->OrderActionStatus, OrderAction->UserID, OrderAction->StatusMsg, OrderAction->reserve1, OrderAction->BranchID, OrderAction->InvestUnitID, OrderAction->reserve2, OrderAction->MacAddress, OrderAction->InstrumentID, OrderAction->IPAddress, OrderAction->OrderMemo, OrderAction->SessionReqSeq);
 	}
 }
 void WriteExchangeOrderAction(CThostFtdcExchangeOrderActionField* ExchangeOrderAction)
@@ -536,8 +536,8 @@ void WriteSyncDeposit(CThostFtdcSyncDepositField* SyncDeposit)
 {
 	if(SyncDeposit)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcSyncDepositField: DepositSeqNo[%s], BrokerID[%s], InvestorID[%s], Deposit[%f], IsForce[%d], CurrencyID[%s], IsFromSopt[%d], TradingPassword[%s]",
-			SyncDeposit->DepositSeqNo, SyncDeposit->BrokerID, SyncDeposit->InvestorID, GetDoubleValue(SyncDeposit->Deposit), SyncDeposit->IsForce, SyncDeposit->CurrencyID, SyncDeposit->IsFromSopt, SyncDeposit->TradingPassword);
+		WriteLog(LogLevel::Info, "CThostFtdcSyncDepositField: DepositSeqNo[%s], BrokerID[%s], InvestorID[%s], Deposit[%f], IsForce[%d], CurrencyID[%s], IsFromSopt[%d], TradingPassword[%s], IsSecAgentTranfer[%d]",
+			SyncDeposit->DepositSeqNo, SyncDeposit->BrokerID, SyncDeposit->InvestorID, GetDoubleValue(SyncDeposit->Deposit), SyncDeposit->IsForce, SyncDeposit->CurrencyID, SyncDeposit->IsFromSopt, SyncDeposit->TradingPassword, SyncDeposit->IsSecAgentTranfer);
 	}
 }
 void WriteSyncFundMortgage(CThostFtdcSyncFundMortgageField* SyncFundMortgage)
@@ -808,8 +808,8 @@ void WriteQryDepthMarketData(CThostFtdcQryDepthMarketDataField* QryDepthMarketDa
 {
 	if(QryDepthMarketData)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcQryDepthMarketDataField: reserve1[%s], ExchangeID[%s], InstrumentID[%s]",
-			QryDepthMarketData->reserve1, QryDepthMarketData->ExchangeID, QryDepthMarketData->InstrumentID);
+		WriteLog(LogLevel::Info, "CThostFtdcQryDepthMarketDataField: reserve1[%s], ExchangeID[%s], InstrumentID[%s], ProductClass[%c]",
+			QryDepthMarketData->reserve1, QryDepthMarketData->ExchangeID, QryDepthMarketData->InstrumentID, QryDepthMarketData->ProductClass);
 	}
 }
 void WriteQryBrokerUser(CThostFtdcQryBrokerUserField* QryBrokerUser)
@@ -1120,32 +1120,32 @@ void WriteInputQuote(CThostFtdcInputQuoteField* InputQuote)
 {
 	if(InputQuote)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcInputQuoteField: BrokerID[%s], InvestorID[%s], reserve1[%s], QuoteRef[%s], UserID[%s], AskPrice[%f], BidPrice[%f], AskVolume[%d], BidVolume[%d], RequestID[%d], BusinessUnit[%s], AskOffsetFlag[%c], BidOffsetFlag[%c], AskHedgeFlag[%c], BidHedgeFlag[%c], AskOrderRef[%s], BidOrderRef[%s], ForQuoteSysID[%s], ExchangeID[%s], InvestUnitID[%s], ClientID[%s], reserve2[%s], MacAddress[%s], InstrumentID[%s], IPAddress[%s], ReplaceSysID[%s], TimeCondition[%c]",
-			InputQuote->BrokerID, InputQuote->InvestorID, InputQuote->reserve1, InputQuote->QuoteRef, InputQuote->UserID, GetDoubleValue(InputQuote->AskPrice), GetDoubleValue(InputQuote->BidPrice), InputQuote->AskVolume, InputQuote->BidVolume, InputQuote->RequestID, InputQuote->BusinessUnit, InputQuote->AskOffsetFlag, InputQuote->BidOffsetFlag, InputQuote->AskHedgeFlag, InputQuote->BidHedgeFlag, InputQuote->AskOrderRef, InputQuote->BidOrderRef, InputQuote->ForQuoteSysID, InputQuote->ExchangeID, InputQuote->InvestUnitID, InputQuote->ClientID, InputQuote->reserve2, InputQuote->MacAddress, InputQuote->InstrumentID, InputQuote->IPAddress, InputQuote->ReplaceSysID, InputQuote->TimeCondition);
+		WriteLog(LogLevel::Info, "CThostFtdcInputQuoteField: BrokerID[%s], InvestorID[%s], reserve1[%s], QuoteRef[%s], UserID[%s], AskPrice[%f], BidPrice[%f], AskVolume[%d], BidVolume[%d], RequestID[%d], BusinessUnit[%s], AskOffsetFlag[%c], BidOffsetFlag[%c], AskHedgeFlag[%c], BidHedgeFlag[%c], AskOrderRef[%s], BidOrderRef[%s], ForQuoteSysID[%s], ExchangeID[%s], InvestUnitID[%s], ClientID[%s], reserve2[%s], MacAddress[%s], InstrumentID[%s], IPAddress[%s], ReplaceSysID[%s], TimeCondition[%c], OrderMemo[%s], SessionReqSeq[%d]",
+			InputQuote->BrokerID, InputQuote->InvestorID, InputQuote->reserve1, InputQuote->QuoteRef, InputQuote->UserID, GetDoubleValue(InputQuote->AskPrice), GetDoubleValue(InputQuote->BidPrice), InputQuote->AskVolume, InputQuote->BidVolume, InputQuote->RequestID, InputQuote->BusinessUnit, InputQuote->AskOffsetFlag, InputQuote->BidOffsetFlag, InputQuote->AskHedgeFlag, InputQuote->BidHedgeFlag, InputQuote->AskOrderRef, InputQuote->BidOrderRef, InputQuote->ForQuoteSysID, InputQuote->ExchangeID, InputQuote->InvestUnitID, InputQuote->ClientID, InputQuote->reserve2, InputQuote->MacAddress, InputQuote->InstrumentID, InputQuote->IPAddress, InputQuote->ReplaceSysID, InputQuote->TimeCondition, InputQuote->OrderMemo, InputQuote->SessionReqSeq);
 	}
 }
 void WriteInputQuoteAction(CThostFtdcInputQuoteActionField* InputQuoteAction)
 {
 	if(InputQuoteAction)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcInputQuoteActionField: BrokerID[%s], InvestorID[%s], QuoteActionRef[%d], QuoteRef[%s], RequestID[%d], FrontID[%d], SessionID[%d], ExchangeID[%s], QuoteSysID[%s], ActionFlag[%c], UserID[%s], reserve1[%s], InvestUnitID[%s], ClientID[%s], reserve2[%s], MacAddress[%s], InstrumentID[%s], IPAddress[%s]",
-			InputQuoteAction->BrokerID, InputQuoteAction->InvestorID, InputQuoteAction->QuoteActionRef, InputQuoteAction->QuoteRef, InputQuoteAction->RequestID, InputQuoteAction->FrontID, InputQuoteAction->SessionID, InputQuoteAction->ExchangeID, InputQuoteAction->QuoteSysID, InputQuoteAction->ActionFlag, InputQuoteAction->UserID, InputQuoteAction->reserve1, InputQuoteAction->InvestUnitID, InputQuoteAction->ClientID, InputQuoteAction->reserve2, InputQuoteAction->MacAddress, InputQuoteAction->InstrumentID, InputQuoteAction->IPAddress);
+		WriteLog(LogLevel::Info, "CThostFtdcInputQuoteActionField: BrokerID[%s], InvestorID[%s], QuoteActionRef[%d], QuoteRef[%s], RequestID[%d], FrontID[%d], SessionID[%d], ExchangeID[%s], QuoteSysID[%s], ActionFlag[%c], UserID[%s], reserve1[%s], InvestUnitID[%s], ClientID[%s], reserve2[%s], MacAddress[%s], InstrumentID[%s], IPAddress[%s], OrderMemo[%s], SessionReqSeq[%d]",
+			InputQuoteAction->BrokerID, InputQuoteAction->InvestorID, InputQuoteAction->QuoteActionRef, InputQuoteAction->QuoteRef, InputQuoteAction->RequestID, InputQuoteAction->FrontID, InputQuoteAction->SessionID, InputQuoteAction->ExchangeID, InputQuoteAction->QuoteSysID, InputQuoteAction->ActionFlag, InputQuoteAction->UserID, InputQuoteAction->reserve1, InputQuoteAction->InvestUnitID, InputQuoteAction->ClientID, InputQuoteAction->reserve2, InputQuoteAction->MacAddress, InputQuoteAction->InstrumentID, InputQuoteAction->IPAddress, InputQuoteAction->OrderMemo, InputQuoteAction->SessionReqSeq);
 	}
 }
 void WriteQuote(CThostFtdcQuoteField* Quote)
 {
 	if(Quote)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcQuoteField: BrokerID[%s], InvestorID[%s], reserve1[%s], QuoteRef[%s], UserID[%s], AskPrice[%f], BidPrice[%f], AskVolume[%d], BidVolume[%d], RequestID[%d], BusinessUnit[%s], AskOffsetFlag[%c], BidOffsetFlag[%c], AskHedgeFlag[%c], BidHedgeFlag[%c], QuoteLocalID[%s], ExchangeID[%s], ParticipantID[%s], ClientID[%s], reserve2[%s], TraderID[%s], InstallID[%d], NotifySequence[%d], OrderSubmitStatus[%c], TradingDay[%s], SettlementID[%d], QuoteSysID[%s], InsertDate[%s], InsertTime[%s], CancelTime[%s], QuoteStatus[%c], ClearingPartID[%s], SequenceNo[%d], AskOrderSysID[%s], BidOrderSysID[%s], FrontID[%d], SessionID[%d], UserProductInfo[%s], StatusMsg[%s], ActiveUserID[%s], BrokerQuoteSeq[%d], AskOrderRef[%s], BidOrderRef[%s], ForQuoteSysID[%s], BranchID[%s], InvestUnitID[%s], AccountID[%s], CurrencyID[%s], reserve3[%s], MacAddress[%s], InstrumentID[%s], ExchangeInstID[%s], IPAddress[%s], ReplaceSysID[%s], TimeCondition[%c]",
-			Quote->BrokerID, Quote->InvestorID, Quote->reserve1, Quote->QuoteRef, Quote->UserID, GetDoubleValue(Quote->AskPrice), GetDoubleValue(Quote->BidPrice), Quote->AskVolume, Quote->BidVolume, Quote->RequestID, Quote->BusinessUnit, Quote->AskOffsetFlag, Quote->BidOffsetFlag, Quote->AskHedgeFlag, Quote->BidHedgeFlag, Quote->QuoteLocalID, Quote->ExchangeID, Quote->ParticipantID, Quote->ClientID, Quote->reserve2, Quote->TraderID, Quote->InstallID, Quote->NotifySequence, Quote->OrderSubmitStatus, Quote->TradingDay, Quote->SettlementID, Quote->QuoteSysID, Quote->InsertDate, Quote->InsertTime, Quote->CancelTime, Quote->QuoteStatus, Quote->ClearingPartID, Quote->SequenceNo, Quote->AskOrderSysID, Quote->BidOrderSysID, Quote->FrontID, Quote->SessionID, Quote->UserProductInfo, Quote->StatusMsg, Quote->ActiveUserID, Quote->BrokerQuoteSeq, Quote->AskOrderRef, Quote->BidOrderRef, Quote->ForQuoteSysID, Quote->BranchID, Quote->InvestUnitID, Quote->AccountID, Quote->CurrencyID, Quote->reserve3, Quote->MacAddress, Quote->InstrumentID, Quote->ExchangeInstID, Quote->IPAddress, Quote->ReplaceSysID, Quote->TimeCondition);
+		WriteLog(LogLevel::Info, "CThostFtdcQuoteField: BrokerID[%s], InvestorID[%s], reserve1[%s], QuoteRef[%s], UserID[%s], AskPrice[%f], BidPrice[%f], AskVolume[%d], BidVolume[%d], RequestID[%d], BusinessUnit[%s], AskOffsetFlag[%c], BidOffsetFlag[%c], AskHedgeFlag[%c], BidHedgeFlag[%c], QuoteLocalID[%s], ExchangeID[%s], ParticipantID[%s], ClientID[%s], reserve2[%s], TraderID[%s], InstallID[%d], NotifySequence[%d], OrderSubmitStatus[%c], TradingDay[%s], SettlementID[%d], QuoteSysID[%s], InsertDate[%s], InsertTime[%s], CancelTime[%s], QuoteStatus[%c], ClearingPartID[%s], SequenceNo[%d], AskOrderSysID[%s], BidOrderSysID[%s], FrontID[%d], SessionID[%d], UserProductInfo[%s], StatusMsg[%s], ActiveUserID[%s], BrokerQuoteSeq[%d], AskOrderRef[%s], BidOrderRef[%s], ForQuoteSysID[%s], BranchID[%s], InvestUnitID[%s], AccountID[%s], CurrencyID[%s], reserve3[%s], MacAddress[%s], InstrumentID[%s], ExchangeInstID[%s], IPAddress[%s], ReplaceSysID[%s], TimeCondition[%c], OrderMemo[%s], SessionReqSeq[%d]",
+			Quote->BrokerID, Quote->InvestorID, Quote->reserve1, Quote->QuoteRef, Quote->UserID, GetDoubleValue(Quote->AskPrice), GetDoubleValue(Quote->BidPrice), Quote->AskVolume, Quote->BidVolume, Quote->RequestID, Quote->BusinessUnit, Quote->AskOffsetFlag, Quote->BidOffsetFlag, Quote->AskHedgeFlag, Quote->BidHedgeFlag, Quote->QuoteLocalID, Quote->ExchangeID, Quote->ParticipantID, Quote->ClientID, Quote->reserve2, Quote->TraderID, Quote->InstallID, Quote->NotifySequence, Quote->OrderSubmitStatus, Quote->TradingDay, Quote->SettlementID, Quote->QuoteSysID, Quote->InsertDate, Quote->InsertTime, Quote->CancelTime, Quote->QuoteStatus, Quote->ClearingPartID, Quote->SequenceNo, Quote->AskOrderSysID, Quote->BidOrderSysID, Quote->FrontID, Quote->SessionID, Quote->UserProductInfo, Quote->StatusMsg, Quote->ActiveUserID, Quote->BrokerQuoteSeq, Quote->AskOrderRef, Quote->BidOrderRef, Quote->ForQuoteSysID, Quote->BranchID, Quote->InvestUnitID, Quote->AccountID, Quote->CurrencyID, Quote->reserve3, Quote->MacAddress, Quote->InstrumentID, Quote->ExchangeInstID, Quote->IPAddress, Quote->ReplaceSysID, Quote->TimeCondition, Quote->OrderMemo, Quote->SessionReqSeq);
 	}
 }
 void WriteQuoteAction(CThostFtdcQuoteActionField* QuoteAction)
 {
 	if(QuoteAction)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcQuoteActionField: BrokerID[%s], InvestorID[%s], QuoteActionRef[%d], QuoteRef[%s], RequestID[%d], FrontID[%d], SessionID[%d], ExchangeID[%s], QuoteSysID[%s], ActionFlag[%c], ActionDate[%s], ActionTime[%s], TraderID[%s], InstallID[%d], QuoteLocalID[%s], ActionLocalID[%s], ParticipantID[%s], ClientID[%s], BusinessUnit[%s], OrderActionStatus[%c], UserID[%s], StatusMsg[%s], reserve1[%s], BranchID[%s], InvestUnitID[%s], reserve2[%s], MacAddress[%s], InstrumentID[%s], IPAddress[%s]",
-			QuoteAction->BrokerID, QuoteAction->InvestorID, QuoteAction->QuoteActionRef, QuoteAction->QuoteRef, QuoteAction->RequestID, QuoteAction->FrontID, QuoteAction->SessionID, QuoteAction->ExchangeID, QuoteAction->QuoteSysID, QuoteAction->ActionFlag, QuoteAction->ActionDate, QuoteAction->ActionTime, QuoteAction->TraderID, QuoteAction->InstallID, QuoteAction->QuoteLocalID, QuoteAction->ActionLocalID, QuoteAction->ParticipantID, QuoteAction->ClientID, QuoteAction->BusinessUnit, QuoteAction->OrderActionStatus, QuoteAction->UserID, QuoteAction->StatusMsg, QuoteAction->reserve1, QuoteAction->BranchID, QuoteAction->InvestUnitID, QuoteAction->reserve2, QuoteAction->MacAddress, QuoteAction->InstrumentID, QuoteAction->IPAddress);
+		WriteLog(LogLevel::Info, "CThostFtdcQuoteActionField: BrokerID[%s], InvestorID[%s], QuoteActionRef[%d], QuoteRef[%s], RequestID[%d], FrontID[%d], SessionID[%d], ExchangeID[%s], QuoteSysID[%s], ActionFlag[%c], ActionDate[%s], ActionTime[%s], TraderID[%s], InstallID[%d], QuoteLocalID[%s], ActionLocalID[%s], ParticipantID[%s], ClientID[%s], BusinessUnit[%s], OrderActionStatus[%c], UserID[%s], StatusMsg[%s], reserve1[%s], BranchID[%s], InvestUnitID[%s], reserve2[%s], MacAddress[%s], InstrumentID[%s], IPAddress[%s], OrderMemo[%s], SessionReqSeq[%d]",
+			QuoteAction->BrokerID, QuoteAction->InvestorID, QuoteAction->QuoteActionRef, QuoteAction->QuoteRef, QuoteAction->RequestID, QuoteAction->FrontID, QuoteAction->SessionID, QuoteAction->ExchangeID, QuoteAction->QuoteSysID, QuoteAction->ActionFlag, QuoteAction->ActionDate, QuoteAction->ActionTime, QuoteAction->TraderID, QuoteAction->InstallID, QuoteAction->QuoteLocalID, QuoteAction->ActionLocalID, QuoteAction->ParticipantID, QuoteAction->ClientID, QuoteAction->BusinessUnit, QuoteAction->OrderActionStatus, QuoteAction->UserID, QuoteAction->StatusMsg, QuoteAction->reserve1, QuoteAction->BranchID, QuoteAction->InvestUnitID, QuoteAction->reserve2, QuoteAction->MacAddress, QuoteAction->InstrumentID, QuoteAction->IPAddress, QuoteAction->OrderMemo, QuoteAction->SessionReqSeq);
 	}
 }
 void WriteQryQuote(CThostFtdcQryQuoteField* QryQuote)
@@ -2024,8 +2024,8 @@ void WriteErrOrder(CThostFtdcErrOrderField* ErrOrder)
 {
 	if(ErrOrder)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcErrOrderField: BrokerID[%s], InvestorID[%s], reserve1[%s], OrderRef[%s], UserID[%s], OrderPriceType[%c], Direction[%c], CombOffsetFlag[%s], CombHedgeFlag[%s], LimitPrice[%f], VolumeTotalOriginal[%d], TimeCondition[%c], GTDDate[%s], VolumeCondition[%c], MinVolume[%d], ContingentCondition[%c], StopPrice[%f], ForceCloseReason[%c], IsAutoSuspend[%d], BusinessUnit[%s], RequestID[%d], UserForceClose[%d], ErrorID[%d], ErrorMsg[%s], IsSwapOrder[%d], ExchangeID[%s], InvestUnitID[%s], AccountID[%s], CurrencyID[%s], ClientID[%s], reserve2[%s], MacAddress[%s], InstrumentID[%s], IPAddress[%s]",
-			ErrOrder->BrokerID, ErrOrder->InvestorID, ErrOrder->reserve1, ErrOrder->OrderRef, ErrOrder->UserID, ErrOrder->OrderPriceType, ErrOrder->Direction, ErrOrder->CombOffsetFlag, ErrOrder->CombHedgeFlag, GetDoubleValue(ErrOrder->LimitPrice), ErrOrder->VolumeTotalOriginal, ErrOrder->TimeCondition, ErrOrder->GTDDate, ErrOrder->VolumeCondition, ErrOrder->MinVolume, ErrOrder->ContingentCondition, GetDoubleValue(ErrOrder->StopPrice), ErrOrder->ForceCloseReason, ErrOrder->IsAutoSuspend, ErrOrder->BusinessUnit, ErrOrder->RequestID, ErrOrder->UserForceClose, ErrOrder->ErrorID, ErrOrder->ErrorMsg, ErrOrder->IsSwapOrder, ErrOrder->ExchangeID, ErrOrder->InvestUnitID, ErrOrder->AccountID, ErrOrder->CurrencyID, ErrOrder->ClientID, ErrOrder->reserve2, ErrOrder->MacAddress, ErrOrder->InstrumentID, ErrOrder->IPAddress);
+		WriteLog(LogLevel::Info, "CThostFtdcErrOrderField: BrokerID[%s], InvestorID[%s], reserve1[%s], OrderRef[%s], UserID[%s], OrderPriceType[%c], Direction[%c], CombOffsetFlag[%s], CombHedgeFlag[%s], LimitPrice[%f], VolumeTotalOriginal[%d], TimeCondition[%c], GTDDate[%s], VolumeCondition[%c], MinVolume[%d], ContingentCondition[%c], StopPrice[%f], ForceCloseReason[%c], IsAutoSuspend[%d], BusinessUnit[%s], RequestID[%d], UserForceClose[%d], ErrorID[%d], ErrorMsg[%s], IsSwapOrder[%d], ExchangeID[%s], InvestUnitID[%s], AccountID[%s], CurrencyID[%s], ClientID[%s], reserve2[%s], MacAddress[%s], InstrumentID[%s], IPAddress[%s], OrderMemo[%s], SessionReqSeq[%d]",
+			ErrOrder->BrokerID, ErrOrder->InvestorID, ErrOrder->reserve1, ErrOrder->OrderRef, ErrOrder->UserID, ErrOrder->OrderPriceType, ErrOrder->Direction, ErrOrder->CombOffsetFlag, ErrOrder->CombHedgeFlag, GetDoubleValue(ErrOrder->LimitPrice), ErrOrder->VolumeTotalOriginal, ErrOrder->TimeCondition, ErrOrder->GTDDate, ErrOrder->VolumeCondition, ErrOrder->MinVolume, ErrOrder->ContingentCondition, GetDoubleValue(ErrOrder->StopPrice), ErrOrder->ForceCloseReason, ErrOrder->IsAutoSuspend, ErrOrder->BusinessUnit, ErrOrder->RequestID, ErrOrder->UserForceClose, ErrOrder->ErrorID, ErrOrder->ErrorMsg, ErrOrder->IsSwapOrder, ErrOrder->ExchangeID, ErrOrder->InvestUnitID, ErrOrder->AccountID, ErrOrder->CurrencyID, ErrOrder->ClientID, ErrOrder->reserve2, ErrOrder->MacAddress, ErrOrder->InstrumentID, ErrOrder->IPAddress, ErrOrder->OrderMemo, ErrOrder->SessionReqSeq);
 	}
 }
 void WriteErrorConditionalOrder(CThostFtdcErrorConditionalOrderField* ErrorConditionalOrder)
@@ -2048,8 +2048,8 @@ void WriteErrOrderAction(CThostFtdcErrOrderActionField* ErrOrderAction)
 {
 	if(ErrOrderAction)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcErrOrderActionField: BrokerID[%s], InvestorID[%s], OrderActionRef[%d], OrderRef[%s], RequestID[%d], FrontID[%d], SessionID[%d], ExchangeID[%s], OrderSysID[%s], ActionFlag[%c], LimitPrice[%f], VolumeChange[%d], ActionDate[%s], ActionTime[%s], TraderID[%s], InstallID[%d], OrderLocalID[%s], ActionLocalID[%s], ParticipantID[%s], ClientID[%s], BusinessUnit[%s], OrderActionStatus[%c], UserID[%s], StatusMsg[%s], reserve1[%s], BranchID[%s], InvestUnitID[%s], reserve2[%s], MacAddress[%s], ErrorID[%d], ErrorMsg[%s], InstrumentID[%s], IPAddress[%s]",
-			ErrOrderAction->BrokerID, ErrOrderAction->InvestorID, ErrOrderAction->OrderActionRef, ErrOrderAction->OrderRef, ErrOrderAction->RequestID, ErrOrderAction->FrontID, ErrOrderAction->SessionID, ErrOrderAction->ExchangeID, ErrOrderAction->OrderSysID, ErrOrderAction->ActionFlag, GetDoubleValue(ErrOrderAction->LimitPrice), ErrOrderAction->VolumeChange, ErrOrderAction->ActionDate, ErrOrderAction->ActionTime, ErrOrderAction->TraderID, ErrOrderAction->InstallID, ErrOrderAction->OrderLocalID, ErrOrderAction->ActionLocalID, ErrOrderAction->ParticipantID, ErrOrderAction->ClientID, ErrOrderAction->BusinessUnit, ErrOrderAction->OrderActionStatus, ErrOrderAction->UserID, ErrOrderAction->StatusMsg, ErrOrderAction->reserve1, ErrOrderAction->BranchID, ErrOrderAction->InvestUnitID, ErrOrderAction->reserve2, ErrOrderAction->MacAddress, ErrOrderAction->ErrorID, ErrOrderAction->ErrorMsg, ErrOrderAction->InstrumentID, ErrOrderAction->IPAddress);
+		WriteLog(LogLevel::Info, "CThostFtdcErrOrderActionField: BrokerID[%s], InvestorID[%s], OrderActionRef[%d], OrderRef[%s], RequestID[%d], FrontID[%d], SessionID[%d], ExchangeID[%s], OrderSysID[%s], ActionFlag[%c], LimitPrice[%f], VolumeChange[%d], ActionDate[%s], ActionTime[%s], TraderID[%s], InstallID[%d], OrderLocalID[%s], ActionLocalID[%s], ParticipantID[%s], ClientID[%s], BusinessUnit[%s], OrderActionStatus[%c], UserID[%s], StatusMsg[%s], reserve1[%s], BranchID[%s], InvestUnitID[%s], reserve2[%s], MacAddress[%s], ErrorID[%d], ErrorMsg[%s], InstrumentID[%s], IPAddress[%s], OrderMemo[%s], SessionReqSeq[%d]",
+			ErrOrderAction->BrokerID, ErrOrderAction->InvestorID, ErrOrderAction->OrderActionRef, ErrOrderAction->OrderRef, ErrOrderAction->RequestID, ErrOrderAction->FrontID, ErrOrderAction->SessionID, ErrOrderAction->ExchangeID, ErrOrderAction->OrderSysID, ErrOrderAction->ActionFlag, GetDoubleValue(ErrOrderAction->LimitPrice), ErrOrderAction->VolumeChange, ErrOrderAction->ActionDate, ErrOrderAction->ActionTime, ErrOrderAction->TraderID, ErrOrderAction->InstallID, ErrOrderAction->OrderLocalID, ErrOrderAction->ActionLocalID, ErrOrderAction->ParticipantID, ErrOrderAction->ClientID, ErrOrderAction->BusinessUnit, ErrOrderAction->OrderActionStatus, ErrOrderAction->UserID, ErrOrderAction->StatusMsg, ErrOrderAction->reserve1, ErrOrderAction->BranchID, ErrOrderAction->InvestUnitID, ErrOrderAction->reserve2, ErrOrderAction->MacAddress, ErrOrderAction->ErrorID, ErrOrderAction->ErrorMsg, ErrOrderAction->InstrumentID, ErrOrderAction->IPAddress, ErrOrderAction->OrderMemo, ErrOrderAction->SessionReqSeq);
 	}
 }
 void WriteQryExchangeSequence(CThostFtdcQryExchangeSequenceField* QryExchangeSequence)
@@ -2848,8 +2848,8 @@ void WriteQueryFreq(CThostFtdcQueryFreqField* QueryFreq)
 {
 	if(QueryFreq)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcQueryFreqField: QueryFreq[%d]",
-			QueryFreq->QueryFreq);
+		WriteLog(LogLevel::Info, "CThostFtdcQueryFreqField: QueryFreq[%d], FTDPkgFreq[%d]",
+			QueryFreq->QueryFreq, QueryFreq->FTDPkgFreq);
 	}
 }
 void WriteAuthForbiddenIP(CThostFtdcAuthForbiddenIPField* AuthForbiddenIP)
@@ -2924,12 +2924,12 @@ void WriteCombPromotionParam(CThostFtdcCombPromotionParamField* CombPromotionPar
 			CombPromotionParam->ExchangeID, CombPromotionParam->InstrumentID, CombPromotionParam->CombHedgeFlag, GetDoubleValue(CombPromotionParam->Xparameter));
 	}
 }
-void WriteReqUserLoginSC(CThostFtdcReqUserLoginSCField* ReqUserLoginSC)
+void WriteReqUserLoginSM(CThostFtdcReqUserLoginSMField* ReqUserLoginSM)
 {
-	if(ReqUserLoginSC)
+	if(ReqUserLoginSM)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcReqUserLoginSCField: TradingDay[%s], BrokerID[%s], UserID[%s], Password[%s], UserProductInfo[%s], InterfaceProductInfo[%s], ProtocolInfo[%s], MacAddress[%s], OneTimePassword[%s], ClientIPAddress[%s], LoginRemark[%s], ClientIPPort[%d], AuthCode[%s], AppID[%s]",
-			ReqUserLoginSC->TradingDay, ReqUserLoginSC->BrokerID, ReqUserLoginSC->UserID, ReqUserLoginSC->Password, ReqUserLoginSC->UserProductInfo, ReqUserLoginSC->InterfaceProductInfo, ReqUserLoginSC->ProtocolInfo, ReqUserLoginSC->MacAddress, ReqUserLoginSC->OneTimePassword, ReqUserLoginSC->ClientIPAddress, ReqUserLoginSC->LoginRemark, ReqUserLoginSC->ClientIPPort, ReqUserLoginSC->AuthCode, ReqUserLoginSC->AppID);
+		WriteLog(LogLevel::Info, "CThostFtdcReqUserLoginSMField: TradingDay[%s], BrokerID[%s], UserID[%s], Password[%s], UserProductInfo[%s], InterfaceProductInfo[%s], ProtocolInfo[%s], MacAddress[%s], OneTimePassword[%s], reserve1[%s], LoginRemark[%s], ClientIPPort[%d], ClientIPAddress[%s], BrokerName[%s], AuthCode[%s], AppID[%s], PIN[%s]",
+			ReqUserLoginSM->TradingDay, ReqUserLoginSM->BrokerID, ReqUserLoginSM->UserID, ReqUserLoginSM->Password, ReqUserLoginSM->UserProductInfo, ReqUserLoginSM->InterfaceProductInfo, ReqUserLoginSM->ProtocolInfo, ReqUserLoginSM->MacAddress, ReqUserLoginSM->OneTimePassword, ReqUserLoginSM->reserve1, ReqUserLoginSM->LoginRemark, ReqUserLoginSM->ClientIPPort, ReqUserLoginSM->ClientIPAddress, ReqUserLoginSM->BrokerName, ReqUserLoginSM->AuthCode, ReqUserLoginSM->AppID, ReqUserLoginSM->PIN);
 	}
 }
 void WriteQryRiskSettleInvstPosition(CThostFtdcQryRiskSettleInvstPositionField* QryRiskSettleInvstPosition)
@@ -3200,8 +3200,8 @@ void WriteInvestorPortfMarginRatio(CThostFtdcInvestorPortfMarginRatioField* Inve
 {
 	if(InvestorPortfMarginRatio)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcInvestorPortfMarginRatioField: InvestorRange[%c], BrokerID[%s], InvestorID[%s], ExchangeID[%s], MarginRatio[%f]",
-			InvestorPortfMarginRatio->InvestorRange, InvestorPortfMarginRatio->BrokerID, InvestorPortfMarginRatio->InvestorID, InvestorPortfMarginRatio->ExchangeID, GetDoubleValue(InvestorPortfMarginRatio->MarginRatio));
+		WriteLog(LogLevel::Info, "CThostFtdcInvestorPortfMarginRatioField: InvestorRange[%c], BrokerID[%s], InvestorID[%s], ExchangeID[%s], MarginRatio[%f], ProductGroupID[%s]",
+			InvestorPortfMarginRatio->InvestorRange, InvestorPortfMarginRatio->BrokerID, InvestorPortfMarginRatio->InvestorID, InvestorPortfMarginRatio->ExchangeID, GetDoubleValue(InvestorPortfMarginRatio->MarginRatio), InvestorPortfMarginRatio->ProductGroupID);
 	}
 }
 void WriteQrySPBMPortfDefinition(CThostFtdcQrySPBMPortfDefinitionField* QrySPBMPortfDefinition)
@@ -3224,8 +3224,8 @@ void WriteQryInvestorPortfMarginRatio(CThostFtdcQryInvestorPortfMarginRatioField
 {
 	if(QryInvestorPortfMarginRatio)
 	{
-		WriteLog(LogLevel::Info, "CThostFtdcQryInvestorPortfMarginRatioField: BrokerID[%s], InvestorID[%s], ExchangeID[%s]",
-			QryInvestorPortfMarginRatio->BrokerID, QryInvestorPortfMarginRatio->InvestorID, QryInvestorPortfMarginRatio->ExchangeID);
+		WriteLog(LogLevel::Info, "CThostFtdcQryInvestorPortfMarginRatioField: BrokerID[%s], InvestorID[%s], ExchangeID[%s], ProductGroupID[%s]",
+			QryInvestorPortfMarginRatio->BrokerID, QryInvestorPortfMarginRatio->InvestorID, QryInvestorPortfMarginRatio->ExchangeID, QryInvestorPortfMarginRatio->ProductGroupID);
 	}
 }
 void WriteInvestorProdSPBMDetail(CThostFtdcInvestorProdSPBMDetailField* InvestorProdSPBMDetail)
@@ -3738,5 +3738,253 @@ void WriteSyncDeltaRULEInterParameter(CThostFtdcSyncDeltaRULEInterParameterField
 	{
 		WriteLog(LogLevel::Info, "CThostFtdcSyncDeltaRULEInterParameterField: TradingDay[%s], ExchangeID[%s], SpreadId[%d], InterRate[%f], Leg1ProdFamilyCode[%s], Leg2ProdFamilyCode[%s], Leg1PropFactor[%d], Leg2PropFactor[%d], CommodityGroupID[%d], CommodityGroupName[%s], ActionDirection[%c], SyncDeltaSequenceNo[%d]",
 			SyncDeltaRULEInterParameter->TradingDay, SyncDeltaRULEInterParameter->ExchangeID, SyncDeltaRULEInterParameter->SpreadId, GetDoubleValue(SyncDeltaRULEInterParameter->InterRate), SyncDeltaRULEInterParameter->Leg1ProdFamilyCode, SyncDeltaRULEInterParameter->Leg2ProdFamilyCode, SyncDeltaRULEInterParameter->Leg1PropFactor, SyncDeltaRULEInterParameter->Leg2PropFactor, SyncDeltaRULEInterParameter->CommodityGroupID, SyncDeltaRULEInterParameter->CommodityGroupName, SyncDeltaRULEInterParameter->ActionDirection, SyncDeltaRULEInterParameter->SyncDeltaSequenceNo);
+	}
+}
+void WriteIpAddrParam(CThostFtdcIpAddrParamField* IpAddrParam)
+{
+	if(IpAddrParam)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcIpAddrParamField: BrokerID[%s], Address[%s], DRIdentityID[%d], DRIdentityName[%s], AddrSrvMode[%c], AddrVer[%c], AddrNo[%d], AddrName[%s], IsSM[%d], IsLocalAddr[%d], Remark[%s], Site[%s], NetOperator[%s]",
+			IpAddrParam->BrokerID, IpAddrParam->Address, IpAddrParam->DRIdentityID, IpAddrParam->DRIdentityName, IpAddrParam->AddrSrvMode, IpAddrParam->AddrVer, IpAddrParam->AddrNo, IpAddrParam->AddrName, IpAddrParam->IsSM, IpAddrParam->IsLocalAddr, IpAddrParam->Remark, IpAddrParam->Site, IpAddrParam->NetOperator);
+	}
+}
+void WriteQryIpAddrParam(CThostFtdcQryIpAddrParamField* QryIpAddrParam)
+{
+	if(QryIpAddrParam)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcQryIpAddrParamField: BrokerID[%s]",
+			QryIpAddrParam->BrokerID);
+	}
+}
+void WriteTGIpAddrParam(CThostFtdcTGIpAddrParamField* TGIpAddrParam)
+{
+	if(TGIpAddrParam)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcTGIpAddrParamField: BrokerID[%s], UserID[%s], Address[%s], DRIdentityID[%d], DRIdentityName[%s], AddrSrvMode[%c], AddrVer[%c], AddrNo[%d], AddrName[%s], IsSM[%d], IsLocalAddr[%d], Remark[%s], Site[%s], NetOperator[%s]",
+			TGIpAddrParam->BrokerID, TGIpAddrParam->UserID, TGIpAddrParam->Address, TGIpAddrParam->DRIdentityID, TGIpAddrParam->DRIdentityName, TGIpAddrParam->AddrSrvMode, TGIpAddrParam->AddrVer, TGIpAddrParam->AddrNo, TGIpAddrParam->AddrName, TGIpAddrParam->IsSM, TGIpAddrParam->IsLocalAddr, TGIpAddrParam->Remark, TGIpAddrParam->Site, TGIpAddrParam->NetOperator);
+	}
+}
+void WriteQryTGIpAddrParam(CThostFtdcQryTGIpAddrParamField* QryTGIpAddrParam)
+{
+	if(QryTGIpAddrParam)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcQryTGIpAddrParamField: BrokerID[%s], UserID[%s], AppID[%s]",
+			QryTGIpAddrParam->BrokerID, QryTGIpAddrParam->UserID, QryTGIpAddrParam->AppID);
+	}
+}
+void WriteTGSessionQryStatus(CThostFtdcTGSessionQryStatusField* TGSessionQryStatus)
+{
+	if(TGSessionQryStatus)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcTGSessionQryStatusField: LastQryFreq[%d], QryStatus[%c]",
+			TGSessionQryStatus->LastQryFreq, TGSessionQryStatus->QryStatus);
+	}
+}
+void WriteLocalAddrConfig(CThostFtdcLocalAddrConfigField* LocalAddrConfig)
+{
+	if(LocalAddrConfig)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcLocalAddrConfigField: BrokerID[%s], PeerAddr[%s], NetMask[%s], DRIdentityID[%d], LocalAddress[%s]",
+			LocalAddrConfig->BrokerID, LocalAddrConfig->PeerAddr, LocalAddrConfig->NetMask, LocalAddrConfig->DRIdentityID, LocalAddrConfig->LocalAddress);
+	}
+}
+void WriteQryLocalAddrConfig(CThostFtdcQryLocalAddrConfigField* QryLocalAddrConfig)
+{
+	if(QryLocalAddrConfig)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcQryLocalAddrConfigField: BrokerID[%s]",
+			QryLocalAddrConfig->BrokerID);
+	}
+}
+void WriteReqQueryBankAccountBySec(CThostFtdcReqQueryBankAccountBySecField* ReqQueryBankAccountBySec)
+{
+	if(ReqQueryBankAccountBySec)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcReqQueryBankAccountBySecField: TradeCode[%s], BankID[%s], BankBranchID[%s], BrokerID[%s], BrokerBranchID[%s], TradeDate[%s], TradeTime[%s], BankSerial[%s], TradingDay[%s], PlateSerial[%d], LastFragment[%c], SessionID[%d], CustomerName[%s], IdCardType[%c], IdentifiedCardNo[%s], CustType[%c], BankAccount[%s], BankPassWord[%s], AccountID[%s], Password[%s], FutureSerial[%d], InstallID[%d], UserID[%s], VerifyCertNoFlag[%c], CurrencyID[%s], Digest[%s], BankAccType[%c], DeviceID[%s], BankSecuAccType[%c], BrokerIDByBank[%s], BankSecuAcc[%s], BankPwdFlag[%c], SecuPwdFlag[%c], OperNo[%s], RequestID[%d], TID[%d], LongCustomerName[%s], DRIdentityID[%d], SecFutureSerial[%d]",
+			ReqQueryBankAccountBySec->TradeCode, ReqQueryBankAccountBySec->BankID, ReqQueryBankAccountBySec->BankBranchID, ReqQueryBankAccountBySec->BrokerID, ReqQueryBankAccountBySec->BrokerBranchID, ReqQueryBankAccountBySec->TradeDate, ReqQueryBankAccountBySec->TradeTime, ReqQueryBankAccountBySec->BankSerial, ReqQueryBankAccountBySec->TradingDay, ReqQueryBankAccountBySec->PlateSerial, ReqQueryBankAccountBySec->LastFragment, ReqQueryBankAccountBySec->SessionID, ReqQueryBankAccountBySec->CustomerName, ReqQueryBankAccountBySec->IdCardType, ReqQueryBankAccountBySec->IdentifiedCardNo, ReqQueryBankAccountBySec->CustType, ReqQueryBankAccountBySec->BankAccount, ReqQueryBankAccountBySec->BankPassWord, ReqQueryBankAccountBySec->AccountID, ReqQueryBankAccountBySec->Password, ReqQueryBankAccountBySec->FutureSerial, ReqQueryBankAccountBySec->InstallID, ReqQueryBankAccountBySec->UserID, ReqQueryBankAccountBySec->VerifyCertNoFlag, ReqQueryBankAccountBySec->CurrencyID, ReqQueryBankAccountBySec->Digest, ReqQueryBankAccountBySec->BankAccType, ReqQueryBankAccountBySec->DeviceID, ReqQueryBankAccountBySec->BankSecuAccType, ReqQueryBankAccountBySec->BrokerIDByBank, ReqQueryBankAccountBySec->BankSecuAcc, ReqQueryBankAccountBySec->BankPwdFlag, ReqQueryBankAccountBySec->SecuPwdFlag, ReqQueryBankAccountBySec->OperNo, ReqQueryBankAccountBySec->RequestID, ReqQueryBankAccountBySec->TID, ReqQueryBankAccountBySec->LongCustomerName, ReqQueryBankAccountBySec->DRIdentityID, ReqQueryBankAccountBySec->SecFutureSerial);
+	}
+}
+void WriteRspQueryBankAccountBySec(CThostFtdcRspQueryBankAccountBySecField* RspQueryBankAccountBySec)
+{
+	if(RspQueryBankAccountBySec)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcRspQueryBankAccountBySecField: TradeCode[%s], BankID[%s], BankBranchID[%s], BrokerID[%s], BrokerBranchID[%s], TradeDate[%s], TradeTime[%s], BankSerial[%s], TradingDay[%s], PlateSerial[%d], LastFragment[%c], SessionID[%d], CustomerName[%s], IdCardType[%c], IdentifiedCardNo[%s], CustType[%c], BankAccount[%s], BankPassWord[%s], AccountID[%s], Password[%s], FutureSerial[%d], InstallID[%d], UserID[%s], VerifyCertNoFlag[%c], CurrencyID[%s], Digest[%s], BankAccType[%c], DeviceID[%s], BankSecuAccType[%c], BrokerIDByBank[%s], BankSecuAcc[%s], BankPwdFlag[%c], SecuPwdFlag[%c], OperNo[%s], RequestID[%d], TID[%d], BankUseAmount[%f], BankFetchAmount[%f], LongCustomerName[%s], DRIdentityID[%d], SecFutureSerial[%d]",
+			RspQueryBankAccountBySec->TradeCode, RspQueryBankAccountBySec->BankID, RspQueryBankAccountBySec->BankBranchID, RspQueryBankAccountBySec->BrokerID, RspQueryBankAccountBySec->BrokerBranchID, RspQueryBankAccountBySec->TradeDate, RspQueryBankAccountBySec->TradeTime, RspQueryBankAccountBySec->BankSerial, RspQueryBankAccountBySec->TradingDay, RspQueryBankAccountBySec->PlateSerial, RspQueryBankAccountBySec->LastFragment, RspQueryBankAccountBySec->SessionID, RspQueryBankAccountBySec->CustomerName, RspQueryBankAccountBySec->IdCardType, RspQueryBankAccountBySec->IdentifiedCardNo, RspQueryBankAccountBySec->CustType, RspQueryBankAccountBySec->BankAccount, RspQueryBankAccountBySec->BankPassWord, RspQueryBankAccountBySec->AccountID, RspQueryBankAccountBySec->Password, RspQueryBankAccountBySec->FutureSerial, RspQueryBankAccountBySec->InstallID, RspQueryBankAccountBySec->UserID, RspQueryBankAccountBySec->VerifyCertNoFlag, RspQueryBankAccountBySec->CurrencyID, RspQueryBankAccountBySec->Digest, RspQueryBankAccountBySec->BankAccType, RspQueryBankAccountBySec->DeviceID, RspQueryBankAccountBySec->BankSecuAccType, RspQueryBankAccountBySec->BrokerIDByBank, RspQueryBankAccountBySec->BankSecuAcc, RspQueryBankAccountBySec->BankPwdFlag, RspQueryBankAccountBySec->SecuPwdFlag, RspQueryBankAccountBySec->OperNo, RspQueryBankAccountBySec->RequestID, RspQueryBankAccountBySec->TID, GetDoubleValue(RspQueryBankAccountBySec->BankUseAmount), GetDoubleValue(RspQueryBankAccountBySec->BankFetchAmount), RspQueryBankAccountBySec->LongCustomerName, RspQueryBankAccountBySec->DRIdentityID, RspQueryBankAccountBySec->SecFutureSerial);
+	}
+}
+void WriteReqTransferBySec(CThostFtdcReqTransferBySecField* ReqTransferBySec)
+{
+	if(ReqTransferBySec)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcReqTransferBySecField: TradeCode[%s], BankID[%s], BankBranchID[%s], BrokerID[%s], BrokerBranchID[%s], TradeDate[%s], TradeTime[%s], BankSerial[%s], TradingDay[%s], PlateSerial[%d], LastFragment[%c], SessionID[%d], CustomerName[%s], IdCardType[%c], IdentifiedCardNo[%s], CustType[%c], BankAccount[%s], BankPassWord[%s], AccountID[%s], Password[%s], InstallID[%d], FutureSerial[%d], UserID[%s], VerifyCertNoFlag[%c], CurrencyID[%s], TradeAmount[%f], FutureFetchAmount[%f], FeePayFlag[%c], CustFee[%f], BrokerFee[%f], Message[%s], Digest[%s], BankAccType[%c], DeviceID[%s], BankSecuAccType[%c], BrokerIDByBank[%s], BankSecuAcc[%s], BankPwdFlag[%c], SecuPwdFlag[%c], OperNo[%s], RequestID[%d], TID[%d], TransferStatus[%c], LongCustomerName[%s], DRIdentityID[%d], SecFutureSerial[%d]",
+			ReqTransferBySec->TradeCode, ReqTransferBySec->BankID, ReqTransferBySec->BankBranchID, ReqTransferBySec->BrokerID, ReqTransferBySec->BrokerBranchID, ReqTransferBySec->TradeDate, ReqTransferBySec->TradeTime, ReqTransferBySec->BankSerial, ReqTransferBySec->TradingDay, ReqTransferBySec->PlateSerial, ReqTransferBySec->LastFragment, ReqTransferBySec->SessionID, ReqTransferBySec->CustomerName, ReqTransferBySec->IdCardType, ReqTransferBySec->IdentifiedCardNo, ReqTransferBySec->CustType, ReqTransferBySec->BankAccount, ReqTransferBySec->BankPassWord, ReqTransferBySec->AccountID, ReqTransferBySec->Password, ReqTransferBySec->InstallID, ReqTransferBySec->FutureSerial, ReqTransferBySec->UserID, ReqTransferBySec->VerifyCertNoFlag, ReqTransferBySec->CurrencyID, GetDoubleValue(ReqTransferBySec->TradeAmount), GetDoubleValue(ReqTransferBySec->FutureFetchAmount), ReqTransferBySec->FeePayFlag, GetDoubleValue(ReqTransferBySec->CustFee), GetDoubleValue(ReqTransferBySec->BrokerFee), ReqTransferBySec->Message, ReqTransferBySec->Digest, ReqTransferBySec->BankAccType, ReqTransferBySec->DeviceID, ReqTransferBySec->BankSecuAccType, ReqTransferBySec->BrokerIDByBank, ReqTransferBySec->BankSecuAcc, ReqTransferBySec->BankPwdFlag, ReqTransferBySec->SecuPwdFlag, ReqTransferBySec->OperNo, ReqTransferBySec->RequestID, ReqTransferBySec->TID, ReqTransferBySec->TransferStatus, ReqTransferBySec->LongCustomerName, ReqTransferBySec->DRIdentityID, ReqTransferBySec->SecFutureSerial);
+	}
+}
+void WriteRspTransferBySec(CThostFtdcRspTransferBySecField* RspTransferBySec)
+{
+	if(RspTransferBySec)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcRspTransferBySecField: TradeCode[%s], BankID[%s], BankBranchID[%s], BrokerID[%s], BrokerBranchID[%s], TradeDate[%s], TradeTime[%s], BankSerial[%s], TradingDay[%s], PlateSerial[%d], LastFragment[%c], SessionID[%d], CustomerName[%s], IdCardType[%c], IdentifiedCardNo[%s], CustType[%c], BankAccount[%s], BankPassWord[%s], AccountID[%s], Password[%s], InstallID[%d], FutureSerial[%d], UserID[%s], VerifyCertNoFlag[%c], CurrencyID[%s], TradeAmount[%f], FutureFetchAmount[%f], FeePayFlag[%c], CustFee[%f], BrokerFee[%f], Message[%s], Digest[%s], BankAccType[%c], DeviceID[%s], BankSecuAccType[%c], BrokerIDByBank[%s], BankSecuAcc[%s], BankPwdFlag[%c], SecuPwdFlag[%c], OperNo[%s], RequestID[%d], TID[%d], TransferStatus[%c], ErrorID[%d], ErrorMsg[%s], LongCustomerName[%s], DRIdentityID[%d], SecFutureSerial[%d]",
+			RspTransferBySec->TradeCode, RspTransferBySec->BankID, RspTransferBySec->BankBranchID, RspTransferBySec->BrokerID, RspTransferBySec->BrokerBranchID, RspTransferBySec->TradeDate, RspTransferBySec->TradeTime, RspTransferBySec->BankSerial, RspTransferBySec->TradingDay, RspTransferBySec->PlateSerial, RspTransferBySec->LastFragment, RspTransferBySec->SessionID, RspTransferBySec->CustomerName, RspTransferBySec->IdCardType, RspTransferBySec->IdentifiedCardNo, RspTransferBySec->CustType, RspTransferBySec->BankAccount, RspTransferBySec->BankPassWord, RspTransferBySec->AccountID, RspTransferBySec->Password, RspTransferBySec->InstallID, RspTransferBySec->FutureSerial, RspTransferBySec->UserID, RspTransferBySec->VerifyCertNoFlag, RspTransferBySec->CurrencyID, GetDoubleValue(RspTransferBySec->TradeAmount), GetDoubleValue(RspTransferBySec->FutureFetchAmount), RspTransferBySec->FeePayFlag, GetDoubleValue(RspTransferBySec->CustFee), GetDoubleValue(RspTransferBySec->BrokerFee), RspTransferBySec->Message, RspTransferBySec->Digest, RspTransferBySec->BankAccType, RspTransferBySec->DeviceID, RspTransferBySec->BankSecuAccType, RspTransferBySec->BrokerIDByBank, RspTransferBySec->BankSecuAcc, RspTransferBySec->BankPwdFlag, RspTransferBySec->SecuPwdFlag, RspTransferBySec->OperNo, RspTransferBySec->RequestID, RspTransferBySec->TID, RspTransferBySec->TransferStatus, RspTransferBySec->ErrorID, RspTransferBySec->ErrorMsg, RspTransferBySec->LongCustomerName, RspTransferBySec->DRIdentityID, RspTransferBySec->SecFutureSerial);
+	}
+}
+void WriteNotifyQueryFutureAccountBySec(CThostFtdcNotifyQueryFutureAccountBySecField* NotifyQueryFutureAccountBySec)
+{
+	if(NotifyQueryFutureAccountBySec)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcNotifyQueryFutureAccountBySecField: TradeCode[%s], BankID[%s], BankBranchID[%s], BrokerID[%s], BrokerBranchID[%s], TradeDate[%s], TradeTime[%s], BankSerial[%s], TradingDay[%s], PlateSerial[%d], LastFragment[%c], SessionID[%d], CustomerName[%s], IdCardType[%c], IdentifiedCardNo[%s], CustType[%c], BankAccount[%s], BankPassWord[%s], AccountID[%s], Password[%s], FutureSerial[%d], InstallID[%d], UserID[%s], VerifyCertNoFlag[%c], CurrencyID[%s], Digest[%s], BankAccType[%c], DeviceID[%s], BankSecuAccType[%c], BrokerIDByBank[%s], BankSecuAcc[%s], BankPwdFlag[%c], SecuPwdFlag[%c], OperNo[%s], RequestID[%d], TID[%d], BankUseAmount[%f], BankFetchAmount[%f], ErrorID[%d], ErrorMsg[%s], LongCustomerName[%s], DRIdentityID[%d], SecFutureSerial[%d]",
+			NotifyQueryFutureAccountBySec->TradeCode, NotifyQueryFutureAccountBySec->BankID, NotifyQueryFutureAccountBySec->BankBranchID, NotifyQueryFutureAccountBySec->BrokerID, NotifyQueryFutureAccountBySec->BrokerBranchID, NotifyQueryFutureAccountBySec->TradeDate, NotifyQueryFutureAccountBySec->TradeTime, NotifyQueryFutureAccountBySec->BankSerial, NotifyQueryFutureAccountBySec->TradingDay, NotifyQueryFutureAccountBySec->PlateSerial, NotifyQueryFutureAccountBySec->LastFragment, NotifyQueryFutureAccountBySec->SessionID, NotifyQueryFutureAccountBySec->CustomerName, NotifyQueryFutureAccountBySec->IdCardType, NotifyQueryFutureAccountBySec->IdentifiedCardNo, NotifyQueryFutureAccountBySec->CustType, NotifyQueryFutureAccountBySec->BankAccount, NotifyQueryFutureAccountBySec->BankPassWord, NotifyQueryFutureAccountBySec->AccountID, NotifyQueryFutureAccountBySec->Password, NotifyQueryFutureAccountBySec->FutureSerial, NotifyQueryFutureAccountBySec->InstallID, NotifyQueryFutureAccountBySec->UserID, NotifyQueryFutureAccountBySec->VerifyCertNoFlag, NotifyQueryFutureAccountBySec->CurrencyID, NotifyQueryFutureAccountBySec->Digest, NotifyQueryFutureAccountBySec->BankAccType, NotifyQueryFutureAccountBySec->DeviceID, NotifyQueryFutureAccountBySec->BankSecuAccType, NotifyQueryFutureAccountBySec->BrokerIDByBank, NotifyQueryFutureAccountBySec->BankSecuAcc, NotifyQueryFutureAccountBySec->BankPwdFlag, NotifyQueryFutureAccountBySec->SecuPwdFlag, NotifyQueryFutureAccountBySec->OperNo, NotifyQueryFutureAccountBySec->RequestID, NotifyQueryFutureAccountBySec->TID, GetDoubleValue(NotifyQueryFutureAccountBySec->BankUseAmount), GetDoubleValue(NotifyQueryFutureAccountBySec->BankFetchAmount), NotifyQueryFutureAccountBySec->ErrorID, NotifyQueryFutureAccountBySec->ErrorMsg, NotifyQueryFutureAccountBySec->LongCustomerName, NotifyQueryFutureAccountBySec->DRIdentityID, NotifyQueryFutureAccountBySec->SecFutureSerial);
+	}
+}
+void WriteExitEmergency(CThostFtdcExitEmergencyField* ExitEmergency)
+{
+	if(ExitEmergency)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcExitEmergencyField: BrokerID[%s]",
+			ExitEmergency->BrokerID);
+	}
+}
+void WriteInvestorPortfMarginModel(CThostFtdcInvestorPortfMarginModelField* InvestorPortfMarginModel)
+{
+	if(InvestorPortfMarginModel)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcInvestorPortfMarginModelField: BrokerID[%s], InvestorID[%s], MarginModelID[%s]",
+			InvestorPortfMarginModel->BrokerID, InvestorPortfMarginModel->InvestorID, InvestorPortfMarginModel->MarginModelID);
+	}
+}
+void WriteInvestorPortfSetting(CThostFtdcInvestorPortfSettingField* InvestorPortfSetting)
+{
+	if(InvestorPortfSetting)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcInvestorPortfSettingField: ExchangeID[%s], BrokerID[%s], InvestorID[%s], HedgeFlag[%c], UsePortf[%d]",
+			InvestorPortfSetting->ExchangeID, InvestorPortfSetting->BrokerID, InvestorPortfSetting->InvestorID, InvestorPortfSetting->HedgeFlag, InvestorPortfSetting->UsePortf);
+	}
+}
+void WriteQryInvestorPortfSetting(CThostFtdcQryInvestorPortfSettingField* QryInvestorPortfSetting)
+{
+	if(QryInvestorPortfSetting)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcQryInvestorPortfSettingField: ExchangeID[%s], BrokerID[%s], InvestorID[%s]",
+			QryInvestorPortfSetting->ExchangeID, QryInvestorPortfSetting->BrokerID, QryInvestorPortfSetting->InvestorID);
+	}
+}
+void WriteUserPasswordUpdateFromSec(CThostFtdcUserPasswordUpdateFromSecField* UserPasswordUpdateFromSec)
+{
+	if(UserPasswordUpdateFromSec)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcUserPasswordUpdateFromSecField: BrokerID[%s], UserID[%s], OldPassword[%s], NewPassword[%s], FromSec[%d]",
+			UserPasswordUpdateFromSec->BrokerID, UserPasswordUpdateFromSec->UserID, UserPasswordUpdateFromSec->OldPassword, UserPasswordUpdateFromSec->NewPassword, UserPasswordUpdateFromSec->FromSec);
+	}
+}
+void WriteSettlementInfoConfirmFromSec(CThostFtdcSettlementInfoConfirmFromSecField* SettlementInfoConfirmFromSec)
+{
+	if(SettlementInfoConfirmFromSec)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcSettlementInfoConfirmFromSecField: BrokerID[%s], InvestorID[%s], ConfirmDate[%s], ConfirmTime[%s], FromSec[%d]",
+			SettlementInfoConfirmFromSec->BrokerID, SettlementInfoConfirmFromSec->InvestorID, SettlementInfoConfirmFromSec->ConfirmDate, SettlementInfoConfirmFromSec->ConfirmTime, SettlementInfoConfirmFromSec->FromSec);
+	}
+}
+void WriteTradingAccountPasswordUpdateFromSec(CThostFtdcTradingAccountPasswordUpdateFromSecField* TradingAccountPasswordUpdateFromSec)
+{
+	if(TradingAccountPasswordUpdateFromSec)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcTradingAccountPasswordUpdateFromSecField: BrokerID[%s], AccountID[%s], OldPassword[%s], NewPassword[%s], CurrencyID[%s], FromSec[%d]",
+			TradingAccountPasswordUpdateFromSec->BrokerID, TradingAccountPasswordUpdateFromSec->AccountID, TradingAccountPasswordUpdateFromSec->OldPassword, TradingAccountPasswordUpdateFromSec->NewPassword, TradingAccountPasswordUpdateFromSec->CurrencyID, TradingAccountPasswordUpdateFromSec->FromSec);
+	}
+}
+void WriteRiskForbiddenRight(CThostFtdcRiskForbiddenRightField* RiskForbiddenRight)
+{
+	if(RiskForbiddenRight)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcRiskForbiddenRightField: BrokerID[%s], InvestorID[%s], InstrumentID[%s], UserID[%s]",
+			RiskForbiddenRight->BrokerID, RiskForbiddenRight->InvestorID, RiskForbiddenRight->InstrumentID, RiskForbiddenRight->UserID);
+	}
+}
+void WriteInvestorInfoCommRec(CThostFtdcInvestorInfoCommRecField* InvestorInfoCommRec)
+{
+	if(InvestorInfoCommRec)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcInvestorInfoCommRecField: ExchangeID[%s], BrokerID[%s], InvestorID[%s], InstrumentID[%s], OrderCount[%d], OrderActionCount[%d], ForQuoteCnt[%d], InfoComm[%f], IsOptSeries[%d], ProductID[%s], InfoCnt[%d]",
+			InvestorInfoCommRec->ExchangeID, InvestorInfoCommRec->BrokerID, InvestorInfoCommRec->InvestorID, InvestorInfoCommRec->InstrumentID, InvestorInfoCommRec->OrderCount, InvestorInfoCommRec->OrderActionCount, InvestorInfoCommRec->ForQuoteCnt, GetDoubleValue(InvestorInfoCommRec->InfoComm), InvestorInfoCommRec->IsOptSeries, InvestorInfoCommRec->ProductID, InvestorInfoCommRec->InfoCnt);
+	}
+}
+void WriteQryInvestorInfoCommRec(CThostFtdcQryInvestorInfoCommRecField* QryInvestorInfoCommRec)
+{
+	if(QryInvestorInfoCommRec)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcQryInvestorInfoCommRecField: InvestorID[%s], InstrumentID[%s], BrokerID[%s]",
+			QryInvestorInfoCommRec->InvestorID, QryInvestorInfoCommRec->InstrumentID, QryInvestorInfoCommRec->BrokerID);
+	}
+}
+void WriteCombLeg(CThostFtdcCombLegField* CombLeg)
+{
+	if(CombLeg)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcCombLegField: CombInstrumentID[%s], LegID[%d], LegInstrumentID[%s], Direction[%c], LegMultiple[%d], ImplyLevel[%d]",
+			CombLeg->CombInstrumentID, CombLeg->LegID, CombLeg->LegInstrumentID, CombLeg->Direction, CombLeg->LegMultiple, CombLeg->ImplyLevel);
+	}
+}
+void WriteQryCombLeg(CThostFtdcQryCombLegField* QryCombLeg)
+{
+	if(QryCombLeg)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcQryCombLegField: LegInstrumentID[%s]",
+			QryCombLeg->LegInstrumentID);
+	}
+}
+void WriteInputOffsetSetting(CThostFtdcInputOffsetSettingField* InputOffsetSetting)
+{
+	if(InputOffsetSetting)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcInputOffsetSettingField: BrokerID[%s], InvestorID[%s], InstrumentID[%s], UnderlyingInstrID[%s], ProductID[%s], OffsetType[%c], Volume[%d], IsOffset[%d], RequestID[%d], UserID[%s], ExchangeID[%s], IPAddress[%s], MacAddress[%s]",
+			InputOffsetSetting->BrokerID, InputOffsetSetting->InvestorID, InputOffsetSetting->InstrumentID, InputOffsetSetting->UnderlyingInstrID, InputOffsetSetting->ProductID, InputOffsetSetting->OffsetType, InputOffsetSetting->Volume, InputOffsetSetting->IsOffset, InputOffsetSetting->RequestID, InputOffsetSetting->UserID, InputOffsetSetting->ExchangeID, InputOffsetSetting->IPAddress, InputOffsetSetting->MacAddress);
+	}
+}
+void WriteOffsetSetting(CThostFtdcOffsetSettingField* OffsetSetting)
+{
+	if(OffsetSetting)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcOffsetSettingField: BrokerID[%s], InvestorID[%s], InstrumentID[%s], UnderlyingInstrID[%s], ProductID[%s], OffsetType[%c], Volume[%d], IsOffset[%d], RequestID[%d], UserID[%s], ExchangeID[%s], IPAddress[%s], MacAddress[%s], ExchangeInstID[%s], ExchangeSerialNo[%s], ExchangeProductID[%s], ParticipantID[%s], ClientID[%s], TraderID[%s], InstallID[%d], OrderSubmitStatus[%c], TradingDay[%s], SettlementID[%d], InsertDate[%s], InsertTime[%s], CancelTime[%s], ExecResult[%c], SequenceNo[%d], FrontID[%d], SessionID[%d], StatusMsg[%s], ActiveUserID[%s], BrokerOffsetSettingSeq[%d]",
+			OffsetSetting->BrokerID, OffsetSetting->InvestorID, OffsetSetting->InstrumentID, OffsetSetting->UnderlyingInstrID, OffsetSetting->ProductID, OffsetSetting->OffsetType, OffsetSetting->Volume, OffsetSetting->IsOffset, OffsetSetting->RequestID, OffsetSetting->UserID, OffsetSetting->ExchangeID, OffsetSetting->IPAddress, OffsetSetting->MacAddress, OffsetSetting->ExchangeInstID, OffsetSetting->ExchangeSerialNo, OffsetSetting->ExchangeProductID, OffsetSetting->ParticipantID, OffsetSetting->ClientID, OffsetSetting->TraderID, OffsetSetting->InstallID, OffsetSetting->OrderSubmitStatus, OffsetSetting->TradingDay, OffsetSetting->SettlementID, OffsetSetting->InsertDate, OffsetSetting->InsertTime, OffsetSetting->CancelTime, OffsetSetting->ExecResult, OffsetSetting->SequenceNo, OffsetSetting->FrontID, OffsetSetting->SessionID, OffsetSetting->StatusMsg, OffsetSetting->ActiveUserID, OffsetSetting->BrokerOffsetSettingSeq);
+	}
+}
+void WriteCancelOffsetSetting(CThostFtdcCancelOffsetSettingField* CancelOffsetSetting)
+{
+	if(CancelOffsetSetting)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcCancelOffsetSettingField: BrokerID[%s], InvestorID[%s], InstrumentID[%s], UnderlyingInstrID[%s], ProductID[%s], OffsetType[%c], Volume[%d], IsOffset[%d], RequestID[%d], UserID[%s], ExchangeID[%s], IPAddress[%s], MacAddress[%s], ExchangeInstID[%s], ExchangeSerialNo[%s], ExchangeProductID[%s], TraderID[%s], InstallID[%d], ParticipantID[%s], ClientID[%s], OrderActionStatus[%c], StatusMsg[%s], ActionLocalID[%s], ActionDate[%s], ActionTime[%s]",
+			CancelOffsetSetting->BrokerID, CancelOffsetSetting->InvestorID, CancelOffsetSetting->InstrumentID, CancelOffsetSetting->UnderlyingInstrID, CancelOffsetSetting->ProductID, CancelOffsetSetting->OffsetType, CancelOffsetSetting->Volume, CancelOffsetSetting->IsOffset, CancelOffsetSetting->RequestID, CancelOffsetSetting->UserID, CancelOffsetSetting->ExchangeID, CancelOffsetSetting->IPAddress, CancelOffsetSetting->MacAddress, CancelOffsetSetting->ExchangeInstID, CancelOffsetSetting->ExchangeSerialNo, CancelOffsetSetting->ExchangeProductID, CancelOffsetSetting->TraderID, CancelOffsetSetting->InstallID, CancelOffsetSetting->ParticipantID, CancelOffsetSetting->ClientID, CancelOffsetSetting->OrderActionStatus, CancelOffsetSetting->StatusMsg, CancelOffsetSetting->ActionLocalID, CancelOffsetSetting->ActionDate, CancelOffsetSetting->ActionTime);
+	}
+}
+void WriteQryOffsetSetting(CThostFtdcQryOffsetSettingField* QryOffsetSetting)
+{
+	if(QryOffsetSetting)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcQryOffsetSettingField: BrokerID[%s], InvestorID[%s], ProductID[%s], OffsetType[%c]",
+			QryOffsetSetting->BrokerID, QryOffsetSetting->InvestorID, QryOffsetSetting->ProductID, QryOffsetSetting->OffsetType);
+	}
+}
+void WriteAddrAppIDRelation(CThostFtdcAddrAppIDRelationField* AddrAppIDRelation)
+{
+	if(AddrAppIDRelation)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcAddrAppIDRelationField: BrokerID[%s], Address[%s], DRIdentityID[%d], AppID[%s]",
+			AddrAppIDRelation->BrokerID, AddrAppIDRelation->Address, AddrAppIDRelation->DRIdentityID, AddrAppIDRelation->AppID);
+	}
+}
+void WriteQryAddrAppIDRelation(CThostFtdcQryAddrAppIDRelationField* QryAddrAppIDRelation)
+{
+	if(QryAddrAppIDRelation)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcQryAddrAppIDRelationField: BrokerID[%s]",
+			QryAddrAppIDRelation->BrokerID);
+	}
+}
+void WriteFrontInfo(CThostFtdcFrontInfoField* FrontInfo)
+{
+	if(FrontInfo)
+	{
+		WriteLog(LogLevel::Info, "CThostFtdcFrontInfoField: FrontAddr[%s], QryFreq[%d], FTDPkgFreq[%d]",
+			FrontInfo->FrontAddr, FrontInfo->QryFreq, FrontInfo->FTDPkgFreq);
 	}
 }

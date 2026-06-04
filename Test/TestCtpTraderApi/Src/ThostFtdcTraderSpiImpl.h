@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ThostFtdcTraderSpiMiddle.h"
-#include "CtpAccountInfo.h"
+#include "CtpWrapper/TraderApiMiddle/ThostFtdcTraderSpiMiddle.h"
+#include "CtpWrapper/CtpAccountInfo/CtpAccountInfo.h"
 
 
 class CThostFtdcTraderSpiImpl : public CThostFtdcTraderSpiMiddle

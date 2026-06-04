@@ -34,10 +34,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)   # exe, dll (Window
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)   # .so, .dylib (·Ç Windows)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)   # .lib, .a
 
-macro(add_module module_name include_dir src_dir)
+macro(add_module name include_dir src_dir)
     file(GLOB_RECURSE src_files CONFIGURE_DEPENDS "${src_dir}/*.cpp" "${src_dir}/*.c" "${src_dir}/*.cu")
-    add_library(${module_name} STATIC ${src_files})
-    target_include_directories(${module_name} PUBLIC ${include_dir} PRIVATE ${src_dir}/..)
+    add_library(${name} STATIC ${src_files})
+    target_include_directories(${name} PUBLIC ${include_dir} PRIVATE ${src_dir}/..)
+endmacro()
+macro(add_application name include_dir src_dir)
+    file(GLOB_RECURSE src_files CONFIGURE_DEPENDS "${src_dir}/*.cpp" "${src_dir}/*.c" "${src_dir}/*.cu")
+    add_executable(${name} ${src_files})
+    target_include_directories(${name} PUBLIC ${include_dir} PRIVATE ${src_dir}/..)
 endmacro()
 
 add_module(Core				${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/Source/Core)
