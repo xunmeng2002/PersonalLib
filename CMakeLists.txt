@@ -44,6 +44,14 @@ macro(add_application name include_dir src_dir)
     add_executable(${name} ${src_files})
     target_include_directories(${name} PUBLIC ${include_dir} PRIVATE ${src_dir}/..)
 endmacro()
+macro(copy_config_file name config_file)
+    add_custom_command(TARGET ${name} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${config_file}
+            $<TARGET_FILE_DIR:${name}>
+        COMMENT "Copying config file ${config_file} to output directory"
+    )
+endmacro()
 
 add_module(Core				${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/Source/Core)
 add_module(Network			${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/Source/Network)

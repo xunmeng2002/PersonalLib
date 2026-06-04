@@ -1,5 +1,5 @@
 #pragma warning(disable:4819)
-#include "ThostFtdcTraderApiMiddle.h"
+#include "CtpWrapper/TraderApiMiddle/ThostFtdcTraderApiMiddle.h"
 #include "ThostFtdcTraderSpiImpl.h"
 #include "Core/Logger/Logger.h"
 #include <iostream>
