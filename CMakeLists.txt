@@ -34,15 +34,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)   # exe, dll (Window
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)   # .so, .dylib (·Ç Windows)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)   # .lib, .a
 
-macro(add_module module_name src_dir)
-    file(GLOB_RECURSE module_sources CONFIGURE_DEPENDS "${src_dir}/*.cpp" "${src_dir}/*.c" "${src_dir}/*.cu")
-    add_library(${module_name} STATIC ${module_sources})
-    target_include_directories(${module_name} PUBLIC ${CMAKE_SOURCE_DIR}/include PRIVATE ${CMAKE_SOURCE_DIR}/Source)
+macro(add_module module_name include_dir src_dir)
+    file(GLOB_RECURSE src_files CONFIGURE_DEPENDS "${src_dir}/*.cpp" "${src_dir}/*.c" "${src_dir}/*.cu")
+    add_library(${module_name} STATIC ${src_files})
+    target_include_directories(${module_name} PUBLIC ${include_dir} PRIVATE ${src_dir}/..)
 endmacro()
 
-add_module(Core				${CMAKE_SOURCE_DIR}/Source/Core)
-add_module(Network			${CMAKE_SOURCE_DIR}/Source/Network)
-add_module(Serialization	${CMAKE_SOURCE_DIR}/Source/Serialization)
+add_module(Core				${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/Source/Core)
+add_module(Network			${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/Source/Network)
+add_module(Serialization	${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/Source/Serialization)
 
 target_link_libraries(Network PUBLIC Core)
 
@@ -51,5 +51,4 @@ target_link_libraries(Network PUBLIC Core)
 string(TIMESTAMP BUILD_TIMESTAMP "%Y%m%d-%H%M%S")
 message("Build timestamp is ${BUILD_TIMESTAMP}")
 
-#add_subdirectory(Target)
-#add_subdirectory(Test)
+add_subdirectory(Test)

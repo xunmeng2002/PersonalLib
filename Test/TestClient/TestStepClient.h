@@ -1,0 +1,31 @@
+#pragma once
+#include "Network/Tcp/TcpBase.h"
+#include "TestCommon/Packages/Packages.h"
+#include "Network/Protocol/Protocol.h"
+#include <chrono>
+
+class StepClient : public Protocol, public ProtocolSubscriber
+{
+public:
+	StepClient();
+	virtual ~StepClient();
+
+	virtual void OnProtocolConnect(SessionIDType sessionID, const char* ip, int port) override;
+	virtual void OnProtocolDisConnect(SessionIDType sessionID, const char* ip, int port) override;
+	virtual void OnMessage(Package* package) override;
+
+	void SendReqInsertOrder(int index);
+
+	bool m_Connected;
+	SessionIDType m_SessionID;
+
+	std::chrono::steady_clock::time_point m_StartTime;
+	int m_RecvCount;
+	ReqInsertOrderPackage* m_ReqInsertOrder;
+};
+
+
+
+void TestStepClient();
+
+

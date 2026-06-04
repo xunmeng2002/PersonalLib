@@ -5,7 +5,7 @@
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/transport/TTransportUtils.h>
 #include "login_constants.h"
-#include "MD5.h"
+#include "Core/MD5.h"
 #include "Decode.h"
 #include "Network/Tcp/.h"
 #include "Network/IOThread.h"
