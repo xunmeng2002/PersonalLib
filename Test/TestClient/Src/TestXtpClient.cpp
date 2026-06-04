@@ -1,12 +1,12 @@
 #include "TestXtpClient.h"
-#include "Utility/Utility.h"
-#include "Logger/Logger.h"
+#include "Core/Utility/Utility.h"
+#include "Core/Logger/Logger.h"
 #include "TestUtility/TestUtility.h"
-#include "Package/PackageFactory.h"
-#include "Utility/TimeUtility.h"
+#include "Network/Protocol/PackageFactory.h"
+#include "Core/Utility/TimeUtility.h"
 #include "Packages/Packages.h"
-#include "IO/IOThread.h"
-#include "ObjectPool/ObjectPool.h"
+#include "Network/IO/IOThread.h"
+#include "Core/ObjectPool/ObjectPool.h"
 
 using namespace std;
 

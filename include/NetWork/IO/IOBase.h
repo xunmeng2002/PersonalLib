@@ -1,9 +1,9 @@
 #pragma once
 #include "Types.h"
-#include "Constant/Constant.h"
-#include "Buffer/Buffer.h"
-#include "IO/Connect.h"
-#include "IO/IOUtility.h"
+#include "Core/Constant/Constant.h"
+#include "Core/Buffer/Buffer.h"
+#include "Network/IO/Connect.h"
+#include "Network/IO/IOUtility.h"
 #include <string>
 #include <chrono>
 #include <mutex>

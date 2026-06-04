@@ -1,9 +1,9 @@
 #include "TestShmServer.h"
 #include "ServerIOSubscriberImpl.h"
-#include "Logger/Logger.h"
+#include "Core/Logger/Logger.h"
 #include "TestUtility/TestUtility.h"
-#include "IO/IOThread.h"
-#include "Shm/ShmServer.h"
+#include "Network/IO/IOThread.h"
+#include "Network/Shm/ShmServer.h"
 
 
 void TestShmServer()

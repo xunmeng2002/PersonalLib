@@ -1,6 +1,6 @@
-#include "Protocol/StepUtility.h"
-#include "Protocol/Items.h"
-#include "Logger/Logger.h"
+#include "Network/Protocol/StepUtility.h"
+#include "Network/Protocol/Items.h"
+#include "Core/Logger/Logger.h"
 
 using namespace std;
 

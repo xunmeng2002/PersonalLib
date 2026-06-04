@@ -1,6 +1,6 @@
-#include "Tcp/TcpBase/TcpUtility.h"
-#include "Platform/Platform.h"
-#include "Logger/Logger.h"
+#include "Network/Tcp/TcpUtility.h"
+#include "Core/Platform/Platform.h"
+#include "Core/Logger/Logger.h"
 #include <string.h>
 #include <mutex>
 

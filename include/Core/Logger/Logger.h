@@ -4,8 +4,8 @@
 #include <map>
 #include <mutex>
 #include <condition_variable>
-#include "LoggerInterface.h"
-#include "ThreadBase/ThreadBase.h"
+#include "Core/Logger/LoggerInterface.h"
+#include "Core/Thread/ThreadBase.h"
 
 struct LogData;
 class Logger : public ThreadBase

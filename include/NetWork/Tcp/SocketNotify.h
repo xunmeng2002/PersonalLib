@@ -1,5 +1,5 @@
 #pragma once
-#include "SocketInit/SocketInit.h"
+#include "Network/Tcp/SocketInit.h"
 #include <string>
 
 class TcpConnect;

@@ -100,8 +100,8 @@ class HeaderMover:
         print("建议添加到 CMakeLists.txt：")
         print('include_directories(${CMAKE_SOURCE_DIR}/include)')
         print('\n然后在代码中使用：')
-        print('#include "Aspect/Aspect.h"')
-        print('#include "json/json.h"')
+        print('#include "Core/Aspect/Aspect.h"')
+        print('#include "Serialization/json/json.h"')
     
     def run(self):
         """执行移动流程"""

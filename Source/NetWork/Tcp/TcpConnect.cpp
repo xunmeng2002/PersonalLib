@@ -1,8 +1,8 @@
-#include "Tcp/TcpBase/TcpConnect.h"
-#include "Logger/Logger.h"
-#include "ObjectPool/ObjectPool.h"
-#include "Utility/TimeUtility.h"
-#include "Tcp/TcpBase/TcpUtility.h"
+#include "Network/Tcp/TcpConnect.h"
+#include "Core/Logger/Logger.h"
+#include "Core/ObjectPool/ObjectPool.h"
+#include "Core/Utility/TimeUtility.h"
+#include "Network/Tcp/TcpUtility.h"
 
 
 TcpConnect::TcpConnect(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort)

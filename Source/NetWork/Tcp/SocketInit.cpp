@@ -1,4 +1,4 @@
-#include "SocketInit/SocketInit.h"
+#include "Network/Tcp/SocketInit.h"
 #include <iostream>
 
 SocketInit SocketInit::_SOCKET_INIT;

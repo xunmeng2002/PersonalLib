@@ -1,7 +1,7 @@
 #pragma once
-#include "SocketInit/SocketInit.h"
+#include "Network/Tcp/SocketInit.h"
 #include "Types.h"
-#include "IO/Connect.h"
+#include "Network/IO/Connect.h"
 #include <mutex>
 #include <string>
 #include <chrono>

@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
 #include "Types.h"
-#include "Buffer/Buffer.h"
-#include "IO/IOBase.h"
-#include "Shm/ShmConnect.h"
+#include "Core/Buffer/Buffer.h"
+#include "Network/IO/IOBase.h"
+#include "Network/Shm/ShmConnect.h"
 
 
 

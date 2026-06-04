@@ -1,9 +1,9 @@
 #include "TestShmClient.h"
 #include "ClientIOSubscriberImpl.h"
-#include "Logger/Logger.h"
+#include "Core/Logger/Logger.h"
 #include "TestUtility/TestUtility.h"
-#include "IO/IOThread.h"
-#include "Shm/ShmClient.h"
+#include "Network/IO/IOThread.h"
+#include "Network/Shm/ShmClient.h"
 
 
 

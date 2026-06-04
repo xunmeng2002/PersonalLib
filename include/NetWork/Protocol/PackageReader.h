@@ -1,6 +1,6 @@
 #pragma once
-#include "Package/Package.h"
-#include "Package/PackageFactory.h"
+#include "Network/Protocol/Package.h"
+#include "Network/Protocol/PackageFactory.h"
 
 
 class PackageReader

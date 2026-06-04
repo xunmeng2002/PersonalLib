@@ -1,9 +1,9 @@
 #pragma once
-#include "ThreadBase/ThreadBase.h"
-#include "IO/IOBase.h"
+#include "Core/Thread/ThreadBase.h"
+#include "Network/IO/IOBase.h"
 #include "Types.h"
-#include "Buffer/Buffer.h"
-#include "IO/Connect.h"
+#include "Core/Buffer/Buffer.h"
+#include "Network/IO/Connect.h"
 #include <string>
 #include <mutex>
 #include <list>

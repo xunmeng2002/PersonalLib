@@ -1,5 +1,5 @@
-#include "Logger/LogData.h"
-#include "Buffer/Buffer.h"
+#include "Core/Logger/LogData.h"
+#include "Core/Buffer/Buffer.h"
 
 LogData::LogData()
 {

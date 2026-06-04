@@ -1,6 +1,6 @@
-#include "Tcp/TcpEpoll/TcpEpollClient.h"
-#include "Logger/Logger.h"
-#include "Tcp/TcpBase/TcpUtility.h"
+#include "Network/Tcp/TcpEpoll/TcpEpollClient.h"
+#include "Core/Logger/Logger.h"
+#include "Network/Tcp/TcpUtility.h"
 
 TcpEpollClient::TcpEpollClient(const char* addressName, int milliSeconds)
 	:TcpEpollBase(ServerTypeType::Client, addressName, milliSeconds)

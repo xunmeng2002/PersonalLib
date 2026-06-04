@@ -1,8 +1,8 @@
 #pragma once
 #include "Types.h"
-#include "IO/Connect.h"
-#include "Buffer/ShmBuffer.h"
-#include "ObjectPool/ObjectPool.h"
+#include "Network/IO/Connect.h"
+#include "Core/Buffer/ShmBuffer.h"
+#include "Core/ObjectPool/ObjectPool.h"
 
 
 template<unsigned SIZE>

@@ -1,6 +1,6 @@
-#include "Shm/ShmBase.h"
-#include "Logger/Logger.h"
-#include "Utility/TimeUtility.h"
+#include "Network/Shm/ShmBase.h"
+#include "Core/Logger/Logger.h"
+#include "Core/Utility/TimeUtility.h"
 #ifdef WINDOWS
 #include "Windows.h"
 #endif

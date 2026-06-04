@@ -1,8 +1,8 @@
 #pragma once
-#include "Constant/Constant.h"
+#include "Core/Constant/Constant.h"
 #include "Types.h"
-#include "ObjectPool/ObjectPool.h"
-#include "Logger/Logger.h"
+#include "Core/ObjectPool/ObjectPool.h"
+#include "Core/Logger/Logger.h"
 #include <algorithm>
 #include <atomic>
 #include <cstring>

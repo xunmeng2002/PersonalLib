@@ -1,5 +1,5 @@
 #pragma once
-#include "Package/Package.h"
+#include "Network/Protocol/Package.h"
 
 class ProtocolSubscriber
 {

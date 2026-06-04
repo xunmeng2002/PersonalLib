@@ -1,7 +1,7 @@
 #pragma once
-#include "IOBase.h"
-#include "IOThread.h"
-#include "Buffer.h"
+#include "Network/IOBase.h"
+#include "Network/IOThread.h"
+#include "Core/Buffer.h"
 
 class ShmSubscriberImpl : public IOSubscriber
 {

@@ -1,5 +1,5 @@
-#include "Shm/ShmClient.h"
-#include "Logger/Logger.h"
+#include "Network/Shm/ShmClient.h"
+#include "Core/Logger/Logger.h"
 #include <string.h>
 
 using namespace std;

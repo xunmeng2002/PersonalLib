@@ -1,7 +1,7 @@
 #pragma once
-#include "ObjectPool/ObjectPool.h"
-#include "Constant/Constant.h"
-#include "Logger/Logger.h"
+#include "Core/ObjectPool/ObjectPool.h"
+#include "Core/Constant/Constant.h"
+#include "Core/Logger/Logger.h"
 #include <cstring>
 #include <assert.h>
 

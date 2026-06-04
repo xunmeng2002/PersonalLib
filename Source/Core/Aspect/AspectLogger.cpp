@@ -1,5 +1,5 @@
-#include "AspectLogger/AspectLogger.h"
-#include "Logger/Logger.h"
+#include "Core/Aspect/AspectLogger.h"
+#include "Core/Logger/Logger.h"
 
 
 

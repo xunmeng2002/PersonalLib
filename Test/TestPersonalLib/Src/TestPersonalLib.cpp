@@ -1,5 +1,5 @@
 #include "MD5/MD5.h"
-#include "Logger/Logger.h"
+#include "Core/Logger/Logger.h"
 #include <iostream>
 using namespace std;
 

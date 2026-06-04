@@ -1,7 +1,7 @@
 #pragma warning(disable:4819)
 #include "ThostFtdcMdApiMiddle.h"
 #include "ThostFtdcMdSpiImpl.h"
-#include "Logger/Logger.h"
+#include "Core/Logger/Logger.h"
 #include "CtpAccountInfo.h"
 #include <iostream>
 #include <string.h>

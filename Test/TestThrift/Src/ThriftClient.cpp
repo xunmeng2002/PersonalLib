@@ -1,12 +1,12 @@
 #include "ThriftClient.h"
-#include "Logger/Logger.h"
-#include "Utility.h"
-#include "Utility/TimeUtility.h"
-#include "Platform.h"
+#include "Core/Logger/Logger.h"
+#include "Core/Utility.h"
+#include "Core/Utility/TimeUtility.h"
+#include "Core/Platform.h"
 #include "TcpBase.h"
 #include "MD5.h"
 #include "Decode.h"
-#include "Buffer.h"
+#include "Core/Buffer.h"
 
 
 

@@ -1,9 +1,9 @@
 #pragma once
-#include "Package/PackageReader.h"
-#include "Package/PackageFactory.h"
-#include "Protocol/ProtocolSubscriber.h"
-#include "IO/IOBase.h"
-#include "IO/IOThread.h"
+#include "Network/Protocol/PackageReader.h"
+#include "Network/Protocol/PackageFactory.h"
+#include "Network/Protocol/ProtocolSubscriber.h"
+#include "Network/IO/IOBase.h"
+#include "Network/IO/IOThread.h"
 #include <map>
 
 class Protocol : public IOSubscriber

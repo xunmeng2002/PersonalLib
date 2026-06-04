@@ -1,7 +1,7 @@
 #include <functional>
 #include <assert.h>
-#include "ThreadBase/ThreadBase.h"
-#include "Logger/Logger.h"
+#include "Core/Thread/ThreadBase.h"
+#include "Core/Logger/Logger.h"
 
 
 ThreadBase::ThreadBase(const char* name, int milliSeconds)

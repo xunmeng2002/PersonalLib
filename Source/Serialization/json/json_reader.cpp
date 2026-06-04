@@ -5,10 +5,10 @@
 // See file LICENSE for detail or copy at http://jsoncpp.sourceforge.net/LICENSE
 
 #if !defined(JSON_IS_AMALGAMATION)
-#include "json/json_tool.h"
-#include <json/assertions.h>
-#include <json/reader.h>
-#include <json/value.h>
+#include "Serialization/json/json_tool.h"
+#include <Serialization/json/assertions.h>
+#include <Serialization/json/reader.h>
+#include <Serialization/json/value.h>
 #endif // if !defined(JSON_IS_AMALGAMATION)
 #include <algorithm>
 #include <cassert>

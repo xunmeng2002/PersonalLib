@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include "Types.h"
-#include "Protocol/Head.h"
+#include "Network/Protocol/Head.h"
 
 #define MaxPackageSize 2 * 64 * 1024
 

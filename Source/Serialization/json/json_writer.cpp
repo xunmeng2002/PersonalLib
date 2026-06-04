@@ -4,8 +4,8 @@
 // See file LICENSE for detail or copy at http://jsoncpp.sourceforge.net/LICENSE
 
 #if !defined(JSON_IS_AMALGAMATION)
-#include "json/json_tool.h"
-#include <json/writer.h>
+#include "Serialization/json/json_tool.h"
+#include <Serialization/json/writer.h>
 #endif // if !defined(JSON_IS_AMALGAMATION)
 #include <algorithm>
 #include <cassert>

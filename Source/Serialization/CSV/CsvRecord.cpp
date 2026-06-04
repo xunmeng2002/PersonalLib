@@ -1,5 +1,5 @@
-﻿#include "Csv/CsvRecord.h"
-#include "Csv/CsvParser.h"
+﻿#include "Serialization/Csv/CsvRecord.h"
+#include "Serialization/Csv/CsvParser.h"
 #include <limits>
 #include <stdlib.h>
 

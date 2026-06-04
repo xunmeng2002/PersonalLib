@@ -1,18 +1,18 @@
-#include "IO/IOFactory.h"
-#include "Utility/TimeUtility.h"
+#include "Network/IO/IOFactory.h"
+#include "Core/Utility/TimeUtility.h"
 #ifdef LINUX
-#include "Tcp/TcpEpoll/TcpEpollClient.h"
-#include "Tcp/TcpEpoll/TcpEpollServer.h"
+#include "Network/Tcp/TcpEpoll/TcpEpollClient.h"
+#include "Network/Tcp/TcpEpoll/TcpEpollServer.h"
 #elif defined WINDOWS
-#include "Tcp/TcpIocp/TcpIocpClient.h"
-#include "Tcp/TcpIocp/TcpIocpServer.h"
+#include "Network/Tcp/TcpIocp/TcpIocpClient.h"
+#include "Network/Tcp/TcpIocp/TcpIocpServer.h"
 #endif
-#include "Tcp/TcpSelect/TcpSelectClient.h"
-#include "Tcp/TcpSelect/TcpSelectServer.h"
-#include "Shm/SingleShm.h"
-#include "Shm/ShmClient.h"
-#include "Shm/ShmServer.h"
-#include "SocketInit/SocketInit.h"
+#include "Network/Tcp/TcpSelect/TcpSelectClient.h"
+#include "Network/Tcp/TcpSelect/TcpSelectServer.h"
+#include "Network/Shm/SingleShm.h"
+#include "Network/Shm/ShmClient.h"
+#include "Network/Shm/ShmServer.h"
+#include "Network/Tcp/SocketInit.h"
 
 
 IOBase* IOFactory::CreateIO(ServerTypeType serverType, const char* address, int milliSeconds)

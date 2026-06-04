@@ -2,7 +2,7 @@
 #include <string>
 #include <unordered_map>
 #include "Types.h"
-#include "Protocol/Head.h"
+#include "Network/Protocol/Head.h"
 
 
 constexpr unsigned int StepHeaderLen = 36u;

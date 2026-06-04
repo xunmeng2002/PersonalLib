@@ -1,6 +1,6 @@
-#include "ShmSubscriberImpl.h"
+#include "Network/ShmSubscriberImpl.h"
 #include "TestUtility.h"
-#include "Logger/Logger.h"
+#include "Core/Logger/Logger.h"
 #include <string.h>
 #include <assert.h>
 

@@ -1,6 +1,6 @@
 #include "ServerIOSubscriberImpl.h"
-#include "Logger/Logger.h"
-#include "Platform/Platform.h"
+#include "Core/Logger/Logger.h"
+#include "Core/Platform/Platform.h"
 #include <string.h>
 #include <iostream>
 

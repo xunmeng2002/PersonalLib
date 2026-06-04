@@ -1,6 +1,6 @@
 #pragma once
 #include "Types.h"
-#include "Buffer/Buffer.h"
+#include "Core/Buffer/Buffer.h"
 #include <list>
 #include <mutex>
 

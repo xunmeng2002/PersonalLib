@@ -1,5 +1,5 @@
-#include "Tcp/TcpIocp/TcpIocpSockApi.h"
-#include "Logger/Logger.h"
+#include "Network/Tcp/TcpIocp/TcpIocpSockApi.h"
+#include "Core/Logger/Logger.h"
 
 SocketApi SocketApi::m_Instance;
 

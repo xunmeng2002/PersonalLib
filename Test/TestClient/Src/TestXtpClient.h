@@ -1,7 +1,7 @@
 #pragma once
-#include "Tcp/TcpBase/TcpBase.h"
+#include "Network/Tcp/TcpBase.h"
 #include "Packages/Packages.h"
-#include "Protocol/Protocol.h"
+#include "Network/Protocol/Protocol.h"
 #include <chrono>
 
 class XtpClient : public Protocol, public ProtocolSubscriber

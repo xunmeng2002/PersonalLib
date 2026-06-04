@@ -1,7 +1,7 @@
-#include "Tcp/TcpBase/SocketNotify.h"
-#include "Tcp/TcpBase/TcpUtility.h"
-#include "Tcp/TcpBase/TcpConnect.h"
-#include "Logger/Logger.h"
+#include "Network/Tcp/SocketNotify.h"
+#include "Network/Tcp/TcpUtility.h"
+#include "Network/Tcp/TcpConnect.h"
+#include "Core/Logger/Logger.h"
 
 SocketNotify::SocketNotify()
 	:m_Sockets{ INVALID_SOCKET, INVALID_SOCKET }, m_TcpConnect(nullptr), m_IP("127.0.0.1"), m_AddressInfo(nullptr), m_ReceiveBuffer{0}

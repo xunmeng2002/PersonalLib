@@ -1,8 +1,8 @@
 #pragma once
-#include "ThreadBase/ThreadBase.h"
-#include "IO/IOBase.h"
-#include "IO/IOThread.h"
-#include "Utility/TimeUtility.h"
+#include "Core/Thread/ThreadBase.h"
+#include "Network/IO/IOBase.h"
+#include "Network/IO/IOThread.h"
+#include "Core/Utility/TimeUtility.h"
 #include <map>
 #include <chrono>
 

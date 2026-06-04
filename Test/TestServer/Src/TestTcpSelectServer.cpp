@@ -1,9 +1,9 @@
 #include "TestTcpSelectServer.h"
-#include "Tcp/TcpSelect/TcpSelectServer.h"
+#include "Network/Tcp/TcpSelect/TcpSelectServer.h"
 #include "ServerIOSubscriberImpl.h"
-#include "Logger/Logger.h"
+#include "Core/Logger/Logger.h"
 #include "TestUtility/TestUtility.h"
-#include "IO/IOThread.h"
+#include "Network/IO/IOThread.h"
 
 
 void TestTcpSelectServer()

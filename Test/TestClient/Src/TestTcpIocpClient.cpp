@@ -1,11 +1,11 @@
 #include "TestTcpIocpClient.h"
 #ifdef WINDOWS
-#include "Tcp/TcpIocp/TcpIocpClient.h"
+#include "Network/Tcp/TcpIocp/TcpIocpClient.h"
 #endif
 #include "ClientIOSubscriberImpl.h"
-#include "Logger/Logger.h"
+#include "Core/Logger/Logger.h"
 #include "TestUtility/TestUtility.h"
-#include "IO/IOThread.h"
+#include "Network/IO/IOThread.h"
 
 
 void TestTcpIocpClient()

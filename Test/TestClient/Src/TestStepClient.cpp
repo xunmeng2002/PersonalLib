@@ -1,12 +1,12 @@
 #include "TestStepClient.h"
-#include "Utility/Utility.h"
-#include "Utility/TimeUtility.h"
-#include "Logger/Logger.h"
+#include "Core/Utility/Utility.h"
+#include "Core/Utility/TimeUtility.h"
+#include "Core/Logger/Logger.h"
 #include "TestUtility/TestUtility.h"
-#include "Package/PackageFactory.h"
+#include "Network/Protocol/PackageFactory.h"
 #include "Packages/Packages.h"
-#include "IO/IOThread.h"
-#include "ObjectPool/ObjectPool.h"
+#include "Network/IO/IOThread.h"
+#include "Core/ObjectPool/ObjectPool.h"
 
 using namespace std;
 

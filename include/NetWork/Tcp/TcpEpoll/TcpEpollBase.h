@@ -1,6 +1,6 @@
 #pragma once
-#include "Tcp/TcpBase/TcpBase.h"
-#include "Tcp/TcpBase/TcpConnect.h"
+#include "Network/Tcp/TcpBase.h"
+#include "Network/Tcp/TcpConnect.h"
 #include <list>
 #include <map>
 #ifdef LINUX

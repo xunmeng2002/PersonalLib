@@ -7,12 +7,12 @@
 #include "login_constants.h"
 #include "MD5.h"
 #include "Decode.h"
-#include "SocketInit.h"
-#include "IOThread.h"
-#include "IOFactory.h"
+#include "Network/Tcp/.h"
+#include "Network/IOThread.h"
+#include "Network/IOFactory.h"
 #include "TcpSelectClient.h"
 #include "ThriftClient.h"
-#include "Logger/Logger.h"
+#include "Core/Logger/Logger.h"
 
 using namespace apache::thrift;
 using namespace apache::thrift::transport;
