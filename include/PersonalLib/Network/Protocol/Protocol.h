@@ -1,5 +1,5 @@
 #pragma once
-#include "NetworkExport.h"
+#include "PersonalLib/Network/NetworkExport.h"
 #include "PersonalLib/Network/Protocol/PackageReader.h"
 #include "PersonalLib/Network/Protocol/PackageFactory.h"
 #include "PersonalLib/Network/Protocol/ProtocolSubscriber.h"

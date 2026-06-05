@@ -1,5 +1,5 @@
 #pragma once
-#include "CoreExport.h"
+#include "PersonalLib/Core/CoreExport.h"
 
 #ifdef LINUX
 #include <errno.h>

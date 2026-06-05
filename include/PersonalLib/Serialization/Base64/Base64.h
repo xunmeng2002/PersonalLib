@@ -1,5 +1,5 @@
 #pragma once
-#include "SerializationExport.h"
+#include "PersonalLib/Serialization/SerializationExport.h"
 
 
 void SERIALIZATION_EXPORTS Base64Encode(const unsigned char* src, int srcLen, unsigned char* dest, int& destLen);

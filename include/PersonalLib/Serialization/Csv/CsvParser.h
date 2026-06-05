@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "SerializationExport.h"
+#include "PersonalLib/Serialization/SerializationExport.h"
 
 const int TOKEN_MAX_LEN = 64 * 1024; 
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "NetworkExport.h"
+#include "PersonalLib/Network/NetworkExport.h"
 #include "PersonalLib/Network/Tcp/TcpBase.h"
 #include "PersonalLib/Network/Tcp/TcpConnect.h"
 #include <list>

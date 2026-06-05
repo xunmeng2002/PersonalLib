@@ -43,10 +43,14 @@ macro(add_shared_module name include_dir src_dir)
     add_library(${name} SHARED ${src_files})
 
     string(TOUPPER ${name} name_upper)
+    set(export_subdir "${PROJECT_NAME}/${name}")
+    set(export_file_name "${export_subdir}/${name}Export.h")
     generate_export_header(${name}
         EXPORT_MACRO_NAME ${name_upper}_EXPORTS
-        EXPORT_FILE_NAME ${name}Export.h
+        EXPORT_FILE_NAME ${export_file_name}
     )
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${export_file_name}
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${export_subdir})
     target_include_directories(${name}
         PUBLIC
             $<BUILD_INTERFACE:${include_dir}>

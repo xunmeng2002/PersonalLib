@@ -1,5 +1,5 @@
 #pragma once
-#include "NetworkExport.h"
+#include "PersonalLib/Network/NetworkExport.h"
 #include "PersonalLib/Network/Tcp/TcpIocp/TcpIocpBase.h"
 
 class NETWORK_EXPORTS TcpIocpServer : public TcpIocpBase
