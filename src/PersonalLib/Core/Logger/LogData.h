@@ -1,5 +1,4 @@
 #pragma once
-#include "PersonalLib/Core/CoreExport.h"
 #include <stdio.h>
 #include <list>
 #include <mutex>
@@ -10,7 +9,7 @@
 
 template<unsigned SIZE>
 class Buffer;
-struct CORE_EXPORTS LogData
+struct LogData
 {
 	LogData();
 	~LogData();

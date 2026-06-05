@@ -5,8 +5,20 @@
 #include <map>
 #include <mutex>
 #include <condition_variable>
-#include "PersonalLib/Core/Logger/LoggerInterface.h"
 #include "PersonalLib/Core/Thread/ThreadBase.h"
+
+enum class LogLevel : int
+{
+	Ignore = 0,
+	Debug = 1,
+	Info = 2,
+	Warning = 3,
+	Error = 4,
+	Critical = 5,
+	Emergency = 6,
+};
+
+typedef void (*WriteLogFunc)(LogLevel level, const char* fileName, int lineNo, const char* funcName, const char* formatStr, ...);
 
 struct LogData;
 class CORE_EXPORTS Logger : public ThreadBase
