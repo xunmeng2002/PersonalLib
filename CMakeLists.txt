@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 SET(PROJECT_NAME "PersonLib")
-project(${PROJECT_NAME})
+project(${PROJECT_NAME} VERSION 1.0.0 LANGUAGES CXX)
+include(GNUInstallDirs)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -37,12 +38,23 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)   # .lib, .a
 macro(add_module name include_dir src_dir)
     file(GLOB_RECURSE src_files CONFIGURE_DEPENDS "${src_dir}/*.cpp" "${src_dir}/*.c" "${src_dir}/*.cu")
     add_library(${name} STATIC ${src_files})
-    target_include_directories(${name} PUBLIC ${include_dir} PRIVATE ${src_dir}/..)
+    target_include_directories(${name}
+        PUBLIC
+            $<BUILD_INTERFACE:${include_dir}>
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        PRIVATE
+            ${src_dir}/..
+    )
 endmacro()
 macro(add_application name include_dir src_dir)
     file(GLOB_RECURSE src_files CONFIGURE_DEPENDS "${src_dir}/*.cpp" "${src_dir}/*.c" "${src_dir}/*.cu")
     add_executable(${name} ${src_files})
-    target_include_directories(${name} PUBLIC ${include_dir} PRIVATE ${src_dir}/..)
+    target_include_directories(${name}
+        PUBLIC
+            ${include_dir}
+        PRIVATE
+            ${src_dir}/..
+    )
 endmacro()
 macro(copy_config_file name config_file)
     add_custom_command(TARGET ${name} POST_BUILD
@@ -59,9 +71,41 @@ add_module(Serialization	${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOU
 
 target_link_libraries(Network PUBLIC Core)
 
-
+option(BUILD_TESTS "Build test projects" ON)
+if(BUILD_TESTS)
+    add_subdirectory(Test)
+endif()
 
 string(TIMESTAMP BUILD_TIMESTAMP "%Y%m%d-%H%M%S")
 message("Build timestamp is ${BUILD_TIMESTAMP}")
 
-add_subdirectory(Test)
+install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(TARGETS Core Network Serialization
+    EXPORT ${PROJECT_NAME}Targets
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+install(EXPORT ${PROJECT_NAME}Targets
+    FILE ${PROJECT_NAME}Targets.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+)
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+    "include(CMakeFindDependencyMacro)\n"
+    "# Add find_dependency calls if your library has dependencies\n"
+    "include(\"\${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}Targets.cmake\")\n"
+    "check_required_components(\"${PROJECT_NAME}\")\n"
+)
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+)
