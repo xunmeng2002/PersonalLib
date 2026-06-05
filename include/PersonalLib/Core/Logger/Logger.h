@@ -1,4 +1,5 @@
 #pragma once
+#include "CoreExport.h"
 #include <list>
 #include <vector>
 #include <map>
@@ -8,7 +9,7 @@
 #include "PersonalLib/Core/Thread/ThreadBase.h"
 
 struct LogData;
-class Logger : public ThreadBase
+class CORE_EXPORTS Logger : public ThreadBase
 {
 private:
 	Logger();

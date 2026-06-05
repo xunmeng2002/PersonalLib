@@ -20,7 +20,7 @@ TcpIocpBase::~TcpIocpBase()
 
 bool TcpIocpBase::Init()
 {
-    auto ret = GetAddrinfo(m_Address.c_str(), m_Port.c_str(), m_AddressInfo);
+    auto ret = TcpUtility::GetAddrinfo(m_Address.c_str(), m_Port.c_str(), m_AddressInfo);
     if (ret != 0)
     {
         WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:%s, Port%s, ret:%d", m_Address.c_str(), m_Port.c_str(), ret);

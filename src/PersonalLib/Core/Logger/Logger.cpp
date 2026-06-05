@@ -60,7 +60,7 @@ LogLevel& Logger::GetConsoleLogLevel()
 }
 bool Logger::Init(const char* fullProcessName)
 {
-	ParseProcessName(fullProcessName, m_ProcessName, 128);
+	Utility::ParseProcessName(fullProcessName, m_ProcessName, 128);
 	m_LogData = new LogData();
 	CreateLogDir("log");
 
@@ -91,7 +91,7 @@ void Logger::Write(LogLevel level, const char* file, int line, const char* func,
 }
 void Logger::ThreadInit()
 {
-	m_CreateLogFileTime = *GetLocalTm();
+	m_CreateLogFileTime = *TimeUtility::GetLocalTm();
 	CreateLogFile();
 	ThreadBase::ThreadInit();
 }
@@ -113,7 +113,7 @@ void Logger::Run()
 	if (++count >= 120)
 	{
 		count = 0;
-		auto currTime = *GetLocalTm();
+		auto currTime = *TimeUtility::GetLocalTm();
 		if (m_CreateLogFileTime.tm_mday != currTime.tm_mday)
 		{
 			m_CreateLogFileTime = currTime;
@@ -157,7 +157,7 @@ void Logger::WriteToLog(LogLevel level, const char* file, int line, const char* 
 	for (auto p = file; *p != '\0'; p++)
 		if (*p == '\\' || *p == '/')
 			file = p + 1;
-	unsigned len1 = snprintf(t_LogBuffer, MaxLogFormatLength, "%s %lld %s ", GetLocalDateTimeWithMilliSecond().c_str(), GetCurrentThreadID(), s_LogLevelName[level].c_str());
+	unsigned len1 = snprintf(t_LogBuffer, MaxLogFormatLength, "%s %lld %s ", TimeUtility::GetLocalDateTimeWithMilliSecond().c_str(), GetCurrentThreadID(), s_LogLevelName[level].c_str());
 	unsigned len2 = vsnprintf(t_LogBuffer + len1, MaxLogLineContentLength, format, va);
 	unsigned len3 = snprintf(t_LogBuffer + len1 + len2, LogLineLength - len1 - len2 - 1, "\t\t---%s:%d[%s]\n", file, line, func);
 	unsigned len = len1 + len2 + len3;

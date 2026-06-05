@@ -1,4 +1,5 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Types.h"
 #include <string>
 #ifdef LINUX
@@ -6,7 +7,7 @@
 #endif
 
 
-class Sem
+class NETWORK_EXPORTS Sem
 {
 public:
 	Sem(const char* name, ServerTypeType serverType, unsigned timeOutMilliSecond = 100);

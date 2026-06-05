@@ -1,4 +1,5 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Network/Tcp/TcpBase.h"
 #include "PersonalLib/Network/Tcp/TcpConnect.h"
 #include <list>
@@ -10,7 +11,7 @@
 
 #define EpollEventNumber 1024
 
-class TcpEpollBase : public TcpBase
+class NETWORK_EXPORTS TcpEpollBase : public TcpBase
 {
 public:
 	TcpEpollBase(ServerTypeType serverType, const char* addressName, int milliSeconds);

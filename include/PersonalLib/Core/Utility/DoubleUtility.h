@@ -1,11 +1,16 @@
 #pragma once
+#include "CoreExport.h"
 #include <limits>
 
-bool DoubleEqual(const double& left, const double& right);
-bool DoubleNotEqual(const double& left, const double& right);
-bool DoubleLess(const double& left, const double& right);
-bool DoubleLessEqual(const double& left, const double& right);
-bool DoubleGreat(const double& left, const double& right);
-bool DoubleGreatEqual(const double& left, const double& right);
+class CORE_EXPORTS DoubleUtility
+{
+public:
+	static bool DoubleEqual(const double& left, const double& right);
+	static bool DoubleNotEqual(const double& left, const double& right);
+	static bool DoubleLess(const double& left, const double& right);
+	static bool DoubleLessEqual(const double& left, const double& right);
+	static bool DoubleGreat(const double& left, const double& right);
+	static bool DoubleGreatEqual(const double& left, const double& right);
 
-double GetDoubleValue(const double& value);
+	static double GetDoubleValue(const double& value);
+};

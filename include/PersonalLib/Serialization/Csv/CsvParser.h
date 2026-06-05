@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include "SerializationExport.h"
 
 const int TOKEN_MAX_LEN = 64 * 1024; 
 
@@ -11,7 +11,7 @@ enum CSV_PARSER_ERROR
 	CPE_TOKEN_TOO_LONG,
 };
 
-class CSVParser  
+class SERIALIZATION_EXPORTS CSVParser
 {
 public:
 	CSVParser();

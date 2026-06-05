@@ -1,7 +1,7 @@
 
 
 
-add_module(TestCommon ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/TestCommon)
+add_static_module(TestCommon ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/TestCommon)
 target_link_libraries(TestCommon PUBLIC Core Network)
 
 
@@ -17,7 +17,7 @@ target_link_libraries(TestServer PRIVATE TestCommon)
 
 
 SET(APIVersion "6.7.9")
-add_module(CtpWrapper ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/CtpWrapper)
+add_static_module(CtpWrapper ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/CtpWrapper)
 target_include_directories(CtpWrapper PUBLIC ${CMAKE_SOURCE_DIR}/../Libs/CTP/${APIVersion}/include)
 target_link_directories(CtpWrapper PUBLIC ${CMAKE_SOURCE_DIR}/../Libs/CTP/${APIVersion}/win64)
 target_link_libraries(CtpWrapper PUBLIC Core Network Serialization thostmduserapi_se thosttraderapi_se)

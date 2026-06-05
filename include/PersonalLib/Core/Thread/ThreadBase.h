@@ -1,9 +1,10 @@
 #pragma once
+#include "CoreExport.h"
 #include <thread>
 #include <string>
 #include <chrono>
 
-class ThreadBase
+class CORE_EXPORTS ThreadBase
 {
 public:
 	ThreadBase(const char* name, int milliSeconds = 100);

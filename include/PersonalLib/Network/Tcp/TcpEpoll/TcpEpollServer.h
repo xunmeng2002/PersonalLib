@@ -1,8 +1,9 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Network/Tcp/TcpEpoll/TcpEpollBase.h"
 
 
-class TcpEpollServer : public TcpEpollBase
+class NETWORK_EXPORTS TcpEpollServer : public TcpEpollBase
 {
 public:
 	TcpEpollServer(const char* addressName, int milliSeconds);

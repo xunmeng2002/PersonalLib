@@ -1,11 +1,12 @@
 #pragma once
+#include "NetworkExport.h"
 #include <list>
 #include <map>
 #include "PersonalLib/Network/Tcp/SocketInit.h"
 #include "PersonalLib/Network/Tcp/TcpBase.h"
 
 
-class TcpSelectBase : public TcpBase
+class NETWORK_EXPORTS TcpSelectBase : public TcpBase
 {
 public:
 	TcpSelectBase(ServerTypeType serverType, const char* addressName, int milliSeconds);

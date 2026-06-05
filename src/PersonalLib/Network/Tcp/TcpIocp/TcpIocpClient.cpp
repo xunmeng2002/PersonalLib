@@ -16,7 +16,7 @@ bool TcpIocpClient::Init()
 {
     if (!TcpIocpBase::Init())
         return false;
-    auto ret = GetClientAddrinfo(nullptr, "0", m_ClientLocalAddressInfo, m_AddressInfo->ai_family);
+    auto ret = TcpUtility::GetClientAddrinfo(nullptr, "0", m_ClientLocalAddressInfo, m_AddressInfo->ai_family);
     if (ret < 0)
     {
         WriteLog(LogLevel::Info, "GetAddrinfo for m_ClientLocalAddressInfo Failed. ret:%d, Errno:%d", ret, WSAGetLastError());
@@ -29,7 +29,7 @@ bool TcpIocpClient::ConnectToServer(const char* ip, unsigned short port)
 {
     m_Address = ip;
     m_Port = std::to_string(port);
-    auto ret = GetAddrinfo(m_Address.c_str(), m_Port.c_str(), m_AddressInfo);
+    auto ret = TcpUtility::GetAddrinfo(m_Address.c_str(), m_Port.c_str(), m_AddressInfo);
     if (ret < 0)
     {
         WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:%s Port:%s ret:%d, Errno:%d", m_Address.c_str(), m_Port.c_str(), ret, WSAGetLastError());
@@ -89,7 +89,7 @@ SOCKET TcpIocpClient::PrepareConnectSocket()
         closesocket(socketID);
         return INVALID_SOCKET;
     }
-    if (!Bind(socketID, m_ClientLocalAddressInfo))
+    if (!TcpUtility::Bind(socketID, m_ClientLocalAddressInfo))
     {
         closesocket(socketID);
         return INVALID_SOCKET;

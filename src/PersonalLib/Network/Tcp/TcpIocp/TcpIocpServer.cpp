@@ -14,11 +14,11 @@ bool TcpIocpServer::Init()
 {
     if (!TcpIocpBase::Init())
         return false;
-    if (!Bind(m_Socket, m_AddressInfo))
+    if (!TcpUtility::Bind(m_Socket, m_AddressInfo))
     {
         return false;
     }
-    if (!Listen(m_Socket, m_BackLog))
+    if (!TcpUtility::Listen(m_Socket, m_BackLog))
     {
         return false;
     }

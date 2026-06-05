@@ -6,7 +6,7 @@
 
 
 
-void ParseProcessName(const char* fullProcessName, char* processName, int len)
+void Utility::ParseProcessName(const char* fullProcessName, char* processName, int len)
 {
 #if WINDOWS
 	const char* temp = strrchr(fullProcessName, '\\');
@@ -21,25 +21,25 @@ void ParseProcessName(const char* fullProcessName, char* processName, int len)
 }
 
 
-std::string ItoA(int value)
+std::string Utility::ItoA(int value)
 {
 	static char buff[32];
 	sprintf(buff, "%d", value);
 	return std::string(buff);
 }
-std::string FtoA(double value)
+std::string Utility::FtoA(double value)
 {
 	static char buff[32];
 	sprintf(buff, "%f", value);
 	return std::string(buff);
 }
-void Erase(std::string& str, char a)
+void Utility::Erase(std::string& str, char a)
 {
 	str.erase(std::remove(str.begin(), str.end(), a), str.end());
 }
 
 
-void PrintBytes(const char* name, char* src, int len)
+void Utility::PrintBytes(const char* name, char* src, int len)
 {
 	std::ofstream ofs("temp.log", std::ios::app);
 	char buff[1024] = { 0 };
@@ -51,7 +51,7 @@ void PrintBytes(const char* name, char* src, int len)
 	ofs << buff << std::endl;
 }
 
-void RemoveCharacter(char* src, int size, char c)
+void Utility::RemoveCharacter(char* src, int size, char c)
 {
 	auto read = src;
 	auto write = src;
@@ -66,7 +66,7 @@ void RemoveCharacter(char* src, int size, char c)
 	*write = '\0';
 }
 
-ProtocolTypeType GetConfigProtocolType(const std::string& configProtocolType)
+ProtocolTypeType Utility::GetConfigProtocolType(const std::string& configProtocolType)
 {
 	if (configProtocolType == "step")
 	{

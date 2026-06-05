@@ -7,13 +7,13 @@
 using namespace std;
 
 
-void ParseIPAddress(const std::string& addressName, std::string& ip, std::string& port)
+void TcpUtility::ParseIPAddress(const std::string& addressName, std::string& ip, std::string& port)
 {
 	auto index = addressName.find(':', 0);
 	ip = addressName.substr(0, index);
 	port = addressName.substr(index + 1);
 }
-int GetAddrinfo(const char* ip, const char* port, addrinfo*& addrInfo)
+int TcpUtility::GetAddrinfo(const char* ip, const char* port, addrinfo*& addrInfo)
 {
 	struct addrinfo hints;
 	::memset(&hints, 0, sizeof(hints));
@@ -25,7 +25,7 @@ int GetAddrinfo(const char* ip, const char* port, addrinfo*& addrInfo)
 	WriteLog(LogLevel::Info, "GetAddrinfo: IP:%s Port:%s GetAddrinfo ret:%d", ip, port, ret);
 	return ret;
 }
-int GetClientAddrinfo(const char* ip, const char* port, addrinfo*& addrInfo, int serverAddressFamily)
+int TcpUtility::GetClientAddrinfo(const char* ip, const char* port, addrinfo*& addrInfo, int serverAddressFamily)
 {
 	struct addrinfo hints;
 	::memset(&hints, 0, sizeof(hints));
@@ -37,7 +37,7 @@ int GetClientAddrinfo(const char* ip, const char* port, addrinfo*& addrInfo, int
 	WriteLog(LogLevel::Info, "GetClientAddrinfo: IP:%s Port:%s GetAddrinfo ret:%d", ip, port, ret);
 	return ret;
 }
-int GetNameinfo(const sockaddr* sockAddr, int len, std::string& ip, std::string& port, int flags)
+int TcpUtility::GetNameinfo(const sockaddr* sockAddr, int len, std::string& ip, std::string& port, int flags)
 {
 	static mutex getnameinfoMutex;
 	lock_guard<mutex> guard(getnameinfoMutex);
@@ -49,11 +49,11 @@ int GetNameinfo(const sockaddr* sockAddr, int len, std::string& ip, std::string&
 	return ret;
 }
 
-SOCKET CreateSocket(int family)
+SOCKET TcpUtility::CreateSocket(int family)
 {
 	return socket(family, SOCK_STREAM, IPPROTO_TCP);
 }
-bool SetSockUnblock(SOCKET socketID, unsigned long unblock)
+bool TcpUtility::SetSockUnblock(SOCKET socketID, unsigned long unblock)
 {
 #ifdef  WINDOWS
 	if (::ioctlsocket(socketID, FIONBIO, &unblock) == SOCKET_ERROR)
@@ -73,7 +73,7 @@ bool SetSockUnblock(SOCKET socketID, unsigned long unblock)
 #endif // LINUX
 	return true;
 }
-bool SetSockReuse(SOCKET socketID, int resue)
+bool TcpUtility::SetSockReuse(SOCKET socketID, int resue)
 {
 	if (::setsockopt(socketID, SOL_SOCKET, SO_REUSEADDR, (char*)&resue, sizeof(int)) == SOCKET_ERROR)
 	{
@@ -83,7 +83,7 @@ bool SetSockReuse(SOCKET socketID, int resue)
 	WriteLog(LogLevel::Info, "setsockopt SO_REUSEADDR:%d Success.", resue);
 	return true;
 }
-bool SetSockNodelay(SOCKET socketID, int nodelay)
+bool TcpUtility::SetSockNodelay(SOCKET socketID, int nodelay)
 {
 	if (::setsockopt(socketID, IPPROTO_TCP, TCP_NODELAY, (char*)&nodelay, sizeof(int)) == SOCKET_ERROR)
 	{
@@ -93,7 +93,7 @@ bool SetSockNodelay(SOCKET socketID, int nodelay)
 	WriteLog(LogLevel::Info, "setsockopt TCP_NODELAY:%d Success.", nodelay);
 	return true;
 }
-bool SetSockIPV6Only(SOCKET socketID, int ipv6Only)
+bool TcpUtility::SetSockIPV6Only(SOCKET socketID, int ipv6Only)
 {
 	if (::setsockopt(socketID, IPPROTO_IPV6, IPV6_V6ONLY, (char*)&ipv6Only, sizeof(int)) == SOCKET_ERROR)
 	{
@@ -103,7 +103,7 @@ bool SetSockIPV6Only(SOCKET socketID, int ipv6Only)
 	WriteLog(LogLevel::Error, "setsockopt IPV6_V6ONLY:%d Success.", ipv6Only);
 	return true;
 }
-bool Bind(SOCKET socketID, addrinfo* bindAddressInfo)
+bool TcpUtility::Bind(SOCKET socketID, addrinfo* bindAddressInfo)
 {
 	if (::bind(socketID, bindAddressInfo->ai_addr, int(bindAddressInfo->ai_addrlen)) == SOCKET_ERROR)
 	{
@@ -112,7 +112,7 @@ bool Bind(SOCKET socketID, addrinfo* bindAddressInfo)
 	}
 	return true;
 }
-bool Listen(SOCKET socketID, int backLog)
+bool TcpUtility::Listen(SOCKET socketID, int backLog)
 {
 	if (listen(socketID, backLog) == SOCKET_ERROR)
 	{
@@ -122,7 +122,7 @@ bool Listen(SOCKET socketID, int backLog)
 	return true;
 }
 
-bool InitSocket(SOCKET socketID)
+bool TcpUtility::InitSocket(SOCKET socketID)
 {
 	if (!SetSockUnblock(socketID) || !SetSockReuse(socketID) || !SetSockNodelay(socketID))
 	{
@@ -131,7 +131,7 @@ bool InitSocket(SOCKET socketID)
 	}
 	return true;
 }
-SOCKET PrepareSocket(int family)
+SOCKET TcpUtility::PrepareSocket(int family)
 {
 	auto socketID = CreateSocket(family);
 	if (!InitSocket(socketID))

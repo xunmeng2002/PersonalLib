@@ -1,9 +1,10 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Network/Protocol/Package.h"
 #include "PersonalLib/Network/Protocol/PackageFactory.h"
 
 
-class PackageReader
+class NETWORK_EXPORTS PackageReader
 {
 public:
 	PackageReader(ProtocolTypeType protocolType, PackageFactory* packageFactory, SessionIDType sessionID, const char* ipAddress);

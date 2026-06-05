@@ -1,10 +1,11 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Types.h"
 #include "PersonalLib/Core/Buffer/Buffer.h"
 #include <list>
 #include <mutex>
 
-class Connect
+class NETWORK_EXPORTS Connect
 {
 public:
 	Connect(SessionIDType sessionID, const char* remoteAddress, int remotePort,  ConnectStatusType connectStatus)

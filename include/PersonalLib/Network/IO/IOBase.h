@@ -1,4 +1,5 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Types.h"
 #include "PersonalLib/Core/Constant/Constant.h"
 #include "PersonalLib/Core/Buffer/Buffer.h"
@@ -19,7 +20,7 @@ public:
 	virtual void OnRecv(SessionIDType sessionID, Buffer<BuffSize>* buffer) = 0;
 };
 
-class IOBase
+class NETWORK_EXPORTS IOBase
 {
 public:
 	IOBase(ServerTypeType serverType, const char* addressName, int milliSeconds);

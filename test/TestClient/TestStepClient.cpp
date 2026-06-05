@@ -51,7 +51,7 @@ void StepClient::OnMessage(Package* package)
 	else
 	{
 		WriteLog(LogLevel::Info, "OnMessage: %s", package->GetDebugString());
-		WriteLog(LogLevel::Info, "Total Cost: %lld ms", GetDuration<chrono::milliseconds>(m_StartTime));
+		WriteLog(LogLevel::Info, "Total Cost: %lld ms", TimeUtility::GetDuration<chrono::milliseconds>(m_StartTime));
 		m_IOThread->Stop();
 	}
 }
@@ -60,9 +60,9 @@ void StepClient::SendReqInsertOrder(int index)
 	m_ReqInsertOrder->Prepare(m_SessionID, false, index);
 	m_ReqInsertOrder->ReqInsertOrder = ObjectPool<ReqInsertOrderField>::GetInstance().Allocate();
 	memset(m_ReqInsertOrder->ReqInsertOrder, 0, sizeof(ReqInsertOrderField));
-	Strcpy(m_ReqInsertOrder->ReqInsertOrder->AccountID, "Xunmeng001");
-	Strcpy(m_ReqInsertOrder->ReqInsertOrder->ExchangeID, "SHSE");
-	Strcpy(m_ReqInsertOrder->ReqInsertOrder->InstrumentID, "600036");
+	Utility::Strcpy(m_ReqInsertOrder->ReqInsertOrder->AccountID, "Xunmeng001");
+	Utility::Strcpy(m_ReqInsertOrder->ReqInsertOrder->ExchangeID, "SHSE");
+	Utility::Strcpy(m_ReqInsertOrder->ReqInsertOrder->InstrumentID, "600036");
 	m_ReqInsertOrder->ReqInsertOrder->Direction = DirectionType::Buy;
 	m_ReqInsertOrder->ReqInsertOrder->OffsetFlag = OffsetFlagType::Open;
 	m_ReqInsertOrder->ReqInsertOrder->OrderPriceType = OrderPriceTypeType::LimitPrice;

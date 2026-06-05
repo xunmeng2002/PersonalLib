@@ -128,7 +128,7 @@ bool PackageReader::ParseStepPackage(Package*& package)
 		return true;
 	}
 	int packageStartIndex = 0;
-	if (!GetPackageStart(m_Data, 0, m_Length, packageStartIndex))
+	if (!StepUtility::GetPackageStart(m_Data, 0, m_Length, packageStartIndex))
 	{
 		WriteLog(LogLevel::Warning, "Cannot Find PackageStart Mark.");
 		return false;
@@ -138,7 +138,7 @@ bool PackageReader::ParseStepPackage(Package*& package)
 		return true;
 	}
 	::memset(&m_Head, 0, sizeof(m_Head));
-	if (!HeadFromStream(m_Data, packageStartIndex, packageStartIndex + StepHeaderLen, &m_Head))
+	if (!StepUtility::HeadFromStream(m_Data, packageStartIndex, packageStartIndex + StepHeaderLen, &m_Head))
 	{
 		WriteLog(LogLevel::Warning, "Parse Head Failed.");
 		return false;
@@ -147,7 +147,7 @@ bool PackageReader::ParseStepPackage(Package*& package)
 	{
 		return true;
 	}
-	if (!TailFromStream(m_Data, packageStartIndex + StepHeaderLen + m_Head.BodyLen, packageStartIndex + StepHeaderLen + m_Head.BodyLen + StepTailLen, &m_Tail))
+	if (!StepUtility::TailFromStream(m_Data, packageStartIndex + StepHeaderLen + m_Head.BodyLen, packageStartIndex + StepHeaderLen + m_Head.BodyLen + StepTailLen, &m_Tail))
 	{
 		WriteLog(LogLevel::Warning, "Parse Tail Failed.");
 		return false;

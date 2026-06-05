@@ -1,9 +1,10 @@
 #pragma once
+#include "CoreExport.h"
 #include <chrono>
 
 using namespace std::chrono;
 
-class AspectPerformance
+class CORE_EXPORTS AspectPerformance
 {
 public:
 	AspectPerformance();

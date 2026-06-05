@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.20)
 SET(PROJECT_NAME "PersonalLib")
 project(${PROJECT_NAME} VERSION 1.0.0 LANGUAGES CXX)
 include(GNUInstallDirs)
+include(GenerateExportHeader)
+
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -36,9 +38,28 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/$<CONFIG>)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/$<CONFIG>)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/$<CONFIG>)
 
-macro(add_module name include_dir src_dir)
+macro(add_shared_module name include_dir src_dir)
     file(GLOB_RECURSE src_files CONFIGURE_DEPENDS "${src_dir}/*.cpp" "${src_dir}/*.c" "${src_dir}/*.cu")
     add_library(${name} SHARED ${src_files})
+
+    string(TOUPPER ${name} name_upper)
+    generate_export_header(${name}
+        EXPORT_MACRO_NAME ${name_upper}_EXPORTS
+        EXPORT_FILE_NAME ${name}Export.h
+    )
+    target_include_directories(${name}
+        PUBLIC
+            $<BUILD_INTERFACE:${include_dir}>
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+        PRIVATE
+            ${src_dir}/../..
+    )
+    target_compile_definitions(${name} PRIVATE ${name}_EXPORTS)
+endmacro()
+macro(add_static_module name include_dir src_dir)
+    file(GLOB_RECURSE src_files CONFIGURE_DEPENDS "${src_dir}/*.cpp" "${src_dir}/*.c" "${src_dir}/*.cu")
+    add_library(${name} STATIC ${src_files})
     target_include_directories(${name}
         PUBLIC
             $<BUILD_INTERFACE:${include_dir}>
@@ -66,9 +87,11 @@ macro(copy_config_file name config_file)
     )
 endmacro()
 
-add_module(Core				${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}/Core)
-add_module(Network			${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}/Network)
-add_module(Serialization	${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}/Serialization)
+add_shared_module(Core				${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}/Core)
+add_shared_module(Network			${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}/Network)
+add_shared_module(Serialization	    ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}/Serialization)
+target_compile_definitions(Serialization PRIVATE JSON_DLL_BUILD)
+
 
 target_link_libraries(Network PUBLIC Core)
 

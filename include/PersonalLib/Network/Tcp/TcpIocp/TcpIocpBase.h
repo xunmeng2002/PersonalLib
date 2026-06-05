@@ -1,9 +1,10 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Network/Tcp/TcpBase.h"
 #include "PersonalLib/Network/Tcp/TcpIocp/TcpIocpConnect.h"
 #include "PersonalLib/Network/Tcp/TcpIocp/TcpIocpCompletePort.h"
 
-class TcpIocpBase : public TcpBase
+class NETWORK_EXPORTS TcpIocpBase : public TcpBase
 {
 public:
 	TcpIocpBase(ServerTypeType serverType, const char* addressName, int milliSeconds, int backlog = 5);

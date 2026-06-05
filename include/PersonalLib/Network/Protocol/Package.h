@@ -1,4 +1,5 @@
 #pragma once
+#include "NetworkExport.h"
 #include <stdint.h>
 #include "PersonalLib/Types.h"
 #include "PersonalLib/Network/Protocol/Head.h"
@@ -6,7 +7,7 @@
 #define MaxPackageSize 2 * 64 * 1024
 
 
-class Package
+class NETWORK_EXPORTS Package
 {
 public:
 	Package()

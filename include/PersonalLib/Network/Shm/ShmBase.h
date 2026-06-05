@@ -1,4 +1,5 @@
 #pragma once
+#include "NetworkExport.h"
 #include <string>
 #include <map>
 #include <list>
@@ -12,7 +13,7 @@
 
 
 
-class ShmBase : public IOBase
+class NETWORK_EXPORTS ShmBase : public IOBase
 {
 public:
 	ShmBase(ServerTypeType shmType, const char* shmName, int milliSeconds);

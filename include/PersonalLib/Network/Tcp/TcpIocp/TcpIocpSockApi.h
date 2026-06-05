@@ -1,8 +1,9 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Network/Tcp/SocketInit.h"
 #include <MSWSock.h>
 
-class SocketApi
+class NETWORK_EXPORTS SocketApi
 {
 private:
 	SocketApi();

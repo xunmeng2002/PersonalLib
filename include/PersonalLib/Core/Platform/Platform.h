@@ -1,9 +1,10 @@
 #pragma once
+#include "CoreExport.h"
 
 #ifdef LINUX
 #include <errno.h>
 
-int GetLastError();
-int WSAGetLastError();
+int CORE_EXPORTS GetLastError();
+int CORE_EXPORTS WSAGetLastError();
 #endif
 

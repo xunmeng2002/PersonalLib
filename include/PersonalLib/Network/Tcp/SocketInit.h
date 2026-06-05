@@ -1,4 +1,5 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Core/Platform/Platform.h"
 #include <mutex>
 #ifdef WINDOWS
@@ -19,7 +20,7 @@ typedef int SOCKET;
 #define closesocket close
 #endif // LINUX
 
-class SocketInit
+class NETWORK_EXPORTS SocketInit
 {
 public:
 	~SocketInit();

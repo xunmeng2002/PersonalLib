@@ -1,7 +1,8 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Network/Tcp/TcpIocp/TcpIocpBase.h"
 
-class TcpIocpServer : public TcpIocpBase
+class NETWORK_EXPORTS TcpIocpServer : public TcpIocpBase
 {
 public:
 	TcpIocpServer(const char* addressName, int milliSeconds, int backlog = 5);

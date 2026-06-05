@@ -32,9 +32,9 @@ int Package::MakePackage(ProtocolTypeType protocolType, char* buff, int size)
 	else if (protocolType == ProtocolTypeType::Step)
 	{
 		Head.BodyLen = ToStepStream(buff + StepHeaderLen, size - StepHeaderLen - StepTailLen);
-		HeadToStream(&Head, buff, StepHeaderLen);
+		StepUtility::HeadToStream(&Head, buff, StepHeaderLen);
 		Tail.CheckSum = CalculateSum((unsigned char*)buff, StepHeaderLen + Head.BodyLen);
-		TailToStream(&Tail, buff + StepHeaderLen + Head.BodyLen, StepTailLen);
+		StepUtility::TailToStream(&Tail, buff + StepHeaderLen + Head.BodyLen, StepTailLen);
 		return StepHeaderLen + Head.BodyLen + StepTailLen;
 	}
 	return 0;

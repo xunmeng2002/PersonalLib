@@ -19,13 +19,13 @@ bool TcpEpollClient::ConnectToServer(const char* ip, unsigned short port)
 	}
 	m_Address = ip;
 	m_Port = std::to_string(port);
-	auto ret = GetAddrinfo(m_Address.c_str(), m_Port.c_str(), m_AddressInfo);
+	auto ret = TcpUtility::GetAddrinfo(m_Address.c_str(), m_Port.c_str(), m_AddressInfo);
 	if (ret < 0 || m_AddressInfo == nullptr)
 	{
 		WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:%s Port:%s ret:%d, Errno:%d", m_Address.c_str(), m_Port.c_str(), ret, errno);
 		return false;
 	}
-	auto socketID = PrepareSocket(m_AddressInfo->ai_family);
+	auto socketID = TcpUtility::PrepareSocket(m_AddressInfo->ai_family);
 	ret = connect(socketID, m_AddressInfo->ai_addr, int(m_AddressInfo->ai_addrlen));
 	if (ret == -1 && errno != EINPROGRESS)
 	{

@@ -40,11 +40,11 @@ int NotifyComponentConnectStatusPackage::ToStepStream(char* buff, int size) cons
 	char* ppos = buff;
 	if (NotifyComponentConnectStatus != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, NotifyComponentConnectStatusField::FieldID);
-		WriteString(ppos, Items::SessionID, NotifyComponentConnectStatus->SessionID);
-		WriteString(ppos, Items::Component, (int)NotifyComponentConnectStatus->Component);
-		WriteString(ppos, Items::IsConnected, NotifyComponentConnectStatus->IsConnected);
-		WriteHexString(ppos, Items::FieldEnd, NotifyComponentConnectStatusField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, NotifyComponentConnectStatusField::FieldID);
+		StepUtility::WriteString(ppos, Items::SessionID, NotifyComponentConnectStatus->SessionID);
+		StepUtility::WriteString(ppos, Items::Component, (int)NotifyComponentConnectStatus->Component);
+		StepUtility::WriteString(ppos, Items::IsConnected, NotifyComponentConnectStatus->IsConnected);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, NotifyComponentConnectStatusField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -55,7 +55,7 @@ bool NotifyComponentConnectStatusPackage::FromStepStream(char* buff, int startIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -69,7 +69,7 @@ bool NotifyComponentConnectStatusPackage::FromStepStream(char* buff, int startIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -193,18 +193,18 @@ int ReqAccountLoginPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAccountLogin != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAccountLoginField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAccountLoginField::FieldID);
 		if (strlen(ReqAccountLogin->AccountID) >= sizeof(ReqAccountLogin->AccountID))
 		{
 			ReqAccountLogin->AccountID[sizeof(ReqAccountLogin->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqAccountLogin->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqAccountLogin->AccountID);
 		if (strlen(ReqAccountLogin->Password) >= sizeof(ReqAccountLogin->Password))
 		{
 			ReqAccountLogin->Password[sizeof(ReqAccountLogin->Password) - 1] = 0;
 		}
-		WriteString(ppos, Items::Password, ReqAccountLogin->Password);
-		WriteHexString(ppos, Items::FieldEnd, ReqAccountLoginField::FieldID);
+		StepUtility::WriteString(ppos, Items::Password, ReqAccountLogin->Password);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAccountLoginField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -215,7 +215,7 @@ bool ReqAccountLoginPackage::FromStepStream(char* buff, int startIndex, int endI
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -229,7 +229,7 @@ bool ReqAccountLoginPackage::FromStepStream(char* buff, int startIndex, int endI
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -355,35 +355,35 @@ int RspAccountLoginPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAccountLogin != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAccountLoginField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAccountLoginField::FieldID);
 		if (strlen(RspAccountLogin->AccountID) >= sizeof(RspAccountLogin->AccountID))
 		{
 			RspAccountLogin->AccountID[sizeof(RspAccountLogin->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, RspAccountLogin->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, RspAccountLogin->AccountID);
 		if (strlen(RspAccountLogin->LoginDate) >= sizeof(RspAccountLogin->LoginDate))
 		{
 			RspAccountLogin->LoginDate[sizeof(RspAccountLogin->LoginDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::LoginDate, RspAccountLogin->LoginDate);
+		StepUtility::WriteString(ppos, Items::LoginDate, RspAccountLogin->LoginDate);
 		if (strlen(RspAccountLogin->LoginTime) >= sizeof(RspAccountLogin->LoginTime))
 		{
 			RspAccountLogin->LoginTime[sizeof(RspAccountLogin->LoginTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::LoginTime, RspAccountLogin->LoginTime);
-		WriteString(ppos, Items::SessionID, RspAccountLogin->SessionID);
-		WriteHexString(ppos, Items::FieldEnd, RspAccountLoginField::FieldID);
+		StepUtility::WriteString(ppos, Items::LoginTime, RspAccountLogin->LoginTime);
+		StepUtility::WriteString(ppos, Items::SessionID, RspAccountLogin->SessionID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAccountLoginField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -394,7 +394,7 @@ bool RspAccountLoginPackage::FromStepStream(char* buff, int startIndex, int endI
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -408,7 +408,7 @@ bool RspAccountLoginPackage::FromStepStream(char* buff, int startIndex, int endI
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -461,7 +461,7 @@ bool RspAccountLoginPackage::FromStepStream(char* buff, int startIndex, int endI
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -599,13 +599,13 @@ int ReqAccountLogoutPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAccountLogout != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAccountLogoutField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAccountLogoutField::FieldID);
 		if (strlen(ReqAccountLogout->AccountID) >= sizeof(ReqAccountLogout->AccountID))
 		{
 			ReqAccountLogout->AccountID[sizeof(ReqAccountLogout->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqAccountLogout->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqAccountLogoutField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqAccountLogout->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAccountLogoutField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -616,7 +616,7 @@ bool ReqAccountLogoutPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -630,7 +630,7 @@ bool ReqAccountLogoutPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -750,24 +750,24 @@ int RspAccountLogoutPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAccountLogout != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAccountLogoutField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAccountLogoutField::FieldID);
 		if (strlen(RspAccountLogout->AccountID) >= sizeof(RspAccountLogout->AccountID))
 		{
 			RspAccountLogout->AccountID[sizeof(RspAccountLogout->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, RspAccountLogout->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, RspAccountLogoutField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, RspAccountLogout->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAccountLogoutField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -778,7 +778,7 @@ bool RspAccountLogoutPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -792,7 +792,7 @@ bool RspAccountLogoutPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -828,7 +828,7 @@ bool RspAccountLogoutPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -966,13 +966,13 @@ int ReqQryAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryAccountField::FieldID);
 		if (strlen(ReqQryAccount->AccountID) >= sizeof(ReqQryAccount->AccountID))
 		{
 			ReqQryAccount->AccountID[sizeof(ReqQryAccount->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqQryAccount->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqQryAccount->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryAccountField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -983,7 +983,7 @@ bool ReqQryAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -997,7 +997,7 @@ bool ReqQryAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -1117,29 +1117,29 @@ int RspQryAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Account != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, AccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, AccountField::FieldID);
 		if (strlen(Account->AccountID) >= sizeof(Account->AccountID))
 		{
 			Account->AccountID[sizeof(Account->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Account->AccountID);
-		WriteString(ppos, Items::AccountType, (int)Account->AccountType);
-		WriteString(ppos, Items::AccountStatus, (int)Account->AccountStatus);
-		WriteString(ppos, Items::TradeGroupID, Account->TradeGroupID);
-		WriteString(ppos, Items::RiskGroupID, Account->RiskGroupID);
-		WriteString(ppos, Items::CommissionGroupID, Account->CommissionGroupID);
-		WriteHexString(ppos, Items::FieldEnd, AccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, Account->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountType, (int)Account->AccountType);
+		StepUtility::WriteString(ppos, Items::AccountStatus, (int)Account->AccountStatus);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, Account->TradeGroupID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, Account->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::CommissionGroupID, Account->CommissionGroupID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, AccountField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -1150,7 +1150,7 @@ bool RspQryAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -1164,7 +1164,7 @@ bool RspQryAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -1225,7 +1225,7 @@ bool RspQryAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -1363,13 +1363,13 @@ int ReqQryHolderAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryHolderAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryHolderAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryHolderAccountField::FieldID);
 		if (strlen(ReqQryHolderAccount->AccountID) >= sizeof(ReqQryHolderAccount->AccountID))
 		{
 			ReqQryHolderAccount->AccountID[sizeof(ReqQryHolderAccount->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqQryHolderAccount->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryHolderAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqQryHolderAccount->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryHolderAccountField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -1380,7 +1380,7 @@ bool ReqQryHolderAccountPackage::FromStepStream(char* buff, int startIndex, int 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -1394,7 +1394,7 @@ bool ReqQryHolderAccountPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -1514,30 +1514,30 @@ int RspQryHolderAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (HolderAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, HolderAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, HolderAccountField::FieldID);
 		if (strlen(HolderAccount->ExchangeID) >= sizeof(HolderAccount->ExchangeID))
 		{
 			HolderAccount->ExchangeID[sizeof(HolderAccount->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, HolderAccount->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, HolderAccount->ExchangeID);
 		if (strlen(HolderAccount->HolderAccountID) >= sizeof(HolderAccount->HolderAccountID))
 		{
 			HolderAccount->HolderAccountID[sizeof(HolderAccount->HolderAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::HolderAccountID, HolderAccount->HolderAccountID);
-		WriteString(ppos, Items::PrimaryFlag, HolderAccount->PrimaryFlag);
-		WriteHexString(ppos, Items::FieldEnd, HolderAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::HolderAccountID, HolderAccount->HolderAccountID);
+		StepUtility::WriteString(ppos, Items::PrimaryFlag, HolderAccount->PrimaryFlag);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, HolderAccountField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -1548,7 +1548,7 @@ bool RspQryHolderAccountPackage::FromStepStream(char* buff, int startIndex, int 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -1562,7 +1562,7 @@ bool RspQryHolderAccountPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -1609,7 +1609,7 @@ bool RspQryHolderAccountPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -1747,13 +1747,13 @@ int ReqQryCapitalPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryCapital != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryCapitalField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryCapitalField::FieldID);
 		if (strlen(ReqQryCapital->AccountID) >= sizeof(ReqQryCapital->AccountID))
 		{
 			ReqQryCapital->AccountID[sizeof(ReqQryCapital->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqQryCapital->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryCapitalField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqQryCapital->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryCapitalField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -1764,7 +1764,7 @@ bool ReqQryCapitalPackage::FromStepStream(char* buff, int startIndex, int endInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -1778,7 +1778,7 @@ bool ReqQryCapitalPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -1898,51 +1898,51 @@ int RspQryCapitalPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Capital != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, CapitalField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, CapitalField::FieldID);
 		if (strlen(Capital->TradingDay) >= sizeof(Capital->TradingDay))
 		{
 			Capital->TradingDay[sizeof(Capital->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, Capital->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, Capital->TradingDay);
 		if (strlen(Capital->AccountID) >= sizeof(Capital->AccountID))
 		{
 			Capital->AccountID[sizeof(Capital->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Capital->AccountID);
-		WriteString(ppos, Items::AccountType, (int)Capital->AccountType);
-		WriteString(ppos, Items::Asset, Capital->Asset);
-		WriteString(ppos, Items::PreAsset, Capital->PreAsset);
-		WriteString(ppos, Items::CashAsset, Capital->CashAsset);
-		WriteString(ppos, Items::PreCashAsset, Capital->PreCashAsset);
-		WriteString(ppos, Items::Available, Capital->Available);
-		WriteString(ppos, Items::CashIn, Capital->CashIn);
-		WriteString(ppos, Items::CashOut, Capital->CashOut);
-		WriteString(ppos, Items::Margin, Capital->Margin);
-		WriteString(ppos, Items::Commission, Capital->Commission);
-		WriteString(ppos, Items::StampTax, Capital->StampTax);
-		WriteString(ppos, Items::TransferFee, Capital->TransferFee);
-		WriteString(ppos, Items::FrozenCash, Capital->FrozenCash);
-		WriteString(ppos, Items::FrozenMargin, Capital->FrozenMargin);
-		WriteString(ppos, Items::FrozenCommission, Capital->FrozenCommission);
-		WriteString(ppos, Items::FrozenStampTax, Capital->FrozenStampTax);
-		WriteString(ppos, Items::FrozenTransferFee, Capital->FrozenTransferFee);
-		WriteString(ppos, Items::MarketValue, Capital->MarketValue);
-		WriteString(ppos, Items::TotalProfit, Capital->TotalProfit);
-		WriteString(ppos, Items::TodayProfit, Capital->TodayProfit);
-		WriteString(ppos, Items::Deposit, Capital->Deposit);
-		WriteString(ppos, Items::Withdraw, Capital->Withdraw);
-		WriteHexString(ppos, Items::FieldEnd, CapitalField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, Capital->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountType, (int)Capital->AccountType);
+		StepUtility::WriteString(ppos, Items::Asset, Capital->Asset);
+		StepUtility::WriteString(ppos, Items::PreAsset, Capital->PreAsset);
+		StepUtility::WriteString(ppos, Items::CashAsset, Capital->CashAsset);
+		StepUtility::WriteString(ppos, Items::PreCashAsset, Capital->PreCashAsset);
+		StepUtility::WriteString(ppos, Items::Available, Capital->Available);
+		StepUtility::WriteString(ppos, Items::CashIn, Capital->CashIn);
+		StepUtility::WriteString(ppos, Items::CashOut, Capital->CashOut);
+		StepUtility::WriteString(ppos, Items::Margin, Capital->Margin);
+		StepUtility::WriteString(ppos, Items::Commission, Capital->Commission);
+		StepUtility::WriteString(ppos, Items::StampTax, Capital->StampTax);
+		StepUtility::WriteString(ppos, Items::TransferFee, Capital->TransferFee);
+		StepUtility::WriteString(ppos, Items::FrozenCash, Capital->FrozenCash);
+		StepUtility::WriteString(ppos, Items::FrozenMargin, Capital->FrozenMargin);
+		StepUtility::WriteString(ppos, Items::FrozenCommission, Capital->FrozenCommission);
+		StepUtility::WriteString(ppos, Items::FrozenStampTax, Capital->FrozenStampTax);
+		StepUtility::WriteString(ppos, Items::FrozenTransferFee, Capital->FrozenTransferFee);
+		StepUtility::WriteString(ppos, Items::MarketValue, Capital->MarketValue);
+		StepUtility::WriteString(ppos, Items::TotalProfit, Capital->TotalProfit);
+		StepUtility::WriteString(ppos, Items::TodayProfit, Capital->TodayProfit);
+		StepUtility::WriteString(ppos, Items::Deposit, Capital->Deposit);
+		StepUtility::WriteString(ppos, Items::Withdraw, Capital->Withdraw);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, CapitalField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -1953,7 +1953,7 @@ bool RspQryCapitalPackage::FromStepStream(char* buff, int startIndex, int endInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -1967,7 +1967,7 @@ bool RspQryCapitalPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -2119,7 +2119,7 @@ bool RspQryCapitalPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -2257,13 +2257,13 @@ int ReqQryPositionPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryPosition != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryPositionField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryPositionField::FieldID);
 		if (strlen(ReqQryPosition->AccountID) >= sizeof(ReqQryPosition->AccountID))
 		{
 			ReqQryPosition->AccountID[sizeof(ReqQryPosition->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqQryPosition->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryPositionField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqQryPosition->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryPositionField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -2274,7 +2274,7 @@ bool ReqQryPositionPackage::FromStepStream(char* buff, int startIndex, int endIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -2288,7 +2288,7 @@ bool ReqQryPositionPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -2408,61 +2408,61 @@ int RspQryPositionPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Position != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, PositionField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, PositionField::FieldID);
 		if (strlen(Position->TradingDay) >= sizeof(Position->TradingDay))
 		{
 			Position->TradingDay[sizeof(Position->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, Position->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, Position->TradingDay);
 		if (strlen(Position->AccountID) >= sizeof(Position->AccountID))
 		{
 			Position->AccountID[sizeof(Position->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Position->AccountID);
-		WriteString(ppos, Items::AccountType, (int)Position->AccountType);
+		StepUtility::WriteString(ppos, Items::AccountID, Position->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountType, (int)Position->AccountType);
 		if (strlen(Position->ExchangeID) >= sizeof(Position->ExchangeID))
 		{
 			Position->ExchangeID[sizeof(Position->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, Position->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, Position->ExchangeID);
 		if (strlen(Position->InstrumentID) >= sizeof(Position->InstrumentID))
 		{
 			Position->InstrumentID[sizeof(Position->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, Position->InstrumentID);
-		WriteString(ppos, Items::ProductClass, (int)Position->ProductClass);
-		WriteString(ppos, Items::PosiDirection, (int)Position->PosiDirection);
-		WriteString(ppos, Items::TotalPosition, Position->TotalPosition);
-		WriteString(ppos, Items::PositionFrozen, Position->PositionFrozen);
-		WriteString(ppos, Items::TodayPosition, Position->TodayPosition);
-		WriteString(ppos, Items::TotalCostPrice, Position->TotalCostPrice);
-		WriteString(ppos, Items::TodayCostPrice, Position->TodayCostPrice);
-		WriteString(ppos, Items::CashIn, Position->CashIn);
-		WriteString(ppos, Items::CashOut, Position->CashOut);
-		WriteString(ppos, Items::Margin, Position->Margin);
-		WriteString(ppos, Items::Commission, Position->Commission);
-		WriteString(ppos, Items::StampTax, Position->StampTax);
-		WriteString(ppos, Items::TransferFee, Position->TransferFee);
-		WriteString(ppos, Items::MarketValue, Position->MarketValue);
-		WriteString(ppos, Items::VolumeMultiple, Position->VolumeMultiple);
-		WriteString(ppos, Items::TotalCost, Position->TotalCost);
-		WriteString(ppos, Items::TodayCost, Position->TodayCost);
-		WriteString(ppos, Items::TotalProfit, Position->TotalProfit);
-		WriteString(ppos, Items::TodayProfit, Position->TodayProfit);
-		WriteString(ppos, Items::LastPrice, Position->LastPrice);
-		WriteString(ppos, Items::PrePrice, Position->PrePrice);
-		WriteHexString(ppos, Items::FieldEnd, PositionField::FieldID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, Position->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)Position->ProductClass);
+		StepUtility::WriteString(ppos, Items::PosiDirection, (int)Position->PosiDirection);
+		StepUtility::WriteString(ppos, Items::TotalPosition, Position->TotalPosition);
+		StepUtility::WriteString(ppos, Items::PositionFrozen, Position->PositionFrozen);
+		StepUtility::WriteString(ppos, Items::TodayPosition, Position->TodayPosition);
+		StepUtility::WriteString(ppos, Items::TotalCostPrice, Position->TotalCostPrice);
+		StepUtility::WriteString(ppos, Items::TodayCostPrice, Position->TodayCostPrice);
+		StepUtility::WriteString(ppos, Items::CashIn, Position->CashIn);
+		StepUtility::WriteString(ppos, Items::CashOut, Position->CashOut);
+		StepUtility::WriteString(ppos, Items::Margin, Position->Margin);
+		StepUtility::WriteString(ppos, Items::Commission, Position->Commission);
+		StepUtility::WriteString(ppos, Items::StampTax, Position->StampTax);
+		StepUtility::WriteString(ppos, Items::TransferFee, Position->TransferFee);
+		StepUtility::WriteString(ppos, Items::MarketValue, Position->MarketValue);
+		StepUtility::WriteString(ppos, Items::VolumeMultiple, Position->VolumeMultiple);
+		StepUtility::WriteString(ppos, Items::TotalCost, Position->TotalCost);
+		StepUtility::WriteString(ppos, Items::TodayCost, Position->TodayCost);
+		StepUtility::WriteString(ppos, Items::TotalProfit, Position->TotalProfit);
+		StepUtility::WriteString(ppos, Items::TodayProfit, Position->TodayProfit);
+		StepUtility::WriteString(ppos, Items::LastPrice, Position->LastPrice);
+		StepUtility::WriteString(ppos, Items::PrePrice, Position->PrePrice);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, PositionField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -2473,7 +2473,7 @@ bool RspQryPositionPackage::FromStepStream(char* buff, int startIndex, int endIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -2487,7 +2487,7 @@ bool RspQryPositionPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -2651,7 +2651,7 @@ bool RspQryPositionPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -2789,13 +2789,13 @@ int ReqQryOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryOrder != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryOrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryOrderField::FieldID);
 		if (strlen(ReqQryOrder->AccountID) >= sizeof(ReqQryOrder->AccountID))
 		{
 			ReqQryOrder->AccountID[sizeof(ReqQryOrder->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqQryOrder->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryOrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqQryOrder->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryOrderField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -2806,7 +2806,7 @@ bool ReqQryOrderPackage::FromStepStream(char* buff, int startIndex, int endIndex
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -2820,7 +2820,7 @@ bool ReqQryOrderPackage::FromStepStream(char* buff, int startIndex, int endIndex
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -2940,88 +2940,88 @@ int RspQryOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Order != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, OrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, OrderField::FieldID);
 		if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
 		{
 			Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, Order->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, Order->TradingDay);
 		if (strlen(Order->AccountID) >= sizeof(Order->AccountID))
 		{
 			Order->AccountID[sizeof(Order->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Order->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, Order->AccountID);
 		if (strlen(Order->ExchangeID) >= sizeof(Order->ExchangeID))
 		{
 			Order->ExchangeID[sizeof(Order->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
 		if (strlen(Order->InstrumentID) >= sizeof(Order->InstrumentID))
 		{
 			Order->InstrumentID[sizeof(Order->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
-		WriteString(ppos, Items::ProductClass, (int)Order->ProductClass);
-		WriteString(ppos, Items::OrderID, Order->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)Order->ProductClass);
+		StepUtility::WriteString(ppos, Items::OrderID, Order->OrderID);
 		if (strlen(Order->OrderSysID) >= sizeof(Order->OrderSysID))
 		{
 			Order->OrderSysID[sizeof(Order->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
-		WriteString(ppos, Items::Direction, (int)Order->Direction);
-		WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
-		WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
-		WriteString(ppos, Items::Price, Order->Price);
-		WriteString(ppos, Items::Volume, Order->Volume);
-		WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
-		WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
-		WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
-		WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
+		StepUtility::WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
+		StepUtility::WriteString(ppos, Items::Direction, (int)Order->Direction);
+		StepUtility::WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
+		StepUtility::WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
+		StepUtility::WriteString(ppos, Items::Price, Order->Price);
+		StepUtility::WriteString(ppos, Items::Volume, Order->Volume);
+		StepUtility::WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
+		StepUtility::WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
+		StepUtility::WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
+		StepUtility::WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
 		if (strlen(Order->StatusMsg) >= sizeof(Order->StatusMsg))
 		{
 			Order->StatusMsg[sizeof(Order->StatusMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
+		StepUtility::WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
 		if (strlen(Order->OrderDate) >= sizeof(Order->OrderDate))
 		{
 			Order->OrderDate[sizeof(Order->OrderDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderDate, Order->OrderDate);
+		StepUtility::WriteString(ppos, Items::OrderDate, Order->OrderDate);
 		if (strlen(Order->OrderTime) >= sizeof(Order->OrderTime))
 		{
 			Order->OrderTime[sizeof(Order->OrderTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderTime, Order->OrderTime);
+		StepUtility::WriteString(ppos, Items::OrderTime, Order->OrderTime);
 		if (strlen(Order->CancelDate) >= sizeof(Order->CancelDate))
 		{
 			Order->CancelDate[sizeof(Order->CancelDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::CancelDate, Order->CancelDate);
+		StepUtility::WriteString(ppos, Items::CancelDate, Order->CancelDate);
 		if (strlen(Order->CancelTime) >= sizeof(Order->CancelTime))
 		{
 			Order->CancelTime[sizeof(Order->CancelTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::CancelTime, Order->CancelTime);
-		WriteString(ppos, Items::SessionID, Order->SessionID);
-		WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
-		WriteString(ppos, Items::RequestID, Order->RequestID);
-		WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
-		WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
-		WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
-		WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
-		WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
-		WriteHexString(ppos, Items::FieldEnd, OrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::CancelTime, Order->CancelTime);
+		StepUtility::WriteString(ppos, Items::SessionID, Order->SessionID);
+		StepUtility::WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
+		StepUtility::WriteString(ppos, Items::RequestID, Order->RequestID);
+		StepUtility::WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
+		StepUtility::WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
+		StepUtility::WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
+		StepUtility::WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
+		StepUtility::WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, OrderField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -3032,7 +3032,7 @@ bool RspQryOrderPackage::FromStepStream(char* buff, int startIndex, int endIndex
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -3046,7 +3046,7 @@ bool RspQryOrderPackage::FromStepStream(char* buff, int startIndex, int endIndex
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -3231,7 +3231,7 @@ bool RspQryOrderPackage::FromStepStream(char* buff, int startIndex, int endIndex
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -3369,13 +3369,13 @@ int ReqQryTradePackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryTrade != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryTradeField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryTradeField::FieldID);
 		if (strlen(ReqQryTrade->AccountID) >= sizeof(ReqQryTrade->AccountID))
 		{
 			ReqQryTrade->AccountID[sizeof(ReqQryTrade->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqQryTrade->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryTradeField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqQryTrade->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryTradeField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -3386,7 +3386,7 @@ bool ReqQryTradePackage::FromStepStream(char* buff, int startIndex, int endIndex
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -3400,7 +3400,7 @@ bool ReqQryTradePackage::FromStepStream(char* buff, int startIndex, int endIndex
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -3520,70 +3520,70 @@ int RspQryTradePackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Trade != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, TradeField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, TradeField::FieldID);
 		if (strlen(Trade->TradingDay) >= sizeof(Trade->TradingDay))
 		{
 			Trade->TradingDay[sizeof(Trade->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, Trade->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, Trade->TradingDay);
 		if (strlen(Trade->AccountID) >= sizeof(Trade->AccountID))
 		{
 			Trade->AccountID[sizeof(Trade->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Trade->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, Trade->AccountID);
 		if (strlen(Trade->ExchangeID) >= sizeof(Trade->ExchangeID))
 		{
 			Trade->ExchangeID[sizeof(Trade->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, Trade->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, Trade->ExchangeID);
 		if (strlen(Trade->InstrumentID) >= sizeof(Trade->InstrumentID))
 		{
 			Trade->InstrumentID[sizeof(Trade->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, Trade->InstrumentID);
-		WriteString(ppos, Items::ProductClass, (int)Trade->ProductClass);
-		WriteString(ppos, Items::OrderID, Trade->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, Trade->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)Trade->ProductClass);
+		StepUtility::WriteString(ppos, Items::OrderID, Trade->OrderID);
 		if (strlen(Trade->OrderSysID) >= sizeof(Trade->OrderSysID))
 		{
 			Trade->OrderSysID[sizeof(Trade->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, Trade->OrderSysID);
+		StepUtility::WriteString(ppos, Items::OrderSysID, Trade->OrderSysID);
 		if (strlen(Trade->TradeID) >= sizeof(Trade->TradeID))
 		{
 			Trade->TradeID[sizeof(Trade->TradeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradeID, Trade->TradeID);
-		WriteString(ppos, Items::Direction, (int)Trade->Direction);
-		WriteString(ppos, Items::OffsetFlag, (int)Trade->OffsetFlag);
-		WriteString(ppos, Items::Price, Trade->Price);
-		WriteString(ppos, Items::Volume, Trade->Volume);
-		WriteString(ppos, Items::VolumeMultiple, Trade->VolumeMultiple);
-		WriteString(ppos, Items::TradeAmount, Trade->TradeAmount);
-		WriteString(ppos, Items::Commission, Trade->Commission);
-		WriteString(ppos, Items::StampTax, Trade->StampTax);
-		WriteString(ppos, Items::TransferFee, Trade->TransferFee);
+		StepUtility::WriteString(ppos, Items::TradeID, Trade->TradeID);
+		StepUtility::WriteString(ppos, Items::Direction, (int)Trade->Direction);
+		StepUtility::WriteString(ppos, Items::OffsetFlag, (int)Trade->OffsetFlag);
+		StepUtility::WriteString(ppos, Items::Price, Trade->Price);
+		StepUtility::WriteString(ppos, Items::Volume, Trade->Volume);
+		StepUtility::WriteString(ppos, Items::VolumeMultiple, Trade->VolumeMultiple);
+		StepUtility::WriteString(ppos, Items::TradeAmount, Trade->TradeAmount);
+		StepUtility::WriteString(ppos, Items::Commission, Trade->Commission);
+		StepUtility::WriteString(ppos, Items::StampTax, Trade->StampTax);
+		StepUtility::WriteString(ppos, Items::TransferFee, Trade->TransferFee);
 		if (strlen(Trade->TradeDate) >= sizeof(Trade->TradeDate))
 		{
 			Trade->TradeDate[sizeof(Trade->TradeDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradeDate, Trade->TradeDate);
+		StepUtility::WriteString(ppos, Items::TradeDate, Trade->TradeDate);
 		if (strlen(Trade->TradeTime) >= sizeof(Trade->TradeTime))
 		{
 			Trade->TradeTime[sizeof(Trade->TradeTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradeTime, Trade->TradeTime);
-		WriteHexString(ppos, Items::FieldEnd, TradeField::FieldID);
+		StepUtility::WriteString(ppos, Items::TradeTime, Trade->TradeTime);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, TradeField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -3594,7 +3594,7 @@ bool RspQryTradePackage::FromStepStream(char* buff, int startIndex, int endIndex
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -3608,7 +3608,7 @@ bool RspQryTradePackage::FromStepStream(char* buff, int startIndex, int endIndex
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -3741,7 +3741,7 @@ bool RspQryTradePackage::FromStepStream(char* buff, int startIndex, int endIndex
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -3879,18 +3879,18 @@ int ReqQryInstrumentPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryInstrument != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryInstrumentField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryInstrumentField::FieldID);
 		if (strlen(ReqQryInstrument->ExchangeID) >= sizeof(ReqQryInstrument->ExchangeID))
 		{
 			ReqQryInstrument->ExchangeID[sizeof(ReqQryInstrument->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqQryInstrument->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqQryInstrument->ExchangeID);
 		if (strlen(ReqQryInstrument->InstrumentID) >= sizeof(ReqQryInstrument->InstrumentID))
 		{
 			ReqQryInstrument->InstrumentID[sizeof(ReqQryInstrument->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, ReqQryInstrument->InstrumentID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryInstrumentField::FieldID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, ReqQryInstrument->InstrumentID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryInstrumentField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -3901,7 +3901,7 @@ bool ReqQryInstrumentPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -3915,7 +3915,7 @@ bool ReqQryInstrumentPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -4041,41 +4041,41 @@ int RspQryInstrumentPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Instrument != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, InstrumentField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, InstrumentField::FieldID);
 		if (strlen(Instrument->ExchangeID) >= sizeof(Instrument->ExchangeID))
 		{
 			Instrument->ExchangeID[sizeof(Instrument->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, Instrument->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, Instrument->ExchangeID);
 		if (strlen(Instrument->InstrumentID) >= sizeof(Instrument->InstrumentID))
 		{
 			Instrument->InstrumentID[sizeof(Instrument->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, Instrument->InstrumentID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, Instrument->InstrumentID);
 		if (strlen(Instrument->ExchangeInstID) >= sizeof(Instrument->ExchangeInstID))
 		{
 			Instrument->ExchangeInstID[sizeof(Instrument->ExchangeInstID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeInstID, Instrument->ExchangeInstID);
+		StepUtility::WriteString(ppos, Items::ExchangeInstID, Instrument->ExchangeInstID);
 		if (strlen(Instrument->InstrumentName) >= sizeof(Instrument->InstrumentName))
 		{
 			Instrument->InstrumentName[sizeof(Instrument->InstrumentName) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentName, Instrument->InstrumentName);
-		WriteString(ppos, Items::VolumeMultiple, Instrument->VolumeMultiple);
-		WriteString(ppos, Items::ProductClass, (int)Instrument->ProductClass);
-		WriteHexString(ppos, Items::FieldEnd, InstrumentField::FieldID);
+		StepUtility::WriteString(ppos, Items::InstrumentName, Instrument->InstrumentName);
+		StepUtility::WriteString(ppos, Items::VolumeMultiple, Instrument->VolumeMultiple);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)Instrument->ProductClass);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, InstrumentField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -4086,7 +4086,7 @@ bool RspQryInstrumentPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -4100,7 +4100,7 @@ bool RspQryInstrumentPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -4164,7 +4164,7 @@ bool RspQryInstrumentPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -4302,18 +4302,18 @@ int ReqQryOptionInstrumentPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryOptionInstrument != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryOptionInstrumentField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryOptionInstrumentField::FieldID);
 		if (strlen(ReqQryOptionInstrument->ExchangeID) >= sizeof(ReqQryOptionInstrument->ExchangeID))
 		{
 			ReqQryOptionInstrument->ExchangeID[sizeof(ReqQryOptionInstrument->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqQryOptionInstrument->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqQryOptionInstrument->ExchangeID);
 		if (strlen(ReqQryOptionInstrument->InstrumentID) >= sizeof(ReqQryOptionInstrument->InstrumentID))
 		{
 			ReqQryOptionInstrument->InstrumentID[sizeof(ReqQryOptionInstrument->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, ReqQryOptionInstrument->InstrumentID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryOptionInstrumentField::FieldID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, ReqQryOptionInstrument->InstrumentID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryOptionInstrumentField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -4324,7 +4324,7 @@ bool ReqQryOptionInstrumentPackage::FromStepStream(char* buff, int startIndex, i
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -4338,7 +4338,7 @@ bool ReqQryOptionInstrumentPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -4464,56 +4464,56 @@ int RspQryOptionInstrumentPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (OptionInstrument != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, OptionInstrumentField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, OptionInstrumentField::FieldID);
 		if (strlen(OptionInstrument->ExchangeID) >= sizeof(OptionInstrument->ExchangeID))
 		{
 			OptionInstrument->ExchangeID[sizeof(OptionInstrument->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, OptionInstrument->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, OptionInstrument->ExchangeID);
 		if (strlen(OptionInstrument->InstrumentID) >= sizeof(OptionInstrument->InstrumentID))
 		{
 			OptionInstrument->InstrumentID[sizeof(OptionInstrument->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, OptionInstrument->InstrumentID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, OptionInstrument->InstrumentID);
 		if (strlen(OptionInstrument->ExchangeInstID) >= sizeof(OptionInstrument->ExchangeInstID))
 		{
 			OptionInstrument->ExchangeInstID[sizeof(OptionInstrument->ExchangeInstID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeInstID, OptionInstrument->ExchangeInstID);
+		StepUtility::WriteString(ppos, Items::ExchangeInstID, OptionInstrument->ExchangeInstID);
 		if (strlen(OptionInstrument->InstrumentName) >= sizeof(OptionInstrument->InstrumentName))
 		{
 			OptionInstrument->InstrumentName[sizeof(OptionInstrument->InstrumentName) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentName, OptionInstrument->InstrumentName);
-		WriteString(ppos, Items::VolumeMultiple, OptionInstrument->VolumeMultiple);
-		WriteString(ppos, Items::OptionType, (int)OptionInstrument->OptionType);
+		StepUtility::WriteString(ppos, Items::InstrumentName, OptionInstrument->InstrumentName);
+		StepUtility::WriteString(ppos, Items::VolumeMultiple, OptionInstrument->VolumeMultiple);
+		StepUtility::WriteString(ppos, Items::OptionType, (int)OptionInstrument->OptionType);
 		if (strlen(OptionInstrument->UnderlyingInstrumentID) >= sizeof(OptionInstrument->UnderlyingInstrumentID))
 		{
 			OptionInstrument->UnderlyingInstrumentID[sizeof(OptionInstrument->UnderlyingInstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UnderlyingInstrumentID, OptionInstrument->UnderlyingInstrumentID);
-		WriteString(ppos, Items::ExecutePrice, OptionInstrument->ExecutePrice);
-		WriteString(ppos, Items::UnitMargin, OptionInstrument->UnitMargin);
-		WriteString(ppos, Items::PriceTick, OptionInstrument->PriceTick);
-		WriteString(ppos, Items::MaxLimitOrderVolume, OptionInstrument->MaxLimitOrderVolume);
-		WriteString(ppos, Items::MaxMarketOrderVolume, OptionInstrument->MaxMarketOrderVolume);
+		StepUtility::WriteString(ppos, Items::UnderlyingInstrumentID, OptionInstrument->UnderlyingInstrumentID);
+		StepUtility::WriteString(ppos, Items::ExecutePrice, OptionInstrument->ExecutePrice);
+		StepUtility::WriteString(ppos, Items::UnitMargin, OptionInstrument->UnitMargin);
+		StepUtility::WriteString(ppos, Items::PriceTick, OptionInstrument->PriceTick);
+		StepUtility::WriteString(ppos, Items::MaxLimitOrderVolume, OptionInstrument->MaxLimitOrderVolume);
+		StepUtility::WriteString(ppos, Items::MaxMarketOrderVolume, OptionInstrument->MaxMarketOrderVolume);
 		if (strlen(OptionInstrument->ExpiringDate) >= sizeof(OptionInstrument->ExpiringDate))
 		{
 			OptionInstrument->ExpiringDate[sizeof(OptionInstrument->ExpiringDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExpiringDate, OptionInstrument->ExpiringDate);
-		WriteHexString(ppos, Items::FieldEnd, OptionInstrumentField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExpiringDate, OptionInstrument->ExpiringDate);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, OptionInstrumentField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -4524,7 +4524,7 @@ bool RspQryOptionInstrumentPackage::FromStepStream(char* buff, int startIndex, i
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -4538,7 +4538,7 @@ bool RspQryOptionInstrumentPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -4639,7 +4639,7 @@ bool RspQryOptionInstrumentPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -4777,19 +4777,19 @@ int ReqQryCommissionRatePackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryCommissionRate != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryCommissionRateField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryCommissionRateField::FieldID);
 		if (strlen(ReqQryCommissionRate->AccountID) >= sizeof(ReqQryCommissionRate->AccountID))
 		{
 			ReqQryCommissionRate->AccountID[sizeof(ReqQryCommissionRate->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqQryCommissionRate->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqQryCommissionRate->AccountID);
 		if (strlen(ReqQryCommissionRate->ExchangeID) >= sizeof(ReqQryCommissionRate->ExchangeID))
 		{
 			ReqQryCommissionRate->ExchangeID[sizeof(ReqQryCommissionRate->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqQryCommissionRate->ExchangeID);
-		WriteString(ppos, Items::ProductClass, (int)ReqQryCommissionRate->ProductClass);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryCommissionRateField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqQryCommissionRate->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)ReqQryCommissionRate->ProductClass);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryCommissionRateField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -4800,7 +4800,7 @@ bool ReqQryCommissionRatePackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -4814,7 +4814,7 @@ bool ReqQryCommissionRatePackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -4945,40 +4945,40 @@ int RspQryCommissionRatePackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (CommissionRate != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, CommissionRateField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, CommissionRateField::FieldID);
 		if (strlen(CommissionRate->AccountID) >= sizeof(CommissionRate->AccountID))
 		{
 			CommissionRate->AccountID[sizeof(CommissionRate->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, CommissionRate->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, CommissionRate->AccountID);
 		if (strlen(CommissionRate->ExchangeID) >= sizeof(CommissionRate->ExchangeID))
 		{
 			CommissionRate->ExchangeID[sizeof(CommissionRate->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, CommissionRate->ExchangeID);
-		WriteString(ppos, Items::ProductClass, (int)CommissionRate->ProductClass);
-		WriteString(ppos, Items::OpenBuyByMoney, CommissionRate->OpenBuyByMoney);
-		WriteString(ppos, Items::OpenSellByMoney, CommissionRate->OpenSellByMoney);
-		WriteString(ppos, Items::CloseBuyByMoney, CommissionRate->CloseBuyByMoney);
-		WriteString(ppos, Items::CloseSellByMoney, CommissionRate->CloseSellByMoney);
-		WriteString(ppos, Items::OpenBuyByVolume, CommissionRate->OpenBuyByVolume);
-		WriteString(ppos, Items::OpenSellByVolume, CommissionRate->OpenSellByVolume);
-		WriteString(ppos, Items::CloseBuyByVolume, CommissionRate->CloseBuyByVolume);
-		WriteString(ppos, Items::CloseSellByVolume, CommissionRate->CloseSellByVolume);
-		WriteString(ppos, Items::MinCommission, CommissionRate->MinCommission);
-		WriteString(ppos, Items::MaxCommission, CommissionRate->MaxCommission);
-		WriteHexString(ppos, Items::FieldEnd, CommissionRateField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, CommissionRate->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)CommissionRate->ProductClass);
+		StepUtility::WriteString(ppos, Items::OpenBuyByMoney, CommissionRate->OpenBuyByMoney);
+		StepUtility::WriteString(ppos, Items::OpenSellByMoney, CommissionRate->OpenSellByMoney);
+		StepUtility::WriteString(ppos, Items::CloseBuyByMoney, CommissionRate->CloseBuyByMoney);
+		StepUtility::WriteString(ppos, Items::CloseSellByMoney, CommissionRate->CloseSellByMoney);
+		StepUtility::WriteString(ppos, Items::OpenBuyByVolume, CommissionRate->OpenBuyByVolume);
+		StepUtility::WriteString(ppos, Items::OpenSellByVolume, CommissionRate->OpenSellByVolume);
+		StepUtility::WriteString(ppos, Items::CloseBuyByVolume, CommissionRate->CloseBuyByVolume);
+		StepUtility::WriteString(ppos, Items::CloseSellByVolume, CommissionRate->CloseSellByVolume);
+		StepUtility::WriteString(ppos, Items::MinCommission, CommissionRate->MinCommission);
+		StepUtility::WriteString(ppos, Items::MaxCommission, CommissionRate->MaxCommission);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, CommissionRateField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -4989,7 +4989,7 @@ bool RspQryCommissionRatePackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -5003,7 +5003,7 @@ bool RspQryCommissionRatePackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -5100,7 +5100,7 @@ bool RspQryCommissionRatePackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -5238,13 +5238,13 @@ int ReqQryMoneyTransferPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryMoneyTransfer != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryMoneyTransferField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryMoneyTransferField::FieldID);
 		if (strlen(ReqQryMoneyTransfer->AccountID) >= sizeof(ReqQryMoneyTransfer->AccountID))
 		{
 			ReqQryMoneyTransfer->AccountID[sizeof(ReqQryMoneyTransfer->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqQryMoneyTransfer->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryMoneyTransferField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqQryMoneyTransfer->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryMoneyTransferField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -5255,7 +5255,7 @@ bool ReqQryMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -5269,7 +5269,7 @@ bool ReqQryMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -5389,53 +5389,53 @@ int RspQryMoneyTransferPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (MoneyTransfer != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, MoneyTransferField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, MoneyTransferField::FieldID);
 		if (strlen(MoneyTransfer->TradingDay) >= sizeof(MoneyTransfer->TradingDay))
 		{
 			MoneyTransfer->TradingDay[sizeof(MoneyTransfer->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, MoneyTransfer->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, MoneyTransfer->TradingDay);
 		if (strlen(MoneyTransfer->AccountID) >= sizeof(MoneyTransfer->AccountID))
 		{
 			MoneyTransfer->AccountID[sizeof(MoneyTransfer->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, MoneyTransfer->AccountID);
-		WriteString(ppos, Items::MoneyTransferID, MoneyTransfer->MoneyTransferID);
-		WriteString(ppos, Items::AccountType, (int)MoneyTransfer->AccountType);
-		WriteString(ppos, Items::TransferDirection, (int)MoneyTransfer->TransferDirection);
-		WriteString(ppos, Items::TransferAmount, MoneyTransfer->TransferAmount);
+		StepUtility::WriteString(ppos, Items::AccountID, MoneyTransfer->AccountID);
+		StepUtility::WriteString(ppos, Items::MoneyTransferID, MoneyTransfer->MoneyTransferID);
+		StepUtility::WriteString(ppos, Items::AccountType, (int)MoneyTransfer->AccountType);
+		StepUtility::WriteString(ppos, Items::TransferDirection, (int)MoneyTransfer->TransferDirection);
+		StepUtility::WriteString(ppos, Items::TransferAmount, MoneyTransfer->TransferAmount);
 		if (strlen(MoneyTransfer->InfoMessage) >= sizeof(MoneyTransfer->InfoMessage))
 		{
 			MoneyTransfer->InfoMessage[sizeof(MoneyTransfer->InfoMessage) - 1] = 0;
 		}
-		WriteString(ppos, Items::InfoMessage, MoneyTransfer->InfoMessage);
+		StepUtility::WriteString(ppos, Items::InfoMessage, MoneyTransfer->InfoMessage);
 		if (strlen(MoneyTransfer->UserID) >= sizeof(MoneyTransfer->UserID))
 		{
 			MoneyTransfer->UserID[sizeof(MoneyTransfer->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, MoneyTransfer->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, MoneyTransfer->UserID);
 		if (strlen(MoneyTransfer->TransferDate) >= sizeof(MoneyTransfer->TransferDate))
 		{
 			MoneyTransfer->TransferDate[sizeof(MoneyTransfer->TransferDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::TransferDate, MoneyTransfer->TransferDate);
+		StepUtility::WriteString(ppos, Items::TransferDate, MoneyTransfer->TransferDate);
 		if (strlen(MoneyTransfer->TransferTime) >= sizeof(MoneyTransfer->TransferTime))
 		{
 			MoneyTransfer->TransferTime[sizeof(MoneyTransfer->TransferTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::TransferTime, MoneyTransfer->TransferTime);
-		WriteHexString(ppos, Items::FieldEnd, MoneyTransferField::FieldID);
+		StepUtility::WriteString(ppos, Items::TransferTime, MoneyTransfer->TransferTime);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, MoneyTransferField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -5446,7 +5446,7 @@ bool RspQryMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -5460,7 +5460,7 @@ bool RspQryMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -5546,7 +5546,7 @@ bool RspQryMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -5684,29 +5684,29 @@ int ReqInsertOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqInsertOrder != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqInsertOrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqInsertOrderField::FieldID);
 		if (strlen(ReqInsertOrder->AccountID) >= sizeof(ReqInsertOrder->AccountID))
 		{
 			ReqInsertOrder->AccountID[sizeof(ReqInsertOrder->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqInsertOrder->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqInsertOrder->AccountID);
 		if (strlen(ReqInsertOrder->ExchangeID) >= sizeof(ReqInsertOrder->ExchangeID))
 		{
 			ReqInsertOrder->ExchangeID[sizeof(ReqInsertOrder->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqInsertOrder->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqInsertOrder->ExchangeID);
 		if (strlen(ReqInsertOrder->InstrumentID) >= sizeof(ReqInsertOrder->InstrumentID))
 		{
 			ReqInsertOrder->InstrumentID[sizeof(ReqInsertOrder->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, ReqInsertOrder->InstrumentID);
-		WriteString(ppos, Items::Direction, (int)ReqInsertOrder->Direction);
-		WriteString(ppos, Items::OffsetFlag, (int)ReqInsertOrder->OffsetFlag);
-		WriteString(ppos, Items::OrderPriceType, (int)ReqInsertOrder->OrderPriceType);
-		WriteString(ppos, Items::Price, ReqInsertOrder->Price);
-		WriteString(ppos, Items::Volume, ReqInsertOrder->Volume);
-		WriteString(ppos, Items::ClientOrderID, ReqInsertOrder->ClientOrderID);
-		WriteHexString(ppos, Items::FieldEnd, ReqInsertOrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, ReqInsertOrder->InstrumentID);
+		StepUtility::WriteString(ppos, Items::Direction, (int)ReqInsertOrder->Direction);
+		StepUtility::WriteString(ppos, Items::OffsetFlag, (int)ReqInsertOrder->OffsetFlag);
+		StepUtility::WriteString(ppos, Items::OrderPriceType, (int)ReqInsertOrder->OrderPriceType);
+		StepUtility::WriteString(ppos, Items::Price, ReqInsertOrder->Price);
+		StepUtility::WriteString(ppos, Items::Volume, ReqInsertOrder->Volume);
+		StepUtility::WriteString(ppos, Items::ClientOrderID, ReqInsertOrder->ClientOrderID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqInsertOrderField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -5717,7 +5717,7 @@ bool ReqInsertOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -5731,7 +5731,7 @@ bool ReqInsertOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -5893,88 +5893,88 @@ int RspInsertOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Order != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, OrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, OrderField::FieldID);
 		if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
 		{
 			Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, Order->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, Order->TradingDay);
 		if (strlen(Order->AccountID) >= sizeof(Order->AccountID))
 		{
 			Order->AccountID[sizeof(Order->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Order->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, Order->AccountID);
 		if (strlen(Order->ExchangeID) >= sizeof(Order->ExchangeID))
 		{
 			Order->ExchangeID[sizeof(Order->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
 		if (strlen(Order->InstrumentID) >= sizeof(Order->InstrumentID))
 		{
 			Order->InstrumentID[sizeof(Order->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
-		WriteString(ppos, Items::ProductClass, (int)Order->ProductClass);
-		WriteString(ppos, Items::OrderID, Order->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)Order->ProductClass);
+		StepUtility::WriteString(ppos, Items::OrderID, Order->OrderID);
 		if (strlen(Order->OrderSysID) >= sizeof(Order->OrderSysID))
 		{
 			Order->OrderSysID[sizeof(Order->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
-		WriteString(ppos, Items::Direction, (int)Order->Direction);
-		WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
-		WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
-		WriteString(ppos, Items::Price, Order->Price);
-		WriteString(ppos, Items::Volume, Order->Volume);
-		WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
-		WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
-		WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
-		WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
+		StepUtility::WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
+		StepUtility::WriteString(ppos, Items::Direction, (int)Order->Direction);
+		StepUtility::WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
+		StepUtility::WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
+		StepUtility::WriteString(ppos, Items::Price, Order->Price);
+		StepUtility::WriteString(ppos, Items::Volume, Order->Volume);
+		StepUtility::WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
+		StepUtility::WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
+		StepUtility::WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
+		StepUtility::WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
 		if (strlen(Order->StatusMsg) >= sizeof(Order->StatusMsg))
 		{
 			Order->StatusMsg[sizeof(Order->StatusMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
+		StepUtility::WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
 		if (strlen(Order->OrderDate) >= sizeof(Order->OrderDate))
 		{
 			Order->OrderDate[sizeof(Order->OrderDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderDate, Order->OrderDate);
+		StepUtility::WriteString(ppos, Items::OrderDate, Order->OrderDate);
 		if (strlen(Order->OrderTime) >= sizeof(Order->OrderTime))
 		{
 			Order->OrderTime[sizeof(Order->OrderTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderTime, Order->OrderTime);
+		StepUtility::WriteString(ppos, Items::OrderTime, Order->OrderTime);
 		if (strlen(Order->CancelDate) >= sizeof(Order->CancelDate))
 		{
 			Order->CancelDate[sizeof(Order->CancelDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::CancelDate, Order->CancelDate);
+		StepUtility::WriteString(ppos, Items::CancelDate, Order->CancelDate);
 		if (strlen(Order->CancelTime) >= sizeof(Order->CancelTime))
 		{
 			Order->CancelTime[sizeof(Order->CancelTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::CancelTime, Order->CancelTime);
-		WriteString(ppos, Items::SessionID, Order->SessionID);
-		WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
-		WriteString(ppos, Items::RequestID, Order->RequestID);
-		WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
-		WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
-		WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
-		WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
-		WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
-		WriteHexString(ppos, Items::FieldEnd, OrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::CancelTime, Order->CancelTime);
+		StepUtility::WriteString(ppos, Items::SessionID, Order->SessionID);
+		StepUtility::WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
+		StepUtility::WriteString(ppos, Items::RequestID, Order->RequestID);
+		StepUtility::WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
+		StepUtility::WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
+		StepUtility::WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
+		StepUtility::WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
+		StepUtility::WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, OrderField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -5985,7 +5985,7 @@ bool RspInsertOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -5999,7 +5999,7 @@ bool RspInsertOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -6184,7 +6184,7 @@ bool RspInsertOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -6322,31 +6322,31 @@ int ReqCancelOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqCancelOrder != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqCancelOrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqCancelOrderField::FieldID);
 		if (strlen(ReqCancelOrder->AccountID) >= sizeof(ReqCancelOrder->AccountID))
 		{
 			ReqCancelOrder->AccountID[sizeof(ReqCancelOrder->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqCancelOrder->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqCancelOrder->AccountID);
 		if (strlen(ReqCancelOrder->ExchangeID) >= sizeof(ReqCancelOrder->ExchangeID))
 		{
 			ReqCancelOrder->ExchangeID[sizeof(ReqCancelOrder->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqCancelOrder->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqCancelOrder->ExchangeID);
 		if (strlen(ReqCancelOrder->InstrumentID) >= sizeof(ReqCancelOrder->InstrumentID))
 		{
 			ReqCancelOrder->InstrumentID[sizeof(ReqCancelOrder->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, ReqCancelOrder->InstrumentID);
-		WriteString(ppos, Items::ClientCancelOrderID, ReqCancelOrder->ClientCancelOrderID);
-		WriteString(ppos, Items::OrderID, ReqCancelOrder->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, ReqCancelOrder->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ClientCancelOrderID, ReqCancelOrder->ClientCancelOrderID);
+		StepUtility::WriteString(ppos, Items::OrderID, ReqCancelOrder->OrderID);
 		if (strlen(ReqCancelOrder->OrderSysID) >= sizeof(ReqCancelOrder->OrderSysID))
 		{
 			ReqCancelOrder->OrderSysID[sizeof(ReqCancelOrder->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, ReqCancelOrder->OrderSysID);
-		WriteString(ppos, Items::ClientOrderID, ReqCancelOrder->ClientOrderID);
-		WriteHexString(ppos, Items::FieldEnd, ReqCancelOrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::OrderSysID, ReqCancelOrder->OrderSysID);
+		StepUtility::WriteString(ppos, Items::ClientOrderID, ReqCancelOrder->ClientOrderID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqCancelOrderField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -6357,7 +6357,7 @@ bool ReqCancelOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -6371,7 +6371,7 @@ bool ReqCancelOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -6524,42 +6524,42 @@ int RspCancelOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (CancelOrder != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, CancelOrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, CancelOrderField::FieldID);
 		if (strlen(CancelOrder->AccountID) >= sizeof(CancelOrder->AccountID))
 		{
 			CancelOrder->AccountID[sizeof(CancelOrder->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, CancelOrder->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, CancelOrder->AccountID);
 		if (strlen(CancelOrder->ExchangeID) >= sizeof(CancelOrder->ExchangeID))
 		{
 			CancelOrder->ExchangeID[sizeof(CancelOrder->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, CancelOrder->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, CancelOrder->ExchangeID);
 		if (strlen(CancelOrder->InstrumentID) >= sizeof(CancelOrder->InstrumentID))
 		{
 			CancelOrder->InstrumentID[sizeof(CancelOrder->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, CancelOrder->InstrumentID);
-		WriteString(ppos, Items::ClientCancelOrderID, CancelOrder->ClientCancelOrderID);
-		WriteString(ppos, Items::OrderID, CancelOrder->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, CancelOrder->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ClientCancelOrderID, CancelOrder->ClientCancelOrderID);
+		StepUtility::WriteString(ppos, Items::OrderID, CancelOrder->OrderID);
 		if (strlen(CancelOrder->OrderSysID) >= sizeof(CancelOrder->OrderSysID))
 		{
 			CancelOrder->OrderSysID[sizeof(CancelOrder->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, CancelOrder->OrderSysID);
-		WriteString(ppos, Items::ClientOrderID, CancelOrder->ClientOrderID);
-		WriteHexString(ppos, Items::FieldEnd, CancelOrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::OrderSysID, CancelOrder->OrderSysID);
+		StepUtility::WriteString(ppos, Items::ClientOrderID, CancelOrder->ClientOrderID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, CancelOrderField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -6570,7 +6570,7 @@ bool RspCancelOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -6584,7 +6584,7 @@ bool RspCancelOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -6653,7 +6653,7 @@ bool RspCancelOrderPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -6791,77 +6791,77 @@ int RtnOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Order != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, OrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, OrderField::FieldID);
 		if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
 		{
 			Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, Order->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, Order->TradingDay);
 		if (strlen(Order->AccountID) >= sizeof(Order->AccountID))
 		{
 			Order->AccountID[sizeof(Order->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Order->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, Order->AccountID);
 		if (strlen(Order->ExchangeID) >= sizeof(Order->ExchangeID))
 		{
 			Order->ExchangeID[sizeof(Order->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
 		if (strlen(Order->InstrumentID) >= sizeof(Order->InstrumentID))
 		{
 			Order->InstrumentID[sizeof(Order->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
-		WriteString(ppos, Items::ProductClass, (int)Order->ProductClass);
-		WriteString(ppos, Items::OrderID, Order->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)Order->ProductClass);
+		StepUtility::WriteString(ppos, Items::OrderID, Order->OrderID);
 		if (strlen(Order->OrderSysID) >= sizeof(Order->OrderSysID))
 		{
 			Order->OrderSysID[sizeof(Order->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
-		WriteString(ppos, Items::Direction, (int)Order->Direction);
-		WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
-		WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
-		WriteString(ppos, Items::Price, Order->Price);
-		WriteString(ppos, Items::Volume, Order->Volume);
-		WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
-		WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
-		WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
-		WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
+		StepUtility::WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
+		StepUtility::WriteString(ppos, Items::Direction, (int)Order->Direction);
+		StepUtility::WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
+		StepUtility::WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
+		StepUtility::WriteString(ppos, Items::Price, Order->Price);
+		StepUtility::WriteString(ppos, Items::Volume, Order->Volume);
+		StepUtility::WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
+		StepUtility::WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
+		StepUtility::WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
+		StepUtility::WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
 		if (strlen(Order->StatusMsg) >= sizeof(Order->StatusMsg))
 		{
 			Order->StatusMsg[sizeof(Order->StatusMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
+		StepUtility::WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
 		if (strlen(Order->OrderDate) >= sizeof(Order->OrderDate))
 		{
 			Order->OrderDate[sizeof(Order->OrderDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderDate, Order->OrderDate);
+		StepUtility::WriteString(ppos, Items::OrderDate, Order->OrderDate);
 		if (strlen(Order->OrderTime) >= sizeof(Order->OrderTime))
 		{
 			Order->OrderTime[sizeof(Order->OrderTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderTime, Order->OrderTime);
+		StepUtility::WriteString(ppos, Items::OrderTime, Order->OrderTime);
 		if (strlen(Order->CancelDate) >= sizeof(Order->CancelDate))
 		{
 			Order->CancelDate[sizeof(Order->CancelDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::CancelDate, Order->CancelDate);
+		StepUtility::WriteString(ppos, Items::CancelDate, Order->CancelDate);
 		if (strlen(Order->CancelTime) >= sizeof(Order->CancelTime))
 		{
 			Order->CancelTime[sizeof(Order->CancelTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::CancelTime, Order->CancelTime);
-		WriteString(ppos, Items::SessionID, Order->SessionID);
-		WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
-		WriteString(ppos, Items::RequestID, Order->RequestID);
-		WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
-		WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
-		WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
-		WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
-		WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
-		WriteHexString(ppos, Items::FieldEnd, OrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::CancelTime, Order->CancelTime);
+		StepUtility::WriteString(ppos, Items::SessionID, Order->SessionID);
+		StepUtility::WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
+		StepUtility::WriteString(ppos, Items::RequestID, Order->RequestID);
+		StepUtility::WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
+		StepUtility::WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
+		StepUtility::WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
+		StepUtility::WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
+		StepUtility::WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, OrderField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -6872,7 +6872,7 @@ bool RtnOrderPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -6886,7 +6886,7 @@ bool RtnOrderPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -7150,59 +7150,59 @@ int RtnTradePackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Trade != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, TradeField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, TradeField::FieldID);
 		if (strlen(Trade->TradingDay) >= sizeof(Trade->TradingDay))
 		{
 			Trade->TradingDay[sizeof(Trade->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, Trade->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, Trade->TradingDay);
 		if (strlen(Trade->AccountID) >= sizeof(Trade->AccountID))
 		{
 			Trade->AccountID[sizeof(Trade->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Trade->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, Trade->AccountID);
 		if (strlen(Trade->ExchangeID) >= sizeof(Trade->ExchangeID))
 		{
 			Trade->ExchangeID[sizeof(Trade->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, Trade->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, Trade->ExchangeID);
 		if (strlen(Trade->InstrumentID) >= sizeof(Trade->InstrumentID))
 		{
 			Trade->InstrumentID[sizeof(Trade->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, Trade->InstrumentID);
-		WriteString(ppos, Items::ProductClass, (int)Trade->ProductClass);
-		WriteString(ppos, Items::OrderID, Trade->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, Trade->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)Trade->ProductClass);
+		StepUtility::WriteString(ppos, Items::OrderID, Trade->OrderID);
 		if (strlen(Trade->OrderSysID) >= sizeof(Trade->OrderSysID))
 		{
 			Trade->OrderSysID[sizeof(Trade->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, Trade->OrderSysID);
+		StepUtility::WriteString(ppos, Items::OrderSysID, Trade->OrderSysID);
 		if (strlen(Trade->TradeID) >= sizeof(Trade->TradeID))
 		{
 			Trade->TradeID[sizeof(Trade->TradeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradeID, Trade->TradeID);
-		WriteString(ppos, Items::Direction, (int)Trade->Direction);
-		WriteString(ppos, Items::OffsetFlag, (int)Trade->OffsetFlag);
-		WriteString(ppos, Items::Price, Trade->Price);
-		WriteString(ppos, Items::Volume, Trade->Volume);
-		WriteString(ppos, Items::VolumeMultiple, Trade->VolumeMultiple);
-		WriteString(ppos, Items::TradeAmount, Trade->TradeAmount);
-		WriteString(ppos, Items::Commission, Trade->Commission);
-		WriteString(ppos, Items::StampTax, Trade->StampTax);
-		WriteString(ppos, Items::TransferFee, Trade->TransferFee);
+		StepUtility::WriteString(ppos, Items::TradeID, Trade->TradeID);
+		StepUtility::WriteString(ppos, Items::Direction, (int)Trade->Direction);
+		StepUtility::WriteString(ppos, Items::OffsetFlag, (int)Trade->OffsetFlag);
+		StepUtility::WriteString(ppos, Items::Price, Trade->Price);
+		StepUtility::WriteString(ppos, Items::Volume, Trade->Volume);
+		StepUtility::WriteString(ppos, Items::VolumeMultiple, Trade->VolumeMultiple);
+		StepUtility::WriteString(ppos, Items::TradeAmount, Trade->TradeAmount);
+		StepUtility::WriteString(ppos, Items::Commission, Trade->Commission);
+		StepUtility::WriteString(ppos, Items::StampTax, Trade->StampTax);
+		StepUtility::WriteString(ppos, Items::TransferFee, Trade->TransferFee);
 		if (strlen(Trade->TradeDate) >= sizeof(Trade->TradeDate))
 		{
 			Trade->TradeDate[sizeof(Trade->TradeDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradeDate, Trade->TradeDate);
+		StepUtility::WriteString(ppos, Items::TradeDate, Trade->TradeDate);
 		if (strlen(Trade->TradeTime) >= sizeof(Trade->TradeTime))
 		{
 			Trade->TradeTime[sizeof(Trade->TradeTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradeTime, Trade->TradeTime);
-		WriteHexString(ppos, Items::FieldEnd, TradeField::FieldID);
+		StepUtility::WriteString(ppos, Items::TradeTime, Trade->TradeTime);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, TradeField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -7213,7 +7213,7 @@ bool RtnTradePackage::FromStepStream(char* buff, int startIndex, int endIndex)
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -7227,7 +7227,7 @@ bool RtnTradePackage::FromStepStream(char* buff, int startIndex, int endIndex)
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -7439,42 +7439,42 @@ int RtnMoneyTransferPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (MoneyTransfer != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, MoneyTransferField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, MoneyTransferField::FieldID);
 		if (strlen(MoneyTransfer->TradingDay) >= sizeof(MoneyTransfer->TradingDay))
 		{
 			MoneyTransfer->TradingDay[sizeof(MoneyTransfer->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, MoneyTransfer->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, MoneyTransfer->TradingDay);
 		if (strlen(MoneyTransfer->AccountID) >= sizeof(MoneyTransfer->AccountID))
 		{
 			MoneyTransfer->AccountID[sizeof(MoneyTransfer->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, MoneyTransfer->AccountID);
-		WriteString(ppos, Items::MoneyTransferID, MoneyTransfer->MoneyTransferID);
-		WriteString(ppos, Items::AccountType, (int)MoneyTransfer->AccountType);
-		WriteString(ppos, Items::TransferDirection, (int)MoneyTransfer->TransferDirection);
-		WriteString(ppos, Items::TransferAmount, MoneyTransfer->TransferAmount);
+		StepUtility::WriteString(ppos, Items::AccountID, MoneyTransfer->AccountID);
+		StepUtility::WriteString(ppos, Items::MoneyTransferID, MoneyTransfer->MoneyTransferID);
+		StepUtility::WriteString(ppos, Items::AccountType, (int)MoneyTransfer->AccountType);
+		StepUtility::WriteString(ppos, Items::TransferDirection, (int)MoneyTransfer->TransferDirection);
+		StepUtility::WriteString(ppos, Items::TransferAmount, MoneyTransfer->TransferAmount);
 		if (strlen(MoneyTransfer->InfoMessage) >= sizeof(MoneyTransfer->InfoMessage))
 		{
 			MoneyTransfer->InfoMessage[sizeof(MoneyTransfer->InfoMessage) - 1] = 0;
 		}
-		WriteString(ppos, Items::InfoMessage, MoneyTransfer->InfoMessage);
+		StepUtility::WriteString(ppos, Items::InfoMessage, MoneyTransfer->InfoMessage);
 		if (strlen(MoneyTransfer->UserID) >= sizeof(MoneyTransfer->UserID))
 		{
 			MoneyTransfer->UserID[sizeof(MoneyTransfer->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, MoneyTransfer->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, MoneyTransfer->UserID);
 		if (strlen(MoneyTransfer->TransferDate) >= sizeof(MoneyTransfer->TransferDate))
 		{
 			MoneyTransfer->TransferDate[sizeof(MoneyTransfer->TransferDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::TransferDate, MoneyTransfer->TransferDate);
+		StepUtility::WriteString(ppos, Items::TransferDate, MoneyTransfer->TransferDate);
 		if (strlen(MoneyTransfer->TransferTime) >= sizeof(MoneyTransfer->TransferTime))
 		{
 			MoneyTransfer->TransferTime[sizeof(MoneyTransfer->TransferTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::TransferTime, MoneyTransfer->TransferTime);
-		WriteHexString(ppos, Items::FieldEnd, MoneyTransferField::FieldID);
+		StepUtility::WriteString(ppos, Items::TransferTime, MoneyTransfer->TransferTime);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, MoneyTransferField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -7485,7 +7485,7 @@ bool RtnMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -7499,7 +7499,7 @@ bool RtnMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -7664,19 +7664,19 @@ int RtnAccountLogoutPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (AccountLogout != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, AccountLogoutField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, AccountLogoutField::FieldID);
 		if (strlen(AccountLogout->AccountID) >= sizeof(AccountLogout->AccountID))
 		{
 			AccountLogout->AccountID[sizeof(AccountLogout->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, AccountLogout->AccountID);
-		WriteString(ppos, Items::ErrorID, AccountLogout->ErrorID);
+		StepUtility::WriteString(ppos, Items::AccountID, AccountLogout->AccountID);
+		StepUtility::WriteString(ppos, Items::ErrorID, AccountLogout->ErrorID);
 		if (strlen(AccountLogout->ErrorMsg) >= sizeof(AccountLogout->ErrorMsg))
 		{
 			AccountLogout->ErrorMsg[sizeof(AccountLogout->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, AccountLogout->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, AccountLogoutField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, AccountLogout->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, AccountLogoutField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -7687,7 +7687,7 @@ bool RtnAccountLogoutPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -7701,7 +7701,7 @@ bool RtnAccountLogoutPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -7827,18 +7827,18 @@ int ReqRiskUserLoginPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRiskUserLogin != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRiskUserLoginField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRiskUserLoginField::FieldID);
 		if (strlen(ReqRiskUserLogin->UserID) >= sizeof(ReqRiskUserLogin->UserID))
 		{
 			ReqRiskUserLogin->UserID[sizeof(ReqRiskUserLogin->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqRiskUserLogin->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqRiskUserLogin->UserID);
 		if (strlen(ReqRiskUserLogin->Password) >= sizeof(ReqRiskUserLogin->Password))
 		{
 			ReqRiskUserLogin->Password[sizeof(ReqRiskUserLogin->Password) - 1] = 0;
 		}
-		WriteString(ppos, Items::Password, ReqRiskUserLogin->Password);
-		WriteHexString(ppos, Items::FieldEnd, ReqRiskUserLoginField::FieldID);
+		StepUtility::WriteString(ppos, Items::Password, ReqRiskUserLogin->Password);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRiskUserLoginField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -7849,7 +7849,7 @@ bool ReqRiskUserLoginPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -7863,7 +7863,7 @@ bool ReqRiskUserLoginPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -7989,36 +7989,36 @@ int RspRiskUserLoginPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspRiskUserLogin != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRiskUserLoginField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRiskUserLoginField::FieldID);
 		if (strlen(RspRiskUserLogin->UserID) >= sizeof(RspRiskUserLogin->UserID))
 		{
 			RspRiskUserLogin->UserID[sizeof(RspRiskUserLogin->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, RspRiskUserLogin->UserID);
-		WriteString(ppos, Items::RiskGroupID, RspRiskUserLogin->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::UserID, RspRiskUserLogin->UserID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, RspRiskUserLogin->RiskGroupID);
 		if (strlen(RspRiskUserLogin->LoginDate) >= sizeof(RspRiskUserLogin->LoginDate))
 		{
 			RspRiskUserLogin->LoginDate[sizeof(RspRiskUserLogin->LoginDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::LoginDate, RspRiskUserLogin->LoginDate);
+		StepUtility::WriteString(ppos, Items::LoginDate, RspRiskUserLogin->LoginDate);
 		if (strlen(RspRiskUserLogin->LoginTime) >= sizeof(RspRiskUserLogin->LoginTime))
 		{
 			RspRiskUserLogin->LoginTime[sizeof(RspRiskUserLogin->LoginTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::LoginTime, RspRiskUserLogin->LoginTime);
-		WriteString(ppos, Items::SessionID, RspRiskUserLogin->SessionID);
-		WriteHexString(ppos, Items::FieldEnd, RspRiskUserLoginField::FieldID);
+		StepUtility::WriteString(ppos, Items::LoginTime, RspRiskUserLogin->LoginTime);
+		StepUtility::WriteString(ppos, Items::SessionID, RspRiskUserLogin->SessionID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRiskUserLoginField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -8029,7 +8029,7 @@ bool RspRiskUserLoginPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -8043,7 +8043,7 @@ bool RspRiskUserLoginPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -8101,7 +8101,7 @@ bool RspRiskUserLoginPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -8239,13 +8239,13 @@ int ReqRiskUserLogoutPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRiskUserLogout != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRiskUserLogoutField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRiskUserLogoutField::FieldID);
 		if (strlen(ReqRiskUserLogout->UserID) >= sizeof(ReqRiskUserLogout->UserID))
 		{
 			ReqRiskUserLogout->UserID[sizeof(ReqRiskUserLogout->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqRiskUserLogout->UserID);
-		WriteHexString(ppos, Items::FieldEnd, ReqRiskUserLogoutField::FieldID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqRiskUserLogout->UserID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRiskUserLogoutField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -8256,7 +8256,7 @@ bool ReqRiskUserLogoutPackage::FromStepStream(char* buff, int startIndex, int en
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -8270,7 +8270,7 @@ bool ReqRiskUserLogoutPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -8390,24 +8390,24 @@ int RspRiskUserLogoutPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspRiskUserLogout != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRiskUserLogoutField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRiskUserLogoutField::FieldID);
 		if (strlen(RspRiskUserLogout->UserID) >= sizeof(RspRiskUserLogout->UserID))
 		{
 			RspRiskUserLogout->UserID[sizeof(RspRiskUserLogout->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, RspRiskUserLogout->UserID);
-		WriteHexString(ppos, Items::FieldEnd, RspRiskUserLogoutField::FieldID);
+		StepUtility::WriteString(ppos, Items::UserID, RspRiskUserLogout->UserID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRiskUserLogoutField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -8418,7 +8418,7 @@ bool RspRiskUserLogoutPackage::FromStepStream(char* buff, int startIndex, int en
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -8432,7 +8432,7 @@ bool RspRiskUserLogoutPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -8468,7 +8468,7 @@ bool RspRiskUserLogoutPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -8606,19 +8606,19 @@ int RtnRiskUserLogoutPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RiskUserLogout != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RiskUserLogoutField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RiskUserLogoutField::FieldID);
 		if (strlen(RiskUserLogout->UserID) >= sizeof(RiskUserLogout->UserID))
 		{
 			RiskUserLogout->UserID[sizeof(RiskUserLogout->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, RiskUserLogout->UserID);
-		WriteString(ppos, Items::ErrorID, RiskUserLogout->ErrorID);
+		StepUtility::WriteString(ppos, Items::UserID, RiskUserLogout->UserID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RiskUserLogout->ErrorID);
 		if (strlen(RiskUserLogout->ErrorMsg) >= sizeof(RiskUserLogout->ErrorMsg))
 		{
 			RiskUserLogout->ErrorMsg[sizeof(RiskUserLogout->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RiskUserLogout->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RiskUserLogoutField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RiskUserLogout->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RiskUserLogoutField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -8629,7 +8629,7 @@ bool RtnRiskUserLogoutPackage::FromStepStream(char* buff, int startIndex, int en
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -8643,7 +8643,7 @@ bool RtnRiskUserLogoutPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -8769,18 +8769,18 @@ int RtnAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Account != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, AccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, AccountField::FieldID);
 		if (strlen(Account->AccountID) >= sizeof(Account->AccountID))
 		{
 			Account->AccountID[sizeof(Account->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Account->AccountID);
-		WriteString(ppos, Items::AccountType, (int)Account->AccountType);
-		WriteString(ppos, Items::AccountStatus, (int)Account->AccountStatus);
-		WriteString(ppos, Items::TradeGroupID, Account->TradeGroupID);
-		WriteString(ppos, Items::RiskGroupID, Account->RiskGroupID);
-		WriteString(ppos, Items::CommissionGroupID, Account->CommissionGroupID);
-		WriteHexString(ppos, Items::FieldEnd, AccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, Account->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountType, (int)Account->AccountType);
+		StepUtility::WriteString(ppos, Items::AccountStatus, (int)Account->AccountStatus);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, Account->TradeGroupID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, Account->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::CommissionGroupID, Account->CommissionGroupID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, AccountField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -8791,7 +8791,7 @@ bool RtnAccountPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -8805,7 +8805,7 @@ bool RtnAccountPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -8945,13 +8945,13 @@ int RtnAccountDeletePackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (AccountDelete != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, AccountDeleteField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, AccountDeleteField::FieldID);
 		if (strlen(AccountDelete->AccountID) >= sizeof(AccountDelete->AccountID))
 		{
 			AccountDelete->AccountID[sizeof(AccountDelete->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, AccountDelete->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, AccountDeleteField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, AccountDelete->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, AccountDeleteField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -8962,7 +8962,7 @@ bool RtnAccountDeletePackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -8976,7 +8976,7 @@ bool RtnAccountDeletePackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -9091,50 +9091,50 @@ int RtnPositionPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Position != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, PositionField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, PositionField::FieldID);
 		if (strlen(Position->TradingDay) >= sizeof(Position->TradingDay))
 		{
 			Position->TradingDay[sizeof(Position->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, Position->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, Position->TradingDay);
 		if (strlen(Position->AccountID) >= sizeof(Position->AccountID))
 		{
 			Position->AccountID[sizeof(Position->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Position->AccountID);
-		WriteString(ppos, Items::AccountType, (int)Position->AccountType);
+		StepUtility::WriteString(ppos, Items::AccountID, Position->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountType, (int)Position->AccountType);
 		if (strlen(Position->ExchangeID) >= sizeof(Position->ExchangeID))
 		{
 			Position->ExchangeID[sizeof(Position->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, Position->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, Position->ExchangeID);
 		if (strlen(Position->InstrumentID) >= sizeof(Position->InstrumentID))
 		{
 			Position->InstrumentID[sizeof(Position->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, Position->InstrumentID);
-		WriteString(ppos, Items::ProductClass, (int)Position->ProductClass);
-		WriteString(ppos, Items::PosiDirection, (int)Position->PosiDirection);
-		WriteString(ppos, Items::TotalPosition, Position->TotalPosition);
-		WriteString(ppos, Items::PositionFrozen, Position->PositionFrozen);
-		WriteString(ppos, Items::TodayPosition, Position->TodayPosition);
-		WriteString(ppos, Items::TotalCostPrice, Position->TotalCostPrice);
-		WriteString(ppos, Items::TodayCostPrice, Position->TodayCostPrice);
-		WriteString(ppos, Items::CashIn, Position->CashIn);
-		WriteString(ppos, Items::CashOut, Position->CashOut);
-		WriteString(ppos, Items::Margin, Position->Margin);
-		WriteString(ppos, Items::Commission, Position->Commission);
-		WriteString(ppos, Items::StampTax, Position->StampTax);
-		WriteString(ppos, Items::TransferFee, Position->TransferFee);
-		WriteString(ppos, Items::MarketValue, Position->MarketValue);
-		WriteString(ppos, Items::VolumeMultiple, Position->VolumeMultiple);
-		WriteString(ppos, Items::TotalCost, Position->TotalCost);
-		WriteString(ppos, Items::TodayCost, Position->TodayCost);
-		WriteString(ppos, Items::TotalProfit, Position->TotalProfit);
-		WriteString(ppos, Items::TodayProfit, Position->TodayProfit);
-		WriteString(ppos, Items::LastPrice, Position->LastPrice);
-		WriteString(ppos, Items::PrePrice, Position->PrePrice);
-		WriteHexString(ppos, Items::FieldEnd, PositionField::FieldID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, Position->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)Position->ProductClass);
+		StepUtility::WriteString(ppos, Items::PosiDirection, (int)Position->PosiDirection);
+		StepUtility::WriteString(ppos, Items::TotalPosition, Position->TotalPosition);
+		StepUtility::WriteString(ppos, Items::PositionFrozen, Position->PositionFrozen);
+		StepUtility::WriteString(ppos, Items::TodayPosition, Position->TodayPosition);
+		StepUtility::WriteString(ppos, Items::TotalCostPrice, Position->TotalCostPrice);
+		StepUtility::WriteString(ppos, Items::TodayCostPrice, Position->TodayCostPrice);
+		StepUtility::WriteString(ppos, Items::CashIn, Position->CashIn);
+		StepUtility::WriteString(ppos, Items::CashOut, Position->CashOut);
+		StepUtility::WriteString(ppos, Items::Margin, Position->Margin);
+		StepUtility::WriteString(ppos, Items::Commission, Position->Commission);
+		StepUtility::WriteString(ppos, Items::StampTax, Position->StampTax);
+		StepUtility::WriteString(ppos, Items::TransferFee, Position->TransferFee);
+		StepUtility::WriteString(ppos, Items::MarketValue, Position->MarketValue);
+		StepUtility::WriteString(ppos, Items::VolumeMultiple, Position->VolumeMultiple);
+		StepUtility::WriteString(ppos, Items::TotalCost, Position->TotalCost);
+		StepUtility::WriteString(ppos, Items::TodayCost, Position->TodayCost);
+		StepUtility::WriteString(ppos, Items::TotalProfit, Position->TotalProfit);
+		StepUtility::WriteString(ppos, Items::TodayProfit, Position->TodayProfit);
+		StepUtility::WriteString(ppos, Items::LastPrice, Position->LastPrice);
+		StepUtility::WriteString(ppos, Items::PrePrice, Position->PrePrice);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, PositionField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -9145,7 +9145,7 @@ bool RtnPositionPackage::FromStepStream(char* buff, int startIndex, int endIndex
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -9159,7 +9159,7 @@ bool RtnPositionPackage::FromStepStream(char* buff, int startIndex, int endIndex
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -9402,15 +9402,15 @@ int RtnAccountRiskPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (AccountRisk != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, AccountRiskField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, AccountRiskField::FieldID);
 		if (strlen(AccountRisk->AccountID) >= sizeof(AccountRisk->AccountID))
 		{
 			AccountRisk->AccountID[sizeof(AccountRisk->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, AccountRisk->AccountID);
-		WriteString(ppos, Items::RiskID, AccountRisk->RiskID);
-		WriteString(ppos, Items::RiskStatus, (int)AccountRisk->RiskStatus);
-		WriteHexString(ppos, Items::FieldEnd, AccountRiskField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, AccountRisk->AccountID);
+		StepUtility::WriteString(ppos, Items::RiskID, AccountRisk->RiskID);
+		StepUtility::WriteString(ppos, Items::RiskStatus, (int)AccountRisk->RiskStatus);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, AccountRiskField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -9421,7 +9421,7 @@ bool RtnAccountRiskPackage::FromStepStream(char* buff, int startIndex, int endIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -9435,7 +9435,7 @@ bool RtnAccountRiskPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -9560,14 +9560,14 @@ int RtnAccountRiskDeletePackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (AccountRiskDelete != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, AccountRiskDeleteField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, AccountRiskDeleteField::FieldID);
 		if (strlen(AccountRiskDelete->AccountID) >= sizeof(AccountRiskDelete->AccountID))
 		{
 			AccountRiskDelete->AccountID[sizeof(AccountRiskDelete->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, AccountRiskDelete->AccountID);
-		WriteString(ppos, Items::RiskID, AccountRiskDelete->RiskID);
-		WriteHexString(ppos, Items::FieldEnd, AccountRiskDeleteField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, AccountRiskDelete->AccountID);
+		StepUtility::WriteString(ppos, Items::RiskID, AccountRiskDelete->RiskID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, AccountRiskDeleteField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -9578,7 +9578,7 @@ bool RtnAccountRiskDeletePackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -9592,7 +9592,7 @@ bool RtnAccountRiskDeletePackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -9712,31 +9712,31 @@ int RtnAccountRiskNotifyPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (AccountRiskNotify != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, AccountRiskNotifyField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, AccountRiskNotifyField::FieldID);
 		if (strlen(AccountRiskNotify->NotifyDate) >= sizeof(AccountRiskNotify->NotifyDate))
 		{
 			AccountRiskNotify->NotifyDate[sizeof(AccountRiskNotify->NotifyDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::NotifyDate, AccountRiskNotify->NotifyDate);
+		StepUtility::WriteString(ppos, Items::NotifyDate, AccountRiskNotify->NotifyDate);
 		if (strlen(AccountRiskNotify->NotifyTime) >= sizeof(AccountRiskNotify->NotifyTime))
 		{
 			AccountRiskNotify->NotifyTime[sizeof(AccountRiskNotify->NotifyTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::NotifyTime, AccountRiskNotify->NotifyTime);
+		StepUtility::WriteString(ppos, Items::NotifyTime, AccountRiskNotify->NotifyTime);
 		if (strlen(AccountRiskNotify->AccountID) >= sizeof(AccountRiskNotify->AccountID))
 		{
 			AccountRiskNotify->AccountID[sizeof(AccountRiskNotify->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, AccountRiskNotify->AccountID);
-		WriteString(ppos, Items::RiskID, AccountRiskNotify->RiskID);
-		WriteString(ppos, Items::RiskRuleID, AccountRiskNotify->RiskRuleID);
-		WriteString(ppos, Items::RiskStatus, (int)AccountRiskNotify->RiskStatus);
+		StepUtility::WriteString(ppos, Items::AccountID, AccountRiskNotify->AccountID);
+		StepUtility::WriteString(ppos, Items::RiskID, AccountRiskNotify->RiskID);
+		StepUtility::WriteString(ppos, Items::RiskRuleID, AccountRiskNotify->RiskRuleID);
+		StepUtility::WriteString(ppos, Items::RiskStatus, (int)AccountRiskNotify->RiskStatus);
 		if (strlen(AccountRiskNotify->RiskMessage) >= sizeof(AccountRiskNotify->RiskMessage))
 		{
 			AccountRiskNotify->RiskMessage[sizeof(AccountRiskNotify->RiskMessage) - 1] = 0;
 		}
-		WriteString(ppos, Items::RiskMessage, AccountRiskNotify->RiskMessage);
-		WriteHexString(ppos, Items::FieldEnd, AccountRiskNotifyField::FieldID);
+		StepUtility::WriteString(ppos, Items::RiskMessage, AccountRiskNotify->RiskMessage);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, AccountRiskNotifyField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -9747,7 +9747,7 @@ bool RtnAccountRiskNotifyPackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -9761,7 +9761,7 @@ bool RtnAccountRiskNotifyPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -9909,13 +9909,13 @@ int ReqQryRiskGroupAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryRiskGroupAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupAccountField::FieldID);
 		if (strlen(ReqQryRiskGroupAccount->UserID) >= sizeof(ReqQryRiskGroupAccount->UserID))
 		{
 			ReqQryRiskGroupAccount->UserID[sizeof(ReqQryRiskGroupAccount->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqQryRiskGroupAccount->UserID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqQryRiskGroupAccount->UserID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupAccountField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -9926,7 +9926,7 @@ bool ReqQryRiskGroupAccountPackage::FromStepStream(char* buff, int startIndex, i
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -9940,7 +9940,7 @@ bool ReqQryRiskGroupAccountPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -10060,29 +10060,29 @@ int RspQryRiskGroupAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Account != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, AccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, AccountField::FieldID);
 		if (strlen(Account->AccountID) >= sizeof(Account->AccountID))
 		{
 			Account->AccountID[sizeof(Account->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Account->AccountID);
-		WriteString(ppos, Items::AccountType, (int)Account->AccountType);
-		WriteString(ppos, Items::AccountStatus, (int)Account->AccountStatus);
-		WriteString(ppos, Items::TradeGroupID, Account->TradeGroupID);
-		WriteString(ppos, Items::RiskGroupID, Account->RiskGroupID);
-		WriteString(ppos, Items::CommissionGroupID, Account->CommissionGroupID);
-		WriteHexString(ppos, Items::FieldEnd, AccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, Account->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountType, (int)Account->AccountType);
+		StepUtility::WriteString(ppos, Items::AccountStatus, (int)Account->AccountStatus);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, Account->TradeGroupID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, Account->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::CommissionGroupID, Account->CommissionGroupID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, AccountField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -10093,7 +10093,7 @@ bool RspQryRiskGroupAccountPackage::FromStepStream(char* buff, int startIndex, i
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -10107,7 +10107,7 @@ bool RspQryRiskGroupAccountPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -10168,7 +10168,7 @@ bool RspQryRiskGroupAccountPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -10306,18 +10306,18 @@ int ReqQryRiskGroupCapitalPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryRiskGroupCapital != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupCapitalField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupCapitalField::FieldID);
 		if (strlen(ReqQryRiskGroupCapital->UserID) >= sizeof(ReqQryRiskGroupCapital->UserID))
 		{
 			ReqQryRiskGroupCapital->UserID[sizeof(ReqQryRiskGroupCapital->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqQryRiskGroupCapital->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqQryRiskGroupCapital->UserID);
 		if (strlen(ReqQryRiskGroupCapital->AccountID) >= sizeof(ReqQryRiskGroupCapital->AccountID))
 		{
 			ReqQryRiskGroupCapital->AccountID[sizeof(ReqQryRiskGroupCapital->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqQryRiskGroupCapital->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupCapitalField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqQryRiskGroupCapital->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupCapitalField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -10328,7 +10328,7 @@ bool ReqQryRiskGroupCapitalPackage::FromStepStream(char* buff, int startIndex, i
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -10342,7 +10342,7 @@ bool ReqQryRiskGroupCapitalPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -10468,51 +10468,51 @@ int RspQryRiskGroupCapitalPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Capital != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, CapitalField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, CapitalField::FieldID);
 		if (strlen(Capital->TradingDay) >= sizeof(Capital->TradingDay))
 		{
 			Capital->TradingDay[sizeof(Capital->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, Capital->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, Capital->TradingDay);
 		if (strlen(Capital->AccountID) >= sizeof(Capital->AccountID))
 		{
 			Capital->AccountID[sizeof(Capital->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Capital->AccountID);
-		WriteString(ppos, Items::AccountType, (int)Capital->AccountType);
-		WriteString(ppos, Items::Asset, Capital->Asset);
-		WriteString(ppos, Items::PreAsset, Capital->PreAsset);
-		WriteString(ppos, Items::CashAsset, Capital->CashAsset);
-		WriteString(ppos, Items::PreCashAsset, Capital->PreCashAsset);
-		WriteString(ppos, Items::Available, Capital->Available);
-		WriteString(ppos, Items::CashIn, Capital->CashIn);
-		WriteString(ppos, Items::CashOut, Capital->CashOut);
-		WriteString(ppos, Items::Margin, Capital->Margin);
-		WriteString(ppos, Items::Commission, Capital->Commission);
-		WriteString(ppos, Items::StampTax, Capital->StampTax);
-		WriteString(ppos, Items::TransferFee, Capital->TransferFee);
-		WriteString(ppos, Items::FrozenCash, Capital->FrozenCash);
-		WriteString(ppos, Items::FrozenMargin, Capital->FrozenMargin);
-		WriteString(ppos, Items::FrozenCommission, Capital->FrozenCommission);
-		WriteString(ppos, Items::FrozenStampTax, Capital->FrozenStampTax);
-		WriteString(ppos, Items::FrozenTransferFee, Capital->FrozenTransferFee);
-		WriteString(ppos, Items::MarketValue, Capital->MarketValue);
-		WriteString(ppos, Items::TotalProfit, Capital->TotalProfit);
-		WriteString(ppos, Items::TodayProfit, Capital->TodayProfit);
-		WriteString(ppos, Items::Deposit, Capital->Deposit);
-		WriteString(ppos, Items::Withdraw, Capital->Withdraw);
-		WriteHexString(ppos, Items::FieldEnd, CapitalField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, Capital->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountType, (int)Capital->AccountType);
+		StepUtility::WriteString(ppos, Items::Asset, Capital->Asset);
+		StepUtility::WriteString(ppos, Items::PreAsset, Capital->PreAsset);
+		StepUtility::WriteString(ppos, Items::CashAsset, Capital->CashAsset);
+		StepUtility::WriteString(ppos, Items::PreCashAsset, Capital->PreCashAsset);
+		StepUtility::WriteString(ppos, Items::Available, Capital->Available);
+		StepUtility::WriteString(ppos, Items::CashIn, Capital->CashIn);
+		StepUtility::WriteString(ppos, Items::CashOut, Capital->CashOut);
+		StepUtility::WriteString(ppos, Items::Margin, Capital->Margin);
+		StepUtility::WriteString(ppos, Items::Commission, Capital->Commission);
+		StepUtility::WriteString(ppos, Items::StampTax, Capital->StampTax);
+		StepUtility::WriteString(ppos, Items::TransferFee, Capital->TransferFee);
+		StepUtility::WriteString(ppos, Items::FrozenCash, Capital->FrozenCash);
+		StepUtility::WriteString(ppos, Items::FrozenMargin, Capital->FrozenMargin);
+		StepUtility::WriteString(ppos, Items::FrozenCommission, Capital->FrozenCommission);
+		StepUtility::WriteString(ppos, Items::FrozenStampTax, Capital->FrozenStampTax);
+		StepUtility::WriteString(ppos, Items::FrozenTransferFee, Capital->FrozenTransferFee);
+		StepUtility::WriteString(ppos, Items::MarketValue, Capital->MarketValue);
+		StepUtility::WriteString(ppos, Items::TotalProfit, Capital->TotalProfit);
+		StepUtility::WriteString(ppos, Items::TodayProfit, Capital->TodayProfit);
+		StepUtility::WriteString(ppos, Items::Deposit, Capital->Deposit);
+		StepUtility::WriteString(ppos, Items::Withdraw, Capital->Withdraw);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, CapitalField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -10523,7 +10523,7 @@ bool RspQryRiskGroupCapitalPackage::FromStepStream(char* buff, int startIndex, i
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -10537,7 +10537,7 @@ bool RspQryRiskGroupCapitalPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -10689,7 +10689,7 @@ bool RspQryRiskGroupCapitalPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -10827,18 +10827,18 @@ int ReqQryRiskGroupPositionPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryRiskGroupPosition != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupPositionField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupPositionField::FieldID);
 		if (strlen(ReqQryRiskGroupPosition->UserID) >= sizeof(ReqQryRiskGroupPosition->UserID))
 		{
 			ReqQryRiskGroupPosition->UserID[sizeof(ReqQryRiskGroupPosition->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqQryRiskGroupPosition->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqQryRiskGroupPosition->UserID);
 		if (strlen(ReqQryRiskGroupPosition->AccountID) >= sizeof(ReqQryRiskGroupPosition->AccountID))
 		{
 			ReqQryRiskGroupPosition->AccountID[sizeof(ReqQryRiskGroupPosition->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqQryRiskGroupPosition->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupPositionField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqQryRiskGroupPosition->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupPositionField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -10849,7 +10849,7 @@ bool ReqQryRiskGroupPositionPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -10863,7 +10863,7 @@ bool ReqQryRiskGroupPositionPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -10989,61 +10989,61 @@ int RspQryRiskGroupPositionPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Position != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, PositionField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, PositionField::FieldID);
 		if (strlen(Position->TradingDay) >= sizeof(Position->TradingDay))
 		{
 			Position->TradingDay[sizeof(Position->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, Position->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, Position->TradingDay);
 		if (strlen(Position->AccountID) >= sizeof(Position->AccountID))
 		{
 			Position->AccountID[sizeof(Position->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Position->AccountID);
-		WriteString(ppos, Items::AccountType, (int)Position->AccountType);
+		StepUtility::WriteString(ppos, Items::AccountID, Position->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountType, (int)Position->AccountType);
 		if (strlen(Position->ExchangeID) >= sizeof(Position->ExchangeID))
 		{
 			Position->ExchangeID[sizeof(Position->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, Position->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, Position->ExchangeID);
 		if (strlen(Position->InstrumentID) >= sizeof(Position->InstrumentID))
 		{
 			Position->InstrumentID[sizeof(Position->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, Position->InstrumentID);
-		WriteString(ppos, Items::ProductClass, (int)Position->ProductClass);
-		WriteString(ppos, Items::PosiDirection, (int)Position->PosiDirection);
-		WriteString(ppos, Items::TotalPosition, Position->TotalPosition);
-		WriteString(ppos, Items::PositionFrozen, Position->PositionFrozen);
-		WriteString(ppos, Items::TodayPosition, Position->TodayPosition);
-		WriteString(ppos, Items::TotalCostPrice, Position->TotalCostPrice);
-		WriteString(ppos, Items::TodayCostPrice, Position->TodayCostPrice);
-		WriteString(ppos, Items::CashIn, Position->CashIn);
-		WriteString(ppos, Items::CashOut, Position->CashOut);
-		WriteString(ppos, Items::Margin, Position->Margin);
-		WriteString(ppos, Items::Commission, Position->Commission);
-		WriteString(ppos, Items::StampTax, Position->StampTax);
-		WriteString(ppos, Items::TransferFee, Position->TransferFee);
-		WriteString(ppos, Items::MarketValue, Position->MarketValue);
-		WriteString(ppos, Items::VolumeMultiple, Position->VolumeMultiple);
-		WriteString(ppos, Items::TotalCost, Position->TotalCost);
-		WriteString(ppos, Items::TodayCost, Position->TodayCost);
-		WriteString(ppos, Items::TotalProfit, Position->TotalProfit);
-		WriteString(ppos, Items::TodayProfit, Position->TodayProfit);
-		WriteString(ppos, Items::LastPrice, Position->LastPrice);
-		WriteString(ppos, Items::PrePrice, Position->PrePrice);
-		WriteHexString(ppos, Items::FieldEnd, PositionField::FieldID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, Position->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)Position->ProductClass);
+		StepUtility::WriteString(ppos, Items::PosiDirection, (int)Position->PosiDirection);
+		StepUtility::WriteString(ppos, Items::TotalPosition, Position->TotalPosition);
+		StepUtility::WriteString(ppos, Items::PositionFrozen, Position->PositionFrozen);
+		StepUtility::WriteString(ppos, Items::TodayPosition, Position->TodayPosition);
+		StepUtility::WriteString(ppos, Items::TotalCostPrice, Position->TotalCostPrice);
+		StepUtility::WriteString(ppos, Items::TodayCostPrice, Position->TodayCostPrice);
+		StepUtility::WriteString(ppos, Items::CashIn, Position->CashIn);
+		StepUtility::WriteString(ppos, Items::CashOut, Position->CashOut);
+		StepUtility::WriteString(ppos, Items::Margin, Position->Margin);
+		StepUtility::WriteString(ppos, Items::Commission, Position->Commission);
+		StepUtility::WriteString(ppos, Items::StampTax, Position->StampTax);
+		StepUtility::WriteString(ppos, Items::TransferFee, Position->TransferFee);
+		StepUtility::WriteString(ppos, Items::MarketValue, Position->MarketValue);
+		StepUtility::WriteString(ppos, Items::VolumeMultiple, Position->VolumeMultiple);
+		StepUtility::WriteString(ppos, Items::TotalCost, Position->TotalCost);
+		StepUtility::WriteString(ppos, Items::TodayCost, Position->TodayCost);
+		StepUtility::WriteString(ppos, Items::TotalProfit, Position->TotalProfit);
+		StepUtility::WriteString(ppos, Items::TodayProfit, Position->TodayProfit);
+		StepUtility::WriteString(ppos, Items::LastPrice, Position->LastPrice);
+		StepUtility::WriteString(ppos, Items::PrePrice, Position->PrePrice);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, PositionField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -11054,7 +11054,7 @@ bool RspQryRiskGroupPositionPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -11068,7 +11068,7 @@ bool RspQryRiskGroupPositionPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -11232,7 +11232,7 @@ bool RspQryRiskGroupPositionPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -11370,18 +11370,18 @@ int ReqQryRiskGroupOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryRiskGroupOrder != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupOrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupOrderField::FieldID);
 		if (strlen(ReqQryRiskGroupOrder->UserID) >= sizeof(ReqQryRiskGroupOrder->UserID))
 		{
 			ReqQryRiskGroupOrder->UserID[sizeof(ReqQryRiskGroupOrder->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqQryRiskGroupOrder->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqQryRiskGroupOrder->UserID);
 		if (strlen(ReqQryRiskGroupOrder->AccountID) >= sizeof(ReqQryRiskGroupOrder->AccountID))
 		{
 			ReqQryRiskGroupOrder->AccountID[sizeof(ReqQryRiskGroupOrder->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqQryRiskGroupOrder->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupOrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqQryRiskGroupOrder->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupOrderField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -11392,7 +11392,7 @@ bool ReqQryRiskGroupOrderPackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -11406,7 +11406,7 @@ bool ReqQryRiskGroupOrderPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -11532,88 +11532,88 @@ int RspQryRiskGroupOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Order != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, OrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, OrderField::FieldID);
 		if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
 		{
 			Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, Order->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, Order->TradingDay);
 		if (strlen(Order->AccountID) >= sizeof(Order->AccountID))
 		{
 			Order->AccountID[sizeof(Order->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Order->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, Order->AccountID);
 		if (strlen(Order->ExchangeID) >= sizeof(Order->ExchangeID))
 		{
 			Order->ExchangeID[sizeof(Order->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
 		if (strlen(Order->InstrumentID) >= sizeof(Order->InstrumentID))
 		{
 			Order->InstrumentID[sizeof(Order->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
-		WriteString(ppos, Items::ProductClass, (int)Order->ProductClass);
-		WriteString(ppos, Items::OrderID, Order->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)Order->ProductClass);
+		StepUtility::WriteString(ppos, Items::OrderID, Order->OrderID);
 		if (strlen(Order->OrderSysID) >= sizeof(Order->OrderSysID))
 		{
 			Order->OrderSysID[sizeof(Order->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
-		WriteString(ppos, Items::Direction, (int)Order->Direction);
-		WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
-		WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
-		WriteString(ppos, Items::Price, Order->Price);
-		WriteString(ppos, Items::Volume, Order->Volume);
-		WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
-		WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
-		WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
-		WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
+		StepUtility::WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
+		StepUtility::WriteString(ppos, Items::Direction, (int)Order->Direction);
+		StepUtility::WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
+		StepUtility::WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
+		StepUtility::WriteString(ppos, Items::Price, Order->Price);
+		StepUtility::WriteString(ppos, Items::Volume, Order->Volume);
+		StepUtility::WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
+		StepUtility::WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
+		StepUtility::WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
+		StepUtility::WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
 		if (strlen(Order->StatusMsg) >= sizeof(Order->StatusMsg))
 		{
 			Order->StatusMsg[sizeof(Order->StatusMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
+		StepUtility::WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
 		if (strlen(Order->OrderDate) >= sizeof(Order->OrderDate))
 		{
 			Order->OrderDate[sizeof(Order->OrderDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderDate, Order->OrderDate);
+		StepUtility::WriteString(ppos, Items::OrderDate, Order->OrderDate);
 		if (strlen(Order->OrderTime) >= sizeof(Order->OrderTime))
 		{
 			Order->OrderTime[sizeof(Order->OrderTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderTime, Order->OrderTime);
+		StepUtility::WriteString(ppos, Items::OrderTime, Order->OrderTime);
 		if (strlen(Order->CancelDate) >= sizeof(Order->CancelDate))
 		{
 			Order->CancelDate[sizeof(Order->CancelDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::CancelDate, Order->CancelDate);
+		StepUtility::WriteString(ppos, Items::CancelDate, Order->CancelDate);
 		if (strlen(Order->CancelTime) >= sizeof(Order->CancelTime))
 		{
 			Order->CancelTime[sizeof(Order->CancelTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::CancelTime, Order->CancelTime);
-		WriteString(ppos, Items::SessionID, Order->SessionID);
-		WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
-		WriteString(ppos, Items::RequestID, Order->RequestID);
-		WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
-		WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
-		WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
-		WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
-		WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
-		WriteHexString(ppos, Items::FieldEnd, OrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::CancelTime, Order->CancelTime);
+		StepUtility::WriteString(ppos, Items::SessionID, Order->SessionID);
+		StepUtility::WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
+		StepUtility::WriteString(ppos, Items::RequestID, Order->RequestID);
+		StepUtility::WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
+		StepUtility::WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
+		StepUtility::WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
+		StepUtility::WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
+		StepUtility::WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, OrderField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -11624,7 +11624,7 @@ bool RspQryRiskGroupOrderPackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -11638,7 +11638,7 @@ bool RspQryRiskGroupOrderPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -11823,7 +11823,7 @@ bool RspQryRiskGroupOrderPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -11961,18 +11961,18 @@ int ReqQryRiskGroupTradePackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryRiskGroupTrade != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupTradeField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupTradeField::FieldID);
 		if (strlen(ReqQryRiskGroupTrade->UserID) >= sizeof(ReqQryRiskGroupTrade->UserID))
 		{
 			ReqQryRiskGroupTrade->UserID[sizeof(ReqQryRiskGroupTrade->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqQryRiskGroupTrade->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqQryRiskGroupTrade->UserID);
 		if (strlen(ReqQryRiskGroupTrade->AccountID) >= sizeof(ReqQryRiskGroupTrade->AccountID))
 		{
 			ReqQryRiskGroupTrade->AccountID[sizeof(ReqQryRiskGroupTrade->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqQryRiskGroupTrade->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupTradeField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqQryRiskGroupTrade->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupTradeField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -11983,7 +11983,7 @@ bool ReqQryRiskGroupTradePackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -11997,7 +11997,7 @@ bool ReqQryRiskGroupTradePackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -12123,70 +12123,70 @@ int RspQryRiskGroupTradePackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Trade != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, TradeField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, TradeField::FieldID);
 		if (strlen(Trade->TradingDay) >= sizeof(Trade->TradingDay))
 		{
 			Trade->TradingDay[sizeof(Trade->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, Trade->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, Trade->TradingDay);
 		if (strlen(Trade->AccountID) >= sizeof(Trade->AccountID))
 		{
 			Trade->AccountID[sizeof(Trade->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Trade->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, Trade->AccountID);
 		if (strlen(Trade->ExchangeID) >= sizeof(Trade->ExchangeID))
 		{
 			Trade->ExchangeID[sizeof(Trade->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, Trade->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, Trade->ExchangeID);
 		if (strlen(Trade->InstrumentID) >= sizeof(Trade->InstrumentID))
 		{
 			Trade->InstrumentID[sizeof(Trade->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, Trade->InstrumentID);
-		WriteString(ppos, Items::ProductClass, (int)Trade->ProductClass);
-		WriteString(ppos, Items::OrderID, Trade->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, Trade->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)Trade->ProductClass);
+		StepUtility::WriteString(ppos, Items::OrderID, Trade->OrderID);
 		if (strlen(Trade->OrderSysID) >= sizeof(Trade->OrderSysID))
 		{
 			Trade->OrderSysID[sizeof(Trade->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, Trade->OrderSysID);
+		StepUtility::WriteString(ppos, Items::OrderSysID, Trade->OrderSysID);
 		if (strlen(Trade->TradeID) >= sizeof(Trade->TradeID))
 		{
 			Trade->TradeID[sizeof(Trade->TradeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradeID, Trade->TradeID);
-		WriteString(ppos, Items::Direction, (int)Trade->Direction);
-		WriteString(ppos, Items::OffsetFlag, (int)Trade->OffsetFlag);
-		WriteString(ppos, Items::Price, Trade->Price);
-		WriteString(ppos, Items::Volume, Trade->Volume);
-		WriteString(ppos, Items::VolumeMultiple, Trade->VolumeMultiple);
-		WriteString(ppos, Items::TradeAmount, Trade->TradeAmount);
-		WriteString(ppos, Items::Commission, Trade->Commission);
-		WriteString(ppos, Items::StampTax, Trade->StampTax);
-		WriteString(ppos, Items::TransferFee, Trade->TransferFee);
+		StepUtility::WriteString(ppos, Items::TradeID, Trade->TradeID);
+		StepUtility::WriteString(ppos, Items::Direction, (int)Trade->Direction);
+		StepUtility::WriteString(ppos, Items::OffsetFlag, (int)Trade->OffsetFlag);
+		StepUtility::WriteString(ppos, Items::Price, Trade->Price);
+		StepUtility::WriteString(ppos, Items::Volume, Trade->Volume);
+		StepUtility::WriteString(ppos, Items::VolumeMultiple, Trade->VolumeMultiple);
+		StepUtility::WriteString(ppos, Items::TradeAmount, Trade->TradeAmount);
+		StepUtility::WriteString(ppos, Items::Commission, Trade->Commission);
+		StepUtility::WriteString(ppos, Items::StampTax, Trade->StampTax);
+		StepUtility::WriteString(ppos, Items::TransferFee, Trade->TransferFee);
 		if (strlen(Trade->TradeDate) >= sizeof(Trade->TradeDate))
 		{
 			Trade->TradeDate[sizeof(Trade->TradeDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradeDate, Trade->TradeDate);
+		StepUtility::WriteString(ppos, Items::TradeDate, Trade->TradeDate);
 		if (strlen(Trade->TradeTime) >= sizeof(Trade->TradeTime))
 		{
 			Trade->TradeTime[sizeof(Trade->TradeTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradeTime, Trade->TradeTime);
-		WriteHexString(ppos, Items::FieldEnd, TradeField::FieldID);
+		StepUtility::WriteString(ppos, Items::TradeTime, Trade->TradeTime);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, TradeField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -12197,7 +12197,7 @@ bool RspQryRiskGroupTradePackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -12211,7 +12211,7 @@ bool RspQryRiskGroupTradePackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -12344,7 +12344,7 @@ bool RspQryRiskGroupTradePackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -12482,18 +12482,18 @@ int ReqQryRiskGroupAccountRiskPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryRiskGroupAccountRisk != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupAccountRiskField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupAccountRiskField::FieldID);
 		if (strlen(ReqQryRiskGroupAccountRisk->UserID) >= sizeof(ReqQryRiskGroupAccountRisk->UserID))
 		{
 			ReqQryRiskGroupAccountRisk->UserID[sizeof(ReqQryRiskGroupAccountRisk->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqQryRiskGroupAccountRisk->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqQryRiskGroupAccountRisk->UserID);
 		if (strlen(ReqQryRiskGroupAccountRisk->AccountID) >= sizeof(ReqQryRiskGroupAccountRisk->AccountID))
 		{
 			ReqQryRiskGroupAccountRisk->AccountID[sizeof(ReqQryRiskGroupAccountRisk->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqQryRiskGroupAccountRisk->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupAccountRiskField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqQryRiskGroupAccountRisk->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupAccountRiskField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -12504,7 +12504,7 @@ bool ReqQryRiskGroupAccountRiskPackage::FromStepStream(char* buff, int startInde
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -12518,7 +12518,7 @@ bool ReqQryRiskGroupAccountRiskPackage::FromStepStream(char* buff, int startInde
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -12644,26 +12644,26 @@ int RspQryRiskGroupAccountRiskPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (AccountRisk != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, AccountRiskField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, AccountRiskField::FieldID);
 		if (strlen(AccountRisk->AccountID) >= sizeof(AccountRisk->AccountID))
 		{
 			AccountRisk->AccountID[sizeof(AccountRisk->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, AccountRisk->AccountID);
-		WriteString(ppos, Items::RiskID, AccountRisk->RiskID);
-		WriteString(ppos, Items::RiskStatus, (int)AccountRisk->RiskStatus);
-		WriteHexString(ppos, Items::FieldEnd, AccountRiskField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, AccountRisk->AccountID);
+		StepUtility::WriteString(ppos, Items::RiskID, AccountRisk->RiskID);
+		StepUtility::WriteString(ppos, Items::RiskStatus, (int)AccountRisk->RiskStatus);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, AccountRiskField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -12674,7 +12674,7 @@ bool RspQryRiskGroupAccountRiskPackage::FromStepStream(char* buff, int startInde
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -12688,7 +12688,7 @@ bool RspQryRiskGroupAccountRiskPackage::FromStepStream(char* buff, int startInde
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -12734,7 +12734,7 @@ bool RspQryRiskGroupAccountRiskPackage::FromStepStream(char* buff, int startInde
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -12872,18 +12872,18 @@ int ReqQryRiskGroupAccountRiskNotifyPackage::ToStepStream(char* buff, int size) 
 	char* ppos = buff;
 	if (ReqQryRiskGroupAccountRiskNotify != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupAccountRiskNotifyField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryRiskGroupAccountRiskNotifyField::FieldID);
 		if (strlen(ReqQryRiskGroupAccountRiskNotify->UserID) >= sizeof(ReqQryRiskGroupAccountRiskNotify->UserID))
 		{
 			ReqQryRiskGroupAccountRiskNotify->UserID[sizeof(ReqQryRiskGroupAccountRiskNotify->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqQryRiskGroupAccountRiskNotify->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqQryRiskGroupAccountRiskNotify->UserID);
 		if (strlen(ReqQryRiskGroupAccountRiskNotify->AccountID) >= sizeof(ReqQryRiskGroupAccountRiskNotify->AccountID))
 		{
 			ReqQryRiskGroupAccountRiskNotify->AccountID[sizeof(ReqQryRiskGroupAccountRiskNotify->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqQryRiskGroupAccountRiskNotify->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupAccountRiskNotifyField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqQryRiskGroupAccountRiskNotify->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryRiskGroupAccountRiskNotifyField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -12894,7 +12894,7 @@ bool ReqQryRiskGroupAccountRiskNotifyPackage::FromStepStream(char* buff, int sta
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -12908,7 +12908,7 @@ bool ReqQryRiskGroupAccountRiskNotifyPackage::FromStepStream(char* buff, int sta
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -13034,42 +13034,42 @@ int RspQryRiskGroupAccountRiskNotifyPackage::ToStepStream(char* buff, int size) 
 	char* ppos = buff;
 	if (AccountRiskNotify != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, AccountRiskNotifyField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, AccountRiskNotifyField::FieldID);
 		if (strlen(AccountRiskNotify->NotifyDate) >= sizeof(AccountRiskNotify->NotifyDate))
 		{
 			AccountRiskNotify->NotifyDate[sizeof(AccountRiskNotify->NotifyDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::NotifyDate, AccountRiskNotify->NotifyDate);
+		StepUtility::WriteString(ppos, Items::NotifyDate, AccountRiskNotify->NotifyDate);
 		if (strlen(AccountRiskNotify->NotifyTime) >= sizeof(AccountRiskNotify->NotifyTime))
 		{
 			AccountRiskNotify->NotifyTime[sizeof(AccountRiskNotify->NotifyTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::NotifyTime, AccountRiskNotify->NotifyTime);
+		StepUtility::WriteString(ppos, Items::NotifyTime, AccountRiskNotify->NotifyTime);
 		if (strlen(AccountRiskNotify->AccountID) >= sizeof(AccountRiskNotify->AccountID))
 		{
 			AccountRiskNotify->AccountID[sizeof(AccountRiskNotify->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, AccountRiskNotify->AccountID);
-		WriteString(ppos, Items::RiskID, AccountRiskNotify->RiskID);
-		WriteString(ppos, Items::RiskRuleID, AccountRiskNotify->RiskRuleID);
-		WriteString(ppos, Items::RiskStatus, (int)AccountRiskNotify->RiskStatus);
+		StepUtility::WriteString(ppos, Items::AccountID, AccountRiskNotify->AccountID);
+		StepUtility::WriteString(ppos, Items::RiskID, AccountRiskNotify->RiskID);
+		StepUtility::WriteString(ppos, Items::RiskRuleID, AccountRiskNotify->RiskRuleID);
+		StepUtility::WriteString(ppos, Items::RiskStatus, (int)AccountRiskNotify->RiskStatus);
 		if (strlen(AccountRiskNotify->RiskMessage) >= sizeof(AccountRiskNotify->RiskMessage))
 		{
 			AccountRiskNotify->RiskMessage[sizeof(AccountRiskNotify->RiskMessage) - 1] = 0;
 		}
-		WriteString(ppos, Items::RiskMessage, AccountRiskNotify->RiskMessage);
-		WriteHexString(ppos, Items::FieldEnd, AccountRiskNotifyField::FieldID);
+		StepUtility::WriteString(ppos, Items::RiskMessage, AccountRiskNotify->RiskMessage);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, AccountRiskNotifyField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -13080,7 +13080,7 @@ bool RspQryRiskGroupAccountRiskNotifyPackage::FromStepStream(char* buff, int sta
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -13094,7 +13094,7 @@ bool RspQryRiskGroupAccountRiskNotifyPackage::FromStepStream(char* buff, int sta
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -13163,7 +13163,7 @@ bool RspQryRiskGroupAccountRiskNotifyPackage::FromStepStream(char* buff, int sta
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -13301,35 +13301,35 @@ int ReqRiskInsertOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRiskInsertOrder != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRiskInsertOrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRiskInsertOrderField::FieldID);
 		if (strlen(ReqRiskInsertOrder->UserID) >= sizeof(ReqRiskInsertOrder->UserID))
 		{
 			ReqRiskInsertOrder->UserID[sizeof(ReqRiskInsertOrder->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqRiskInsertOrder->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqRiskInsertOrder->UserID);
 		if (strlen(ReqRiskInsertOrder->AccountID) >= sizeof(ReqRiskInsertOrder->AccountID))
 		{
 			ReqRiskInsertOrder->AccountID[sizeof(ReqRiskInsertOrder->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqRiskInsertOrder->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqRiskInsertOrder->AccountID);
 		if (strlen(ReqRiskInsertOrder->ExchangeID) >= sizeof(ReqRiskInsertOrder->ExchangeID))
 		{
 			ReqRiskInsertOrder->ExchangeID[sizeof(ReqRiskInsertOrder->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqRiskInsertOrder->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqRiskInsertOrder->ExchangeID);
 		if (strlen(ReqRiskInsertOrder->InstrumentID) >= sizeof(ReqRiskInsertOrder->InstrumentID))
 		{
 			ReqRiskInsertOrder->InstrumentID[sizeof(ReqRiskInsertOrder->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, ReqRiskInsertOrder->InstrumentID);
-		WriteString(ppos, Items::Direction, (int)ReqRiskInsertOrder->Direction);
-		WriteString(ppos, Items::OffsetFlag, (int)ReqRiskInsertOrder->OffsetFlag);
-		WriteString(ppos, Items::OrderPriceType, (int)ReqRiskInsertOrder->OrderPriceType);
-		WriteString(ppos, Items::Price, ReqRiskInsertOrder->Price);
-		WriteString(ppos, Items::Volume, ReqRiskInsertOrder->Volume);
-		WriteString(ppos, Items::ClientOrderID, ReqRiskInsertOrder->ClientOrderID);
-		WriteString(ppos, Items::IsForceClose, ReqRiskInsertOrder->IsForceClose);
-		WriteHexString(ppos, Items::FieldEnd, ReqRiskInsertOrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, ReqRiskInsertOrder->InstrumentID);
+		StepUtility::WriteString(ppos, Items::Direction, (int)ReqRiskInsertOrder->Direction);
+		StepUtility::WriteString(ppos, Items::OffsetFlag, (int)ReqRiskInsertOrder->OffsetFlag);
+		StepUtility::WriteString(ppos, Items::OrderPriceType, (int)ReqRiskInsertOrder->OrderPriceType);
+		StepUtility::WriteString(ppos, Items::Price, ReqRiskInsertOrder->Price);
+		StepUtility::WriteString(ppos, Items::Volume, ReqRiskInsertOrder->Volume);
+		StepUtility::WriteString(ppos, Items::ClientOrderID, ReqRiskInsertOrder->ClientOrderID);
+		StepUtility::WriteString(ppos, Items::IsForceClose, ReqRiskInsertOrder->IsForceClose);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRiskInsertOrderField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -13340,7 +13340,7 @@ bool ReqRiskInsertOrderPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -13354,7 +13354,7 @@ bool ReqRiskInsertOrderPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -13527,88 +13527,88 @@ int RspRiskInsertOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (Order != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, OrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, OrderField::FieldID);
 		if (strlen(Order->TradingDay) >= sizeof(Order->TradingDay))
 		{
 			Order->TradingDay[sizeof(Order->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, Order->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, Order->TradingDay);
 		if (strlen(Order->AccountID) >= sizeof(Order->AccountID))
 		{
 			Order->AccountID[sizeof(Order->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, Order->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, Order->AccountID);
 		if (strlen(Order->ExchangeID) >= sizeof(Order->ExchangeID))
 		{
 			Order->ExchangeID[sizeof(Order->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, Order->ExchangeID);
 		if (strlen(Order->InstrumentID) >= sizeof(Order->InstrumentID))
 		{
 			Order->InstrumentID[sizeof(Order->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
-		WriteString(ppos, Items::ProductClass, (int)Order->ProductClass);
-		WriteString(ppos, Items::OrderID, Order->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, Order->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)Order->ProductClass);
+		StepUtility::WriteString(ppos, Items::OrderID, Order->OrderID);
 		if (strlen(Order->OrderSysID) >= sizeof(Order->OrderSysID))
 		{
 			Order->OrderSysID[sizeof(Order->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
-		WriteString(ppos, Items::Direction, (int)Order->Direction);
-		WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
-		WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
-		WriteString(ppos, Items::Price, Order->Price);
-		WriteString(ppos, Items::Volume, Order->Volume);
-		WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
-		WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
-		WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
-		WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
+		StepUtility::WriteString(ppos, Items::OrderSysID, Order->OrderSysID);
+		StepUtility::WriteString(ppos, Items::Direction, (int)Order->Direction);
+		StepUtility::WriteString(ppos, Items::OffsetFlag, (int)Order->OffsetFlag);
+		StepUtility::WriteString(ppos, Items::OrderPriceType, (int)Order->OrderPriceType);
+		StepUtility::WriteString(ppos, Items::Price, Order->Price);
+		StepUtility::WriteString(ppos, Items::Volume, Order->Volume);
+		StepUtility::WriteString(ppos, Items::VolumeTotal, Order->VolumeTotal);
+		StepUtility::WriteString(ppos, Items::VolumeTraded, Order->VolumeTraded);
+		StepUtility::WriteString(ppos, Items::VolumeMultiple, Order->VolumeMultiple);
+		StepUtility::WriteString(ppos, Items::OrderStatus, (int)Order->OrderStatus);
 		if (strlen(Order->StatusMsg) >= sizeof(Order->StatusMsg))
 		{
 			Order->StatusMsg[sizeof(Order->StatusMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
+		StepUtility::WriteString(ppos, Items::StatusMsg, Order->StatusMsg);
 		if (strlen(Order->OrderDate) >= sizeof(Order->OrderDate))
 		{
 			Order->OrderDate[sizeof(Order->OrderDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderDate, Order->OrderDate);
+		StepUtility::WriteString(ppos, Items::OrderDate, Order->OrderDate);
 		if (strlen(Order->OrderTime) >= sizeof(Order->OrderTime))
 		{
 			Order->OrderTime[sizeof(Order->OrderTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderTime, Order->OrderTime);
+		StepUtility::WriteString(ppos, Items::OrderTime, Order->OrderTime);
 		if (strlen(Order->CancelDate) >= sizeof(Order->CancelDate))
 		{
 			Order->CancelDate[sizeof(Order->CancelDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::CancelDate, Order->CancelDate);
+		StepUtility::WriteString(ppos, Items::CancelDate, Order->CancelDate);
 		if (strlen(Order->CancelTime) >= sizeof(Order->CancelTime))
 		{
 			Order->CancelTime[sizeof(Order->CancelTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::CancelTime, Order->CancelTime);
-		WriteString(ppos, Items::SessionID, Order->SessionID);
-		WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
-		WriteString(ppos, Items::RequestID, Order->RequestID);
-		WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
-		WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
-		WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
-		WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
-		WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
-		WriteHexString(ppos, Items::FieldEnd, OrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::CancelTime, Order->CancelTime);
+		StepUtility::WriteString(ppos, Items::SessionID, Order->SessionID);
+		StepUtility::WriteString(ppos, Items::ClientOrderID, Order->ClientOrderID);
+		StepUtility::WriteString(ppos, Items::RequestID, Order->RequestID);
+		StepUtility::WriteString(ppos, Items::FrozenCash, Order->FrozenCash);
+		StepUtility::WriteString(ppos, Items::FrozenMargin, Order->FrozenMargin);
+		StepUtility::WriteString(ppos, Items::FrozenCommission, Order->FrozenCommission);
+		StepUtility::WriteString(ppos, Items::FrozenStampTax, Order->FrozenStampTax);
+		StepUtility::WriteString(ppos, Items::FrozenTransferFee, Order->FrozenTransferFee);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, OrderField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -13619,7 +13619,7 @@ bool RspRiskInsertOrderPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -13633,7 +13633,7 @@ bool RspRiskInsertOrderPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -13818,7 +13818,7 @@ bool RspRiskInsertOrderPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -13956,36 +13956,36 @@ int ReqRiskCancelOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRiskCancelOrder != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRiskCancelOrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRiskCancelOrderField::FieldID);
 		if (strlen(ReqRiskCancelOrder->UserID) >= sizeof(ReqRiskCancelOrder->UserID))
 		{
 			ReqRiskCancelOrder->UserID[sizeof(ReqRiskCancelOrder->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqRiskCancelOrder->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqRiskCancelOrder->UserID);
 		if (strlen(ReqRiskCancelOrder->AccountID) >= sizeof(ReqRiskCancelOrder->AccountID))
 		{
 			ReqRiskCancelOrder->AccountID[sizeof(ReqRiskCancelOrder->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqRiskCancelOrder->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqRiskCancelOrder->AccountID);
 		if (strlen(ReqRiskCancelOrder->ExchangeID) >= sizeof(ReqRiskCancelOrder->ExchangeID))
 		{
 			ReqRiskCancelOrder->ExchangeID[sizeof(ReqRiskCancelOrder->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqRiskCancelOrder->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqRiskCancelOrder->ExchangeID);
 		if (strlen(ReqRiskCancelOrder->InstrumentID) >= sizeof(ReqRiskCancelOrder->InstrumentID))
 		{
 			ReqRiskCancelOrder->InstrumentID[sizeof(ReqRiskCancelOrder->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, ReqRiskCancelOrder->InstrumentID);
-		WriteString(ppos, Items::ClientCancelOrderID, ReqRiskCancelOrder->ClientCancelOrderID);
-		WriteString(ppos, Items::OrderID, ReqRiskCancelOrder->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, ReqRiskCancelOrder->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ClientCancelOrderID, ReqRiskCancelOrder->ClientCancelOrderID);
+		StepUtility::WriteString(ppos, Items::OrderID, ReqRiskCancelOrder->OrderID);
 		if (strlen(ReqRiskCancelOrder->OrderSysID) >= sizeof(ReqRiskCancelOrder->OrderSysID))
 		{
 			ReqRiskCancelOrder->OrderSysID[sizeof(ReqRiskCancelOrder->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, ReqRiskCancelOrder->OrderSysID);
-		WriteString(ppos, Items::ClientOrderID, ReqRiskCancelOrder->ClientOrderID);
-		WriteHexString(ppos, Items::FieldEnd, ReqRiskCancelOrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::OrderSysID, ReqRiskCancelOrder->OrderSysID);
+		StepUtility::WriteString(ppos, Items::ClientOrderID, ReqRiskCancelOrder->ClientOrderID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRiskCancelOrderField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -13996,7 +13996,7 @@ bool ReqRiskCancelOrderPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -14010,7 +14010,7 @@ bool ReqRiskCancelOrderPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -14169,42 +14169,42 @@ int RspRiskCancelOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (CancelOrder != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, CancelOrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, CancelOrderField::FieldID);
 		if (strlen(CancelOrder->AccountID) >= sizeof(CancelOrder->AccountID))
 		{
 			CancelOrder->AccountID[sizeof(CancelOrder->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, CancelOrder->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, CancelOrder->AccountID);
 		if (strlen(CancelOrder->ExchangeID) >= sizeof(CancelOrder->ExchangeID))
 		{
 			CancelOrder->ExchangeID[sizeof(CancelOrder->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, CancelOrder->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, CancelOrder->ExchangeID);
 		if (strlen(CancelOrder->InstrumentID) >= sizeof(CancelOrder->InstrumentID))
 		{
 			CancelOrder->InstrumentID[sizeof(CancelOrder->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, CancelOrder->InstrumentID);
-		WriteString(ppos, Items::ClientCancelOrderID, CancelOrder->ClientCancelOrderID);
-		WriteString(ppos, Items::OrderID, CancelOrder->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, CancelOrder->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ClientCancelOrderID, CancelOrder->ClientCancelOrderID);
+		StepUtility::WriteString(ppos, Items::OrderID, CancelOrder->OrderID);
 		if (strlen(CancelOrder->OrderSysID) >= sizeof(CancelOrder->OrderSysID))
 		{
 			CancelOrder->OrderSysID[sizeof(CancelOrder->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, CancelOrder->OrderSysID);
-		WriteString(ppos, Items::ClientOrderID, CancelOrder->ClientOrderID);
-		WriteHexString(ppos, Items::FieldEnd, CancelOrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::OrderSysID, CancelOrder->OrderSysID);
+		StepUtility::WriteString(ppos, Items::ClientOrderID, CancelOrder->ClientOrderID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, CancelOrderField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -14215,7 +14215,7 @@ bool RspRiskCancelOrderPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -14229,7 +14229,7 @@ bool RspRiskCancelOrderPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -14298,7 +14298,7 @@ bool RspRiskCancelOrderPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -14436,18 +14436,18 @@ int ReqMdUserLoginPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqMdUserLogin != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqMdUserLoginField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqMdUserLoginField::FieldID);
 		if (strlen(ReqMdUserLogin->MdUserID) >= sizeof(ReqMdUserLogin->MdUserID))
 		{
 			ReqMdUserLogin->MdUserID[sizeof(ReqMdUserLogin->MdUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::MdUserID, ReqMdUserLogin->MdUserID);
+		StepUtility::WriteString(ppos, Items::MdUserID, ReqMdUserLogin->MdUserID);
 		if (strlen(ReqMdUserLogin->Password) >= sizeof(ReqMdUserLogin->Password))
 		{
 			ReqMdUserLogin->Password[sizeof(ReqMdUserLogin->Password) - 1] = 0;
 		}
-		WriteString(ppos, Items::Password, ReqMdUserLogin->Password);
-		WriteHexString(ppos, Items::FieldEnd, ReqMdUserLoginField::FieldID);
+		StepUtility::WriteString(ppos, Items::Password, ReqMdUserLogin->Password);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqMdUserLoginField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -14458,7 +14458,7 @@ bool ReqMdUserLoginPackage::FromStepStream(char* buff, int startIndex, int endIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -14472,7 +14472,7 @@ bool ReqMdUserLoginPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -14598,35 +14598,35 @@ int RspMdUserLoginPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspMdUserLogin != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspMdUserLoginField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspMdUserLoginField::FieldID);
 		if (strlen(RspMdUserLogin->MdUserID) >= sizeof(RspMdUserLogin->MdUserID))
 		{
 			RspMdUserLogin->MdUserID[sizeof(RspMdUserLogin->MdUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::MdUserID, RspMdUserLogin->MdUserID);
+		StepUtility::WriteString(ppos, Items::MdUserID, RspMdUserLogin->MdUserID);
 		if (strlen(RspMdUserLogin->LoginDate) >= sizeof(RspMdUserLogin->LoginDate))
 		{
 			RspMdUserLogin->LoginDate[sizeof(RspMdUserLogin->LoginDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::LoginDate, RspMdUserLogin->LoginDate);
+		StepUtility::WriteString(ppos, Items::LoginDate, RspMdUserLogin->LoginDate);
 		if (strlen(RspMdUserLogin->LoginTime) >= sizeof(RspMdUserLogin->LoginTime))
 		{
 			RspMdUserLogin->LoginTime[sizeof(RspMdUserLogin->LoginTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::LoginTime, RspMdUserLogin->LoginTime);
-		WriteString(ppos, Items::SessionID, RspMdUserLogin->SessionID);
-		WriteHexString(ppos, Items::FieldEnd, RspMdUserLoginField::FieldID);
+		StepUtility::WriteString(ppos, Items::LoginTime, RspMdUserLogin->LoginTime);
+		StepUtility::WriteString(ppos, Items::SessionID, RspMdUserLogin->SessionID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspMdUserLoginField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -14637,7 +14637,7 @@ bool RspMdUserLoginPackage::FromStepStream(char* buff, int startIndex, int endIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -14651,7 +14651,7 @@ bool RspMdUserLoginPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -14704,7 +14704,7 @@ bool RspMdUserLoginPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -14842,13 +14842,13 @@ int ReqMdUserLogoutPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqMdUserLogout != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqMdUserLogoutField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqMdUserLogoutField::FieldID);
 		if (strlen(ReqMdUserLogout->MdUserID) >= sizeof(ReqMdUserLogout->MdUserID))
 		{
 			ReqMdUserLogout->MdUserID[sizeof(ReqMdUserLogout->MdUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::MdUserID, ReqMdUserLogout->MdUserID);
-		WriteHexString(ppos, Items::FieldEnd, ReqMdUserLogoutField::FieldID);
+		StepUtility::WriteString(ppos, Items::MdUserID, ReqMdUserLogout->MdUserID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqMdUserLogoutField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -14859,7 +14859,7 @@ bool ReqMdUserLogoutPackage::FromStepStream(char* buff, int startIndex, int endI
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -14873,7 +14873,7 @@ bool ReqMdUserLogoutPackage::FromStepStream(char* buff, int startIndex, int endI
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -14993,24 +14993,24 @@ int RspMdUserLogoutPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspMdUserLogout != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspMdUserLogoutField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspMdUserLogoutField::FieldID);
 		if (strlen(RspMdUserLogout->MdUserID) >= sizeof(RspMdUserLogout->MdUserID))
 		{
 			RspMdUserLogout->MdUserID[sizeof(RspMdUserLogout->MdUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::MdUserID, RspMdUserLogout->MdUserID);
-		WriteHexString(ppos, Items::FieldEnd, RspMdUserLogoutField::FieldID);
+		StepUtility::WriteString(ppos, Items::MdUserID, RspMdUserLogout->MdUserID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspMdUserLogoutField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -15021,7 +15021,7 @@ bool RspMdUserLogoutPackage::FromStepStream(char* buff, int startIndex, int endI
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -15035,7 +15035,7 @@ bool RspMdUserLogoutPackage::FromStepStream(char* buff, int startIndex, int endI
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -15071,7 +15071,7 @@ bool RspMdUserLogoutPackage::FromStepStream(char* buff, int startIndex, int endI
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -15209,18 +15209,18 @@ int ReqMdInitPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqMdInit != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqMdInitField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqMdInitField::FieldID);
 		if (strlen(ReqMdInit->ExchangeID) >= sizeof(ReqMdInit->ExchangeID))
 		{
 			ReqMdInit->ExchangeID[sizeof(ReqMdInit->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqMdInit->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqMdInit->ExchangeID);
 		if (strlen(ReqMdInit->TradingDay) >= sizeof(ReqMdInit->TradingDay))
 		{
 			ReqMdInit->TradingDay[sizeof(ReqMdInit->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqMdInit->TradingDay);
-		WriteHexString(ppos, Items::FieldEnd, ReqMdInitField::FieldID);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqMdInit->TradingDay);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqMdInitField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -15231,7 +15231,7 @@ bool ReqMdInitPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -15245,7 +15245,7 @@ bool ReqMdInitPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -15371,29 +15371,29 @@ int RspMdInitPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspMdInit != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspMdInitField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspMdInitField::FieldID);
 		if (strlen(RspMdInit->ExchangeID) >= sizeof(RspMdInit->ExchangeID))
 		{
 			RspMdInit->ExchangeID[sizeof(RspMdInit->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, RspMdInit->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, RspMdInit->ExchangeID);
 		if (strlen(RspMdInit->TradingDay) >= sizeof(RspMdInit->TradingDay))
 		{
 			RspMdInit->TradingDay[sizeof(RspMdInit->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, RspMdInit->TradingDay);
-		WriteHexString(ppos, Items::FieldEnd, RspMdInitField::FieldID);
+		StepUtility::WriteString(ppos, Items::TradingDay, RspMdInit->TradingDay);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspMdInitField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -15404,7 +15404,7 @@ bool RspMdInitPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -15418,7 +15418,7 @@ bool RspMdInitPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -15460,7 +15460,7 @@ bool RspMdInitPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -15598,18 +15598,18 @@ int ReqSubscribeMdPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqSubscribeMd != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqSubscribeMdField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqSubscribeMdField::FieldID);
 		if (strlen(ReqSubscribeMd->ExchangeID) >= sizeof(ReqSubscribeMd->ExchangeID))
 		{
 			ReqSubscribeMd->ExchangeID[sizeof(ReqSubscribeMd->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqSubscribeMd->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqSubscribeMd->ExchangeID);
 		if (strlen(ReqSubscribeMd->InstrumentID) >= sizeof(ReqSubscribeMd->InstrumentID))
 		{
 			ReqSubscribeMd->InstrumentID[sizeof(ReqSubscribeMd->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, ReqSubscribeMd->InstrumentID);
-		WriteHexString(ppos, Items::FieldEnd, ReqSubscribeMdField::FieldID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, ReqSubscribeMd->InstrumentID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqSubscribeMdField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -15620,7 +15620,7 @@ bool ReqSubscribeMdPackage::FromStepStream(char* buff, int startIndex, int endIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -15634,7 +15634,7 @@ bool ReqSubscribeMdPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -15760,29 +15760,29 @@ int RspSubscribeMdPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspSubscribeMd != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspSubscribeMdField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspSubscribeMdField::FieldID);
 		if (strlen(RspSubscribeMd->ExchangeID) >= sizeof(RspSubscribeMd->ExchangeID))
 		{
 			RspSubscribeMd->ExchangeID[sizeof(RspSubscribeMd->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, RspSubscribeMd->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, RspSubscribeMd->ExchangeID);
 		if (strlen(RspSubscribeMd->InstrumentID) >= sizeof(RspSubscribeMd->InstrumentID))
 		{
 			RspSubscribeMd->InstrumentID[sizeof(RspSubscribeMd->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, RspSubscribeMd->InstrumentID);
-		WriteHexString(ppos, Items::FieldEnd, RspSubscribeMdField::FieldID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, RspSubscribeMd->InstrumentID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspSubscribeMdField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -15793,7 +15793,7 @@ bool RspSubscribeMdPackage::FromStepStream(char* buff, int startIndex, int endIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -15807,7 +15807,7 @@ bool RspSubscribeMdPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -15849,7 +15849,7 @@ bool RspSubscribeMdPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -15987,30 +15987,30 @@ int RtnShortMdPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ShortMd != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ShortMdField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ShortMdField::FieldID);
 		if (strlen(ShortMd->TradingDay) >= sizeof(ShortMd->TradingDay))
 		{
 			ShortMd->TradingDay[sizeof(ShortMd->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ShortMd->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, ShortMd->TradingDay);
 		if (strlen(ShortMd->ExchangeID) >= sizeof(ShortMd->ExchangeID))
 		{
 			ShortMd->ExchangeID[sizeof(ShortMd->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ShortMd->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ShortMd->ExchangeID);
 		if (strlen(ShortMd->InstrumentID) >= sizeof(ShortMd->InstrumentID))
 		{
 			ShortMd->InstrumentID[sizeof(ShortMd->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, ShortMd->InstrumentID);
-		WriteString(ppos, Items::LastPrice, ShortMd->LastPrice);
-		WriteString(ppos, Items::ClosePrice, ShortMd->ClosePrice);
-		WriteString(ppos, Items::PreClosePrice, ShortMd->PreClosePrice);
-		WriteString(ppos, Items::SettlementPrice, ShortMd->SettlementPrice);
-		WriteString(ppos, Items::PreSettlementPrice, ShortMd->PreSettlementPrice);
-		WriteString(ppos, Items::UpperLimitPrice, ShortMd->UpperLimitPrice);
-		WriteString(ppos, Items::LowerLimitPrice, ShortMd->LowerLimitPrice);
-		WriteHexString(ppos, Items::FieldEnd, ShortMdField::FieldID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, ShortMd->InstrumentID);
+		StepUtility::WriteString(ppos, Items::LastPrice, ShortMd->LastPrice);
+		StepUtility::WriteString(ppos, Items::ClosePrice, ShortMd->ClosePrice);
+		StepUtility::WriteString(ppos, Items::PreClosePrice, ShortMd->PreClosePrice);
+		StepUtility::WriteString(ppos, Items::SettlementPrice, ShortMd->SettlementPrice);
+		StepUtility::WriteString(ppos, Items::PreSettlementPrice, ShortMd->PreSettlementPrice);
+		StepUtility::WriteString(ppos, Items::UpperLimitPrice, ShortMd->UpperLimitPrice);
+		StepUtility::WriteString(ppos, Items::LowerLimitPrice, ShortMd->LowerLimitPrice);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ShortMdField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -16021,7 +16021,7 @@ bool RtnShortMdPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -16035,7 +16035,7 @@ bool RtnShortMdPackage::FromStepStream(char* buff, int startIndex, int endIndex)
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -16197,19 +16197,19 @@ int RtnExchangeStatusPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RtnExchangeStatus != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RtnExchangeStatusField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RtnExchangeStatusField::FieldID);
 		if (strlen(RtnExchangeStatus->ExchangeID) >= sizeof(RtnExchangeStatus->ExchangeID))
 		{
 			RtnExchangeStatus->ExchangeID[sizeof(RtnExchangeStatus->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, RtnExchangeStatus->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, RtnExchangeStatus->ExchangeID);
 		if (strlen(RtnExchangeStatus->ExchangeDate) >= sizeof(RtnExchangeStatus->ExchangeDate))
 		{
 			RtnExchangeStatus->ExchangeDate[sizeof(RtnExchangeStatus->ExchangeDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeDate, RtnExchangeStatus->ExchangeDate);
-		WriteString(ppos, Items::ExchangeStatus, (int)RtnExchangeStatus->ExchangeStatus);
-		WriteHexString(ppos, Items::FieldEnd, RtnExchangeStatusField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeDate, RtnExchangeStatus->ExchangeDate);
+		StepUtility::WriteString(ppos, Items::ExchangeStatus, (int)RtnExchangeStatus->ExchangeStatus);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RtnExchangeStatusField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -16220,7 +16220,7 @@ bool RtnExchangeStatusPackage::FromStepStream(char* buff, int startIndex, int en
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -16234,7 +16234,7 @@ bool RtnExchangeStatusPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -16360,18 +16360,18 @@ int RtnMdInitCompletedPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (MdInitCompleted != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, MdInitCompletedField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, MdInitCompletedField::FieldID);
 		if (strlen(MdInitCompleted->ExchangeID) >= sizeof(MdInitCompleted->ExchangeID))
 		{
 			MdInitCompleted->ExchangeID[sizeof(MdInitCompleted->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, MdInitCompleted->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, MdInitCompleted->ExchangeID);
 		if (strlen(MdInitCompleted->TradingDay) >= sizeof(MdInitCompleted->TradingDay))
 		{
 			MdInitCompleted->TradingDay[sizeof(MdInitCompleted->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, MdInitCompleted->TradingDay);
-		WriteHexString(ppos, Items::FieldEnd, MdInitCompletedField::FieldID);
+		StepUtility::WriteString(ppos, Items::TradingDay, MdInitCompleted->TradingDay);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, MdInitCompletedField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -16382,7 +16382,7 @@ bool RtnMdInitCompletedPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -16396,7 +16396,7 @@ bool RtnMdInitCompletedPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -16517,18 +16517,18 @@ int ReqAdminUserLoginPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAdminUserLogin != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAdminUserLoginField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAdminUserLoginField::FieldID);
 		if (strlen(ReqAdminUserLogin->AdminUserID) >= sizeof(ReqAdminUserLogin->AdminUserID))
 		{
 			ReqAdminUserLogin->AdminUserID[sizeof(ReqAdminUserLogin->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAdminUserLogin->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAdminUserLogin->AdminUserID);
 		if (strlen(ReqAdminUserLogin->Password) >= sizeof(ReqAdminUserLogin->Password))
 		{
 			ReqAdminUserLogin->Password[sizeof(ReqAdminUserLogin->Password) - 1] = 0;
 		}
-		WriteString(ppos, Items::Password, ReqAdminUserLogin->Password);
-		WriteHexString(ppos, Items::FieldEnd, ReqAdminUserLoginField::FieldID);
+		StepUtility::WriteString(ppos, Items::Password, ReqAdminUserLogin->Password);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAdminUserLoginField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -16539,7 +16539,7 @@ bool ReqAdminUserLoginPackage::FromStepStream(char* buff, int startIndex, int en
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -16553,7 +16553,7 @@ bool ReqAdminUserLoginPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -16679,35 +16679,35 @@ int RspAdminUserLoginPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAdminUserLogin != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAdminUserLoginField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAdminUserLoginField::FieldID);
 		if (strlen(RspAdminUserLogin->AdminUserID) >= sizeof(RspAdminUserLogin->AdminUserID))
 		{
 			RspAdminUserLogin->AdminUserID[sizeof(RspAdminUserLogin->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAdminUserLogin->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAdminUserLogin->AdminUserID);
 		if (strlen(RspAdminUserLogin->LoginDate) >= sizeof(RspAdminUserLogin->LoginDate))
 		{
 			RspAdminUserLogin->LoginDate[sizeof(RspAdminUserLogin->LoginDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::LoginDate, RspAdminUserLogin->LoginDate);
+		StepUtility::WriteString(ppos, Items::LoginDate, RspAdminUserLogin->LoginDate);
 		if (strlen(RspAdminUserLogin->LoginTime) >= sizeof(RspAdminUserLogin->LoginTime))
 		{
 			RspAdminUserLogin->LoginTime[sizeof(RspAdminUserLogin->LoginTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::LoginTime, RspAdminUserLogin->LoginTime);
-		WriteString(ppos, Items::SessionID, RspAdminUserLogin->SessionID);
-		WriteHexString(ppos, Items::FieldEnd, RspAdminUserLoginField::FieldID);
+		StepUtility::WriteString(ppos, Items::LoginTime, RspAdminUserLogin->LoginTime);
+		StepUtility::WriteString(ppos, Items::SessionID, RspAdminUserLogin->SessionID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAdminUserLoginField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -16718,7 +16718,7 @@ bool RspAdminUserLoginPackage::FromStepStream(char* buff, int startIndex, int en
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -16732,7 +16732,7 @@ bool RspAdminUserLoginPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -16785,7 +16785,7 @@ bool RspAdminUserLoginPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -16923,13 +16923,13 @@ int ReqAdminUserLogoutPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAdminUserLogout != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAdminUserLogoutField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAdminUserLogoutField::FieldID);
 		if (strlen(ReqAdminUserLogout->AdminUserID) >= sizeof(ReqAdminUserLogout->AdminUserID))
 		{
 			ReqAdminUserLogout->AdminUserID[sizeof(ReqAdminUserLogout->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAdminUserLogout->AdminUserID);
-		WriteHexString(ppos, Items::FieldEnd, ReqAdminUserLogoutField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAdminUserLogout->AdminUserID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAdminUserLogoutField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -16940,7 +16940,7 @@ bool ReqAdminUserLogoutPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -16954,7 +16954,7 @@ bool ReqAdminUserLogoutPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -17074,24 +17074,24 @@ int RspAdminUserLogoutPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAdminUserLogout != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAdminUserLogoutField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAdminUserLogoutField::FieldID);
 		if (strlen(RspAdminUserLogout->AdminUserID) >= sizeof(RspAdminUserLogout->AdminUserID))
 		{
 			RspAdminUserLogout->AdminUserID[sizeof(RspAdminUserLogout->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAdminUserLogout->AdminUserID);
-		WriteHexString(ppos, Items::FieldEnd, RspAdminUserLogoutField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAdminUserLogout->AdminUserID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAdminUserLogoutField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -17102,7 +17102,7 @@ bool RspAdminUserLogoutPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -17116,7 +17116,7 @@ bool RspAdminUserLogoutPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -17152,7 +17152,7 @@ bool RspAdminUserLogoutPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -17290,19 +17290,19 @@ int RtnAdminUserLogoutPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (AdminUserLogout != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, AdminUserLogoutField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, AdminUserLogoutField::FieldID);
 		if (strlen(AdminUserLogout->UserID) >= sizeof(AdminUserLogout->UserID))
 		{
 			AdminUserLogout->UserID[sizeof(AdminUserLogout->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, AdminUserLogout->UserID);
-		WriteString(ppos, Items::ErrorID, AdminUserLogout->ErrorID);
+		StepUtility::WriteString(ppos, Items::UserID, AdminUserLogout->UserID);
+		StepUtility::WriteString(ppos, Items::ErrorID, AdminUserLogout->ErrorID);
 		if (strlen(AdminUserLogout->ErrorMsg) >= sizeof(AdminUserLogout->ErrorMsg))
 		{
 			AdminUserLogout->ErrorMsg[sizeof(AdminUserLogout->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, AdminUserLogout->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, AdminUserLogoutField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, AdminUserLogout->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, AdminUserLogoutField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -17313,7 +17313,7 @@ bool RtnAdminUserLogoutPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -17327,7 +17327,7 @@ bool RtnAdminUserLogoutPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -17453,29 +17453,29 @@ int ReqAddRiskUserPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddRiskUser != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddRiskUserField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddRiskUserField::FieldID);
 		if (strlen(ReqAddRiskUser->AdminUserID) >= sizeof(ReqAddRiskUser->AdminUserID))
 		{
 			ReqAddRiskUser->AdminUserID[sizeof(ReqAddRiskUser->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddRiskUser->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddRiskUser->AdminUserID);
 		if (strlen(ReqAddRiskUser->UserID) >= sizeof(ReqAddRiskUser->UserID))
 		{
 			ReqAddRiskUser->UserID[sizeof(ReqAddRiskUser->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqAddRiskUser->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqAddRiskUser->UserID);
 		if (strlen(ReqAddRiskUser->UserName) >= sizeof(ReqAddRiskUser->UserName))
 		{
 			ReqAddRiskUser->UserName[sizeof(ReqAddRiskUser->UserName) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserName, ReqAddRiskUser->UserName);
+		StepUtility::WriteString(ppos, Items::UserName, ReqAddRiskUser->UserName);
 		if (strlen(ReqAddRiskUser->Password) >= sizeof(ReqAddRiskUser->Password))
 		{
 			ReqAddRiskUser->Password[sizeof(ReqAddRiskUser->Password) - 1] = 0;
 		}
-		WriteString(ppos, Items::Password, ReqAddRiskUser->Password);
-		WriteString(ppos, Items::RiskGroupID, ReqAddRiskUser->RiskGroupID);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddRiskUserField::FieldID);
+		StepUtility::WriteString(ppos, Items::Password, ReqAddRiskUser->Password);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, ReqAddRiskUser->RiskGroupID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddRiskUserField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -17486,7 +17486,7 @@ bool ReqAddRiskUserPackage::FromStepStream(char* buff, int startIndex, int endIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -17500,7 +17500,7 @@ bool ReqAddRiskUserPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -17643,29 +17643,29 @@ int RspAddRiskUserPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddRiskUser != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddRiskUserField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddRiskUserField::FieldID);
 		if (strlen(RspAddRiskUser->AdminUserID) >= sizeof(RspAddRiskUser->AdminUserID))
 		{
 			RspAddRiskUser->AdminUserID[sizeof(RspAddRiskUser->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddRiskUser->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddRiskUser->AdminUserID);
 		if (strlen(RspAddRiskUser->UserID) >= sizeof(RspAddRiskUser->UserID))
 		{
 			RspAddRiskUser->UserID[sizeof(RspAddRiskUser->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, RspAddRiskUser->UserID);
-		WriteHexString(ppos, Items::FieldEnd, RspAddRiskUserField::FieldID);
+		StepUtility::WriteString(ppos, Items::UserID, RspAddRiskUser->UserID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddRiskUserField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -17676,7 +17676,7 @@ bool RspAddRiskUserPackage::FromStepStream(char* buff, int startIndex, int endIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -17690,7 +17690,7 @@ bool RspAddRiskUserPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -17732,7 +17732,7 @@ bool RspAddRiskUserPackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -17870,29 +17870,29 @@ int ReqUpdateRiskUserPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqUpdateRiskUser != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqUpdateRiskUserField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqUpdateRiskUserField::FieldID);
 		if (strlen(ReqUpdateRiskUser->AdminUserID) >= sizeof(ReqUpdateRiskUser->AdminUserID))
 		{
 			ReqUpdateRiskUser->AdminUserID[sizeof(ReqUpdateRiskUser->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqUpdateRiskUser->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqUpdateRiskUser->AdminUserID);
 		if (strlen(ReqUpdateRiskUser->UserID) >= sizeof(ReqUpdateRiskUser->UserID))
 		{
 			ReqUpdateRiskUser->UserID[sizeof(ReqUpdateRiskUser->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqUpdateRiskUser->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqUpdateRiskUser->UserID);
 		if (strlen(ReqUpdateRiskUser->UserName) >= sizeof(ReqUpdateRiskUser->UserName))
 		{
 			ReqUpdateRiskUser->UserName[sizeof(ReqUpdateRiskUser->UserName) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserName, ReqUpdateRiskUser->UserName);
+		StepUtility::WriteString(ppos, Items::UserName, ReqUpdateRiskUser->UserName);
 		if (strlen(ReqUpdateRiskUser->Password) >= sizeof(ReqUpdateRiskUser->Password))
 		{
 			ReqUpdateRiskUser->Password[sizeof(ReqUpdateRiskUser->Password) - 1] = 0;
 		}
-		WriteString(ppos, Items::Password, ReqUpdateRiskUser->Password);
-		WriteString(ppos, Items::RiskGroupID, ReqUpdateRiskUser->RiskGroupID);
-		WriteHexString(ppos, Items::FieldEnd, ReqUpdateRiskUserField::FieldID);
+		StepUtility::WriteString(ppos, Items::Password, ReqUpdateRiskUser->Password);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, ReqUpdateRiskUser->RiskGroupID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqUpdateRiskUserField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -17903,7 +17903,7 @@ bool ReqUpdateRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -17917,7 +17917,7 @@ bool ReqUpdateRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -18060,29 +18060,29 @@ int RspUpdateRiskUserPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspUpdateRiskUser != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspUpdateRiskUserField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspUpdateRiskUserField::FieldID);
 		if (strlen(RspUpdateRiskUser->AdminUserID) >= sizeof(RspUpdateRiskUser->AdminUserID))
 		{
 			RspUpdateRiskUser->AdminUserID[sizeof(RspUpdateRiskUser->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspUpdateRiskUser->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspUpdateRiskUser->AdminUserID);
 		if (strlen(RspUpdateRiskUser->UserID) >= sizeof(RspUpdateRiskUser->UserID))
 		{
 			RspUpdateRiskUser->UserID[sizeof(RspUpdateRiskUser->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, RspUpdateRiskUser->UserID);
-		WriteHexString(ppos, Items::FieldEnd, RspUpdateRiskUserField::FieldID);
+		StepUtility::WriteString(ppos, Items::UserID, RspUpdateRiskUser->UserID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspUpdateRiskUserField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -18093,7 +18093,7 @@ bool RspUpdateRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -18107,7 +18107,7 @@ bool RspUpdateRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -18149,7 +18149,7 @@ bool RspUpdateRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -18287,18 +18287,18 @@ int ReqRemoveRiskUserPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRemoveRiskUser != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRemoveRiskUserField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRemoveRiskUserField::FieldID);
 		if (strlen(ReqRemoveRiskUser->AdminUserID) >= sizeof(ReqRemoveRiskUser->AdminUserID))
 		{
 			ReqRemoveRiskUser->AdminUserID[sizeof(ReqRemoveRiskUser->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqRemoveRiskUser->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqRemoveRiskUser->AdminUserID);
 		if (strlen(ReqRemoveRiskUser->UserID) >= sizeof(ReqRemoveRiskUser->UserID))
 		{
 			ReqRemoveRiskUser->UserID[sizeof(ReqRemoveRiskUser->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqRemoveRiskUser->UserID);
-		WriteHexString(ppos, Items::FieldEnd, ReqRemoveRiskUserField::FieldID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqRemoveRiskUser->UserID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRemoveRiskUserField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -18309,7 +18309,7 @@ bool ReqRemoveRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -18323,7 +18323,7 @@ bool ReqRemoveRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -18449,29 +18449,29 @@ int RspRemoveRiskUserPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspRemoveRiskUser != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRemoveRiskUserField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRemoveRiskUserField::FieldID);
 		if (strlen(RspRemoveRiskUser->AdminUserID) >= sizeof(RspRemoveRiskUser->AdminUserID))
 		{
 			RspRemoveRiskUser->AdminUserID[sizeof(RspRemoveRiskUser->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspRemoveRiskUser->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspRemoveRiskUser->AdminUserID);
 		if (strlen(RspRemoveRiskUser->UserID) >= sizeof(RspRemoveRiskUser->UserID))
 		{
 			RspRemoveRiskUser->UserID[sizeof(RspRemoveRiskUser->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, RspRemoveRiskUser->UserID);
-		WriteHexString(ppos, Items::FieldEnd, RspRemoveRiskUserField::FieldID);
+		StepUtility::WriteString(ppos, Items::UserID, RspRemoveRiskUser->UserID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRemoveRiskUserField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -18482,7 +18482,7 @@ bool RspRemoveRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -18496,7 +18496,7 @@ bool RspRemoveRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -18538,7 +18538,7 @@ bool RspRemoveRiskUserPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -18676,28 +18676,28 @@ int ReqAddAdminUserPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddAdminUser != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddAdminUserField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddAdminUserField::FieldID);
 		if (strlen(ReqAddAdminUser->AdminUserID) >= sizeof(ReqAddAdminUser->AdminUserID))
 		{
 			ReqAddAdminUser->AdminUserID[sizeof(ReqAddAdminUser->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddAdminUser->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddAdminUser->AdminUserID);
 		if (strlen(ReqAddAdminUser->UserID) >= sizeof(ReqAddAdminUser->UserID))
 		{
 			ReqAddAdminUser->UserID[sizeof(ReqAddAdminUser->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqAddAdminUser->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqAddAdminUser->UserID);
 		if (strlen(ReqAddAdminUser->UserName) >= sizeof(ReqAddAdminUser->UserName))
 		{
 			ReqAddAdminUser->UserName[sizeof(ReqAddAdminUser->UserName) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserName, ReqAddAdminUser->UserName);
+		StepUtility::WriteString(ppos, Items::UserName, ReqAddAdminUser->UserName);
 		if (strlen(ReqAddAdminUser->Password) >= sizeof(ReqAddAdminUser->Password))
 		{
 			ReqAddAdminUser->Password[sizeof(ReqAddAdminUser->Password) - 1] = 0;
 		}
-		WriteString(ppos, Items::Password, ReqAddAdminUser->Password);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddAdminUserField::FieldID);
+		StepUtility::WriteString(ppos, Items::Password, ReqAddAdminUser->Password);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddAdminUserField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -18708,7 +18708,7 @@ bool ReqAddAdminUserPackage::FromStepStream(char* buff, int startIndex, int endI
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -18722,7 +18722,7 @@ bool ReqAddAdminUserPackage::FromStepStream(char* buff, int startIndex, int endI
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -18860,29 +18860,29 @@ int RspAddAdminUserPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddAdminUser != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddAdminUserField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddAdminUserField::FieldID);
 		if (strlen(RspAddAdminUser->AdminUserID) >= sizeof(RspAddAdminUser->AdminUserID))
 		{
 			RspAddAdminUser->AdminUserID[sizeof(RspAddAdminUser->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddAdminUser->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddAdminUser->AdminUserID);
 		if (strlen(RspAddAdminUser->UserID) >= sizeof(RspAddAdminUser->UserID))
 		{
 			RspAddAdminUser->UserID[sizeof(RspAddAdminUser->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, RspAddAdminUser->UserID);
-		WriteHexString(ppos, Items::FieldEnd, RspAddAdminUserField::FieldID);
+		StepUtility::WriteString(ppos, Items::UserID, RspAddAdminUser->UserID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddAdminUserField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -18893,7 +18893,7 @@ bool RspAddAdminUserPackage::FromStepStream(char* buff, int startIndex, int endI
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -18907,7 +18907,7 @@ bool RspAddAdminUserPackage::FromStepStream(char* buff, int startIndex, int endI
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -18949,7 +18949,7 @@ bool RspAddAdminUserPackage::FromStepStream(char* buff, int startIndex, int endI
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -19087,28 +19087,28 @@ int ReqUpdateAdminUserPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqUpdateAdminUser != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqUpdateAdminUserField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqUpdateAdminUserField::FieldID);
 		if (strlen(ReqUpdateAdminUser->AdminUserID) >= sizeof(ReqUpdateAdminUser->AdminUserID))
 		{
 			ReqUpdateAdminUser->AdminUserID[sizeof(ReqUpdateAdminUser->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqUpdateAdminUser->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqUpdateAdminUser->AdminUserID);
 		if (strlen(ReqUpdateAdminUser->UserID) >= sizeof(ReqUpdateAdminUser->UserID))
 		{
 			ReqUpdateAdminUser->UserID[sizeof(ReqUpdateAdminUser->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqUpdateAdminUser->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqUpdateAdminUser->UserID);
 		if (strlen(ReqUpdateAdminUser->UserName) >= sizeof(ReqUpdateAdminUser->UserName))
 		{
 			ReqUpdateAdminUser->UserName[sizeof(ReqUpdateAdminUser->UserName) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserName, ReqUpdateAdminUser->UserName);
+		StepUtility::WriteString(ppos, Items::UserName, ReqUpdateAdminUser->UserName);
 		if (strlen(ReqUpdateAdminUser->Password) >= sizeof(ReqUpdateAdminUser->Password))
 		{
 			ReqUpdateAdminUser->Password[sizeof(ReqUpdateAdminUser->Password) - 1] = 0;
 		}
-		WriteString(ppos, Items::Password, ReqUpdateAdminUser->Password);
-		WriteHexString(ppos, Items::FieldEnd, ReqUpdateAdminUserField::FieldID);
+		StepUtility::WriteString(ppos, Items::Password, ReqUpdateAdminUser->Password);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqUpdateAdminUserField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -19119,7 +19119,7 @@ bool ReqUpdateAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -19133,7 +19133,7 @@ bool ReqUpdateAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -19271,29 +19271,29 @@ int RspUpdateAdminUserPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspUpdateAdminUser != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspUpdateAdminUserField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspUpdateAdminUserField::FieldID);
 		if (strlen(RspUpdateAdminUser->AdminUserID) >= sizeof(RspUpdateAdminUser->AdminUserID))
 		{
 			RspUpdateAdminUser->AdminUserID[sizeof(RspUpdateAdminUser->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspUpdateAdminUser->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspUpdateAdminUser->AdminUserID);
 		if (strlen(RspUpdateAdminUser->UserID) >= sizeof(RspUpdateAdminUser->UserID))
 		{
 			RspUpdateAdminUser->UserID[sizeof(RspUpdateAdminUser->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, RspUpdateAdminUser->UserID);
-		WriteHexString(ppos, Items::FieldEnd, RspUpdateAdminUserField::FieldID);
+		StepUtility::WriteString(ppos, Items::UserID, RspUpdateAdminUser->UserID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspUpdateAdminUserField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -19304,7 +19304,7 @@ bool RspUpdateAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -19318,7 +19318,7 @@ bool RspUpdateAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -19360,7 +19360,7 @@ bool RspUpdateAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -19498,18 +19498,18 @@ int ReqRemoveAdminUserPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRemoveAdminUser != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRemoveAdminUserField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRemoveAdminUserField::FieldID);
 		if (strlen(ReqRemoveAdminUser->AdminUserID) >= sizeof(ReqRemoveAdminUser->AdminUserID))
 		{
 			ReqRemoveAdminUser->AdminUserID[sizeof(ReqRemoveAdminUser->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqRemoveAdminUser->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqRemoveAdminUser->AdminUserID);
 		if (strlen(ReqRemoveAdminUser->UserID) >= sizeof(ReqRemoveAdminUser->UserID))
 		{
 			ReqRemoveAdminUser->UserID[sizeof(ReqRemoveAdminUser->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqRemoveAdminUser->UserID);
-		WriteHexString(ppos, Items::FieldEnd, ReqRemoveAdminUserField::FieldID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqRemoveAdminUser->UserID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRemoveAdminUserField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -19520,7 +19520,7 @@ bool ReqRemoveAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -19534,7 +19534,7 @@ bool ReqRemoveAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -19660,29 +19660,29 @@ int RspRemoveAdminUserPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspRemoveAdminUser != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRemoveAdminUserField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRemoveAdminUserField::FieldID);
 		if (strlen(RspRemoveAdminUser->AdminUserID) >= sizeof(RspRemoveAdminUser->AdminUserID))
 		{
 			RspRemoveAdminUser->AdminUserID[sizeof(RspRemoveAdminUser->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspRemoveAdminUser->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspRemoveAdminUser->AdminUserID);
 		if (strlen(RspRemoveAdminUser->UserID) >= sizeof(RspRemoveAdminUser->UserID))
 		{
 			RspRemoveAdminUser->UserID[sizeof(RspRemoveAdminUser->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, RspRemoveAdminUser->UserID);
-		WriteHexString(ppos, Items::FieldEnd, RspRemoveAdminUserField::FieldID);
+		StepUtility::WriteString(ppos, Items::UserID, RspRemoveAdminUser->UserID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRemoveAdminUserField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -19693,7 +19693,7 @@ bool RspRemoveAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -19707,7 +19707,7 @@ bool RspRemoveAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -19749,7 +19749,7 @@ bool RspRemoveAdminUserPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -19887,46 +19887,46 @@ int ReqAddPrimaryAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddPrimaryAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddPrimaryAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddPrimaryAccountField::FieldID);
 		if (strlen(ReqAddPrimaryAccount->AdminUserID) >= sizeof(ReqAddPrimaryAccount->AdminUserID))
 		{
 			ReqAddPrimaryAccount->AdminUserID[sizeof(ReqAddPrimaryAccount->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddPrimaryAccount->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddPrimaryAccount->AdminUserID);
 		if (strlen(ReqAddPrimaryAccount->TradingDay) >= sizeof(ReqAddPrimaryAccount->TradingDay))
 		{
 			ReqAddPrimaryAccount->TradingDay[sizeof(ReqAddPrimaryAccount->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqAddPrimaryAccount->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqAddPrimaryAccount->TradingDay);
 		if (strlen(ReqAddPrimaryAccount->PrimaryAccountID) >= sizeof(ReqAddPrimaryAccount->PrimaryAccountID))
 		{
 			ReqAddPrimaryAccount->PrimaryAccountID[sizeof(ReqAddPrimaryAccount->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, ReqAddPrimaryAccount->PrimaryAccountID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, ReqAddPrimaryAccount->PrimaryAccountID);
 		if (strlen(ReqAddPrimaryAccount->PrimaryAccountName) >= sizeof(ReqAddPrimaryAccount->PrimaryAccountName))
 		{
 			ReqAddPrimaryAccount->PrimaryAccountName[sizeof(ReqAddPrimaryAccount->PrimaryAccountName) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountName, ReqAddPrimaryAccount->PrimaryAccountName);
-		WriteString(ppos, Items::AccountClass, (int)ReqAddPrimaryAccount->AccountClass);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountName, ReqAddPrimaryAccount->PrimaryAccountName);
+		StepUtility::WriteString(ppos, Items::AccountClass, (int)ReqAddPrimaryAccount->AccountClass);
 		if (strlen(ReqAddPrimaryAccount->BrokerPassword) >= sizeof(ReqAddPrimaryAccount->BrokerPassword))
 		{
 			ReqAddPrimaryAccount->BrokerPassword[sizeof(ReqAddPrimaryAccount->BrokerPassword) - 1] = 0;
 		}
-		WriteString(ppos, Items::BrokerPassword, ReqAddPrimaryAccount->BrokerPassword);
-		WriteString(ppos, Items::OfferID, ReqAddPrimaryAccount->OfferID);
-		WriteString(ppos, Items::IsAllowLogin, ReqAddPrimaryAccount->IsAllowLogin);
-		WriteString(ppos, Items::IsSimulateAccount, ReqAddPrimaryAccount->IsSimulateAccount);
-		WriteString(ppos, Items::AccountStatus, (int)ReqAddPrimaryAccount->AccountStatus);
+		StepUtility::WriteString(ppos, Items::BrokerPassword, ReqAddPrimaryAccount->BrokerPassword);
+		StepUtility::WriteString(ppos, Items::OfferID, ReqAddPrimaryAccount->OfferID);
+		StepUtility::WriteString(ppos, Items::IsAllowLogin, ReqAddPrimaryAccount->IsAllowLogin);
+		StepUtility::WriteString(ppos, Items::IsSimulateAccount, ReqAddPrimaryAccount->IsSimulateAccount);
+		StepUtility::WriteString(ppos, Items::AccountStatus, (int)ReqAddPrimaryAccount->AccountStatus);
 		if (strlen(ReqAddPrimaryAccount->Password) >= sizeof(ReqAddPrimaryAccount->Password))
 		{
 			ReqAddPrimaryAccount->Password[sizeof(ReqAddPrimaryAccount->Password) - 1] = 0;
 		}
-		WriteString(ppos, Items::Password, ReqAddPrimaryAccount->Password);
-		WriteString(ppos, Items::RiskGroupID, ReqAddPrimaryAccount->RiskGroupID);
-		WriteString(ppos, Items::CommissionGroupID, ReqAddPrimaryAccount->CommissionGroupID);
-		WriteString(ppos, Items::IsAutoAudit, ReqAddPrimaryAccount->IsAutoAudit);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddPrimaryAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::Password, ReqAddPrimaryAccount->Password);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, ReqAddPrimaryAccount->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::CommissionGroupID, ReqAddPrimaryAccount->CommissionGroupID);
+		StepUtility::WriteString(ppos, Items::IsAutoAudit, ReqAddPrimaryAccount->IsAutoAudit);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddPrimaryAccountField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -19937,7 +19937,7 @@ bool ReqAddPrimaryAccountPackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -19951,7 +19951,7 @@ bool ReqAddPrimaryAccountPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -20141,29 +20141,29 @@ int RspAddPrimaryAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddPrimaryAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddPrimaryAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddPrimaryAccountField::FieldID);
 		if (strlen(RspAddPrimaryAccount->AdminUserID) >= sizeof(RspAddPrimaryAccount->AdminUserID))
 		{
 			RspAddPrimaryAccount->AdminUserID[sizeof(RspAddPrimaryAccount->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddPrimaryAccount->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddPrimaryAccount->AdminUserID);
 		if (strlen(RspAddPrimaryAccount->PrimaryAccountID) >= sizeof(RspAddPrimaryAccount->PrimaryAccountID))
 		{
 			RspAddPrimaryAccount->PrimaryAccountID[sizeof(RspAddPrimaryAccount->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, RspAddPrimaryAccount->PrimaryAccountID);
-		WriteHexString(ppos, Items::FieldEnd, RspAddPrimaryAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, RspAddPrimaryAccount->PrimaryAccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddPrimaryAccountField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -20174,7 +20174,7 @@ bool RspAddPrimaryAccountPackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -20188,7 +20188,7 @@ bool RspAddPrimaryAccountPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -20230,7 +20230,7 @@ bool RspAddPrimaryAccountPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -20368,46 +20368,46 @@ int ReqUpdatePrimaryAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqUpdatePrimaryAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqUpdatePrimaryAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqUpdatePrimaryAccountField::FieldID);
 		if (strlen(ReqUpdatePrimaryAccount->AdminUserID) >= sizeof(ReqUpdatePrimaryAccount->AdminUserID))
 		{
 			ReqUpdatePrimaryAccount->AdminUserID[sizeof(ReqUpdatePrimaryAccount->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqUpdatePrimaryAccount->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqUpdatePrimaryAccount->AdminUserID);
 		if (strlen(ReqUpdatePrimaryAccount->TradingDay) >= sizeof(ReqUpdatePrimaryAccount->TradingDay))
 		{
 			ReqUpdatePrimaryAccount->TradingDay[sizeof(ReqUpdatePrimaryAccount->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqUpdatePrimaryAccount->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqUpdatePrimaryAccount->TradingDay);
 		if (strlen(ReqUpdatePrimaryAccount->PrimaryAccountID) >= sizeof(ReqUpdatePrimaryAccount->PrimaryAccountID))
 		{
 			ReqUpdatePrimaryAccount->PrimaryAccountID[sizeof(ReqUpdatePrimaryAccount->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, ReqUpdatePrimaryAccount->PrimaryAccountID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, ReqUpdatePrimaryAccount->PrimaryAccountID);
 		if (strlen(ReqUpdatePrimaryAccount->PrimaryAccountName) >= sizeof(ReqUpdatePrimaryAccount->PrimaryAccountName))
 		{
 			ReqUpdatePrimaryAccount->PrimaryAccountName[sizeof(ReqUpdatePrimaryAccount->PrimaryAccountName) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountName, ReqUpdatePrimaryAccount->PrimaryAccountName);
-		WriteString(ppos, Items::AccountClass, (int)ReqUpdatePrimaryAccount->AccountClass);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountName, ReqUpdatePrimaryAccount->PrimaryAccountName);
+		StepUtility::WriteString(ppos, Items::AccountClass, (int)ReqUpdatePrimaryAccount->AccountClass);
 		if (strlen(ReqUpdatePrimaryAccount->BrokerPassword) >= sizeof(ReqUpdatePrimaryAccount->BrokerPassword))
 		{
 			ReqUpdatePrimaryAccount->BrokerPassword[sizeof(ReqUpdatePrimaryAccount->BrokerPassword) - 1] = 0;
 		}
-		WriteString(ppos, Items::BrokerPassword, ReqUpdatePrimaryAccount->BrokerPassword);
-		WriteString(ppos, Items::OfferID, ReqUpdatePrimaryAccount->OfferID);
-		WriteString(ppos, Items::IsAllowLogin, ReqUpdatePrimaryAccount->IsAllowLogin);
-		WriteString(ppos, Items::IsSimulateAccount, ReqUpdatePrimaryAccount->IsSimulateAccount);
-		WriteString(ppos, Items::AccountStatus, (int)ReqUpdatePrimaryAccount->AccountStatus);
+		StepUtility::WriteString(ppos, Items::BrokerPassword, ReqUpdatePrimaryAccount->BrokerPassword);
+		StepUtility::WriteString(ppos, Items::OfferID, ReqUpdatePrimaryAccount->OfferID);
+		StepUtility::WriteString(ppos, Items::IsAllowLogin, ReqUpdatePrimaryAccount->IsAllowLogin);
+		StepUtility::WriteString(ppos, Items::IsSimulateAccount, ReqUpdatePrimaryAccount->IsSimulateAccount);
+		StepUtility::WriteString(ppos, Items::AccountStatus, (int)ReqUpdatePrimaryAccount->AccountStatus);
 		if (strlen(ReqUpdatePrimaryAccount->Password) >= sizeof(ReqUpdatePrimaryAccount->Password))
 		{
 			ReqUpdatePrimaryAccount->Password[sizeof(ReqUpdatePrimaryAccount->Password) - 1] = 0;
 		}
-		WriteString(ppos, Items::Password, ReqUpdatePrimaryAccount->Password);
-		WriteString(ppos, Items::RiskGroupID, ReqUpdatePrimaryAccount->RiskGroupID);
-		WriteString(ppos, Items::CommissionGroupID, ReqUpdatePrimaryAccount->CommissionGroupID);
-		WriteString(ppos, Items::IsAutoAudit, ReqUpdatePrimaryAccount->IsAutoAudit);
-		WriteHexString(ppos, Items::FieldEnd, ReqUpdatePrimaryAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::Password, ReqUpdatePrimaryAccount->Password);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, ReqUpdatePrimaryAccount->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::CommissionGroupID, ReqUpdatePrimaryAccount->CommissionGroupID);
+		StepUtility::WriteString(ppos, Items::IsAutoAudit, ReqUpdatePrimaryAccount->IsAutoAudit);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqUpdatePrimaryAccountField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -20418,7 +20418,7 @@ bool ReqUpdatePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -20432,7 +20432,7 @@ bool ReqUpdatePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -20622,29 +20622,29 @@ int RspUpdatePrimaryAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspUpdatePrimaryAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspUpdatePrimaryAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspUpdatePrimaryAccountField::FieldID);
 		if (strlen(RspUpdatePrimaryAccount->AdminUserID) >= sizeof(RspUpdatePrimaryAccount->AdminUserID))
 		{
 			RspUpdatePrimaryAccount->AdminUserID[sizeof(RspUpdatePrimaryAccount->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspUpdatePrimaryAccount->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspUpdatePrimaryAccount->AdminUserID);
 		if (strlen(RspUpdatePrimaryAccount->PrimaryAccountID) >= sizeof(RspUpdatePrimaryAccount->PrimaryAccountID))
 		{
 			RspUpdatePrimaryAccount->PrimaryAccountID[sizeof(RspUpdatePrimaryAccount->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, RspUpdatePrimaryAccount->PrimaryAccountID);
-		WriteHexString(ppos, Items::FieldEnd, RspUpdatePrimaryAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, RspUpdatePrimaryAccount->PrimaryAccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspUpdatePrimaryAccountField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -20655,7 +20655,7 @@ bool RspUpdatePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -20669,7 +20669,7 @@ bool RspUpdatePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -20711,7 +20711,7 @@ bool RspUpdatePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -20849,18 +20849,18 @@ int ReqRemovePrimaryAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRemovePrimaryAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRemovePrimaryAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRemovePrimaryAccountField::FieldID);
 		if (strlen(ReqRemovePrimaryAccount->AdminUserID) >= sizeof(ReqRemovePrimaryAccount->AdminUserID))
 		{
 			ReqRemovePrimaryAccount->AdminUserID[sizeof(ReqRemovePrimaryAccount->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqRemovePrimaryAccount->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqRemovePrimaryAccount->AdminUserID);
 		if (strlen(ReqRemovePrimaryAccount->PrimaryAccountID) >= sizeof(ReqRemovePrimaryAccount->PrimaryAccountID))
 		{
 			ReqRemovePrimaryAccount->PrimaryAccountID[sizeof(ReqRemovePrimaryAccount->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, ReqRemovePrimaryAccount->PrimaryAccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqRemovePrimaryAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, ReqRemovePrimaryAccount->PrimaryAccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRemovePrimaryAccountField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -20871,7 +20871,7 @@ bool ReqRemovePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -20885,7 +20885,7 @@ bool ReqRemovePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -21011,29 +21011,29 @@ int RspRemovePrimaryAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspRemovePrimaryAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRemovePrimaryAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRemovePrimaryAccountField::FieldID);
 		if (strlen(RspRemovePrimaryAccount->AdminUserID) >= sizeof(RspRemovePrimaryAccount->AdminUserID))
 		{
 			RspRemovePrimaryAccount->AdminUserID[sizeof(RspRemovePrimaryAccount->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspRemovePrimaryAccount->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspRemovePrimaryAccount->AdminUserID);
 		if (strlen(RspRemovePrimaryAccount->PrimaryAccountID) >= sizeof(RspRemovePrimaryAccount->PrimaryAccountID))
 		{
 			RspRemovePrimaryAccount->PrimaryAccountID[sizeof(RspRemovePrimaryAccount->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, RspRemovePrimaryAccount->PrimaryAccountID);
-		WriteHexString(ppos, Items::FieldEnd, RspRemovePrimaryAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, RspRemovePrimaryAccount->PrimaryAccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRemovePrimaryAccountField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -21044,7 +21044,7 @@ bool RspRemovePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -21058,7 +21058,7 @@ bool RspRemovePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -21100,7 +21100,7 @@ bool RspRemovePrimaryAccountPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -21238,38 +21238,38 @@ int ReqAddAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddAccountField::FieldID);
 		if (strlen(ReqAddAccount->AdminUserID) >= sizeof(ReqAddAccount->AdminUserID))
 		{
 			ReqAddAccount->AdminUserID[sizeof(ReqAddAccount->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddAccount->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddAccount->AdminUserID);
 		if (strlen(ReqAddAccount->TradingDay) >= sizeof(ReqAddAccount->TradingDay))
 		{
 			ReqAddAccount->TradingDay[sizeof(ReqAddAccount->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqAddAccount->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqAddAccount->TradingDay);
 		if (strlen(ReqAddAccount->AccountID) >= sizeof(ReqAddAccount->AccountID))
 		{
 			ReqAddAccount->AccountID[sizeof(ReqAddAccount->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqAddAccount->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqAddAccount->AccountID);
 		if (strlen(ReqAddAccount->AccountName) >= sizeof(ReqAddAccount->AccountName))
 		{
 			ReqAddAccount->AccountName[sizeof(ReqAddAccount->AccountName) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountName, ReqAddAccount->AccountName);
-		WriteString(ppos, Items::AccountStatus, (int)ReqAddAccount->AccountStatus);
+		StepUtility::WriteString(ppos, Items::AccountName, ReqAddAccount->AccountName);
+		StepUtility::WriteString(ppos, Items::AccountStatus, (int)ReqAddAccount->AccountStatus);
 		if (strlen(ReqAddAccount->Password) >= sizeof(ReqAddAccount->Password))
 		{
 			ReqAddAccount->Password[sizeof(ReqAddAccount->Password) - 1] = 0;
 		}
-		WriteString(ppos, Items::Password, ReqAddAccount->Password);
-		WriteString(ppos, Items::TradeGroupID, ReqAddAccount->TradeGroupID);
-		WriteString(ppos, Items::RiskGroupID, ReqAddAccount->RiskGroupID);
-		WriteString(ppos, Items::CommissionGroupID, ReqAddAccount->CommissionGroupID);
-		WriteString(ppos, Items::IsAutoAudit, ReqAddAccount->IsAutoAudit);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::Password, ReqAddAccount->Password);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, ReqAddAccount->TradeGroupID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, ReqAddAccount->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::CommissionGroupID, ReqAddAccount->CommissionGroupID);
+		StepUtility::WriteString(ppos, Items::IsAutoAudit, ReqAddAccount->IsAutoAudit);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddAccountField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -21280,7 +21280,7 @@ bool ReqAddAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -21294,7 +21294,7 @@ bool ReqAddAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -21463,29 +21463,29 @@ int RspAddAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddAccountField::FieldID);
 		if (strlen(RspAddAccount->AdminUserID) >= sizeof(RspAddAccount->AdminUserID))
 		{
 			RspAddAccount->AdminUserID[sizeof(RspAddAccount->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddAccount->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddAccount->AdminUserID);
 		if (strlen(RspAddAccount->AccountID) >= sizeof(RspAddAccount->AccountID))
 		{
 			RspAddAccount->AccountID[sizeof(RspAddAccount->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, RspAddAccount->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, RspAddAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, RspAddAccount->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddAccountField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -21496,7 +21496,7 @@ bool RspAddAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -21510,7 +21510,7 @@ bool RspAddAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -21552,7 +21552,7 @@ bool RspAddAccountPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -21690,38 +21690,38 @@ int ReqUpdateAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqUpdateAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqUpdateAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqUpdateAccountField::FieldID);
 		if (strlen(ReqUpdateAccount->AdminUserID) >= sizeof(ReqUpdateAccount->AdminUserID))
 		{
 			ReqUpdateAccount->AdminUserID[sizeof(ReqUpdateAccount->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqUpdateAccount->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqUpdateAccount->AdminUserID);
 		if (strlen(ReqUpdateAccount->TradingDay) >= sizeof(ReqUpdateAccount->TradingDay))
 		{
 			ReqUpdateAccount->TradingDay[sizeof(ReqUpdateAccount->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqUpdateAccount->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqUpdateAccount->TradingDay);
 		if (strlen(ReqUpdateAccount->AccountID) >= sizeof(ReqUpdateAccount->AccountID))
 		{
 			ReqUpdateAccount->AccountID[sizeof(ReqUpdateAccount->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqUpdateAccount->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqUpdateAccount->AccountID);
 		if (strlen(ReqUpdateAccount->AccountName) >= sizeof(ReqUpdateAccount->AccountName))
 		{
 			ReqUpdateAccount->AccountName[sizeof(ReqUpdateAccount->AccountName) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountName, ReqUpdateAccount->AccountName);
-		WriteString(ppos, Items::AccountStatus, (int)ReqUpdateAccount->AccountStatus);
+		StepUtility::WriteString(ppos, Items::AccountName, ReqUpdateAccount->AccountName);
+		StepUtility::WriteString(ppos, Items::AccountStatus, (int)ReqUpdateAccount->AccountStatus);
 		if (strlen(ReqUpdateAccount->Password) >= sizeof(ReqUpdateAccount->Password))
 		{
 			ReqUpdateAccount->Password[sizeof(ReqUpdateAccount->Password) - 1] = 0;
 		}
-		WriteString(ppos, Items::Password, ReqUpdateAccount->Password);
-		WriteString(ppos, Items::TradeGroupID, ReqUpdateAccount->TradeGroupID);
-		WriteString(ppos, Items::RiskGroupID, ReqUpdateAccount->RiskGroupID);
-		WriteString(ppos, Items::CommissionGroupID, ReqUpdateAccount->CommissionGroupID);
-		WriteString(ppos, Items::IsAutoAudit, ReqUpdateAccount->IsAutoAudit);
-		WriteHexString(ppos, Items::FieldEnd, ReqUpdateAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::Password, ReqUpdateAccount->Password);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, ReqUpdateAccount->TradeGroupID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, ReqUpdateAccount->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::CommissionGroupID, ReqUpdateAccount->CommissionGroupID);
+		StepUtility::WriteString(ppos, Items::IsAutoAudit, ReqUpdateAccount->IsAutoAudit);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqUpdateAccountField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -21732,7 +21732,7 @@ bool ReqUpdateAccountPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -21746,7 +21746,7 @@ bool ReqUpdateAccountPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -21915,29 +21915,29 @@ int RspUpdateAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspUpdateAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspUpdateAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspUpdateAccountField::FieldID);
 		if (strlen(RspUpdateAccount->AdminUserID) >= sizeof(RspUpdateAccount->AdminUserID))
 		{
 			RspUpdateAccount->AdminUserID[sizeof(RspUpdateAccount->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspUpdateAccount->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspUpdateAccount->AdminUserID);
 		if (strlen(RspUpdateAccount->AccountID) >= sizeof(RspUpdateAccount->AccountID))
 		{
 			RspUpdateAccount->AccountID[sizeof(RspUpdateAccount->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, RspUpdateAccount->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, RspUpdateAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, RspUpdateAccount->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspUpdateAccountField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -21948,7 +21948,7 @@ bool RspUpdateAccountPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -21962,7 +21962,7 @@ bool RspUpdateAccountPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -22004,7 +22004,7 @@ bool RspUpdateAccountPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -22142,18 +22142,18 @@ int ReqRemoveAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRemoveAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRemoveAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRemoveAccountField::FieldID);
 		if (strlen(ReqRemoveAccount->AdminUserID) >= sizeof(ReqRemoveAccount->AdminUserID))
 		{
 			ReqRemoveAccount->AdminUserID[sizeof(ReqRemoveAccount->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqRemoveAccount->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqRemoveAccount->AdminUserID);
 		if (strlen(ReqRemoveAccount->AccountID) >= sizeof(ReqRemoveAccount->AccountID))
 		{
 			ReqRemoveAccount->AccountID[sizeof(ReqRemoveAccount->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqRemoveAccount->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqRemoveAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqRemoveAccount->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRemoveAccountField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -22164,7 +22164,7 @@ bool ReqRemoveAccountPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -22178,7 +22178,7 @@ bool ReqRemoveAccountPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -22304,29 +22304,29 @@ int RspRemoveAccountPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspRemoveAccount != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRemoveAccountField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRemoveAccountField::FieldID);
 		if (strlen(RspRemoveAccount->AdminUserID) >= sizeof(RspRemoveAccount->AdminUserID))
 		{
 			RspRemoveAccount->AdminUserID[sizeof(RspRemoveAccount->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspRemoveAccount->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspRemoveAccount->AdminUserID);
 		if (strlen(RspRemoveAccount->AccountID) >= sizeof(RspRemoveAccount->AccountID))
 		{
 			RspRemoveAccount->AccountID[sizeof(RspRemoveAccount->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, RspRemoveAccount->AccountID);
-		WriteHexString(ppos, Items::FieldEnd, RspRemoveAccountField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, RspRemoveAccount->AccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRemoveAccountField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -22337,7 +22337,7 @@ bool RspRemoveAccountPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -22351,7 +22351,7 @@ bool RspRemoveAccountPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -22393,7 +22393,7 @@ bool RspRemoveAccountPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -22531,28 +22531,28 @@ int ReqAddBaseCommissionPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddBaseCommission != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddBaseCommissionField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddBaseCommissionField::FieldID);
 		if (strlen(ReqAddBaseCommission->AdminUserID) >= sizeof(ReqAddBaseCommission->AdminUserID))
 		{
 			ReqAddBaseCommission->AdminUserID[sizeof(ReqAddBaseCommission->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddBaseCommission->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddBaseCommission->AdminUserID);
 		if (strlen(ReqAddBaseCommission->TradingDay) >= sizeof(ReqAddBaseCommission->TradingDay))
 		{
 			ReqAddBaseCommission->TradingDay[sizeof(ReqAddBaseCommission->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqAddBaseCommission->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqAddBaseCommission->TradingDay);
 		if (strlen(ReqAddBaseCommission->ExchangeID) >= sizeof(ReqAddBaseCommission->ExchangeID))
 		{
 			ReqAddBaseCommission->ExchangeID[sizeof(ReqAddBaseCommission->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqAddBaseCommission->ExchangeID);
-		WriteString(ppos, Items::ProductClass, (int)ReqAddBaseCommission->ProductClass);
-		WriteString(ppos, Items::OpenStampTaxByMoney, ReqAddBaseCommission->OpenStampTaxByMoney);
-		WriteString(ppos, Items::CloseStampTaxByMoney, ReqAddBaseCommission->CloseStampTaxByMoney);
-		WriteString(ppos, Items::OpenTransferFeeByMoney, ReqAddBaseCommission->OpenTransferFeeByMoney);
-		WriteString(ppos, Items::CloseTransferFeeByMoney, ReqAddBaseCommission->CloseTransferFeeByMoney);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddBaseCommissionField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqAddBaseCommission->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)ReqAddBaseCommission->ProductClass);
+		StepUtility::WriteString(ppos, Items::OpenStampTaxByMoney, ReqAddBaseCommission->OpenStampTaxByMoney);
+		StepUtility::WriteString(ppos, Items::CloseStampTaxByMoney, ReqAddBaseCommission->CloseStampTaxByMoney);
+		StepUtility::WriteString(ppos, Items::OpenTransferFeeByMoney, ReqAddBaseCommission->OpenTransferFeeByMoney);
+		StepUtility::WriteString(ppos, Items::CloseTransferFeeByMoney, ReqAddBaseCommission->CloseTransferFeeByMoney);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddBaseCommissionField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -22563,7 +22563,7 @@ bool ReqAddBaseCommissionPackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -22577,7 +22577,7 @@ bool ReqAddBaseCommissionPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -22734,35 +22734,35 @@ int RspAddBaseCommissionPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddBaseCommission != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddBaseCommissionField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddBaseCommissionField::FieldID);
 		if (strlen(RspAddBaseCommission->AdminUserID) >= sizeof(RspAddBaseCommission->AdminUserID))
 		{
 			RspAddBaseCommission->AdminUserID[sizeof(RspAddBaseCommission->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddBaseCommission->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddBaseCommission->AdminUserID);
 		if (strlen(RspAddBaseCommission->TradingDay) >= sizeof(RspAddBaseCommission->TradingDay))
 		{
 			RspAddBaseCommission->TradingDay[sizeof(RspAddBaseCommission->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, RspAddBaseCommission->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, RspAddBaseCommission->TradingDay);
 		if (strlen(RspAddBaseCommission->ExchangeID) >= sizeof(RspAddBaseCommission->ExchangeID))
 		{
 			RspAddBaseCommission->ExchangeID[sizeof(RspAddBaseCommission->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, RspAddBaseCommission->ExchangeID);
-		WriteString(ppos, Items::ProductClass, (int)RspAddBaseCommission->ProductClass);
-		WriteHexString(ppos, Items::FieldEnd, RspAddBaseCommissionField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, RspAddBaseCommission->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)RspAddBaseCommission->ProductClass);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddBaseCommissionField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -22773,7 +22773,7 @@ bool RspAddBaseCommissionPackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -22787,7 +22787,7 @@ bool RspAddBaseCommissionPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -22840,7 +22840,7 @@ bool RspAddBaseCommissionPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -22978,28 +22978,28 @@ int ReqUpdateBaseCommissionPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqUpdateBaseCommission != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqUpdateBaseCommissionField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqUpdateBaseCommissionField::FieldID);
 		if (strlen(ReqUpdateBaseCommission->AdminUserID) >= sizeof(ReqUpdateBaseCommission->AdminUserID))
 		{
 			ReqUpdateBaseCommission->AdminUserID[sizeof(ReqUpdateBaseCommission->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqUpdateBaseCommission->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqUpdateBaseCommission->AdminUserID);
 		if (strlen(ReqUpdateBaseCommission->TradingDay) >= sizeof(ReqUpdateBaseCommission->TradingDay))
 		{
 			ReqUpdateBaseCommission->TradingDay[sizeof(ReqUpdateBaseCommission->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqUpdateBaseCommission->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqUpdateBaseCommission->TradingDay);
 		if (strlen(ReqUpdateBaseCommission->ExchangeID) >= sizeof(ReqUpdateBaseCommission->ExchangeID))
 		{
 			ReqUpdateBaseCommission->ExchangeID[sizeof(ReqUpdateBaseCommission->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqUpdateBaseCommission->ExchangeID);
-		WriteString(ppos, Items::ProductClass, (int)ReqUpdateBaseCommission->ProductClass);
-		WriteString(ppos, Items::OpenStampTaxByMoney, ReqUpdateBaseCommission->OpenStampTaxByMoney);
-		WriteString(ppos, Items::CloseStampTaxByMoney, ReqUpdateBaseCommission->CloseStampTaxByMoney);
-		WriteString(ppos, Items::OpenTransferFeeByMoney, ReqUpdateBaseCommission->OpenTransferFeeByMoney);
-		WriteString(ppos, Items::CloseTransferFeeByMoney, ReqUpdateBaseCommission->CloseTransferFeeByMoney);
-		WriteHexString(ppos, Items::FieldEnd, ReqUpdateBaseCommissionField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqUpdateBaseCommission->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)ReqUpdateBaseCommission->ProductClass);
+		StepUtility::WriteString(ppos, Items::OpenStampTaxByMoney, ReqUpdateBaseCommission->OpenStampTaxByMoney);
+		StepUtility::WriteString(ppos, Items::CloseStampTaxByMoney, ReqUpdateBaseCommission->CloseStampTaxByMoney);
+		StepUtility::WriteString(ppos, Items::OpenTransferFeeByMoney, ReqUpdateBaseCommission->OpenTransferFeeByMoney);
+		StepUtility::WriteString(ppos, Items::CloseTransferFeeByMoney, ReqUpdateBaseCommission->CloseTransferFeeByMoney);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqUpdateBaseCommissionField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -23010,7 +23010,7 @@ bool ReqUpdateBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -23024,7 +23024,7 @@ bool ReqUpdateBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -23181,35 +23181,35 @@ int RspUpdateBaseCommissionPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspUpdateBaseCommission != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspUpdateBaseCommissionField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspUpdateBaseCommissionField::FieldID);
 		if (strlen(RspUpdateBaseCommission->AdminUserID) >= sizeof(RspUpdateBaseCommission->AdminUserID))
 		{
 			RspUpdateBaseCommission->AdminUserID[sizeof(RspUpdateBaseCommission->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspUpdateBaseCommission->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspUpdateBaseCommission->AdminUserID);
 		if (strlen(RspUpdateBaseCommission->TradingDay) >= sizeof(RspUpdateBaseCommission->TradingDay))
 		{
 			RspUpdateBaseCommission->TradingDay[sizeof(RspUpdateBaseCommission->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, RspUpdateBaseCommission->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, RspUpdateBaseCommission->TradingDay);
 		if (strlen(RspUpdateBaseCommission->ExchangeID) >= sizeof(RspUpdateBaseCommission->ExchangeID))
 		{
 			RspUpdateBaseCommission->ExchangeID[sizeof(RspUpdateBaseCommission->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, RspUpdateBaseCommission->ExchangeID);
-		WriteString(ppos, Items::ProductClass, (int)RspUpdateBaseCommission->ProductClass);
-		WriteHexString(ppos, Items::FieldEnd, RspUpdateBaseCommissionField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, RspUpdateBaseCommission->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)RspUpdateBaseCommission->ProductClass);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspUpdateBaseCommissionField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -23220,7 +23220,7 @@ bool RspUpdateBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -23234,7 +23234,7 @@ bool RspUpdateBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -23287,7 +23287,7 @@ bool RspUpdateBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -23425,24 +23425,24 @@ int ReqRemoveBaseCommissionPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRemoveBaseCommission != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRemoveBaseCommissionField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRemoveBaseCommissionField::FieldID);
 		if (strlen(ReqRemoveBaseCommission->AdminUserID) >= sizeof(ReqRemoveBaseCommission->AdminUserID))
 		{
 			ReqRemoveBaseCommission->AdminUserID[sizeof(ReqRemoveBaseCommission->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqRemoveBaseCommission->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqRemoveBaseCommission->AdminUserID);
 		if (strlen(ReqRemoveBaseCommission->TradingDay) >= sizeof(ReqRemoveBaseCommission->TradingDay))
 		{
 			ReqRemoveBaseCommission->TradingDay[sizeof(ReqRemoveBaseCommission->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqRemoveBaseCommission->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqRemoveBaseCommission->TradingDay);
 		if (strlen(ReqRemoveBaseCommission->ExchangeID) >= sizeof(ReqRemoveBaseCommission->ExchangeID))
 		{
 			ReqRemoveBaseCommission->ExchangeID[sizeof(ReqRemoveBaseCommission->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqRemoveBaseCommission->ExchangeID);
-		WriteString(ppos, Items::ProductClass, (int)ReqRemoveBaseCommission->ProductClass);
-		WriteHexString(ppos, Items::FieldEnd, ReqRemoveBaseCommissionField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqRemoveBaseCommission->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)ReqRemoveBaseCommission->ProductClass);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRemoveBaseCommissionField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -23453,7 +23453,7 @@ bool ReqRemoveBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -23467,7 +23467,7 @@ bool ReqRemoveBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -23604,35 +23604,35 @@ int RspRemoveBaseCommissionPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	if (RspRemoveBaseCommission != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRemoveBaseCommissionField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRemoveBaseCommissionField::FieldID);
 		if (strlen(RspRemoveBaseCommission->AdminUserID) >= sizeof(RspRemoveBaseCommission->AdminUserID))
 		{
 			RspRemoveBaseCommission->AdminUserID[sizeof(RspRemoveBaseCommission->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspRemoveBaseCommission->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspRemoveBaseCommission->AdminUserID);
 		if (strlen(RspRemoveBaseCommission->TradingDay) >= sizeof(RspRemoveBaseCommission->TradingDay))
 		{
 			RspRemoveBaseCommission->TradingDay[sizeof(RspRemoveBaseCommission->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, RspRemoveBaseCommission->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, RspRemoveBaseCommission->TradingDay);
 		if (strlen(RspRemoveBaseCommission->ExchangeID) >= sizeof(RspRemoveBaseCommission->ExchangeID))
 		{
 			RspRemoveBaseCommission->ExchangeID[sizeof(RspRemoveBaseCommission->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, RspRemoveBaseCommission->ExchangeID);
-		WriteString(ppos, Items::ProductClass, (int)RspRemoveBaseCommission->ProductClass);
-		WriteHexString(ppos, Items::FieldEnd, RspRemoveBaseCommissionField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, RspRemoveBaseCommission->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)RspRemoveBaseCommission->ProductClass);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRemoveBaseCommissionField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -23643,7 +23643,7 @@ bool RspRemoveBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -23657,7 +23657,7 @@ bool RspRemoveBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -23698,7 +23698,7 @@ bool RspRemoveBaseCommissionPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -23848,40 +23848,40 @@ int ReqAddCommissionGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddCommissionGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddCommissionGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddCommissionGroupField::FieldID);
 		if (strlen(ReqAddCommissionGroup->AdminUserID) >= sizeof(ReqAddCommissionGroup->AdminUserID))
 		{
 			ReqAddCommissionGroup->AdminUserID[sizeof(ReqAddCommissionGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddCommissionGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddCommissionGroup->AdminUserID);
 		if (strlen(ReqAddCommissionGroup->TradingDay) >= sizeof(ReqAddCommissionGroup->TradingDay))
 		{
 			ReqAddCommissionGroup->TradingDay[sizeof(ReqAddCommissionGroup->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqAddCommissionGroup->TradingDay);
-		WriteString(ppos, Items::CommissionGroupID, ReqAddCommissionGroup->CommissionGroupID);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqAddCommissionGroup->TradingDay);
+		StepUtility::WriteString(ppos, Items::CommissionGroupID, ReqAddCommissionGroup->CommissionGroupID);
 		if (strlen(ReqAddCommissionGroup->CommissionGroupName) >= sizeof(ReqAddCommissionGroup->CommissionGroupName))
 		{
 			ReqAddCommissionGroup->CommissionGroupName[sizeof(ReqAddCommissionGroup->CommissionGroupName) - 1] = 0;
 		}
-		WriteString(ppos, Items::CommissionGroupName, ReqAddCommissionGroup->CommissionGroupName);
+		StepUtility::WriteString(ppos, Items::CommissionGroupName, ReqAddCommissionGroup->CommissionGroupName);
 		if (strlen(ReqAddCommissionGroup->ExchangeID) >= sizeof(ReqAddCommissionGroup->ExchangeID))
 		{
 			ReqAddCommissionGroup->ExchangeID[sizeof(ReqAddCommissionGroup->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqAddCommissionGroup->ExchangeID);
-		WriteString(ppos, Items::ProductClass, (int)ReqAddCommissionGroup->ProductClass);
-		WriteString(ppos, Items::OpenBuyByMoney, ReqAddCommissionGroup->OpenBuyByMoney);
-		WriteString(ppos, Items::OpenSellByMoney, ReqAddCommissionGroup->OpenSellByMoney);
-		WriteString(ppos, Items::CloseBuyByMoney, ReqAddCommissionGroup->CloseBuyByMoney);
-		WriteString(ppos, Items::CloseSellByMoney, ReqAddCommissionGroup->CloseSellByMoney);
-		WriteString(ppos, Items::OpenBuyByVolume, ReqAddCommissionGroup->OpenBuyByVolume);
-		WriteString(ppos, Items::OpenSellByVolume, ReqAddCommissionGroup->OpenSellByVolume);
-		WriteString(ppos, Items::CloseBuyByVolume, ReqAddCommissionGroup->CloseBuyByVolume);
-		WriteString(ppos, Items::CloseSellByVolume, ReqAddCommissionGroup->CloseSellByVolume);
-		WriteString(ppos, Items::MinCommission, ReqAddCommissionGroup->MinCommission);
-		WriteString(ppos, Items::MaxCommission, ReqAddCommissionGroup->MaxCommission);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddCommissionGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqAddCommissionGroup->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)ReqAddCommissionGroup->ProductClass);
+		StepUtility::WriteString(ppos, Items::OpenBuyByMoney, ReqAddCommissionGroup->OpenBuyByMoney);
+		StepUtility::WriteString(ppos, Items::OpenSellByMoney, ReqAddCommissionGroup->OpenSellByMoney);
+		StepUtility::WriteString(ppos, Items::CloseBuyByMoney, ReqAddCommissionGroup->CloseBuyByMoney);
+		StepUtility::WriteString(ppos, Items::CloseSellByMoney, ReqAddCommissionGroup->CloseSellByMoney);
+		StepUtility::WriteString(ppos, Items::OpenBuyByVolume, ReqAddCommissionGroup->OpenBuyByVolume);
+		StepUtility::WriteString(ppos, Items::OpenSellByVolume, ReqAddCommissionGroup->OpenSellByVolume);
+		StepUtility::WriteString(ppos, Items::CloseBuyByVolume, ReqAddCommissionGroup->CloseBuyByVolume);
+		StepUtility::WriteString(ppos, Items::CloseSellByVolume, ReqAddCommissionGroup->CloseSellByVolume);
+		StepUtility::WriteString(ppos, Items::MinCommission, ReqAddCommissionGroup->MinCommission);
+		StepUtility::WriteString(ppos, Items::MaxCommission, ReqAddCommissionGroup->MaxCommission);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddCommissionGroupField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -23892,7 +23892,7 @@ bool ReqAddCommissionGroupPackage::FromStepStream(char* buff, int startIndex, in
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -23906,7 +23906,7 @@ bool ReqAddCommissionGroupPackage::FromStepStream(char* buff, int startIndex, in
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -24104,36 +24104,36 @@ int RspAddCommissionGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddCommissionGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddCommissionGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddCommissionGroupField::FieldID);
 		if (strlen(RspAddCommissionGroup->AdminUserID) >= sizeof(RspAddCommissionGroup->AdminUserID))
 		{
 			RspAddCommissionGroup->AdminUserID[sizeof(RspAddCommissionGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddCommissionGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddCommissionGroup->AdminUserID);
 		if (strlen(RspAddCommissionGroup->TradingDay) >= sizeof(RspAddCommissionGroup->TradingDay))
 		{
 			RspAddCommissionGroup->TradingDay[sizeof(RspAddCommissionGroup->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, RspAddCommissionGroup->TradingDay);
-		WriteString(ppos, Items::CommissionGroupID, RspAddCommissionGroup->CommissionGroupID);
+		StepUtility::WriteString(ppos, Items::TradingDay, RspAddCommissionGroup->TradingDay);
+		StepUtility::WriteString(ppos, Items::CommissionGroupID, RspAddCommissionGroup->CommissionGroupID);
 		if (strlen(RspAddCommissionGroup->ExchangeID) >= sizeof(RspAddCommissionGroup->ExchangeID))
 		{
 			RspAddCommissionGroup->ExchangeID[sizeof(RspAddCommissionGroup->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, RspAddCommissionGroup->ExchangeID);
-		WriteString(ppos, Items::ProductClass, (int)RspAddCommissionGroup->ProductClass);
-		WriteHexString(ppos, Items::FieldEnd, RspAddCommissionGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, RspAddCommissionGroup->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)RspAddCommissionGroup->ProductClass);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddCommissionGroupField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -24144,7 +24144,7 @@ bool RspAddCommissionGroupPackage::FromStepStream(char* buff, int startIndex, in
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -24158,7 +24158,7 @@ bool RspAddCommissionGroupPackage::FromStepStream(char* buff, int startIndex, in
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -24216,7 +24216,7 @@ bool RspAddCommissionGroupPackage::FromStepStream(char* buff, int startIndex, in
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -24354,40 +24354,40 @@ int ReqUpdateCommissionGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqUpdateCommissionGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqUpdateCommissionGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqUpdateCommissionGroupField::FieldID);
 		if (strlen(ReqUpdateCommissionGroup->AdminUserID) >= sizeof(ReqUpdateCommissionGroup->AdminUserID))
 		{
 			ReqUpdateCommissionGroup->AdminUserID[sizeof(ReqUpdateCommissionGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqUpdateCommissionGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqUpdateCommissionGroup->AdminUserID);
 		if (strlen(ReqUpdateCommissionGroup->TradingDay) >= sizeof(ReqUpdateCommissionGroup->TradingDay))
 		{
 			ReqUpdateCommissionGroup->TradingDay[sizeof(ReqUpdateCommissionGroup->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqUpdateCommissionGroup->TradingDay);
-		WriteString(ppos, Items::CommissionGroupID, ReqUpdateCommissionGroup->CommissionGroupID);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqUpdateCommissionGroup->TradingDay);
+		StepUtility::WriteString(ppos, Items::CommissionGroupID, ReqUpdateCommissionGroup->CommissionGroupID);
 		if (strlen(ReqUpdateCommissionGroup->CommissionGroupName) >= sizeof(ReqUpdateCommissionGroup->CommissionGroupName))
 		{
 			ReqUpdateCommissionGroup->CommissionGroupName[sizeof(ReqUpdateCommissionGroup->CommissionGroupName) - 1] = 0;
 		}
-		WriteString(ppos, Items::CommissionGroupName, ReqUpdateCommissionGroup->CommissionGroupName);
+		StepUtility::WriteString(ppos, Items::CommissionGroupName, ReqUpdateCommissionGroup->CommissionGroupName);
 		if (strlen(ReqUpdateCommissionGroup->ExchangeID) >= sizeof(ReqUpdateCommissionGroup->ExchangeID))
 		{
 			ReqUpdateCommissionGroup->ExchangeID[sizeof(ReqUpdateCommissionGroup->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqUpdateCommissionGroup->ExchangeID);
-		WriteString(ppos, Items::ProductClass, (int)ReqUpdateCommissionGroup->ProductClass);
-		WriteString(ppos, Items::OpenBuyByMoney, ReqUpdateCommissionGroup->OpenBuyByMoney);
-		WriteString(ppos, Items::OpenSellByMoney, ReqUpdateCommissionGroup->OpenSellByMoney);
-		WriteString(ppos, Items::CloseBuyByMoney, ReqUpdateCommissionGroup->CloseBuyByMoney);
-		WriteString(ppos, Items::CloseSellByMoney, ReqUpdateCommissionGroup->CloseSellByMoney);
-		WriteString(ppos, Items::OpenBuyByVolume, ReqUpdateCommissionGroup->OpenBuyByVolume);
-		WriteString(ppos, Items::OpenSellByVolume, ReqUpdateCommissionGroup->OpenSellByVolume);
-		WriteString(ppos, Items::CloseBuyByVolume, ReqUpdateCommissionGroup->CloseBuyByVolume);
-		WriteString(ppos, Items::CloseSellByVolume, ReqUpdateCommissionGroup->CloseSellByVolume);
-		WriteString(ppos, Items::MinCommission, ReqUpdateCommissionGroup->MinCommission);
-		WriteString(ppos, Items::MaxCommission, ReqUpdateCommissionGroup->MaxCommission);
-		WriteHexString(ppos, Items::FieldEnd, ReqUpdateCommissionGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqUpdateCommissionGroup->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)ReqUpdateCommissionGroup->ProductClass);
+		StepUtility::WriteString(ppos, Items::OpenBuyByMoney, ReqUpdateCommissionGroup->OpenBuyByMoney);
+		StepUtility::WriteString(ppos, Items::OpenSellByMoney, ReqUpdateCommissionGroup->OpenSellByMoney);
+		StepUtility::WriteString(ppos, Items::CloseBuyByMoney, ReqUpdateCommissionGroup->CloseBuyByMoney);
+		StepUtility::WriteString(ppos, Items::CloseSellByMoney, ReqUpdateCommissionGroup->CloseSellByMoney);
+		StepUtility::WriteString(ppos, Items::OpenBuyByVolume, ReqUpdateCommissionGroup->OpenBuyByVolume);
+		StepUtility::WriteString(ppos, Items::OpenSellByVolume, ReqUpdateCommissionGroup->OpenSellByVolume);
+		StepUtility::WriteString(ppos, Items::CloseBuyByVolume, ReqUpdateCommissionGroup->CloseBuyByVolume);
+		StepUtility::WriteString(ppos, Items::CloseSellByVolume, ReqUpdateCommissionGroup->CloseSellByVolume);
+		StepUtility::WriteString(ppos, Items::MinCommission, ReqUpdateCommissionGroup->MinCommission);
+		StepUtility::WriteString(ppos, Items::MaxCommission, ReqUpdateCommissionGroup->MaxCommission);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqUpdateCommissionGroupField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -24398,7 +24398,7 @@ bool ReqUpdateCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -24412,7 +24412,7 @@ bool ReqUpdateCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -24610,36 +24610,36 @@ int RspUpdateCommissionGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspUpdateCommissionGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspUpdateCommissionGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspUpdateCommissionGroupField::FieldID);
 		if (strlen(RspUpdateCommissionGroup->AdminUserID) >= sizeof(RspUpdateCommissionGroup->AdminUserID))
 		{
 			RspUpdateCommissionGroup->AdminUserID[sizeof(RspUpdateCommissionGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspUpdateCommissionGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspUpdateCommissionGroup->AdminUserID);
 		if (strlen(RspUpdateCommissionGroup->TradingDay) >= sizeof(RspUpdateCommissionGroup->TradingDay))
 		{
 			RspUpdateCommissionGroup->TradingDay[sizeof(RspUpdateCommissionGroup->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, RspUpdateCommissionGroup->TradingDay);
-		WriteString(ppos, Items::CommissionGroupID, RspUpdateCommissionGroup->CommissionGroupID);
+		StepUtility::WriteString(ppos, Items::TradingDay, RspUpdateCommissionGroup->TradingDay);
+		StepUtility::WriteString(ppos, Items::CommissionGroupID, RspUpdateCommissionGroup->CommissionGroupID);
 		if (strlen(RspUpdateCommissionGroup->ExchangeID) >= sizeof(RspUpdateCommissionGroup->ExchangeID))
 		{
 			RspUpdateCommissionGroup->ExchangeID[sizeof(RspUpdateCommissionGroup->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, RspUpdateCommissionGroup->ExchangeID);
-		WriteString(ppos, Items::ProductClass, (int)RspUpdateCommissionGroup->ProductClass);
-		WriteHexString(ppos, Items::FieldEnd, RspUpdateCommissionGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, RspUpdateCommissionGroup->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)RspUpdateCommissionGroup->ProductClass);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspUpdateCommissionGroupField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -24650,7 +24650,7 @@ bool RspUpdateCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -24664,7 +24664,7 @@ bool RspUpdateCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -24722,7 +24722,7 @@ bool RspUpdateCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -24860,25 +24860,25 @@ int ReqRemoveCommissionGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRemoveCommissionGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRemoveCommissionGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRemoveCommissionGroupField::FieldID);
 		if (strlen(ReqRemoveCommissionGroup->AdminUserID) >= sizeof(ReqRemoveCommissionGroup->AdminUserID))
 		{
 			ReqRemoveCommissionGroup->AdminUserID[sizeof(ReqRemoveCommissionGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqRemoveCommissionGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqRemoveCommissionGroup->AdminUserID);
 		if (strlen(ReqRemoveCommissionGroup->TradingDay) >= sizeof(ReqRemoveCommissionGroup->TradingDay))
 		{
 			ReqRemoveCommissionGroup->TradingDay[sizeof(ReqRemoveCommissionGroup->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqRemoveCommissionGroup->TradingDay);
-		WriteString(ppos, Items::CommissionGroupID, ReqRemoveCommissionGroup->CommissionGroupID);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqRemoveCommissionGroup->TradingDay);
+		StepUtility::WriteString(ppos, Items::CommissionGroupID, ReqRemoveCommissionGroup->CommissionGroupID);
 		if (strlen(ReqRemoveCommissionGroup->ExchangeID) >= sizeof(ReqRemoveCommissionGroup->ExchangeID))
 		{
 			ReqRemoveCommissionGroup->ExchangeID[sizeof(ReqRemoveCommissionGroup->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqRemoveCommissionGroup->ExchangeID);
-		WriteString(ppos, Items::ProductClass, (int)ReqRemoveCommissionGroup->ProductClass);
-		WriteHexString(ppos, Items::FieldEnd, ReqRemoveCommissionGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqRemoveCommissionGroup->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)ReqRemoveCommissionGroup->ProductClass);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRemoveCommissionGroupField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -24889,7 +24889,7 @@ bool ReqRemoveCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -24903,7 +24903,7 @@ bool ReqRemoveCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -25045,36 +25045,36 @@ int RspRemoveCommissionGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspRemoveCommissionGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRemoveCommissionGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRemoveCommissionGroupField::FieldID);
 		if (strlen(RspRemoveCommissionGroup->AdminUserID) >= sizeof(RspRemoveCommissionGroup->AdminUserID))
 		{
 			RspRemoveCommissionGroup->AdminUserID[sizeof(RspRemoveCommissionGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspRemoveCommissionGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspRemoveCommissionGroup->AdminUserID);
 		if (strlen(RspRemoveCommissionGroup->TradingDay) >= sizeof(RspRemoveCommissionGroup->TradingDay))
 		{
 			RspRemoveCommissionGroup->TradingDay[sizeof(RspRemoveCommissionGroup->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, RspRemoveCommissionGroup->TradingDay);
-		WriteString(ppos, Items::CommissionGroupID, RspRemoveCommissionGroup->CommissionGroupID);
+		StepUtility::WriteString(ppos, Items::TradingDay, RspRemoveCommissionGroup->TradingDay);
+		StepUtility::WriteString(ppos, Items::CommissionGroupID, RspRemoveCommissionGroup->CommissionGroupID);
 		if (strlen(RspRemoveCommissionGroup->ExchangeID) >= sizeof(RspRemoveCommissionGroup->ExchangeID))
 		{
 			RspRemoveCommissionGroup->ExchangeID[sizeof(RspRemoveCommissionGroup->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, RspRemoveCommissionGroup->ExchangeID);
-		WriteString(ppos, Items::ProductClass, (int)RspRemoveCommissionGroup->ProductClass);
-		WriteHexString(ppos, Items::FieldEnd, RspRemoveCommissionGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, RspRemoveCommissionGroup->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)RspRemoveCommissionGroup->ProductClass);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRemoveCommissionGroupField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -25085,7 +25085,7 @@ bool RspRemoveCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -25099,7 +25099,7 @@ bool RspRemoveCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -25157,7 +25157,7 @@ bool RspRemoveCommissionGroupPackage::FromStepStream(char* buff, int startIndex,
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -25295,25 +25295,25 @@ int ReqAddOptionMarginParamPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddOptionMarginParam != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddOptionMarginParamField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddOptionMarginParamField::FieldID);
 		if (strlen(ReqAddOptionMarginParam->AdminUserID) >= sizeof(ReqAddOptionMarginParam->AdminUserID))
 		{
 			ReqAddOptionMarginParam->AdminUserID[sizeof(ReqAddOptionMarginParam->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddOptionMarginParam->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddOptionMarginParam->AdminUserID);
 		if (strlen(ReqAddOptionMarginParam->TradingDay) >= sizeof(ReqAddOptionMarginParam->TradingDay))
 		{
 			ReqAddOptionMarginParam->TradingDay[sizeof(ReqAddOptionMarginParam->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqAddOptionMarginParam->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqAddOptionMarginParam->TradingDay);
 		if (strlen(ReqAddOptionMarginParam->ExchangeID) >= sizeof(ReqAddOptionMarginParam->ExchangeID))
 		{
 			ReqAddOptionMarginParam->ExchangeID[sizeof(ReqAddOptionMarginParam->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqAddOptionMarginParam->ExchangeID);
-		WriteString(ppos, Items::Param1, ReqAddOptionMarginParam->Param1);
-		WriteString(ppos, Items::Param2, ReqAddOptionMarginParam->Param2);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddOptionMarginParamField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqAddOptionMarginParam->ExchangeID);
+		StepUtility::WriteString(ppos, Items::Param1, ReqAddOptionMarginParam->Param1);
+		StepUtility::WriteString(ppos, Items::Param2, ReqAddOptionMarginParam->Param2);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddOptionMarginParamField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -25324,7 +25324,7 @@ bool ReqAddOptionMarginParamPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -25338,7 +25338,7 @@ bool ReqAddOptionMarginParamPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -25480,29 +25480,29 @@ int RspAddOptionMarginParamPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddOptionMarginParam != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddOptionMarginParamField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddOptionMarginParamField::FieldID);
 		if (strlen(RspAddOptionMarginParam->AdminUserID) >= sizeof(RspAddOptionMarginParam->AdminUserID))
 		{
 			RspAddOptionMarginParam->AdminUserID[sizeof(RspAddOptionMarginParam->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddOptionMarginParam->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddOptionMarginParam->AdminUserID);
 		if (strlen(RspAddOptionMarginParam->ExchangeID) >= sizeof(RspAddOptionMarginParam->ExchangeID))
 		{
 			RspAddOptionMarginParam->ExchangeID[sizeof(RspAddOptionMarginParam->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, RspAddOptionMarginParam->ExchangeID);
-		WriteHexString(ppos, Items::FieldEnd, RspAddOptionMarginParamField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, RspAddOptionMarginParam->ExchangeID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddOptionMarginParamField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -25513,7 +25513,7 @@ bool RspAddOptionMarginParamPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -25527,7 +25527,7 @@ bool RspAddOptionMarginParamPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -25569,7 +25569,7 @@ bool RspAddOptionMarginParamPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -25707,25 +25707,25 @@ int ReqUpdateOptionMarginParamPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqUpdateOptionMarginParam != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqUpdateOptionMarginParamField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqUpdateOptionMarginParamField::FieldID);
 		if (strlen(ReqUpdateOptionMarginParam->AdminUserID) >= sizeof(ReqUpdateOptionMarginParam->AdminUserID))
 		{
 			ReqUpdateOptionMarginParam->AdminUserID[sizeof(ReqUpdateOptionMarginParam->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqUpdateOptionMarginParam->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqUpdateOptionMarginParam->AdminUserID);
 		if (strlen(ReqUpdateOptionMarginParam->TradingDay) >= sizeof(ReqUpdateOptionMarginParam->TradingDay))
 		{
 			ReqUpdateOptionMarginParam->TradingDay[sizeof(ReqUpdateOptionMarginParam->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqUpdateOptionMarginParam->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqUpdateOptionMarginParam->TradingDay);
 		if (strlen(ReqUpdateOptionMarginParam->ExchangeID) >= sizeof(ReqUpdateOptionMarginParam->ExchangeID))
 		{
 			ReqUpdateOptionMarginParam->ExchangeID[sizeof(ReqUpdateOptionMarginParam->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqUpdateOptionMarginParam->ExchangeID);
-		WriteString(ppos, Items::Param1, ReqUpdateOptionMarginParam->Param1);
-		WriteString(ppos, Items::Param2, ReqUpdateOptionMarginParam->Param2);
-		WriteHexString(ppos, Items::FieldEnd, ReqUpdateOptionMarginParamField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqUpdateOptionMarginParam->ExchangeID);
+		StepUtility::WriteString(ppos, Items::Param1, ReqUpdateOptionMarginParam->Param1);
+		StepUtility::WriteString(ppos, Items::Param2, ReqUpdateOptionMarginParam->Param2);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqUpdateOptionMarginParamField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -25736,7 +25736,7 @@ bool ReqUpdateOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -25750,7 +25750,7 @@ bool ReqUpdateOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -25892,29 +25892,29 @@ int RspUpdateOptionMarginParamPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspUpdateOptionMarginParam != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspUpdateOptionMarginParamField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspUpdateOptionMarginParamField::FieldID);
 		if (strlen(RspUpdateOptionMarginParam->AdminUserID) >= sizeof(RspUpdateOptionMarginParam->AdminUserID))
 		{
 			RspUpdateOptionMarginParam->AdminUserID[sizeof(RspUpdateOptionMarginParam->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspUpdateOptionMarginParam->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspUpdateOptionMarginParam->AdminUserID);
 		if (strlen(RspUpdateOptionMarginParam->ExchangeID) >= sizeof(RspUpdateOptionMarginParam->ExchangeID))
 		{
 			RspUpdateOptionMarginParam->ExchangeID[sizeof(RspUpdateOptionMarginParam->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, RspUpdateOptionMarginParam->ExchangeID);
-		WriteHexString(ppos, Items::FieldEnd, RspUpdateOptionMarginParamField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, RspUpdateOptionMarginParam->ExchangeID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspUpdateOptionMarginParamField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -25925,7 +25925,7 @@ bool RspUpdateOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -25939,7 +25939,7 @@ bool RspUpdateOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -25981,7 +25981,7 @@ bool RspUpdateOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -26119,18 +26119,18 @@ int ReqRemoveOptionMarginParamPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRemoveOptionMarginParam != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRemoveOptionMarginParamField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRemoveOptionMarginParamField::FieldID);
 		if (strlen(ReqRemoveOptionMarginParam->AdminUserID) >= sizeof(ReqRemoveOptionMarginParam->AdminUserID))
 		{
 			ReqRemoveOptionMarginParam->AdminUserID[sizeof(ReqRemoveOptionMarginParam->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqRemoveOptionMarginParam->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqRemoveOptionMarginParam->AdminUserID);
 		if (strlen(ReqRemoveOptionMarginParam->ExchangeID) >= sizeof(ReqRemoveOptionMarginParam->ExchangeID))
 		{
 			ReqRemoveOptionMarginParam->ExchangeID[sizeof(ReqRemoveOptionMarginParam->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqRemoveOptionMarginParam->ExchangeID);
-		WriteHexString(ppos, Items::FieldEnd, ReqRemoveOptionMarginParamField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqRemoveOptionMarginParam->ExchangeID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRemoveOptionMarginParamField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -26141,7 +26141,7 @@ bool ReqRemoveOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -26155,7 +26155,7 @@ bool ReqRemoveOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -26281,29 +26281,29 @@ int RspRemoveOptionMarginParamPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspRemoveOptionMarginParam != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRemoveOptionMarginParamField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRemoveOptionMarginParamField::FieldID);
 		if (strlen(RspRemoveOptionMarginParam->AdminUserID) >= sizeof(RspRemoveOptionMarginParam->AdminUserID))
 		{
 			RspRemoveOptionMarginParam->AdminUserID[sizeof(RspRemoveOptionMarginParam->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspRemoveOptionMarginParam->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspRemoveOptionMarginParam->AdminUserID);
 		if (strlen(RspRemoveOptionMarginParam->ExchangeID) >= sizeof(RspRemoveOptionMarginParam->ExchangeID))
 		{
 			RspRemoveOptionMarginParam->ExchangeID[sizeof(RspRemoveOptionMarginParam->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, RspRemoveOptionMarginParam->ExchangeID);
-		WriteHexString(ppos, Items::FieldEnd, RspRemoveOptionMarginParamField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, RspRemoveOptionMarginParam->ExchangeID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRemoveOptionMarginParamField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -26314,7 +26314,7 @@ bool RspRemoveOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -26328,7 +26328,7 @@ bool RspRemoveOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -26370,7 +26370,7 @@ bool RspRemoveOptionMarginParamPackage::FromStepStream(char* buff, int startInde
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -26508,25 +26508,25 @@ int ReqAddTradeOfferPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddTradeOffer != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddTradeOfferField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddTradeOfferField::FieldID);
 		if (strlen(ReqAddTradeOffer->AdminUserID) >= sizeof(ReqAddTradeOffer->AdminUserID))
 		{
 			ReqAddTradeOffer->AdminUserID[sizeof(ReqAddTradeOffer->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddTradeOffer->AdminUserID);
-		WriteString(ppos, Items::OfferID, ReqAddTradeOffer->OfferID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddTradeOffer->AdminUserID);
+		StepUtility::WriteString(ppos, Items::OfferID, ReqAddTradeOffer->OfferID);
 		if (strlen(ReqAddTradeOffer->OfferName) >= sizeof(ReqAddTradeOffer->OfferName))
 		{
 			ReqAddTradeOffer->OfferName[sizeof(ReqAddTradeOffer->OfferName) - 1] = 0;
 		}
-		WriteString(ppos, Items::OfferName, ReqAddTradeOffer->OfferName);
-		WriteString(ppos, Items::OfferType, (int)ReqAddTradeOffer->OfferType);
+		StepUtility::WriteString(ppos, Items::OfferName, ReqAddTradeOffer->OfferName);
+		StepUtility::WriteString(ppos, Items::OfferType, (int)ReqAddTradeOffer->OfferType);
 		if (strlen(ReqAddTradeOffer->OfferPassword) >= sizeof(ReqAddTradeOffer->OfferPassword))
 		{
 			ReqAddTradeOffer->OfferPassword[sizeof(ReqAddTradeOffer->OfferPassword) - 1] = 0;
 		}
-		WriteString(ppos, Items::OfferPassword, ReqAddTradeOffer->OfferPassword);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddTradeOfferField::FieldID);
+		StepUtility::WriteString(ppos, Items::OfferPassword, ReqAddTradeOffer->OfferPassword);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddTradeOfferField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -26537,7 +26537,7 @@ bool ReqAddTradeOfferPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -26551,7 +26551,7 @@ bool ReqAddTradeOfferPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -26693,25 +26693,25 @@ int RspAddTradeOfferPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddTradeOffer != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddTradeOfferField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddTradeOfferField::FieldID);
 		if (strlen(RspAddTradeOffer->AdminUserID) >= sizeof(RspAddTradeOffer->AdminUserID))
 		{
 			RspAddTradeOffer->AdminUserID[sizeof(RspAddTradeOffer->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddTradeOffer->AdminUserID);
-		WriteString(ppos, Items::OfferID, RspAddTradeOffer->OfferID);
-		WriteHexString(ppos, Items::FieldEnd, RspAddTradeOfferField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddTradeOffer->AdminUserID);
+		StepUtility::WriteString(ppos, Items::OfferID, RspAddTradeOffer->OfferID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddTradeOfferField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -26722,7 +26722,7 @@ bool RspAddTradeOfferPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -26736,7 +26736,7 @@ bool RspAddTradeOfferPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -26777,7 +26777,7 @@ bool RspAddTradeOfferPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -26915,25 +26915,25 @@ int ReqUpdateTradeOfferPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqUpdateTradeOffer != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqUpdateTradeOfferField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqUpdateTradeOfferField::FieldID);
 		if (strlen(ReqUpdateTradeOffer->AdminUserID) >= sizeof(ReqUpdateTradeOffer->AdminUserID))
 		{
 			ReqUpdateTradeOffer->AdminUserID[sizeof(ReqUpdateTradeOffer->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqUpdateTradeOffer->AdminUserID);
-		WriteString(ppos, Items::OfferID, ReqUpdateTradeOffer->OfferID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqUpdateTradeOffer->AdminUserID);
+		StepUtility::WriteString(ppos, Items::OfferID, ReqUpdateTradeOffer->OfferID);
 		if (strlen(ReqUpdateTradeOffer->OfferName) >= sizeof(ReqUpdateTradeOffer->OfferName))
 		{
 			ReqUpdateTradeOffer->OfferName[sizeof(ReqUpdateTradeOffer->OfferName) - 1] = 0;
 		}
-		WriteString(ppos, Items::OfferName, ReqUpdateTradeOffer->OfferName);
-		WriteString(ppos, Items::OfferType, (int)ReqUpdateTradeOffer->OfferType);
+		StepUtility::WriteString(ppos, Items::OfferName, ReqUpdateTradeOffer->OfferName);
+		StepUtility::WriteString(ppos, Items::OfferType, (int)ReqUpdateTradeOffer->OfferType);
 		if (strlen(ReqUpdateTradeOffer->OfferPassword) >= sizeof(ReqUpdateTradeOffer->OfferPassword))
 		{
 			ReqUpdateTradeOffer->OfferPassword[sizeof(ReqUpdateTradeOffer->OfferPassword) - 1] = 0;
 		}
-		WriteString(ppos, Items::OfferPassword, ReqUpdateTradeOffer->OfferPassword);
-		WriteHexString(ppos, Items::FieldEnd, ReqUpdateTradeOfferField::FieldID);
+		StepUtility::WriteString(ppos, Items::OfferPassword, ReqUpdateTradeOffer->OfferPassword);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqUpdateTradeOfferField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -26944,7 +26944,7 @@ bool ReqUpdateTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -26958,7 +26958,7 @@ bool ReqUpdateTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -27100,25 +27100,25 @@ int RspUpdateTradeOfferPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspUpdateTradeOffer != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspUpdateTradeOfferField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspUpdateTradeOfferField::FieldID);
 		if (strlen(RspUpdateTradeOffer->AdminUserID) >= sizeof(RspUpdateTradeOffer->AdminUserID))
 		{
 			RspUpdateTradeOffer->AdminUserID[sizeof(RspUpdateTradeOffer->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspUpdateTradeOffer->AdminUserID);
-		WriteString(ppos, Items::OfferID, RspUpdateTradeOffer->OfferID);
-		WriteHexString(ppos, Items::FieldEnd, RspUpdateTradeOfferField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspUpdateTradeOffer->AdminUserID);
+		StepUtility::WriteString(ppos, Items::OfferID, RspUpdateTradeOffer->OfferID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspUpdateTradeOfferField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -27129,7 +27129,7 @@ bool RspUpdateTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -27143,7 +27143,7 @@ bool RspUpdateTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -27184,7 +27184,7 @@ bool RspUpdateTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -27322,14 +27322,14 @@ int ReqRemoveTradeOfferPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRemoveTradeOffer != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRemoveTradeOfferField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRemoveTradeOfferField::FieldID);
 		if (strlen(ReqRemoveTradeOffer->AdminUserID) >= sizeof(ReqRemoveTradeOffer->AdminUserID))
 		{
 			ReqRemoveTradeOffer->AdminUserID[sizeof(ReqRemoveTradeOffer->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqRemoveTradeOffer->AdminUserID);
-		WriteString(ppos, Items::OfferID, ReqRemoveTradeOffer->OfferID);
-		WriteHexString(ppos, Items::FieldEnd, ReqRemoveTradeOfferField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqRemoveTradeOffer->AdminUserID);
+		StepUtility::WriteString(ppos, Items::OfferID, ReqRemoveTradeOffer->OfferID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRemoveTradeOfferField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -27340,7 +27340,7 @@ bool ReqRemoveTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -27354,7 +27354,7 @@ bool ReqRemoveTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -27479,25 +27479,25 @@ int RspRemoveTradeOfferPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspRemoveTradeOffer != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRemoveTradeOfferField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRemoveTradeOfferField::FieldID);
 		if (strlen(RspRemoveTradeOffer->AdminUserID) >= sizeof(RspRemoveTradeOffer->AdminUserID))
 		{
 			RspRemoveTradeOffer->AdminUserID[sizeof(RspRemoveTradeOffer->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspRemoveTradeOffer->AdminUserID);
-		WriteString(ppos, Items::OfferID, RspRemoveTradeOffer->OfferID);
-		WriteHexString(ppos, Items::FieldEnd, RspRemoveTradeOfferField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspRemoveTradeOffer->AdminUserID);
+		StepUtility::WriteString(ppos, Items::OfferID, RspRemoveTradeOffer->OfferID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRemoveTradeOfferField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -27508,7 +27508,7 @@ bool RspRemoveTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -27522,7 +27522,7 @@ bool RspRemoveTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -27563,7 +27563,7 @@ bool RspRemoveTradeOfferPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -27701,19 +27701,19 @@ int ReqAddTradeGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddTradeGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddTradeGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddTradeGroupField::FieldID);
 		if (strlen(ReqAddTradeGroup->AdminUserID) >= sizeof(ReqAddTradeGroup->AdminUserID))
 		{
 			ReqAddTradeGroup->AdminUserID[sizeof(ReqAddTradeGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddTradeGroup->AdminUserID);
-		WriteString(ppos, Items::TradeGroupID, ReqAddTradeGroup->TradeGroupID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddTradeGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, ReqAddTradeGroup->TradeGroupID);
 		if (strlen(ReqAddTradeGroup->TradeGroupName) >= sizeof(ReqAddTradeGroup->TradeGroupName))
 		{
 			ReqAddTradeGroup->TradeGroupName[sizeof(ReqAddTradeGroup->TradeGroupName) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradeGroupName, ReqAddTradeGroup->TradeGroupName);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddTradeGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::TradeGroupName, ReqAddTradeGroup->TradeGroupName);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddTradeGroupField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -27724,7 +27724,7 @@ bool ReqAddTradeGroupPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -27738,7 +27738,7 @@ bool ReqAddTradeGroupPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -27869,25 +27869,25 @@ int RspAddTradeGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddTradeGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddTradeGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddTradeGroupField::FieldID);
 		if (strlen(RspAddTradeGroup->AdminUserID) >= sizeof(RspAddTradeGroup->AdminUserID))
 		{
 			RspAddTradeGroup->AdminUserID[sizeof(RspAddTradeGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddTradeGroup->AdminUserID);
-		WriteString(ppos, Items::TradeGroupID, RspAddTradeGroup->TradeGroupID);
-		WriteHexString(ppos, Items::FieldEnd, RspAddTradeGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddTradeGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, RspAddTradeGroup->TradeGroupID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddTradeGroupField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -27898,7 +27898,7 @@ bool RspAddTradeGroupPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -27912,7 +27912,7 @@ bool RspAddTradeGroupPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -27953,7 +27953,7 @@ bool RspAddTradeGroupPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -28091,19 +28091,19 @@ int ReqUpdateTradeGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqUpdateTradeGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqUpdateTradeGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqUpdateTradeGroupField::FieldID);
 		if (strlen(ReqUpdateTradeGroup->AdminUserID) >= sizeof(ReqUpdateTradeGroup->AdminUserID))
 		{
 			ReqUpdateTradeGroup->AdminUserID[sizeof(ReqUpdateTradeGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqUpdateTradeGroup->AdminUserID);
-		WriteString(ppos, Items::TradeGroupID, ReqUpdateTradeGroup->TradeGroupID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqUpdateTradeGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, ReqUpdateTradeGroup->TradeGroupID);
 		if (strlen(ReqUpdateTradeGroup->TradeGroupName) >= sizeof(ReqUpdateTradeGroup->TradeGroupName))
 		{
 			ReqUpdateTradeGroup->TradeGroupName[sizeof(ReqUpdateTradeGroup->TradeGroupName) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradeGroupName, ReqUpdateTradeGroup->TradeGroupName);
-		WriteHexString(ppos, Items::FieldEnd, ReqUpdateTradeGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::TradeGroupName, ReqUpdateTradeGroup->TradeGroupName);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqUpdateTradeGroupField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -28114,7 +28114,7 @@ bool ReqUpdateTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -28128,7 +28128,7 @@ bool ReqUpdateTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -28259,25 +28259,25 @@ int RspUpdateTradeGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspUpdateTradeGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspUpdateTradeGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspUpdateTradeGroupField::FieldID);
 		if (strlen(RspUpdateTradeGroup->AdminUserID) >= sizeof(RspUpdateTradeGroup->AdminUserID))
 		{
 			RspUpdateTradeGroup->AdminUserID[sizeof(RspUpdateTradeGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspUpdateTradeGroup->AdminUserID);
-		WriteString(ppos, Items::TradeGroupID, RspUpdateTradeGroup->TradeGroupID);
-		WriteHexString(ppos, Items::FieldEnd, RspUpdateTradeGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspUpdateTradeGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, RspUpdateTradeGroup->TradeGroupID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspUpdateTradeGroupField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -28288,7 +28288,7 @@ bool RspUpdateTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -28302,7 +28302,7 @@ bool RspUpdateTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -28343,7 +28343,7 @@ bool RspUpdateTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -28481,14 +28481,14 @@ int ReqRemoveTradeGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRemoveTradeGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRemoveTradeGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRemoveTradeGroupField::FieldID);
 		if (strlen(ReqRemoveTradeGroup->AdminUserID) >= sizeof(ReqRemoveTradeGroup->AdminUserID))
 		{
 			ReqRemoveTradeGroup->AdminUserID[sizeof(ReqRemoveTradeGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqRemoveTradeGroup->AdminUserID);
-		WriteString(ppos, Items::TradeGroupID, ReqRemoveTradeGroup->TradeGroupID);
-		WriteHexString(ppos, Items::FieldEnd, ReqRemoveTradeGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqRemoveTradeGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, ReqRemoveTradeGroup->TradeGroupID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRemoveTradeGroupField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -28499,7 +28499,7 @@ bool ReqRemoveTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -28513,7 +28513,7 @@ bool ReqRemoveTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -28638,25 +28638,25 @@ int RspRemoveTradeGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspRemoveTradeGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRemoveTradeGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRemoveTradeGroupField::FieldID);
 		if (strlen(RspRemoveTradeGroup->AdminUserID) >= sizeof(RspRemoveTradeGroup->AdminUserID))
 		{
 			RspRemoveTradeGroup->AdminUserID[sizeof(RspRemoveTradeGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspRemoveTradeGroup->AdminUserID);
-		WriteString(ppos, Items::TradeGroupID, RspRemoveTradeGroup->TradeGroupID);
-		WriteHexString(ppos, Items::FieldEnd, RspRemoveTradeGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspRemoveTradeGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, RspRemoveTradeGroup->TradeGroupID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRemoveTradeGroupField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -28667,7 +28667,7 @@ bool RspRemoveTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -28681,7 +28681,7 @@ bool RspRemoveTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -28722,7 +28722,7 @@ bool RspRemoveTradeGroupPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -28860,20 +28860,20 @@ int ReqAddTradeGroupItemPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddTradeGroupItem != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddTradeGroupItemField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddTradeGroupItemField::FieldID);
 		if (strlen(ReqAddTradeGroupItem->AdminUserID) >= sizeof(ReqAddTradeGroupItem->AdminUserID))
 		{
 			ReqAddTradeGroupItem->AdminUserID[sizeof(ReqAddTradeGroupItem->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddTradeGroupItem->AdminUserID);
-		WriteString(ppos, Items::TradeGroupID, ReqAddTradeGroupItem->TradeGroupID);
-		WriteString(ppos, Items::AccountClass, (int)ReqAddTradeGroupItem->AccountClass);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddTradeGroupItem->AdminUserID);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, ReqAddTradeGroupItem->TradeGroupID);
+		StepUtility::WriteString(ppos, Items::AccountClass, (int)ReqAddTradeGroupItem->AccountClass);
 		if (strlen(ReqAddTradeGroupItem->PrimaryAccountID) >= sizeof(ReqAddTradeGroupItem->PrimaryAccountID))
 		{
 			ReqAddTradeGroupItem->PrimaryAccountID[sizeof(ReqAddTradeGroupItem->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, ReqAddTradeGroupItem->PrimaryAccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddTradeGroupItemField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, ReqAddTradeGroupItem->PrimaryAccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddTradeGroupItemField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -28884,7 +28884,7 @@ bool ReqAddTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -28898,7 +28898,7 @@ bool ReqAddTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -29034,26 +29034,26 @@ int RspAddTradeGroupItemPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddTradeGroupItem != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddTradeGroupItemField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddTradeGroupItemField::FieldID);
 		if (strlen(RspAddTradeGroupItem->AdminUserID) >= sizeof(RspAddTradeGroupItem->AdminUserID))
 		{
 			RspAddTradeGroupItem->AdminUserID[sizeof(RspAddTradeGroupItem->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddTradeGroupItem->AdminUserID);
-		WriteString(ppos, Items::TradeGroupID, RspAddTradeGroupItem->TradeGroupID);
-		WriteString(ppos, Items::AccountClass, (int)RspAddTradeGroupItem->AccountClass);
-		WriteHexString(ppos, Items::FieldEnd, RspAddTradeGroupItemField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddTradeGroupItem->AdminUserID);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, RspAddTradeGroupItem->TradeGroupID);
+		StepUtility::WriteString(ppos, Items::AccountClass, (int)RspAddTradeGroupItem->AccountClass);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddTradeGroupItemField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -29064,7 +29064,7 @@ bool RspAddTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -29078,7 +29078,7 @@ bool RspAddTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -29124,7 +29124,7 @@ bool RspAddTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -29262,20 +29262,20 @@ int ReqUpdateTradeGroupItemPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqUpdateTradeGroupItem != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqUpdateTradeGroupItemField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqUpdateTradeGroupItemField::FieldID);
 		if (strlen(ReqUpdateTradeGroupItem->AdminUserID) >= sizeof(ReqUpdateTradeGroupItem->AdminUserID))
 		{
 			ReqUpdateTradeGroupItem->AdminUserID[sizeof(ReqUpdateTradeGroupItem->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqUpdateTradeGroupItem->AdminUserID);
-		WriteString(ppos, Items::TradeGroupID, ReqUpdateTradeGroupItem->TradeGroupID);
-		WriteString(ppos, Items::AccountClass, (int)ReqUpdateTradeGroupItem->AccountClass);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqUpdateTradeGroupItem->AdminUserID);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, ReqUpdateTradeGroupItem->TradeGroupID);
+		StepUtility::WriteString(ppos, Items::AccountClass, (int)ReqUpdateTradeGroupItem->AccountClass);
 		if (strlen(ReqUpdateTradeGroupItem->PrimaryAccountID) >= sizeof(ReqUpdateTradeGroupItem->PrimaryAccountID))
 		{
 			ReqUpdateTradeGroupItem->PrimaryAccountID[sizeof(ReqUpdateTradeGroupItem->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, ReqUpdateTradeGroupItem->PrimaryAccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqUpdateTradeGroupItemField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, ReqUpdateTradeGroupItem->PrimaryAccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqUpdateTradeGroupItemField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -29286,7 +29286,7 @@ bool ReqUpdateTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -29300,7 +29300,7 @@ bool ReqUpdateTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -29436,26 +29436,26 @@ int RspUpdateTradeGroupItemPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspUpdateTradeGroupItem != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspUpdateTradeGroupItemField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspUpdateTradeGroupItemField::FieldID);
 		if (strlen(RspUpdateTradeGroupItem->AdminUserID) >= sizeof(RspUpdateTradeGroupItem->AdminUserID))
 		{
 			RspUpdateTradeGroupItem->AdminUserID[sizeof(RspUpdateTradeGroupItem->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspUpdateTradeGroupItem->AdminUserID);
-		WriteString(ppos, Items::TradeGroupID, RspUpdateTradeGroupItem->TradeGroupID);
-		WriteString(ppos, Items::AccountClass, (int)RspUpdateTradeGroupItem->AccountClass);
-		WriteHexString(ppos, Items::FieldEnd, RspUpdateTradeGroupItemField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspUpdateTradeGroupItem->AdminUserID);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, RspUpdateTradeGroupItem->TradeGroupID);
+		StepUtility::WriteString(ppos, Items::AccountClass, (int)RspUpdateTradeGroupItem->AccountClass);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspUpdateTradeGroupItemField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -29466,7 +29466,7 @@ bool RspUpdateTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -29480,7 +29480,7 @@ bool RspUpdateTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -29526,7 +29526,7 @@ bool RspUpdateTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -29664,15 +29664,15 @@ int ReqRemoveTradeGroupItemPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRemoveTradeGroupItem != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRemoveTradeGroupItemField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRemoveTradeGroupItemField::FieldID);
 		if (strlen(ReqRemoveTradeGroupItem->AdminUserID) >= sizeof(ReqRemoveTradeGroupItem->AdminUserID))
 		{
 			ReqRemoveTradeGroupItem->AdminUserID[sizeof(ReqRemoveTradeGroupItem->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqRemoveTradeGroupItem->AdminUserID);
-		WriteString(ppos, Items::TradeGroupID, ReqRemoveTradeGroupItem->TradeGroupID);
-		WriteString(ppos, Items::AccountClass, (int)ReqRemoveTradeGroupItem->AccountClass);
-		WriteHexString(ppos, Items::FieldEnd, ReqRemoveTradeGroupItemField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqRemoveTradeGroupItem->AdminUserID);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, ReqRemoveTradeGroupItem->TradeGroupID);
+		StepUtility::WriteString(ppos, Items::AccountClass, (int)ReqRemoveTradeGroupItem->AccountClass);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRemoveTradeGroupItemField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -29683,7 +29683,7 @@ bool ReqRemoveTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -29697,7 +29697,7 @@ bool ReqRemoveTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -29827,26 +29827,26 @@ int RspRemoveTradeGroupItemPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspRemoveTradeGroupItem != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRemoveTradeGroupItemField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRemoveTradeGroupItemField::FieldID);
 		if (strlen(RspRemoveTradeGroupItem->AdminUserID) >= sizeof(RspRemoveTradeGroupItem->AdminUserID))
 		{
 			RspRemoveTradeGroupItem->AdminUserID[sizeof(RspRemoveTradeGroupItem->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspRemoveTradeGroupItem->AdminUserID);
-		WriteString(ppos, Items::TradeGroupID, RspRemoveTradeGroupItem->TradeGroupID);
-		WriteString(ppos, Items::AccountClass, (int)RspRemoveTradeGroupItem->AccountClass);
-		WriteHexString(ppos, Items::FieldEnd, RspRemoveTradeGroupItemField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspRemoveTradeGroupItem->AdminUserID);
+		StepUtility::WriteString(ppos, Items::TradeGroupID, RspRemoveTradeGroupItem->TradeGroupID);
+		StepUtility::WriteString(ppos, Items::AccountClass, (int)RspRemoveTradeGroupItem->AccountClass);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRemoveTradeGroupItemField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -29857,7 +29857,7 @@ bool RspRemoveTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -29871,7 +29871,7 @@ bool RspRemoveTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -29917,7 +29917,7 @@ bool RspRemoveTradeGroupItemPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -30055,19 +30055,19 @@ int ReqAddRiskGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddRiskGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddRiskGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddRiskGroupField::FieldID);
 		if (strlen(ReqAddRiskGroup->AdminUserID) >= sizeof(ReqAddRiskGroup->AdminUserID))
 		{
 			ReqAddRiskGroup->AdminUserID[sizeof(ReqAddRiskGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddRiskGroup->AdminUserID);
-		WriteString(ppos, Items::RiskGroupID, ReqAddRiskGroup->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddRiskGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, ReqAddRiskGroup->RiskGroupID);
 		if (strlen(ReqAddRiskGroup->RiskGroupName) >= sizeof(ReqAddRiskGroup->RiskGroupName))
 		{
 			ReqAddRiskGroup->RiskGroupName[sizeof(ReqAddRiskGroup->RiskGroupName) - 1] = 0;
 		}
-		WriteString(ppos, Items::RiskGroupName, ReqAddRiskGroup->RiskGroupName);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddRiskGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::RiskGroupName, ReqAddRiskGroup->RiskGroupName);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddRiskGroupField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -30078,7 +30078,7 @@ bool ReqAddRiskGroupPackage::FromStepStream(char* buff, int startIndex, int endI
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -30092,7 +30092,7 @@ bool ReqAddRiskGroupPackage::FromStepStream(char* buff, int startIndex, int endI
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -30223,25 +30223,25 @@ int RspAddRiskGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddRiskGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddRiskGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddRiskGroupField::FieldID);
 		if (strlen(RspAddRiskGroup->AdminUserID) >= sizeof(RspAddRiskGroup->AdminUserID))
 		{
 			RspAddRiskGroup->AdminUserID[sizeof(RspAddRiskGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddRiskGroup->AdminUserID);
-		WriteString(ppos, Items::RiskGroupID, RspAddRiskGroup->RiskGroupID);
-		WriteHexString(ppos, Items::FieldEnd, RspAddRiskGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddRiskGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, RspAddRiskGroup->RiskGroupID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddRiskGroupField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -30252,7 +30252,7 @@ bool RspAddRiskGroupPackage::FromStepStream(char* buff, int startIndex, int endI
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -30266,7 +30266,7 @@ bool RspAddRiskGroupPackage::FromStepStream(char* buff, int startIndex, int endI
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -30307,7 +30307,7 @@ bool RspAddRiskGroupPackage::FromStepStream(char* buff, int startIndex, int endI
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -30445,19 +30445,19 @@ int ReqUpdateRiskGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqUpdateRiskGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqUpdateRiskGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqUpdateRiskGroupField::FieldID);
 		if (strlen(ReqUpdateRiskGroup->AdminUserID) >= sizeof(ReqUpdateRiskGroup->AdminUserID))
 		{
 			ReqUpdateRiskGroup->AdminUserID[sizeof(ReqUpdateRiskGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqUpdateRiskGroup->AdminUserID);
-		WriteString(ppos, Items::RiskGroupID, ReqUpdateRiskGroup->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqUpdateRiskGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, ReqUpdateRiskGroup->RiskGroupID);
 		if (strlen(ReqUpdateRiskGroup->RiskGroupName) >= sizeof(ReqUpdateRiskGroup->RiskGroupName))
 		{
 			ReqUpdateRiskGroup->RiskGroupName[sizeof(ReqUpdateRiskGroup->RiskGroupName) - 1] = 0;
 		}
-		WriteString(ppos, Items::RiskGroupName, ReqUpdateRiskGroup->RiskGroupName);
-		WriteHexString(ppos, Items::FieldEnd, ReqUpdateRiskGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::RiskGroupName, ReqUpdateRiskGroup->RiskGroupName);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqUpdateRiskGroupField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -30468,7 +30468,7 @@ bool ReqUpdateRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -30482,7 +30482,7 @@ bool ReqUpdateRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -30613,25 +30613,25 @@ int RspUpdateRiskGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspUpdateRiskGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspUpdateRiskGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspUpdateRiskGroupField::FieldID);
 		if (strlen(RspUpdateRiskGroup->AdminUserID) >= sizeof(RspUpdateRiskGroup->AdminUserID))
 		{
 			RspUpdateRiskGroup->AdminUserID[sizeof(RspUpdateRiskGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspUpdateRiskGroup->AdminUserID);
-		WriteString(ppos, Items::RiskGroupID, RspUpdateRiskGroup->RiskGroupID);
-		WriteHexString(ppos, Items::FieldEnd, RspUpdateRiskGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspUpdateRiskGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, RspUpdateRiskGroup->RiskGroupID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspUpdateRiskGroupField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -30642,7 +30642,7 @@ bool RspUpdateRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -30656,7 +30656,7 @@ bool RspUpdateRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -30697,7 +30697,7 @@ bool RspUpdateRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -30835,14 +30835,14 @@ int ReqRemoveRiskGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRemoveRiskGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRemoveRiskGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRemoveRiskGroupField::FieldID);
 		if (strlen(ReqRemoveRiskGroup->AdminUserID) >= sizeof(ReqRemoveRiskGroup->AdminUserID))
 		{
 			ReqRemoveRiskGroup->AdminUserID[sizeof(ReqRemoveRiskGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqRemoveRiskGroup->AdminUserID);
-		WriteString(ppos, Items::RiskGroupID, ReqRemoveRiskGroup->RiskGroupID);
-		WriteHexString(ppos, Items::FieldEnd, ReqRemoveRiskGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqRemoveRiskGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, ReqRemoveRiskGroup->RiskGroupID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRemoveRiskGroupField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -30853,7 +30853,7 @@ bool ReqRemoveRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -30867,7 +30867,7 @@ bool ReqRemoveRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -30992,25 +30992,25 @@ int RspRemoveRiskGroupPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspRemoveRiskGroup != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRemoveRiskGroupField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRemoveRiskGroupField::FieldID);
 		if (strlen(RspRemoveRiskGroup->AdminUserID) >= sizeof(RspRemoveRiskGroup->AdminUserID))
 		{
 			RspRemoveRiskGroup->AdminUserID[sizeof(RspRemoveRiskGroup->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspRemoveRiskGroup->AdminUserID);
-		WriteString(ppos, Items::RiskGroupID, RspRemoveRiskGroup->RiskGroupID);
-		WriteHexString(ppos, Items::FieldEnd, RspRemoveRiskGroupField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspRemoveRiskGroup->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, RspRemoveRiskGroup->RiskGroupID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRemoveRiskGroupField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -31021,7 +31021,7 @@ bool RspRemoveRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -31035,7 +31035,7 @@ bool RspRemoveRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -31076,7 +31076,7 @@ bool RspRemoveRiskGroupPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -31214,15 +31214,15 @@ int ReqAddRiskGroupItemPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddRiskGroupItem != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddRiskGroupItemField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddRiskGroupItemField::FieldID);
 		if (strlen(ReqAddRiskGroupItem->AdminUserID) >= sizeof(ReqAddRiskGroupItem->AdminUserID))
 		{
 			ReqAddRiskGroupItem->AdminUserID[sizeof(ReqAddRiskGroupItem->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddRiskGroupItem->AdminUserID);
-		WriteString(ppos, Items::RiskGroupID, ReqAddRiskGroupItem->RiskGroupID);
-		WriteString(ppos, Items::RiskID, ReqAddRiskGroupItem->RiskID);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddRiskGroupItemField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddRiskGroupItem->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, ReqAddRiskGroupItem->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::RiskID, ReqAddRiskGroupItem->RiskID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddRiskGroupItemField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -31233,7 +31233,7 @@ bool ReqAddRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, int 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -31247,7 +31247,7 @@ bool ReqAddRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -31377,26 +31377,26 @@ int RspAddRiskGroupItemPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddRiskGroupItem != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddRiskGroupItemField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddRiskGroupItemField::FieldID);
 		if (strlen(RspAddRiskGroupItem->AdminUserID) >= sizeof(RspAddRiskGroupItem->AdminUserID))
 		{
 			RspAddRiskGroupItem->AdminUserID[sizeof(RspAddRiskGroupItem->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddRiskGroupItem->AdminUserID);
-		WriteString(ppos, Items::RiskGroupID, RspAddRiskGroupItem->RiskGroupID);
-		WriteString(ppos, Items::RiskID, RspAddRiskGroupItem->RiskID);
-		WriteHexString(ppos, Items::FieldEnd, RspAddRiskGroupItemField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddRiskGroupItem->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, RspAddRiskGroupItem->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::RiskID, RspAddRiskGroupItem->RiskID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddRiskGroupItemField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -31407,7 +31407,7 @@ bool RspAddRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, int 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -31421,7 +31421,7 @@ bool RspAddRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -31467,7 +31467,7 @@ bool RspAddRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -31605,15 +31605,15 @@ int ReqUpdateRiskGroupItemPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqUpdateRiskGroupItem != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqUpdateRiskGroupItemField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqUpdateRiskGroupItemField::FieldID);
 		if (strlen(ReqUpdateRiskGroupItem->AdminUserID) >= sizeof(ReqUpdateRiskGroupItem->AdminUserID))
 		{
 			ReqUpdateRiskGroupItem->AdminUserID[sizeof(ReqUpdateRiskGroupItem->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqUpdateRiskGroupItem->AdminUserID);
-		WriteString(ppos, Items::RiskGroupID, ReqUpdateRiskGroupItem->RiskGroupID);
-		WriteString(ppos, Items::RiskID, ReqUpdateRiskGroupItem->RiskID);
-		WriteHexString(ppos, Items::FieldEnd, ReqUpdateRiskGroupItemField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqUpdateRiskGroupItem->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, ReqUpdateRiskGroupItem->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::RiskID, ReqUpdateRiskGroupItem->RiskID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqUpdateRiskGroupItemField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -31624,7 +31624,7 @@ bool ReqUpdateRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -31638,7 +31638,7 @@ bool ReqUpdateRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -31768,26 +31768,26 @@ int RspUpdateRiskGroupItemPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspUpdateRiskGroupItem != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspUpdateRiskGroupItemField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspUpdateRiskGroupItemField::FieldID);
 		if (strlen(RspUpdateRiskGroupItem->AdminUserID) >= sizeof(RspUpdateRiskGroupItem->AdminUserID))
 		{
 			RspUpdateRiskGroupItem->AdminUserID[sizeof(RspUpdateRiskGroupItem->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspUpdateRiskGroupItem->AdminUserID);
-		WriteString(ppos, Items::RiskGroupID, RspUpdateRiskGroupItem->RiskGroupID);
-		WriteString(ppos, Items::RiskID, RspUpdateRiskGroupItem->RiskID);
-		WriteHexString(ppos, Items::FieldEnd, RspUpdateRiskGroupItemField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspUpdateRiskGroupItem->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, RspUpdateRiskGroupItem->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::RiskID, RspUpdateRiskGroupItem->RiskID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspUpdateRiskGroupItemField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -31798,7 +31798,7 @@ bool RspUpdateRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -31812,7 +31812,7 @@ bool RspUpdateRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -31858,7 +31858,7 @@ bool RspUpdateRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -31996,15 +31996,15 @@ int ReqRemoveRiskGroupItemPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRemoveRiskGroupItem != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRemoveRiskGroupItemField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRemoveRiskGroupItemField::FieldID);
 		if (strlen(ReqRemoveRiskGroupItem->AdminUserID) >= sizeof(ReqRemoveRiskGroupItem->AdminUserID))
 		{
 			ReqRemoveRiskGroupItem->AdminUserID[sizeof(ReqRemoveRiskGroupItem->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqRemoveRiskGroupItem->AdminUserID);
-		WriteString(ppos, Items::RiskGroupID, ReqRemoveRiskGroupItem->RiskGroupID);
-		WriteString(ppos, Items::RiskID, ReqRemoveRiskGroupItem->RiskID);
-		WriteHexString(ppos, Items::FieldEnd, ReqRemoveRiskGroupItemField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqRemoveRiskGroupItem->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, ReqRemoveRiskGroupItem->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::RiskID, ReqRemoveRiskGroupItem->RiskID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRemoveRiskGroupItemField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -32015,7 +32015,7 @@ bool ReqRemoveRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -32029,7 +32029,7 @@ bool ReqRemoveRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -32159,26 +32159,26 @@ int RspRemoveRiskGroupItemPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspRemoveRiskGroupItem != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRemoveRiskGroupItemField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRemoveRiskGroupItemField::FieldID);
 		if (strlen(RspRemoveRiskGroupItem->AdminUserID) >= sizeof(RspRemoveRiskGroupItem->AdminUserID))
 		{
 			RspRemoveRiskGroupItem->AdminUserID[sizeof(RspRemoveRiskGroupItem->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspRemoveRiskGroupItem->AdminUserID);
-		WriteString(ppos, Items::RiskGroupID, RspRemoveRiskGroupItem->RiskGroupID);
-		WriteString(ppos, Items::RiskID, RspRemoveRiskGroupItem->RiskID);
-		WriteHexString(ppos, Items::FieldEnd, RspRemoveRiskGroupItemField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspRemoveRiskGroupItem->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskGroupID, RspRemoveRiskGroupItem->RiskGroupID);
+		StepUtility::WriteString(ppos, Items::RiskID, RspRemoveRiskGroupItem->RiskID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRemoveRiskGroupItemField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -32189,7 +32189,7 @@ bool RspRemoveRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -32203,7 +32203,7 @@ bool RspRemoveRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -32249,7 +32249,7 @@ bool RspRemoveRiskGroupItemPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -32387,20 +32387,20 @@ int ReqAddOrUpdateRiskPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddOrUpdateRisk != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddOrUpdateRiskField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddOrUpdateRiskField::FieldID);
 		if (strlen(ReqAddOrUpdateRisk->AdminUserID) >= sizeof(ReqAddOrUpdateRisk->AdminUserID))
 		{
 			ReqAddOrUpdateRisk->AdminUserID[sizeof(ReqAddOrUpdateRisk->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddOrUpdateRisk->AdminUserID);
-		WriteString(ppos, Items::RiskID, ReqAddOrUpdateRisk->RiskID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddOrUpdateRisk->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskID, ReqAddOrUpdateRisk->RiskID);
 		if (strlen(ReqAddOrUpdateRisk->RiskName) >= sizeof(ReqAddOrUpdateRisk->RiskName))
 		{
 			ReqAddOrUpdateRisk->RiskName[sizeof(ReqAddOrUpdateRisk->RiskName) - 1] = 0;
 		}
-		WriteString(ppos, Items::RiskName, ReqAddOrUpdateRisk->RiskName);
-		WriteString(ppos, Items::RiskClassID, (int)ReqAddOrUpdateRisk->RiskClassID);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddOrUpdateRiskField::FieldID);
+		StepUtility::WriteString(ppos, Items::RiskName, ReqAddOrUpdateRisk->RiskName);
+		StepUtility::WriteString(ppos, Items::RiskClassID, (int)ReqAddOrUpdateRisk->RiskClassID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddOrUpdateRiskField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -32411,7 +32411,7 @@ bool ReqAddOrUpdateRiskPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -32425,7 +32425,7 @@ bool ReqAddOrUpdateRiskPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -32561,25 +32561,25 @@ int RspAddOrUpdateRiskPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddOrUpdateRisk != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddOrUpdateRiskField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddOrUpdateRiskField::FieldID);
 		if (strlen(RspAddOrUpdateRisk->AdminUserID) >= sizeof(RspAddOrUpdateRisk->AdminUserID))
 		{
 			RspAddOrUpdateRisk->AdminUserID[sizeof(RspAddOrUpdateRisk->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddOrUpdateRisk->AdminUserID);
-		WriteString(ppos, Items::RiskID, RspAddOrUpdateRisk->RiskID);
-		WriteHexString(ppos, Items::FieldEnd, RspAddOrUpdateRiskField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddOrUpdateRisk->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskID, RspAddOrUpdateRisk->RiskID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddOrUpdateRiskField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -32590,7 +32590,7 @@ bool RspAddOrUpdateRiskPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -32604,7 +32604,7 @@ bool RspAddOrUpdateRiskPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -32645,7 +32645,7 @@ bool RspAddOrUpdateRiskPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -32783,14 +32783,14 @@ int ReqRemoveRiskPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRemoveRisk != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRemoveRiskField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRemoveRiskField::FieldID);
 		if (strlen(ReqRemoveRisk->AdminUserID) >= sizeof(ReqRemoveRisk->AdminUserID))
 		{
 			ReqRemoveRisk->AdminUserID[sizeof(ReqRemoveRisk->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqRemoveRisk->AdminUserID);
-		WriteString(ppos, Items::RiskID, ReqRemoveRisk->RiskID);
-		WriteHexString(ppos, Items::FieldEnd, ReqRemoveRiskField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqRemoveRisk->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskID, ReqRemoveRisk->RiskID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRemoveRiskField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -32801,7 +32801,7 @@ bool ReqRemoveRiskPackage::FromStepStream(char* buff, int startIndex, int endInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -32815,7 +32815,7 @@ bool ReqRemoveRiskPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -32940,25 +32940,25 @@ int RspRemoveRiskPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspRemoveRisk != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRemoveRiskField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRemoveRiskField::FieldID);
 		if (strlen(RspRemoveRisk->AdminUserID) >= sizeof(RspRemoveRisk->AdminUserID))
 		{
 			RspRemoveRisk->AdminUserID[sizeof(RspRemoveRisk->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspRemoveRisk->AdminUserID);
-		WriteString(ppos, Items::RiskID, RspRemoveRisk->RiskID);
-		WriteHexString(ppos, Items::FieldEnd, RspRemoveRiskField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspRemoveRisk->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskID, RspRemoveRisk->RiskID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRemoveRiskField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -32969,7 +32969,7 @@ bool RspRemoveRiskPackage::FromStepStream(char* buff, int startIndex, int endInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -32983,7 +32983,7 @@ bool RspRemoveRiskPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -33024,7 +33024,7 @@ bool RspRemoveRiskPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -33162,21 +33162,21 @@ int ReqAddRiskRulePackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddRiskRule != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddRiskRuleField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddRiskRuleField::FieldID);
 		if (strlen(ReqAddRiskRule->AdminUserID) >= sizeof(ReqAddRiskRule->AdminUserID))
 		{
 			ReqAddRiskRule->AdminUserID[sizeof(ReqAddRiskRule->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddRiskRule->AdminUserID);
-		WriteString(ppos, Items::RiskID, ReqAddRiskRule->RiskID);
-		WriteString(ppos, Items::RiskRuleID, ReqAddRiskRule->RiskRuleID);
-		WriteString(ppos, Items::RiskRuleStyle, (int)ReqAddRiskRule->RiskRuleStyle);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddRiskRule->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskID, ReqAddRiskRule->RiskID);
+		StepUtility::WriteString(ppos, Items::RiskRuleID, ReqAddRiskRule->RiskRuleID);
+		StepUtility::WriteString(ppos, Items::RiskRuleStyle, (int)ReqAddRiskRule->RiskRuleStyle);
 		if (strlen(ReqAddRiskRule->FormatRiskMessage) >= sizeof(ReqAddRiskRule->FormatRiskMessage))
 		{
 			ReqAddRiskRule->FormatRiskMessage[sizeof(ReqAddRiskRule->FormatRiskMessage) - 1] = 0;
 		}
-		WriteString(ppos, Items::FormatRiskMessage, ReqAddRiskRule->FormatRiskMessage);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddRiskRuleField::FieldID);
+		StepUtility::WriteString(ppos, Items::FormatRiskMessage, ReqAddRiskRule->FormatRiskMessage);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddRiskRuleField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -33187,7 +33187,7 @@ bool ReqAddRiskRulePackage::FromStepStream(char* buff, int startIndex, int endIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -33201,7 +33201,7 @@ bool ReqAddRiskRulePackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -33342,26 +33342,26 @@ int RspAddRiskRulePackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddRiskRule != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddRiskRuleField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddRiskRuleField::FieldID);
 		if (strlen(RspAddRiskRule->AdminUserID) >= sizeof(RspAddRiskRule->AdminUserID))
 		{
 			RspAddRiskRule->AdminUserID[sizeof(RspAddRiskRule->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddRiskRule->AdminUserID);
-		WriteString(ppos, Items::RiskID, RspAddRiskRule->RiskID);
-		WriteString(ppos, Items::RiskRuleID, RspAddRiskRule->RiskRuleID);
-		WriteHexString(ppos, Items::FieldEnd, RspAddRiskRuleField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddRiskRule->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskID, RspAddRiskRule->RiskID);
+		StepUtility::WriteString(ppos, Items::RiskRuleID, RspAddRiskRule->RiskRuleID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddRiskRuleField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -33372,7 +33372,7 @@ bool RspAddRiskRulePackage::FromStepStream(char* buff, int startIndex, int endIn
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -33386,7 +33386,7 @@ bool RspAddRiskRulePackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -33432,7 +33432,7 @@ bool RspAddRiskRulePackage::FromStepStream(char* buff, int startIndex, int endIn
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -33570,64 +33570,64 @@ int ReqAddRiskRuleItemPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddRiskRuleItem != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddRiskRuleItemField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddRiskRuleItemField::FieldID);
 		if (strlen(ReqAddRiskRuleItem->AdminUserID) >= sizeof(ReqAddRiskRuleItem->AdminUserID))
 		{
 			ReqAddRiskRuleItem->AdminUserID[sizeof(ReqAddRiskRuleItem->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddRiskRuleItem->AdminUserID);
-		WriteString(ppos, Items::RiskID, ReqAddRiskRuleItem->RiskID);
-		WriteString(ppos, Items::RiskRuleID, ReqAddRiskRuleItem->RiskRuleID);
-		WriteString(ppos, Items::RiskRuleItemID, ReqAddRiskRuleItem->RiskRuleItemID);
-		WriteString(ppos, Items::RiskIndexType, (int)ReqAddRiskRuleItem->RiskIndexType);
-		WriteString(ppos, Items::RiskIndexID, ReqAddRiskRuleItem->RiskIndexID);
-		WriteString(ppos, Items::RiskIndexTextRef, ReqAddRiskRuleItem->RiskIndexTextRef);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddRiskRuleItem->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskID, ReqAddRiskRuleItem->RiskID);
+		StepUtility::WriteString(ppos, Items::RiskRuleID, ReqAddRiskRuleItem->RiskRuleID);
+		StepUtility::WriteString(ppos, Items::RiskRuleItemID, ReqAddRiskRuleItem->RiskRuleItemID);
+		StepUtility::WriteString(ppos, Items::RiskIndexType, (int)ReqAddRiskRuleItem->RiskIndexType);
+		StepUtility::WriteString(ppos, Items::RiskIndexID, ReqAddRiskRuleItem->RiskIndexID);
+		StepUtility::WriteString(ppos, Items::RiskIndexTextRef, ReqAddRiskRuleItem->RiskIndexTextRef);
 		if (strlen(ReqAddRiskRuleItem->IndexParam1) >= sizeof(ReqAddRiskRuleItem->IndexParam1))
 		{
 			ReqAddRiskRuleItem->IndexParam1[sizeof(ReqAddRiskRuleItem->IndexParam1) - 1] = 0;
 		}
-		WriteString(ppos, Items::IndexParam1, ReqAddRiskRuleItem->IndexParam1);
+		StepUtility::WriteString(ppos, Items::IndexParam1, ReqAddRiskRuleItem->IndexParam1);
 		if (strlen(ReqAddRiskRuleItem->IndexParam2) >= sizeof(ReqAddRiskRuleItem->IndexParam2))
 		{
 			ReqAddRiskRuleItem->IndexParam2[sizeof(ReqAddRiskRuleItem->IndexParam2) - 1] = 0;
 		}
-		WriteString(ppos, Items::IndexParam2, ReqAddRiskRuleItem->IndexParam2);
+		StepUtility::WriteString(ppos, Items::IndexParam2, ReqAddRiskRuleItem->IndexParam2);
 		if (strlen(ReqAddRiskRuleItem->IndexParam3) >= sizeof(ReqAddRiskRuleItem->IndexParam3))
 		{
 			ReqAddRiskRuleItem->IndexParam3[sizeof(ReqAddRiskRuleItem->IndexParam3) - 1] = 0;
 		}
-		WriteString(ppos, Items::IndexParam3, ReqAddRiskRuleItem->IndexParam3);
+		StepUtility::WriteString(ppos, Items::IndexParam3, ReqAddRiskRuleItem->IndexParam3);
 		if (strlen(ReqAddRiskRuleItem->IndexParam4) >= sizeof(ReqAddRiskRuleItem->IndexParam4))
 		{
 			ReqAddRiskRuleItem->IndexParam4[sizeof(ReqAddRiskRuleItem->IndexParam4) - 1] = 0;
 		}
-		WriteString(ppos, Items::IndexParam4, ReqAddRiskRuleItem->IndexParam4);
+		StepUtility::WriteString(ppos, Items::IndexParam4, ReqAddRiskRuleItem->IndexParam4);
 		if (strlen(ReqAddRiskRuleItem->IndexParam5) >= sizeof(ReqAddRiskRuleItem->IndexParam5))
 		{
 			ReqAddRiskRuleItem->IndexParam5[sizeof(ReqAddRiskRuleItem->IndexParam5) - 1] = 0;
 		}
-		WriteString(ppos, Items::IndexParam5, ReqAddRiskRuleItem->IndexParam5);
+		StepUtility::WriteString(ppos, Items::IndexParam5, ReqAddRiskRuleItem->IndexParam5);
 		if (strlen(ReqAddRiskRuleItem->IndexParam6) >= sizeof(ReqAddRiskRuleItem->IndexParam6))
 		{
 			ReqAddRiskRuleItem->IndexParam6[sizeof(ReqAddRiskRuleItem->IndexParam6) - 1] = 0;
 		}
-		WriteString(ppos, Items::IndexParam6, ReqAddRiskRuleItem->IndexParam6);
-		WriteString(ppos, Items::LogicFunc, (int)ReqAddRiskRuleItem->LogicFunc);
-		WriteString(ppos, Items::LogicParamType1, (int)ReqAddRiskRuleItem->LogicParamType1);
+		StepUtility::WriteString(ppos, Items::IndexParam6, ReqAddRiskRuleItem->IndexParam6);
+		StepUtility::WriteString(ppos, Items::LogicFunc, (int)ReqAddRiskRuleItem->LogicFunc);
+		StepUtility::WriteString(ppos, Items::LogicParamType1, (int)ReqAddRiskRuleItem->LogicParamType1);
 		if (strlen(ReqAddRiskRuleItem->LogicParam1) >= sizeof(ReqAddRiskRuleItem->LogicParam1))
 		{
 			ReqAddRiskRuleItem->LogicParam1[sizeof(ReqAddRiskRuleItem->LogicParam1) - 1] = 0;
 		}
-		WriteString(ppos, Items::LogicParam1, ReqAddRiskRuleItem->LogicParam1);
-		WriteString(ppos, Items::LogicParam1TextRef, ReqAddRiskRuleItem->LogicParam1TextRef);
-		WriteString(ppos, Items::LogicParamType2, (int)ReqAddRiskRuleItem->LogicParamType2);
+		StepUtility::WriteString(ppos, Items::LogicParam1, ReqAddRiskRuleItem->LogicParam1);
+		StepUtility::WriteString(ppos, Items::LogicParam1TextRef, ReqAddRiskRuleItem->LogicParam1TextRef);
+		StepUtility::WriteString(ppos, Items::LogicParamType2, (int)ReqAddRiskRuleItem->LogicParamType2);
 		if (strlen(ReqAddRiskRuleItem->LogicParam2) >= sizeof(ReqAddRiskRuleItem->LogicParam2))
 		{
 			ReqAddRiskRuleItem->LogicParam2[sizeof(ReqAddRiskRuleItem->LogicParam2) - 1] = 0;
 		}
-		WriteString(ppos, Items::LogicParam2, ReqAddRiskRuleItem->LogicParam2);
-		WriteString(ppos, Items::LogicParam2TextRef, ReqAddRiskRuleItem->LogicParam2TextRef);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddRiskRuleItemField::FieldID);
+		StepUtility::WriteString(ppos, Items::LogicParam2, ReqAddRiskRuleItem->LogicParam2);
+		StepUtility::WriteString(ppos, Items::LogicParam2TextRef, ReqAddRiskRuleItem->LogicParam2TextRef);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddRiskRuleItemField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -33638,7 +33638,7 @@ bool ReqAddRiskRuleItemPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -33652,7 +33652,7 @@ bool ReqAddRiskRuleItemPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -33875,27 +33875,27 @@ int RspAddRiskRuleItemPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddRiskRuleItem != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddRiskRuleItemField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddRiskRuleItemField::FieldID);
 		if (strlen(RspAddRiskRuleItem->AdminUserID) >= sizeof(RspAddRiskRuleItem->AdminUserID))
 		{
 			RspAddRiskRuleItem->AdminUserID[sizeof(RspAddRiskRuleItem->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddRiskRuleItem->AdminUserID);
-		WriteString(ppos, Items::RiskID, RspAddRiskRuleItem->RiskID);
-		WriteString(ppos, Items::RiskRuleID, RspAddRiskRuleItem->RiskRuleID);
-		WriteString(ppos, Items::RiskRuleItemID, RspAddRiskRuleItem->RiskRuleItemID);
-		WriteHexString(ppos, Items::FieldEnd, RspAddRiskRuleItemField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddRiskRuleItem->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskID, RspAddRiskRuleItem->RiskID);
+		StepUtility::WriteString(ppos, Items::RiskRuleID, RspAddRiskRuleItem->RiskRuleID);
+		StepUtility::WriteString(ppos, Items::RiskRuleItemID, RspAddRiskRuleItem->RiskRuleItemID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddRiskRuleItemField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -33906,7 +33906,7 @@ bool RspAddRiskRuleItemPackage::FromStepStream(char* buff, int startIndex, int e
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -33920,7 +33920,7 @@ bool RspAddRiskRuleItemPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -33971,7 +33971,7 @@ bool RspAddRiskRuleItemPackage::FromStepStream(char* buff, int startIndex, int e
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -34109,21 +34109,21 @@ int ReqAddRiskTradeScopePackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddRiskTradeScope != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddRiskTradeScopeField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddRiskTradeScopeField::FieldID);
 		if (strlen(ReqAddRiskTradeScope->AdminUserID) >= sizeof(ReqAddRiskTradeScope->AdminUserID))
 		{
 			ReqAddRiskTradeScope->AdminUserID[sizeof(ReqAddRiskTradeScope->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddRiskTradeScope->AdminUserID);
-		WriteString(ppos, Items::RiskID, ReqAddRiskTradeScope->RiskID);
-		WriteString(ppos, Items::TradeScopeType, (int)ReqAddRiskTradeScope->TradeScopeType);
-		WriteString(ppos, Items::InstrumentGroupID, ReqAddRiskTradeScope->InstrumentGroupID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddRiskTradeScope->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskID, ReqAddRiskTradeScope->RiskID);
+		StepUtility::WriteString(ppos, Items::TradeScopeType, (int)ReqAddRiskTradeScope->TradeScopeType);
+		StepUtility::WriteString(ppos, Items::InstrumentGroupID, ReqAddRiskTradeScope->InstrumentGroupID);
 		if (strlen(ReqAddRiskTradeScope->FormatRiskMessage) >= sizeof(ReqAddRiskTradeScope->FormatRiskMessage))
 		{
 			ReqAddRiskTradeScope->FormatRiskMessage[sizeof(ReqAddRiskTradeScope->FormatRiskMessage) - 1] = 0;
 		}
-		WriteString(ppos, Items::FormatRiskMessage, ReqAddRiskTradeScope->FormatRiskMessage);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddRiskTradeScopeField::FieldID);
+		StepUtility::WriteString(ppos, Items::FormatRiskMessage, ReqAddRiskTradeScope->FormatRiskMessage);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddRiskTradeScopeField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -34134,7 +34134,7 @@ bool ReqAddRiskTradeScopePackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -34148,7 +34148,7 @@ bool ReqAddRiskTradeScopePackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -34289,25 +34289,25 @@ int RspAddRiskTradeScopePackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddRiskTradeScope != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddRiskTradeScopeField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddRiskTradeScopeField::FieldID);
 		if (strlen(RspAddRiskTradeScope->AdminUserID) >= sizeof(RspAddRiskTradeScope->AdminUserID))
 		{
 			RspAddRiskTradeScope->AdminUserID[sizeof(RspAddRiskTradeScope->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddRiskTradeScope->AdminUserID);
-		WriteString(ppos, Items::RiskID, RspAddRiskTradeScope->RiskID);
-		WriteHexString(ppos, Items::FieldEnd, RspAddRiskTradeScopeField::FieldID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddRiskTradeScope->AdminUserID);
+		StepUtility::WriteString(ppos, Items::RiskID, RspAddRiskTradeScope->RiskID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddRiskTradeScopeField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -34318,7 +34318,7 @@ bool RspAddRiskTradeScopePackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -34332,7 +34332,7 @@ bool RspAddRiskTradeScopePackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -34373,7 +34373,7 @@ bool RspAddRiskTradeScopePackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -34511,19 +34511,19 @@ int ReqAddAccountRiskPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAddAccountRisk != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAddAccountRiskField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAddAccountRiskField::FieldID);
 		if (strlen(ReqAddAccountRisk->AdminUserID) >= sizeof(ReqAddAccountRisk->AdminUserID))
 		{
 			ReqAddAccountRisk->AdminUserID[sizeof(ReqAddAccountRisk->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAddAccountRisk->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAddAccountRisk->AdminUserID);
 		if (strlen(ReqAddAccountRisk->AccountID) >= sizeof(ReqAddAccountRisk->AccountID))
 		{
 			ReqAddAccountRisk->AccountID[sizeof(ReqAddAccountRisk->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqAddAccountRisk->AccountID);
-		WriteString(ppos, Items::RiskID, ReqAddAccountRisk->RiskID);
-		WriteHexString(ppos, Items::FieldEnd, ReqAddAccountRiskField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqAddAccountRisk->AccountID);
+		StepUtility::WriteString(ppos, Items::RiskID, ReqAddAccountRisk->RiskID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAddAccountRiskField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -34534,7 +34534,7 @@ bool ReqAddAccountRiskPackage::FromStepStream(char* buff, int startIndex, int en
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -34548,7 +34548,7 @@ bool ReqAddAccountRiskPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -34679,30 +34679,30 @@ int RspAddAccountRiskPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAddAccountRisk != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAddAccountRiskField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAddAccountRiskField::FieldID);
 		if (strlen(RspAddAccountRisk->AdminUserID) >= sizeof(RspAddAccountRisk->AdminUserID))
 		{
 			RspAddAccountRisk->AdminUserID[sizeof(RspAddAccountRisk->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAddAccountRisk->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAddAccountRisk->AdminUserID);
 		if (strlen(RspAddAccountRisk->AccountID) >= sizeof(RspAddAccountRisk->AccountID))
 		{
 			RspAddAccountRisk->AccountID[sizeof(RspAddAccountRisk->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, RspAddAccountRisk->AccountID);
-		WriteString(ppos, Items::RiskID, RspAddAccountRisk->RiskID);
-		WriteHexString(ppos, Items::FieldEnd, RspAddAccountRiskField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, RspAddAccountRisk->AccountID);
+		StepUtility::WriteString(ppos, Items::RiskID, RspAddAccountRisk->RiskID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAddAccountRiskField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -34713,7 +34713,7 @@ bool RspAddAccountRiskPackage::FromStepStream(char* buff, int startIndex, int en
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -34727,7 +34727,7 @@ bool RspAddAccountRiskPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -34774,7 +34774,7 @@ bool RspAddAccountRiskPackage::FromStepStream(char* buff, int startIndex, int en
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -34912,19 +34912,19 @@ int ReqRemoveAccountRiskPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqRemoveAccountRisk != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqRemoveAccountRiskField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqRemoveAccountRiskField::FieldID);
 		if (strlen(ReqRemoveAccountRisk->AdminUserID) >= sizeof(ReqRemoveAccountRisk->AdminUserID))
 		{
 			ReqRemoveAccountRisk->AdminUserID[sizeof(ReqRemoveAccountRisk->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqRemoveAccountRisk->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqRemoveAccountRisk->AdminUserID);
 		if (strlen(ReqRemoveAccountRisk->AccountID) >= sizeof(ReqRemoveAccountRisk->AccountID))
 		{
 			ReqRemoveAccountRisk->AccountID[sizeof(ReqRemoveAccountRisk->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqRemoveAccountRisk->AccountID);
-		WriteString(ppos, Items::RiskID, ReqRemoveAccountRisk->RiskID);
-		WriteHexString(ppos, Items::FieldEnd, ReqRemoveAccountRiskField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqRemoveAccountRisk->AccountID);
+		StepUtility::WriteString(ppos, Items::RiskID, ReqRemoveAccountRisk->RiskID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqRemoveAccountRiskField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -34935,7 +34935,7 @@ bool ReqRemoveAccountRiskPackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -34949,7 +34949,7 @@ bool ReqRemoveAccountRiskPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -35080,30 +35080,30 @@ int RspRemoveAccountRiskPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspRemoveAccountRisk != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspRemoveAccountRiskField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspRemoveAccountRiskField::FieldID);
 		if (strlen(RspRemoveAccountRisk->AdminUserID) >= sizeof(RspRemoveAccountRisk->AdminUserID))
 		{
 			RspRemoveAccountRisk->AdminUserID[sizeof(RspRemoveAccountRisk->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspRemoveAccountRisk->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspRemoveAccountRisk->AdminUserID);
 		if (strlen(RspRemoveAccountRisk->AccountID) >= sizeof(RspRemoveAccountRisk->AccountID))
 		{
 			RspRemoveAccountRisk->AccountID[sizeof(RspRemoveAccountRisk->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, RspRemoveAccountRisk->AccountID);
-		WriteString(ppos, Items::RiskID, RspRemoveAccountRisk->RiskID);
-		WriteHexString(ppos, Items::FieldEnd, RspRemoveAccountRiskField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, RspRemoveAccountRisk->AccountID);
+		StepUtility::WriteString(ppos, Items::RiskID, RspRemoveAccountRisk->RiskID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspRemoveAccountRiskField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -35114,7 +35114,7 @@ bool RspRemoveAccountRiskPackage::FromStepStream(char* buff, int startIndex, int
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -35128,7 +35128,7 @@ bool RspRemoveAccountRiskPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -35175,7 +35175,7 @@ bool RspRemoveAccountRiskPackage::FromStepStream(char* buff, int startIndex, int
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -35313,47 +35313,47 @@ int ReqMoneyTransferPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqMoneyTransfer != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqMoneyTransferField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqMoneyTransferField::FieldID);
 		if (strlen(ReqMoneyTransfer->AdminUserID) >= sizeof(ReqMoneyTransfer->AdminUserID))
 		{
 			ReqMoneyTransfer->AdminUserID[sizeof(ReqMoneyTransfer->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqMoneyTransfer->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqMoneyTransfer->AdminUserID);
 		if (strlen(ReqMoneyTransfer->TradingDay) >= sizeof(ReqMoneyTransfer->TradingDay))
 		{
 			ReqMoneyTransfer->TradingDay[sizeof(ReqMoneyTransfer->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqMoneyTransfer->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqMoneyTransfer->TradingDay);
 		if (strlen(ReqMoneyTransfer->AccountID) >= sizeof(ReqMoneyTransfer->AccountID))
 		{
 			ReqMoneyTransfer->AccountID[sizeof(ReqMoneyTransfer->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqMoneyTransfer->AccountID);
-		WriteString(ppos, Items::MoneyTransferID, ReqMoneyTransfer->MoneyTransferID);
-		WriteString(ppos, Items::AccountType, (int)ReqMoneyTransfer->AccountType);
-		WriteString(ppos, Items::TransferDirection, (int)ReqMoneyTransfer->TransferDirection);
-		WriteString(ppos, Items::TransferAmount, ReqMoneyTransfer->TransferAmount);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqMoneyTransfer->AccountID);
+		StepUtility::WriteString(ppos, Items::MoneyTransferID, ReqMoneyTransfer->MoneyTransferID);
+		StepUtility::WriteString(ppos, Items::AccountType, (int)ReqMoneyTransfer->AccountType);
+		StepUtility::WriteString(ppos, Items::TransferDirection, (int)ReqMoneyTransfer->TransferDirection);
+		StepUtility::WriteString(ppos, Items::TransferAmount, ReqMoneyTransfer->TransferAmount);
 		if (strlen(ReqMoneyTransfer->InfoMessage) >= sizeof(ReqMoneyTransfer->InfoMessage))
 		{
 			ReqMoneyTransfer->InfoMessage[sizeof(ReqMoneyTransfer->InfoMessage) - 1] = 0;
 		}
-		WriteString(ppos, Items::InfoMessage, ReqMoneyTransfer->InfoMessage);
+		StepUtility::WriteString(ppos, Items::InfoMessage, ReqMoneyTransfer->InfoMessage);
 		if (strlen(ReqMoneyTransfer->UserID) >= sizeof(ReqMoneyTransfer->UserID))
 		{
 			ReqMoneyTransfer->UserID[sizeof(ReqMoneyTransfer->UserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UserID, ReqMoneyTransfer->UserID);
+		StepUtility::WriteString(ppos, Items::UserID, ReqMoneyTransfer->UserID);
 		if (strlen(ReqMoneyTransfer->TransferDate) >= sizeof(ReqMoneyTransfer->TransferDate))
 		{
 			ReqMoneyTransfer->TransferDate[sizeof(ReqMoneyTransfer->TransferDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::TransferDate, ReqMoneyTransfer->TransferDate);
+		StepUtility::WriteString(ppos, Items::TransferDate, ReqMoneyTransfer->TransferDate);
 		if (strlen(ReqMoneyTransfer->TransferTime) >= sizeof(ReqMoneyTransfer->TransferTime))
 		{
 			ReqMoneyTransfer->TransferTime[sizeof(ReqMoneyTransfer->TransferTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::TransferTime, ReqMoneyTransfer->TransferTime);
-		WriteHexString(ppos, Items::FieldEnd, ReqMoneyTransferField::FieldID);
+		StepUtility::WriteString(ppos, Items::TransferTime, ReqMoneyTransfer->TransferTime);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqMoneyTransferField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -35364,7 +35364,7 @@ bool ReqMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -35378,7 +35378,7 @@ bool ReqMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -35554,35 +35554,35 @@ int RspMoneyTransferPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspMoneyTransfer != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspMoneyTransferField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspMoneyTransferField::FieldID);
 		if (strlen(RspMoneyTransfer->AdminUserID) >= sizeof(RspMoneyTransfer->AdminUserID))
 		{
 			RspMoneyTransfer->AdminUserID[sizeof(RspMoneyTransfer->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspMoneyTransfer->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspMoneyTransfer->AdminUserID);
 		if (strlen(RspMoneyTransfer->TradingDay) >= sizeof(RspMoneyTransfer->TradingDay))
 		{
 			RspMoneyTransfer->TradingDay[sizeof(RspMoneyTransfer->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, RspMoneyTransfer->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, RspMoneyTransfer->TradingDay);
 		if (strlen(RspMoneyTransfer->AccountID) >= sizeof(RspMoneyTransfer->AccountID))
 		{
 			RspMoneyTransfer->AccountID[sizeof(RspMoneyTransfer->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, RspMoneyTransfer->AccountID);
-		WriteString(ppos, Items::MoneyTransferID, RspMoneyTransfer->MoneyTransferID);
-		WriteHexString(ppos, Items::FieldEnd, RspMoneyTransferField::FieldID);
+		StepUtility::WriteString(ppos, Items::AccountID, RspMoneyTransfer->AccountID);
+		StepUtility::WriteString(ppos, Items::MoneyTransferID, RspMoneyTransfer->MoneyTransferID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspMoneyTransferField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -35593,7 +35593,7 @@ bool RspMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -35607,7 +35607,7 @@ bool RspMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -35660,7 +35660,7 @@ bool RspMoneyTransferPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -35798,35 +35798,35 @@ int ReqAuditOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqAuditOrder != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqAuditOrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqAuditOrderField::FieldID);
 		if (strlen(ReqAuditOrder->AdminUserID) >= sizeof(ReqAuditOrder->AdminUserID))
 		{
 			ReqAuditOrder->AdminUserID[sizeof(ReqAuditOrder->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, ReqAuditOrder->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, ReqAuditOrder->AdminUserID);
 		if (strlen(ReqAuditOrder->TradingDay) >= sizeof(ReqAuditOrder->TradingDay))
 		{
 			ReqAuditOrder->TradingDay[sizeof(ReqAuditOrder->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqAuditOrder->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqAuditOrder->TradingDay);
 		if (strlen(ReqAuditOrder->AccountID) >= sizeof(ReqAuditOrder->AccountID))
 		{
 			ReqAuditOrder->AccountID[sizeof(ReqAuditOrder->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, ReqAuditOrder->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, ReqAuditOrder->AccountID);
 		if (strlen(ReqAuditOrder->ExchangeID) >= sizeof(ReqAuditOrder->ExchangeID))
 		{
 			ReqAuditOrder->ExchangeID[sizeof(ReqAuditOrder->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqAuditOrder->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqAuditOrder->ExchangeID);
 		if (strlen(ReqAuditOrder->InstrumentID) >= sizeof(ReqAuditOrder->InstrumentID))
 		{
 			ReqAuditOrder->InstrumentID[sizeof(ReqAuditOrder->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, ReqAuditOrder->InstrumentID);
-		WriteString(ppos, Items::OrderID, ReqAuditOrder->OrderID);
-		WriteString(ppos, Items::AuditStatus, (int)ReqAuditOrder->AuditStatus);
-		WriteHexString(ppos, Items::FieldEnd, ReqAuditOrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, ReqAuditOrder->InstrumentID);
+		StepUtility::WriteString(ppos, Items::OrderID, ReqAuditOrder->OrderID);
+		StepUtility::WriteString(ppos, Items::AuditStatus, (int)ReqAuditOrder->AuditStatus);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqAuditOrderField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -35837,7 +35837,7 @@ bool ReqAuditOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -35851,7 +35851,7 @@ bool ReqAuditOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -36005,46 +36005,46 @@ int RspAuditOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspAuditOrder != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspAuditOrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspAuditOrderField::FieldID);
 		if (strlen(RspAuditOrder->AdminUserID) >= sizeof(RspAuditOrder->AdminUserID))
 		{
 			RspAuditOrder->AdminUserID[sizeof(RspAuditOrder->AdminUserID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AdminUserID, RspAuditOrder->AdminUserID);
+		StepUtility::WriteString(ppos, Items::AdminUserID, RspAuditOrder->AdminUserID);
 		if (strlen(RspAuditOrder->TradingDay) >= sizeof(RspAuditOrder->TradingDay))
 		{
 			RspAuditOrder->TradingDay[sizeof(RspAuditOrder->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, RspAuditOrder->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, RspAuditOrder->TradingDay);
 		if (strlen(RspAuditOrder->AccountID) >= sizeof(RspAuditOrder->AccountID))
 		{
 			RspAuditOrder->AccountID[sizeof(RspAuditOrder->AccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::AccountID, RspAuditOrder->AccountID);
+		StepUtility::WriteString(ppos, Items::AccountID, RspAuditOrder->AccountID);
 		if (strlen(RspAuditOrder->ExchangeID) >= sizeof(RspAuditOrder->ExchangeID))
 		{
 			RspAuditOrder->ExchangeID[sizeof(RspAuditOrder->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, RspAuditOrder->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, RspAuditOrder->ExchangeID);
 		if (strlen(RspAuditOrder->InstrumentID) >= sizeof(RspAuditOrder->InstrumentID))
 		{
 			RspAuditOrder->InstrumentID[sizeof(RspAuditOrder->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, RspAuditOrder->InstrumentID);
-		WriteString(ppos, Items::OrderID, RspAuditOrder->OrderID);
-		WriteString(ppos, Items::AuditStatus, (int)RspAuditOrder->AuditStatus);
-		WriteHexString(ppos, Items::FieldEnd, RspAuditOrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, RspAuditOrder->InstrumentID);
+		StepUtility::WriteString(ppos, Items::OrderID, RspAuditOrder->OrderID);
+		StepUtility::WriteString(ppos, Items::AuditStatus, (int)RspAuditOrder->AuditStatus);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspAuditOrderField::FieldID);
 	}
 	if (RspInfo != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspInfo->ErrorID);
 		if (strlen(RspInfo->ErrorMsg) >= sizeof(RspInfo->ErrorMsg))
 		{
 			RspInfo->ErrorMsg[sizeof(RspInfo->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
-		WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspInfo->ErrorMsg);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspInfoField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -36055,7 +36055,7 @@ bool RspAuditOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -36069,7 +36069,7 @@ bool RspAuditOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -36139,7 +36139,7 @@ bool RspAuditOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -36277,14 +36277,14 @@ int ReqOfferLoginPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqOfferLogin != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqOfferLoginField::FieldID);
-		WriteString(ppos, Items::OfferID, ReqOfferLogin->OfferID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqOfferLoginField::FieldID);
+		StepUtility::WriteString(ppos, Items::OfferID, ReqOfferLogin->OfferID);
 		if (strlen(ReqOfferLogin->OfferPassword) >= sizeof(ReqOfferLogin->OfferPassword))
 		{
 			ReqOfferLogin->OfferPassword[sizeof(ReqOfferLogin->OfferPassword) - 1] = 0;
 		}
-		WriteString(ppos, Items::OfferPassword, ReqOfferLogin->OfferPassword);
-		WriteHexString(ppos, Items::FieldEnd, ReqOfferLoginField::FieldID);
+		StepUtility::WriteString(ppos, Items::OfferPassword, ReqOfferLogin->OfferPassword);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqOfferLoginField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -36295,7 +36295,7 @@ bool ReqOfferLoginPackage::FromStepStream(char* buff, int startIndex, int endInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -36309,7 +36309,7 @@ bool ReqOfferLoginPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -36429,20 +36429,20 @@ int RspOfferLoginPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspOfferLogin != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspOfferLoginField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspOfferLogin->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspOfferLoginField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspOfferLogin->ErrorID);
 		if (strlen(RspOfferLogin->ErrorMsg) >= sizeof(RspOfferLogin->ErrorMsg))
 		{
 			RspOfferLogin->ErrorMsg[sizeof(RspOfferLogin->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspOfferLogin->ErrorMsg);
-		WriteString(ppos, Items::OfferID, RspOfferLogin->OfferID);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspOfferLogin->ErrorMsg);
+		StepUtility::WriteString(ppos, Items::OfferID, RspOfferLogin->OfferID);
 		if (strlen(RspOfferLogin->TradingDay) >= sizeof(RspOfferLogin->TradingDay))
 		{
 			RspOfferLogin->TradingDay[sizeof(RspOfferLogin->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, RspOfferLogin->TradingDay);
-		WriteHexString(ppos, Items::FieldEnd, RspOfferLoginField::FieldID);
+		StepUtility::WriteString(ppos, Items::TradingDay, RspOfferLogin->TradingDay);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspOfferLoginField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -36453,7 +36453,7 @@ bool RspOfferLoginPackage::FromStepStream(char* buff, int startIndex, int endInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -36467,7 +36467,7 @@ bool RspOfferLoginPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -36598,18 +36598,18 @@ int ReqPrimaryAccountLoginPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqPrimaryAccountLogin != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqPrimaryAccountLoginField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqPrimaryAccountLoginField::FieldID);
 		if (strlen(ReqPrimaryAccountLogin->PrimaryAccountID) >= sizeof(ReqPrimaryAccountLogin->PrimaryAccountID))
 		{
 			ReqPrimaryAccountLogin->PrimaryAccountID[sizeof(ReqPrimaryAccountLogin->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, ReqPrimaryAccountLogin->PrimaryAccountID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, ReqPrimaryAccountLogin->PrimaryAccountID);
 		if (strlen(ReqPrimaryAccountLogin->Password) >= sizeof(ReqPrimaryAccountLogin->Password))
 		{
 			ReqPrimaryAccountLogin->Password[sizeof(ReqPrimaryAccountLogin->Password) - 1] = 0;
 		}
-		WriteString(ppos, Items::Password, ReqPrimaryAccountLogin->Password);
-		WriteHexString(ppos, Items::FieldEnd, ReqPrimaryAccountLoginField::FieldID);
+		StepUtility::WriteString(ppos, Items::Password, ReqPrimaryAccountLogin->Password);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqPrimaryAccountLoginField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -36620,7 +36620,7 @@ bool ReqPrimaryAccountLoginPackage::FromStepStream(char* buff, int startIndex, i
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -36634,7 +36634,7 @@ bool ReqPrimaryAccountLoginPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -36755,24 +36755,24 @@ int RspPrimaryAccountLoginPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspPrimaryAccountLogin != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspPrimaryAccountLoginField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspPrimaryAccountLogin->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspPrimaryAccountLoginField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspPrimaryAccountLogin->ErrorID);
 		if (strlen(RspPrimaryAccountLogin->ErrorMsg) >= sizeof(RspPrimaryAccountLogin->ErrorMsg))
 		{
 			RspPrimaryAccountLogin->ErrorMsg[sizeof(RspPrimaryAccountLogin->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspPrimaryAccountLogin->ErrorMsg);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspPrimaryAccountLogin->ErrorMsg);
 		if (strlen(RspPrimaryAccountLogin->TradingDay) >= sizeof(RspPrimaryAccountLogin->TradingDay))
 		{
 			RspPrimaryAccountLogin->TradingDay[sizeof(RspPrimaryAccountLogin->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, RspPrimaryAccountLogin->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, RspPrimaryAccountLogin->TradingDay);
 		if (strlen(RspPrimaryAccountLogin->PrimaryAccountID) >= sizeof(RspPrimaryAccountLogin->PrimaryAccountID))
 		{
 			RspPrimaryAccountLogin->PrimaryAccountID[sizeof(RspPrimaryAccountLogin->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, RspPrimaryAccountLogin->PrimaryAccountID);
-		WriteHexString(ppos, Items::FieldEnd, RspPrimaryAccountLoginField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, RspPrimaryAccountLogin->PrimaryAccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspPrimaryAccountLoginField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -36783,7 +36783,7 @@ bool RspPrimaryAccountLoginPackage::FromStepStream(char* buff, int startIndex, i
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -36797,7 +36797,7 @@ bool RspPrimaryAccountLoginPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -36929,18 +36929,18 @@ int ReqPrimaryAccountLogoutPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqPrimaryAccountLogout != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqPrimaryAccountLogoutField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqPrimaryAccountLogoutField::FieldID);
 		if (strlen(ReqPrimaryAccountLogout->TradingDay) >= sizeof(ReqPrimaryAccountLogout->TradingDay))
 		{
 			ReqPrimaryAccountLogout->TradingDay[sizeof(ReqPrimaryAccountLogout->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqPrimaryAccountLogout->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqPrimaryAccountLogout->TradingDay);
 		if (strlen(ReqPrimaryAccountLogout->PrimaryAccountID) >= sizeof(ReqPrimaryAccountLogout->PrimaryAccountID))
 		{
 			ReqPrimaryAccountLogout->PrimaryAccountID[sizeof(ReqPrimaryAccountLogout->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, ReqPrimaryAccountLogout->PrimaryAccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqPrimaryAccountLogoutField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, ReqPrimaryAccountLogout->PrimaryAccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqPrimaryAccountLogoutField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -36951,7 +36951,7 @@ bool ReqPrimaryAccountLogoutPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -36965,7 +36965,7 @@ bool ReqPrimaryAccountLogoutPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -37086,18 +37086,18 @@ int RtnPrimaryAccountLogoutPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RtnPrimaryAccountLogout != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RtnPrimaryAccountLogoutField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RtnPrimaryAccountLogoutField::FieldID);
 		if (strlen(RtnPrimaryAccountLogout->TradingDay) >= sizeof(RtnPrimaryAccountLogout->TradingDay))
 		{
 			RtnPrimaryAccountLogout->TradingDay[sizeof(RtnPrimaryAccountLogout->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, RtnPrimaryAccountLogout->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, RtnPrimaryAccountLogout->TradingDay);
 		if (strlen(RtnPrimaryAccountLogout->PrimaryAccountID) >= sizeof(RtnPrimaryAccountLogout->PrimaryAccountID))
 		{
 			RtnPrimaryAccountLogout->PrimaryAccountID[sizeof(RtnPrimaryAccountLogout->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, RtnPrimaryAccountLogout->PrimaryAccountID);
-		WriteHexString(ppos, Items::FieldEnd, RtnPrimaryAccountLogoutField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, RtnPrimaryAccountLogout->PrimaryAccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RtnPrimaryAccountLogoutField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -37108,7 +37108,7 @@ bool RtnPrimaryAccountLogoutPackage::FromStepStream(char* buff, int startIndex, 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -37122,7 +37122,7 @@ bool RtnPrimaryAccountLogoutPackage::FromStepStream(char* buff, int startIndex, 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -37243,13 +37243,13 @@ int ReqPrimaryAccountInitPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqPrimaryAccountInit != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqPrimaryAccountInitField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqPrimaryAccountInitField::FieldID);
 		if (strlen(ReqPrimaryAccountInit->PrimaryAccountID) >= sizeof(ReqPrimaryAccountInit->PrimaryAccountID))
 		{
 			ReqPrimaryAccountInit->PrimaryAccountID[sizeof(ReqPrimaryAccountInit->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, ReqPrimaryAccountInit->PrimaryAccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqPrimaryAccountInitField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, ReqPrimaryAccountInit->PrimaryAccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqPrimaryAccountInitField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -37260,7 +37260,7 @@ bool ReqPrimaryAccountInitPackage::FromStepStream(char* buff, int startIndex, in
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -37274,7 +37274,7 @@ bool ReqPrimaryAccountInitPackage::FromStepStream(char* buff, int startIndex, in
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -37389,19 +37389,19 @@ int RspPrimaryAccountInitPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspPrimaryAccountInit != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspPrimaryAccountInitField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspPrimaryAccountInit->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspPrimaryAccountInitField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspPrimaryAccountInit->ErrorID);
 		if (strlen(RspPrimaryAccountInit->ErrorMsg) >= sizeof(RspPrimaryAccountInit->ErrorMsg))
 		{
 			RspPrimaryAccountInit->ErrorMsg[sizeof(RspPrimaryAccountInit->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspPrimaryAccountInit->ErrorMsg);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspPrimaryAccountInit->ErrorMsg);
 		if (strlen(RspPrimaryAccountInit->PrimaryAccountID) >= sizeof(RspPrimaryAccountInit->PrimaryAccountID))
 		{
 			RspPrimaryAccountInit->PrimaryAccountID[sizeof(RspPrimaryAccountInit->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, RspPrimaryAccountInit->PrimaryAccountID);
-		WriteHexString(ppos, Items::FieldEnd, RspPrimaryAccountInitField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, RspPrimaryAccountInit->PrimaryAccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspPrimaryAccountInitField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -37412,7 +37412,7 @@ bool RspPrimaryAccountInitPackage::FromStepStream(char* buff, int startIndex, in
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -37426,7 +37426,7 @@ bool RspPrimaryAccountInitPackage::FromStepStream(char* buff, int startIndex, in
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -37552,13 +37552,13 @@ int ReqPrimaryAccountQueryPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqPrimaryAccountQuery != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqPrimaryAccountQueryField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqPrimaryAccountQueryField::FieldID);
 		if (strlen(ReqPrimaryAccountQuery->PrimaryAccountID) >= sizeof(ReqPrimaryAccountQuery->PrimaryAccountID))
 		{
 			ReqPrimaryAccountQuery->PrimaryAccountID[sizeof(ReqPrimaryAccountQuery->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, ReqPrimaryAccountQuery->PrimaryAccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqPrimaryAccountQueryField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, ReqPrimaryAccountQuery->PrimaryAccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqPrimaryAccountQueryField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -37569,7 +37569,7 @@ bool ReqPrimaryAccountQueryPackage::FromStepStream(char* buff, int startIndex, i
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -37583,7 +37583,7 @@ bool ReqPrimaryAccountQueryPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -37698,19 +37698,19 @@ int RspPrimaryAccountQueryPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspPrimaryAccountQuery != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspPrimaryAccountQueryField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspPrimaryAccountQuery->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspPrimaryAccountQueryField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspPrimaryAccountQuery->ErrorID);
 		if (strlen(RspPrimaryAccountQuery->ErrorMsg) >= sizeof(RspPrimaryAccountQuery->ErrorMsg))
 		{
 			RspPrimaryAccountQuery->ErrorMsg[sizeof(RspPrimaryAccountQuery->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspPrimaryAccountQuery->ErrorMsg);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspPrimaryAccountQuery->ErrorMsg);
 		if (strlen(RspPrimaryAccountQuery->PrimaryAccountID) >= sizeof(RspPrimaryAccountQuery->PrimaryAccountID))
 		{
 			RspPrimaryAccountQuery->PrimaryAccountID[sizeof(RspPrimaryAccountQuery->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, RspPrimaryAccountQuery->PrimaryAccountID);
-		WriteHexString(ppos, Items::FieldEnd, RspPrimaryAccountQueryField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, RspPrimaryAccountQuery->PrimaryAccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspPrimaryAccountQueryField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -37721,7 +37721,7 @@ bool RspPrimaryAccountQueryPackage::FromStepStream(char* buff, int startIndex, i
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -37735,7 +37735,7 @@ bool RspPrimaryAccountQueryPackage::FromStepStream(char* buff, int startIndex, i
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -37861,13 +37861,13 @@ int ReqQryOfferOptionInstrumentPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqQryOfferOptionInstrument != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqQryOfferOptionInstrumentField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqQryOfferOptionInstrumentField::FieldID);
 		if (strlen(ReqQryOfferOptionInstrument->PrimaryAccountID) >= sizeof(ReqQryOfferOptionInstrument->PrimaryAccountID))
 		{
 			ReqQryOfferOptionInstrument->PrimaryAccountID[sizeof(ReqQryOfferOptionInstrument->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, ReqQryOfferOptionInstrument->PrimaryAccountID);
-		WriteHexString(ppos, Items::FieldEnd, ReqQryOfferOptionInstrumentField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, ReqQryOfferOptionInstrument->PrimaryAccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqQryOfferOptionInstrumentField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -37878,7 +37878,7 @@ bool ReqQryOfferOptionInstrumentPackage::FromStepStream(char* buff, int startInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -37892,7 +37892,7 @@ bool ReqQryOfferOptionInstrumentPackage::FromStepStream(char* buff, int startInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -38007,19 +38007,19 @@ int RspQryOfferOptionInstrumentPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (RspQryOfferOptionInstrument != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, RspQryOfferOptionInstrumentField::FieldID);
-		WriteString(ppos, Items::ErrorID, RspQryOfferOptionInstrument->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, RspQryOfferOptionInstrumentField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, RspQryOfferOptionInstrument->ErrorID);
 		if (strlen(RspQryOfferOptionInstrument->ErrorMsg) >= sizeof(RspQryOfferOptionInstrument->ErrorMsg))
 		{
 			RspQryOfferOptionInstrument->ErrorMsg[sizeof(RspQryOfferOptionInstrument->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, RspQryOfferOptionInstrument->ErrorMsg);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, RspQryOfferOptionInstrument->ErrorMsg);
 		if (strlen(RspQryOfferOptionInstrument->PrimaryAccountID) >= sizeof(RspQryOfferOptionInstrument->PrimaryAccountID))
 		{
 			RspQryOfferOptionInstrument->PrimaryAccountID[sizeof(RspQryOfferOptionInstrument->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, RspQryOfferOptionInstrument->PrimaryAccountID);
-		WriteHexString(ppos, Items::FieldEnd, RspQryOfferOptionInstrumentField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, RspQryOfferOptionInstrument->PrimaryAccountID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, RspQryOfferOptionInstrumentField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -38030,7 +38030,7 @@ bool RspQryOfferOptionInstrumentPackage::FromStepStream(char* buff, int startInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -38044,7 +38044,7 @@ bool RspQryOfferOptionInstrumentPackage::FromStepStream(char* buff, int startInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -38170,50 +38170,50 @@ int RtnOfferOptionInstrumentPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (OfferOptionInstrument != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, OfferOptionInstrumentField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, OfferOptionInstrumentField::FieldID);
 		if (strlen(OfferOptionInstrument->TradingDay) >= sizeof(OfferOptionInstrument->TradingDay))
 		{
 			OfferOptionInstrument->TradingDay[sizeof(OfferOptionInstrument->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, OfferOptionInstrument->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, OfferOptionInstrument->TradingDay);
 		if (strlen(OfferOptionInstrument->ExchangeID) >= sizeof(OfferOptionInstrument->ExchangeID))
 		{
 			OfferOptionInstrument->ExchangeID[sizeof(OfferOptionInstrument->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, OfferOptionInstrument->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, OfferOptionInstrument->ExchangeID);
 		if (strlen(OfferOptionInstrument->InstrumentID) >= sizeof(OfferOptionInstrument->InstrumentID))
 		{
 			OfferOptionInstrument->InstrumentID[sizeof(OfferOptionInstrument->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, OfferOptionInstrument->InstrumentID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, OfferOptionInstrument->InstrumentID);
 		if (strlen(OfferOptionInstrument->ExchangeInstID) >= sizeof(OfferOptionInstrument->ExchangeInstID))
 		{
 			OfferOptionInstrument->ExchangeInstID[sizeof(OfferOptionInstrument->ExchangeInstID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeInstID, OfferOptionInstrument->ExchangeInstID);
+		StepUtility::WriteString(ppos, Items::ExchangeInstID, OfferOptionInstrument->ExchangeInstID);
 		if (strlen(OfferOptionInstrument->InstrumentName) >= sizeof(OfferOptionInstrument->InstrumentName))
 		{
 			OfferOptionInstrument->InstrumentName[sizeof(OfferOptionInstrument->InstrumentName) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentName, OfferOptionInstrument->InstrumentName);
-		WriteString(ppos, Items::VolumeMultiple, OfferOptionInstrument->VolumeMultiple);
-		WriteString(ppos, Items::OptionType, (int)OfferOptionInstrument->OptionType);
+		StepUtility::WriteString(ppos, Items::InstrumentName, OfferOptionInstrument->InstrumentName);
+		StepUtility::WriteString(ppos, Items::VolumeMultiple, OfferOptionInstrument->VolumeMultiple);
+		StepUtility::WriteString(ppos, Items::OptionType, (int)OfferOptionInstrument->OptionType);
 		if (strlen(OfferOptionInstrument->UnderlyingInstrumentID) >= sizeof(OfferOptionInstrument->UnderlyingInstrumentID))
 		{
 			OfferOptionInstrument->UnderlyingInstrumentID[sizeof(OfferOptionInstrument->UnderlyingInstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::UnderlyingInstrumentID, OfferOptionInstrument->UnderlyingInstrumentID);
-		WriteString(ppos, Items::ExecutePrice, OfferOptionInstrument->ExecutePrice);
-		WriteString(ppos, Items::UnitMargin, OfferOptionInstrument->UnitMargin);
-		WriteString(ppos, Items::PriceTick, OfferOptionInstrument->PriceTick);
-		WriteString(ppos, Items::MaxLimitOrderVolume, OfferOptionInstrument->MaxLimitOrderVolume);
-		WriteString(ppos, Items::MaxMarketOrderVolume, OfferOptionInstrument->MaxMarketOrderVolume);
+		StepUtility::WriteString(ppos, Items::UnderlyingInstrumentID, OfferOptionInstrument->UnderlyingInstrumentID);
+		StepUtility::WriteString(ppos, Items::ExecutePrice, OfferOptionInstrument->ExecutePrice);
+		StepUtility::WriteString(ppos, Items::UnitMargin, OfferOptionInstrument->UnitMargin);
+		StepUtility::WriteString(ppos, Items::PriceTick, OfferOptionInstrument->PriceTick);
+		StepUtility::WriteString(ppos, Items::MaxLimitOrderVolume, OfferOptionInstrument->MaxLimitOrderVolume);
+		StepUtility::WriteString(ppos, Items::MaxMarketOrderVolume, OfferOptionInstrument->MaxMarketOrderVolume);
 		if (strlen(OfferOptionInstrument->ExpiringDate) >= sizeof(OfferOptionInstrument->ExpiringDate))
 		{
 			OfferOptionInstrument->ExpiringDate[sizeof(OfferOptionInstrument->ExpiringDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExpiringDate, OfferOptionInstrument->ExpiringDate);
-		WriteHexString(ppos, Items::FieldEnd, OfferOptionInstrumentField::FieldID);
+		StepUtility::WriteString(ppos, Items::ExpiringDate, OfferOptionInstrument->ExpiringDate);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, OfferOptionInstrumentField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -38224,7 +38224,7 @@ bool RtnOfferOptionInstrumentPackage::FromStepStream(char* buff, int startIndex,
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -38238,7 +38238,7 @@ bool RtnOfferOptionInstrumentPackage::FromStepStream(char* buff, int startIndex,
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -38424,35 +38424,35 @@ int ReqOfferOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqOfferOrder != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqOfferOrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqOfferOrderField::FieldID);
 		if (strlen(ReqOfferOrder->TradingDay) >= sizeof(ReqOfferOrder->TradingDay))
 		{
 			ReqOfferOrder->TradingDay[sizeof(ReqOfferOrder->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqOfferOrder->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqOfferOrder->TradingDay);
 		if (strlen(ReqOfferOrder->PrimaryAccountID) >= sizeof(ReqOfferOrder->PrimaryAccountID))
 		{
 			ReqOfferOrder->PrimaryAccountID[sizeof(ReqOfferOrder->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, ReqOfferOrder->PrimaryAccountID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, ReqOfferOrder->PrimaryAccountID);
 		if (strlen(ReqOfferOrder->ExchangeID) >= sizeof(ReqOfferOrder->ExchangeID))
 		{
 			ReqOfferOrder->ExchangeID[sizeof(ReqOfferOrder->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqOfferOrder->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqOfferOrder->ExchangeID);
 		if (strlen(ReqOfferOrder->InstrumentID) >= sizeof(ReqOfferOrder->InstrumentID))
 		{
 			ReqOfferOrder->InstrumentID[sizeof(ReqOfferOrder->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, ReqOfferOrder->InstrumentID);
-		WriteString(ppos, Items::ProductClass, (int)ReqOfferOrder->ProductClass);
-		WriteString(ppos, Items::OrderID, ReqOfferOrder->OrderID);
-		WriteString(ppos, Items::Direction, (int)ReqOfferOrder->Direction);
-		WriteString(ppos, Items::OffsetFlag, (int)ReqOfferOrder->OffsetFlag);
-		WriteString(ppos, Items::OrderPriceType, (int)ReqOfferOrder->OrderPriceType);
-		WriteString(ppos, Items::Price, ReqOfferOrder->Price);
-		WriteString(ppos, Items::Volume, ReqOfferOrder->Volume);
-		WriteHexString(ppos, Items::FieldEnd, ReqOfferOrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, ReqOfferOrder->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)ReqOfferOrder->ProductClass);
+		StepUtility::WriteString(ppos, Items::OrderID, ReqOfferOrder->OrderID);
+		StepUtility::WriteString(ppos, Items::Direction, (int)ReqOfferOrder->Direction);
+		StepUtility::WriteString(ppos, Items::OffsetFlag, (int)ReqOfferOrder->OffsetFlag);
+		StepUtility::WriteString(ppos, Items::OrderPriceType, (int)ReqOfferOrder->OrderPriceType);
+		StepUtility::WriteString(ppos, Items::Price, ReqOfferOrder->Price);
+		StepUtility::WriteString(ppos, Items::Volume, ReqOfferOrder->Volume);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqOfferOrderField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -38463,7 +38463,7 @@ bool ReqOfferOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -38477,7 +38477,7 @@ bool ReqOfferOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -38645,37 +38645,37 @@ int ReqOfferCancelOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (ReqOfferCancelOrder != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, ReqOfferCancelOrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, ReqOfferCancelOrderField::FieldID);
 		if (strlen(ReqOfferCancelOrder->TradingDay) >= sizeof(ReqOfferCancelOrder->TradingDay))
 		{
 			ReqOfferCancelOrder->TradingDay[sizeof(ReqOfferCancelOrder->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, ReqOfferCancelOrder->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, ReqOfferCancelOrder->TradingDay);
 		if (strlen(ReqOfferCancelOrder->PrimaryAccountID) >= sizeof(ReqOfferCancelOrder->PrimaryAccountID))
 		{
 			ReqOfferCancelOrder->PrimaryAccountID[sizeof(ReqOfferCancelOrder->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, ReqOfferCancelOrder->PrimaryAccountID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, ReqOfferCancelOrder->PrimaryAccountID);
 		if (strlen(ReqOfferCancelOrder->ExchangeID) >= sizeof(ReqOfferCancelOrder->ExchangeID))
 		{
 			ReqOfferCancelOrder->ExchangeID[sizeof(ReqOfferCancelOrder->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, ReqOfferCancelOrder->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, ReqOfferCancelOrder->ExchangeID);
 		if (strlen(ReqOfferCancelOrder->InstrumentID) >= sizeof(ReqOfferCancelOrder->InstrumentID))
 		{
 			ReqOfferCancelOrder->InstrumentID[sizeof(ReqOfferCancelOrder->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, ReqOfferCancelOrder->InstrumentID);
-		WriteString(ppos, Items::ProductClass, (int)ReqOfferCancelOrder->ProductClass);
-		WriteString(ppos, Items::Direction, (int)ReqOfferCancelOrder->Direction);
-		WriteString(ppos, Items::CancelOrderID, ReqOfferCancelOrder->CancelOrderID);
-		WriteString(ppos, Items::OrderID, ReqOfferCancelOrder->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, ReqOfferCancelOrder->InstrumentID);
+		StepUtility::WriteString(ppos, Items::ProductClass, (int)ReqOfferCancelOrder->ProductClass);
+		StepUtility::WriteString(ppos, Items::Direction, (int)ReqOfferCancelOrder->Direction);
+		StepUtility::WriteString(ppos, Items::CancelOrderID, ReqOfferCancelOrder->CancelOrderID);
+		StepUtility::WriteString(ppos, Items::OrderID, ReqOfferCancelOrder->OrderID);
 		if (strlen(ReqOfferCancelOrder->OrderSysID) >= sizeof(ReqOfferCancelOrder->OrderSysID))
 		{
 			ReqOfferCancelOrder->OrderSysID[sizeof(ReqOfferCancelOrder->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, ReqOfferCancelOrder->OrderSysID);
-		WriteHexString(ppos, Items::FieldEnd, ReqOfferCancelOrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::OrderSysID, ReqOfferCancelOrder->OrderSysID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, ReqOfferCancelOrderField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -38686,7 +38686,7 @@ bool ReqOfferCancelOrderPackage::FromStepStream(char* buff, int startIndex, int 
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -38700,7 +38700,7 @@ bool ReqOfferCancelOrderPackage::FromStepStream(char* buff, int startIndex, int 
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -38859,68 +38859,68 @@ int RtnOfferOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (OfferOrder != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, OfferOrderField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, OfferOrderField::FieldID);
 		if (strlen(OfferOrder->TradingDay) >= sizeof(OfferOrder->TradingDay))
 		{
 			OfferOrder->TradingDay[sizeof(OfferOrder->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, OfferOrder->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, OfferOrder->TradingDay);
 		if (strlen(OfferOrder->PrimaryAccountID) >= sizeof(OfferOrder->PrimaryAccountID))
 		{
 			OfferOrder->PrimaryAccountID[sizeof(OfferOrder->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, OfferOrder->PrimaryAccountID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, OfferOrder->PrimaryAccountID);
 		if (strlen(OfferOrder->ExchangeID) >= sizeof(OfferOrder->ExchangeID))
 		{
 			OfferOrder->ExchangeID[sizeof(OfferOrder->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, OfferOrder->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, OfferOrder->ExchangeID);
 		if (strlen(OfferOrder->InstrumentID) >= sizeof(OfferOrder->InstrumentID))
 		{
 			OfferOrder->InstrumentID[sizeof(OfferOrder->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, OfferOrder->InstrumentID);
-		WriteString(ppos, Items::OrderID, OfferOrder->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, OfferOrder->InstrumentID);
+		StepUtility::WriteString(ppos, Items::OrderID, OfferOrder->OrderID);
 		if (strlen(OfferOrder->OrderSysID) >= sizeof(OfferOrder->OrderSysID))
 		{
 			OfferOrder->OrderSysID[sizeof(OfferOrder->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, OfferOrder->OrderSysID);
-		WriteString(ppos, Items::Direction, (int)OfferOrder->Direction);
-		WriteString(ppos, Items::OffsetFlag, (int)OfferOrder->OffsetFlag);
-		WriteString(ppos, Items::OrderPriceType, (int)OfferOrder->OrderPriceType);
-		WriteString(ppos, Items::Price, OfferOrder->Price);
-		WriteString(ppos, Items::Volume, OfferOrder->Volume);
-		WriteString(ppos, Items::VolumeTotal, OfferOrder->VolumeTotal);
-		WriteString(ppos, Items::VolumeTraded, OfferOrder->VolumeTraded);
-		WriteString(ppos, Items::OrderStatus, (int)OfferOrder->OrderStatus);
+		StepUtility::WriteString(ppos, Items::OrderSysID, OfferOrder->OrderSysID);
+		StepUtility::WriteString(ppos, Items::Direction, (int)OfferOrder->Direction);
+		StepUtility::WriteString(ppos, Items::OffsetFlag, (int)OfferOrder->OffsetFlag);
+		StepUtility::WriteString(ppos, Items::OrderPriceType, (int)OfferOrder->OrderPriceType);
+		StepUtility::WriteString(ppos, Items::Price, OfferOrder->Price);
+		StepUtility::WriteString(ppos, Items::Volume, OfferOrder->Volume);
+		StepUtility::WriteString(ppos, Items::VolumeTotal, OfferOrder->VolumeTotal);
+		StepUtility::WriteString(ppos, Items::VolumeTraded, OfferOrder->VolumeTraded);
+		StepUtility::WriteString(ppos, Items::OrderStatus, (int)OfferOrder->OrderStatus);
 		if (strlen(OfferOrder->StatusMsg) >= sizeof(OfferOrder->StatusMsg))
 		{
 			OfferOrder->StatusMsg[sizeof(OfferOrder->StatusMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::StatusMsg, OfferOrder->StatusMsg);
+		StepUtility::WriteString(ppos, Items::StatusMsg, OfferOrder->StatusMsg);
 		if (strlen(OfferOrder->OrderDate) >= sizeof(OfferOrder->OrderDate))
 		{
 			OfferOrder->OrderDate[sizeof(OfferOrder->OrderDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderDate, OfferOrder->OrderDate);
+		StepUtility::WriteString(ppos, Items::OrderDate, OfferOrder->OrderDate);
 		if (strlen(OfferOrder->OrderTime) >= sizeof(OfferOrder->OrderTime))
 		{
 			OfferOrder->OrderTime[sizeof(OfferOrder->OrderTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderTime, OfferOrder->OrderTime);
+		StepUtility::WriteString(ppos, Items::OrderTime, OfferOrder->OrderTime);
 		if (strlen(OfferOrder->CancelDate) >= sizeof(OfferOrder->CancelDate))
 		{
 			OfferOrder->CancelDate[sizeof(OfferOrder->CancelDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::CancelDate, OfferOrder->CancelDate);
+		StepUtility::WriteString(ppos, Items::CancelDate, OfferOrder->CancelDate);
 		if (strlen(OfferOrder->CancelTime) >= sizeof(OfferOrder->CancelTime))
 		{
 			OfferOrder->CancelTime[sizeof(OfferOrder->CancelTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::CancelTime, OfferOrder->CancelTime);
-		WriteString(ppos, Items::IsNewOrder, OfferOrder->IsNewOrder);
-		WriteHexString(ppos, Items::FieldEnd, OfferOrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::CancelTime, OfferOrder->CancelTime);
+		StepUtility::WriteString(ppos, Items::IsNewOrder, OfferOrder->IsNewOrder);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, OfferOrderField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -38931,7 +38931,7 @@ bool RtnOfferOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -38945,7 +38945,7 @@ bool RtnOfferOrderPackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -39164,53 +39164,53 @@ int RtnOfferTradePackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (OfferTrade != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, OfferTradeField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, OfferTradeField::FieldID);
 		if (strlen(OfferTrade->TradingDay) >= sizeof(OfferTrade->TradingDay))
 		{
 			OfferTrade->TradingDay[sizeof(OfferTrade->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, OfferTrade->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, OfferTrade->TradingDay);
 		if (strlen(OfferTrade->PrimaryAccountID) >= sizeof(OfferTrade->PrimaryAccountID))
 		{
 			OfferTrade->PrimaryAccountID[sizeof(OfferTrade->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, OfferTrade->PrimaryAccountID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, OfferTrade->PrimaryAccountID);
 		if (strlen(OfferTrade->ExchangeID) >= sizeof(OfferTrade->ExchangeID))
 		{
 			OfferTrade->ExchangeID[sizeof(OfferTrade->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, OfferTrade->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, OfferTrade->ExchangeID);
 		if (strlen(OfferTrade->InstrumentID) >= sizeof(OfferTrade->InstrumentID))
 		{
 			OfferTrade->InstrumentID[sizeof(OfferTrade->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, OfferTrade->InstrumentID);
-		WriteString(ppos, Items::OrderID, OfferTrade->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, OfferTrade->InstrumentID);
+		StepUtility::WriteString(ppos, Items::OrderID, OfferTrade->OrderID);
 		if (strlen(OfferTrade->OrderSysID) >= sizeof(OfferTrade->OrderSysID))
 		{
 			OfferTrade->OrderSysID[sizeof(OfferTrade->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, OfferTrade->OrderSysID);
+		StepUtility::WriteString(ppos, Items::OrderSysID, OfferTrade->OrderSysID);
 		if (strlen(OfferTrade->TradeID) >= sizeof(OfferTrade->TradeID))
 		{
 			OfferTrade->TradeID[sizeof(OfferTrade->TradeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradeID, OfferTrade->TradeID);
-		WriteString(ppos, Items::Direction, (int)OfferTrade->Direction);
-		WriteString(ppos, Items::OffsetFlag, (int)OfferTrade->OffsetFlag);
-		WriteString(ppos, Items::Price, OfferTrade->Price);
-		WriteString(ppos, Items::Volume, OfferTrade->Volume);
+		StepUtility::WriteString(ppos, Items::TradeID, OfferTrade->TradeID);
+		StepUtility::WriteString(ppos, Items::Direction, (int)OfferTrade->Direction);
+		StepUtility::WriteString(ppos, Items::OffsetFlag, (int)OfferTrade->OffsetFlag);
+		StepUtility::WriteString(ppos, Items::Price, OfferTrade->Price);
+		StepUtility::WriteString(ppos, Items::Volume, OfferTrade->Volume);
 		if (strlen(OfferTrade->TradeDate) >= sizeof(OfferTrade->TradeDate))
 		{
 			OfferTrade->TradeDate[sizeof(OfferTrade->TradeDate) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradeDate, OfferTrade->TradeDate);
+		StepUtility::WriteString(ppos, Items::TradeDate, OfferTrade->TradeDate);
 		if (strlen(OfferTrade->TradeTime) >= sizeof(OfferTrade->TradeTime))
 		{
 			OfferTrade->TradeTime[sizeof(OfferTrade->TradeTime) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradeTime, OfferTrade->TradeTime);
-		WriteHexString(ppos, Items::FieldEnd, OfferTradeField::FieldID);
+		StepUtility::WriteString(ppos, Items::TradeTime, OfferTrade->TradeTime);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, OfferTradeField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -39221,7 +39221,7 @@ bool RtnOfferTradePackage::FromStepStream(char* buff, int startIndex, int endInd
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -39235,7 +39235,7 @@ bool RtnOfferTradePackage::FromStepStream(char* buff, int startIndex, int endInd
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -39417,42 +39417,42 @@ int RtnOfferErrorCancelOrderPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (OfferErrorCancelOrder != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, OfferErrorCancelOrderField::FieldID);
-		WriteString(ppos, Items::ErrorID, OfferErrorCancelOrder->ErrorID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, OfferErrorCancelOrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::ErrorID, OfferErrorCancelOrder->ErrorID);
 		if (strlen(OfferErrorCancelOrder->ErrorMsg) >= sizeof(OfferErrorCancelOrder->ErrorMsg))
 		{
 			OfferErrorCancelOrder->ErrorMsg[sizeof(OfferErrorCancelOrder->ErrorMsg) - 1] = 0;
 		}
-		WriteString(ppos, Items::ErrorMsg, OfferErrorCancelOrder->ErrorMsg);
+		StepUtility::WriteString(ppos, Items::ErrorMsg, OfferErrorCancelOrder->ErrorMsg);
 		if (strlen(OfferErrorCancelOrder->TradingDay) >= sizeof(OfferErrorCancelOrder->TradingDay))
 		{
 			OfferErrorCancelOrder->TradingDay[sizeof(OfferErrorCancelOrder->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, OfferErrorCancelOrder->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, OfferErrorCancelOrder->TradingDay);
 		if (strlen(OfferErrorCancelOrder->PrimaryAccountID) >= sizeof(OfferErrorCancelOrder->PrimaryAccountID))
 		{
 			OfferErrorCancelOrder->PrimaryAccountID[sizeof(OfferErrorCancelOrder->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, OfferErrorCancelOrder->PrimaryAccountID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, OfferErrorCancelOrder->PrimaryAccountID);
 		if (strlen(OfferErrorCancelOrder->ExchangeID) >= sizeof(OfferErrorCancelOrder->ExchangeID))
 		{
 			OfferErrorCancelOrder->ExchangeID[sizeof(OfferErrorCancelOrder->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, OfferErrorCancelOrder->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, OfferErrorCancelOrder->ExchangeID);
 		if (strlen(OfferErrorCancelOrder->InstrumentID) >= sizeof(OfferErrorCancelOrder->InstrumentID))
 		{
 			OfferErrorCancelOrder->InstrumentID[sizeof(OfferErrorCancelOrder->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, OfferErrorCancelOrder->InstrumentID);
-		WriteString(ppos, Items::Direction, (int)OfferErrorCancelOrder->Direction);
-		WriteString(ppos, Items::CancelOrderID, OfferErrorCancelOrder->CancelOrderID);
-		WriteString(ppos, Items::OrderID, OfferErrorCancelOrder->OrderID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, OfferErrorCancelOrder->InstrumentID);
+		StepUtility::WriteString(ppos, Items::Direction, (int)OfferErrorCancelOrder->Direction);
+		StepUtility::WriteString(ppos, Items::CancelOrderID, OfferErrorCancelOrder->CancelOrderID);
+		StepUtility::WriteString(ppos, Items::OrderID, OfferErrorCancelOrder->OrderID);
 		if (strlen(OfferErrorCancelOrder->OrderSysID) >= sizeof(OfferErrorCancelOrder->OrderSysID))
 		{
 			OfferErrorCancelOrder->OrderSysID[sizeof(OfferErrorCancelOrder->OrderSysID) - 1] = 0;
 		}
-		WriteString(ppos, Items::OrderSysID, OfferErrorCancelOrder->OrderSysID);
-		WriteHexString(ppos, Items::FieldEnd, OfferErrorCancelOrderField::FieldID);
+		StepUtility::WriteString(ppos, Items::OrderSysID, OfferErrorCancelOrder->OrderSysID);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, OfferErrorCancelOrderField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -39463,7 +39463,7 @@ bool RtnOfferErrorCancelOrderPackage::FromStepStream(char* buff, int startIndex,
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -39477,7 +39477,7 @@ bool RtnOfferErrorCancelOrderPackage::FromStepStream(char* buff, int startIndex,
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -39642,19 +39642,19 @@ int RtnOfferCapitalPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (OfferCapital != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, OfferCapitalField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, OfferCapitalField::FieldID);
 		if (strlen(OfferCapital->TradingDay) >= sizeof(OfferCapital->TradingDay))
 		{
 			OfferCapital->TradingDay[sizeof(OfferCapital->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, OfferCapital->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, OfferCapital->TradingDay);
 		if (strlen(OfferCapital->PrimaryAccountID) >= sizeof(OfferCapital->PrimaryAccountID))
 		{
 			OfferCapital->PrimaryAccountID[sizeof(OfferCapital->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, OfferCapital->PrimaryAccountID);
-		WriteString(ppos, Items::PreCashAsset, OfferCapital->PreCashAsset);
-		WriteHexString(ppos, Items::FieldEnd, OfferCapitalField::FieldID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, OfferCapital->PrimaryAccountID);
+		StepUtility::WriteString(ppos, Items::PreCashAsset, OfferCapital->PreCashAsset);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, OfferCapitalField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -39665,7 +39665,7 @@ bool RtnOfferCapitalPackage::FromStepStream(char* buff, int startIndex, int endI
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -39679,7 +39679,7 @@ bool RtnOfferCapitalPackage::FromStepStream(char* buff, int startIndex, int endI
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{
@@ -39805,34 +39805,34 @@ int RtnOfferPositionPackage::ToStepStream(char* buff, int size) const
 	char* ppos = buff;
 	if (OfferPosition != nullptr)
 	{
-		WriteHexString(ppos, Items::FieldStart, OfferPositionField::FieldID);
+		StepUtility::WriteHexString(ppos, Items::FieldStart, OfferPositionField::FieldID);
 		if (strlen(OfferPosition->TradingDay) >= sizeof(OfferPosition->TradingDay))
 		{
 			OfferPosition->TradingDay[sizeof(OfferPosition->TradingDay) - 1] = 0;
 		}
-		WriteString(ppos, Items::TradingDay, OfferPosition->TradingDay);
+		StepUtility::WriteString(ppos, Items::TradingDay, OfferPosition->TradingDay);
 		if (strlen(OfferPosition->PrimaryAccountID) >= sizeof(OfferPosition->PrimaryAccountID))
 		{
 			OfferPosition->PrimaryAccountID[sizeof(OfferPosition->PrimaryAccountID) - 1] = 0;
 		}
-		WriteString(ppos, Items::PrimaryAccountID, OfferPosition->PrimaryAccountID);
+		StepUtility::WriteString(ppos, Items::PrimaryAccountID, OfferPosition->PrimaryAccountID);
 		if (strlen(OfferPosition->ExchangeID) >= sizeof(OfferPosition->ExchangeID))
 		{
 			OfferPosition->ExchangeID[sizeof(OfferPosition->ExchangeID) - 1] = 0;
 		}
-		WriteString(ppos, Items::ExchangeID, OfferPosition->ExchangeID);
+		StepUtility::WriteString(ppos, Items::ExchangeID, OfferPosition->ExchangeID);
 		if (strlen(OfferPosition->InstrumentID) >= sizeof(OfferPosition->InstrumentID))
 		{
 			OfferPosition->InstrumentID[sizeof(OfferPosition->InstrumentID) - 1] = 0;
 		}
-		WriteString(ppos, Items::InstrumentID, OfferPosition->InstrumentID);
-		WriteString(ppos, Items::PosiDirection, (int)OfferPosition->PosiDirection);
-		WriteString(ppos, Items::TotalPosition, OfferPosition->TotalPosition);
-		WriteString(ppos, Items::PositionFrozen, OfferPosition->PositionFrozen);
-		WriteString(ppos, Items::TotalCostPrice, OfferPosition->TotalCostPrice);
-		WriteString(ppos, Items::Margin, OfferPosition->Margin);
-		WriteString(ppos, Items::MarketValue, OfferPosition->MarketValue);
-		WriteHexString(ppos, Items::FieldEnd, OfferPositionField::FieldID);
+		StepUtility::WriteString(ppos, Items::InstrumentID, OfferPosition->InstrumentID);
+		StepUtility::WriteString(ppos, Items::PosiDirection, (int)OfferPosition->PosiDirection);
+		StepUtility::WriteString(ppos, Items::TotalPosition, OfferPosition->TotalPosition);
+		StepUtility::WriteString(ppos, Items::PositionFrozen, OfferPosition->PositionFrozen);
+		StepUtility::WriteString(ppos, Items::TotalCostPrice, OfferPosition->TotalCostPrice);
+		StepUtility::WriteString(ppos, Items::Margin, OfferPosition->Margin);
+		StepUtility::WriteString(ppos, Items::MarketValue, OfferPosition->MarketValue);
+		StepUtility::WriteHexString(ppos, Items::FieldEnd, OfferPositionField::FieldID);
 	}
 	return int(ppos - buff);
 }
@@ -39843,7 +39843,7 @@ bool RtnOfferPositionPackage::FromStepStream(char* buff, int startIndex, int end
 		unsigned short fieldID;
 		int fieldStartIndex;
 		int fieldEndIndex;
-		if (GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
+		if (StepUtility::GetNextFieldZone(buff, startIndex, endIndex, fieldID, fieldStartIndex, fieldEndIndex))
 		{
 			int itemStartIndex = fieldStartIndex;
 			switch (fieldID)
@@ -39857,7 +39857,7 @@ bool RtnOfferPositionPackage::FromStepStream(char* buff, int startIndex, int end
 					unsigned short  itemID;
 					std::string value;
 					int sohIndex;
-					if (GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
+					if (StepUtility::GetNext(buff, itemStartIndex, fieldEndIndex, itemID, value, sohIndex))
 					{
 						switch (itemID)
 						{

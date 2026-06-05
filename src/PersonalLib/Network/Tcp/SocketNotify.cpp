@@ -22,8 +22,8 @@ bool SocketNotify::Init()
 {
 	if (!CreateSocketPair())
 		return false;
-	SetSockUnblock(m_Sockets[0]);
-	SetSockUnblock(m_Sockets[1]);
+	TcpUtility::SetSockUnblock(m_Sockets[0]);
+	TcpUtility::SetSockUnblock(m_Sockets[1]);
 
 	m_TcpConnect = TcpConnect::Allocate(0LL, m_Sockets[0], m_IP, "");
 	return true;
@@ -52,25 +52,25 @@ TcpConnect* SocketNotify::GetConnect()
 bool SocketNotify::CreateSocketPair()
 {
 #ifdef WIN32
-	auto ret = GetAddrinfo(m_IP.c_str(), 0, m_AddressInfo);
+	auto ret = TcpUtility::GetAddrinfo(m_IP.c_str(), 0, m_AddressInfo);
 	if (ret < 0)
 	{
 		WriteLog(LogLevel::Error, "GetAddrinfo for m_ClientLocalAddressInfo Failed. ret:%d, Errno:%d", ret, WSAGetLastError());
 		return false;
 	}
-	m_Sockets[0] = CreateSocket(m_AddressInfo->ai_family);
+	m_Sockets[0] = TcpUtility::CreateSocket(m_AddressInfo->ai_family);
 	if (m_Sockets[0] == INVALID_SOCKET)
 	{
 		WriteLog(LogLevel::Error, "Create ReadSocket Failed.");
 		return false;
 	}
-	if (!Bind(m_Sockets[0], m_AddressInfo))
+	if (!TcpUtility::Bind(m_Sockets[0], m_AddressInfo))
 	{
 		WriteLog(LogLevel::Error, "SocketNotify Bind Failed.");
 		closesocket(m_Sockets[0]);
 		return false;
 	}
-	if (!Listen(m_Sockets[0]))
+	if (!TcpUtility::Listen(m_Sockets[0]))
 	{
 		WriteLog(LogLevel::Error, "SocketNotify Listen Failed.");
 		closesocket(m_Sockets[0]);
@@ -85,7 +85,7 @@ bool SocketNotify::CreateSocketPair()
 		return false;
 	}
 
-	m_Sockets[1] = CreateSocket(m_AddressInfo->ai_family);
+	m_Sockets[1] = TcpUtility::CreateSocket(m_AddressInfo->ai_family);
 	if (m_Sockets[1] == INVALID_SOCKET)
 	{
 		WriteLog(LogLevel::Error, "Create Write Failed.");

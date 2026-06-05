@@ -1,4 +1,5 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Types.h"
 #include "PersonalLib/Network/Tcp/SocketInit.h"
 #include "PersonalLib/Network/Tcp/TcpConnect.h"
@@ -17,7 +18,7 @@ enum class IocpEvent : int
 	EventRecv = 8,				//«Î«ÛΩ” ’
 };
 
-class TcpIocpConnect : public TcpConnect
+class NETWORK_EXPORTS TcpIocpConnect : public TcpConnect
 {
 public:
 	TcpIocpConnect(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort);
@@ -28,7 +29,7 @@ public:
 	std::atomic<bool> HasPendingSend = false;
 };
 
-class MyOverlapped : public OVERLAPPED
+class NETWORK_EXPORTS MyOverlapped : public OVERLAPPED
 {
 public:
 	MyOverlapped();

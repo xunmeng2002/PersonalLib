@@ -1,4 +1,5 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Network/Tcp/SocketInit.h"
 #include "PersonalLib/Types.h"
 #include "PersonalLib/Network/IO/Connect.h"
@@ -7,7 +8,7 @@
 #include <chrono>
 #include <atomic>
 
-class TcpConnect : public Connect
+class NETWORK_EXPORTS TcpConnect : public Connect
 {
 public:
 	TcpConnect(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort);

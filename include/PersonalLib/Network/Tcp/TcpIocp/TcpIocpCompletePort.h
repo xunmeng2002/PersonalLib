@@ -1,8 +1,9 @@
 #pragma once
+#include "NetworkExport.h"
 #include <Windows.h>
 
 
-class IOCompletePort
+class NETWORK_EXPORTS IOCompletePort
 {
 public:
 	IOCompletePort();

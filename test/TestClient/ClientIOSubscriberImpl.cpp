@@ -48,7 +48,7 @@ void ClientIOSubscriberImpl::OnRecv(SessionIDType sessionID, Buffer<BuffSize>* b
     }
     else
     {
-        auto duration = GetDuration<milliseconds>(m_StartSendTime);
+        auto duration = TimeUtility::GetDuration<milliseconds>(m_StartSendTime);
         WriteLog(LogLevel::Info, "TimeCost:%lld ms", duration);
 
         m_IO->DisConnect(sessionID);
@@ -61,9 +61,9 @@ void ClientIOSubscriberImpl::Send(SessionIDType sessionID)
 
     ReqInsertOrderPackage reqInsertOrder;
     reqInsertOrder.ReqInsertOrder = new ReqInsertOrderField();
-    Strcpy(reqInsertOrder.ReqInsertOrder->AccountID, "Xunmeng001");
-    Strcpy(reqInsertOrder.ReqInsertOrder->ExchangeID, "SHSE");
-    Strcpy(reqInsertOrder.ReqInsertOrder->InstrumentID, "600036");
+    Utility::Strcpy(reqInsertOrder.ReqInsertOrder->AccountID, "Xunmeng001");
+    Utility::Strcpy(reqInsertOrder.ReqInsertOrder->ExchangeID, "SHSE");
+    Utility::Strcpy(reqInsertOrder.ReqInsertOrder->InstrumentID, "600036");
     reqInsertOrder.ReqInsertOrder->Direction = DirectionType::Buy;
     reqInsertOrder.ReqInsertOrder->OffsetFlag = OffsetFlagType::Open;
     reqInsertOrder.ReqInsertOrder->OrderPriceType = OrderPriceTypeType::LimitPrice;

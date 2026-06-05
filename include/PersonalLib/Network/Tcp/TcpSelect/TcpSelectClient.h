@@ -1,8 +1,9 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Network/Tcp/TcpSelect/TcpSelectBase.h"
 
 
-class TcpSelectClient : public TcpSelectBase
+class NETWORK_EXPORTS TcpSelectClient : public TcpSelectBase
 {
 public:
 	TcpSelectClient(const char* addressName, int milliSeconds);

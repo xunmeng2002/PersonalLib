@@ -1,4 +1,5 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Network/Tcp/SocketInit.h"
 #include "PersonalLib/Network/Tcp/TcpConnect.h"
 #include "PersonalLib/Network/Tcp/SocketNotify.h"
@@ -11,7 +12,7 @@
 #include <string>
 
 
-class TcpBase : public IOBase
+class NETWORK_EXPORTS TcpBase : public IOBase
 {
 public:
 	TcpBase(ServerTypeType serverType, const char* addressName, int milliSeconds);

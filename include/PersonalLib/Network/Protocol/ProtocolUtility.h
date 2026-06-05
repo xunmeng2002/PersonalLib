@@ -1,4 +1,4 @@
 #pragma once
+#include "NetworkExport.h"
 
-
-short CalculateSum(unsigned char* buff, int len);
+short NETWORK_EXPORTS CalculateSum(unsigned char* buff, int len);

@@ -34,7 +34,7 @@ bool TcpBase::Init()
 		return false;
 	}
 
-	auto ret = GetAddrinfo(m_Address.c_str(), m_Port.c_str(), m_AddressInfo);
+	auto ret = TcpUtility::GetAddrinfo(m_Address.c_str(), m_Port.c_str(), m_AddressInfo);
 	if (ret < 0)
 	{
 		WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:%s Port:%s ret:%d, Errno:%d", m_Address.c_str(), m_Port.c_str(), ret, WSAGetLastError());
@@ -46,16 +46,16 @@ bool TcpBase::Init()
 	}
 	else if (m_ServerType == ServerTypeType::Server)
 	{
-		m_Socket = PrepareSocket(m_AddressInfo->ai_family);
+		m_Socket = TcpUtility::PrepareSocket(m_AddressInfo->ai_family);
 		if (m_Socket == INVALID_SOCKET)
 		{
 			return false;
 		}
-		if (!Bind(m_Socket, m_AddressInfo))
+		if (!TcpUtility::Bind(m_Socket, m_AddressInfo))
 		{
 			return false;
 		}
-		return Listen(m_Socket);
+		return TcpUtility::Listen(m_Socket);
 	}
 	return true;
 }
@@ -145,8 +145,8 @@ void TcpBase::DoAccept()
 			break;
 		}
 		std::string ip, port;
-		auto ret = GetNameinfo((sockaddr*)&m_RemoteAddress, m_RemoteAddressLen, ip, port);
-		SetSockNodelay(socketID);
+		auto ret = TcpUtility::GetNameinfo((sockaddr*)&m_RemoteAddress, m_RemoteAddressLen, ip, port);
+		TcpUtility::SetSockNodelay(socketID);
 		auto connect = TcpConnect::Allocate(GetSessionID(), socketID, ip, port);
 		AddConnect(connect);
 	}

@@ -1,4 +1,5 @@
 #pragma once
+#include "SerializationExport.h"
 #include <string>
 #include <cstring>
 #include <codecvt>
@@ -18,12 +19,12 @@ public:
 };
 
 
-std::wstring GbkToUnicode(const std::string& str);
-std::string UnicodeToGbk(const std::wstring& str);
-std::wstring Utf8ToUnicode(const std::string& str);
-std::string UnicodeToUtf8(const std::wstring& str);
-std::string GbkToUtf8(const std::string& str);
-std::string Utf8ToGbk(const std::string& str);
+std::wstring SERIALIZATION_EXPORTS GbkToUnicode(const std::string& str);
+std::string SERIALIZATION_EXPORTS UnicodeToGbk(const std::wstring& str);
+std::wstring SERIALIZATION_EXPORTS Utf8ToUnicode(const std::string& str);
+std::string SERIALIZATION_EXPORTS UnicodeToUtf8(const std::wstring& str);
+std::string SERIALIZATION_EXPORTS GbkToUtf8(const std::string& str);
+std::string SERIALIZATION_EXPORTS Utf8ToGbk(const std::string& str);
 
 template <int N>
 void TrunsferUtf8ToGbk(char (&src)[N])

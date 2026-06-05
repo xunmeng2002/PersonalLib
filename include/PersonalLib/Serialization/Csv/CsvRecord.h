@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "SerializationExport.h"
 #include <vector>
 #include <map>
 #include <cstring>
@@ -8,7 +9,7 @@
 const int CSV_RECORD_MAX_HEAD_SIZE = 1024;
 const int CSV_RECORD_MAX_CONTENT_SIZE = 64 * 1024;
 
-class CSVRecord  
+class SERIALIZATION_EXPORTS CSVRecord
 {
 public:
 	CSVRecord();

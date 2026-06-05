@@ -1,9 +1,10 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Network/Tcp/SocketInit.h"
 #include <string>
 
 class TcpConnect;
-class SocketNotify
+class NETWORK_EXPORTS SocketNotify
 {
 public:
 	SocketNotify();

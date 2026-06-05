@@ -4,32 +4,32 @@
 using namespace std;
 
 constexpr double epsilon = std::numeric_limits<double>::epsilon();
-bool DoubleEqual(const double& left, const double& right)
+bool DoubleUtility::DoubleEqual(const double& left, const double& right)
 {
 	return std::abs(left - right) <= epsilon;
 }
-bool DoubleNotEqual(const double& left, const double& right)
+bool DoubleUtility::DoubleNotEqual(const double& left, const double& right)
 {
 	return !DoubleEqual(left, right);
 }
-bool DoubleLess(const double& left, const double& right)
+bool DoubleUtility::DoubleLess(const double& left, const double& right)
 {
 	return left < right - epsilon;
 }
-bool DoubleLessEqual(const double& left, const double& right)
+bool DoubleUtility::DoubleLessEqual(const double& left, const double& right)
 {
 	return left < right + epsilon;
 }
-bool DoubleGreat(const double& left, const double& right)
+bool DoubleUtility::DoubleGreat(const double& left, const double& right)
 {
 	return left > right + epsilon;
 }
-bool DoubleGreatEqual(const double& left, const double& right)
+bool DoubleUtility::DoubleGreatEqual(const double& left, const double& right)
 {
 	return left > right - epsilon;
 }
 
-double GetDoubleValue(const double& value)
+double DoubleUtility::GetDoubleValue(const double& value)
 {
 	if (isinf(value) || isnan(value))
 	{

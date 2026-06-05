@@ -1,4 +1,5 @@
 #pragma once
+#include "NetworkExport.h"
 #include <string>
 #include "PersonalLib/Types.h"
 #include "PersonalLib/Core/Buffer/Buffer.h"
@@ -7,7 +8,7 @@
 
 
 
-class SingleShm : public IOBase
+class NETWORK_EXPORTS SingleShm : public IOBase
 {
 public:
 	SingleShm(ServerTypeType shmType, const char* shmName);

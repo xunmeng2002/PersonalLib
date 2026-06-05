@@ -1,0 +1,5 @@
+<pumplist>
+	<!-- <pump dest="./Test/Source/Packages/Fields.h" tpl="../Templates/Cpp/Packages/Fields.h.tpl" model="./Test/Model/Protocol/Fields.xml"/> -->
+	<!-- <pump dest="./Test/Source/Packages/Packages.h" tpl="../Templates/Cpp/Packages/Packages.h.tpl" model="./Test/Model/Protocol/Packages.xml ./Test/Model/Protocol/FullApiPackages.xml"/> -->
+	<pump dest="./test/src/TestCommon/Packages/Packages.cpp" tpl="../Templates/Cpp/Packages/Packages.cpp.tpl" model="./test/Model/Protocol/Packages.xml ./test/Model/Protocol/FullApiPackages.xml ../Model/Types.xml"/>
+</pumplist>

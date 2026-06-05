@@ -10,12 +10,12 @@ thread_local char t_DateTimeBuff[32];
 using namespace std;
 using namespace std::chrono;
 
-time_t GetTime()
+time_t TimeUtility::GetTime()
 {
 	std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
 	return std::chrono::system_clock::to_time_t(now);
 }
-time_t GetTime(const char* date)
+time_t TimeUtility::GetTime(const char* date)
 {
 	auto dateInt = atoi(date);
 	tm dateTm;
@@ -25,7 +25,7 @@ time_t GetTime(const char* date)
 	dateTm.tm_mday = dateInt % 100;
 	return mktime(&dateTm);
 }
-time_t GetTime(int date)
+time_t TimeUtility::GetTime(int date)
 {
 	tm dateTm;
 	memset(&dateTm, 0, sizeof(dateTm));
@@ -34,23 +34,23 @@ time_t GetTime(int date)
 	dateTm.tm_mday = date % 100;
 	return mktime(&dateTm);
 }
-tm* GetTm(int date)
+tm* TimeUtility::GetTm(int date)
 {
 	auto t = GetTime(date);
 	return localtime(&t);
 }
-tm* GetUtcTm()
+tm* TimeUtility::GetUtcTm()
 {
 	time_t t = GetTime();
 	return gmtime(&t);
 }
-tm* GetLocalTm()
+tm* TimeUtility::GetLocalTm()
 {
 	time_t t = GetTime();
 	return localtime(&t);
 }
 
-void GetPreTradingDay(const char* tradingDay, char* preTradingDay)
+void TimeUtility::GetPreTradingDay(const char* tradingDay, char* preTradingDay)
 {
 	auto dateTime = GetTime(tradingDay);
 
@@ -63,7 +63,7 @@ void GetPreTradingDay(const char* tradingDay, char* preTradingDay)
 	}
 	strftime(preTradingDay, 9, "%Y%m%d", lastTradingDayTm);
 }
-int GetPreTradingDay(int tradingDay)
+int TimeUtility::GetPreTradingDay(int tradingDay)
 {
 	auto dateTime = GetTime(tradingDay);
 	time_t lastTradingDay = dateTime - 86400LL;
@@ -75,14 +75,14 @@ int GetPreTradingDay(int tradingDay)
 	}
 	return (lastTradingDayTm->tm_year + 1900) * 10000 + (lastTradingDayTm->tm_mon + 1) * 100 + lastTradingDayTm->tm_mday;
 }
-int GetPreDate(int date)
+int TimeUtility::GetPreDate(int date)
 {
 	auto dateTime = GetTime(date);
 	time_t nextDateTime = dateTime - 86400LL;
 	tm* nextTm = localtime(&nextDateTime);
 	return (nextTm->tm_year + 1900) * 10000 + (nextTm->tm_mon + 1) * 100 + nextTm->tm_mday;
 }
-void GetNextTradingDay(const char* tradingDay, char* nextTradingDay)
+void TimeUtility::GetNextTradingDay(const char* tradingDay, char* nextTradingDay)
 {
 	auto dateTime = GetTime(tradingDay);
 
@@ -95,7 +95,7 @@ void GetNextTradingDay(const char* tradingDay, char* nextTradingDay)
 	}
 	strftime(nextTradingDay, 9, "%Y%m%d", nextTradingDayTm);
 }
-int GetNextTradingDay(int tradingDay)
+int TimeUtility::GetNextTradingDay(int tradingDay)
 {
 	auto dateTime = GetTime(tradingDay);
 	time_t lastTradingDay = dateTime + 86400LL;
@@ -107,21 +107,21 @@ int GetNextTradingDay(int tradingDay)
 	}
 	return (lastTradingDayTm->tm_year + 1900) * 10000 + (lastTradingDayTm->tm_mon + 1) * 100 + lastTradingDayTm->tm_mday;
 }
-int GetNextDate(int date)
+int TimeUtility::GetNextDate(int date)
 {
 	auto dateTime = GetTime(date);
 	time_t nextDateTime = dateTime + 86400LL;
 	tm* nextTm = localtime(&nextDateTime);
 	return (nextTm->tm_year + 1900) * 10000 + (nextTm->tm_mon + 1) * 100 + nextTm->tm_mday;
 }
-int GetDateWithDayCount(int dayCount)
+int TimeUtility::GetDateWithDayCount(int dayCount)
 {
 	auto dateTime = GetTime();
 	time_t targetTime = dateTime + 86400LL * dayCount;
 	tm* targetTm = localtime(&targetTime);
 	return (targetTm->tm_year + 1900) * 10000 + (targetTm->tm_mon + 1) * 100 + targetTm->tm_mday;
 }
-int GetDateWithDayCount(int date, int dayCount)
+int TimeUtility::GetDateWithDayCount(int date, int dayCount)
 {
 	auto dateTime = GetTime(date);
 	time_t targetTime = dateTime + 86400LL * dayCount;
@@ -129,13 +129,13 @@ int GetDateWithDayCount(int date, int dayCount)
 	return (targetTm->tm_year + 1900) * 10000 + (targetTm->tm_mon + 1) * 100 + targetTm->tm_mday;
 }
 
-int DateAdd(int date, int count)
+int TimeUtility::DateAdd(int date, int count)
 {
 	auto t = GetTime(date);
 	t += 86400LL * count;
 	return atoi(ToLocalDate(&t).c_str());
 }
-int HourAdd(int hourTime, int count)
+int TimeUtility::HourAdd(int hourTime, int count)
 {
 	auto hour = hourTime % 100;
 	auto date = hourTime / 100;
@@ -149,7 +149,7 @@ int HourAdd(int hourTime, int count)
 	date = DateAdd(date, dayCount);
 	return date * 100 + hour;
 }
-long long MinuteAdd(long long minuteTime, int count)
+long long TimeUtility::MinuteAdd(long long minuteTime, int count)
 {
 	auto minute = minuteTime % 100;
 	auto hourTime = minuteTime / 100;
@@ -164,7 +164,7 @@ long long MinuteAdd(long long minuteTime, int count)
 	return hourTime * 100 + minute;
 }
 
-void GetPreYearDay(const char* tradingDay, char* preYearDay)
+void TimeUtility::GetPreYearDay(const char* tradingDay, char* preYearDay)
 {
 	auto dateTime = GetTime(tradingDay);
 
@@ -174,28 +174,28 @@ void GetPreYearDay(const char* tradingDay, char* preYearDay)
 }
 
 
-std::string GetUtcDate()
+std::string TimeUtility::GetUtcDate()
 {
 	auto t = GetTime();
 	auto localTm = gmtime(&t);
 	strftime(t_DateTimeBuff, 32, "%Y%m%d", localTm);
 	return std::string(t_DateTimeBuff);
 }
-std::string GetUtcTime()
+std::string TimeUtility::GetUtcTime()
 {
 	auto t = GetTime();
 	auto localTm = gmtime(&t);
 	strftime(t_DateTimeBuff, 32, "%H:%M:%S", localTm);
 	return std::string(t_DateTimeBuff);
 }
-std::string GetUtcDateTime()
+std::string TimeUtility::GetUtcDateTime()
 {
 	auto t = GetTime();
 	auto localTm = gmtime(&t);
 	strftime(t_DateTimeBuff, 32, "%Y%m%d-%H:%M:%S", localTm);
 	return std::string(t_DateTimeBuff);
 }
-std::string GetUtcDateTimeWithMilliSecond()
+std::string TimeUtility::GetUtcDateTimeWithMilliSecond()
 {
 	auto now = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now());
 	time_t t = std::chrono::system_clock::to_time_t(now);
@@ -206,35 +206,35 @@ std::string GetUtcDateTimeWithMilliSecond()
 	return std::string(t_DateTimeBuff);
 }
 
-std::string GetLocalDate()
+std::string TimeUtility::GetLocalDate()
 {
 	auto t = GetTime();
 	auto localTm = localtime(&t);
 	strftime(t_DateTimeBuff, 32, "%Y%m%d", localTm);
 	return std::string(t_DateTimeBuff);
 }
-std::string GetLocalTime()
+std::string TimeUtility::GetLocalTime()
 {
 	auto t = GetTime();
 	auto localTm = localtime(&t);
 	strftime(t_DateTimeBuff, 32, "%H:%M:%S", localTm);
 	return std::string(t_DateTimeBuff);
 }
-std::string GetLocalDateTime()
+std::string TimeUtility::GetLocalDateTime()
 {
 	auto t = GetTime();
 	auto localTm = localtime(&t);
 	strftime(t_DateTimeBuff, 32, "%Y%m%d-%H:%M:%S", localTm);
 	return std::string(t_DateTimeBuff);
 }
-void GetLocalDateTime(char* date, char* time)
+void TimeUtility::GetLocalDateTime(char* date, char* time)
 {
 	auto t = GetTime();
 	auto localTm = localtime(&t);
 	strftime(date, 9, "%Y%m%d", localTm);
 	strftime(time, 9, "%H:%M:%S", localTm);
 }
-std::string GetLocalDateTimeWithMilliSecond()
+std::string TimeUtility::GetLocalDateTimeWithMilliSecond()
 {
 	auto now = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now());
 	time_t t = std::chrono::system_clock::to_time_t(now);
@@ -244,7 +244,7 @@ std::string GetLocalDateTimeWithMilliSecond()
 	sprintf(t_DateTimeBuff + len, ".%03u", milliSecond);
 	return std::string(t_DateTimeBuff);
 }
-long long GetMilliSecondTimeStamp()
+long long TimeUtility::GetMilliSecondTimeStamp()
 {
 	time_point<system_clock, milliseconds> startTime = time_point_cast<milliseconds>(system_clock::now());
 	time_t time = startTime.time_since_epoch().count() / 1000;
@@ -253,13 +253,13 @@ long long GetMilliSecondTimeStamp()
 	sprintf(t_DateTimeBuff + len, "%03u", ms);
 	return atoll(t_DateTimeBuff);
 }
-void GetDateTimeFromTimeStamp(const Int64Type& timeStamp, DateType& date, TimeType& time)
+void TimeUtility::GetDateTimeFromTimeStamp(const Int64Type& timeStamp, DateType& date, TimeType& time)
 {
 	strcpy(date, to_string(timeStamp / 1000000000LL).c_str());
 	strcpy(time, to_string((timeStamp / 1000LL) % 1000000LL).c_str());
 }
 
-int GetTimeFromTimeString(const char* time)
+int TimeUtility::GetTimeFromTimeString(const char* time)
 {
 	std::istringstream iss(time);
 	int hour, minute, second;
@@ -267,7 +267,7 @@ int GetTimeFromTimeString(const char* time)
 	iss >> hour >> sep >> minute >> sep >> second;
 	return hour * 10000 + minute * 100 + second;
 }
-time_t GetTimeFromString(std::string dateTime, std::string format)
+time_t TimeUtility::GetTimeFromString(std::string dateTime, std::string format)
 {
 	tm t;
 	int len = sscanf(dateTime.c_str(), format.c_str(), &t.tm_year, &t.tm_mon, &t.tm_mday, &t.tm_hour, &t.tm_min, &t.tm_sec);
@@ -276,39 +276,39 @@ time_t GetTimeFromString(std::string dateTime, std::string format)
 
 	return mktime(&t);
 }
-std::string ToUtcDate(time_t* time)
+std::string TimeUtility::ToUtcDate(time_t* time)
 {
 	strftime(t_DateTimeBuff, 32, "%Y%m%d", gmtime(time));
 	return std::string(t_DateTimeBuff);
 }
-std::string ToUtcTime(time_t* time)
+std::string TimeUtility::ToUtcTime(time_t* time)
 {
 	strftime(t_DateTimeBuff, 32, "%H:%M:%S", gmtime(time));
 	return std::string(t_DateTimeBuff);
 }
-std::string ToUtcDateTime(time_t* time)
+std::string TimeUtility::ToUtcDateTime(time_t* time)
 {
 	strftime(t_DateTimeBuff, 32, "%Y%m%d-%H:%M:%S", gmtime(time));
 	return std::string(t_DateTimeBuff);
 }
-std::string ToLocalDate(time_t* time)
+std::string TimeUtility::ToLocalDate(time_t* time)
 {
 	strftime(t_DateTimeBuff, 32, "%Y%m%d", localtime(time));
 	return std::string(t_DateTimeBuff);
 }
-std::string ToLocalTime(time_t* time)
+std::string TimeUtility::ToLocalTime(time_t* time)
 {
 	strftime(t_DateTimeBuff, 32, "%H:%M:%S", localtime(time));
 	return std::string(t_DateTimeBuff);
 }
-std::string ToLocalDateTime(time_t* time)
+std::string TimeUtility::ToLocalDateTime(time_t* time)
 {
 	strftime(t_DateTimeBuff, 32, "%Y%m%d-%H:%M:%S", localtime(time));
 	return std::string(t_DateTimeBuff);
 }
 
 
-void GetDateTimeFromUpdateTs(long long updateTs, int& date, int& hour, int& minute, int& second, int& milliSecond)
+void TimeUtility::GetDateTimeFromUpdateTs(long long updateTs, int& date, int& hour, int& minute, int& second, int& milliSecond)
 {
 	milliSecond = (int)(updateTs % 1000LL);
 	updateTs /= 1000LL;
@@ -319,7 +319,7 @@ void GetDateTimeFromUpdateTs(long long updateTs, int& date, int& hour, int& minu
 	hour = (int)(updateTs % 100LL);
 	date = (int)(updateTs / 100LL);
 }
-int CalculateNextBarFromDayBar(int tradingDay, int barPeriod)
+int TimeUtility::CalculateNextBarFromDayBar(int tradingDay, int barPeriod)
 {
 	if (barPeriod <= 1)
 	{
@@ -368,19 +368,19 @@ int CalculateNextBarFromDayBar(int tradingDay, int barPeriod)
 	}
 	return tradingDay;
 }
-int CalculateMinutes(int hour, int minute)
+int TimeUtility::CalculateMinutes(int hour, int minute)
 {
 	return hour * 60 + minute;
 }
-int CalculateMinutesTimeStamp(int minutes)
+int TimeUtility::CalculateMinutesTimeStamp(int minutes)
 {
 	return (minutes / 60) * 100 + minutes % 60;
 }
-int CalculateSeconds(int hour, int minute, int second)
+int TimeUtility::CalculateSeconds(int hour, int minute, int second)
 {
 	return hour * 3600 + minute * 60 + second;
 }
-int CalculateSecondsTimeStamp(int seconds)
+int TimeUtility::CalculateSecondsTimeStamp(int seconds)
 {
 	auto hour = (seconds / 3600);
 	seconds %= 3600;
@@ -390,7 +390,7 @@ int CalculateSecondsTimeStamp(int seconds)
 }
 
 
-int CalculateNextBarDate(int barPeriod, int date)
+int TimeUtility::CalculateNextBarDate(int barPeriod, int date)
 {
 	if (barPeriod == 1)
 	{
@@ -398,7 +398,7 @@ int CalculateNextBarDate(int barPeriod, int date)
 	}
 	return CalculateNextBarFromDayBar(date, barPeriod);
 }
-long long CalculateNextMinuteBarTime(long long updateTs)
+long long TimeUtility::CalculateNextMinuteBarTime(long long updateTs)
 {
 	int date, hour, minute, second, milliSecond;
 	GetDateTimeFromUpdateTs(updateTs, date, hour, minute, second, milliSecond);
@@ -412,7 +412,7 @@ long long CalculateNextMinuteBarTime(long long updateTs)
 	long long nextBarTimeStamp = CalculateMinutesTimeStamp(minutes);
 	return date * 1000000000LL + nextBarTimeStamp * 100000LL;
 }
-long long CalculateNextSecondBarTime(int barPeriod, long long updateTs)
+long long TimeUtility::CalculateNextSecondBarTime(int barPeriod, long long updateTs)
 {
 	int date, hour, minute, second, milliSecond;
 	GetDateTimeFromUpdateTs(updateTs, date, hour, minute, second, milliSecond);
@@ -427,7 +427,7 @@ long long CalculateNextSecondBarTime(int barPeriod, long long updateTs)
 	return date * 1000000000LL + nextBarTimeStamp * 1000LL;
 }
 
-void CalculateRealMinuteBarTime(const char* exchangeID, const char* instrumentID, int calculateBarTime, int& realBarTime, int& realUpdateTs)
+void TimeUtility::CalculateRealMinuteBarTime(const char* exchangeID, const char* instrumentID, int calculateBarTime, int& realBarTime, int& realUpdateTs)
 {
 	if (strcmp(exchangeID, "SSE") == 0 || strcmp(exchangeID, "SZSE") == 0 || strcmp(exchangeID, "CFFEX") == 0)
 	{

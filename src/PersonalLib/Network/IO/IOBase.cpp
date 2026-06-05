@@ -100,7 +100,7 @@ Connect* IOBase::GetConnect(SessionIDType sessionID)
 
 SessionIDType IOBase::GetSessionID()
 {
-	return GetMilliSecondTimeStamp() * 100LL + (++m_LastSessionIndex) % 100LL;
+	return TimeUtility::GetMilliSecondTimeStamp() * 100LL + (++m_LastSessionIndex) % 100LL;
 }
 
 

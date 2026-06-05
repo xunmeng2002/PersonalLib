@@ -1,8 +1,9 @@
 #pragma once
+#include "CoreExport.h"
 #include <chrono>
 
 
-class Timer
+class CORE_EXPORTS Timer
 {
 public:
 	Timer();

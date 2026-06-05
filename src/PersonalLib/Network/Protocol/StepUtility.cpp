@@ -5,7 +5,7 @@
 using namespace std;
 
 
-bool GetNextSoh(char* buff, int startIndex, int endIndex, int& sohIndex)
+bool StepUtility::GetNextSoh(char* buff, int startIndex, int endIndex, int& sohIndex)
 {
 	for (int i = startIndex; i < endIndex; ++i)
 	{
@@ -17,7 +17,7 @@ bool GetNextSoh(char* buff, int startIndex, int endIndex, int& sohIndex)
 	}
 	return false;
 }
-bool GetNextEqual(char* buff, int startIndex, int endIndex, int& equalIndex)
+bool StepUtility::GetNextEqual(char* buff, int startIndex, int endIndex, int& equalIndex)
 {
 	for (int i = startIndex; i < endIndex; ++i)
 	{
@@ -29,7 +29,7 @@ bool GetNextEqual(char* buff, int startIndex, int endIndex, int& equalIndex)
 	}
 	return false;
 }
-bool GetNext(char* buff, int startIndex, int endIndex, unsigned short& key, std::string& value, int& sohIndex)
+bool StepUtility::GetNext(char* buff, int startIndex, int endIndex, unsigned short& key, std::string& value, int& sohIndex)
 {
 	if (!GetNextSoh(buff, startIndex, endIndex, sohIndex))
 	{
@@ -44,7 +44,7 @@ bool GetNext(char* buff, int startIndex, int endIndex, unsigned short& key, std:
 	value = std::string(buff + equalIndex + 1, buff + sohIndex);
 	return true;
 }
-bool GetFieldStart(char* buff, int startIndex, int endIndex, unsigned short& fieldID, int& fieldStartIndex)
+bool StepUtility::GetFieldStart(char* buff, int startIndex, int endIndex, unsigned short& fieldID, int& fieldStartIndex)
 {
 	for (int i = startIndex; i < endIndex; ++i)
 	{
@@ -57,7 +57,7 @@ bool GetFieldStart(char* buff, int startIndex, int endIndex, unsigned short& fie
 	}
 	return false;
 }
-bool GetFieldEnd(char* buff, int startIndex, int endIndex, unsigned short& fieldID, int& fieldEndIndex)
+bool StepUtility::GetFieldEnd(char* buff, int startIndex, int endIndex, unsigned short& fieldID, int& fieldEndIndex)
 {
 	for (int i = startIndex; i < endIndex; ++i)
 	{
@@ -75,7 +75,7 @@ bool GetFieldEnd(char* buff, int startIndex, int endIndex, unsigned short& field
 	}
 	return false;
 }
-bool GetNextFieldZone(char* buff, int startIndex, int endIndex, unsigned short& fieldID, int& fieldStartIndex, int& fieldEndIndex)
+bool StepUtility::GetNextFieldZone(char* buff, int startIndex, int endIndex, unsigned short& fieldID, int& fieldStartIndex, int& fieldEndIndex)
 {
 	if (!GetFieldStart(buff, startIndex, endIndex, fieldID, fieldStartIndex))
 	{
@@ -93,7 +93,7 @@ bool GetNextFieldZone(char* buff, int startIndex, int endIndex, unsigned short& 
 	}
 	return true;
 }
-bool GetPackageStart(char* buff, int startIndex, int endIndex, int& packageStartIndex)
+bool StepUtility::GetPackageStart(char* buff, int startIndex, int endIndex, int& packageStartIndex)
 {
 	for (int i = startIndex; i < endIndex; ++i)
 	{
@@ -106,63 +106,63 @@ bool GetPackageStart(char* buff, int startIndex, int endIndex, int& packageStart
 	return false;
 }
 
-void WriteString(char*& ppos, int key, bool value)
+void StepUtility::WriteString(char*& ppos, int key, bool value)
 {
 	int len = sprintf(ppos, "%d=%d", key, value);
 	ppos += len;
 	*ppos++ = SOH;
 }
-void WriteString(char*& ppos, int key, char value)
+void StepUtility::WriteString(char*& ppos, int key, char value)
 {
 	int len = sprintf(ppos, "%d=%c", key, value);
 	ppos += len;
 	*ppos++ = SOH;
 }
-void WriteString(char*& ppos, int key, unsigned short value)
+void StepUtility::WriteString(char*& ppos, int key, unsigned short value)
 {
 	int len = sprintf(ppos, "%d=%d", key, value);
 	ppos += len;
 	*ppos++ = SOH;
 }
-void WriteString(char*& ppos, int key, int value)
+void StepUtility::WriteString(char*& ppos, int key, int value)
 {
 	int len = sprintf(ppos, "%d=%d", key, value);
 	ppos += len;
 	*ppos++ = SOH;
 }
-void WriteString(char*& ppos, int key, long long value)
+void StepUtility::WriteString(char*& ppos, int key, long long value)
 {
 	int len = sprintf(ppos, "%d=%lld", key, value);
 	ppos += len;
 	*ppos++ = SOH;
 }
-void WriteString(char*& ppos, int key, double value)
+void StepUtility::WriteString(char*& ppos, int key, double value)
 {
 	int len = sprintf(ppos, "%d=%.6f", key, value);
 	ppos += len;
 	*ppos++ = SOH;
 }
-void WriteString(char*& ppos, int key, std::string value)
+void StepUtility::WriteString(char*& ppos, int key, std::string value)
 {
 	int len = sprintf(ppos, "%d=%s", key, value.c_str());
 	ppos += len;
 	*ppos++ = SOH;
 }
-void WriteString(char*& ppos, int key, char* value)
+void StepUtility::WriteString(char*& ppos, int key, char* value)
 {
 	int len = sprintf(ppos, "%d=%s", key, value);
 	ppos += len;
 	*ppos++ = SOH;
 }
 
-void WriteHexString(char*& ppos, int key, unsigned short value)
+void StepUtility::WriteHexString(char*& ppos, int key, unsigned short value)
 {
 	int len = sprintf(ppos, "%d=%04X", key, value);
 	ppos += len;
 	*ppos++ = SOH;
 }
 
-void HeadToStream(HeadField* head, char* buff, int size)
+void StepUtility::HeadToStream(HeadField* head, char* buff, int size)
 {
 	int len = 0;
 	len += ::sprintf(buff + len, "%c%u=%04X%c", SOH, Items::PackageID, head->PackageID, SOH);
@@ -172,7 +172,7 @@ void HeadToStream(HeadField* head, char* buff, int size)
 	//最后一个不能使用sprintf赋值，因为sprintf会在末尾自动补上0
 	buff[len] = SOH;
 }
-bool HeadFromStream(char* buff, int startIndex, int endIndex, HeadField* head)
+bool StepUtility::HeadFromStream(char* buff, int startIndex, int endIndex, HeadField* head)
 {
 	//跳过报文首个SOH符号
 	startIndex += 1;
@@ -210,11 +210,11 @@ bool HeadFromStream(char* buff, int startIndex, int endIndex, HeadField* head)
 	}
 	return true;
 }
-void TailToStream(TailField* tail, char* buff, int size)
+void StepUtility::TailToStream(TailField* tail, char* buff, int size)
 {
 	sprintf(buff, "%u=%05u%c", Items::CheckSum, tail->CheckSum, SOH);
 }
-bool TailFromStream(char* buff, int startIndex, int endIndex, TailField* tail)
+bool StepUtility::TailFromStream(char* buff, int startIndex, int endIndex, TailField* tail)
 {
 	while (startIndex < endIndex)
 	{

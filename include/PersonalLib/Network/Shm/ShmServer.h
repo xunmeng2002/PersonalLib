@@ -1,9 +1,10 @@
 #pragma once
+#include "NetworkExport.h"
 #include "PersonalLib/Network/Shm/ShmBase.h"
 #include <chrono>
 
 
-class ShmServer : public ShmBase
+class NETWORK_EXPORTS ShmServer : public ShmBase
 {
 public:
 	ShmServer(const char* shmName, int milliSeconds);

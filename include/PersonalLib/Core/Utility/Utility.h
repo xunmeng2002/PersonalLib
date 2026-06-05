@@ -1,24 +1,30 @@
 #pragma once
+#include "CoreExport.h"
 #include <string>
 #include <cstring>
 #include "PersonalLib/Types.h"
 
-void ParseProcessName(const char* fullProcessName, char* processName, int len);
 
-std::string ItoA(int value);
-std::string FtoA(double value);
-void Erase(std::string& str, char a);
-
-template<int N>
-char* Strcpy(char(&dest)[N], const char* src)
+class CORE_EXPORTS Utility
 {
-    if (src == nullptr)
-        return nullptr;
-    return strncpy(dest, src, sizeof(dest) - 1);
-}
+public:
+    static void ParseProcessName(const char* fullProcessName, char* processName, int len);
+
+    static std::string ItoA(int value);
+    static std::string FtoA(double value);
+    static void Erase(std::string& str, char a);
+
+    template<int N>
+    static char* Strcpy(char(&dest)[N], const char* src)
+    {
+        if (src == nullptr)
+            return nullptr;
+        return strncpy(dest, src, sizeof(dest) - 1);
+    }
 
 
-void PrintBytes(const char* name, char* src, int len);
-void RemoveCharacter(char* src, int size, char c = ' ');
+    static void PrintBytes(const char* name, char* src, int len);
+    static void RemoveCharacter(char* src, int size, char c = ' ');
 
-ProtocolTypeType GetConfigProtocolType(const std::string& configProtocolType);
+    static ProtocolTypeType GetConfigProtocolType(const std::string& configProtocolType);
+};
