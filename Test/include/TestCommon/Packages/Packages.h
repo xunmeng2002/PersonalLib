@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "TestCommon/Packages/Fields.h"
-#include "Network/Protocol/Package.h"
+#include "PersonalLib/Network/Protocol/Package.h"
 
 
 class NotifyComponentConnectStatusPackage : public Package

@@ -5,14 +5,14 @@
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/transport/TTransportUtils.h>
 #include "login_constants.h"
-#include "Core/MD5.h"
+#include "PersonalLib/Core/MD5.h"
 #include "Decode.h"
-#include "Network/Tcp/.h"
-#include "Network/IOThread.h"
-#include "Network/IOFactory.h"
+#include "PersonalLib/Network/Tcp/.h"
+#include "PersonalLib/Network/IOThread.h"
+#include "PersonalLib/Network/IOFactory.h"
 #include "TcpSelectClient.h"
 #include "ThriftClient.h"
-#include "Core/Logger/Logger.h"
+#include "PersonalLib/Core/Logger/Logger.h"
 
 using namespace apache::thrift;
 using namespace apache::thrift::transport;

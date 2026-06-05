@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <set>
 #include <string.h>
-#include "Core/Logger/Logger.h"
+#include "PersonalLib/Core/Logger/Logger.h"
 #include "TestShmServer.h"
 #include "TestTcpSelectServer.h"
 #include "TestTcpEpollServer.h"
@@ -9,7 +9,7 @@
 #include "TestXtpServer.h"
 #include "TestStepServer.h"
 #include "TestCommon/TestUtility/TestUtility.h"
-#include "Network/IO/IOFactory.h"
+#include "PersonalLib/Network/IO/IOFactory.h"
 
 int main(int argc, const char* argv[])
 {

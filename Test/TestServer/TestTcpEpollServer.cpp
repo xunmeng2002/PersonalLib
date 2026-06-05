@@ -1,11 +1,11 @@
 #include "TestTcpEpollServer.h"
 #ifdef LINUX
-#include "Network/Tcp/TcpEpoll/TcpEpollServer.h"
+#include "PersonalLib/Network/Tcp/TcpEpoll/TcpEpollServer.h"
 #endif
 #include "ServerIOSubscriberImpl.h"
-#include "Core/Logger/Logger.h"
+#include "PersonalLib/Core/Logger/Logger.h"
 #include "TestCommon/TestUtility/TestUtility.h"
-#include "Network/IO/IOThread.h"
+#include "PersonalLib/Network/IO/IOThread.h"
 
 
 void TestTcpEpollServer()

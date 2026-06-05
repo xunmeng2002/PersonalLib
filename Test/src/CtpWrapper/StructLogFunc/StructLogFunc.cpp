@@ -1,5 +1,5 @@
 ﻿#include "CtpWrapper/StructLogFunc/StructLogFunc.h"
-#include "Core/Logger/Logger.h"
+#include "PersonalLib/Core/Logger/Logger.h"
 #include <limits>
 
 double GetDoubleValue(double& value)

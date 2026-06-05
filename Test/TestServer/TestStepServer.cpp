@@ -1,8 +1,8 @@
 #include "TestStepServer.h"
-#include "Core/Utility/Utility.h"
-#include "Core/Logger/Logger.h"
+#include "PersonalLib/Core/Utility/Utility.h"
+#include "PersonalLib/Core/Logger/Logger.h"
 #include "TestCommon/TestUtility/TestUtility.h"
-#include "Network/Protocol/PackageFactory.h"
+#include "PersonalLib/Network/Protocol/PackageFactory.h"
 
 using namespace std;
 

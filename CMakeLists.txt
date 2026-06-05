@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-SET(PROJECT_NAME "PersonLib")
+SET(PROJECT_NAME "PersonalLib")
 project(${PROJECT_NAME} VERSION 1.0.0 LANGUAGES CXX)
 include(GNUInstallDirs)
 
@@ -43,7 +43,7 @@ macro(add_module name include_dir src_dir)
             $<BUILD_INTERFACE:${include_dir}>
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
         PRIVATE
-            ${src_dir}/..
+            ${src_dir}/../..
     )
 endmacro()
 macro(add_application name include_dir src_dir)
@@ -65,9 +65,9 @@ macro(copy_config_file name config_file)
     )
 endmacro()
 
-add_module(Core				${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/Source/Core)
-add_module(Network			${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/Source/Network)
-add_module(Serialization	${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/Source/Serialization)
+add_module(Core				${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}/Core)
+add_module(Network			${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}/Network)
+add_module(Serialization	${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}/Serialization)
 
 target_link_libraries(Network PUBLIC Core)
 

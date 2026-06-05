@@ -1,5 +1,5 @@
 #include "ThostFtdcMdSpiImpl.h"
-#include "Core/Logger/Logger.h"
+#include "PersonalLib/Core/Logger/Logger.h"
 #include <string.h>
 
 

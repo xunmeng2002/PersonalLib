@@ -1,7 +1,7 @@
 #pragma once
-#include "Core/Thread/ThreadBase.h"
-#include "Network/IO/IOBase.h"
-#include "Network/IO/IOThread.h"
+#include "PersonalLib/Core/Thread/ThreadBase.h"
+#include "PersonalLib/Network/IO/IOBase.h"
+#include "PersonalLib/Network/IO/IOThread.h"
 
 
 class ServerIOSubscriberImpl : public IOSubscriber

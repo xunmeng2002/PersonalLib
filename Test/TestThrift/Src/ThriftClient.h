@@ -1,8 +1,8 @@
 #pragma once
-#include "Core/Thread/ThreadBase.h"
-#include "Network/IOBase.h"
+#include "PersonalLib/Core/Thread/ThreadBase.h"
+#include "PersonalLib/Network/IOBase.h"
 #include "TopicDecoder.h"
-#include "Core/Buffer.h"
+#include "PersonalLib/Core/Buffer.h"
 #include "login_constants.h"
 #include "unit_constants.h"
 #include "common_constants.h"

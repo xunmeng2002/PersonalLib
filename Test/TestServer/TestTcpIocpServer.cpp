@@ -1,12 +1,12 @@
 #include "TestTcpIocpServer.h"
 #ifdef WINDOWS
-#include "Network/Tcp/TcpIocp/TcpIocpServer.h"
+#include "PersonalLib/Network/Tcp/TcpIocp/TcpIocpServer.h"
 #endif
 #include "ServerIOSubscriberImpl.h"
-#include "Core/Logger/Logger.h"
+#include "PersonalLib/Core/Logger/Logger.h"
 #include "TestCommon/TestUtility/TestUtility.h"
-#include "Network/IO/IOThread.h"
-#include "Network/IO/IOFactory.h"
+#include "PersonalLib/Network/IO/IOThread.h"
+#include "PersonalLib/Network/IO/IOFactory.h"
 
 
 void TestTcpIocpServer()

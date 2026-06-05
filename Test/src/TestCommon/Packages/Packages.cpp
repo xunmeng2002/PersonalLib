@@ -1,8 +1,8 @@
 ﻿#include "TestCommon/Packages/Packages.h"
-#include "Network/Protocol/Items.h"
-#include "Network/Protocol/StepUtility.h"
-#include "Core/Logger/Logger.h"
-#include "Core/ObjectPool/ObjectPool.h"
+#include "PersonalLib/Network/Protocol/Items.h"
+#include "PersonalLib/Network/Protocol/StepUtility.h"
+#include "PersonalLib/Core/Logger/Logger.h"
+#include "PersonalLib/Core/ObjectPool/ObjectPool.h"
 #include <cstring>
 
 thread_local char t_DataStringBuffer[10240];
