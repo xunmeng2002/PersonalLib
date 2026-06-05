@@ -6,38 +6,39 @@ include(GNUInstallDirs)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 20)
-set(BUILD_TEST_PROJECT 1)
 
 add_definitions(-DUNICODE -D_UNICODE)
+
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type" FORCE)
+endif()
+set(CMAKE_DEBUG_POSTFIX "d")  
+
 message("CMAKE_BUILD_TYPE:" ${CMAKE_BUILD_TYPE})
 message("CMAKE_SYSTEM_NAME:" ${CMAKE_SYSTEM_NAME})
 message("CMAKE_CL_64:" ${CMAKE_CL_64})
 IF(CMAKE_SYSTEM_NAME MATCHES "Windows")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
-	#string(REPLACE "/MD" "/MT" CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
-	#string(REPLACE "/MDd" "/MTd" CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
-	add_definitions("-DWINDOWS")
-	add_definitions("-DPERSONAL_LIB")
-	add_definitions("-D_CRT_SECURE_NO_WARNINGS")
-	add_definitions("-D_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING")
+    add_definitions(-DWINDOWS -D_CRT_SECURE_NO_WARNINGS -D_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /Zi /MDd /D_DEBUG")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /MD /DNDEBUG")
 ELSEIF(CMAKE_SYSTEM_NAME MATCHES "Linux")
-	IF(CMAKE_BUILD_TYPE MATCHES "Debug")
-		#list(APPEND CMAKE_CXX_FLAGS "-fsanitize=address")
-	ENDIF()
 	add_definitions("-DLINUX")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g -ggdb")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
+    #list(APPEND CMAKE_CXX_FLAGS_DEBUG "-fsanitize=address")
 ENDIF()
 message("CMAKE_CXX_FLAGS:" ${CMAKE_CXX_FLAGS})
 message("CMAKE_CXX_FLAGS_RELEASE:" ${CMAKE_CXX_FLAGS_RELEASE})
 message("CMAKE_CXX_FLAGS_DEBUG:" ${CMAKE_CXX_FLAGS_DEBUG})
 
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)   # exe, dll (Windows)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)   # .so, .dylib (·Ç Windows)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)   # .lib, .a
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/$<CONFIG>)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/$<CONFIG>)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/$<CONFIG>)
 
 macro(add_module name include_dir src_dir)
     file(GLOB_RECURSE src_files CONFIGURE_DEPENDS "${src_dir}/*.cpp" "${src_dir}/*.c" "${src_dir}/*.cu")
-    add_library(${name} STATIC ${src_files})
+    add_library(${name} SHARED ${src_files})
     target_include_directories(${name}
         PUBLIC
             $<BUILD_INTERFACE:${include_dir}>
@@ -50,7 +51,7 @@ macro(add_application name include_dir src_dir)
     file(GLOB_RECURSE src_files CONFIGURE_DEPENDS "${src_dir}/*.cpp" "${src_dir}/*.c" "${src_dir}/*.cu")
     add_executable(${name} ${src_files})
     target_include_directories(${name}
-        PUBLIC
+        PRIVATE
             ${include_dir}
         PRIVATE
             ${src_dir}/..
@@ -82,6 +83,7 @@ message("Build timestamp is ${BUILD_TIMESTAMP}")
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 install(TARGETS Core Network Serialization
     EXPORT ${PROJECT_NAME}Targets
+    #CONFIGURATIONS Release
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

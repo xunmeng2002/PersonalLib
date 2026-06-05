@@ -19,6 +19,24 @@
       ]
     },
     {
+      "name": "x64-Release",
+      "generator": "Ninja",
+      "configurationType": "RelWithDebInfo",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "variables": [
+        {
+          "name": "CMAKE_INSTALL_PREFIX",
+          "value": "${projectDir}/../Libs/PersonalLib",
+          "type": "PATH"
+        }
+      ]
+    },
+    {
       "name": "WSL-GCC-Debug",
       "generator": "Ninja",
       "configurationType": "Debug",

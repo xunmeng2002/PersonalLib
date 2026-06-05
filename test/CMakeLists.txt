@@ -35,6 +35,6 @@ target_link_libraries(TestCtpTraderApi PRIVATE CtpWrapper)
 add_custom_command(TARGET CtpWrapper POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${CTP_DLLS}
-        ${CMAKE_SOURCE_DIR}/bin
+        ${CMAKE_SOURCE_DIR}/bin/$<CONFIG>
     COMMENT "Copying CTP DLLs to binary directory")
 copy_config_file(TestCtpMdApi ${CMAKE_CURRENT_SOURCE_DIR}/src/CtpWrapper/CtpAccountInfo.json)
