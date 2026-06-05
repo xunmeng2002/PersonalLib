@@ -73,7 +73,7 @@ target_link_libraries(Network PUBLIC Core)
 
 option(BUILD_TESTS "Build test projects" ON)
 if(BUILD_TESTS)
-    add_subdirectory(Test)
+    add_subdirectory(test)
 endif()
 
 string(TIMESTAMP BUILD_TIMESTAMP "%Y%m%d-%H%M%S")
