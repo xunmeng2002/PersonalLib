@@ -8,24 +8,20 @@ using namespace std;
 template <typename Func, typename... Args>
 struct Aspect
 {
-    Aspect(Func& f, const std::string& funcName)
+    Aspect(Func&& f, const std::string& funcName)
         : m_Func(std::forward<Func>(f)), m_FuncName(funcName)
     {
     }
 
-    template <typename T>
-    void Invoke(Args&&... args, T&& aspect)
+    void Invoke(Args&&... args)
     {
-        aspect.Before(m_FuncName.c_str());
-        m_Func(std::forward<Args>(args)...); //core code
-        aspect.After(m_FuncName.c_str());
+        m_Func(std::forward<Args>(args)...);
     }
-
     template <typename T, typename... AP>
     void Invoke(Args&&... args, T&& aspect, AP&&... aspects)
     {
         aspect.Before(m_FuncName.c_str());
-        Invoke(std::forward<Args>(args)..., AP()...);
+        Invoke(std::forward<Args>(args)..., std::forward<AP>(aspects)...);
         aspect.After(m_FuncName.c_str());
     }
 private:

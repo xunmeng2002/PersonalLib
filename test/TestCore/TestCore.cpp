@@ -1,7 +1,16 @@
 #include "PersonalLib/Core/MD5/MD5.h"
 #include "PersonalLib/Core/Logger/Logger.h"
+#include "PersonalLib/Core/Aspect/Aspect.h"
+#include "PersonalLib/Core/Aspect/AspectLogger.h"
+#include "PersonalLib/Core/Aspect/AspectPerformance.h"
 #include <iostream>
 using namespace std;
+
+void CalcalateMD5(const char* src, int len)
+{
+    string s = getMD5((const unsigned char*)src, len);
+    WriteLog(LogLevel::Info, "getMD5 Result:%s", s.c_str());
+}
 
 int main(int argc, const char* argv[])
 {
@@ -13,8 +22,7 @@ int main(int argc, const char* argv[])
 
     string src = "HelloWorldHelloWorldHelloWorldHelloWorldHelloWorldHelloWorld";
 
-    string s = getMD5((const unsigned char*)src.c_str(), (int)src.length());
-    WriteLog(LogLevel::Info, "getMD5 Result:%s", s.c_str());
+    Invoke<AspectLogger, AspectPerformance>(CalcalateMD5, "CalcalateMD5", src.c_str(), src.length());
 
     WriteLog(LogLevel::Info, "TestPersonalLib Stop.");
 
