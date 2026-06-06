@@ -85,7 +85,7 @@ def WriteFieldsFile(destFieldFile, fields):
 	
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Usage: ParseModel.py destField.xml srcField.xml srcItem.xml")
+        print("Usage: ParseShortField.py destField.xml srcField.xml srcItem.xml")
         exit(-1) 
     destFieldFile = sys.argv[1]
     srcFieldFile = sys.argv[2]

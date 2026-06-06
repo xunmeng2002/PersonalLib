@@ -55,9 +55,10 @@ def GetFields(fieldFile, items, fields):
             field.Items.append(items[itemName])
         fields[field.Name] = field
 
-def GetPackages(packageFile, fields, packages, destFields):
+def GetPackages(packageFile, fields, packages, destFields) -> str:
     dom = xml.dom.minidom.parse(packageFile)
     root = dom.documentElement
+    rootName = root.getAttribute("name")
     lastID = 0
     for packageNode in root.getElementsByTagName("package"):
         package = Package()
@@ -75,6 +76,7 @@ def GetPackages(packageFile, fields, packages, destFields):
             package.Fields.append(fields[fieldName])
             destFields[fieldName] = fields[fieldName]
         packages.append(package)
+    return rootName
 	
 def AddItemNode(dom, parentNode, item):
     itemNode = dom.createElement('item')
@@ -109,13 +111,14 @@ def ReadXml(packageFile, fieldFile, itemFile):
     destFields = {}
     GetItems(itemFile, items)
     GetFields(fieldFile, items, fields)
-    GetPackages(packageFile, fields, packages, destFields)
-    return packages, destFields
+    rootName = GetPackages(packageFile, fields, packages, destFields)
+    return rootName, packages, destFields
 
-def WritePackagesFile(destPackageFile, packages):
+def WritePackagesFile(destPackageFile, rootName, packages):
     impl = xml.dom.minidom.getDOMImplementation()
     dom = impl.createDocument(None, 'packages', None)
     root = dom.documentElement
+    root.setAttribute("name", rootName)
     for package in packages:
         AddPackageNode(dom, root, package)
     f = open(destPackageFile, 'w', encoding="UTF-8")
@@ -147,7 +150,7 @@ def WriteFieldsFile(destFieldFile, fields):
 	
 if __name__ == "__main__":
     if len(sys.argv) < 5:
-        print("Usage: ParseModel.py destPackage.xml fullApiPackage.xml destField.xml srcPackage.xml srcField.xml srcItem.xml")
+        print("Usage: ParsePackageModel.py destPackage.xml fullApiPackage.xml destField.xml srcPackage.xml srcField.xml srcItem.xml")
         exit(-1) 
     destPackageFile = sys.argv[1]
     fullApiPackageFile = sys.argv[2]
@@ -156,7 +159,7 @@ if __name__ == "__main__":
     srcFieldFile = sys.argv[5]
     srcItemFile = sys.argv[6]
 
-    packages, fields = ReadXml(srcPackageFile, srcFieldFile, srcItemFile)
-    WritePackagesFile(destPackageFile, packages)
+    rootName, packages, fields = ReadXml(srcPackageFile, srcFieldFile, srcItemFile)
+    WritePackagesFile(destPackageFile, rootName, packages)
     WriteFullApiPackagesFile(fullApiPackageFile, packages)
     WriteFieldsFile(destFieldFile, fields)
