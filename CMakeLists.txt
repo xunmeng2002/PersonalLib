@@ -3,7 +3,7 @@ SET(PROJECT_NAME "PersonalLib")
 project(${PROJECT_NAME} VERSION 1.0.0 LANGUAGES CXX)
 include(GNUInstallDirs)
 include(GenerateExportHeader)
-
+include(../CMakeCommon/CMakeCommon.cmake)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -38,67 +38,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/$<CONFIG>)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/$<CONFIG>)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/$<CONFIG>)
 
-
-macro(add_template_library name include_dir)
-    add_library(${name} INTERFACE)
-    target_include_directories(${name}
-        INTERFACE
-            $<BUILD_INTERFACE:${include_dir}>
-            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-    )
-endmacro()
-macro(add_shared_module name include_dir src_dir)
-    file(GLOB_RECURSE src_files CONFIGURE_DEPENDS "${src_dir}/*.cpp" "${src_dir}/*.c" "${src_dir}/*.cu")
-    add_library(${name} SHARED ${src_files})
-
-    string(TOUPPER ${name} name_upper)
-    set(export_subdir "${PROJECT_NAME}/${name}")
-    set(export_file_name "${export_subdir}/${name}Export.h")
-    generate_export_header(${name}
-        EXPORT_MACRO_NAME ${name_upper}_EXPORTS
-        EXPORT_FILE_NAME ${export_file_name}
-    )
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${export_file_name}
-            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${export_subdir})
-    target_include_directories(${name}
-        PUBLIC
-            $<BUILD_INTERFACE:${include_dir}>
-            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-            $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-        PRIVATE
-            ${src_dir}/../..
-    )
-    target_compile_definitions(${name} PRIVATE ${name}_EXPORTS)
-endmacro()
-macro(add_static_module name include_dir src_dir)
-    file(GLOB_RECURSE src_files CONFIGURE_DEPENDS "${src_dir}/*.cpp" "${src_dir}/*.c" "${src_dir}/*.cu")
-    add_library(${name} STATIC ${src_files})
-    target_include_directories(${name}
-        PUBLIC
-            $<BUILD_INTERFACE:${include_dir}>
-            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-        PRIVATE
-            ${src_dir}/../..
-    )
-endmacro()
-macro(add_application name include_dir src_dir)
-    file(GLOB_RECURSE src_files CONFIGURE_DEPENDS "${src_dir}/*.cpp" "${src_dir}/*.c" "${src_dir}/*.cu")
-    add_executable(${name} ${src_files})
-    target_include_directories(${name}
-        PRIVATE
-            ${include_dir}
-        PRIVATE
-            ${src_dir}/..
-    )
-endmacro()
-macro(copy_config_file name config_file)
-    add_custom_command(TARGET ${name} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            ${config_file}
-            $<TARGET_FILE_DIR:${name}>
-        COMMENT "Copying config file ${config_file} to output directory"
-    )
-endmacro()
 
 add_template_library(TemplateLib    ${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_shared_module(Core				${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}/Core)
