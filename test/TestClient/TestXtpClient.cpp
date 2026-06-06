@@ -6,7 +6,7 @@
 #include "PersonalLib/Core/Utility/TimeUtility.h"
 #include "TestCommon/Packages/Packages.h"
 #include "PersonalLib/Network/IO/IOThread.h"
-#include "PersonalLib/Core/ObjectPool/ObjectPool.h"
+#include "PersonalLib/TemplateLib/ObjectPool/ObjectPool.h"
 
 using namespace std;
 

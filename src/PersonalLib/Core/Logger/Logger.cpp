@@ -1,5 +1,5 @@
 #include "PersonalLib/Core/Logger/Logger.h"
-#include "PersonalLib/Core/Buffer/Buffer.h"
+#include "PersonalLib/TemplateLib/Buffer/Buffer.h"
 #include "PersonalLib/Core/Logger/LogData.h"
 #include "PersonalLib/Core/Utility/Utility.h"
 #include "PersonalLib/Core/Utility/TimeUtility.h"

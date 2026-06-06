@@ -2,7 +2,7 @@
 #include "PersonalLib/Network/NetworkExport.h"
 #include <string>
 #include "PersonalLib/Types.h"
-#include "PersonalLib/Core/Buffer/Buffer.h"
+#include "PersonalLib/TemplateLib/Buffer/Buffer.h"
 #include "PersonalLib/Network/IO/IOBase.h"
 #include "PersonalLib/Network/Shm/ShmConnect.h"
 

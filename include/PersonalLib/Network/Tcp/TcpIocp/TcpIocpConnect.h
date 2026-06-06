@@ -3,7 +3,7 @@
 #include "PersonalLib/Types.h"
 #include "PersonalLib/Network/Tcp/SocketInit.h"
 #include "PersonalLib/Network/Tcp/TcpConnect.h"
-#include "PersonalLib/Core/Buffer/Buffer.h"
+#include "PersonalLib/TemplateLib/Buffer/Buffer.h"
 
 enum class IocpEvent : int
 {

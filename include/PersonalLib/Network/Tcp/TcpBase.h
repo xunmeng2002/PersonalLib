@@ -4,8 +4,8 @@
 #include "PersonalLib/Network/Tcp/TcpConnect.h"
 #include "PersonalLib/Network/Tcp/SocketNotify.h"
 #include "PersonalLib/Network/IO/IOBase.h"
-#include "PersonalLib/Core/Buffer/Buffer.h"
-#include "PersonalLib/Core/Constant/Constant.h"
+#include "PersonalLib/TemplateLib/Buffer/Buffer.h"
+#include "PersonalLib/TemplateLib/Constant/Constant.h"
 #include <list>
 #include <map>
 #include <mutex>

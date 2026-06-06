@@ -3,7 +3,7 @@
 #include "PersonalLib/Core/Thread/ThreadBase.h"
 #include "PersonalLib/Network/IO/IOBase.h"
 #include "PersonalLib/Types.h"
-#include "PersonalLib/Core/Buffer/Buffer.h"
+#include "PersonalLib/TemplateLib/Buffer/Buffer.h"
 #include "PersonalLib/Network/IO/Connect.h"
 #include <string>
 #include <mutex>

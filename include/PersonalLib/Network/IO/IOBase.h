@@ -1,8 +1,8 @@
 #pragma once
 #include "PersonalLib/Network/NetworkExport.h"
 #include "PersonalLib/Types.h"
-#include "PersonalLib/Core/Constant/Constant.h"
-#include "PersonalLib/Core/Buffer/Buffer.h"
+#include "PersonalLib/TemplateLib/Constant/Constant.h"
+#include "PersonalLib/TemplateLib/Buffer/Buffer.h"
 #include "PersonalLib/Network/IO/Connect.h"
 #include "PersonalLib/Network/IO/IOUtility.h"
 #include <string>

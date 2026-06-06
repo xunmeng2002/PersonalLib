@@ -6,7 +6,7 @@
 #include "TcpBase.h"
 #include "PersonalLib/Core/MD5.h"
 #include "Decode.h"
-#include "PersonalLib/Core/Buffer.h"
+#include "PersonalLib/TemplateLib/Buffer.h"
 
 
 

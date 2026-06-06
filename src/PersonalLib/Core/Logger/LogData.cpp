@@ -1,5 +1,5 @@
 #include "PersonalLib/Core/Logger/LogData.h"
-#include "PersonalLib/Core/Buffer/Buffer.h"
+#include "PersonalLib/TemplateLib/Buffer/Buffer.h"
 
 LogData::LogData()
 {

@@ -2,7 +2,7 @@
 #include "PersonalLib/Core/Thread/ThreadBase.h"
 #include "PersonalLib/Network/IOBase.h"
 #include "TopicDecoder.h"
-#include "PersonalLib/Core/Buffer.h"
+#include "PersonalLib/TemplateLib/Buffer.h"
 #include "login_constants.h"
 #include "unit_constants.h"
 #include "common_constants.h"

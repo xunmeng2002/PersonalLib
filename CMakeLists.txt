@@ -38,6 +38,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/$<CONFIG>)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/$<CONFIG>)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/$<CONFIG>)
 
+
+macro(add_template_library name include_dir)
+    add_library(${name} INTERFACE)
+    target_include_directories(${name}
+        INTERFACE
+            $<BUILD_INTERFACE:${include_dir}>
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+    )
+endmacro()
 macro(add_shared_module name include_dir src_dir)
     file(GLOB_RECURSE src_files CONFIGURE_DEPENDS "${src_dir}/*.cpp" "${src_dir}/*.c" "${src_dir}/*.cu")
     add_library(${name} SHARED ${src_files})
@@ -91,11 +100,11 @@ macro(copy_config_file name config_file)
     )
 endmacro()
 
+add_template_library(TemplateLib    ${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_shared_module(Core				${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}/Core)
 add_shared_module(Network			${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}/Network)
 add_shared_module(Serialization	    ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}/Serialization)
 target_compile_definitions(Serialization PRIVATE JSON_DLL_BUILD)
-
 
 target_link_libraries(Network PUBLIC Core)
 
