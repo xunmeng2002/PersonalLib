@@ -5,31 +5,43 @@ include(GNUInstallDirs)
 include(GenerateExportHeader)
 include(../CMakeCommon/CMakeCommon.cmake)
 
-set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 20)
-
+set(CMAKE_DEBUG_POSTFIX "d")
+set(CMAKE_VERBOSE_MAKEFILE ON)
 add_definitions(-DUNICODE -D_UNICODE)
 
-if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type" FORCE)
-endif()
-set(CMAKE_DEBUG_POSTFIX "d")  
 
-message("CMAKE_BUILD_TYPE:" ${CMAKE_BUILD_TYPE})
-message("CMAKE_SYSTEM_NAME:" ${CMAKE_SYSTEM_NAME})
-message("CMAKE_CL_64:" ${CMAKE_CL_64})
 IF(CMAKE_SYSTEM_NAME MATCHES "Windows")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
     add_definitions(-DWINDOWS -D_CRT_SECURE_NO_WARNINGS -D_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING)
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /Zi /MDd /D_DEBUG")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /MD /DNDEBUG")
+	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+	add_compile_options(
+        $<$<CONFIG:Debug>:/Od>
+        $<$<CONFIG:Debug>:/Zi>
+        $<$<CONFIG:Release>:/O2>
+        $<$<CONFIG:RelWithDebInfo>:/O2>
+        $<$<CONFIG:RelWithDebInfo>:/Zi>
+        $<$<CONFIG:MinSizeRel>:/O1>)
 ELSEIF(CMAKE_SYSTEM_NAME MATCHES "Linux")
 	add_definitions("-DLINUX")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g -ggdb")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
+    add_compile_options(
+        $<$<CONFIG:Debug>:-O0 -g -ggdb>
+        $<$<CONFIG:Release>:-O3>
+        $<$<CONFIG:RelWithDebInfo>:-O2 -g>
+        $<$<CONFIG:MinSizeRel>:-Os>)
+    add_compile_definitions(
+        $<$<CONFIG:Debug>:_DEBUG>
+        $<$<CONFIG:Release>:NDEBUG>
+        $<$<CONFIG:RelWithDebInfo>:NDEBUG>
+        $<$<CONFIG:MinSizeRel>:NDEBUG>)
+    #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g -ggdb")
+    #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
     #list(APPEND CMAKE_CXX_FLAGS_DEBUG "-fsanitize=address")
 ENDIF()
+message("CMAKE_BUILD_TYPE:" ${CMAKE_BUILD_TYPE})
+message("CMAKE_SYSTEM_NAME:" ${CMAKE_SYSTEM_NAME})
+message("CMAKE_CL_64:" ${CMAKE_CL_64})
 message("CMAKE_CXX_FLAGS:" ${CMAKE_CXX_FLAGS})
 message("CMAKE_CXX_FLAGS_RELEASE:" ${CMAKE_CXX_FLAGS_RELEASE})
 message("CMAKE_CXX_FLAGS_DEBUG:" ${CMAKE_CXX_FLAGS_DEBUG})
@@ -65,6 +77,7 @@ install(TARGETS Core Network Serialization
 )
 
 install(EXPORT ${PROJECT_NAME}Targets
+    NAMESPACE ${PROJECT_NAME}::
     FILE ${PROJECT_NAME}Targets.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
@@ -77,9 +90,8 @@ write_basic_package_version_file(
 )
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
     "include(CMakeFindDependencyMacro)\n"
-    "# Add find_dependency calls if your library has dependencies\n"
     "include(\"\${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}Targets.cmake\")\n"
-    "check_required_components(\"${PROJECT_NAME}\")\n"
+    "set(${PROJECT_NAME}_FOUND TRUE)\n"
 )
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake

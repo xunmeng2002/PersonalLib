@@ -22,25 +22,25 @@ public:
 	unsigned Write(const char* data, unsigned len)
 	{
 		unsigned size = GetWriteBufferSize();
-		len = std::min(len, size);
+		len = (std::min)(len, size);
 		return CopyFromBuffer(data, len);
 	}
 	unsigned Read(char* buff, unsigned len)
 	{
 		unsigned size = GetReadBufferSize();
-		len = std::min(len, size);
+		len = (std::min)(len, size);
 		return CopyToBuffer(buff, len, true);
 	}
 	unsigned Peek(char* buff, unsigned len)
 	{
 		unsigned size = GetReadBufferSize();
-		len = std::min(len, size);
+		len = (std::min)(len, size);
 		return CopyToBuffer(buff, len, false);
 	}
 	unsigned Skip(unsigned len)
 	{
 		unsigned size = GetReadBufferSize();
-		len = std::min(len, size);
+		len = (std::min)(len, size);
 		return CopyToBuffer(nullptr, len, true);
 	}
 	inline unsigned GetReadBufferSize()
@@ -71,7 +71,7 @@ private:
 	{
 		if (len == 0)
 			return 0;
-		unsigned tailLen = std::min<unsigned>(len, (m_Buffer + SIZE) - m_ReadPos);
+		unsigned tailLen = (std::min)(len, unsigned((m_Buffer + SIZE) - m_ReadPos));
 		if (buff != nullptr)
 		{
 			memcpy(buff, m_ReadPos, tailLen);
@@ -98,7 +98,7 @@ private:
 	{
 		if (len == 0)
 			return 0;
-		unsigned tailLen = std::min<unsigned>(len, (m_Buffer + SIZE) - m_WritePos);
+		unsigned tailLen = (std::min)(len, unsigned((m_Buffer + SIZE) - m_WritePos));
 		memcpy(m_WritePos, data, tailLen);
 		if (tailLen < len)
 		{

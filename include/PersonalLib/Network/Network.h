@@ -29,8 +29,6 @@
 #include "PersonalLib/Network/Tcp/TcpEpoll/TcpEpollBase.h"
 #include "PersonalLib/Network/Tcp/TcpEpoll/TcpEpollClient.h"
 #include "PersonalLib/Network/Tcp/TcpEpoll/TcpEpollServer.h"
-#include "PersonalLib/Network/Tcp/TcpEpoll/Connect.h"
-#include "PersonalLib/Network/Tcp/TcpEpoll/Connect.h"
 #include "PersonalLib/Network/Tcp/TcpIocp/TcpIocpBase.h"
 #include "PersonalLib/Network/Tcp/TcpIocp/TcpIocpClient.h"
 #include "PersonalLib/Network/Tcp/TcpIocp/TcpIocpCompletePort.h"
