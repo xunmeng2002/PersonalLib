@@ -1,8 +1,7 @@
 #pragma once
-#include "PersonalLib/TemplateLib/Constant/Constant.h"
 #include "PersonalLib/Types.h"
+#include "PersonalLib/TemplateLib/Constant/Constant.h"
 #include "PersonalLib/TemplateLib/ObjectPool/ObjectPool.h"
-#include "PersonalLib/Core/Logger/Logger.h"
 #include <algorithm>
 #include <atomic>
 #include <cstring>
