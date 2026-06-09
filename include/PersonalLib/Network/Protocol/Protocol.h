@@ -10,7 +10,7 @@
 class NETWORK_EXPORTS Protocol : public IOSubscriber
 {
 public:
-	Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, int milliSeconds, PackageFactory* packageFactory);
+	Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, IOModelType ioModel, int milliSeconds, PackageFactory* packageFactory);
 	~Protocol();
 	void Subscribe(ProtocolSubscriber* subscriber);
 	void UnSubscribe();
@@ -34,6 +34,7 @@ public:
 protected:
 	ProtocolTypeType m_ProtocolType;
 	ServerTypeType m_ServerType;
+	IOModelType m_IOModel;
 	int m_MilliSeconds;
 	IOBase* m_IOBase;
 	IOThread* m_IOThread;

@@ -1,9 +1,6 @@
 #include "ClientIOSubscriberImpl.h"
-#include "PersonalLib/Network/Tcp/TcpSelect/TcpSelectClient.h"
-#include "PersonalLib/Core/Logger/Logger.h"
-#include "PersonalLib/Core/Utility/Utility.h"
 #include "TestCommon/Packages/Packages.h"
-#include "PersonalLib/Core/Platform/Platform.h"
+#include <PersonalLib/Core/Core.h>
 #include <cstring>
 
 

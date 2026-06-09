@@ -1,15 +1,11 @@
-﻿#include <iostream>
-#include <set>
-#include <string.h>
-#include "PersonalLib/Core/Logger/Logger.h"
-#include "TestShmServer.h"
-#include "TestTcpSelectServer.h"
-#include "TestTcpEpollServer.h"
-#include "TestTcpIocpServer.h"
+﻿#include "TestShmServer.h"
+#include "TestTcpServer.h"
 #include "TestXtpServer.h"
 #include "TestStepServer.h"
 #include "TestCommon/TestUtility/TestUtility.h"
-#include "PersonalLib/Network/IO/IOFactory.h"
+#include <PersonalLib/Core/Logger/Logger.h>
+#include <PersonalLib/Network/IO/IOFactory.h>
+
 
 int main(int argc, const char* argv[])
 {
@@ -18,27 +14,18 @@ int main(int argc, const char* argv[])
     Logger::GetInstance().Start();
     SocketInit::GetInstance().Init();
 
-    switch (g_ServerProtocolType)
+    switch (g_TestProtocolType)
     {
-    case TcpProtocolType::Shm:
+    case TestProtocolType::Shm:
         TestShmServer();
         break;
-    case TcpProtocolType::Udp:
-        //TestUdpServer();
+    case TestProtocolType::Tcp:
+        TestTcpServer();
         break;
-    case TcpProtocolType::TcpSelect:
-        TestTcpSelectServer();
-        break;
-    case TcpProtocolType::TcpEpoll:
-        TestTcpEpollServer();
-        break;
-    case TcpProtocolType::TcpIocp:
-        TestTcpIocpServer();
-        break;
-    case TcpProtocolType::Xtp:
+    case TestProtocolType::Xtp:
         TestXtpServer();
         break;
-    case TcpProtocolType::Step:
+    case TestProtocolType::Step:
         TestStepServer();
         break;
     default:

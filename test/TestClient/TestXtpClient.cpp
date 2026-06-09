@@ -1,18 +1,18 @@
 #include "TestXtpClient.h"
-#include "PersonalLib/Core/Utility/Utility.h"
-#include "PersonalLib/Core/Logger/Logger.h"
+#include <PersonalLib/Core/Utility/Utility.h>
+#include <PersonalLib/Core/Logger/Logger.h>
 #include "TestCommon/TestUtility/TestUtility.h"
-#include "PersonalLib/Network/Protocol/PackageFactory.h"
-#include "PersonalLib/Core/Utility/TimeUtility.h"
+#include <PersonalLib/Network/Protocol/PackageFactory.h>
+#include <PersonalLib/Core/Utility/TimeUtility.h>
 #include "TestCommon/Packages/Packages.h"
-#include "PersonalLib/Network/IO/IOThread.h"
-#include "PersonalLib/TemplateLib/ObjectPool/ObjectPool.h"
+#include <PersonalLib/Network/IO/IOThread.h>
+#include <PersonalLib/TemplateLib/ObjectPool/ObjectPool.h>
 
 using namespace std;
 
 
 XtpClient::XtpClient()
-	:Protocol(ProtocolTypeType::Xtp, ServerTypeType::Client, 0, new PackageFactory()), m_Connected(false), m_SessionID(0LL), m_RecvCount(0)
+	:Protocol(ProtocolTypeType::Xtp, ServerTypeType::Client, g_IOModel, 0, new PackageFactory()), m_Connected(false), m_SessionID(0LL), m_RecvCount(0)
 {
 	m_ReqInsertOrder = new ReqInsertOrderPackage();
 	Subscribe(this);

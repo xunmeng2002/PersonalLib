@@ -485,6 +485,17 @@ enum class InstrumentClassType : int
 	Main = '1',
 };
 
+//IO模型
+enum class IOModelType : int
+{
+	//Select
+	Select = '0',
+	//Epoll
+	Epoll = '1',
+	//Iocp
+	Iocp = '2',
+};
+
 //IO类型
 enum class IOTypeType : int
 {

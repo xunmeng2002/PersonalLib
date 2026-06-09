@@ -1,14 +1,14 @@
 #include "TestStepServer.h"
-#include "PersonalLib/Core/Utility/Utility.h"
-#include "PersonalLib/Core/Logger/Logger.h"
+#include <PersonalLib/Core/Utility/Utility.h>
+#include <PersonalLib/Core/Logger/Logger.h>
 #include "TestCommon/TestUtility/TestUtility.h"
-#include "PersonalLib/Network/Protocol/PackageFactory.h"
+#include <PersonalLib/Network/Protocol/PackageFactory.h>
 
 using namespace std;
 
 
 StepServer::StepServer()
-	:Protocol(ProtocolTypeType::Step, ServerTypeType::Server, 0, new PackageFactory()), m_Connected(false), m_SessionID(0LL), m_RecvCount(0)
+	:Protocol(ProtocolTypeType::Step, ServerTypeType::Server, g_IOModel, 0, new PackageFactory()), m_Connected(false), m_SessionID(0LL), m_RecvCount(0)
 {
 	Subscribe(this);
 	RegisterFront(g_Address);

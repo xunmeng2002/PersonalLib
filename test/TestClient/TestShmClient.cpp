@@ -1,25 +1,24 @@
 #include "TestShmClient.h"
 #include "ClientIOSubscriberImpl.h"
-#include "PersonalLib/Core/Logger/Logger.h"
 #include "TestCommon/TestUtility/TestUtility.h"
-#include "PersonalLib/Network/IO/IOThread.h"
-#include "PersonalLib/Network/Shm/ShmClient.h"
+#include <PersonalLib/Core/Logger/Logger.h>
+#include <PersonalLib/Network/Network.h>
 
 
 
 void TestShmClient()
 {
     IOThread* ioThread = new IOThread("ShmClient");
-    auto addressName = g_Address + 6;
-    ShmClient shmClient(addressName, 100);
-    ClientIOSubscriberImpl clientIOSubscriberImpl(&shmClient, ioThread);
-    ioThread->SetIO(&shmClient);
+    auto io = IOFactory::CreateIO(ServerTypeType::Client, g_Address);
+    ClientIOSubscriberImpl clientIOSubscriberImpl(io, ioThread);
+    ioThread->SetIO(io);
 
-    if (!shmClient.Init())
+    if (!io->Init())
     {
         WriteLog(LogLevel::Error, "ShmClient Init Failed.");
         return;
     }
     ioThread->Start();
     ioThread->Join();
+    delete io;
 }

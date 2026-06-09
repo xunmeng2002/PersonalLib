@@ -1,30 +1,25 @@
 #include "TestShmServer.h"
 #include "ServerIOSubscriberImpl.h"
-#include "PersonalLib/Core/Logger/Logger.h"
 #include "TestCommon/TestUtility/TestUtility.h"
-#include "PersonalLib/Network/IO/IOThread.h"
-#include "PersonalLib/Network/Shm/ShmServer.h"
+#include <PersonalLib/Core/Logger/Logger.h>
+#include <PersonalLib/Network/Network.h>
+
 
 
 void TestShmServer()
 {
-    WriteLog(LogLevel::Info, "TestShmServer");
-
     IOThread* ioThread = new IOThread("ShmServer");
-    auto addressName = g_Address + 6;
-    ShmServer shmServer(addressName, 100);
-    ServerIOSubscriberImpl serverIOSubscriberImpl(&shmServer, ioThread);
-    ioThread->SetIO(&shmServer);
+    auto io = IOFactory::CreateIO(ServerTypeType::Server, g_Address);
+    ServerIOSubscriberImpl serverIOSubscriberImpl(io, ioThread);
+    ioThread->SetIO(io);
 
-    if (!shmServer.Init())
+    if (!io->Init())
     {
         WriteLog(LogLevel::Error, "ShmServer Init Failed.");
         return;
     }
     ioThread->Start();
-
-    std::this_thread::sleep_for(std::chrono::seconds(60));
-    ioThread->Stop();
     ioThread->Join();
+    delete io;
 }
 

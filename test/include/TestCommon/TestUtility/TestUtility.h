@@ -1,14 +1,11 @@
 #pragma once
 #include <chrono>
-#include "PersonalLib/Types.h"
+#include <PersonalLib/Types.h>
 
-enum class TcpProtocolType : int
+enum class TestProtocolType : int
 {
     Shm = 0,
-    Udp,
-    TcpSelect,
-    TcpEpoll,
-    TcpIocp,
+    Tcp,
     Xtp,
     Step
 };
@@ -20,11 +17,8 @@ struct ShmPackage
     char Data[16];
 };
 
-extern TcpProtocolType g_ClientProtocolType;
-extern TcpProtocolType g_ServerProtocolType;
+extern TestProtocolType g_TestProtocolType;
 extern const char* g_Address;
-extern const char* g_ShmName;
-extern const char* g_SemName;
-
+extern IOModelType g_IOModel;
 
 void PrintTimeCost(const char* name, std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds> startTime, std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds> endTime);
