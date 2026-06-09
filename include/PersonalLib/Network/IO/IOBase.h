@@ -29,6 +29,7 @@ public:
 	virtual void SetTimeOut(int milliSeconds);
 
 	virtual bool Init() { return true; }
+	virtual bool ConnectToServer(const char* addressName) { return false; }
 	virtual void DisConnect(SessionIDType sessionID);
 	virtual void DisConnectAll();
 	virtual void Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) = 0;

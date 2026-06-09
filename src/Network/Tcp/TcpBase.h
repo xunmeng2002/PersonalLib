@@ -20,6 +20,7 @@ public:
 	virtual bool Init() override;
 
 	virtual void Send(SessionIDType sessionID, Buffer<BuffSize>* buffer) override;
+	virtual bool ConnectToServer(const char* address) override;
 	virtual bool ConnectToServer(const char* ip, unsigned short port) { return false; }
 	virtual void HandleIOEvent() override;
 protected:

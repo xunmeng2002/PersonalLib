@@ -9,6 +9,7 @@ public:
 	ShmClient(const char* shmName, int milliSeconds);
 	virtual ~ShmClient();
 
+	virtual bool ConnectToServer(const char* addressName) override;
 protected:
 	virtual void ConnectToServer() override;
 	virtual void CheckConnect() override;

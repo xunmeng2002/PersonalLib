@@ -65,6 +65,11 @@ void TcpBase::Send(SessionIDType sessionID, Buffer<BuffSize>* buffer)
 	connect->PushBack(buffer);
 	m_SocketNotify->Notify();
 }
+bool TcpBase::ConnectToServer(const char* address)
+{
+	ParseAddress(address, m_Address, m_Port);
+	return ConnectToServer(m_Address.c_str(), atoi(m_Port.c_str()));
+}
 void TcpBase::HandleIOEvent()
 {
 	if (m_ServerType == ServerTypeType::Client)

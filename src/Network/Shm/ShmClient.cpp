@@ -12,7 +12,33 @@ ShmClient::~ShmClient()
 {
 	m_ShmConnect = nullptr;
 }
-
+bool ShmClient::ConnectToServer(const char* addressName)
+{
+	string address, port;
+	ParseAddress(addressName, address, port);
+	if (address == m_Address && m_Connected)
+	{
+		return true;
+	}
+	if (address != m_Address)
+	{
+		RemoveConnect(m_ShmConnect);
+		m_Address = address;
+		m_Port = port;
+		m_Connected = false;
+		m_HasSendConnect = false;
+		m_ShmConnect = nullptr;
+		WriteLog(LogLevel::Info, "Address Changed. Address:%s Port:%s\n", m_Address.c_str(), m_Port.c_str());
+		if (!Init())
+			return false;
+	}
+	ConnectToServer();
+	while (m_HasSendConnect && m_CommonShmHeader->Status == ConnectStatusType::Connecting)
+	{
+		this_thread::sleep_for(std::chrono::milliseconds(10));
+	}
+	return m_Connected;
+}
 void ShmClient::ConnectToServer()
 {
 	if (m_Connected)
