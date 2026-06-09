@@ -1,6 +1,6 @@
 #pragma once
-#include "PersonalLib/Network/NetworkExport.h"
-#include "PersonalLib/Network/Tcp/SocketInit.h"
+#include <PersonalLib/Network/NetworkExport.h>
+#include <PersonalLib/Network/Tcp/SocketInit.h>
 #include <MSWSock.h>
 
 class NETWORK_EXPORTS SocketApi

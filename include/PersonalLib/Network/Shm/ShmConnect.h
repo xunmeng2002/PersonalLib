@@ -1,8 +1,9 @@
 #pragma once
-#include "PersonalLib/Types.h"
-#include "PersonalLib/Network/IO/Connect.h"
-#include "PersonalLib/TemplateLib/Buffer/ShmBuffer.h"
-#include "PersonalLib/TemplateLib/ObjectPool/ObjectPool.h"
+#include <PersonalLib/Network/NetworkExport.h>
+#include <PersonalLib/Types.h>
+#include <PersonalLib/Network/IO/Connect.h>
+#include <PersonalLib/TemplateLib/Buffer/ShmBuffer.h>
+#include <PersonalLib/TemplateLib/ObjectPool/ObjectPool.h>
 
 
 template<unsigned SIZE>

@@ -1,9 +1,9 @@
 #pragma once
-#include "PersonalLib/Network/NetworkExport.h"
+#include <PersonalLib/Network/NetworkExport.h>
 #include <list>
 #include <map>
-#include "PersonalLib/Network/Tcp/SocketInit.h"
-#include "PersonalLib/Network/Tcp/TcpBase.h"
+#include <PersonalLib/Network/Tcp/SocketInit.h>
+#include <PersonalLib/Network/Tcp/TcpBase.h>
 
 
 class NETWORK_EXPORTS TcpSelectBase : public TcpBase

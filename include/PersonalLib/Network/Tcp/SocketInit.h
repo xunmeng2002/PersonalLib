@@ -1,6 +1,6 @@
 #pragma once
-#include "PersonalLib/Network/NetworkExport.h"
-#include "PersonalLib/Core/Platform/Platform.h"
+#include <PersonalLib/Network/NetworkExport.h>
+#include <PersonalLib/Core/Platform/Platform.h>
 #include <mutex>
 #ifdef WINDOWS
 #include <Ws2tcpip.h>

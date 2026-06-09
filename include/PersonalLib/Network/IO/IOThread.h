@@ -1,10 +1,10 @@
 #pragma once
-#include "PersonalLib/Network/NetworkExport.h"
-#include "PersonalLib/Core/Thread/ThreadBase.h"
-#include "PersonalLib/Network/IO/IOBase.h"
-#include "PersonalLib/Types.h"
-#include "PersonalLib/TemplateLib/Buffer/Buffer.h"
-#include "PersonalLib/Network/IO/Connect.h"
+#include <PersonalLib/Network/NetworkExport.h>
+#include <PersonalLib/Types.h>
+#include <PersonalLib/Core/Thread/ThreadBase.h>
+#include <PersonalLib/Network/IO/IOBase.h>
+#include <PersonalLib/TemplateLib/Buffer/Buffer.h>
+#include <PersonalLib/Network/IO/Connect.h>
 #include <string>
 #include <mutex>
 #include <list>

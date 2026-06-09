@@ -1,5 +1,5 @@
 #pragma once
-#include "PersonalLib/Network/NetworkExport.h"
+#include <PersonalLib/Network/NetworkExport.h>
 #include <Windows.h>
 
 

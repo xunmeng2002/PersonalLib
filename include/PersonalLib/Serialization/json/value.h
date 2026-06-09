@@ -7,7 +7,7 @@
 #define JSON_H_INCLUDED
 
 #if !defined(JSON_IS_AMALGAMATION)
-#include "forwards.h"
+#include <PersonalLib/Serialization/json/forwards.h>
 #endif // if !defined(JSON_IS_AMALGAMATION)
 
 // Conditional NORETURN attribute on the throw functions would:

@@ -1,5 +1,6 @@
 #pragma once
-#include "PersonalLib/Network/Protocol/Package.h"
+#include <PersonalLib/Network/NetworkExport.h>
+#include <PersonalLib/Network/Protocol/Package.h>
 
 class ProtocolSubscriber
 {

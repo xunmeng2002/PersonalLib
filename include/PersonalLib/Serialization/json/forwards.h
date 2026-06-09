@@ -7,7 +7,7 @@
 #define JSON_FORWARDS_H_INCLUDED
 
 #if !defined(JSON_IS_AMALGAMATION)
-#include "config.h"
+#include <PersonalLib/Serialization/json/config.h>
 #endif // if !defined(JSON_IS_AMALGAMATION)
 
 namespace Json {

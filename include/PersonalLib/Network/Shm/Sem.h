@@ -1,6 +1,6 @@
 #pragma once
-#include "PersonalLib/Network/NetworkExport.h"
-#include "PersonalLib/Types.h"
+#include <PersonalLib/Network/NetworkExport.h>
+#include <PersonalLib/Types.h>
 #include <string>
 #ifdef LINUX
 #include <semaphore.h>

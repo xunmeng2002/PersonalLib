@@ -1,7 +1,7 @@
 #pragma once
-#include "PersonalLib/Network/NetworkExport.h"
-#include "PersonalLib/Types.h"
-#include "PersonalLib/TemplateLib/Buffer/Buffer.h"
+#include <PersonalLib/Network/NetworkExport.h>
+#include <PersonalLib/Types.h>
+#include <PersonalLib/TemplateLib/Buffer/Buffer.h>
 #include <list>
 #include <mutex>
 

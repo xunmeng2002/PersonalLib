@@ -1,10 +1,10 @@
 #pragma once
-#include "PersonalLib/Network/NetworkExport.h"
-#include "PersonalLib/Network/Protocol/PackageReader.h"
-#include "PersonalLib/Network/Protocol/PackageFactory.h"
-#include "PersonalLib/Network/Protocol/ProtocolSubscriber.h"
-#include "PersonalLib/Network/IO/IOBase.h"
-#include "PersonalLib/Network/IO/IOThread.h"
+#include <PersonalLib/Network/NetworkExport.h>
+#include <PersonalLib/Network/Protocol/PackageReader.h>
+#include <PersonalLib/Network/Protocol/PackageFactory.h>
+#include <PersonalLib/Network/Protocol/ProtocolSubscriber.h>
+#include <PersonalLib/Network/IO/IOBase.h>
+#include <PersonalLib/Network/IO/IOThread.h>
 #include <map>
 
 class NETWORK_EXPORTS Protocol : public IOSubscriber

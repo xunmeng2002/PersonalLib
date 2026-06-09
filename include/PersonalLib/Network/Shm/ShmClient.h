@@ -1,6 +1,6 @@
 #pragma once
-#include "PersonalLib/Network/NetworkExport.h"
-#include "PersonalLib/Network/Shm/ShmBase.h"
+#include <PersonalLib/Network/NetworkExport.h>
+#include <PersonalLib/Network/Shm/ShmBase.h>
 
 
 

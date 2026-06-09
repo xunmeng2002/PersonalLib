@@ -7,7 +7,7 @@
 #define JSON_FEATURES_H_INCLUDED
 
 #if !defined(JSON_IS_AMALGAMATION)
-#include "forwards.h"
+#include <PersonalLib/Serialization/json/forwards.h>
 #endif // if !defined(JSON_IS_AMALGAMATION)
 
 #pragma pack(push)

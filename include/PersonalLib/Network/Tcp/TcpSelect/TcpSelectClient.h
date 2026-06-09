@@ -1,6 +1,6 @@
 #pragma once
-#include "PersonalLib/Network/NetworkExport.h"
-#include "PersonalLib/Network/Tcp/TcpSelect/TcpSelectBase.h"
+#include <PersonalLib/Network/NetworkExport.h>
+#include <PersonalLib/Network/Tcp/TcpSelect/TcpSelectBase.h>
 
 
 class NETWORK_EXPORTS TcpSelectClient : public TcpSelectBase

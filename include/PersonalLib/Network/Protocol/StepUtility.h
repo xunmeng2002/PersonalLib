@@ -1,9 +1,8 @@
 #pragma once
-#include "PersonalLib/Network/NetworkExport.h"
+#include <PersonalLib/Network/NetworkExport.h>
+#include <PersonalLib/Network/Protocol/Head.h>
 #include <string>
 #include <unordered_map>
-#include "PersonalLib/Types.h"
-#include "PersonalLib/Network/Protocol/Head.h"
 
 
 constexpr unsigned int StepHeaderLen = 36u;

@@ -1,11 +1,12 @@
 #pragma once
-#include "PersonalLib/Core/CoreExport.h"
+#include <PersonalLib/Core/CoreExport.h>
+#include <PersonalLib/Core/Thread/ThreadBase.h>
 #include <list>
 #include <vector>
 #include <map>
 #include <mutex>
 #include <condition_variable>
-#include "PersonalLib/Core/Thread/ThreadBase.h"
+
 
 enum class LogLevel : int
 {

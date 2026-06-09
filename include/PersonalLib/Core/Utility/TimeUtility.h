@@ -1,8 +1,8 @@
 #pragma once
-#include "PersonalLib/Core/CoreExport.h"
+#include <PersonalLib/Core/CoreExport.h>
+#include <PersonalLib/Types.h>
 #include <chrono>
 #include <string>
-#include "PersonalLib/Types.h"
 
 
 class CORE_EXPORTS TimeUtility

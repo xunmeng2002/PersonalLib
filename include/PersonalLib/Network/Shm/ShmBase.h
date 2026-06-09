@@ -1,15 +1,15 @@
 #pragma once
-#include "PersonalLib/Network/NetworkExport.h"
+#include <PersonalLib/Network/NetworkExport.h>
+#include <PersonalLib/Types.h>
+#include <PersonalLib/TemplateLib/Buffer/Buffer.h>
+#include <PersonalLib/Network/IO/IOBase.h>
+#include <PersonalLib/Network/Shm/Sem.h>
+#include <PersonalLib/Network/Shm/ShmConnect.h>
 #include <string>
 #include <map>
 #include <list>
 #include <mutex>
 #include <chrono>
-#include "PersonalLib/Types.h"
-#include "PersonalLib/TemplateLib/Buffer/Buffer.h"
-#include "PersonalLib/Network/IO/IOBase.h"
-#include "PersonalLib/Network/Shm/Sem.h"
-#include "PersonalLib/Network/Shm/ShmConnect.h"
 
 
 

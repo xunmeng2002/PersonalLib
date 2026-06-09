@@ -1,5 +1,5 @@
 #pragma once
-#include "PersonalLib/Serialization/SerializationExport.h"
+#include <PersonalLib/Serialization/SerializationExport.h>
 #include <string>
 #include <cstring>
 #include <codecvt>

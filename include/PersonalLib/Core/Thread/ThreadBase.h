@@ -1,5 +1,5 @@
 #pragma once
-#include "PersonalLib/Core/CoreExport.h"
+#include <PersonalLib/Core/CoreExport.h>
 #include <thread>
 #include <string>
 #include <chrono>

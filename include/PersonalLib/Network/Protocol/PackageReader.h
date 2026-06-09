@@ -1,7 +1,7 @@
 #pragma once
-#include "PersonalLib/Network/NetworkExport.h"
-#include "PersonalLib/Network/Protocol/Package.h"
-#include "PersonalLib/Network/Protocol/PackageFactory.h"
+#include <PersonalLib/Network/NetworkExport.h>
+#include <PersonalLib/Network/Protocol/Package.h>
+#include <PersonalLib/Network/Protocol/PackageFactory.h>
 
 
 class NETWORK_EXPORTS PackageReader
