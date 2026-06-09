@@ -5,7 +5,6 @@
 #include "Tcp/SocketNotify.h"
 #include <PersonalLib/Network/IO/IOBase.h>
 #include <PersonalLib/TemplateLib/Buffer/Buffer.h>
-#include <PersonalLib/Core/Constant/Constant.h>
 #include <list>
 #include <map>
 #include <mutex>

@@ -1,6 +1,5 @@
 #pragma once
 #include <PersonalLib/TemplateLib/ObjectPool/ObjectPool.h>
-#include <PersonalLib/Core/Constant/Constant.h>
 #include <string.h>
 #include <assert.h>
 

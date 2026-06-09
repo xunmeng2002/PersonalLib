@@ -1,10 +1,9 @@
 #pragma once
+#include <PersonalLib/TemplateLib/Buffer/Buffer.h>
 #include <stdio.h>
 #include <list>
 #include <mutex>
 #include <condition_variable>
-#include <PersonalLib/Core/Constant/Constant.h>
-
 
 
 template<unsigned SIZE>
