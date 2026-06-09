@@ -1,6 +1,6 @@
 #pragma once
 #include <PersonalLib/Types.h>
-#include <PersonalLib/TemplateLib/Constant/Constant.h>
+#include <PersonalLib/Core/Constant/Constant.h>
 #include <PersonalLib/TemplateLib/ObjectPool/ObjectPool.h>
 #include <algorithm>
 #include <atomic>
