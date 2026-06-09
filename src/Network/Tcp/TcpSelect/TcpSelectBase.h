@@ -1,6 +1,6 @@
 #pragma once
-#include <PersonalLib/Network/Tcp/SocketInit.h>
-#include <PersonalLib/Network/Tcp/TcpBase.h>
+#include "Tcp/SocketInit.h"
+#include "Tcp/TcpBase.h"
 #include <list>
 #include <map>
 

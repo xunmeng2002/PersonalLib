@@ -1,5 +1,4 @@
 #pragma once
-#include <PersonalLib/Network/Tcp/TcpBase.h>
 #include <PersonalLib/Network/Protocol/Protocol.h>
 
 

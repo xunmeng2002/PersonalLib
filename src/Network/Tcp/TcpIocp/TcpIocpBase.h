@@ -1,5 +1,5 @@
 #pragma once
-#include <PersonalLib/Network/Tcp/TcpBase.h>
+#include "Tcp/TcpBase.h"
 #include "Tcp/TcpIocp/TcpIocpConnect.h"
 #include "Tcp/TcpIocp/TcpIocpCompletePort.h"
 

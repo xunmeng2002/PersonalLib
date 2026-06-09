@@ -1,7 +1,7 @@
 #pragma once
 #include <PersonalLib/Types.h>
-#include <PersonalLib/Network/Tcp/SocketInit.h>
-#include <PersonalLib/Network/Tcp/TcpConnect.h>
+#include "Tcp/SocketInit.h"
+#include "Tcp/TcpConnect.h"
 #include <PersonalLib/TemplateLib/Buffer/Buffer.h>
 
 enum class IocpEvent : int

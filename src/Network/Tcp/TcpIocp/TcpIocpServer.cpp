@@ -2,7 +2,7 @@
 #include "Tcp/TcpIocp/TcpIocpSockApi.h"
 #include "Tcp/TcpIocp/TcpIocpCompletePort.h"
 #include <PersonalLib/Core/Logger/Logger.h>
-#include <PersonalLib/Network/Tcp/TcpUtility.h>
+#include "Tcp/TcpUtility.h"
 
 
 TcpIocpServer::TcpIocpServer(const char* addressName, int milliSeconds, int backlog)

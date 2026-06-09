@@ -2,7 +2,7 @@
 #include "Tcp/TcpIocp/TcpIocpConnect.h"
 #include "Tcp/TcpIocp/TcpIocpSockApi.h"
 #include "Tcp/TcpIocp/TcpIocpCompletePort.h"
-#include <PersonalLib/Network/Tcp/TcpUtility.h>
+#include "Tcp/TcpUtility.h"
 #include <PersonalLib/Core/Logger/Logger.h>
 
 using namespace std;

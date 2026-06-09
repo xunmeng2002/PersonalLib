@@ -1,6 +1,6 @@
 #pragma once
 #include <PersonalLib/Network/NetworkExport.h>
-#include <PersonalLib/Network/Tcp/SocketInit.h>
+#include "Tcp/SocketInit.h"
 #include <string>
 
 class NETWORK_EXPORTS TcpUtility

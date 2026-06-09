@@ -1,7 +1,7 @@
 #pragma once
 #include <PersonalLib/Network/NetworkExport.h>
 #include <PersonalLib/Types.h>
-#include <PersonalLib/Network/Tcp/SocketInit.h>
+#include "Tcp/SocketInit.h"
 #include <PersonalLib/Network/IO/Connect.h>
 #include <mutex>
 #include <string>

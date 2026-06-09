@@ -1,7 +1,7 @@
-#include <PersonalLib/Network/Tcp/TcpBase.h>
+#include "Tcp/TcpBase.h"
 #include <PersonalLib/Core/Platform/Platform.h>
 #include <PersonalLib/Core/Logger/Logger.h>
-#include <PersonalLib/Network/Tcp/TcpUtility.h>
+#include "Tcp/TcpUtility.h"
 #include <PersonalLib/Core/Utility/TimeUtility.h>
 #include <cstring>
 #include <assert.h>

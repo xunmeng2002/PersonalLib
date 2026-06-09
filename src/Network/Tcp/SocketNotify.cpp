@@ -1,6 +1,6 @@
-#include <PersonalLib/Network/Tcp/SocketNotify.h>
-#include <PersonalLib/Network/Tcp/TcpUtility.h>
-#include <PersonalLib/Network/Tcp/TcpConnect.h>
+#include "Tcp/SocketNotify.h"
+#include "Tcp/TcpUtility.h"
+#include "Tcp/TcpConnect.h"
 #include <PersonalLib/Core/Logger/Logger.h>
 
 SocketNotify::SocketNotify()

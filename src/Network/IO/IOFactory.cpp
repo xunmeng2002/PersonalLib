@@ -12,7 +12,7 @@
 #include "Shm/ShmClient.h"
 #include "Shm/ShmServer.h"
 #include <PersonalLib/Core/Utility/TimeUtility.h>
-#include <PersonalLib/Network/Tcp/SocketInit.h>
+#include "Tcp/SocketInit.h"
 
 
 IOBase* IOFactory::CreateIO(ServerTypeType serverType, const char* address, IOModelType ioModel, int milliSeconds)

@@ -3,7 +3,7 @@
 #include "Tcp/TcpIocp/TcpIocpConnect.h"
 #include "Tcp/TcpIocp/TcpIocpSockApi.h"
 #include <PersonalLib/Network/IO/IOUtility.h>
-#include <PersonalLib/Network/Tcp/TcpUtility.h>
+#include "Tcp/TcpUtility.h"
 #include <PersonalLib/Core/Logger/Logger.h>
 
 

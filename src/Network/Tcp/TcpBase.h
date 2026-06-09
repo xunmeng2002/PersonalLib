@@ -1,8 +1,8 @@
 #pragma once
 #include <PersonalLib/Network/NetworkExport.h>
-#include <PersonalLib/Network/Tcp/SocketInit.h>
-#include <PersonalLib/Network/Tcp/TcpConnect.h>
-#include <PersonalLib/Network/Tcp/SocketNotify.h>
+#include "Tcp/SocketInit.h"
+#include "Tcp/TcpConnect.h"
+#include "Tcp/SocketNotify.h"
 #include <PersonalLib/Network/IO/IOBase.h>
 #include <PersonalLib/TemplateLib/Buffer/Buffer.h>
 #include <PersonalLib/TemplateLib/Constant/Constant.h>
