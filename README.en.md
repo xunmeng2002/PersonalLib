@@ -56,7 +56,6 @@ PersonalLib/
 - **Buffer**: Buffer management
 - **RingBuffer**: Circular buffer
 - **ShmBuffer**: Shared memory buffer
-- **DB**: Database operation encapsulation
 - **MemCache**: In-memory cache
 - **ObjectPool**: Object pool
 - **ThreadSafeContainer**: Thread-safe containers
