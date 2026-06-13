@@ -52,12 +52,17 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/$<CONFIG>)
 
 
 add_template_library(TemplateLib    ${CMAKE_CURRENT_SOURCE_DIR}/include)
+add_static_module(Core              ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/Core)
+add_static_module(Network           ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/Network)
+add_static_module(Serialization     ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/Serialization)
+target_link_libraries(NetworkStatic PUBLIC CoreStatic)
+
 add_shared_module(Core				${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/Core)
 add_shared_module(Network			${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/Network)
 add_shared_module(Serialization	    ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/Serialization)
 target_compile_definitions(Serialization PRIVATE JSON_DLL_BUILD)
-
 target_link_libraries(Network PUBLIC Core)
+
 
 option(BUILD_TESTS "Build test projects" ON)
 if(BUILD_TESTS)
@@ -68,7 +73,9 @@ string(TIMESTAMP BUILD_TIMESTAMP "%Y%m%d-%H%M%S")
 message("Build timestamp is ${BUILD_TIMESTAMP}")
 
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-install(TARGETS Core Network Serialization
+install(TARGETS 
+    Core Network Serialization
+    CoreStatic NetworkStatic SerializationStatic
     EXPORT ${PROJECT_NAME}Targets
     #CONFIGURATIONS Release
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
