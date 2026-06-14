@@ -1,4 +1,3 @@
-
 add_static_md_module(TestCommon ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/TestCommon)
 target_link_libraries(TestCommonStatic PUBLIC Core Network)
 
