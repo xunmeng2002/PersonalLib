@@ -18,6 +18,7 @@ struct ShmPackage
 };
 
 extern TestProtocolType g_TestProtocolType;
+extern const char* g_ShmAddress;
 extern const char* g_Address;
 extern IOModelType g_IOModel;
 

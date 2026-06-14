@@ -33,19 +33,18 @@ bool TcpBase::Init()
 		WriteLog(LogLevel::Error, "SocketNotify Init Failed.");
 		return false;
 	}
-
-	auto ret = TcpUtility::GetAddrinfo(m_Address.c_str(), m_Port.c_str(), m_AddressInfo);
-	if (ret < 0)
-	{
-		WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:%s Port:%s ret:%d, Errno:%d", m_Address.c_str(), m_Port.c_str(), ret, WSAGetLastError());
-		return false;
-	}
 	if (m_ServerType == ServerTypeType::Client)
 	{
 		ConnectToServer(m_Address.c_str(), atoi(m_Port.c_str()));
 	}
 	else if (m_ServerType == ServerTypeType::Server)
 	{
+		auto ret = TcpUtility::GetAddrinfo(m_Address.c_str(), m_Port.c_str(), m_AddressInfo);
+		if (ret < 0)
+		{
+			WriteLog(LogLevel::Info, "GetAddrinfo Failed. Address:%s Port:%s ret:%d, Errno:%d", m_Address.c_str(), m_Port.c_str(), ret, WSAGetLastError());
+			return false;
+		}
 		m_Socket = TcpUtility::PrepareSocket(m_AddressInfo->ai_family);
 		if (m_Socket == INVALID_SOCKET)
 		{

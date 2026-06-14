@@ -97,7 +97,6 @@ void TcpSelectClient::CheckConnect()
 	m_ConnectSuccessedSessions.clear();
 	for (auto& sessionID : m_ConnectFailedSessions)
 	{
-		m_Connectings[sessionID]->Deallocate();
 		m_Connectings.erase(sessionID);
 	}
 	m_ConnectFailedSessions.clear();

@@ -9,7 +9,7 @@
 void TestShmClient()
 {
     IOThread* ioThread = new IOThread("ShmClient");
-    auto io = IOFactory::CreateIO(ServerTypeType::Client, g_Address);
+    auto io = IOFactory::CreateIO(ServerTypeType::Client, g_ShmAddress);
     ClientIOSubscriberImpl clientIOSubscriberImpl(io, ioThread);
     ioThread->SetIO(io);
 

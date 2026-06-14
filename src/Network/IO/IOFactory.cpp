@@ -1,4 +1,5 @@
 #include <PersonalLib/Network/IO/IOFactory.h>
+#include "Tcp/SocketInit.h"
 #ifdef LINUX
 #include "Tcp/TcpEpoll/TcpEpollClient.h"
 #include "Tcp/TcpEpoll/TcpEpollServer.h"
@@ -11,8 +12,8 @@
 #include "Shm/SingleShm.h"
 #include "Shm/ShmClient.h"
 #include "Shm/ShmServer.h"
-#include <PersonalLib/Core/Utility/TimeUtility.h>
-#include "Tcp/SocketInit.h"
+#include <PersonalLib/Core/Core.h>
+
 
 
 IOBase* IOFactory::CreateIO(ServerTypeType serverType, const char* address, IOModelType ioModel, int milliSeconds)
@@ -37,7 +38,8 @@ IOBase* IOFactory::CreateIO(ServerTypeType serverType, const char* address, IOMo
 		throw std::logic_error(errorMsg);
 	}
 	auto addressName = address + 6;
-
+	WriteLog(LogLevel::Info, "CreateIO ServerType:%s, Address:%s, IOType:%s, IOModel:%s",
+		GetServerTypeString(serverType), address, GetIOTypeString(ioType), GetIOModelString(ioModel));
 	if (serverType == ServerTypeType::Client)
 	{
 		switch (ioType)

@@ -7,9 +7,9 @@ using namespace std::chrono;
 
 
 
-TestProtocolType g_TestProtocolType = TestProtocolType::Shm;
+TestProtocolType g_TestProtocolType = TestProtocolType::Tcp;
 
-//const char* g_Address = "shm://TestShm:4";
+const char* g_ShmAddress = "shm://TestShm:4";
 const char* g_Address = "tcp://127.0.0.1:20001";
 IOModelType g_IOModel = IOModelType::Select;
 
