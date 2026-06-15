@@ -47,6 +47,7 @@
 项目内置 Python 脚本，用于代码解析、模型生成、批量处理等自动化工作。
 
 ## 三、项目目录结构
+```
 PersonalLib/
 ├── include/ # 头文件目录（对外暴露接口）
 │ ├── PersonalLib/Core/ # 核心模块头文件
@@ -70,6 +71,7 @@ PersonalLib/
 ├── .gitmodules # Git 子模块配置
 ├── .gitignore # Git 忽略规则
 └── LICENSE # 开源许可证
+```
 
 ## 四、环境依赖
 ### 基础要求
