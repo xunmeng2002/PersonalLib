@@ -1,13 +1,13 @@
 # PersonalLib
 [![License](https://img.shields.io/badge/License-BSD--4--Clause-blue.svg)](LICENSE)
-[![Language](https://img.shields.io/badge/Language-C++14+-orange.svg)]()
+[![Language](https://img.shields.io/badge/Language-C++20+-orange.svg)]()
 [![Build](https://img.shields.io/badge/Build-CMake3.10+-green.svg)]()
 
 **PersonalLib** is a cross-platform C++ general-purpose foundational library designed for **financial trading systems and risk management systems**. It integrates high-performance logging, multi-model network communication, serialization, data structures, utility components, and other commonly used capabilities. It supports Linux / Windows platforms and can quickly accelerate financial backend service development.
 
 ## 1. Project Overview
 
-This is a personal open-source foundational component library focused on encapsulating low-level common capabilities for financial scenarios, avoiding reinventing the wheel. The library is developed based on standard C++14, uses CMake for cross-platform building, comes with Python scripts for automatic code generation, and includes comprehensive test cases. It is suitable for learning, secondary development, and integration into small-to-medium financial business systems.
+This is a personal open-source foundational component library focused on encapsulating low-level common capabilities for financial scenarios, avoiding reinventing the wheel. The library is developed based on standard C++20, uses CMake for cross-platform building, comes with Python scripts for automatic code generation, and includes comprehensive test cases. It is suitable for learning, secondary development, and integration into small-to-medium financial business systems.
 
 ## 2. Core Features
 
@@ -84,7 +84,7 @@ PersonalLib/
 ## 4. Environment Dependencies
 
 ### Prerequisites
-- C++ compiler supporting **C++14 or later** (GCC, Clang, MSVC)
+- C++ compiler supporting **C++20 or later** (GCC, Clang, MSVC)
 - Build tool: **CMake 3.10+**
 - Script runtime: **Python 3.6+** (only for code generation scripts, not a runtime dependency)
 - Platform: Linux, Windows

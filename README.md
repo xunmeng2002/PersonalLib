@@ -1,12 +1,12 @@
 # PersonalLib
 [![License](https://img.shields.io/badge/License-BSD--4--Clause-blue.svg)](LICENSE)
-[![Language](https://img.shields.io/badge/Language-C++14+-orange.svg)]()
+[![Language](https://img.shields.io/badge/Language-C++20+-orange.svg)]()
 [![Build](https://img.shields.io/badge/Build-CMake3.10+-green.svg)]()
 
 **PersonalLib** 是一套面向**金融交易系统、风险管理系统**设计的跨平台 C++ 通用基础库，集成高性能日志、多模型网络通信、序列化、数据结构、工具组件等常用能力，适配 Linux / Windows 双平台，可快速落地金融后端服务开发。
 
 ## 一、项目概述
-本项目为个人开源基础组件库，聚焦金融场景下的底层通用能力封装，规避重复造轮子。库基于标准 C++14 开发，采用 CMake 跨平台构建，配套 Python 脚本实现代码自动生成，内置完整测试用例，适合学习、二次开发及中小型金融业务系统集成。
+本项目为个人开源基础组件库，聚焦金融场景下的底层通用能力封装，规避重复造轮子。库基于标准 C++20 开发，采用 CMake 跨平台构建，配套 Python 脚本实现代码自动生成，内置完整测试用例，适合学习、二次开发及中小型金融业务系统集成。
 
 ## 二、核心功能模块
 整体分为四大核心模块 + 工具脚本，覆盖后端开发高频场景：
@@ -75,7 +75,7 @@ PersonalLib/
 
 ## 四、环境依赖
 ### 基础要求
-- C++ 编译器：支持 **C++14 及以上**（GCC、Clang、MSVC）
+- C++ 编译器：支持 **C++20 及以上**（GCC、Clang、MSVC）
 - 构建工具：**CMake 3.10+**
 - 脚本环境：**Python 3.6+**（仅用于代码生成类脚本，非运行依赖）
 - 平台：Linux、Windows
