@@ -5,6 +5,8 @@
 
 **PersonalLib** is a cross-platform C++ general-purpose foundational library designed for **financial trading systems and risk management systems**. It integrates high-performance logging, multi-model network communication, serialization, data structures, utility components, and other commonly used capabilities. It supports Linux / Windows platforms and can quickly accelerate financial backend service development.
 
+Created by [Fireseeker](https://fireseeker.cn/)
+
 ## 1. Project Overview
 
 This is a personal open-source foundational component library focused on encapsulating low-level common capabilities for financial scenarios, avoiding reinventing the wheel. The library is developed based on standard C++20, uses CMake for cross-platform building, comes with Python scripts for automatic code generation, and includes comprehensive test cases. It is suitable for learning, secondary development, and integration into small-to-medium financial business systems.
