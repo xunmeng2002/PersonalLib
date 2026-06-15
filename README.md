@@ -84,32 +84,32 @@ PersonalLib/
 ## 五、快速构建 & 编译
 ### 1. 克隆代码（含子模块）
 ```bash
-# 完整克隆仓库 + 拉取子模块
 git clone --recursive https://gitee.com/xunmeng200/PersonalLib.git
 cd PersonalLib
+```
 
 ### 2. 更新子模块（若未递归克隆）
+```bash
 # Linux / Mac
 sh UpdateSubmodule.sh
 
 # Windows
 UpdateSubmodule.bat
+```
 
 ### 3. CMake 编译（通用流程）
-# 1. 创建构建目录
+```bash
 mkdir build && cd build
-
-# 2. CMake 配置项目
 cmake ..
-
-# 3. 编译 Release 版本
 cmake --build . --config Release
+```
 
 编译完成后，库文件、测试程序会输出至 build 目录对应路径。
 
 ## 六、基础使用示例
 ### 示例 1：高性能日志组件
 
+```cpp
 #include "PersonalLib/Core/Logger/Logger.h"
 
 int main()
@@ -126,9 +126,11 @@ int main()
 
     return 0;
 }
+```
 
 ### 示例 2：JSON 序列化与解析
 
+```cpp
 #include "PersonalLib/Serialization/json/json.h"
 #include <iostream>
 
@@ -147,8 +149,11 @@ int main()
 
     return 0;
 }
+```
 
 ### 示例 3：网络通信（Step 协议客户端）
+
+```cpp
 #include "PersonalLib/Network/Protocol/Protocol.h"
 
 int main()
@@ -166,6 +171,7 @@ int main()
 
     return 0;
 }
+```
 
 ## 七、测试程序说明
 项目内置全套测试用例，位于 test/ 目录：
