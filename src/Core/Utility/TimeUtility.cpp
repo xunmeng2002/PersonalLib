@@ -255,8 +255,8 @@ long long TimeUtility::GetMilliSecondTimeStamp()
 }
 void TimeUtility::GetDateTimeFromTimeStamp(const Int64Type& timeStamp, DateType& date, TimeType& time)
 {
-	strcpy(date, to_string(timeStamp / 1000000000LL).c_str());
-	strcpy(time, to_string((timeStamp / 1000LL) % 1000000LL).c_str());
+	snprintf(date, sizeof(DateType), to_string(timeStamp / 1000000000LL).c_str());
+	snprintf(time, sizeof(TimeType), to_string((timeStamp / 1000LL) % 1000000LL).c_str());
 }
 
 int TimeUtility::GetTimeFromTimeString(const char* time)

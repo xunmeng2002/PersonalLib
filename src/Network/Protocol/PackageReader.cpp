@@ -17,7 +17,7 @@ PackageReader::PackageReader(ProtocolTypeType protocolType, PackageFactory* pack
 	m_ProtocolType = protocolType;
 	m_PackageFactory = packageFactory;
 	m_SessionID = sessionID;
-	strcpy(m_IPAddress, ipAddress);
+	snprintf(m_IPAddress, sizeof(IPAddressType), ipAddress);
 	memset(&(m_Head), 0, sizeof(HeadField));
 	memset(&(m_Tail), 0, sizeof(TailField));
 }
@@ -114,7 +114,7 @@ bool PackageReader::ParseXtpPackage(Package*& package)
 	}
 
 	package->SessionID = m_SessionID;
-	strcpy(package->IPAddress, m_IPAddress);
+	snprintf(package->IPAddress, sizeof(IPAddressType), m_IPAddress);
 	package->Head = m_Head;
 	package->Tail = m_Tail;
 	auto ret = package->FromXtpStream(m_Data, sizeof(HeadField), sizeof(HeadField) + m_Head.BodyLen);
@@ -167,7 +167,7 @@ bool PackageReader::ParseStepPackage(Package*& package)
 	}
 
 	package->SessionID = m_SessionID;
-	strcpy(package->IPAddress, m_IPAddress);
+	snprintf(package->IPAddress, sizeof(IPAddressType), m_IPAddress);
 	memcpy(&package->Head, &m_Head, sizeof(HeadField));
 	memcpy(&package->Tail, &m_Tail, sizeof(TailField));
 	auto ret = package->FromStepStream(m_Data, packageStartIndex + StepHeaderLen, packageStartIndex + StepHeaderLen + m_Head.BodyLen);

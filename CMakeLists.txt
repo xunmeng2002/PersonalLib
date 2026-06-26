@@ -6,7 +6,12 @@ include(GenerateExportHeader)
 include(submodules/CMakeCommon/CMakeCommon.cmake)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 20)
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    add_compile_options(/std:c++20)
+elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
+    add_compile_options(-std=c++20)
+endif()
+#set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_DEBUG_POSTFIX "d")
 set(CMAKE_VERBOSE_MAKEFILE ON)
 add_definitions(-DUNICODE -D_UNICODE)
@@ -49,6 +54,8 @@ message("CMAKE_CXX_FLAGS_DEBUG:" ${CMAKE_CXX_FLAGS_DEBUG})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/$<CONFIG>)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/$<CONFIG>)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/$<CONFIG>)
+
+
 
 
 add_template_library(TemplateLib    ${CMAKE_CURRENT_SOURCE_DIR}/include)

@@ -35,7 +35,7 @@ void TcpConnect::Set(SessionIDType sessionID, const SOCKET& socketID, const std:
 {
 	SessionID = sessionID;
 	SocketID = socketID;
-	strcpy(RemoteAddress, remoteIP.c_str());
+	snprintf(RemoteAddress, sizeof(RemoteAddress), remoteIP.c_str());
 	RemotePort = atoi(remotePort.c_str());
 	LastSendTimePoint = std::chrono::steady_clock::now();
 }

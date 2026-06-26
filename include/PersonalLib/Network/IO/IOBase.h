@@ -23,7 +23,7 @@ class NETWORK_EXPORTS IOBase
 {
 public:
 	IOBase(ServerTypeType serverType, const char* addressName, int milliSeconds);
-	~IOBase();
+	virtual ~IOBase();
 	void Subscribe(IOSubscriber* subscriber);
 	void UnSubscribe();
 	virtual void SetTimeOut(int milliSeconds);
