@@ -1,4 +1,4 @@
-﻿#include "Tcp/TcpConnect.h"
+#include "Tcp/TcpConnect.h"
 #include <PersonalLib/Core/Logger/Logger.h>
 #include <PersonalLib/TemplateLib/ObjectPool/ObjectPool.h>
 #include <PersonalLib/Core/Utility/TimeUtility.h>
@@ -35,7 +35,7 @@ void TcpConnect::Set(SessionIDType sessionID, const SOCKET& socketID, const std:
 {
 	SessionID = sessionID;
 	SocketID = socketID;
-	snprintf(RemoteAddress, sizeof(RemoteAddress), remoteIP.c_str());
+	snprintf(RemoteAddress, sizeof(RemoteAddress), "%s", remoteIP.c_str());
 	RemotePort = atoi(remotePort.c_str());
 	LastSendTimePoint = std::chrono::steady_clock::now();
 }
