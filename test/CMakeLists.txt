@@ -11,3 +11,9 @@ target_link_libraries(TestCore PRIVATE Core)
 target_link_libraries(TestClient PRIVATE TestCommonStatic)
 target_link_libraries(TestServer PRIVATE TestCommonStatic)
 
+
+option(BUILD_UNIT_TESTS "Build unit tests" ON)
+if(BUILD_UNIT_TESTS)
+    add_subdirectory(unittest)
+endif()
+

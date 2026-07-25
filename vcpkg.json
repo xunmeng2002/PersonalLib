@@ -1,0 +1,8 @@
+{
+  "name": "PersonalLib",
+  "version": "1.0.0",
+  "description": "Personal library project - vcpkg manifest placeholder",
+  "dependencies": [
+    "gtest"
+  ]
+}
