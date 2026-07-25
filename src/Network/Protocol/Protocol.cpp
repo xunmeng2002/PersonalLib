@@ -122,10 +122,11 @@ void Protocol::OnConnect(SessionIDType sessionID, const char* ip, int port)
 void Protocol::OnDisConnect(SessionIDType sessionID, const char* ip, int port)
 {
 	WriteLog(LogLevel::Info, "Protocol::OnDisConnect SessionID:%lld, IP:%s, Port:%d", sessionID, ip, port);
-	if (m_SessionPackageReaders.find(sessionID) != m_SessionPackageReaders.end())
+	auto it = m_SessionPackageReaders.find(sessionID);
+	if (it != m_SessionPackageReaders.end())
 	{
-		m_SessionPackageReaders[sessionID]->Deallocate();
-		m_SessionPackageReaders.erase(sessionID);
+		it->second->Deallocate();
+		m_SessionPackageReaders.erase(it);
 	}
 	if (m_Subscriber)
 	{
