@@ -141,12 +141,25 @@ int TimeUtility::HourAdd(int hourTime, int count)
 	auto hour = hourTime % 100;
 	auto date = hourTime / 100;
 	hour += count;
-	if (hour < 24)
+
+	if (hour >= 0 && hour < 24)
 	{
 		return date * 100 + hour;
 	}
-	auto dayCount = hour / 24;
-	hour = hour % 24;
+
+	int dayCount;
+	if (hour >= 0)
+	{
+		dayCount = hour / 24;
+		hour %= 24;
+	}
+	else
+	{
+		// C++ 对负数除法向零截断（-1/24=0），需做 floor 除法
+		dayCount = (hour - 23) / 24;
+		hour -= dayCount * 24;  // 归入 [0, 23]
+	}
+
 	date = DateAdd(date, dayCount);
 	return date * 100 + hour;
 }
@@ -155,12 +168,25 @@ long long TimeUtility::MinuteAdd(long long minuteTime, int count)
 	auto minute = minuteTime % 100;
 	auto hourTime = minuteTime / 100;
 	minute += count;
-	if (minute < 60)
+
+	if (minute >= 0 && minute < 60)
 	{
 		return hourTime * 100 + minute;
 	}
-	auto hourCount = minute / 60;
-	minute = minute % 60;
+
+	int hourCount;
+	if (minute >= 0)
+	{
+		hourCount = minute / 60;
+		minute %= 60;
+	}
+	else
+	{
+		// C++ 对负数除法向零截断，需做 floor 除法
+		hourCount = (minute - 59) / 60;
+		minute -= hourCount * 60;  // 归入 [0, 59]
+	}
+
 	hourTime = HourAdd(hourTime, hourCount);
 	return hourTime * 100 + minute;
 }

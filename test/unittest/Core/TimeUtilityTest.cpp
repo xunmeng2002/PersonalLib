@@ -172,12 +172,32 @@ TEST(TimeUtilityTest, HourAdd_CrossMonth)
 
 TEST(TimeUtilityTest, HourAdd_Negative)
 {
-    // ❌ 发现生产代码 bug: HourAdd 对负值跨天未正确处理
-    // 3:00 - 4h: hour = -1, 条件 if (hour < 24) 为真, 返回 date*100 + (-1) = 2024011499
-    // 正确应为 2024-01-14 23:00 = 2024011423
-    // 待修复: if (hour < 24) 应加 hour >= 0 条件
-    auto result = TimeUtility::HourAdd(2024011503, -4);
-    EXPECT_EQ(result, 2024011499);  // 当前 Bug 行为，留作回归
+    // 3:00 - 4h = 前一天的 23:00
+    EXPECT_EQ(TimeUtility::HourAdd(2024011503, -4), 2024011423);
+}
+
+TEST(TimeUtilityTest, HourAdd_LargeNegative)
+{
+    // 3:00 - 30h = 前一天的 21:00 (跨一天多)
+    EXPECT_EQ(TimeUtility::HourAdd(2024011503, -30), 2024011321);
+}
+
+TEST(TimeUtilityTest, MinuteAdd_Negative)
+{
+    // 10:05 - 10min = 09:55
+    EXPECT_EQ(TimeUtility::MinuteAdd(202401151005LL, -10), 202401150955LL);
+}
+
+TEST(TimeUtilityTest, MinuteAdd_NegativeCrossHour)
+{
+    // 10:05 - 20min = 09:45（跨小时）
+    EXPECT_EQ(TimeUtility::MinuteAdd(202401151005LL, -20), 202401150945LL);
+}
+
+TEST(TimeUtilityTest, MinuteAdd_LargeNegative)
+{
+    // 10:05 - 90min = 08:35（跨 1 小时多）
+    EXPECT_EQ(TimeUtility::MinuteAdd(202401151005LL, -90), 202401150835LL);
 }
 
 // ---------- MinuteAdd ----------
