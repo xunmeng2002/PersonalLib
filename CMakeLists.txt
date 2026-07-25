@@ -21,7 +21,7 @@ add_definitions(-DUNICODE -D_UNICODE)
 
 IF(CMAKE_SYSTEM_NAME MATCHES "Windows")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc /bigobj /utf-8")
-    add_definitions(-DWINDOWS -D_CRT_SECURE_NO_WARNINGS -D_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING)
+    add_definitions(-DWINDOWS -D_CRT_SECURE_NO_WARNINGS)
 	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 	add_compile_options(
         $<$<CONFIG:Debug>:/Od>
@@ -71,6 +71,19 @@ add_shared_module(Core				${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SO
 add_shared_module(Network			${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/Network)
 add_shared_module(Serialization	    ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src/Serialization)
 target_compile_definitions(Serialization PRIVATE JSON_DLL_BUILD)
+# Encode.cpp 使用了 C++17 弃用的 <codecvt>，仅对该文件压制警告
+if(LINUX)
+	set_source_files_properties(
+		${CMAKE_CURRENT_SOURCE_DIR}/src/Serialization/Encode/Encode.cpp
+		PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations"
+	)
+endif()
+if(WIN32)
+	set_source_files_properties(
+		${CMAKE_CURRENT_SOURCE_DIR}/src/Serialization/Encode/Encode.cpp
+		PROPERTIES COMPILE_FLAGS "-D_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING"
+	)
+endif()
 target_link_libraries(Network PUBLIC Core)
 
 
