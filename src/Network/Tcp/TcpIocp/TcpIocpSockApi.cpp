@@ -1,6 +1,8 @@
 ﻿#include "Tcp/TcpIocp/TcpIocpSockApi.h"
 #include <PersonalLib/Core/Logger/Logger.h>
 
+#ifdef WINDOWS
+
 SocketApi SocketApi::m_Instance;
 
 SocketApi::SocketApi()
@@ -56,3 +58,4 @@ bool SocketApi::Init(SOCKET sock)
 	}
 	return true;
 }
+#endif // WINDOWS

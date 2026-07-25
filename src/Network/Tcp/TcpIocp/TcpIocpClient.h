@@ -1,4 +1,5 @@
 ﻿#pragma once
+#ifdef WINDOWS
 #include "Tcp/TcpIocp/TcpIocpBase.h"
 
 
@@ -18,4 +19,5 @@ protected:
 private:
 	addrinfo* m_ClientLocalAddressInfo;
 };
+#endif // WINDOWS
 

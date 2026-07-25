@@ -6,6 +6,7 @@
 #include "Tcp/TcpUtility.h"
 #include <PersonalLib/Core/Logger/Logger.h>
 
+#ifdef WINDOWS
 
 TcpIocpClient::TcpIocpClient(const char* addressName, int milliSeconds, int backlog)
 	:TcpIocpBase(ServerTypeType::Client, addressName, milliSeconds, backlog)
@@ -103,3 +104,4 @@ SOCKET TcpIocpClient::PrepareConnectSocket()
     return socketID;
 }
 
+#endif // WINDOWS

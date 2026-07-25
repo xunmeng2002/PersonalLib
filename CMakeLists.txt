@@ -43,8 +43,6 @@ ELSEIF(CMAKE_SYSTEM_NAME MATCHES "Linux")
         $<$<CONFIG:Release>:NDEBUG>
         $<$<CONFIG:RelWithDebInfo>:NDEBUG>
         $<$<CONFIG:MinSizeRel>:NDEBUG>)
-    #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g -ggdb")
-    #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
     #list(APPEND CMAKE_CXX_FLAGS_DEBUG "-fsanitize=address")
 ENDIF()
 message("CMAKE_BUILD_TYPE:" ${CMAKE_BUILD_TYPE})

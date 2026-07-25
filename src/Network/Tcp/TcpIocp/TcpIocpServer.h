@@ -1,4 +1,5 @@
 ﻿#pragma once
+#ifdef WINDOWS
 #include "Tcp/TcpIocp/TcpIocpBase.h"
 
 class TcpIocpServer : public TcpIocpBase
@@ -13,4 +14,5 @@ protected:
 
 	SOCKET PrepareAcceptSocket();
 };
+#endif // WINDOWS
 

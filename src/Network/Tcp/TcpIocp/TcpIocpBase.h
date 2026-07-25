@@ -1,4 +1,5 @@
 ﻿#pragma once
+#ifdef WINDOWS
 #include "Tcp/TcpBase.h"
 #include "Tcp/TcpIocp/TcpIocpConnect.h"
 #include "Tcp/TcpIocp/TcpIocpCompletePort.h"
@@ -31,4 +32,5 @@ protected:
 	int m_BackLog;
 	IOCompletePort* m_IOCompletePort;
 };
+#endif // WINDOWS
 

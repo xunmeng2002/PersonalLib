@@ -1,5 +1,6 @@
 ﻿#include "Tcp/TcpIocp/TcpIocpCompletePort.h"
 
+#ifdef WINDOWS
 
 IOCompletePort::IOCompletePort()
 {
@@ -37,3 +38,4 @@ bool IOCompletePort::GetStatus(PDWORD pdwNumBytes, ULONG_PTR* pCompKey, OVERLAPP
 {
 	return GetQueuedCompletionStatus(m_Handle, pdwNumBytes, pCompKey, ppo, dwMilliseconds);
 }
+#endif // WINDOWS

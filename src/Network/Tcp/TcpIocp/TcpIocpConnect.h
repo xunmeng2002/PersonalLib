@@ -1,4 +1,5 @@
 ﻿#pragma once
+#ifdef WINDOWS
 #include <PersonalLib/Types.h>
 #include "Tcp/SocketInit.h"
 #include "Tcp/TcpConnect.h"
@@ -45,5 +46,6 @@ public:
 	Buffer<BuffSize>* MyBuffer;
 	TcpIocpConnect* Connect;
 };
+#endif // WINDOWS
 
 

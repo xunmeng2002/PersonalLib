@@ -5,6 +5,8 @@
 #include "Tcp/TcpUtility.h"
 #include <PersonalLib/Core/Logger/Logger.h>
 
+#ifdef WINDOWS
+
 using namespace std;
 
 TcpIocpBase::TcpIocpBase(ServerTypeType serverType, const char* addressName, int milliSeconds, int backlog)
@@ -290,3 +292,5 @@ void TcpIocpBase::OnRecvComplete(MyOverlapped* overlapped, int bytesTransferred)
     }
     PostRecv(overlapped);
 }
+
+#endif // WINDOWS

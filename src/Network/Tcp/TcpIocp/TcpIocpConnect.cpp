@@ -2,6 +2,7 @@
 #include <PersonalLib/TemplateLib/ObjectPool/ObjectPool.h>
 #include <PersonalLib/Core/Logger/Logger.h>
 
+#ifdef WINDOWS
 
 TcpIocpConnect::TcpIocpConnect(SessionIDType sessionID, const SOCKET& socketID, const std::string& remoteIP, const std::string& remotePort)
 	:TcpConnect(sessionID, socketID, remoteIP, remotePort)
@@ -97,3 +98,4 @@ void MyOverlapped::Reset()
 	}
 	Connect = nullptr;
 }
+#endif // WINDOWS
