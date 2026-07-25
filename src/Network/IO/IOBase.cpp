@@ -89,12 +89,13 @@ void IOBase::RemoveConnect(Connect* connect)
 Connect* IOBase::GetConnect(SessionIDType sessionID)
 {
 	std::lock_guard<std::mutex> guard(m_ConnectsMutex);
-	if (m_Connects.find(sessionID) == m_Connects.end())
+	auto it = m_Connects.find(sessionID);
+	if (it == m_Connects.end())
 	{
 		WriteLog(LogLevel::Warning, "Connect not Exist For SessionID:%lld", sessionID);
 		return nullptr;
 	}
-	return m_Connects[sessionID];
+	return it->second;
 }
 
 

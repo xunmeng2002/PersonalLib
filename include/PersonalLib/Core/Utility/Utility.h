@@ -12,7 +12,6 @@ public:
 
     static std::string ItoA(int value);
     static std::string FtoA(double value);
-    static void Erase(std::string& str, char a);
 
     template<int N>
     static char* Strcpy(char(&dest)[N], const char* src)

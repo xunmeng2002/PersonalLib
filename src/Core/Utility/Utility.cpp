@@ -30,10 +30,6 @@ std::string Utility::FtoA(double value)
 {
 	return std::format("{}", value);
 }
-void Utility::Erase(std::string& str, char a)
-{
-	str.erase(std::remove(str.begin(), str.end(), a), str.end());
-}
 
 
 void Utility::PrintBytes(const char* name, char* src, int len)
