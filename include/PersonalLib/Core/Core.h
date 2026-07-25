@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <PersonalLib/Core/Aspect/Aspect.h>
 #include <PersonalLib/Core/Aspect/AspectAfter.h>
 #include <PersonalLib/Core/Aspect/AspectBefore.h>

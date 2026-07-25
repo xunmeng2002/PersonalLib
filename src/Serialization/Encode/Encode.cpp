@@ -1,4 +1,4 @@
-#include <PersonalLib/Serialization/Encode/Encode.h>
+﻿#include <PersonalLib/Serialization/Encode/Encode.h>
 #include <locale>
 
 

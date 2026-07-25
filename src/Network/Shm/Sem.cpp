@@ -1,4 +1,4 @@
-#include "Shm/Sem.h"
+﻿#include "Shm/Sem.h"
 #include <PersonalLib/Core/Logger/Logger.h>
 #include <PersonalLib/Core/Utility/TimeUtility.h>
 #include <thread>

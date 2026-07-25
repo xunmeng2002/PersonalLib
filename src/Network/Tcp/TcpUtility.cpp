@@ -1,4 +1,4 @@
-#include "Tcp/TcpUtility.h"
+﻿#include "Tcp/TcpUtility.h"
 #include <PersonalLib/Core/Platform/Platform.h>
 #include <PersonalLib/Core/Logger/Logger.h>
 #include <string.h>

@@ -1,4 +1,4 @@
-#include <PersonalLib/Core/Platform/Dir.h>
+﻿#include <PersonalLib/Core/Platform/Dir.h>
 #ifdef WINDOWS
 #include <direct.h>
 #include <io.h>

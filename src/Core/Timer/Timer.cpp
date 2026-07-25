@@ -1,4 +1,4 @@
-#include <PersonalLib/Core/Timer/Timer.h>
+﻿#include <PersonalLib/Core/Timer/Timer.h>
 
 using namespace std::chrono;
 

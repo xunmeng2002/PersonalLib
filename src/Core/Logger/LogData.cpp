@@ -1,4 +1,4 @@
-#include "Logger/LogData.h"
+﻿#include "Logger/LogData.h"
 
 
 LogData::LogData()

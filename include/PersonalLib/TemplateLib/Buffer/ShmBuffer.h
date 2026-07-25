@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <PersonalLib/Types.h>
 #include <PersonalLib/TemplateLib/ObjectPool/ObjectPool.h>
 #include <algorithm>

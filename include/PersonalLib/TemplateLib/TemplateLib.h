@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <PersonalLib/TemplateLib/Buffer/Buffer.h>
 #include <PersonalLib/TemplateLib/Buffer/RingBuffer.h>
 #include <PersonalLib/TemplateLib/Buffer/ShmBuffer.h>

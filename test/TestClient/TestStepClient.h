@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "TestCommon/Packages/Packages.h"
 #include <PersonalLib/Network/Protocol/Protocol.h>
 #include <chrono>

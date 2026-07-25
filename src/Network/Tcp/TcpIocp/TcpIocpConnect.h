@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <PersonalLib/Types.h>
 #include "Tcp/SocketInit.h"
 #include "Tcp/TcpConnect.h"
@@ -6,15 +6,15 @@
 
 enum class IocpEvent : int
 {
-	EventNone = 0,			//ÇëÇóÁ¬½Ó
-	EventConnect = 1,			//ÇëÇóÁ¬½Ó
-	EventDisConnect = 2,		//ÇëÇó¶Ï¿ªÁ¬½Ó
-	EventAccept = 3,			//ÇëÇó½ÓÊÜÁ¬½Ó
-	EventOnConnected = 4,		//ÒÑÁ¬½Ó
-	EventOnDisConnected = 5,	//ÒÑ¶Ï¿ªÁ¬½Ó
-	EventOnAccept = 6,			//ÒÑ½ÓÊÜÁ¬½Ó
-	EventSend = 7,				//ÇëÇó·¢ËÍ
-	EventRecv = 8,				//ÇëÇó½ÓÊÕ
+	EventNone = 0,			//è¯·æ±‚è¿æ¥
+	EventConnect = 1,			//è¯·æ±‚è¿æ¥
+	EventDisConnect = 2,		//è¯·æ±‚æ–­å¼€è¿æ¥
+	EventAccept = 3,			//è¯·æ±‚æ¥å—è¿æ¥
+	EventOnConnected = 4,		//å·²è¿æ¥
+	EventOnDisConnected = 5,	//å·²æ–­å¼€è¿æ¥
+	EventOnAccept = 6,			//å·²æ¥å—è¿æ¥
+	EventSend = 7,				//è¯·æ±‚å‘é€
+	EventRecv = 8,				//è¯·æ±‚æ¥æ”¶
 };
 
 class TcpIocpConnect : public TcpConnect

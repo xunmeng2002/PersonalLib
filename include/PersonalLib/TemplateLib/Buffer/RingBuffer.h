@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <PersonalLib/TemplateLib/ObjectPool/ObjectPool.h>
 #include <string.h>
 #include <assert.h>

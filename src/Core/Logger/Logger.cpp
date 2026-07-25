@@ -1,4 +1,4 @@
-#include <PersonalLib/Core/Logger/Logger.h>
+ï»¿#include <PersonalLib/Core/Logger/Logger.h>
 #include <PersonalLib/TemplateLib/Buffer/Buffer.h>
 #include <PersonalLib/Core/Utility/Utility.h>
 #include <PersonalLib/Core/Utility/TimeUtility.h>
@@ -193,7 +193,7 @@ void Logger::CreateLogFile()
 }
 static int64_t GetCurrentThreadIdSysCall() noexcept {
 #ifdef WINDOWS
-	// Windows: Ö±½Óµ÷ÓÃAPI
+	// Windows: ç›´æŽ¥è°ƒç”¨API
 	return static_cast<int64_t>(::GetCurrentThreadId());
 #elif defined(LINUX)
 	return static_cast<int64_t>(syscall(SYS_gettid));

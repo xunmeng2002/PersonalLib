@@ -1,4 +1,4 @@
-#include "Shm/SingleShm.h"
+﻿#include "Shm/SingleShm.h"
 #include <PersonalLib/Core/Logger/Logger.h>
 #include <PersonalLib/Core/Utility/TimeUtility.h>
 #include <string.h>

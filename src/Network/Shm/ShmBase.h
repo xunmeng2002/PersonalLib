@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Shm/Sem.h"
 #include "Shm/ShmConnect.h"
 #include <PersonalLib/Types.h>

@@ -1,4 +1,4 @@
-#include <PersonalLib/Network/Protocol/Protocol.h>
+﻿#include <PersonalLib/Network/Protocol/Protocol.h>
 #include <PersonalLib/Core/Logger/Logger.h>
 #include <PersonalLib/Network/IO/IOFactory.h>
 #include <stdexcept>

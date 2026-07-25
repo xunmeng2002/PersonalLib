@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Tcp/TcpBase.h"
 #include "Tcp/TcpConnect.h"
 #include <list>

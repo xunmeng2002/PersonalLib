@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Tcp/SocketInit.h"
 #include <MSWSock.h>
 

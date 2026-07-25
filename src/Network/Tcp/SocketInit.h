@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <PersonalLib/Network/NetworkExport.h>
 #include <PersonalLib/Core/Platform/Platform.h>
 #include <mutex>

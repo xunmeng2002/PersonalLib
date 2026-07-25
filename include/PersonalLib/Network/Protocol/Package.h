@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <PersonalLib/Network/NetworkExport.h>
 #include <PersonalLib/Types.h>
 #include <PersonalLib/Network/Protocol/Head.h>

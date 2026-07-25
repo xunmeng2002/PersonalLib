@@ -1,4 +1,4 @@
-#include <PersonalLib/Core/Platform/Platform.h>
+﻿#include <PersonalLib/Core/Platform/Platform.h>
 #ifdef LINUX
 #include <unistd.h>
 

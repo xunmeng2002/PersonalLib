@@ -1,4 +1,4 @@
-#include <PersonalLib/Core/Thread/ThreadBase.h>
+﻿#include <PersonalLib/Core/Thread/ThreadBase.h>
 #include <PersonalLib/Core/Logger/Logger.h>
 #include <functional>
 #include <assert.h>

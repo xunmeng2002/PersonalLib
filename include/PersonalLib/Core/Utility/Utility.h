@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <PersonalLib/Core/CoreExport.h>
 #include <PersonalLib/Types.h>
 #include <string>

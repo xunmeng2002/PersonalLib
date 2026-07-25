@@ -1,4 +1,4 @@
-#include <PersonalLib/Network/IO/IOThread.h>
+﻿#include <PersonalLib/Network/IO/IOThread.h>
 #include <PersonalLib/Network/IO/IOUtility.h>
 #include <PersonalLib/Core/Utility/TimeUtility.h>
 #include <PersonalLib/Core/Logger/Logger.h>

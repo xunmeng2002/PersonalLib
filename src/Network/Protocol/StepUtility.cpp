@@ -1,4 +1,4 @@
-#include <PersonalLib/Network/Protocol/StepUtility.h>
+ï»¿#include <PersonalLib/Network/Protocol/StepUtility.h>
 #include <PersonalLib/Network/Protocol/Items.h>
 #include <PersonalLib/Core/Logger/Logger.h>
 
@@ -169,12 +169,12 @@ void StepUtility::HeadToStream(HeadField* head, char* buff, int size)
 	len += ::sprintf(buff + len, "%u=%05u%c", Items::BodyLen, head->BodyLen, SOH);
 	len += ::sprintf(buff + len, "%u=%13d%c", Items::MsgSeqNum, head->MsgSeqNum, SOH);
 	len += ::sprintf(buff + len, "%u=%d", Items::MessageChain, head->MessageChain);
-	//×îºóÒ»¸ö²»ÄÜÊ¹ÓÃsprintf¸³Öµ£¬ÒòÎªsprintf»áÔÚÄ©Î²×Ô¶¯²¹ÉÏ0
+	//æœ€åä¸€ä¸ªä¸èƒ½ä½¿ç”¨sprintfèµ‹å€¼ï¼Œå› ä¸ºsprintfä¼šåœ¨æœ«å°¾è‡ªåŠ¨è¡¥ä¸Š0
 	buff[len] = SOH;
 }
 bool StepUtility::HeadFromStream(char* buff, int startIndex, int endIndex, HeadField* head)
 {
-	//Ìø¹ı±¨ÎÄÊ×¸öSOH·ûºÅ
+	//è·³è¿‡æŠ¥æ–‡é¦–ä¸ªSOHç¬¦å·
 	startIndex += 1;
 	unsigned short key;
 	std::string value;

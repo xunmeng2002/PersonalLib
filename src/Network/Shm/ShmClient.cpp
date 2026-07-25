@@ -1,4 +1,4 @@
-#include "Shm/ShmClient.h"
+﻿#include "Shm/ShmClient.h"
 #include <PersonalLib/Core/Logger/Logger.h>
 #include <string.h>
 

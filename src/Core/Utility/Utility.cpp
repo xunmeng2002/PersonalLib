@@ -1,4 +1,4 @@
-#include <PersonalLib/Core/Utility/Utility.h>
+﻿#include <PersonalLib/Core/Utility/Utility.h>
 #include <algorithm>
 #include <iostream>
 #include <cstring>

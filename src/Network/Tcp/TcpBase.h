@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <PersonalLib/Network/NetworkExport.h>
 #include "Tcp/SocketInit.h"
 #include "Tcp/TcpConnect.h"

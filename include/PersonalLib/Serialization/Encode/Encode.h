@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <PersonalLib/Serialization/SerializationExport.h>
 #include <string>
 #include <cstring>

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Shm/ShmConnect.h"
 #include <PersonalLib/Types.h>
 #include <PersonalLib/TemplateLib/Buffer/Buffer.h>

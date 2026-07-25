@@ -1,4 +1,4 @@
-#include <PersonalLib/Core/Utility/DoubleUtility.h>
+﻿#include <PersonalLib/Core/Utility/DoubleUtility.h>
 #include <cmath>
 
 using namespace std;

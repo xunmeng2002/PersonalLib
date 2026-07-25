@@ -1,4 +1,4 @@
-#include "Shm/ShmBase.h"
+﻿#include "Shm/ShmBase.h"
 #include <PersonalLib/Core/Logger/Logger.h>
 #include <PersonalLib/Core/Utility/TimeUtility.h>
 #ifdef WINDOWS

@@ -1,4 +1,4 @@
-#include <PersonalLib/Network/IO/IOFactory.h>
+﻿#include <PersonalLib/Network/IO/IOFactory.h>
 #include "Tcp/SocketInit.h"
 #ifdef LINUX
 #include "Tcp/TcpEpoll/TcpEpollClient.h"
