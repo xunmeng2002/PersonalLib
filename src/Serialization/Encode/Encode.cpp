@@ -1,5 +1,20 @@
-﻿#include <PersonalLib/Serialization/Encode/Encode.h>
+#include <PersonalLib/Serialization/Encode/Encode.h>
 #include <locale>
+#include <codecvt>
+
+
+class codecvt_gbk : public std::codecvt_byname<wchar_t, char, std::mbstate_t>
+{
+public:
+    codecvt_gbk()
+#ifdef WINDOWS
+        :codecvt_byname("zh_CN")
+#else
+        : codecvt_byname("zh_CN.GB18030")
+#endif
+    {
+    }
+};
 
 
 static std::wstring_convert<codecvt_gbk> s_GbkConvert;

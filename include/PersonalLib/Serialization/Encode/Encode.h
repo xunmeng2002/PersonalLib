@@ -1,23 +1,17 @@
-﻿#pragma once
+#pragma once
 #include <PersonalLib/Serialization/SerializationExport.h>
 #include <string>
 #include <cstring>
-#include <codecvt>
 
 
-class codecvt_gbk : public std::codecvt_byname<wchar_t, char, std::mbstate_t>
-{
-public:
-    codecvt_gbk()
-#ifdef WINDOWS
-        :codecvt_byname("zh_CN")
-#else
-        : codecvt_byname("zh_CN.GB18030")
-#endif
-    {
-    }
-};
-
+// ============================================================================
+//  NOTE: wstring_convert / codecvt_utf8 / codecvt_byname are deprecated in
+//  C++17 and will be removed in C++26.  The deprecation warning is suppressed
+//  below because no portable, non-deprecated standard equivalent exists yet
+//  (codecvt<wchar_t,char> in <locale> is NOT deprecated but its locale-based
+//  behaviour is broken on MSVC for UTF-8, so it is not a drop-in replacement).
+//  Revisit for C++26 — expected alternatives: <text_encoding> or <unicode>.
+// ============================================================================
 
 std::wstring SERIALIZATION_EXPORTS GbkToUnicode(const std::string& str);
 std::string SERIALIZATION_EXPORTS UnicodeToGbk(const std::wstring& str);
@@ -40,4 +34,3 @@ void TrunsferGbkToUtf8(char (&src)[N])
     memset(src, 0, N);
     memcpy(src, utf8.c_str(), utf8.length());
 }
-
