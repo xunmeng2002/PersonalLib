@@ -157,9 +157,9 @@ void Logger::WriteToLog(LogLevel level, const char* file, int line, const char* 
 	for (auto p = file; *p != '\0'; p++)
 		if (*p == '\\' || *p == '/')
 			file = p + 1;
-	unsigned len1 = snprintf(t_LogBuffer, MaxLogFormatLength, "%s %lld %s ", TimeUtility::GetLocalDateTimeWithMilliSecond().c_str(), GetCurrentThreadID(), s_LogLevelName[level].c_str());
+	unsigned len1 = std::format_to_n(t_LogBuffer, MaxLogFormatLength, "{} {} {} ", TimeUtility::GetLocalDateTimeWithMilliSecond(), GetCurrentThreadID(), s_LogLevelName[level]).out - t_LogBuffer;
 	unsigned len2 = vsnprintf(t_LogBuffer + len1, MaxLogLineContentLength, format, va);
-	unsigned len3 = snprintf(t_LogBuffer + len1 + len2, LogLineLength - len1 - len2 - 1, "\t\t---%s:%d[%s]\n", file, line, func);
+	unsigned len3 = std::format_to_n(t_LogBuffer + len1 + len2, LogLineLength - len1 - len2 - 1, "\t\t---{}:{}[{}]\n", file, line, func).out - (t_LogBuffer + len1 + len2);
 	unsigned len = len1 + len2 + len3;
 	std::lock_guard<std::mutex> guard(m_LogData->Mutex);
 	if (m_LogData->CurrBuffer->GetWriteBufferSize() < len)
@@ -172,8 +172,8 @@ void Logger::WriteToLog(LogLevel level, const char* file, int line, const char* 
 void Logger::WriteToConsole(LogLevel level, const char* formatStr, va_list va)
 {
 	static thread_local char logString[LogLineLength] = {0};
-	int len = snprintf(logString, MaxLogFormatLength, "ThreadID[%lld] ", GetCurrentThreadID());
-	len += vsnprintf(logString + len, LogLineLength - len -1, formatStr, va);
+	int len = std::format_to_n(logString, MaxLogFormatLength, "ThreadID[{}] ", GetCurrentThreadID()).out - logString;
+	len += vsnprintf(logString + len, LogLineLength - len - 1, formatStr, va);
 
 	printf("%s\n", logString);
 }
@@ -186,8 +186,8 @@ void Logger::CreateLogFile()
 	}
 	char timeBuff[32];
 	strftime(timeBuff, 32, "%Y%m%d-%H%M%S", &m_CreateLogFileTime);
-	char fileName[256];		
-	snprintf(fileName, sizeof(fileName), "log/%s.%s.log", m_ProcessName, timeBuff);
+	char fileName[256]{};
+	std::format_to_n(fileName, sizeof(fileName) - 1, "log/{}.{}.log", m_ProcessName, timeBuff);
 	m_LogData->LogFile = fopen(fileName, "a+");
 	assert(m_LogData->LogFile != nullptr);
 }

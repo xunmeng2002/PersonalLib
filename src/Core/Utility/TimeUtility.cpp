@@ -1,6 +1,7 @@
 ﻿#include <PersonalLib/Core/Utility/TimeUtility.h>
+#include <format>
 #include <iostream>
-#include <sstream> 
+#include <sstream>
 #include <ctime>
 #include <time.h>
 #include <cstring>
@@ -202,7 +203,7 @@ std::string TimeUtility::GetUtcDateTimeWithMilliSecond()
 	int milliSecond = now.time_since_epoch().count() % 1000;
 	auto localTm = gmtime(&t);
 	auto len = strftime(t_DateTimeBuff, 32, "%Y%m%d-%H:%M:%S", localTm);
-	sprintf(t_DateTimeBuff + len, ".%03u", milliSecond);
+	std::format_to_n(t_DateTimeBuff + len, 32 - len, ".{:03}", milliSecond);
 	return std::string(t_DateTimeBuff);
 }
 
@@ -241,7 +242,7 @@ std::string TimeUtility::GetLocalDateTimeWithMilliSecond()
 	int milliSecond = now.time_since_epoch().count() % 1000;
 	auto localTm = localtime(&t);
 	auto len = strftime(t_DateTimeBuff, 32, "%Y%m%d-%H:%M:%S", localTm);
-	sprintf(t_DateTimeBuff + len, ".%03u", milliSecond);
+	std::format_to_n(t_DateTimeBuff + len, 32 - len, ".{:03}", milliSecond);
 	return std::string(t_DateTimeBuff);
 }
 long long TimeUtility::GetMilliSecondTimeStamp()
@@ -250,13 +251,13 @@ long long TimeUtility::GetMilliSecondTimeStamp()
 	time_t time = startTime.time_since_epoch().count() / 1000;
 	int ms = startTime.time_since_epoch().count() % 1000;
 	auto len = strftime(t_DateTimeBuff, 32, "%Y%m%d%H%M%S", localtime(&time));
-	sprintf(t_DateTimeBuff + len, "%03u", ms);
+	std::format_to_n(t_DateTimeBuff + len, 32 - len, "{:03}", ms);
 	return atoll(t_DateTimeBuff);
 }
 void TimeUtility::GetDateTimeFromTimeStamp(const Int64Type& timeStamp, DateType& date, TimeType& time)
 {
-	snprintf(date, sizeof(DateType), to_string(timeStamp / 1000000000LL).c_str());
-	snprintf(time, sizeof(TimeType), to_string((timeStamp / 1000LL) % 1000000LL).c_str());
+	snprintf(date, sizeof(DateType), "%lld", timeStamp / 1000000000LL);
+	snprintf(time, sizeof(TimeType), "%lld", (timeStamp / 1000LL) % 1000000LL);
 }
 
 int TimeUtility::GetTimeFromTimeString(const char* time)

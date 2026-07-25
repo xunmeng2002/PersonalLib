@@ -13,6 +13,8 @@
 #include "Shm/ShmClient.h"
 #include "Shm/ShmServer.h"
 #include <PersonalLib/Core/Core.h>
+#include <format>
+#include <stdexcept>
 
 
 
@@ -33,9 +35,7 @@ IOBase* IOFactory::CreateIO(ServerTypeType serverType, const char* address, IOMo
 	}
 	else
 	{
-		char errorMsg[256]{ 0 };
-		sprintf(errorMsg, "Invalid Address:%s", address);
-		throw std::logic_error(errorMsg);
+		throw std::logic_error(std::format("Invalid Address:{}", address));
 	}
 	auto addressName = address + 6;
 	WriteLog(LogLevel::Info, "CreateIO ServerType:%s, Address:%s, IOType:%s, IOModel:%s",

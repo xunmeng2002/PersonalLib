@@ -1,5 +1,6 @@
 ﻿#include <PersonalLib/Core/Utility/Utility.h>
 #include <algorithm>
+#include <format>
 #include <iostream>
 #include <cstring>
 #include <fstream>
@@ -23,15 +24,11 @@ void Utility::ParseProcessName(const char* fullProcessName, char* processName, i
 
 std::string Utility::ItoA(int value)
 {
-	static char buff[32];
-	sprintf(buff, "%d", value);
-	return std::string(buff);
+	return std::to_string(value);
 }
 std::string Utility::FtoA(double value)
 {
-	static char buff[32];
-	sprintf(buff, "%f", value);
-	return std::string(buff);
+	return std::format("{}", value);
 }
 void Utility::Erase(std::string& str, char a)
 {
@@ -42,13 +39,13 @@ void Utility::Erase(std::string& str, char a)
 void Utility::PrintBytes(const char* name, char* src, int len)
 {
 	std::ofstream ofs("temp.log", std::ios::app);
-	char buff[1024] = { 0 };
-	int index = sprintf(buff, "%s:", name);
+	std::string result;
+	result += std::format("{}:", name);
 	for (auto i = 0; i < len; ++i)
 	{
-		index += sprintf(buff + index, "%02X ", (unsigned char)src[i]);
+		result += std::format("{:02X} ", static_cast<unsigned char>(src[i]));
 	}
-	ofs << buff << std::endl;
+	ofs << result << std::endl;
 }
 
 void Utility::RemoveCharacter(char* src, int size, char c)
