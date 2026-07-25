@@ -1,8 +1,5 @@
-﻿#pragma once
+#pragma once
 #include <PersonalLib/Core/CoreExport.h>
-#include <chrono>
-
-using namespace std::chrono;
 
 class CORE_EXPORTS AspectLogger
 {

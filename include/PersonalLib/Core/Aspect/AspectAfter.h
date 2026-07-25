@@ -1,9 +1,6 @@
-﻿#pragma once
+#pragma once
 #include <functional>
 #include <string>
-
-using namespace std;
-
 
 template <typename Func, typename... Args>
 struct AspectAfter

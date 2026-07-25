@@ -1,23 +1,21 @@
-﻿#pragma once
+#pragma once
 #include <iostream>
 
-using std::cout;
-using std::endl;
 
 struct AA
 {
-    void Before(const char* funcName) { cout << funcName << ": AA Before" << endl; }
-    void After(const char* funcName) { cout << funcName << ": AA After" << endl; }
+    void Before(const char* funcName) { std::cout << funcName << ": AA Before" << std::endl; }
+    void After(const char* funcName) { std::cout << funcName << ": AA After" << std::endl; }
 };
 struct BB
 {
-    void Before(const char* funcName) { cout << funcName << ": BB Before" << endl; }
-    void After(const char* funcName) { cout << funcName << ": BB After" << endl; }
+    void Before(const char* funcName) { std::cout << funcName << ": BB Before" << std::endl; }
+    void After(const char* funcName) { std::cout << funcName << ": BB After" << std::endl; }
 };
 struct CC
 {
-    void Before(const char* funcName) { cout << funcName << ": CC Before" << endl; }
-    void After(const char* funcName) { cout << funcName << ": CC After" << endl; }
+    void Before(const char* funcName) { std::cout << funcName << ": CC Before" << std::endl; }
+    void After(const char* funcName) { std::cout << funcName << ": CC After" << std::endl; }
 };
 
 

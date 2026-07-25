@@ -1,14 +1,12 @@
-﻿#include "Aspect/AspectTest.h"
+#include "Aspect/AspectTest.h"
 #include <PersonalLib/Core/Aspect/Aspect.h>
 #include <PersonalLib/Core/Aspect/AspectBefore.h>
 #include <PersonalLib/Core/Aspect/AspectAfter.h>
 #include <iostream>
 
-using namespace std;
-
 void CoreFunc()
 {
-    cout << "core function called" << endl;
+    std::cout << "core function called" << std::endl;
 }
 void TestAspect()
 {

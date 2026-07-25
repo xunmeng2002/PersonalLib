@@ -1,8 +1,6 @@
-﻿#pragma once
+#pragma once
 #include <PersonalLib/Core/CoreExport.h>
 #include <chrono>
-
-using namespace std::chrono;
 
 class CORE_EXPORTS AspectPerformance
 {
@@ -11,8 +9,8 @@ public:
 	void Before(const char* funcName);
 	void After(const char* funcName);
 private:
-	time_point<system_clock, microseconds> m_StartTimePoint;
-	time_point<system_clock, microseconds> m_EndTimePoint;
+	std::chrono::time_point<std::chrono::system_clock, std::chrono::microseconds> m_StartTimePoint;
+    std::chrono::time_point<std::chrono::system_clock, std::chrono::microseconds> m_EndTimePoint;
 };
 
 

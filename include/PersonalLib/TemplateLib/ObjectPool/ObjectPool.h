@@ -1,7 +1,6 @@
-﻿#pragma once
+#pragma once
 #include <atomic>
 #include <mutex>
-#include <iostream>
 #include <memory>
 
 
