@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
+set(VcpkgPth "D:/Github/vcpkg")
+set(CMAKE_TOOLCHAIN_FILE "${VcpkgPth}/scripts/buildsystems/vcpkg.cmake")
 SET(PROJECT_NAME "PersonalLib")
 project(${PROJECT_NAME} VERSION 1.0.0 LANGUAGES CXX)
 include(GNUInstallDirs)

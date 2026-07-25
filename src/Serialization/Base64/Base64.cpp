@@ -65,6 +65,11 @@ void Base64Encode(const unsigned char* src, int srcLen, unsigned char* dest, int
 }
 void Base64Decode(const unsigned char* src, int srcLen, unsigned char* dest, int& destLen)
 {
+    if (srcLen <= 0)
+    {
+        destLen = 0;
+        return;
+    }
     int remainder = srcLen % 4;
     unsigned char* p = dest;
     unsigned char value;

@@ -1,4 +1,4 @@
-﻿#include <PersonalLib/Core/Utility/Utility.h>
+#include <PersonalLib/Core/Utility/Utility.h>
 #include <algorithm>
 #include <format>
 #include <iostream>
@@ -11,12 +11,20 @@ void Utility::ParseProcessName(const char* fullProcessName, char* processName, i
 {
 #if WINDOWS
 	const char* temp = strrchr(fullProcessName, '\\');
-	temp = temp == nullptr ? fullProcessName : ++temp;
-	temp = strtok((char*)temp, ".");
-#endif
-#if LINUX
+	temp = temp == nullptr ? fullProcessName : temp + 1;
+	// 用 strchr 找扩展名分隔符，避免 strtok 修改只读字符串
+	const char* dot = strchr(temp, '.');
+	if (dot != nullptr)
+	{
+		int name_len = static_cast<int>(dot - temp);
+		int copy_len = (name_len < len - 1) ? name_len : len - 1;
+		strncpy(processName, temp, copy_len);
+		processName[copy_len] = '\0';
+		return;
+	}
+#elif LINUX
 	const char* temp = strrchr(fullProcessName, '/');
-	temp = temp == nullptr ? fullProcessName : ++temp;
+	temp = temp == nullptr ? fullProcessName : temp + 1;
 #endif
 	strncpy(processName, temp, len);
 }
@@ -56,7 +64,6 @@ void Utility::RemoveCharacter(char* src, int size, char c)
 			++write;
 		}
 	}
-	*write = '\0';
 }
 
 ProtocolTypeType Utility::GetConfigProtocolType(const std::string& configProtocolType)

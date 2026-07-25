@@ -71,6 +71,7 @@ bool CSVRecord::AnalysisFieldContent(const char *pszFieldContent)
 	m_nContentBufferLen = 0;
 	
 	CSVParser csvParser(pszFieldContent);
+	csvParser.SetSeparator(m_chSeparator);
 	for (unsigned int i = 0; i<m_CSVFields.size(); i++)
 	{
 		char *pszToken = csvParser.GetNextToken();
