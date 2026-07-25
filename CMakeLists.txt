@@ -31,9 +31,12 @@ IF(CMAKE_SYSTEM_NAME MATCHES "Windows")
 ELSEIF(CMAKE_SYSTEM_NAME MATCHES "Linux")
 	add_definitions("-DLINUX")
     add_compile_options(
-        $<$<CONFIG:Debug>:-O0 -g -ggdb>
+        $<$<CONFIG:Debug>:-O0>
+        $<$<CONFIG:Debug>:-g>
+        $<$<CONFIG:Debug>:-ggdb>
         $<$<CONFIG:Release>:-O3>
-        $<$<CONFIG:RelWithDebInfo>:-O2 -g>
+        $<$<CONFIG:RelWithDebInfo>:-O2>
+        $<$<CONFIG:RelWithDebInfo>:-g>
         $<$<CONFIG:MinSizeRel>:-Os>)
     add_compile_definitions(
         $<$<CONFIG:Debug>:_DEBUG>
