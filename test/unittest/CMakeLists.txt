@@ -10,6 +10,7 @@ add_application(UnitTests
 target_link_libraries(UnitTests PRIVATE
     GTest::gtest
     GTest::gtest_main
+    TemplateLib
     Core
     Serialization
 )

@@ -33,7 +33,7 @@ public:
 	}
 
 private:
-	std::mutex m_Mutex;
+	mutable std::mutex m_Mutex;
 	std::condition_variable m_ConditionVariable;
 	std::list<T*> m_Items;
 };
