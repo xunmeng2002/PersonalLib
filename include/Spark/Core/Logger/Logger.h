@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <Spark/Core/CoreExport.h>
 #include <Spark/Core/Thread/ThreadBase.h>
 #include <list>
@@ -38,7 +38,6 @@ public:
 	bool Init(const char* fullProcessName);
 	void SetLogLevel(LogLevel logLevel = LogLevel::Info, LogLevel logLevelConsole = LogLevel::Warning);
 	static void SetExternLogger(WriteLogFunc externLogger);
-	static void Write(LogLevel level, const char* file, int line, const char* func, const char* formatStr, ...);
 
 
 protected:
@@ -49,6 +48,7 @@ protected:
 	bool CreateLogDir(const std::string& path);
 	void SwapInnerLogBuffers();
 	void FlushBuffers();
+    static void Write(LogLevel level, const char* file, int line, const char* func, const char* formatStr, ...);
 	void WriteToLog(LogLevel level, const char* file, int line, const char* func, const char* format, va_list va);
 	void WriteToConsole(LogLevel level, const char* formatStr, va_list va);
 	void CreateLogFile();
