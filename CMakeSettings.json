@@ -13,7 +13,7 @@
       "variables": [
         {
           "name": "CMAKE_INSTALL_PREFIX",
-          "value": "${projectDir}/../Libs/Spark",
+          "value": "${projectDir}/../Libs/Spark/x64-windows",
           "type": "PATH"
         }
       ]
@@ -31,7 +31,7 @@
       "variables": [
         {
           "name": "CMAKE_INSTALL_PREFIX",
-          "value": "${projectDir}/../Libs/Spark",
+          "value": "${projectDir}/../Libs/Spark/x64-windows",
           "type": "PATH"
         }
       ]
@@ -51,7 +51,7 @@
       "variables": [
         {
           "name": "CMAKE_INSTALL_PREFIX",
-          "value": "${projectDir}/../Libs/Spark",
+          "value": "${projectDir}/../Libs/Spark/x64-linux",
           "type": "PATH"
         }
       ]
