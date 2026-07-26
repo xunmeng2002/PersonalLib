@@ -37,7 +37,7 @@ public:
     
     void PushBack(std::shared_ptr<T> data)
     {
-        Node* newNode = new Node(data);
+        Node* newNode = new Node();
         Node* oldTail = m_Tail.load(std::memory_order_acquire);
 		oldTail->data.swap(data);
 		oldTail->next = newNode;

@@ -98,15 +98,22 @@ TEST(BufferTest, Shift_Zero)
 
 // ---------- Shift + Append (环形复用) ----------
 
-TEST(BufferTest, ShiftThenAppend_ReusesSpace)
+TEST(BufferTest, ShiftThenMemMoveThenAppend_ReusesSpace)
 {
     Buffer<kBufferSize> buf;
     buf.Append(std::string(kBufferSize, 'X').data(), kBufferSize);
     EXPECT_EQ(buf.GetLength(), kBufferSize);
 
-    // Shift half, then append more — data goes after remaining, not at start
+    // Shift half — 但 Buffer 是线性缓冲区，Shift 只移动读指针，写位置不变
     buf.Shift(kBufferSize / 2);
     EXPECT_EQ(buf.GetLength(), kBufferSize / 2);
+
+    // 此时写指针在末尾，写空间为 0
+    EXPECT_EQ(buf.GetWriteBufferSize(), 0u);
+
+    // MemMove 将剩余数据紧贴到头部，释放写空间
+    buf.MemMove();
+    EXPECT_GT(buf.GetWriteBufferSize(), 0u);
 
     unsigned written = buf.Append("YYY", 3);
     EXPECT_EQ(written, 3u);

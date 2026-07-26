@@ -19,26 +19,21 @@ struct ShmTestFixture : public ::testing::Test
     void SetUp() override
     {
         // 内存布局 (index=1):
-        //   [0 .. sizeof(SingleShmHeader))  — header 预留
+        //   [0 .. sizeof(SingleShmHeader))  — header (index=0)
         //   [sizeof(SingleShmHeader) .. 2*SIZE) — 填充
         //   [2*SIZE .. 3*SIZE)              — UpBuffer
         //   [3*SIZE .. 4*SIZE)              — DownBuffer
         size_t total = sizeof(SingleShmHeader) + kShmSize * 4;
         memory_.resize(total, 0);
 
-        // 初始化 header (at 偏移 0)
-        header_ = reinterpret_cast<SingleShmHeader*>(memory_.data());
-        header_->Status = ConnectStatusType::Connected;
-        header_->UpWriteCount = 0;
-        header_->UpReadCount = 0;
-        header_->DownWriteCount = 0;
-        header_->DownReadCount = 0;
-
-        // 使用 index=1 构造
+        // 使用 index=1 构造 — ShmBuffer 自行定位 header、UpBuffer、DownBuffer
         client_.reset(new ShmBuffer<kShmSize>(
             ServerTypeType::Client, 1, memory_.data(), ConnectStatusType::Connected));
         server_.reset(new ShmBuffer<kShmSize>(
             ServerTypeType::Server, 1, memory_.data(), ConnectStatusType::Connected));
+
+        // header_ 指向 ShmBuffer 实际使用的 header（index=1，偏移 sizeof(SingleShmHeader)）
+        header_ = client_->m_ShmHeader;
     }
 
     void TearDown() override

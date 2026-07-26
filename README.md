@@ -41,7 +41,6 @@ Created by [Fireseeker](https://fireseeker.cn/)
 高性能数据结构与通用业务组件：
 - 缓冲区：通用 Buffer、环形缓冲区 `RingBuffer`、共享内存缓冲区 `ShmBuffer`
 - 数据库（DB）简易操作封装
-- 内存缓存 `MemCache`
 - 对象池 `ObjectPool`，减少频繁内存分配开销
 - 线程安全容器 `ThreadSafeContainer`
 
