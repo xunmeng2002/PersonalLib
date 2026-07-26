@@ -1,6 +1,6 @@
-﻿#include <PersonalLib/Network/Protocol/Protocol.h>
-#include <PersonalLib/Core/Logger/Logger.h>
-#include <PersonalLib/Network/IO/IOFactory.h>
+﻿#include <Spark/Network/Protocol/Protocol.h>
+#include <Spark/Core/Logger/Logger.h>
+#include <Spark/Network/IO/IOFactory.h>
 #include <stdexcept>
 
 Protocol::Protocol(ProtocolTypeType protocolType, ServerTypeType serverType, IOModelType ioModel, int milliSeconds, PackageFactory* packageFactory)

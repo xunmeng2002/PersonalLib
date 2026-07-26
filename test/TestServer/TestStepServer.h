@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <PersonalLib/Network/Protocol/Protocol.h>
+#include <Spark/Network/Protocol/Protocol.h>
 
 
 class StepServer : public Protocol, public ProtocolSubscriber

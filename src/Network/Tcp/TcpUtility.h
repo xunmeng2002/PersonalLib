@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <PersonalLib/Network/NetworkExport.h>
+#include <Spark/Network/NetworkExport.h>
 #include "Tcp/SocketInit.h"
 #include <string>
 

@@ -1,7 +1,7 @@
 #include "Aspect/AspectTest.h"
-#include <PersonalLib/Core/Aspect/Aspect.h>
-#include <PersonalLib/Core/Aspect/AspectBefore.h>
-#include <PersonalLib/Core/Aspect/AspectAfter.h>
+#include <Spark/Core/Aspect/Aspect.h>
+#include <Spark/Core/Aspect/AspectBefore.h>
+#include <Spark/Core/Aspect/AspectAfter.h>
 #include <iostream>
 
 void CoreFunc()

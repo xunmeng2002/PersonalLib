@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <PersonalLib/Core/MD5/MD5.h>
+#include <Spark/Core/MD5/MD5.h>
 
 #include <string>
 

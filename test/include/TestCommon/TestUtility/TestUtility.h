@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <chrono>
-#include <PersonalLib/Types.h>
+#include <Spark/Types.h>
 
 enum class TestProtocolType : int
 {

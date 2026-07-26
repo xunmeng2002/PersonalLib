@@ -1,6 +1,6 @@
 ﻿#include "Tcp/TcpUtility.h"
-#include <PersonalLib/Core/Platform/Platform.h>
-#include <PersonalLib/Core/Logger/Logger.h>
+#include <Spark/Core/Platform/Platform.h>
+#include <Spark/Core/Logger/Logger.h>
 #include <string.h>
 #include <mutex>
 

@@ -3,7 +3,7 @@
 #include "TestXtpClient.h"
 #include "TestStepClient.h"
 #include "TestCommon/TestUtility/TestUtility.h"
-#include <PersonalLib/Core/Logger/Logger.h>
+#include <Spark/Core/Logger/Logger.h>
 #include <thread>
 
 

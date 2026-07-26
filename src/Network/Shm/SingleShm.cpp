@@ -1,6 +1,6 @@
 ﻿#include "Shm/SingleShm.h"
-#include <PersonalLib/Core/Logger/Logger.h>
-#include <PersonalLib/Core/Utility/TimeUtility.h>
+#include <Spark/Core/Logger/Logger.h>
+#include <Spark/Core/Utility/TimeUtility.h>
 #include <string.h>
 #include <assert.h>
 #ifdef LINUX

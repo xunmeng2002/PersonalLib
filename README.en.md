@@ -1,9 +1,9 @@
-# PersonalLib
+# Spark
 [![License](https://img.shields.io/badge/License-BSD--4--Clause-blue.svg)](LICENSE)
 [![Language](https://img.shields.io/badge/Language-C++20+-orange.svg)]()
 [![Build](https://img.shields.io/badge/Build-CMake3.10+-green.svg)]()
 
-**PersonalLib** is a cross-platform C++ general-purpose foundational library designed for **financial trading systems and risk management systems**. It integrates high-performance logging, multi-model network communication, serialization, data structures, utility components, and other commonly used capabilities. It supports Linux / Windows platforms and can quickly accelerate financial backend service development.
+**Spark** is a cross-platform C++ general-purpose foundational library designed for **financial trading systems and risk management systems**. It integrates high-performance logging, multi-model network communication, serialization, data structures, utility components, and other commonly used capabilities. It supports Linux / Windows platforms and can quickly accelerate financial backend service development.
 
 Created by [Fireseeker](https://fireseeker.cn/)
 
@@ -58,12 +58,12 @@ Built-in Python scripts for automation tasks such as code parsing, model generat
 ## 3. Project Directory Structure
 
 ```
-PersonalLib/
+Spark/
 ├── include/                    # Header files (public interface)
-│   ├── PersonalLib/Core/       # Core module headers
-│   ├── PersonalLib/Network/    # Network module headers
-│   ├── PersonalLib/Serialization/   # Serialization module headers
-│   └── PersonalLib/TemplateLib/     # Template library headers
+│   ├── Spark/Core/       # Core module headers
+│   ├── Spark/Network/    # Network module headers
+│   ├── Spark/Serialization/   # Serialization module headers
+│   └── Spark/TemplateLib/     # Template library headers
 ├── src/                        # Source code
 │   ├── Core/                   # Core module implementations
 │   ├── Network/                # Network module implementations
@@ -98,8 +98,8 @@ The project depends on the `CMakeCommon` submodule. After cloning, you need to s
 
 ### 5.1 Clone Repository (with Submodules)
 ```bash
-git clone --recursive https://gitee.com/xunmeng200/PersonalLib.git
-cd PersonalLib
+git clone --recursive https://gitee.com/xunmeng200/Spark.git
+cd Spark
 ```
 
 ### 5.2 Update Submodules (if not cloned recursively)
@@ -125,7 +125,7 @@ After compilation, library files and test programs will be output to the `build`
 ### 6.1 High-Performance Logging
 
 ```cpp
-#include "PersonalLib/Core/Logger/Logger.h"
+#include "Spark/Core/Logger/Logger.h"
 
 int main()
 {
@@ -146,7 +146,7 @@ int main()
 ### 6.2 JSON Serialization & Parsing
 
 ```cpp
-#include "PersonalLib/Serialization/json/json.h"
+#include "Spark/Serialization/json/json.h"
 #include <iostream>
 
 int main()
@@ -169,7 +169,7 @@ int main()
 ### 6.3 Network Communication (Step Protocol Client)
 
 ```cpp
-#include "PersonalLib/Network/Protocol/Protocol.h"
+#include "Spark/Network/Protocol/Protocol.h"
 
 int main()
 {

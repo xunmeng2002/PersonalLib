@@ -1,5 +1,5 @@
-﻿#include <PersonalLib/Core/Thread/ThreadBase.h>
-#include <PersonalLib/Core/Logger/Logger.h>
+﻿#include <Spark/Core/Thread/ThreadBase.h>
+#include <Spark/Core/Logger/Logger.h>
 #include <functional>
 #include <assert.h>
 

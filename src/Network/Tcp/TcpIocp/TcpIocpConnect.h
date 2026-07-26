@@ -1,9 +1,9 @@
 ﻿#pragma once
 #ifdef WINDOWS
-#include <PersonalLib/Types.h>
+#include <Spark/Types.h>
 #include "Tcp/SocketInit.h"
 #include "Tcp/TcpConnect.h"
-#include <PersonalLib/TemplateLib/Buffer/Buffer.h>
+#include <Spark/TemplateLib/Buffer/Buffer.h>
 
 enum class IocpEvent : int
 {

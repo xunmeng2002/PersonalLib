@@ -1,4 +1,4 @@
-﻿#include <PersonalLib/Network/IO/IOFactory.h>
+﻿#include <Spark/Network/IO/IOFactory.h>
 #include "Tcp/SocketInit.h"
 #ifdef LINUX
 #include "Tcp/TcpEpoll/TcpEpollClient.h"
@@ -12,7 +12,7 @@
 #include "Shm/SingleShm.h"
 #include "Shm/ShmClient.h"
 #include "Shm/ShmServer.h"
-#include <PersonalLib/Core/Core.h>
+#include <Spark/Core/Core.h>
 #include <format>
 #include <stdexcept>
 

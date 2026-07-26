@@ -1,5 +1,5 @@
-﻿#include <PersonalLib/Core/Aspect/AspectLogger.h>
-#include <PersonalLib/Core/Logger/Logger.h>
+﻿#include <Spark/Core/Aspect/AspectLogger.h>
+#include <Spark/Core/Logger/Logger.h>
 
 
 

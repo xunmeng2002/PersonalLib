@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include <PersonalLib/Network/NetworkExport.h>
+#include <Spark/Network/NetworkExport.h>
 #include "Tcp/SocketInit.h"
 #include "Tcp/TcpConnect.h"
 #include "Tcp/SocketNotify.h"
-#include <PersonalLib/Network/IO/IOBase.h>
-#include <PersonalLib/TemplateLib/Buffer/Buffer.h>
+#include <Spark/Network/IO/IOBase.h>
+#include <Spark/TemplateLib/Buffer/Buffer.h>
 #include <list>
 #include <map>
 #include <mutex>

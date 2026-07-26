@@ -1,5 +1,5 @@
-﻿#include <PersonalLib/Serialization/Csv/CsvRecord.h>
-#include <PersonalLib/Serialization/Csv/CsvParser.h>
+﻿#include <Spark/Serialization/Csv/CsvRecord.h>
+#include <Spark/Serialization/Csv/CsvParser.h>
 #include <limits>
 #include <stdlib.h>
 

@@ -3,8 +3,8 @@
 #include "TestXtpServer.h"
 #include "TestStepServer.h"
 #include "TestCommon/TestUtility/TestUtility.h"
-#include <PersonalLib/Core/Logger/Logger.h>
-#include <PersonalLib/Network/IO/IOFactory.h>
+#include <Spark/Core/Logger/Logger.h>
+#include <Spark/Network/IO/IOFactory.h>
 
 
 int main(int argc, const char* argv[])

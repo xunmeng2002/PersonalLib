@@ -13,7 +13,7 @@
       "variables": [
         {
           "name": "CMAKE_INSTALL_PREFIX",
-          "value": "${projectDir}/../Libs/PersonalLib",
+          "value": "${projectDir}/../Libs/Spark",
           "type": "PATH"
         }
       ]
@@ -31,7 +31,7 @@
       "variables": [
         {
           "name": "CMAKE_INSTALL_PREFIX",
-          "value": "${projectDir}/../Libs/PersonalLib",
+          "value": "${projectDir}/../Libs/Spark",
           "type": "PATH"
         }
       ]

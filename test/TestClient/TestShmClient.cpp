@@ -1,8 +1,8 @@
 ﻿#include "TestShmClient.h"
 #include "ClientIOSubscriberImpl.h"
 #include "TestCommon/TestUtility/TestUtility.h"
-#include <PersonalLib/Core/Logger/Logger.h>
-#include <PersonalLib/Network/Network.h>
+#include <Spark/Core/Logger/Logger.h>
+#include <Spark/Network/Network.h>
 
 
 

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <PersonalLib/TemplateLib/ThreadSafeContainer/LockFreeQueue.h>
+#include <Spark/TemplateLib/ThreadSafeContainer/LockFreeQueue.h>
 
 #include <memory>
 #include <string>

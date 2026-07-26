@@ -1,6 +1,6 @@
 ﻿#include "Shm/ShmBase.h"
-#include <PersonalLib/Core/Logger/Logger.h>
-#include <PersonalLib/Core/Utility/TimeUtility.h>
+#include <Spark/Core/Logger/Logger.h>
+#include <Spark/Core/Utility/TimeUtility.h>
 #ifdef WINDOWS
 #include <Windows.h>
 #endif

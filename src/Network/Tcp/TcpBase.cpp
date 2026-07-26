@@ -1,8 +1,8 @@
 ﻿#include "Tcp/TcpBase.h"
-#include <PersonalLib/Core/Platform/Platform.h>
-#include <PersonalLib/Core/Logger/Logger.h>
+#include <Spark/Core/Platform/Platform.h>
+#include <Spark/Core/Logger/Logger.h>
 #include "Tcp/TcpUtility.h"
-#include <PersonalLib/Core/Utility/TimeUtility.h>
+#include <Spark/Core/Utility/TimeUtility.h>
 #include <cstring>
 #include <assert.h>
 #include <chrono>

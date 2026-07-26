@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <PersonalLib/TemplateLib/ThreadSafeContainer/ThreadSafeList.h>
+#include <Spark/TemplateLib/ThreadSafeContainer/ThreadSafeList.h>
 
 #include <algorithm>
 #include <numeric>

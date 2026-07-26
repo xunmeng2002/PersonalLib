@@ -1,7 +1,7 @@
 #include "Tcp/TcpConnect.h"
-#include <PersonalLib/Core/Logger/Logger.h>
-#include <PersonalLib/TemplateLib/ObjectPool/ObjectPool.h>
-#include <PersonalLib/Core/Utility/TimeUtility.h>
+#include <Spark/Core/Logger/Logger.h>
+#include <Spark/TemplateLib/ObjectPool/ObjectPool.h>
+#include <Spark/Core/Utility/TimeUtility.h>
 #include "Tcp/TcpUtility.h"
 
 

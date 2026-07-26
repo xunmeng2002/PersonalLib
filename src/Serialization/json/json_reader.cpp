@@ -5,10 +5,10 @@
 // See file LICENSE for detail or copy at http://jsoncpp.sourceforge.net/LICENSE
 
 #if !defined(JSON_IS_AMALGAMATION)
-#include <PersonalLib/Serialization/json/json_tool.h>
-#include <PersonalLib/Serialization/json/assertions.h>
-#include <PersonalLib/Serialization/json/reader.h>
-#include <PersonalLib/Serialization/json/value.h>
+#include <Spark/Serialization/json/json_tool.h>
+#include <Spark/Serialization/json/assertions.h>
+#include <Spark/Serialization/json/reader.h>
+#include <Spark/Serialization/json/value.h>
 #endif // if !defined(JSON_IS_AMALGAMATION)
 #include <algorithm>
 #include <cassert>

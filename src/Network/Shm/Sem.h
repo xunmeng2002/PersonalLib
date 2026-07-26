@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <PersonalLib/Types.h>
+#include <Spark/Types.h>
 #include <string>
 #ifdef LINUX
 #include <semaphore.h>

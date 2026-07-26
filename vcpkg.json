@@ -1,7 +1,8 @@
 {
-  "name": "personallib",
+  "name": "spark",
   "version": "1.0.0",
-  "description": "Personal library project - vcpkg manifest placeholder",
+  "description": "Spark library project - vcpkg manifest placeholder",
+  "builtin-baseline": "40f3c709db80acf154ac4b17a1f83c564ebd022e",
   "dependencies": [
     "gtest"
   ]

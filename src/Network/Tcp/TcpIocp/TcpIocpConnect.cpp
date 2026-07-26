@@ -1,6 +1,6 @@
 ﻿#include "Tcp/TcpIocp/TcpIocpConnect.h"
-#include <PersonalLib/TemplateLib/ObjectPool/ObjectPool.h>
-#include <PersonalLib/Core/Logger/Logger.h>
+#include <Spark/TemplateLib/ObjectPool/ObjectPool.h>
+#include <Spark/Core/Logger/Logger.h>
 
 #ifdef WINDOWS
 

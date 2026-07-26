@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "TestCommon/Packages/Packages.h"
-#include <PersonalLib/Network/Protocol/Protocol.h>
+#include <Spark/Network/Protocol/Protocol.h>
 #include <chrono>
 
 class XtpClient : public Protocol, public ProtocolSubscriber

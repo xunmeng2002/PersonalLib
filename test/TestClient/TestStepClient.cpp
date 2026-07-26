@@ -1,12 +1,12 @@
 ﻿#include "TestStepClient.h"
-#include <PersonalLib/Core/Utility/Utility.h>
-#include <PersonalLib/Core/Utility/TimeUtility.h>
-#include <PersonalLib/Core/Logger/Logger.h>
+#include <Spark/Core/Utility/Utility.h>
+#include <Spark/Core/Utility/TimeUtility.h>
+#include <Spark/Core/Logger/Logger.h>
 #include "TestCommon/TestUtility/TestUtility.h"
-#include <PersonalLib/Network/Protocol/PackageFactory.h>
+#include <Spark/Network/Protocol/PackageFactory.h>
 #include "TestCommon/Packages/Packages.h"
-#include <PersonalLib/Network/IO/IOThread.h>
-#include <PersonalLib/TemplateLib/ObjectPool/ObjectPool.h>
+#include <Spark/Network/IO/IOThread.h>
+#include <Spark/TemplateLib/ObjectPool/ObjectPool.h>
 
 using namespace std;
 

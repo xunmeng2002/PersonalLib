@@ -1,9 +1,9 @@
-# PersonalLib
+# Spark
 [![License](https://img.shields.io/badge/License-BSD--4--Clause-blue.svg)](LICENSE)
 [![Language](https://img.shields.io/badge/Language-C++20+-orange.svg)]()
 [![Build](https://img.shields.io/badge/Build-CMake3.10+-green.svg)]()
 
-**PersonalLib** 是一套面向**金融交易系统、风险管理系统**设计的跨平台 C++ 通用基础库，集成高性能日志、多模型网络通信、序列化、数据结构、工具组件等常用能力，适配 Linux / Windows 双平台，可快速落地金融后端服务开发。
+**Spark** 是一套面向**金融交易系统、风险管理系统**设计的跨平台 C++ 通用基础库，集成高性能日志、多模型网络通信、序列化、数据结构、工具组件等常用能力，适配 Linux / Windows 双平台，可快速落地金融后端服务开发。
 
 Created by [Fireseeker](https://fireseeker.cn/)
 
@@ -49,12 +49,12 @@ Created by [Fireseeker](https://fireseeker.cn/)
 
 ## 三、项目目录结构
 ```
-PersonalLib/
+Spark/
 ├── include/ # 头文件目录（对外暴露接口）
-│ ├── PersonalLib/Core/ # 核心模块头文件
-│ ├── PersonalLib/Network/ # 网络模块头文件
-│ ├── PersonalLib/Serialization/ # 序列化模块头文件
-│ └── PersonalLib/TemplateLib/ # 模板库头文件
+│ ├── Spark/Core/ # 核心模块头文件
+│ ├── Spark/Network/ # 网络模块头文件
+│ ├── Spark/Serialization/ # 序列化模块头文件
+│ └── Spark/TemplateLib/ # 模板库头文件
 ├── src/ # 源码实现目录
 │ ├── Core/ # 核心模块实现
 │ ├── Network/ # 网络模块实现
@@ -87,8 +87,8 @@ PersonalLib/
 ## 五、快速构建 & 编译
 ### 1. 克隆代码（含子模块）
 ```bash
-git clone --recursive https://gitee.com/xunmeng200/PersonalLib.git
-cd PersonalLib
+git clone --recursive https://gitee.com/xunmeng200/Spark.git
+cd Spark
 ```
 
 ### 2. 更新子模块（若未递归克隆）
@@ -113,7 +113,7 @@ cmake --build . --config Release
 ### 示例 1：高性能日志组件
 
 ```cpp
-#include "PersonalLib/Core/Logger/Logger.h"
+#include "Spark/Core/Logger/Logger.h"
 
 int main()
 {
@@ -134,7 +134,7 @@ int main()
 ### 示例 2：JSON 序列化与解析
 
 ```cpp
-#include "PersonalLib/Serialization/json/json.h"
+#include "Spark/Serialization/json/json.h"
 #include <iostream>
 
 int main()
@@ -157,7 +157,7 @@ int main()
 ### 示例 3：网络通信（Step 协议客户端）
 
 ```cpp
-#include "PersonalLib/Network/Protocol/Protocol.h"
+#include "Spark/Network/Protocol/Protocol.h"
 
 int main()
 {

@@ -1,8 +1,8 @@
-﻿#include <PersonalLib/Core/MD5/MD5.h>
-#include <PersonalLib/Core/Logger/Logger.h>
-#include <PersonalLib/Core/Aspect/Aspect.h>
-#include <PersonalLib/Core/Aspect/AspectLogger.h>
-#include <PersonalLib/Core/Aspect/AspectPerformance.h>
+﻿#include <Spark/Core/MD5/MD5.h>
+#include <Spark/Core/Logger/Logger.h>
+#include <Spark/Core/Aspect/Aspect.h>
+#include <Spark/Core/Aspect/AspectLogger.h>
+#include <Spark/Core/Aspect/AspectPerformance.h>
 #include <iostream>
 using namespace std;
 
@@ -18,13 +18,13 @@ int main(int argc, const char* argv[])
     Logger::GetInstance().SetLogLevel(LogLevel::Info, LogLevel::Info);
     Logger::GetInstance().Start();
 
-    WriteLog(LogLevel::Info, "TestPersonalLib Start.");
+    WriteLog(LogLevel::Info, "TestSpark Start.");
 
     string src = "HelloWorldHelloWorldHelloWorldHelloWorldHelloWorldHelloWorld";
 
     Invoke<AspectLogger, AspectPerformance>(CalcalateMD5, "CalcalateMD5", src.c_str(), src.length());
 
-    WriteLog(LogLevel::Info, "TestPersonalLib Stop.");
+    WriteLog(LogLevel::Info, "TestSpark Stop.");
 
     this_thread::sleep_for(chrono::seconds(1));
     Logger::GetInstance().Stop();

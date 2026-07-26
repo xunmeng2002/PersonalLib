@@ -1,9 +1,9 @@
 ﻿#pragma once
-#include <PersonalLib/Network/NetworkExport.h>
-#include <PersonalLib/Types.h>
-#include <PersonalLib/Network/IO/Connect.h>
-#include <PersonalLib/TemplateLib/Buffer/ShmBuffer.h>
-#include <PersonalLib/TemplateLib/ObjectPool/ObjectPool.h>
+#include <Spark/Network/NetworkExport.h>
+#include <Spark/Types.h>
+#include <Spark/Network/IO/Connect.h>
+#include <Spark/TemplateLib/Buffer/ShmBuffer.h>
+#include <Spark/TemplateLib/ObjectPool/ObjectPool.h>
 
 
 template<unsigned SIZE>

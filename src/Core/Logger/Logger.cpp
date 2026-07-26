@@ -1,7 +1,7 @@
-﻿#include <PersonalLib/Core/Logger/Logger.h>
-#include <PersonalLib/TemplateLib/Buffer/Buffer.h>
-#include <PersonalLib/Core/Utility/Utility.h>
-#include <PersonalLib/Core/Utility/TimeUtility.h>
+﻿#include <Spark/Core/Logger/Logger.h>
+#include <Spark/TemplateLib/Buffer/Buffer.h>
+#include <Spark/Core/Utility/Utility.h>
+#include <Spark/Core/Utility/TimeUtility.h>
 #include "Logger/LogData.h"
 #include <assert.h>
 #include <iostream>

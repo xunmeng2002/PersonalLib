@@ -1,6 +1,6 @@
 ﻿#include "TestCommon/ShmSubscriber/ShmSubscriberImpl.h"
 #include "TestCommon/TestUtility/TestUtility.h"
-#include <PersonalLib/Core/Logger/Logger.h>
+#include <Spark/Core/Logger/Logger.h>
 #include <string.h>
 #include <assert.h>
 

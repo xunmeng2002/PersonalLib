@@ -1,9 +1,9 @@
 ﻿#pragma once
 #include "Shm/Sem.h"
 #include "Shm/ShmConnect.h"
-#include <PersonalLib/Types.h>
-#include <PersonalLib/TemplateLib/Buffer/Buffer.h>
-#include <PersonalLib/Network/IO/IOBase.h>
+#include <Spark/Types.h>
+#include <Spark/TemplateLib/Buffer/Buffer.h>
+#include <Spark/Network/IO/IOBase.h>
 #include <string>
 #include <map>
 #include <list>

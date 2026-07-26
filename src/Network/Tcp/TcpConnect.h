@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include <PersonalLib/Network/NetworkExport.h>
-#include <PersonalLib/Types.h>
+#include <Spark/Network/NetworkExport.h>
+#include <Spark/Types.h>
 #include "Tcp/SocketInit.h"
-#include <PersonalLib/Network/IO/Connect.h>
+#include <Spark/Network/IO/Connect.h>
 #include <mutex>
 #include <string>
 #include <chrono>

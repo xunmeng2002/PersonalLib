@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <PersonalLib/TemplateLib/Buffer/RingBuffer.h>
+#include <Spark/TemplateLib/Buffer/RingBuffer.h>
 
 #include <cstring>
 #include <numeric>
