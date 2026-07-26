@@ -14,4 +14,5 @@ target_link_libraries(UnitTests PRIVATE
     Core
     Serialization
     Network
+    TestCommonStatic
 )
