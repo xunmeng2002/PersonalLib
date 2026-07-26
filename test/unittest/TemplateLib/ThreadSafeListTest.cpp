@@ -2,7 +2,6 @@
 #include <PersonalLib/TemplateLib/ThreadSafeContainer/ThreadSafeList.h>
 
 #include <algorithm>
-#include <chrono>
 #include <numeric>
 #include <thread>
 #include <vector>
@@ -94,9 +93,7 @@ TEST(ThreadSafeListTest, SingleProducerSingleConsumer)
         {
             for (int i = 0; i < kItemCount; ++i)
             {
-                // 使用指针指向 items 的元素，确保生命周期
                 list.PushBack(&items[i]);
-                std::this_thread::sleep_for(std::chrono::microseconds(10));
             }
         });
 
@@ -141,7 +138,6 @@ TEST(ThreadSafeListTest, MultiProducerSingleConsumer)
                 for (int i = 0; i < kItemsPerProducer; ++i)
                 {
                     list.PushBack(&itemStorage[start + i]);
-                    std::this_thread::sleep_for(std::chrono::microseconds(5));
                 }
             });
     }
