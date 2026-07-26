@@ -13,4 +13,5 @@ target_link_libraries(UnitTests PRIVATE
     TemplateLib
     Core
     Serialization
+    Network
 )
