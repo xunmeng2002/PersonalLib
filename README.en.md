@@ -105,6 +105,8 @@ Spark/
 
 The project depends on the `CMakeCommon` submodule. After cloning, you need to synchronize and pull the submodule.
 
+> For detailed environment setup steps (proxy configuration, vcpkg installation, WSL mirrored networking, etc.), see the [Environment Setup Guide](docs/environment-setup.en.md).
+
 ## 5. Quick Build & Compilation
 
 ### 5.1 Clone Repository (with Submodules)

@@ -1,0 +1,268 @@
+# Environment Setup Guide
+
+> This document covers both **Windows (MSVC)** and **WSL (GCC)** platforms, detailing every step required to set up the build environment from scratch.
+
+---
+
+## Table of Contents
+
+- [Environment Setup Guide](#environment-setup-guide)
+  - [Table of Contents](#table-of-contents)
+  - [1. Windows (MSVC)](#1-windows-msvc)
+    - [1.1 System Requirements](#11-system-requirements)
+    - [1.2 Visual Studio 2022](#12-visual-studio-2022)
+    - [1.3 Git](#13-git)
+    - [1.4 Proxy Configuration (Optional but Recommended)](#14-proxy-configuration-optional-but-recommended)
+    - [1.5 vcpkg](#15-vcpkg)
+    - [1.6 Verification](#16-verification)
+  - [2. WSL (GCC)](#2-wsl-gcc)
+    - [2.1 System Requirements](#21-system-requirements)
+    - [2.2 WSL Setup](#22-wsl-setup)
+    - [2.3 Build Toolchain](#23-build-toolchain)
+    - [2.4 vcpkg](#24-vcpkg)
+    - [2.5 Proxy Configuration (Optional)](#25-proxy-configuration-optional)
+    - [2.6 Verification](#26-verification)
+  - [3. Troubleshooting](#3-troubleshooting)
+    - [3.1 vcpkg Timeout / Cannot Connect to GitHub](#31-vcpkg-timeout--cannot-connect-to-github)
+    - [3.2 VS Says "Could not find GTest"](#32-vs-says-could-not-find-gtest)
+    - [3.3 cmake cannot find Ninja in WSL](#33-cmake-cannot-find-ninja-in-wsl)
+    - [3.4 Git errors after turning proxy off](#34-git-errors-after-turning-proxy-off)
+
+---
+
+## 1. Windows (MSVC)
+
+### 1.1 System Requirements
+
+- **OS**: Windows 10 21H2+ / Windows 11
+- **Disk**: At least 20 GB free space
+
+### 1.2 Visual Studio 2022
+
+Install **Visual Studio 2022** (Enterprise or Community). Under **Workloads**, check:
+
+- **Desktop development with C++**
+  - MSVC v143 build tools (x64/x86)
+  - Windows 10/11 SDK
+  - C++ CMake tools for Windows
+  - C++ ATL for latest v143 build tools (optional)
+
+Reference installation path:
+
+```
+D:/Program Files/Microsoft Visual Studio/2022/Enterprise/
+```
+
+> If you choose a different path, update the vcpkg fallback path in the project's CMake configuration accordingly.
+
+### 1.3 Git
+
+```bash
+git --version  # Must be ≥ 2.30
+```
+
+Git can be installed via the Visual Studio installer or from [https://git-scm.com](https://git-scm.com).
+
+### 1.4 Proxy Configuration (Optional but Recommended)
+
+In mainland China, GitHub connectivity is often unreliable. Using a proxy tool (e.g., Clash Verge) is recommended.
+
+**1.4.1 Configure Git Proxy**
+
+```bash
+# Set (adjust port to match your proxy tool)
+git config --global http.proxy http://127.0.0.1:7897
+git config --global https.proxy http://127.0.0.1:7897
+
+# Unset
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+```
+
+**1.4.2 Set Environment Variables (Persistent)**
+
+```bash
+setx HTTP_PROXY "http://127.0.0.1:7897"
+setx HTTPS_PROXY "http://127.0.0.1:7897"
+setx http_proxy "http://127.0.0.1:7897"
+setx https_proxy "http://127.0.0.1:7897"
+```
+
+Restart your terminal or Visual Studio after setting.
+
+### 1.5 vcpkg
+
+**Option A: System-wide installation (recommended)**
+
+```bash
+git clone https://github.com/microsoft/vcpkg
+cd vcpkg
+.\bootstrap-vcpkg.bat
+```
+
+Set environment variable:
+
+```bash
+setx VCPKG_ROOT "D:/path/to/vcpkg"
+```
+
+Add `%VCPKG_ROOT%` to `PATH`.
+
+**Option B: Use the project's CMake fallback path**
+
+The project defaults to `D:/Github/vcpkg/` as a fallback. If vcpkg is installed there, no extra configuration is needed.
+
+### 1.6 Verification
+
+Open **Visual Studio**, select the `x64-Debug` configuration, and run CMake configuration (generate cache):
+
+- The output should show vcpkg-related logs (downloading and building gtest automatically)
+- After configuration, `test/unittest` should find `GTestConfig.cmake` successfully
+- Build should complete without errors
+
+---
+
+## 2. WSL (GCC)
+
+### 2.1 System Requirements
+
+- **OS**: Windows 10 21H2+ / Windows 11 (WSL2 enabled)
+- **WSL version**: 2.0.0+
+- **Linux distro**: Ubuntu 22.04 LTS (recommended)
+
+### 2.2 WSL Setup
+
+**2.2.1 Install WSL**
+
+```bash
+# Run PowerShell as Administrator
+wsl --install -d Ubuntu
+
+# Verify
+wsl -l -v
+#   NAME      STATE           VERSION
+# * Ubuntu    Running         2
+```
+
+**2.2.2 Mirrored Networking Mode (Optional but Recommended)**
+
+Makes WSL share the Windows network stack — localhost is unified and proxy settings are inherited automatically.
+
+Create `%USERPROFILE%\.wslconfig` with:
+
+```ini
+[wsl2]
+networkingMode=mirrored
+dnsTunneling=true
+autoProxy=true
+```
+
+Restart WSL:
+
+```bash
+wsl --shutdown
+# Then restart wsl
+```
+
+### 2.3 Build Toolchain
+
+Run these commands **inside WSL**:
+
+```bash
+sudo apt update
+sudo apt install build-essential cmake ninja-build curl zip unzip tar pkg-config -y
+```
+
+| Package | Purpose |
+|---------|---------|
+| `build-essential` | g++, gcc, make, and other compilation tools |
+| `cmake` | CMake build system |
+| `ninja-build` | Ninja build system (the project's generator) |
+| `curl`, `zip`, `unzip`, `tar` | vcpkg dependency download and extraction |
+| `pkg-config` | Package configuration helper |
+
+### 2.4 vcpkg
+
+**Install vcpkg:**
+
+```bash
+cd ~
+git clone https://github.com/microsoft/vcpkg ~/Github/vcpkg
+./vcpkg/bootstrap-vcpkg.sh
+```
+
+**Set environment variables (persistent):**
+
+```bash
+echo 'export VCPKG_ROOT=~/Github/vcpkg' >> ~/.bashrc
+echo 'export PATH=$VCPKG_ROOT:$PATH' >> ~/.bashrc
+source ~/.bashrc
+```
+
+(Replace `.bashrc` with `.zshrc` if using zsh.)
+
+**Verify:**
+
+```bash
+vcpkg --version
+echo $VCPKG_ROOT  # Should output /home/xxx/Github/vcpkg
+```
+
+### 2.5 Proxy Configuration (Optional)
+
+If mirrored networking mode is not enabled, configure the proxy manually inside WSL:
+
+```bash
+# Git proxy
+git config --global http.proxy http://127.0.0.1:7897
+git config --global https.proxy http://127.0.0.1:7897
+
+# Environment variables
+echo 'export http_proxy=http://127.0.0.1:7897' >> ~/.bashrc
+echo 'export https_proxy=http://127.0.0.1:7897' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### 2.6 Verification
+
+Run CMake configuration inside WSL:
+
+```bash
+cd /mnt/d/Gitee/Spark
+cmake -S . -B out/build/WSL-GCC-Debug \
+  -DCMAKE_BUILD_TYPE=Debug \
+  -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
+  -DCMAKE_INSTALL_PREFIX=../Libs/Spark/x64-linux \
+  -G Ninja
+```
+
+Alternatively, use **Visual Studio**'s CMake integration — select the `WSL-GCC-Debug` configuration and generate the cache.
+
+---
+
+## 3. Troubleshooting
+
+### 3.1 vcpkg Timeout / Cannot Connect to GitHub
+
+- Make sure your proxy tool is running
+- Check `git config --global http.proxy` is set correctly
+- Check `http_proxy` / `https_proxy` environment variables
+
+### 3.2 VS Says "Could not find GTest"
+
+- Verify vcpkg is installed and `VCPKG_ROOT` is set
+- Verify `CMakeSettings.json` includes `CMAKE_TOOLCHAIN_FILE` for WSL configurations
+- In VS, select **Project → Delete Cache and Regenerate**
+
+### 3.3 cmake cannot find Ninja in WSL
+
+```bash
+sudo apt install ninja-build
+```
+
+### 3.4 Git errors after turning proxy off
+
+```bash
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+```

@@ -1,0 +1,268 @@
+# 环境准备指南
+
+> 本文档面向 **Windows（MSVC）** 和 **WSL（GCC）** 两个平台，说明从零搭建项目编译环境所需的全部步骤。
+
+---
+
+## 目录
+
+- [环境准备指南](#环境准备指南)
+  - [目录](#目录)
+  - [一、Windows（MSVC）](#一windowsmsvc)
+    - [1.1 系统要求](#11-系统要求)
+    - [1.2 Visual Studio 2022](#12-visual-studio-2022)
+    - [1.3 Git](#13-git)
+    - [1.4 代理配置（可选但推荐）](#14-代理配置可选但推荐)
+    - [1.5 vcpkg](#15-vcpkg)
+    - [1.6 验证](#16-验证)
+  - [二、WSL（GCC）](#二wslgcc)
+    - [2.1 系统要求](#21-系统要求)
+    - [2.2 WSL 安装与配置](#22-wsl-安装与配置)
+    - [2.3 构建工具链](#23-构建工具链)
+    - [2.4 vcpkg](#24-vcpkg)
+    - [2.5 代理配置（可选）](#25-代理配置可选)
+    - [2.6 验证](#26-验证)
+  - [三、常见问题](#三常见问题)
+    - [3.1 vcpkg 拉取超时 / 无法连接 GitHub](#31-vcpkg-拉取超时--无法连接-github)
+    - [3.2 VS 提示 "Could not find GTest"](#32-vs-提示-could-not-find-gtest)
+    - [3.3 WSL 中 cmake 找不到 Ninja](#33-wsl-中-cmake-找不到-ninja)
+    - [3.4 代理关闭后 Git 报错](#34-代理关闭后-git-报错)
+
+---
+
+## 一、Windows（MSVC）
+
+### 1.1 系统要求
+
+- **操作系统**：Windows 10 21H2+ / Windows 11
+- **磁盘空间**：至少 20 GB 可用空间
+
+### 1.2 Visual Studio 2022
+
+安装 **Visual Studio 2022**（Enterprise 或 Community 均可），工作负载勾选：
+
+- **使用 C++ 的桌面开发**
+  - MSVC v143 生成工具（x64/x86）
+  - Windows 10/11 SDK
+  - C++ CMake 工具（适用于 Windows）
+  - 适用于最新 v143 生成工具的 C++ ATL（可选）
+
+安装路径（参考）：
+
+```
+D:/Program Files/Microsoft Visual Studio/2022/Enterprise/
+```
+
+> 如果变更了安装路径，请同步更新项目 CMake 中 vcpkg 的回退路径。
+
+### 1.3 Git
+
+```bash
+git --version  # 需 ≥ 2.30
+```
+
+Git 随 Visual Studio 安装时可选，也可从 [https://git-scm.com](https://git-scm.com) 单独安装。
+
+### 1.4 代理配置（可选但推荐）
+
+在中国大陆网络环境下，GitHub 访问不稳定，推荐使用代理工具（如 Clash Verge）。
+
+**1.4.1 配置 Git 代理**
+
+```bash
+# 设置（根据你的代理端口修改）
+git config --global http.proxy http://127.0.0.1:7897
+git config --global https.proxy http://127.0.0.1:7897
+
+# 取消
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+```
+
+**1.4.2 配置环境变量（持久化）**
+
+```bash
+setx HTTP_PROXY "http://127.0.0.1:7897"
+setx HTTPS_PROXY "http://127.0.0.1:7897"
+setx http_proxy "http://127.0.0.1:7897"
+setx https_proxy "http://127.0.0.1:7897"
+```
+
+设置后需重启终端或 Visual Studio。
+
+### 1.5 vcpkg
+
+**方案一：系统级安装（推荐）**
+
+```bash
+git clone https://github.com/microsoft/vcpkg
+cd vcpkg
+.\bootstrap-vcpkg.bat
+```
+
+设置环境变量：
+
+```bash
+setx VCPKG_ROOT "D:/path/to/vcpkg"
+```
+
+将 `%VCPKG_ROOT%` 添加到 `PATH`。
+
+**方案二：使用项目 CMake 回退路径**
+
+项目默认回退路径为 `D:/Github/vcpkg/`。如果 vcpkg 在此位置，无需额外配置。
+
+### 1.6 验证
+
+打开 **Visual Studio**，选择 `x64-Debug` 配置，执行 CMake 配置（生成 cache）：
+
+- 控制台应输出 vcpkg 相关日志（自动安装 gtest）
+- 配置完成后 `test/unittest` 能正确找到 `GTestConfig.cmake`
+- 构建无报错
+
+---
+
+## 二、WSL（GCC）
+
+### 2.1 系统要求
+
+- **操作系统**：Windows 10 21H2+ / Windows 11（已启用 WSL2）
+- **WSL 版本**：2.0.0+
+- **Linux 发行版**：Ubuntu 22.04 LTS（推荐）
+
+### 2.2 WSL 安装与配置
+
+**2.2.1 安装 WSL**
+
+```bash
+# 以管理员身份运行 PowerShell
+wsl --install -d Ubuntu
+
+# 确认版本
+wsl -l -v
+#   NAME      STATE           VERSION
+# * Ubuntu    Running         2
+```
+
+**2.2.2 镜像网络模式（可选但推荐）**
+
+使 WSL 共享 Windows 的网络栈，localhost 互通，自动继承代理设置。
+
+在 `%USERPROFILE%\.wslconfig` 中写入：
+
+```ini
+[wsl2]
+networkingMode=mirrored
+dnsTunneling=true
+autoProxy=true
+```
+
+重启 WSL：
+
+```bash
+wsl --shutdown
+# 然后重新运行 wsl
+```
+
+### 2.3 构建工具链
+
+在 WSL 终端中执行：
+
+```bash
+sudo apt update
+sudo apt install build-essential cmake ninja-build curl zip unzip tar pkg-config -y
+```
+
+| 包名 | 作用 |
+|------|------|
+| `build-essential` | g++、gcc、make 等编译工具链 |
+| `cmake` | CMake 构建系统 |
+| `ninja-build` | Ninja 构建系统（项目使用的生成器） |
+| `curl`、`zip`、`unzip`、`tar` | vcpkg 下载和解压依赖 |
+| `pkg-config` | 包配置工具 |
+
+### 2.4 vcpkg
+
+**安装 vcpkg：**
+
+```bash
+cd ~
+git clone https://github.com/microsoft/vcpkg ~/Github/vcpkg
+./vcpkg/bootstrap-vcpkg.sh
+```
+
+**设置环境变量（持久化）：**
+
+```bash
+echo 'export VCPKG_ROOT=~/Github/vcpkg' >> ~/.bashrc
+echo 'export PATH=$VCPKG_ROOT:$PATH' >> ~/.bashrc
+source ~/.bashrc
+```
+
+（如果使用 zsh，将 `.bashrc` 替换为 `.zshrc`）
+
+**验证：**
+
+```bash
+vcpkg --version
+echo $VCPKG_ROOT  # 应输出 /home/xxx/Github/vcpkg
+```
+
+### 2.5 代理配置（可选）
+
+如果未启用镜像网络模式，需在 WSL 中手动配置代理：
+
+```bash
+# Git 代理
+git config --global http.proxy http://127.0.0.1:7897
+git config --global https.proxy http://127.0.0.1:7897
+
+# 环境变量
+echo 'export http_proxy=http://127.0.0.1:7897' >> ~/.bashrc
+echo 'export https_proxy=http://127.0.0.1:7897' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### 2.6 验证
+
+在 WSL 终端直接运行 CMake 配置：
+
+```bash
+cd /mnt/d/Gitee/Spark
+cmake -S . -B out/build/WSL-GCC-Debug \
+  -DCMAKE_BUILD_TYPE=Debug \
+  -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
+  -DCMAKE_INSTALL_PREFIX=../Libs/Spark/x64-linux \
+  -G Ninja
+```
+
+或使用 **Visual Studio** 的 CMake 集成，选择 `WSL-GCC-Debug` 配置后生成 cache。
+
+---
+
+## 三、常见问题
+
+### 3.1 vcpkg 拉取超时 / 无法连接 GitHub
+
+- 确认代理工具已开启
+- 检查 `git config --global http.proxy` 是否设置正确
+- 检查 `http_proxy` / `https_proxy` 环境变量
+
+### 3.2 VS 提示 "Could not find GTest"
+
+- 确认 vcpkg 已安装且 `VCPKG_ROOT` 环境变量已设置
+- 确认 `CMakeSettings.json` 中 WSL 配置已添加 `CMAKE_TOOLCHAIN_FILE` 变量
+- 在 VS 中选择 **项目 → 清除缓存**，重新生成
+
+### 3.3 WSL 中 cmake 找不到 Ninja
+
+```bash
+sudo apt install ninja-build
+```
+
+### 3.4 代理关闭后 Git 报错
+
+```bash
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+```
