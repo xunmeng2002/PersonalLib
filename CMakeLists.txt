@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
 
-# vcpkg toolchain: 优先使用 VCPKG_ROOT 环境变量，Windows 回退到默认路径
 if(DEFINED ENV{VCPKG_ROOT})
     set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
 elseif(WIN32)
